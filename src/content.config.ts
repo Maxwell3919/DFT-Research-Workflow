@@ -38,4 +38,12 @@ const framework = defineCollection({
   }),
 });
 
-export const collections = { legacyOperations, coreOperations, recipes, framework };
+const topics = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/topics' }),
+  schema: z.object({
+    topic_slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    status: z.enum(['draft', 'reviewed']),
+  }),
+});
+
+export const collections = { legacyOperations, coreOperations, recipes, framework, topics };
