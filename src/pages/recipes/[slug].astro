@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getRecipes, humanizeToken, type Recipe } from '../../lib/operations';
+import { getRecipes, type Recipe } from '../../lib/operations';
 import { withBase } from '../../lib/paths';
 
 type Props = { recipe: Recipe; narrative: CollectionEntry<'recipes'> | undefined };
@@ -20,22 +20,17 @@ const { recipe, narrative } = Astro.props as Props;
 const Narrative = narrative ? (await render(narrative)).Content : null;
 ---
 
-<BaseLayout title={recipe.title} description={`Workflow recipe: ${recipe.title}.`} current="recipes">
+<BaseLayout title={recipe.title} description={`Research workflow: ${recipe.title}.`} current="recipes">
   <article class="chapter">
     <p class="breadcrumb"><a href={withBase('recipes/')}>Workflow Recipes</a></p>
-    <p class="operation-label">Workflow recipe</p>
+    <p class="operation-label">Research workflow</p>
     <h1>{recipe.title}</h1>
-    <p class="operation-summary">This is a composite coverage projection, not an atomic operation or a complete topological execution order.</p>
-    <dl class="operation-contract">
-      <div><dt>System tags</dt><dd>{recipe.system_types.map(humanizeToken).join(', ')}</dd></div>
-      <div><dt>Target tags</dt><dd>{recipe.scientific_targets.map(humanizeToken).join(', ')}</dd></div>
-      <div><dt>Method tags</dt><dd>{recipe.methods.map(humanizeToken).join(', ')}</dd></div>
-      <div><dt>Operation coverage</dt><dd>{recipe.operations.join(', ')}</dd></div>
-    </dl>
-    <section class="narrative-placeholder" aria-labelledby="recipe-content-heading">
-      <h2 id="recipe-content-heading">Detailed content</h2>
-      {Narrative && <Narrative />}
-    </section>
+    <p class="operation-summary">
+      This page will explain one way to combine researcher-scale tasks for the stated scientific goal. It is not an atomic operation or a universal execution sequence.
+    </p>
+
+    {Narrative && <div class="article-content"><Narrative /></div>}
+
     <p class="directory-link"><a href={withBase('recipes/')}>Return to Workflow Recipes</a></p>
   </article>
 </BaseLayout>
