@@ -1,0 +1,82 @@
+[
+  {
+    "id": "frame",
+    "number": "01",
+    "title": "界定问题",
+    "eyebrow": "Question → observable",
+    "summary": "先写清要回答的科学问题、可观测量、比较对象和接受边界，再选择软件。",
+    "decision": "什么结果会真正改变判断？",
+    "failure": "从熟悉的计算类型出发，最后得到很多输出，却没有可检验的问题。",
+    "deliverable": "问题陈述、observable 定义、对照体系与预先声明的证据门。"
+  },
+  {
+    "id": "structure",
+    "number": "02",
+    "title": "建立结构模型",
+    "eyebrow": "Structure → model",
+    "summary": "把来源结构变成边界条件、化学计量、占位、磁序和构型都可追溯的计算模型。",
+    "decision": "哪些结构自由度属于问题，哪些只是数值表示？",
+    "failure": "把能运行的结构文件误当成物理模型已经正确。",
+    "deliverable": "带来源、变换记录和候选构型范围的结构模型。"
+  },
+  {
+    "id": "protocol",
+    "number": "03",
+    "title": "设计计算协议",
+    "eyebrow": "Model → protocol",
+    "summary": "围绕 observable 选择理论近似、赝势/基组、边界条件、占据方法和计算代码。",
+    "decision": "近似的适用条件是否覆盖当前材料与目标性质？",
+    "failure": "复制一份输入文件，却无法解释每个关键选择如何影响目标量。",
+    "deliverable": "版本绑定、假设透明、可审查的 protocol specification。"
+  },
+  {
+    "id": "convergence",
+    "number": "04",
+    "title": "收敛数值表示",
+    "eyebrow": "Protocol → evidence",
+    "summary": "对目标 observable 建立多轴、可复算的收敛证据，而不是只看 SCF 阈值。",
+    "decision": "在研究所需精度下，哪些离散化误差仍会改变结论？",
+    "failure": "将电子迭代收敛等同于 k 点、截断能、超胞或性质已经收敛。",
+    "deliverable": "明确精度目标、轴向扫描和判定规则的 convergence dossier。"
+  },
+  {
+    "id": "execution",
+    "number": "05",
+    "title": "执行与监控",
+    "eyebrow": "Evidence → run",
+    "summary": "用小规模 pilot 校准资源，再提交、监控、恢复并保全每个正式运行的身份。",
+    "decision": "运行身份、资源、依赖和恢复链是否足以解释每个输出？",
+    "failure": "只记录目录名或 JOB DONE，无法把输入、环境、job ID 与结果一一绑定。",
+    "deliverable": "可恢复的 run manifest、scheduler lineage 和完整退出证据。"
+  },
+  {
+    "id": "property",
+    "number": "06",
+    "title": "沿性质分支分析",
+    "eyebrow": "Run → observable",
+    "summary": "不同性质需要不同父计算、采样、后处理和解释边界，不能共用一套验收口径。",
+    "decision": "目标性质的计算对象、参考态与后处理链是什么？",
+    "failure": "从一个方便的输出字段直接跳到材料性质或机制结论。",
+    "deliverable": "带父运行 lineage、单位、约定与不确定性的 property artifact。"
+  },
+  {
+    "id": "validation",
+    "number": "07",
+    "title": "验证与挑战结果",
+    "eyebrow": "Observable → confidence",
+    "summary": "通过基准、独立实现、敏感性分析、物理 sanity checks 和反例主动挑战结论。",
+    "decision": "有什么独立证据能推翻或限制当前解释？",
+    "failure": "把重复运行同一流程、与自己一致或图形平滑当成独立验证。",
+    "deliverable": "覆盖范围明确的 validation matrix 与仍未闭合的证据断点。"
+  },
+  {
+    "id": "provenance",
+    "number": "08",
+    "title": "保全与表达",
+    "eyebrow": "Confidence → claim",
+    "summary": "将输入、代码版本、环境、raw/derived lineage、判定和主张强度打包为可复核记录。",
+    "decision": "读者能否重建结果，并看出数据记录、解释和主张之间的边界？",
+    "failure": "只保存最终图或表，丢失生成它的参数、父运行、失败尝试和限制条件。",
+    "deliverable": "可重现包、claim ledger、证据索引与清楚的 handoff。"
+  }
+]

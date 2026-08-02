@@ -1,0 +1,20 @@
+---
+const gates = [
+  { number: 'G0', title: '身份与完整性', signal: '输入、版本、环境、job ID、路径和 hash 能一一对应。', not: '不说明程序完成，更不说明结果正确。' },
+  { number: 'G1', title: '程序完成', signal: '程序按预期退出，错误与警告已解析。', not: 'JOB DONE 不能证明电子或结构收敛。' },
+  { number: 'G2', title: '内部收敛', signal: 'SCF、几何或响应方程满足其明确阈值。', not: '内部阈值不覆盖 k 点、截断能或有限尺寸。' },
+  { number: 'G3', title: '目标量收敛', signal: 'observable 对相关数值轴的变化低于预设精度。', not: '数值稳定仍可能建立在不适用的物理模型上。' },
+  { number: 'G4', title: '物理有效性', signal: '假设、边界、守恒律、对称性、极限和参考态经审查。', not: '物理 plausible 不等于被独立证据验证。' },
+  { number: 'G5', title: '独立验证', signal: '足够独立的实现、方法、实验或复算按预设标准支持有限结论。', not: '验证范围不能自动推广到全部性质与条件。' },
+  { number: 'G6', title: '科学主张', signal: '主张强度与证据覆盖、反证、未知和敏感性相匹配。', not: '最终接受仍是研究判断，不应由流水线静默决定。' },
+];
+---
+
+<ol class="evidence-ladder">
+  {gates.map((gate) => (
+    <li>
+      <span class="gate-number">{gate.number}</span>
+      <div><h2>{gate.title}</h2><p>{gate.signal}</p><small>{gate.not}</small></div>
+    </li>
+  ))}
+</ol>

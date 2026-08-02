@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import operationsData from '../../data/operations.json';
+import { branches } from '../../data/branches';
+import type { Operation, PropertyBranch } from '../../types';
+
+const operations = operationsData as Operation[];
+export function getStaticPaths() {
+  return branches.map((branch) => ({ params: { id: branch.id }, props: { branch } }));
+}
+const { branch } = Astro.props as { branch: PropertyBranch };
+const operation = operations.find((item) => item.id === branch.operationId);
+if (!operation) throw new Error(`Missing operation ${branch.operationId}`);
+---
+
+<BaseLayout title={branch.title} description={branch.question} current="branches">
+  <article class={`property-page accent-${branch.accent}`}>
+    <header class="property-hero shell">
+      <span class="property-letter">{branch.number}</span><div><p class="kicker"><span>PROPERTY BRANCH</span> / {operation.id}</p><h1>{branch.title}</h1><p>{branch.question}</p></div>
+    </header>
+    <div class="shell property-grid">
+      <section><p class="section-index">ROUTE</p><h2>从父状态到性质 artifact</h2><ol class="route-list">{branch.route.map((item, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><b>{item}</b></li>)}</ol></section>
+      <section><p class="section-index">CONVERGENCE</p><h2>不能省略的收敛轴</h2><ul class="pill-list">{branch.convergence.map((item) => <li>{item}</li>)}</ul></section>
+      <section class="trap-panel"><p class="section-index">CLAIM TRAPS</p><h2>结果不能直接跳到这些结论</h2><ul>{branch.traps.map((item) => <li>{item}</li>)}</ul></section>
+      <section class="contract-panel"><p class="section-index">OPERATION CONTRACT</p><h2>{operation.title}</h2><p>{operation.summary}</p><dl><div><dt>Inputs</dt><dd>{operation.inputs.join(' · ')}</dd></div><div><dt>Outputs</dt><dd>{operation.outputs.join(' · ')}</dd></div><div><dt>Validation gates</dt><dd>{operation.validation_gates.join(' · ')}</dd></div></dl><p class="evidence-note"><b>边界</b>{operation.evidence_boundary}</p></section>
+    </div>
+    <div class="shell back-row"><a class="button ghost" href="/branches/">← 返回全部性质分支</a><a class="button primary" href="/evidence/">继续到证据门 →</a></div>
+  </article>
+</BaseLayout>
