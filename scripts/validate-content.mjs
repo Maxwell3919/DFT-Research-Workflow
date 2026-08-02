@@ -120,7 +120,7 @@ for (const className of cssClasses) {
 const architecture = await readFile(new URL('docs/architecture.md', root), 'utf8');
 for (const statement of [
   '24 typed core',
-  'typed data and provenance DAG',
+  'Typed data and provenance DAG',
   'Legacy compatibility',
   'Talos handoff',
 ]) {
