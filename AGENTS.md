@@ -8,16 +8,34 @@ an authority for production calculations.
 
 ## Current information architecture
 
-- `docs/architecture.md` defines the reader-facing A–E workflow.
-- The public framework uses researcher-scale tasks, concrete target
-  calculations, and complete research workflows.
+- `docs/architecture.md` defines the reader-facing A–E workflow and
+  researcher-scale task granularity.
+- `workflow/topics.json` defines stable A–E section, group, topic title, and
+  route identity.
+- `src/content/topics/*.md` supplies optional natural-language topic narratives.
 - The site does not claim that DFT research contains a fixed total number of
   operations.
 - O01–O24 and former Operation 00–34 files and routes are migration material
   only. They must not return as the primary directory, chapter count, or
   scientific taxonomy.
 - Existing recipe, relation, tag, and legacy files may support migration, but
-  they do not override the current architecture.
+  they do not override the current architecture or topic registry.
+
+## Topic registry rules
+
+- Keep section IDs A–E and D navigation groups D1–D5 unless the user explicitly
+  approves an architecture change.
+- Topic slugs and titles must be unique and must not collide with transitional
+  routes.
+- A registry record identifies a topic and route; it does not define article
+  headings, scientific conclusions, universal parameters, or one execution
+  order.
+- Migration references are internal editorial aids and must not be rendered as a
+  second public taxonomy.
+- The registry length may be used by tests to detect missing routes but must not
+  be presented as the number of DFT operations.
+- Add substantive topic prose under `src/content/topics/` using only
+  `topic_slug` and editorial `status` in frontmatter.
 
 ## Content rules
 
@@ -55,8 +73,8 @@ an authority for production calculations.
   reference; do not copy its content, data, taxonomy, or identity.
 - Avoid dashboards, progress meters, status chips, and contract-heavy layouts
   that interrupt continuous reading.
-- Update deterministic validators when routes, migration boundaries, or public
-  information architecture change.
+- Update deterministic validators when routes, registry relationships,
+  migration boundaries, or public information architecture change.
 - Build and browser success establish software behaviour only.
 
 ## Safety and delivery
