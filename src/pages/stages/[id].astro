@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import stagesData from '../../data/stages.json';
+import operationsData from '../../data/operations.json';
+import type { Operation, Stage } from '../../types';
+
+const stages = stagesData as Stage[];
+const operations = operationsData as Operation[];
+
+export function getStaticPaths() {
+  return (stagesData as Stage[]).map((stage) => ({
+    params: { id: stage.id },
+    props: { stage },
+  }));
+}
+
+const { stage } = Astro.props as { stage: Stage };
+const stageOperations = operations.filter((operation) => operation.stage === stage.id);
+const stageIndex = stages.findIndex((item) => item.id === stage.id);
+const previous = stages[stageIndex - 1];
+const next = stages[stageIndex + 1];
+const maturityLabel = { manual: '研究者判断', assisted: '可辅助', candidate: '候选自动化' };
+---
+
+<BaseLayout title={stage.title} description={stage.summary} current="workflow">
+  <article class="stage-page shell">
+    <header class="stage-hero">
+      <div class="stage-glyph"><span>{stage.number}</span><i></i></div>
+      <div><p class="kicker"><span>STAGE {stage.number}</span> / {stage.eyebrow}</p><h1>{stage.title}</h1><p>{stage.summary}</p></div>
+    </header>
+    <section class="decision-triad">
+      <div><small>关键判断</small><h2>{stage.decision}</h2></div>
+      <div><small>常见误判</small><p>{stage.failure}</p></div>
+      <div><small>阶段交付物</small><p>{stage.deliverable}</p></div>
+    </section>
+    <section class="stage-operations">
+      <div class="section-heading"><div><p class="section-index">OPERATIONS</p><h2>本阶段的 {stageOperations.length} 项操作</h2></div><a class="text-link" href="/registry/">查看完整 registry →</a></div>
+      <div class="contract-list">
+        {stageOperations.map((operation, index) => (
+          <article>
+            <span class="contract-index">{String(index + 1).padStart(2, '0')}</span>
+            <div class="contract-main"><div><code>{operation.id}</code><span class={`maturity maturity-${operation.automation_maturity}`}>{maturityLabel[operation.automation_maturity]}</span></div><h3>{operation.title}</h3><p>{operation.summary}</p></div>
+            <div class="contract-meta"><dl><div><dt>Inputs</dt><dd>{operation.inputs.join(' · ')}</dd></div><div><dt>Outputs</dt><dd>{operation.outputs.join(' · ')}</dd></div>{operation.convergence_axes.length > 0 && <div><dt>Convergence</dt><dd>{operation.convergence_axes.join(' · ')}</dd></div>}</dl><p><b>证据边界</b>{operation.evidence_boundary}</p></div>
+          </article>
+        ))}
+      </div>
+    </section>
+    <nav class="stage-pagination" aria-label="阶段导航">
+      {previous ? <a href={`/stages/${previous.id}/`}><small>← 上一阶段</small><b>{previous.number} · {previous.title}</b></a> : <span></span>}
+      {next ? <a class="next" href={`/stages/${next.id}/`}><small>下一阶段 →</small><b>{next.number} · {next.title}</b></a> : <a class="next" href="/evidence/"><small>下一站 →</small><b>证据门</b></a>}
+    </nav>
+  </article>
+</BaseLayout>

@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  current?: string;
+}
+
+const { title, description, current = '' } = Astro.props;
+const pageTitle = title === 'DFT Research Workflow' ? title : `${title} · DFT Research Workflow`;
+const nav = [
+  { href: '/workflow/', label: '工作流', key: 'workflow' },
+  { href: '/branches/', label: '性质分支', key: 'branches' },
+  { href: '/evidence/', label: '证据门', key: 'evidence' },
+  { href: '/registry/', label: 'Operation registry', key: 'registry' },
+];
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="DFT Research Workflow 首页">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><b>DFT</b><small>Research Workflow</small></span>
+      </a>
+      <nav aria-label="主导航">
+        {nav.map((item) => (
+          <a href={item.href} aria-current={current === item.key ? 'page' : undefined}>{item.label}</a>
+        ))}
+      </nav>
+      <span class="status-chip"><i></i> private build</span>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div>
+        <p class="footer-kicker">DFT Research Workflow</p>
+        <p>先理解可靠研究如何工作，再决定什么值得自动化。</p>
+      </div>
+      <div class="footer-boundary">
+        <strong>证据边界</strong>
+        <span>网站构建通过 ≠ 数值收敛 ≠ 物理有效 ≠ 科学接受</span>
+      </div>
+    </footer>
+  </body>
+</html>

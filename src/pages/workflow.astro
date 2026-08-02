@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkflowExplorer from '../components/WorkflowExplorer.astro';
+---
+
+<BaseLayout title="完整工作流" description="DFT 研究八阶段与三十五项 operation 的可检查地图。" current="workflow">
+  <header class="page-hero shell">
+    <p class="kicker"><span>WORKFLOW MAP</span> / 8 stages · 35 operations</p>
+    <h1>一条共同主干，<br /><em>不是一套固定配方。</em></h1>
+    <p>operation registry 提供覆盖范围；研究阶段提供理解顺序。筛选 automation maturity，可以看见哪些环节依赖研究者判断，哪些只适合辅助，哪些未来才可能形成小型自动化契约。</p>
+  </header>
+  <div class="shell"><WorkflowExplorer /></div>
+</BaseLayout>

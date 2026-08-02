@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { branches } from '../../data/branches';
+---
+
+<BaseLayout title="性质分支" description="不同 DFT 性质分支的父计算、收敛轴和解释边界。" current="branches">
+  <header class="page-hero shell">
+    <p class="kicker"><span>PROPERTY ROUTES</span> / one trunk, different evidence</p>
+    <h1>目标性质不同，<br /><em>证据链也必须不同。</em></h1>
+    <p>共同主干解决身份、模型、协议和执行问题；性质分支决定父计算、采样、后处理、收敛轴与可以支持的主张。</p>
+  </header>
+  <section class="shell branch-list">
+    {branches.map((branch) => (
+      <a class={`branch-row accent-${branch.accent}`} href={`/branches/${branch.id}/`}>
+        <span class="branch-number">{branch.number}</span><div><h2>{branch.title}</h2><p>{branch.question}</p></div><ul>{branch.convergence.slice(0, 3).map((item) => <li>{item}</li>)}</ul><span class="branch-arrow">↗</span>
+      </a>
+    ))}
+  </section>
+</BaseLayout>
