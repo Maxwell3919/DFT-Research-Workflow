@@ -181,7 +181,7 @@ const reviewedTopicSpecifications = {
     reviewStatements: [
       'reviewed within the declared educational scope',
       'does not validate any particular functional',
-      'It does not restore O07 and O08 as parallel public operations.',
+      'restore O07 and O08 as parallel public operations.',
     ],
   },
 };
