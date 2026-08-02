@@ -12,6 +12,11 @@ const requiredFiles = [
   'README.md',
   'docs/architecture.md',
   'docs/content-contract.md',
+  'ontology/operations.json',
+  'ontology/relations.json',
+  'ontology/tags.json',
+  'ontology/legacy-operations.json',
+  'recipes/index.json',
   'src/content.config.ts',
   'src/lib/operations.ts',
   'src/lib/paths.ts',
@@ -95,7 +100,7 @@ const layout = await readFile(new URL('src/layouts/BaseLayout.astro', root), 'ut
 const navigationBlock = layout.match(/const navigation = \[([\s\S]*?)\] as const/)?.[1] ?? '';
 const navigationLabels = [...navigationBlock.matchAll(/label: '([^']+)'/g)].map((match) => match[1]);
 if (JSON.stringify(navigationLabels) !== JSON.stringify(['Home', 'Operations'])) {
-  errors.push(`primary navigation must be exactly Home and Operations: ${JSON.stringify(navigationLabels)}`);
+  errors.push(`primary navigation must be exactly Home and Operations during the transition: ${JSON.stringify(navigationLabels)}`);
 }
 
 const componentDirectory = new URL('src/components/', root);
@@ -112,10 +117,20 @@ for (const className of cssClasses) {
   if (!new RegExp(`\\b${className}\\b`).test(astroBody)) errors.push(`unused CSS class: ${className}`);
 }
 
+const architecture = await readFile(new URL('docs/architecture.md', root), 'utf8');
+for (const statement of [
+  '24 typed core',
+  'Typed data and provenance DAG',
+  'Legacy compatibility',
+  'Talos handoff',
+]) {
+  if (!architecture.includes(statement)) errors.push(`architecture is missing required statement: ${statement}`);
+}
+
 if (errors.length > 0) {
   console.error(`Content validation failed (${errors.length}):`);
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
 
-console.log(`Content contract valid: ${requiredFiles.length} required files, retired architecture absent, English source, Home copy ${wordCount} words, no unused component classes.`);
+console.log(`Content contract valid: ${requiredFiles.length} required files, 24-operation architecture, legacy compatibility, English source, Home copy ${wordCount} words, and no unused component classes.`);

@@ -1,38 +1,109 @@
-import { getCollection, type CollectionEntry } from 'astro:content';
+import operationsDocument from '../../ontology/operations.json';
+import legacyDocument from '../../ontology/legacy-operations.json';
 
-export const parts = [
+export const lifecycleGroups = [
   {
-    id: 'common-workflow',
-    anchor: 'part-i',
-    label: 'Part I · Common DFT Workflow',
-    range: 'Operations 00–17',
+    id: 'source-and-identity',
+    anchor: 'source-and-identity',
+    label: 'Source and Identity',
+    range: 'O01–O04',
+    summary: 'Acquire, parse, verify, and canonicalize source objects.',
   },
   {
-    id: 'property-workflows',
-    anchor: 'part-ii',
-    label: 'Part II · Property Workflows',
-    range: 'Operations 18–33',
+    id: 'model-preparation',
+    anchor: 'model-preparation',
+    label: 'Model Preparation',
+    range: 'O05–O06',
+    summary: 'Build computational models and reduce configurational alternatives.',
   },
   {
-    id: 'closing-loop',
-    anchor: 'part-iii',
-    label: 'Part III · Closing the Loop',
-    range: 'Operation 34',
+    id: 'protocol-design',
+    anchor: 'protocol-design',
+    label: 'Protocol Design',
+    range: 'O07–O10',
+    summary: 'Specify theory, numerics, references, acceptance criteria, and executable inputs.',
+  },
+  {
+    id: 'computation',
+    anchor: 'computation',
+    label: 'Computation',
+    range: 'O11–O17',
+    summary: 'Configure and control execution, solve states, optimize, propagate, respond, and interpolate.',
+  },
+  {
+    id: 'analysis-and-comparison',
+    anchor: 'analysis-and-comparison',
+    label: 'Analysis and Comparison',
+    range: 'O18–O19',
+    summary: 'Derive observables and compare results across cases and references.',
+  },
+  {
+    id: 'evidence-and-claim',
+    anchor: 'evidence-and-claim',
+    label: 'Evidence and Claim',
+    range: 'O20–O22',
+    summary: 'Separate numerical convergence, physical robustness, and claim support.',
+  },
+  {
+    id: 'preservation',
+    anchor: 'preservation',
+    label: 'Preservation',
+    range: 'O23–O24',
+    summary: 'Capture lineage and preserve a reproducibility-ready research bundle.',
   },
 ] as const;
 
-export type OperationEntry = CollectionEntry<'operations'>;
+export type LifecycleId = (typeof lifecycleGroups)[number]['id'];
 
-export async function getOperations(): Promise<OperationEntry[]> {
-  const entries = await getCollection('operations');
-  return entries.sort((left, right) => left.data.number - right.data.number);
-}
-export function formatNumber(number: number): string {
-  return String(number).padStart(2, '0');
+export interface CoreOperation {
+  id: string;
+  order: number;
+  slug: string;
+  name: string;
+  lifecycle: LifecycleId;
+  definition: string;
+  inputs: string[];
+  outputs: string[];
+  requirement: string;
+  repeatability: string;
+  dependencies: string[];
+  alternatives: string[];
+  exclusions: string[];
 }
 
-export function getPart(partId: OperationEntry['data']['part']) {
-  const part = parts.find((candidate) => candidate.id === partId);
-  if (!part) throw new Error(`Unknown operation part: ${partId}`);
-  return part;
+export interface LegacyOperation {
+  number: number;
+  display_number: string;
+  title: string;
+  slug: string;
+  maps_to: string[];
+  entry_kind: string;
+  disposition: string;
+}
+
+const coreOperations = operationsDocument.operations as CoreOperation[];
+const legacyOperations = legacyDocument.entries as LegacyOperation[];
+
+export function getOperations(): CoreOperation[] {
+  return [...coreOperations].sort((left, right) => left.order - right.order);
+}
+
+export function getLegacyOperations(): LegacyOperation[] {
+  return [...legacyOperations].sort((left, right) => left.number - right.number);
+}
+
+export function getOperationById(id: string): CoreOperation {
+  const operation = coreOperations.find((candidate) => candidate.id === id);
+  if (!operation) throw new Error(`Unknown core operation: ${id}`);
+  return operation;
+}
+
+export function getLifecycle(lifecycleId: LifecycleId) {
+  const lifecycle = lifecycleGroups.find((candidate) => candidate.id === lifecycleId);
+  if (!lifecycle) throw new Error(`Unknown lifecycle: ${lifecycleId}`);
+  return lifecycle;
+}
+
+export function humanizeToken(token: string): string {
+  return token.replaceAll('_', ' ').replaceAll('-', ' ');
 }

@@ -3,36 +3,49 @@
 ## Project boundary
 
 This repository is the source authority for the public DFT Research Workflow
-learning website. The site is an English, operation-led, static-first framework
-for how researchers carry out a DFT study.
+learning website. It is a static teaching and ontology project, not a workflow
+engine and not an authority for production calculations.
 
-## Content authority
+## Scientific authority
 
-- The 35 entries in `src/content/operations/` are the public directory,
-  learning order, stable route authority, and future chapter boundary.
-- Operation numbers, titles, parts, and slugs must pass the deterministic
-  validators before they change.
-- Detailed chapters are written and reviewed one operation at a time. Do not
-  bulk-generate tutorial prose, commands, parameters, formulae, examples,
-  results, references, or automation advice.
-- Keep the public information architecture limited to Home and Operations until
-  a later explicit decision.
-- Public pages, metadata, navigation, aria labels, and the 404 page use English.
+- `ontology/operations.json` defines the 24 core operations O01–O24.
+- `ontology/relations.json` defines semantic relations.
+- `ontology/tags.json` defines system, target, method, and implementation tags.
+- `recipes/index.json` defines composite workflow scaffolds.
+- `ontology/legacy-operations.json` maps the former 00–34 routes.
+- `src/content/operations/*.md` is legacy route metadata only.
+- Public pages are projections and must not redefine taxonomy.
+
+Do not restore the claim that the former 35 pages are a complete,
+non-overlapping, minimal operation set.
+
+## Content rules
+
+- Keep operations, recipes, scientific targets, system types, methods,
+  implementations, validation states, and provenance roles at separate levels.
+- A new core operation requires a distinct typed input–action–output contract
+  and a deletion-test witness.
+- Recipes reuse operation IDs rather than copying operation definitions.
+- Detailed content is written and reviewed one operation or recipe at a time.
+- Public content remains English and software-neutral.
+- Preserve the former 35 slugs until a separately approved migration removes
+  them.
 
 ## Design and implementation
 
-- Use the current Electronic Structure Atlas `/theory/` page only as a visual
-  reference: narrow serif reading column, white background, simple text links,
-  restrained headings, and light rules.
-- Do not copy its content, data, taxonomy, or project identity.
-- Keep the site fully readable without client-side JavaScript.
-- Do not add cards, dashboards, filters, badges, status chips, decorative
-  graphics, workflow rails, or automation-maturity interfaces.
+- Keep the site static-first and understandable without client-side JavaScript.
 - Preserve the GitHub Pages project base and exact-SHA deployment manifest.
+- Use the Electronic Structure Atlas `/theory/` page only as a restrained visual
+  reference; do not copy its content, data, taxonomy, or identity.
+- Update deterministic validators whenever authority fields, route projections,
+  or compatibility rules change.
+- Build and browser success establish software behavior only.
 
 ## Safety and delivery
 
 Do not commit credentials, licensed potential contents, private host details,
-unpublished calculation data, or production DFT inputs and outputs. Use one
-short-lived branch and pull request. Build and browser success establish
-software behavior only; they do not establish numerical or scientific validity.
+unpublished calculation data, or production DFT inputs and outputs.
+
+Use a single-purpose short-lived branch and pull request. Re-read the current
+`main` and target blobs before writing or merging. Architecture, ontology, and
+stable-route changes require explicit user authorization. Do not force-push.

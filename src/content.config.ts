@@ -2,7 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-const operations = defineCollection({
+const legacyOperations = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/operations' }),
   schema: z.object({
     number: z.number().int().min(0).max(34),
@@ -13,4 +13,4 @@ const operations = defineCollection({
   }),
 });
 
-export const collections = { operations };
+export const collections = { legacyOperations };
