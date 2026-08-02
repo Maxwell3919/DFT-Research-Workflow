@@ -2,348 +2,351 @@
 
 ## Decision
 
-The repository no longer treats the former 35 chapters as a complete,
-non-overlapping, or minimal set of DFT operations.
+DFT Research Workflow is organized around **researcher-scale tasks**, not a
+fixed number of atomic actions.
 
-The scientific content authority is a scope-bounded ontology of 24 typed core
-operations, O01–O24. The set starts with acquiring or constructing material
-structures and ends with claim assessment, provenance capture, and preservation
-of a reproducible research bundle.
-
-The number 24 is not claimed to be a unique global mathematical minimum. It is
-the canonical granularity adopted by this project: independently executable
-research actions with distinct primary semantics and output types.
-
-The former Operation 00–34 routes remain a compatibility layer. They are not
-ontology authority.
-
-## Scope
-
-The framework starts when a researcher acquires, selects, or constructs a
-material structure or related source object. It covers structure identity,
-model construction, method and numerical specification, execution, solvers,
-analysis, verification, claim assessment, provenance, and reproducibility.
-
-It covers bulk, low-dimensional, surface, interface, molecular, defect,
-disordered, finite-temperature, response, electron–phonon, transport,
-excited-state, and beyond-Kohn–Sham workflows when those workflows are composed
-from the core operations.
-
-The framework ends when a stated scientific claim has an explicit evidence
-status and the selected workflow can be reconstructed from a versioned,
-integrity-checkable package.
-
-The following are outside the core operation ontology:
-
-- how the original research idea was generated;
-- funding, staffing, and general project administration;
-- general literature review that does not alter structures, models, methods,
-  references, acceptance criteria, or interpretation;
-- software-installation tutorials as an end in themselves;
-- manuscript writing, submission, and peer review.
-
-## Workflow model
-
-A DFT study is not represented as one fixed linear sequence. The architecture
-uses three connected models.
-
-### 1. Typed data and provenance DAG
-
-Every executed operation consumes typed objects and produces new typed objects.
-Actual attempts are immutable provenance events. A retry or model revision
-creates a new event rather than rewriting the previous lineage.
-
-### 2. Cyclic workflow-control state graph
-
-Control logic may retry, restart, replace, branch, detour, pause for review, or
-return to model and protocol design. The control graph may contain cycles even
-when the recorded data lineage remains a DAG.
-
-### 3. Multi-axis ontology
-
-Every workflow instance is described using three orthogonal axes:
-
-1. lifecycle projection;
-2. reusable core operations;
-3. system, scientific-target, method, and implementation tags.
-
-A workflow recipe is a graph assembled from operations and parameterized by
-tags. A scientific target such as magnetism, topology, superconductivity, or a
-defect formation energy is not itself an atomic operation.
-
-## Authority layers
-
-Repository authority is separated into four layers.
-
-```text
-ontology/
-├── operations.json          # O01–O24 scientific operation authority
-├── relations.json           # typed semantic relations
-├── tags.json                # systems, targets, methods, implementations
-└── legacy-operations.json   # former 00–34 compatibility mapping
-
-recipes/
-└── index.json               # composite workflow recipe registry
-
-src/content/operations/
-└── *.md                     # legacy route metadata only
-
-src/pages/
-└── ...                      # public teaching projection
-```
-
-Authority order:
-
-1. `ontology/operations.json` defines core operation identity and contracts.
-2. `ontology/relations.json` defines reusable semantic relations.
-3. `ontology/tags.json` defines orthogonal classification vocabularies.
-4. `recipes/index.json` defines composite workflow scaffolds.
-5. `ontology/legacy-operations.json` maps former routes to the new framework.
-6. Astro pages render these sources but do not redefine the taxonomy.
-7. `src/content/operations/*.md` preserves former route metadata only.
-
-A Markdown chapter, page title, or navigation order must not silently modify the
-ontology.
-
-## Public information architecture
-
-The current framework has four distinct public entries:
-
-```text
-Home
-├── Operations
-├── Workflow Recipes
-└── Framework
-```
-
-`/operations/` lists the 24 core operations by lifecycle. Core operation
-pages expose the operation contract: definition, typed inputs and outputs,
-requirement, repeatability, dependencies, alternatives, and exclusions.
-
-`/recipes/` renders the 16 registered composite recipes. Their operation arrays
-are coverage projections, not automatic complete topological execution orders.
-
-`/framework/` renders the workflow model, lifecycle map, relations and feedback
-loops, tags and methods, and evidence/provenance/reproducibility context. These
-are not additional operations or recipes.
-
-The 35 former `/operations/<legacy-slug>/` URLs remain generated. Each legacy
-page states that it is a compatibility route and links to its mapped core
+The former O01–O24 ontology and the earlier Operation 00–34 directory are no
+longer the reader-facing scientific framework. They divided ordinary research
+tasks into implementation-level actions and created two competing numbered
+systems. Their files and URLs may remain temporarily for migration and link
+continuity, but they must not be presented as two valid ways to count DFT
 operations.
 
-The 35 former `/operations/<legacy-slug>/` URLs remain generated as a separate
-compatibility layer and do not enter the main learning sequence.
+The current reader-facing structure is:
 
-## Lifecycle projection
+```text
+A · Structures
+B · Calculation Preparation
+C · Reference-State Calculations
+D · Target Calculations
+E · Research Completion
+```
 
-The lifecycle view is a teaching projection, not a universal execution order.
+The letters identify broad parts of a study. They are navigation aids, not a
+claim that every project follows one irreversible linear sequence.
 
-| Lifecycle | Core operations |
-|---|---|
-| Source and identity | O01–O04 |
-| Model preparation | O05–O06 |
-| Protocol design | O07–O10 |
-| Computation | O11–O17 |
-| Analysis and comparison | O18–O19 |
-| Evidence and claim | O20–O22 |
-| Preservation | O23–O24 |
+## Researcher-scale tasks
 
-O09, O12, and O20–O24 are cross-cutting. They may be revisited throughout a
-workflow and must not be interpreted as one-time terminal steps.
+A task belongs in the public framework when a researcher can reasonably plan,
+perform, discuss, and report it as a recognizable unit of scientific work.
+Usually it:
 
-## Core operations
+- has a clear research purpose;
+- produces a result that can be used directly by later work;
+- has its own important modelling, numerical, or interpretive decisions;
+- has identifiable failure modes or validation questions;
+- could appear as a distinct method or result in a research project.
 
-### Source and identity
+Implementation-level actions remain inside the relevant page. Downloading a
+CIF, parsing it, checking its fields, transforming the cell, recording its
+source, and validating its identity are normally parts of **Obtain a Material
+Structure**, not six parallel top-level operations. Likewise, diagonalization,
+FFT execution, file conversion, scheduler submission, interpolation commands,
+and plotting commands do not become public workflow tasks merely because a
+software system can record them separately.
 
-- O01 · Acquire Source Objects
-- O02 · Parse and Normalize Artifacts
-- O03 · Verify Identity and Integrity
-- O04 · Canonicalize Crystallographic Representation
+Machine-readable provenance may still describe those finer events. The teaching
+architecture does not have to expose the same granularity as an execution engine
+or provenance graph.
 
-### Model preparation
+## Public workflow structure
 
-- O05 · Build a Computational Model
-- O06 · Generate and Reduce Candidate Configurations
+### A · Structures
 
-### Protocol design
+#### Obtain a Material Structure
 
-- O07 · Specify the Physical Theory and Ensemble
-- O08 · Specify Numerical Representation and Boundary Treatment
-- O09 · Design the Protocol, References, and Acceptance Criteria
-- O10 · Materialize and Preflight Executable Inputs
+Obtain a structure from a database, experiment, publication, previous
+calculation, or structure generator. Source tracking, parsing, format
+conversion, identity checks, crystallographic inspection, and representation
+choices are treated as parts of this task.
 
-### Computation
+#### Build or Modify a Computational Model
 
-- O11 · Configure the Execution Environment and Resources
-- O12 · Orchestrate, Monitor, and Recover Executions
-- O13 · Solve an Electronic State
-- O14 · Optimize Structures or Paths
-- O15 · Propagate Dynamics and Sample an Ensemble
-- O16 · Evaluate Perturbations, Responses, and Couplings
-- O17 · Construct Reduced and Interpolated Representations
+Create the model required by the research question: supercells, slabs,
+defects, dopants, adsorbates, interfaces, heterostructures, vacuum regions,
+constraints, magnetic candidates, disorder models, or other structural
+variants.
 
-### Analysis and comparison
+### B · Calculation Preparation
 
-- O18 · Derive Scientific Quantities
-- O19 · Compare and Aggregate Results
+#### Choose the DFT Method and Computational Setup
 
-### Evidence and claim
+Choose the physical approximation and principal computational setup, including
+functional, core treatment, basis or representation, spin and relativistic
+treatment, dispersion corrections, boundary treatment, occupations, sampling,
+and relevant code-specific implementation choices.
 
-- O20 · Verify Numerical Completion and Convergence
-- O21 · Validate Physical Consistency and Method Robustness
-- O22 · Assess Support for a Scientific Claim
+#### Test Numerical Convergence
 
-### Preservation
+Establish numerical settings for the intended observable. Convergence is tied
+to the quantity and claim of interest rather than to one universal total-energy
+threshold.
 
-- O23 · Capture Provenance and Lineage
-- O24 · Package and Preserve a Reproducible Research Bundle
+### C · Reference-State Calculations
 
-## Operation contract
+#### Optimize the Structure
 
-Each core operation must define:
+Optimize atomic positions, lattice variables, constrained coordinates, or other
+structural degrees of freedom appropriate to the model and scientific question.
 
-- stable `id`, `order`, `slug`, and action-oriented `name`;
-- one primary action semantic;
-- typed `inputs` and `outputs`;
-- lifecycle projection;
-- requirement and repeatability;
-- direct operation dependencies;
-- implementation alternatives;
-- explicit exclusions.
+#### Calculate the Reference Ground State
 
-An operation must not be introduced merely because a material class, scientific
-topic, software package, or method family exists. New operation proposals must
-show a distinct input–action–output contract and pass a deletion test against
-the existing set.
+Produce the well-defined electronic reference state used by subsequent target
+calculations. The required SCF, static, NSCF, spin, charge, and sampling choices
+are explained in the context of this task rather than promoted to independent
+public workflow categories.
 
-## Workflow recipes
+### D · Target Calculations
 
-A recipe composes operations into a target-specific graph. It may reuse an
-operation multiple times and may contain branching, parallel candidates, nested
-solvers, and feedback loops.
+D is a branching library. Each concrete calculation below may have its own page
+because it has a distinct scientific output, setup, convergence problem, or
+interpretive boundary. The group names are navigation headings only.
 
-The initial registry includes representative scaffolds for:
+#### D1 · Energetics and Stability
 
-- bulk structure optimization and bands;
-- two-dimensional electronic structure;
+- Relative Energies and Formation Energies
+- Equation of State and Structural Phase Stability
+- Compositional Phase Stability and Convex Hulls
+- Defect Formation Energies and Charge States
+- Surface Energy and Work Function
+- Adsorption Energies
+- Interface and Heterostructure Energetics
+
+#### D2 · Electronic and Magnetic Properties
+
+- Band Structure
+- Density of States and Projected Density of States
+- Fermi Surface and Full-Brillouin-Zone Analysis
+- Charge Density and Charge Redistribution
+- Electrostatic Potential and Band Alignment
+- Chemical Bonding Analysis
+- Magnetic Configuration and Ground-State Comparison
+- Magnetic Anisotropy and Exchange Interactions
+
+Band structures, density of states, and Fermi surfaces remain separate tasks.
+They use different sampling strategies and support different claims. A
+high-symmetry path is not a Brillouin-zone integral or a full-zone search for
+pockets and extrema.
+
+#### D3 · Mechanical, Electric, and Lattice Response
+
+- Elastic Constants and Mechanical Properties
+- Dielectric Response and Born Effective Charges
+- Polarization and Ferroelectricity
+- Piezoelectric Response
+- Harmonic Phonons
+- Anharmonic Phonons
+- Lattice Thermal Transport
+- Electron–Phonon Coupling
+- Conventional Superconductivity
+
+Dependencies do not collapse these into one page. Harmonic phonons may feed
+anharmonic calculations or electron–phonon calculations; those may then feed
+thermal-transport or superconductivity analysis. Each stage still has its own
+physical objects, convergence axes, and evidence boundary.
+
+#### D4 · Kinetics and Finite Temperature
+
+- Reaction Paths and Transition States
+- Diffusion Barriers
+- Ab Initio Molecular Dynamics
+- Finite-Temperature Structural Sampling
+
+#### D5 · Optical, Excited-State, Topological, and Transport Calculations
+
+- Independent-Particle Optical Properties
+- Time-Dependent Response and Spectroscopy
+- Quasiparticle Corrections
+- Excitons and the Bethe–Salpeter Equation
+- Wannier Function Construction
+- Berry Phase and Berry Curvature
+- Topological Invariants and Boundary States
+- Electronic Transport
+- Quantum Transport
+
+Wannier construction, Berry quantities, topology, and transport may be linked
+in one research workflow, but they are not one indivisible operation.
+
+### E · Research Completion
+
+#### Analyze and Compare Results
+
+Normalize, align, aggregate, compare, and interpret results using appropriate
+reference states and uncertainty boundaries.
+
+#### Validate Results and Scientific Conclusions
+
+Separate program completion, solver convergence, structural convergence,
+target-observable convergence, physical consistency, method robustness, and
+support for the stated scientific conclusion.
+
+#### Document and Preserve the Study
+
+Record sources, models, methods, parameters, software versions, dependencies,
+raw and derived evidence, and reconstruction instructions needed for future
+inspection and reproducibility.
+
+## Workflow relations
+
+A, B, and C form a common backbone, but projects may return to them after a
+failed or ambiguous D or E result. D is selected according to the scientific
+question and may branch, repeat, or run in parallel. E is not merely a final
+administrative step: analysis and validation can send the project back to the
+structure, setup, convergence, reference-state, or target-calculation stage.
+
+A provenance system may represent executed events as a directed acyclic data
+lineage while the research-control process contains cycles. The public site
+should explain those relations without converting them into a numbered list of
+pseudo-atomic operations.
+
+## Research workflows
+
+Research-workflow pages show how tasks combine for a specific scientific goal,
+for example:
+
+- bulk structure optimization and electronic properties;
+- two-dimensional materials;
 - magnetic-order comparison;
-- SOC and topology;
-- defect formation energies;
+- defect thermodynamics;
 - surfaces and adsorption;
 - heterostructure band alignment;
-- harmonic phonons;
-- anharmonic lattice thermal transport;
-- electron–phonon coupling and conventional superconductivity;
-- dielectric, polarization, and piezoelectric response;
-- optical and excited-state calculations;
-- reaction paths and diffusion barriers;
-- ab initio molecular dynamics;
-- GW/BSE;
+- harmonic and anharmonic lattice dynamics;
+- electron–phonon superconductivity;
+- reaction paths and diffusion;
+- molecular dynamics;
+- topology and transport;
+- GW and BSE;
 - high-throughput screening.
 
-A recipe page must reference operation IDs. It must not copy and redefine their
-contracts.
+A workflow page may reuse, omit, repeat, or branch between tasks. It must not
+imply that one example is a universal execution sequence.
 
-## Tags
+## Natural topic organization
 
-Tags describe context; they are not operation classes.
+All scientific pages use **Natural topic organization**.
 
-- `system_types`: bulk, 2D, slab, interface, defect, disordered, and related
-  object types;
-- `scientific_targets`: stability, bands, magnetism, phonons, superconductivity,
-  topology, transport, and related observables;
-- `methods`: Kohn–Sham DFT, SOC, DFT+U, DFPT, Wannier, GW, BSE, DMFT, and
-  related physical or algorithmic choices;
-- `implementations`: codes, workflow systems, and analysis tools.
+There is no mandatory visible page contract and no required sequence of
+headings such as:
 
-A system tag must never imply that required model or boundary operations have
-already been performed. For example, `two_dimensional` does not establish that
-vacuum, Coulomb truncation, dipole treatment, or q→0 behavior is correct.
+- Inputs;
+- Outputs;
+- Requirement;
+- Repeatability;
+- Dependencies;
+- Alternatives;
+- Exclusions.
 
-## Assurance and provenance
+Those concepts may be useful for internal metadata or may appear naturally
+where a topic requires them, but they must not force every article into the same
+form. A band-structure page, defect-formation-energy page, phonon page, and
+provenance page have different explanatory needs and should not look like copies
+of one schema.
 
-The architecture keeps the following states separate:
+Authors should choose the structure that best explains the subject. Depending
+on the page, a clear article may discuss scientific motivation, physical
+meaning, model construction, method choices, numerical convergence, workflow
+logic, failure modes, interpretation, evidence limits, implementation notes,
+worked examples, or references. These are editorial considerations, not a
+mandatory heading checklist.
 
-1. task submitted or program exited;
-2. solver internally converged;
-3. structure or path converged;
-4. target observable numerically converged;
-5. result physically consistent;
-6. method robust within the declared scope;
-7. evidence sufficient for a named scientific claim;
-8. provenance complete;
-9. a reproducibility package preserved;
-10. independent reproduction completed.
+Review evaluates scientific completeness, clarity, evidence boundaries, and
+readability. It does not evaluate whether a page conforms to a uniform section
+template.
 
-No earlier state automatically establishes a later one.
+## Metadata and public prose
 
-O20, O21, and O22 produce different evidence objects. O23 and O24 record and
-preserve work but do not validate its scientific correctness.
+Machine-readable metadata may support routing, search, cross-linking,
+provenance, and migration. It must not dictate the visible article structure.
+Metadata can describe internal relationships without being rendered as a large
+contract block at the top of every page.
 
-## Legacy compatibility
+Public prose remains English, software-neutral at the conceptual level, and
+organized for continuous reading. Code-specific details are labelled as
+implementations rather than treated as universal DFT definitions.
 
-The former 35-page taxonomy mixed prerequisites, atomic operations, recipes,
-system tags, method families, and composite quality activities.
+## Migration compatibility
 
-`ontology/legacy-operations.json` is the only mapping authority for those
-routes. Legacy pages may explain the mapping but may not present themselves as
-members of the core operation set.
+The repository currently contains two superseded classifications:
 
-Compatibility policy:
+- O01–O24 machine-granularity routes;
+- former Operation 00–34 routes.
 
-- preserve every former slug;
-- do not reuse a legacy slug for a different concept;
-- link legacy pages to all mapped O01–O24 operations;
-- do not include legacy pages in core-operation counts or adjacency;
-- remove a legacy route only through a separately reviewed migration decision.
+They are **Migration compatibility** data only. During migration:
+
+- old URLs may remain available so existing links do not break;
+- old identifiers must not appear as the primary directory, chapter count, or
+  scientific framework;
+- old routes must not have previous/next links that imply a current sequence;
+- the public directory must not ask readers to understand the relation between
+  24 and 35;
+- useful material is moved into the A–E pages or research-workflow pages;
+- removal or redirection of old URLs is performed only after the new destination
+  pages exist and route migration is reviewed.
+
+`ontology/operations.json`, `ontology/relations.json`,
+`ontology/legacy-operations.json`, and the current scaffold collections remain
+available during this transition. They are not the current reader-facing
+scientific taxonomy.
+
+## Repository authority during migration
+
+Authority is separated as follows:
+
+1. `docs/architecture.md` defines the current reader-facing information
+   architecture and task granularity.
+2. `docs/content-contract.md` defines writing, source, review, and migration
+   rules.
+3. Future A–E content records define the public topic inventory and routes.
+4. Existing O01–O24, recipe, relation, tag, and legacy files are transition
+   sources until their useful information is migrated.
+5. Astro pages render the approved structure but do not independently redefine
+   it.
+
+A legacy JSON record, old route title, or validator assertion must not silently
+restore the superseded numbered framework.
 
 ## Validation
 
-`npm run check` must verify at least:
+Repository checks should establish that:
 
-- exactly 24 continuous operation IDs O01–O24;
-- unique explicit core slugs;
-- the seven lifecycle projections and expected counts;
-- valid operation dependencies;
-- non-empty typed inputs and outputs;
-- exactly 35 legacy mappings and matching compatibility Markdown files;
-- recipe operation references and tag references;
-- valid relation types and operation references;
-- generated core and legacy routes;
-- English, no-JavaScript public pages;
-- project-base-safe links;
-- core-operation previous/next boundaries;
-- desktop and 390 px browser behavior.
+- public pages do not advertise a total number of DFT operations;
+- the workflow directory presents A–E and the D target-calculation branches;
+- old numbered routes remain reachable only as migration surfaces;
+- old routes do not form a public numbered sequence;
+- operation and workflow pages do not render a compulsory Inputs/Outputs-style
+  contract;
+- narrative content can choose its own headings and order;
+- internal links remain project-base safe;
+- pages remain readable without client-side JavaScript;
+- desktop and narrow layouts remain usable;
+- compatibility and current scientific structure are not confused.
 
-These checks validate repository structure and public software behavior only.
-They do not validate a DFT protocol, numerical result, physical interpretation,
-learning effectiveness, or scientific claim.
+Build and browser success establish software behaviour only. They do not
+validate a DFT protocol, numerical result, physical interpretation, learning
+effectiveness, or scientific claim.
 
 ## Talos handoff
 
-The repository state after this architecture migration establishes the ontology,
-recipe registry, compatibility mapping, public core-operation directory, and
-legacy routes. Talos should continue in this order:
+Talos should continue the migration in bounded stages:
 
-1. Read the current `main` SHA, this file, `docs/content-contract.md`, and all
-   files under `ontology/` and `recipes/`.
-2. Run `npm ci --no-audit --no-fund` and `npm run check` before modifying the
-   framework.
-3. Add a public Workflow Recipes directory driven only by `recipes/index.json`.
-4. Add tag and method views driven only by `ontology/tags.json`.
-5. Add relation-aware diagrams from `ontology/relations.json`; keep an
-   understandable static representation without JavaScript.
-6. Migrate any useful explanatory content from legacy pages into recipes or
-   core-operation chapters without duplicating operation contracts.
-7. Write detailed content one reviewed core operation or recipe at a time.
-8. Preserve all legacy routes until an explicit removal decision.
-9. Update validators whenever authority fields or public projections change.
-10. After each batch, distinguish software validation from scientific content
-    review and from live Pages verification.
-
-Talos must not restore the former claim that 35 pages form a minimal,
-non-overlapping operation set. It must not infer that a recipe, method, target,
-or system type is an atomic operation.
+1. read the current `main`, this architecture, the content rules, current routes,
+   validators, and migration data;
+2. keep `/operations/` aligned with the A–E workflow and prevent 24/35 counts
+   from returning to reader-facing pages;
+3. define a machine-readable A–E topic registry without recreating an artificial
+   fixed operation count;
+4. create destination pages for A, B, C, D, and E topics, with each D calculation
+   represented independently;
+5. migrate useful content from O01–O24, former 00–34 pages, and current recipe
+   scaffolds into the appropriate destination;
+6. preserve old URLs during migration, then review redirects or retirement only
+   after destination coverage exists;
+7. write and review content one coherent topic or research workflow at a time;
+8. allow every page to use a natural subject-specific structure;
+9. update tests so they verify scientific information architecture and route
+   integrity rather than a historical item count;
+10. distinguish software validation, scientific review, and live Pages
+    verification in every delivery.
 
 ## Non-goals
 
@@ -352,10 +355,7 @@ This project is not:
 - a workflow execution engine;
 - a scheduler or HPC control service;
 - a universal input generator;
+- a proof that DFT research has a fixed number of operations;
 - a scientific database;
-- evidence that a real DFT calculation is converged or valid;
+- evidence that a real calculation is converged or valid;
 - a replacement for code- and version-specific official documentation.
-
-The site teaches a compositional research model. Production calculations still
-require project-, material-, observable-, software-, and version-specific
-review.
