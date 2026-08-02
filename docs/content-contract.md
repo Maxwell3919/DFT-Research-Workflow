@@ -1,175 +1,207 @@
-# Content contract
+# Content and writing policy
 
-## Authority
+## Purpose
 
-`ontology/operations.json` is the scientific operation authority.
+This document defines how DFT Research Workflow pages are written, reviewed,
+and migrated under the researcher-scale A–E architecture.
 
-The following sources are subordinate projections:
+The public site teaches recognizable research tasks and target calculations. It
+does not expose a workflow-engine schema as the visible structure of every
+article.
 
-- `ontology/relations.json`: typed semantic relationships;
-- `ontology/tags.json`: system, target, method, and implementation vocabularies;
-- `recipes/index.json`: composite workflow scaffolds;
-- `ontology/legacy-operations.json`: former 00–34 compatibility mapping;
-- `src/content/operations/*.md`: legacy route metadata;
-- Astro pages: public rendering.
+## Current information authority
 
-A page cannot redefine an operation by changing prose, order, or navigation.
+- `docs/architecture.md` defines the reader-facing A–E structure and task
+  granularity.
+- Public narrative pages explain individual researcher-scale tasks, target
+  calculations, or complete research workflows.
+- Machine-readable records may support routes, search, relationships, and
+  migration, but they do not determine the visible article outline.
+- Existing O01–O24 and Operation 00–34 records are migration sources, not the
+  current public taxonomy.
 
-## Core operation record
+No page, route, JSON file, or validator may silently restore a numbered 24- or
+35-operation framework as the current scientific structure.
 
-Every O01–O24 record contains exactly:
+## Natural organization rule
 
-- `id`: stable identifier `O01` through `O24`;
-- `order`: integer `1` through `24`;
-- `slug`: explicit `oNN-...` route slug;
-- `name`: action-oriented English name;
-- `lifecycle`: one declared lifecycle projection;
-- `definition`: one primary action semantic;
-- `inputs`: typed input-object names;
-- `outputs`: typed output-object names;
-- `requirement`: universal or conditional applicability;
-- `repeatability`: when or how the operation is repeated;
-- `dependencies`: direct core-operation prerequisites;
-- `alternatives`: implementation subtypes with the same primary semantic;
-- `exclusions`: neighboring concepts that do not belong to the operation.
+Every scientific page is organized according to its subject.
 
-Core records are schema-like metadata, not executable production contracts.
-They do not authorize a calculation or supply code-specific parameters.
+There is no mandatory heading set and no fixed visible order. In particular, a
+page is not required to display separate sections or contract rows named:
 
-## Operation admission rule
+- Inputs;
+- Outputs;
+- Requirement;
+- Repeatability;
+- Dependencies;
+- Alternatives;
+- Exclusions.
 
-A proposed operation is accepted only when it:
+Writers may address any of those ideas when they help explain the topic, but
+they should appear where the scientific narrative naturally needs them. They
+must not be rendered automatically as a uniform form at the top of every page.
 
-1. has a distinct input–action–output contract;
-2. can be executed or evaluated independently;
-3. is not merely a system type, scientific target, software name, or method
-   family;
-4. cannot be represented by parameterizing or composing existing operations;
-5. has a deletion-test witness showing what becomes inexpressible without it.
+A page on obtaining structures may begin with source quality and crystallographic
+ambiguity. A band-structure page may begin with what a band path can and cannot
+show. A defect page may be organized around reference states, chemical
+potentials, charge corrections, and interpretation. A phonon page may be
+organized around dynamical matrices, sampling, interpolation, stability, and
+failure modes. These pages should not be forced into identical outlines.
 
-Changing O01–O24 identity, semantics, or granularity is an architecture change
-and requires explicit review.
+## Researcher-scale page types
 
-## Workflow recipe record
+### Workflow task page
 
-Every recipe contains:
+A workflow task page explains a recognizable unit of research work in parts A,
+B, C, or E, such as obtaining a structure, choosing a setup, optimizing a
+structure, or validating a conclusion.
 
-- stable `slug`;
-- English `title`;
-- ordered or dependency-relevant `operations`;
-- `system_types`;
-- `scientific_targets`;
-- `methods`;
-- `status`.
+Technical actions that are meaningful only as parts of that task remain inside
+the page. File parsing, coordinate conversion, symmetry detection, scheduler
+submission, individual solver calls, and plotting commands do not automatically
+receive separate top-level pages.
 
-A recipe may repeat an operation. Its operation array is a coverage projection,
-not necessarily a complete topological execution order. Detailed recipes may
-later add explicit edges, branches, loops, references, validation axes, and
-failure returns.
+### Target-calculation page
 
-Recipes must reference O01–O24 rather than copying operation definitions.
+Each concrete calculation under part D may have an independent page when it has
+its own scientific output, setup, convergence problem, or interpretation. Group
+headings such as Energetics and Stability or Electronic and Magnetic Properties
+are navigation categories, not extra operations.
 
-## Tag record
+### Research-workflow page
 
-Tags classify context and are orthogonal to operations.
+A research-workflow page combines tasks for a scientific goal such as defect
+thermodynamics, adsorption, heterostructure band alignment, electron–phonon
+superconductivity, topology, or GW/BSE. It may branch, repeat, omit, or revisit
+tasks and must not claim that one example is a universal execution order.
 
-New tags must be added to the appropriate family:
+### Framework page
 
-- `system_types`;
-- `scientific_targets`;
-- `methods`;
-- `implementations`.
+A framework page explains cross-cutting concepts such as workflow branching,
+convergence, evidence levels, provenance, or the distinction between numerical
+completion and scientific validity. It is not a new research task.
 
-A tag does not prove that associated preparation, convergence, boundary, or
-validation operations were performed.
+### Migration page
 
-## Relation record
+A migration page exists only to preserve an old URL temporarily. It should state
+that the route belongs to a superseded classification and direct readers toward
+the current workflow. It must not present an old identifier as a current chapter
+number, participate in numbered adjacency, or require readers to understand the
+relationship between 24 and 35.
 
-Every relation contains:
+## Editorial considerations
 
-- `source`;
-- `relation`;
-- `target`.
+The following questions are useful during planning and review, but they are not
+a public template and need not appear as named headings:
 
-Relation types are declared in `ontology/relations.json`. Operation references
-must resolve to O01–O24. Artifact or control-state targets may use descriptive
-identifiers when they are not operation nodes.
+- What scientific question does the task answer?
+- What object, model, or reference state is required?
+- What does the researcher actually calculate or decide?
+- Which assumptions and method choices control the result?
+- Which numerical variables matter for the intended observable?
+- What failures, ambiguities, or false interpretations are common?
+- What evidence shows that the result is usable?
+- Which claims can and cannot be supported?
+- How does the task connect to preceding and following work?
+- Which official documentation or primary sources support version-sensitive
+  statements?
 
-## Legacy record
+A mature page should answer the applicable questions in a coherent explanatory
+sequence. It need not answer irrelevant questions merely to fill a form.
 
-Every former route contains:
+## Metadata
 
-- `number` and two-digit `display_number`;
-- former `title` and exact `slug`;
-- non-empty `maps_to` operation IDs;
-- `entry_kind`;
-- `disposition`.
+Frontmatter and machine-readable data should be minimal. They may identify a
+page, route, category, status, or migration source. Metadata should not duplicate
+large blocks of prose or force visible contract sections.
 
-Legacy metadata exists only for compatibility and migration. Legacy records are
-excluded from core counts and core previous/next navigation.
+Internal status values may support editorial workflow, but the public site must
+not become a dashboard of scaffold, draft, reviewed, completion percentages, or
+status badges unless a separate design decision requires it.
 
-## Public chapter requirements
+## Scientific and numerical boundaries
 
-### Core operation page
+Pages must distinguish, when relevant:
 
-A core page must show:
-
-- ID and action name;
-- lifecycle projection;
-- definition;
-- inputs and outputs;
-- requirement and repeatability;
-- dependencies;
-- alternatives;
-- exclusions;
-- core-operation adjacency.
-
-Detailed future prose may add rationale, examples, implementation notes,
-failure modes, convergence concerns, and references. It must preserve the
-machine-readable contract.
-
-### Legacy page
-
-A legacy page must:
-
-- state that the route is retained for compatibility;
-- state that it is not one atomic operation;
-- show its `entry_kind` and disposition;
-- link to every mapped core operation;
-- avoid core-operation adjacency and counts.
-
-### Workflow recipe page
-
-A future recipe page must show the composed operation graph, target and system
-tags, required references, convergence axes, failure returns, and evidence
-boundaries. It must not present the recipe as one atomic operation.
-
-## Evidence language
-
-Content must keep these distinctions explicit:
-
-- recorded output;
-- parsed or derived quantity;
-- numerical completion;
-- observable convergence;
+- program exit;
+- solver convergence;
+- structural or path convergence;
+- target-observable convergence;
 - physical consistency;
-- method robustness;
-- claim support;
+- robustness to method or model choices;
+- support for a stated scientific conclusion;
 - provenance completeness;
-- preservation;
+- preservation of a reconstruction package;
 - independent reproduction.
 
-Build, schema, route, and browser checks establish software behavior only.
+These distinctions should be explained naturally in the relevant discussion,
+not repeated mechanically as a standard block on every page.
 
-## Writing and source boundaries
+## Sources
 
 - Public content is English.
-- Use original explanations and synthetic examples.
-- Link to official documentation and primary sources rather than copying them.
-- Do not commit licensed potential bodies, credentials, private host details,
-  unpublished raw calculation trees, or restricted source material.
-- Do not provide universal numerical parameters where the correct value depends
-  on the material, observable, method, implementation, or software version.
-- Detailed content is written and reviewed one operation or recipe at a time;
-  the machine-readable framework may be updated as one coherent architecture
-  change.
+- Use original explanation and synthesis.
+- Prefer official software documentation, formal standards, and primary method
+  papers for version-sensitive claims.
+- Do not copy manuals, textbooks, figures, or long passages.
+- Do not commit credentials, licensed potential bodies, private host details,
+  unpublished calculation trees, or restricted source material.
+- Do not turn a parameter converged for one material and observable into a
+  universal recommendation.
+- Label code-specific instructions as implementations, not definitions of the
+  scientific task.
+
+## Examples
+
+Worked examples should be added only when they genuinely clarify the topic.
+They may use different structures from page to page. There is no requirement
+that every page contain an example, the same material, the same code, the same
+formula sequence, or the same visual component.
+
+A reproducible example should identify its structure source, method and
+numerical settings, software version, relevant raw-output references, derived
+data, and validation boundary. An illustrative example that is not a validated
+research result must say so.
+
+## Review
+
+A page may be considered reviewed when:
+
+1. it fits the current A–E architecture at researcher-task granularity;
+2. its scientific statements are accurate within an explicit scope;
+3. its organization suits the topic and reads as an explanation rather than a
+   serialized schema;
+4. numerical convergence and physical validity are not conflated;
+5. interpretation and claim boundaries are clear where needed;
+6. code-specific details are labelled appropriately;
+7. citations support method- or version-sensitive claims;
+8. examples preserve their stated provenance and limitations;
+9. links, build, no-JavaScript rendering, and responsive layout pass.
+
+Review does not require identical section names, identical ordering, or visible
+Inputs/Outputs-style tables.
+
+## Migration rules
+
+During migration from the O01–O24 and Operation 00–34 structures:
+
+- useful material is reassigned to an A–E task, a D target calculation, a
+  research workflow, or a framework page;
+- old routes remain only as temporary compatibility surfaces;
+- old IDs are not used as the primary public navigation or reading sequence;
+- previous/next links between old numbered pages are removed;
+- redirects or route retirement occur only after the destination content exists
+  and has been reviewed;
+- validators should test current information architecture and route continuity,
+  not preserve historical item counts as scientific requirements.
+
+## Delivery
+
+Detailed content proceeds in small, reviewable batches. A batch should normally
+cover one coherent workflow task, one target calculation, or one research
+workflow. Closely coupled pages may share a pull request when their scientific
+and review boundaries are explicit.
+
+Bulk generation of mechanically uniform pages is not an acceptable substitute
+for topic-specific writing and review.
