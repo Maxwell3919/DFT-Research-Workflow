@@ -1,4 +1,4 @@
-import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import puppeteer from 'puppeteer-core';
 
@@ -10,6 +10,23 @@ const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const root = new URL('../', import.meta.url);
 const workflow = JSON.parse(await readFile(new URL('workflow/topics.json', root), 'utf8'));
 const topicSlugs = workflow.sections.flatMap((section) => section.groups.flatMap((group) => group.topics.map((topic) => topic.slug)));
+
+function parseFrontmatter(source) {
+  const match = source.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (!match) return {};
+  return Object.fromEntries(match[1].split('\n').filter(Boolean).map((line) => {
+    const [key, ...value] = line.split(':');
+    return [key.trim(), value.join(':').trim().replace(/^['"]|['"]$/g, '')];
+  }));
+}
+
+const topicNarrativeStatuses = new Map();
+for (const file of (await readdir(new URL('src/content/topics/', root))).filter((name) => name.endsWith('.md'))) {
+  const source = await readFile(new URL(`src/content/topics/${file}`, root), 'utf8');
+  const data = parseFrontmatter(source);
+  if (data.topic_slug) topicNarrativeStatuses.set(data.topic_slug, data.status);
+}
+
 const representativeTopicSlugs = [
   'obtain-material-structure',
   'band-structure',
@@ -143,9 +160,34 @@ try {
     const state = await page.evaluate(() => ({
       transitional: document.body.innerText.includes('Transitional route'),
       fixedContract: document.querySelector('.operation-contract'),
+      articleContent: document.querySelector('.article-content'),
       hasStableNotice: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     }));
-    if (state.transitional || state.fixedContract || !state.hasStableNotice) throw new Error(`${slug}: invalid stable topic route`);
+    const hasNarrative = topicNarrativeStatuses.has(slug);
+    if (state.transitional || state.fixedContract) throw new Error(`${slug}: invalid current topic route`);
+    if (hasNarrative && (!state.articleContent || state.hasStableNotice)) throw new Error(`${slug}: bound topic narrative was not rendered`);
+    if (!hasNarrative && (state.articleContent || !state.hasStableNotice)) throw new Error(`${slug}: neutral destination state mismatch`);
+  }
+
+  await page.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'domcontentloaded' });
+  const reviewedArticle = await page.evaluate(() => ({
+    text: document.body.innerText,
+    links: [...document.querySelectorAll('.article-content a')].map((link) => link.href),
+    headingCount: document.querySelectorAll('.article-content h2').length,
+  }));
+  for (const phrase of [
+    'A structure file is not yet a computational model.',
+    'Start with the origin of the structure',
+    'Read the crystallographic representation, not just the picture',
+    'Symmetry is tolerance-dependent',
+    'Inspect geometry before trusting automated checks',
+    'Sources and standards',
+  ]) {
+    if (!reviewedArticle.text.includes(phrase)) throw new Error(`Obtain a Material Structure is missing ${phrase}`);
+  }
+  if (reviewedArticle.headingCount < 10) throw new Error('Obtain a Material Structure lost its natural topic sections');
+  for (const domain of ['iucr.org', 'docs.materialsproject.org', 'crystallography.net', 'spglib.readthedocs.io']) {
+    if (!reviewedArticle.links.some((link) => link.includes(domain))) throw new Error(`Obtain a Material Structure is missing source domain ${domain}`);
   }
 
   await page.goto(`${base}/recipes/`, { waitUntil: 'domcontentloaded' });
@@ -179,9 +221,11 @@ try {
   await noJsPage.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
   const noJsTopicLinks = await noJsPage.$$eval('.topic-list a', (links) => links.map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)));
   if (JSON.stringify(noJsTopicLinks) !== JSON.stringify(topicSlugs)) throw new Error('no-JavaScript Research Workflow topic links are incomplete');
-  await noJsPage.goto(`${base}/operations/harmonic-phonons/`, { waitUntil: 'domcontentloaded' });
+  await noJsPage.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'domcontentloaded' });
   const noJsTopicText = await noJsPage.$eval('body', (body) => body.innerText);
-  if (!noJsTopicText.includes('Harmonic Phonons')) throw new Error('no-JavaScript topic page is incomplete');
+  if (!noJsTopicText.includes('A structure file is not yet a computational model.') || !noJsTopicText.includes('Sources and standards')) {
+    throw new Error('no-JavaScript reviewed topic page is incomplete');
+  }
 
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   for (const target of requiredRoutes) {
@@ -199,8 +243,8 @@ try {
     await captureFullPage(page, join(artifactDirectory, 'home-desktop.png'));
     await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
     await captureFullPage(page, join(artifactDirectory, 'research-workflow-desktop.png'));
-    await page.goto(`${base}/operations/harmonic-phonons/`, { waitUntil: 'domcontentloaded' });
-    await captureFullPage(page, join(artifactDirectory, 'topic-harmonic-phonons-desktop.png'));
+    await page.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'domcontentloaded' });
+    await captureFullPage(page, join(artifactDirectory, 'topic-obtain-material-structure-desktop.png'));
     await page.goto(`${base}/operations/o13-solve-an-electronic-state/`, { waitUntil: 'domcontentloaded' });
     await captureFullPage(page, join(artifactDirectory, 'transitional-route-desktop.png'));
   }
@@ -211,6 +255,8 @@ try {
     routes: requiredRoutes.length,
     reader_workflow: 'A-E',
     topic_routes_verified_from_registry: true,
+    topic_narratives: topicNarrativeStatuses.size,
+    reviewed_topic_narratives: [...topicNarrativeStatuses.values()].filter((status) => status === 'reviewed').length,
     target_calculation_groups: 5,
     workflow_sources: recipeLinks,
     framework_pages: frameworkLinks,
@@ -220,10 +266,11 @@ try {
     mobile_width: 390,
     mobile_horizontal_overflow: false,
     no_javascript_workflow: true,
+    no_javascript_reviewed_topic: true,
     public_language: 'en',
   };
   if (artifactDirectory) await writeFile(join(artifactDirectory, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`);
-  console.log(`Browser smoke passed: registry-driven A–E workflow, stable topic routes, natural page layouts, migration-safe old routes, keyboard navigation, 390px no overflow, no-JavaScript reading, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
+  console.log(`Browser smoke passed: registry-driven A–E workflow, reviewed and neutral topic routes, natural page layouts, migration-safe old routes, keyboard navigation, 390px no overflow, no-JavaScript reading, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
 } finally {
   await browser.close();
 }
