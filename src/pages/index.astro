@@ -1,42 +1,34 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getOperations, lifecycleGroups } from '../lib/operations';
 import { withBase } from '../lib/paths';
-
-const operations = getOperations();
 ---
 
 <BaseLayout
   title="DFT Research Workflow"
-  description="A software-neutral DFT research framework built from 24 typed core operations, workflow recipes, and explicit evidence boundaries."
+  description="A software-neutral guide to researcher-scale DFT tasks, target calculations, validation, and reproducibility."
   current="home"
 >
   <h1>DFT Research Workflow</h1>
   <p class="home-intro">
-    DFT Research Workflow explains how a study moves from acquiring or constructing a material structure to producing claim-assessed, reproducibility-ready results. Its scientific authority is a scope-bounded ontology of 24 typed core operations rather than one fixed linear pipeline. Real studies compose these operations as dependency graphs with branching, repeated solvers, parallel candidates, and feedback after failed convergence or validation. Material classes, scientific targets, methods, and software implementations remain separate tags, while phonons, defects, superconductivity, topology, and GW/BSE are represented as workflow recipes. The former 35 chapter URLs are retained only as a compatibility map. Begin with the <a href={withBase('operations/')}>Core Operations directory</a>, then consult <a href={withBase('recipes/')}>Workflow Recipes</a> and the <a href={withBase('framework/')}>Framework</a>.
+    DFT Research Workflow explains how researchers move from a material structure to interpretable, validated, and reproducible results. The site follows five broad parts: Structures, Calculation Preparation, Reference-State Calculations, Target Calculations, and Research Completion. These parts are a learning map rather than a claim that every study follows one fixed sequence. Target calculations form a branching library: band structures, density of states, phonons, defects, transport, optical response, electron–phonon coupling, superconductivity, and other calculations are explained as distinct scientific tasks when their methods and evidence differ. Each article is organized according to its subject instead of repeating a uniform contract. Start with the <a href={withBase('operations/')}>Research Workflow</a>, then use <a href={withBase('recipes/')}>Workflow Recipes</a> for complete examples and <a href={withBase('framework/')}>Framework</a> for cross-cutting concepts.
   </p>
 
-  <section class="parts-overview" aria-labelledby="contents-heading">
-    <h2 id="contents-heading">Lifecycle projection</h2>
+  <section class="parts-overview" aria-labelledby="workflow-heading">
+    <h2 id="workflow-heading">Research workflow</h2>
     <ol>
-      {lifecycleGroups.map((lifecycle) => (
-        <li>
-          <a href={withBase(`operations/#${lifecycle.anchor}`)}>{lifecycle.label}</a>
-          <span>{lifecycle.range} · {lifecycle.summary}</span>
-        </li>
-      ))}
+      <li><a href={withBase('operations/#part-a')}>A · Structures</a><span>Obtain a structure and build the computational model.</span></li>
+      <li><a href={withBase('operations/#part-b')}>B · Calculation Preparation</a><span>Choose the method and establish numerical convergence.</span></li>
+      <li><a href={withBase('operations/#part-c')}>C · Reference-State Calculations</a><span>Optimize the structure and calculate the reference ground state.</span></li>
+      <li><a href={withBase('operations/#part-d')}>D · Target Calculations</a><span>Select and perform the calculations required by the scientific question.</span></li>
+      <li><a href={withBase('operations/#part-e')}>E · Research Completion</a><span>Analyze, validate, document, and preserve the study.</span></li>
     </ol>
-    <p class="framework-note">
-      The lifecycle is a teaching view, not a universal execution order. The directory contains {operations.length} core operations; workflow recipes and tags are separate layers.
-    </p>
   </section>
 
-  <section class="parts-overview" aria-labelledby="learning-layers-heading">
-    <h2 id="learning-layers-heading">Learning layers</h2>
+  <section class="parts-overview" aria-labelledby="supporting-content-heading">
+    <h2 id="supporting-content-heading">Supporting content</h2>
     <ol>
-      <li><a href={withBase('operations/')}>Core Operations</a><span>Reusable typed actions, grouped by lifecycle.</span></li>
-      <li><a href={withBase('recipes/')}>Workflow Recipes</a><span>Composite coverage projections for target-specific work.</span></li>
-      <li><a href={withBase('framework/')}>Framework</a><span>Workflow model, relations, tags, and evidence boundaries.</span></li>
+      <li><a href={withBase('recipes/')}>Workflow Recipes</a><span>Examples of how tasks combine for specific research goals.</span></li>
+      <li><a href={withBase('framework/')}>Framework</a><span>Workflow relations, evidence boundaries, provenance, and reproducibility.</span></li>
     </ol>
   </section>
 </BaseLayout>
