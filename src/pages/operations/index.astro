@@ -1,33 +1,35 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { formatNumber, getOperations, parts } from '../../lib/operations';
+import { getOperations, lifecycleGroups } from '../../lib/operations';
 import { withBase } from '../../lib/paths';
 
-const operations = await getOperations();
+const operations = getOperations();
 ---
 
 <BaseLayout
-  title="Operations"
-  description="The complete directory of 35 practical DFT research operations."
+  title="Core Operations"
+  description="The 24 typed core operations used to compose DFT research workflows."
   current="operations"
 >
-  <h1>Operations</h1>
-  <p class="page-intro">The chapters follow the order in which researchers frame, prepare, run, extend, inspect, and preserve a DFT study.</p>
+  <h1>Core Operations</h1>
+  <p class="page-intro">
+    These 24 operations are the project’s scope-bounded scientific ontology. They are reusable actions with explicit inputs and outputs, not a fixed pipeline. Workflow recipes may branch, repeat, or nest them.
+  </p>
 
-  {parts.map((part) => {
-    const entries = operations.filter((operation) => operation.data.part === part.id);
+  {lifecycleGroups.map((lifecycle) => {
+    const entries = operations.filter((operation) => operation.lifecycle === lifecycle.id);
     return (
-      <section class="part-section" id={part.anchor} aria-labelledby={`${part.anchor}-heading`}>
+      <section class="part-section" id={lifecycle.anchor} aria-labelledby={`${lifecycle.anchor}-heading`}>
         <header>
-          <h2 id={`${part.anchor}-heading`}>{part.label}</h2>
-          <p>{part.range}</p>
+          <h2 id={`${lifecycle.anchor}-heading`}>{lifecycle.label}</h2>
+          <p>{lifecycle.range} · {lifecycle.summary}</p>
         </header>
         <ol class="operations-list">
           {entries.map((operation) => (
             <li>
-              <a href={withBase(`operations/${operation.data.slug}/`)}>
-                <span class="operation-number">{formatNumber(operation.data.number)}</span>
-                <span class="operation-title">{operation.data.title}</span>
+              <a href={withBase(`operations/${operation.slug}/`)}>
+                <span class="operation-number">{operation.id}</span>
+                <span class="operation-title">{operation.name}</span>
               </a>
             </li>
           ))}
@@ -35,4 +37,11 @@ const operations = await getOperations();
       </section>
     );
   })}
+
+  <aside class="legacy-notice">
+    <h2>Legacy compatibility</h2>
+    <p>
+      The former Operation 00–34 routes remain available, but they are not members of the core ontology. Each legacy page explains whether it was a prerequisite, recipe, tag, method family, atomic operation, or composite page and links to its mapped core operations.
+    </p>
+  </aside>
 </BaseLayout>
