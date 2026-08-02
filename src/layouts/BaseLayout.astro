@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { withBase } from '../lib/paths';
 
 interface Props {
   title: string;
@@ -10,10 +11,10 @@ interface Props {
 const { title, description, current = '' } = Astro.props;
 const pageTitle = title === 'DFT Research Workflow' ? title : `${title} · DFT Research Workflow`;
 const nav = [
-  { href: '/workflow/', label: '工作流', key: 'workflow' },
-  { href: '/branches/', label: '性质分支', key: 'branches' },
-  { href: '/evidence/', label: '证据门', key: 'evidence' },
-  { href: '/registry/', label: 'Operation registry', key: 'registry' },
+  { href: withBase('workflow/'), label: '工作流', key: 'workflow' },
+  { href: withBase('branches/'), label: '性质分支', key: 'branches' },
+  { href: withBase('evidence/'), label: '证据门', key: 'evidence' },
+  { href: withBase('registry/'), label: 'Operation registry', key: 'registry' },
 ];
 ---
 
@@ -24,13 +25,13 @@ const nav = [
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
     <title>{pageTitle}</title>
   </head>
   <body>
     <a class="skip-link" href="#main">跳到正文</a>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="DFT Research Workflow 首页">
+      <a class="brand" href={withBase()} aria-label="DFT Research Workflow 首页">
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
         <span><b>DFT</b><small>Research Workflow</small></span>
       </a>
@@ -39,7 +40,7 @@ const nav = [
           <a href={item.href} aria-current={current === item.key ? 'page' : undefined}>{item.label}</a>
         ))}
       </nav>
-      <span class="status-chip"><i></i> private build</span>
+      <span class="status-chip"><i></i> public learning map</span>
     </header>
     <main id="main">
       <slot />

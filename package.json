@@ -14,8 +14,9 @@
     "smoke:browser": "node scripts/smoke-browser.mjs",
     "typecheck": "astro check",
     "validate:operations": "node scripts/validate-operations.mjs",
+    "validate:base-paths": "node scripts/validate-base-paths.mjs",
     "validate:content": "node scripts/validate-content.mjs",
-    "check": "npm run validate:operations && npm run validate:content && npm run typecheck && npm run build"
+    "check": "npm run validate:operations && npm run validate:base-paths && npm run validate:content && npm run typecheck && npm run build"
   },
   "dependencies": {
     "astro": "7.1.4"

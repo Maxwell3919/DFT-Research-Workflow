@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { branches } from '../../data/branches';
+import { withBase } from '../../lib/paths';
 ---
 
 <BaseLayout title="性质分支" description="不同 DFT 性质分支的父计算、收敛轴和解释边界。" current="branches">
@@ -11,7 +12,7 @@ import { branches } from '../../data/branches';
   </header>
   <section class="shell branch-list">
     {branches.map((branch) => (
-      <a class={`branch-row accent-${branch.accent}`} href={`/branches/${branch.id}/`}>
+      <a class={`branch-row accent-${branch.accent}`} href={withBase(`branches/${branch.id}/`)}>
         <span class="branch-number">{branch.number}</span><div><h2>{branch.title}</h2><p>{branch.question}</p></div><ul>{branch.convergence.slice(0, 3).map((item) => <li>{item}</li>)}</ul><span class="branch-arrow">↗</span>
       </a>
     ))}

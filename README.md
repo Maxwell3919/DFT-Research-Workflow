@@ -7,7 +7,7 @@ results.
 This learning website is not a workflow engine. Its software checks do not
 establish numerical validity or scientific acceptance.
 
-This repository starts private. It is intentionally separate from:
+This repository is public and is intentionally separate from:
 
 - `Electronic-Structure-Learning`, which remains the authority for electronic-
   structure theory and reference content;
@@ -56,10 +56,16 @@ npm run smoke:browser
 ```
 
 The generated site is static. It has no scheduler integration, calculation
-backend, production data connection, or public deployment workflow.
+backend, or production data connection. GitHub Pages deployment is bound to the
+exact `main` SHA through `deployment-manifest.json` and a post-deploy browser
+smoke.
+
+Public site: <https://maxwell3919.github.io/DFT-Research-Workflow/>
 
 ## Delivery model
 
 The initial `main` commit is a minimal recoverable project marker. Website
 architecture and content are developed through short-lived branches and pull
-requests. Public visibility and public GitHub Pages remain separate decisions.
+requests. The public repository and GitHub Pages deployment were explicitly
+approved on 2026-08-02; future visibility or deployment-architecture changes
+remain separate decisions.
