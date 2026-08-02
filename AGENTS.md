@@ -21,12 +21,15 @@ non-overlapping, minimal operation set.
 
 ## Content rules
 
+- Follow `docs/content-population-plan.md` for content layers, placeholder scope,
+  writing order, and review gates.
 - Keep operations, recipes, scientific targets, system types, methods,
   implementations, validation states, and provenance roles at separate levels.
 - A new core operation requires a distinct typed input–action–output contract
   and a deletion-test witness.
 - Recipes reuse operation IDs rather than copying operation definitions.
 - Detailed content is written and reviewed one operation or recipe at a time.
+- Placeholder work must remain neutral and must not pre-empt scientific review.
 - Public content remains English and software-neutral.
 - Preserve the former 35 slugs until a separately approved migration removes
   them.
