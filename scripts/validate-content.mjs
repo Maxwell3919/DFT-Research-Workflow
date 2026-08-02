@@ -9,6 +9,7 @@ const requiredFiles = [
   'README.md',
   'docs/architecture.md',
   'docs/content-contract.md',
+  '.github/workflows/deploy.yml',
   'src/pages/index.astro',
   'src/pages/workflow.astro',
   'src/pages/evidence.astro',
@@ -17,6 +18,8 @@ const requiredFiles = [
   'src/pages/branches/index.astro',
   'src/pages/branches/[id].astro',
   'src/pages/data/operations.json.ts',
+  'src/lib/paths.ts',
+  'scripts/validate-base-paths.mjs',
 ];
 const errors = [];
 
@@ -53,7 +56,7 @@ for (const path of await walk(new URL('.', root).pathname)) {
 }
 
 const readme = await readFile(new URL('README.md', root), 'utf8');
-for (const boundary of ['not a workflow engine', 'scientific acceptance', 'private']) {
+for (const boundary of ['not a workflow engine', 'scientific acceptance', 'github pages']) {
   if (!readme.toLowerCase().includes(boundary)) errors.push(`README missing boundary: ${boundary}`);
 }
 

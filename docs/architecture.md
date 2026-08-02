@@ -36,9 +36,16 @@ of becoming thirty-five equal navigation pages.
 ## Static chain
 
 `src/data/operations.json` and `src/data/stages.json` provide the structural
-model. Astro pages render that model into static HTML. A small progressive-
+model. Astro pages render that model into static HTML beneath the project base
+`/DFT-Research-Workflow/`. Internal links use `import.meta.env.BASE_URL`; a
+validator rejects root-absolute page and asset links. A small progressive-
 enhancement script filters the workflow map; all operations remain visible and
 understandable without JavaScript.
+
+The public chain is `main` → exact-SHA validation/build → GitHub Pages deploy →
+`deployment-manifest.json` readback → desktop, 390 px, keyboard-filter and
+no-JavaScript browser smoke. Build/deploy success is not accepted without the
+manifest and live route checks.
 
 No production DFT executable, scheduler, backend, database, credential, or real
 calculation workspace is connected to the website.

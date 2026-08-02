@@ -1,0 +1,131 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  statuses: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Write deployment provenance manifest
+        shell: bash
+        run: |
+          mkdir -p public
+          cat > public/deployment-manifest.json <<EOF
+          {
+            "schema_version": 1,
+            "repository": "${GITHUB_REPOSITORY}",
+            "sha": "${GITHUB_SHA}",
+            "ref": "${GITHUB_REF}",
+            "workflow": "${GITHUB_WORKFLOW}",
+            "run_id": ${GITHUB_RUN_ID},
+            "run_number": ${GITHUB_RUN_NUMBER},
+            "run_attempt": ${GITHUB_RUN_ATTEMPT},
+            "generated_at": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          }
+          EOF
+
+      - name: Validate, build, and upload Astro site
+        uses: withastro/action@v6
+        with:
+          node-version: 22.12.0
+          build-cmd: npm run check
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+
+  smoke:
+    name: Live Pages browser smoke
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SITE_URL: ${{ needs.deploy.outputs.page_url }}
+      DEPLOYED_SHA: ${{ github.sha }}
+      DEPLOYED_REPOSITORY: ${{ github.repository }}
+      SMOKE_ARTIFACT_DIR: artifacts/pages-smoke
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22.12.0
+          cache: npm
+
+      - name: Locate Chrome
+        shell: bash
+        run: |
+          for browser in google-chrome google-chrome-stable chromium chromium-browser; do
+            if command -v "$browser" >/dev/null 2>&1; then
+              echo "CHROME_BIN=$(command -v "$browser")" >> "$GITHUB_ENV"
+              "$browser" --version
+              exit 0
+            fi
+          done
+          echo "No supported Chrome or Chromium binary is available" >&2
+          exit 1
+
+      - name: Install pinned browser-test dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run exact-SHA live browser smoke
+        run: npm run smoke:browser
+
+      - name: Upload browser-smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-smoke-${{ github.run_id }}
+          path: artifacts/pages-smoke/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish successful deployment status
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            -f state=success \
+            -f target_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            -f description='Live Pages browser smoke passed' \
+            -f context='pages/live-browser-smoke'
+
+      - name: Publish failed deployment status
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            -f state=failure \
+            -f target_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            -f description='Live Pages browser smoke failed' \
+            -f context='pages/live-browser-smoke'

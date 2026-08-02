@@ -23,8 +23,9 @@ engine and does not authorize or run production calculations.
   representation.
 - Machine-readable operation records are the structural authority for workflow
   coverage and must pass repository validators.
-- Public visibility and public GitHub Pages deployment require separate explicit
-  user approval.
+- Public visibility and GitHub Pages deployment were explicitly approved on
+  2026-08-02. Future visibility or deployment-architecture changes require a
+  separate explicit user decision.
 
 ## Delivery
 
