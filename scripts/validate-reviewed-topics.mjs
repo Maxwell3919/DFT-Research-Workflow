@@ -35,53 +35,137 @@ for (const file of files) {
   if (data.status === 'reviewed') reviewed.set(data.topic_slug, { file, body });
 }
 
-const structureTopic = reviewed.get('obtain-material-structure');
-if (!structureTopic) {
-  errors.push('obtain-material-structure must have one reviewed narrative');
-} else {
-  const { body, file } = structureTopic;
-  const requiredSections = [
-    '## Start with the origin of the structure',
-    '## Preserve the source before transforming it',
-    '## Read the crystallographic representation, not just the picture',
-    '## Experimental and calculated structures answer different questions',
-    '## Establish chemical and crystallographic identity',
-    '## Treat format conversion as a scientific transformation',
-    '## Symmetry is tolerance-dependent',
-    '## Inspect geometry before trusting automated checks',
-    '## Compare sources when the decision matters',
-    '## The result of this task',
-    '## Sources and standards',
-  ];
-  for (const heading of requiredSections) if (!body.includes(heading)) errors.push(`${file}: missing topic-specific section ${heading}`);
+const forbiddenHeadings = [
+  '## Inputs',
+  '## Outputs',
+  '## Requirement',
+  '## Repeatability',
+  '## Dependencies',
+  '## Alternatives',
+  '## Exclusions',
+];
 
-  const requiredBoundaries = [
-    'A structure file is not yet a computational model.',
-    'A **generated or hypothetical structure** is not experimental evidence.',
-    'A value below one is therefore not a small numerical defect to be rounded away.',
-    'Choosing that representation belongs to **Build or Modify a Computational Model**.',
-    'They are not a certificate that the structure is suitable for a particular DFT calculation.',
-    'It should not silently replace partial occupancy, choose a magnetic order, add vacuum, construct a supercell, select a defect configuration, or claim that the source phase is stable.',
-  ];
-  for (const statement of requiredBoundaries) if (!body.includes(statement)) errors.push(`${file}: missing scientific boundary ${JSON.stringify(statement)}`);
+const reviewedTopicSpecifications = {
+  'obtain-material-structure': {
+    review: 'docs/reviews/2026-08-03-obtain-material-structure.md',
+    sections: [
+      '## Start with the origin of the structure',
+      '## Preserve the source before transforming it',
+      '## Read the crystallographic representation, not just the picture',
+      '## Experimental and calculated structures answer different questions',
+      '## Establish chemical and crystallographic identity',
+      '## Treat format conversion as a scientific transformation',
+      '## Symmetry is tolerance-dependent',
+      '## Inspect geometry before trusting automated checks',
+      '## Compare sources when the decision matters',
+      '## The result of this task',
+      '## Sources and standards',
+    ],
+    boundaries: [
+      'A structure file is not yet a computational model.',
+      'A **generated or hypothetical structure** is not experimental evidence.',
+      'A value below one is therefore not a small numerical defect to be rounded away.',
+      'Choosing that representation belongs to **Build or Modify a Computational Model**.',
+      'They are not a certificate that the structure is suitable for a particular DFT calculation.',
+      'It should not silently replace partial occupancy, choose a magnetic order, add vacuum, construct a supercell, select a defect configuration, or claim that the source phase is stable.',
+    ],
+    sources: [
+      'https://doi.org/10.1107/S010876739101067X',
+      'https://www.iucr.org/resources/cif/documentation',
+      'https://www.iucr.org/resources/cif/dictionaries/browse/cif_core1',
+      'https://checkcif.iucr.org/',
+      'https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project',
+      'https://docs.materialsproject.org/downloading-data/using-the-api/querying-data',
+      'https://docs.materialsproject.org/frequently-asked-questions',
+      'https://www.crystallography.net/cod/',
+      'https://spglib.readthedocs.io/en/v2.7.0/api/autodoc/spglib.html',
+    ],
+    reviewStatements: [
+      'reviewed within the declared educational scope',
+      'does not validate any real material structure',
+    ],
+  },
+  'build-or-modify-computational-model': {
+    review: 'docs/reviews/2026-08-03-build-computational-model.md',
+    sections: [
+      '## Begin with the question the model must answer',
+      '## Separate equivalent representations from changes to the physical model',
+      '## Choose dimensionality and periodicity explicitly',
+      '## Let the supercell encode the relevant length scale',
+      '## Construct surfaces and adsorption models deliberately',
+      '## Treat defects and dopants as controlled departures from a reference',
+      '## Build interfaces and heterostructures as families of candidates',
+      '## Replace disorder with a declared approximation',
+      '## Include magnetic order and constraints in model identity',
+      '## Generate candidates broadly, then reduce them transparently',
+      '## Preserve model lineage and identity',
+      '## The result of this task',
+      '## Sources and methods',
+    ],
+    boundaries: [
+      'The result of this task is often a **model family**, not one privileged file.',
+      'Vacuum is part of the boundary model, not empty experimental material.',
+      'A supercell is a modelling choice, not merely a larger file.',
+      'Choosing a charge state changes the model even before an electronic-structure method is selected.',
+      'No universal lattice-mismatch threshold decides whether an interface is acceptable.',
+      'One ordered cell is not a random alloy.',
+      'Constraints are assumptions written into the model.',
+      'A generated candidate is not a predicted ground state',
+      'This stage does not establish that a model is stable, experimentally realized, numerically converged, or the ground state.',
+    ],
+    sources: [
+      'https://wiki.fysik.dtu.dk/ase/ase/build/build.html',
+      'https://wiki.fysik.dtu.dk/ase/ase/build/surface.html',
+      'https://wiki.fysik.dtu.dk/ase/ase/atoms.html',
+      'https://wiki.fysik.dtu.dk/ase/ase/constraints.html',
+      'https://pymatgen.org/pymatgen.transformations.html',
+      'https://pymatgen.org/pymatgen.analysis.interfaces.html',
+      'https://pymatgen.org/pymatgen.analysis.magnetism.html',
+      'https://doi.org/10.1063/1.333084',
+      'https://doi.org/10.1103/PhysRevLett.65.353',
+      'https://doi.org/10.1103/RevModPhys.86.253',
+    ],
+    reviewStatements: [
+      'reviewed within the declared educational scope',
+      'does not validate any particular model',
+      'It does not restore the former\nInputs/Outputs-style contract',
+    ],
+  },
+};
 
-  const requiredSources = [
-    'https://doi.org/10.1107/S010876739101067X',
-    'https://www.iucr.org/resources/cif/documentation',
-    'https://www.iucr.org/resources/cif/dictionaries/browse/cif_core1',
-    'https://checkcif.iucr.org/',
-    'https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project',
-    'https://docs.materialsproject.org/downloading-data/using-the-api/querying-data',
-    'https://docs.materialsproject.org/frequently-asked-questions',
-    'https://www.crystallography.net/cod/',
-    'https://spglib.readthedocs.io/en/v2.7.0/api/autodoc/spglib.html',
-  ];
-  for (const source of requiredSources) if (!body.includes(source)) errors.push(`${file}: missing reviewed source ${source}`);
-
-  for (const forbiddenHeading of ['## Inputs', '## Outputs', '## Requirement', '## Repeatability', '## Dependencies', '## Alternatives', '## Exclusions']) {
-    if (body.includes(forbiddenHeading)) errors.push(`${file}: restores fixed heading ${forbiddenHeading}`);
+for (const [slug, specification] of Object.entries(reviewedTopicSpecifications)) {
+  const topic = reviewed.get(slug);
+  if (!topic) {
+    errors.push(`${slug} must have one reviewed narrative`);
+    continue;
   }
-  if (/Detailed content for this operation|stable destination is reserved/i.test(body)) errors.push(`${file}: reviewed article still contains placeholder prose`);
+
+  const { body, file } = topic;
+  for (const heading of specification.sections) {
+    if (!body.includes(heading)) errors.push(`${file}: missing topic-specific section ${heading}`);
+  }
+  for (const statement of specification.boundaries) {
+    if (!body.includes(statement)) errors.push(`${file}: missing scientific boundary ${JSON.stringify(statement)}`);
+  }
+  for (const source of specification.sources) {
+    if (!body.includes(source)) errors.push(`${file}: missing reviewed source ${source}`);
+  }
+  for (const heading of forbiddenHeadings) {
+    if (body.includes(heading)) errors.push(`${file}: restores fixed heading ${heading}`);
+  }
+  if (/Detailed content for this operation|stable destination is reserved/i.test(body)) {
+    errors.push(`${file}: reviewed article still contains placeholder prose`);
+  }
+
+  let reviewBody = '';
+  try {
+    reviewBody = await readFile(new URL(specification.review, root), 'utf8');
+  } catch {
+    errors.push(`${file}: missing scientific review ${specification.review}`);
+  }
+  for (const statement of specification.reviewStatements) {
+    if (!reviewBody.includes(statement)) errors.push(`${specification.review}: missing review boundary ${JSON.stringify(statement)}`);
+  }
 }
 
 if (errors.length > 0) {
@@ -90,4 +174,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Reviewed topics valid: ${reviewed.size} reviewed narrative(s), including Obtain a Material Structure with topic-specific boundaries and official sources.`);
+console.log(`Reviewed topics valid: ${reviewed.size} reviewed narrative(s), including structure acquisition and computational-model construction with topic-specific boundaries, reviews, and official or primary sources.`);
