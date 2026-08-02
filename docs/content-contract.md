@@ -1,18 +1,25 @@
-# Content contract
+# Operation content contract
 
-Each operation record must declare:
+The 35 Markdown files in `src/content/operations/` are the only operation
+directory authority.
 
-- stable `id`, `stage`, title, and one-sentence purpose;
-- inputs, outputs, and prerequisites;
-- convergence axes and validation gates;
-- supported tool families without inventing version-specific guarantees;
-- automation maturity: `manual`, `assisted`, or `candidate`;
-- the evidence boundary that prevents a technical signal from becoming a
-  stronger scientific claim.
+Each entry contains exactly these frontmatter fields:
 
-The registry is explanatory metadata, not an executable calculation contract.
-Specific production inputs still require project-, material-, observable-,
-code-, and version-matched review.
+- `number`: integer from 0 through 34;
+- `title`: the fixed formal English operation title;
+- `part`: `common-workflow`, `property-workflows`, or `closing-loop`;
+- `slug`: an explicit, stable, number-prefixed route segment;
+- `status`: currently `scaffold`.
 
-All prose is original. Synthetic examples must be visibly marked. External
-theory, manuals, and references are linked rather than copied.
+Numbers are continuous and unique. Slugs are unique and match their filenames.
+Part I contains 18 entries, Part II contains 16, and Part III contains only
+Operation 34.
+
+The current Markdown bodies remain empty. The shared operation page supplies
+the neutral sentence “This chapter has not yet been written.” Detailed
+explanations, software instructions, parameters, formulae, examples, results,
+validation advice, references, and automation guidance require later,
+operation-by-operation review.
+
+All public text is English. Content from Electronic Structure Atlas or other
+sources is not copied into this collection.

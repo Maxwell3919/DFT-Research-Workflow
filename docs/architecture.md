@@ -1,58 +1,56 @@
 # Website architecture
 
-## Purpose
-
-The site teaches the reasoning structure of a reliable DFT project. It does not
-encode a production workflow engine, prescribe one universal protocol, or treat
-software completion as scientific acceptance.
-
-## Information architecture
+DFT Research Workflow is a small, static-first, English learning website. Its
+public information architecture has two entries:
 
 ```text
 Home
-├── Workflow map
-│   ├── 1. Frame the question
-│   ├── 2. Establish the structure
-│   ├── 3. Design the protocol
-│   ├── 4. Converge the numerics
-│   ├── 5. Execute on HPC
-│   ├── 6. Follow a property branch
-│   ├── 7. Validate the result
-│   └── 8. Preserve and communicate
-├── Property branches
-│   ├── Structures & energetics
-│   ├── Electronic states
-│   ├── Vibrations & response
-│   ├── Charge & bonding
-│   └── Magnetism & topology
-├── Evidence gates
-└── Operation registry
+Operations
 ```
 
-The eight stages are the teaching sequence. The operation registry is the
-coverage authority: thirty-five operations are grouped beneath stages instead
-of becoming thirty-five equal navigation pages.
+## Operations
 
-## Static chain
+Operations is the single learning directory. It contains exactly 35 stable
+chapters in a fixed sequence:
 
-`src/data/operations.json` and `src/data/stages.json` provide the structural
-model. Astro pages render that model into static HTML beneath the project base
-`/DFT-Research-Workflow/`. Internal links use `import.meta.env.BASE_URL`; a
-validator rejects root-absolute page and asset links. A small progressive-
-enhancement script filters the workflow map; all operations remain visible and
-understandable without JavaScript.
+```text
+Part I · Common DFT Workflow
+└── Operations 00–17
 
-The public chain is `main` → exact-SHA validation/build → GitHub Pages deploy →
-`deployment-manifest.json` readback → desktop, 390 px, keyboard-filter and
-no-JavaScript browser smoke. Build/deploy success is not accepted without the
-manifest and live route checks.
+Part II · Property Workflows
+└── Operations 18–33
 
-No production DFT executable, scheduler, backend, database, credential, or real
-calculation workspace is connected to the website.
+Part III · Closing the Loop
+└── Operation 34
+```
 
-## Evidence boundary
+Each operation has one explicit, number-bound slug under `/operations/`.
+Changing a title does not cause Astro to guess or replace the route. The
+previous and next links follow the numeric order across Part boundaries.
 
-Repository validators establish schema consistency, route integrity, TypeScript
-correctness, and buildability. They cannot establish that a calculation
-protocol is converged, a physical interpretation is correct, or a scientific
-claim is accepted.
+## Content collection
+
+`src/content/operations/` is the content authority. Astro loads the Markdown
+entries through `src/content.config.ts`, whose schema requires `number`,
+`title`, `part`, `slug`, and `status: scaffold`. The current entries are
+empty chapter containers; detailed content is added later through individual
+review.
+
+The Home page, Operations directory, operation template, shared layout, and
+global stylesheet contain no client-side components. The complete site remains
+readable when JavaScript is disabled.
+
+## Visual boundary
+
+The narrow serif column, white background, simple navigation, ordinary blue
+links, restrained headings, and light rules are informed by the public
+Electronic Structure Atlas `/theory/` page. DFT Research Workflow does not
+copy that site's content, data, taxonomy, or identity.
+
+## GitHub Pages
+
+Astro builds beneath `/DFT-Research-Workflow/`. Internal links use
+`import.meta.env.BASE_URL`. GitHub Actions validates the collection and
+generated HTML, deploys the static output, writes an exact-SHA
+`deployment-manifest.json`, and runs desktop, 390 px, keyboard, and
+JavaScript-disabled browser checks against the public site.
