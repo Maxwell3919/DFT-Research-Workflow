@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatNumber, getOperations, parts } from '../../lib/operations';
+import { withBase } from '../../lib/paths';
+
+const operations = await getOperations();
+---
+
+<BaseLayout
+  title="Operations"
+  description="The complete directory of 35 practical DFT research operations."
+  current="operations"
+>
+  <h1>Operations</h1>
+  <p class="page-intro">The chapters follow the order in which researchers frame, prepare, run, extend, inspect, and preserve a DFT study.</p>
+
+  {parts.map((part) => {
+    const entries = operations.filter((operation) => operation.data.part === part.id);
+    return (
+      <section class="part-section" id={part.anchor} aria-labelledby={`${part.anchor}-heading`}>
+        <header>
+          <h2 id={`${part.anchor}-heading`}>{part.label}</h2>
+          <p>{part.range}</p>
+        </header>
+        <ol class="operations-list">
+          {entries.map((operation) => (
+            <li>
+              <a href={withBase(`operations/${operation.data.slug}/`)}>
+                <span class="operation-number">{formatNumber(operation.data.number)}</span>
+                <span class="operation-title">{operation.data.title}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </section>
+    );
+  })}
+</BaseLayout>

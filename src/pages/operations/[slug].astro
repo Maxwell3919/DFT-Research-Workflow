@@ -1,0 +1,64 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatNumber, getOperations, getPart, type OperationEntry } from '../../lib/operations';
+import { withBase } from '../../lib/paths';
+
+interface Props {
+  operation: OperationEntry;
+  previous: OperationEntry | null;
+  next: OperationEntry | null;
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const operations = await getOperations();
+  return operations.map((operation, index) => ({
+    params: { slug: operation.data.slug },
+    props: {
+      operation,
+      previous: operations[index - 1] ?? null,
+      next: operations[index + 1] ?? null,
+    },
+  }));
+};
+
+const { operation, previous, next } = Astro.props;
+const part = getPart(operation.data.part);
+const number = formatNumber(operation.data.number);
+---
+
+<BaseLayout
+  title={`Operation ${number}`}
+  description={operation.data.title}
+  current="operations"
+>
+  <article class="chapter">
+    <p class="breadcrumb">
+      <a href={withBase(`operations/#${part.anchor}`)}>{part.label}</a>
+    </p>
+    <p class="operation-label">Operation {number}</p>
+    <h1>{operation.data.title}</h1>
+    <p class="chapter-placeholder">This chapter has not yet been written.</p>
+
+    <nav class="chapter-nav" aria-label="Operation navigation">
+      <div>
+        {previous && (
+          <a data-previous href={withBase(`operations/${previous.data.slug}/`)}>
+            <span>Previous operation</span>
+            <strong>{formatNumber(previous.data.number)} · {previous.data.title}</strong>
+          </a>
+        )}
+      </div>
+      <div>
+        {next && (
+          <a data-next href={withBase(`operations/${next.data.slug}/`)}>
+            <span>Next operation</span>
+            <strong>{formatNumber(next.data.number)} · {next.data.title}</strong>
+          </a>
+        )}
+      </div>
+    </nav>
+
+    <p class="directory-link"><a href={withBase('operations/')}>Return to Operations</a></p>
+  </article>
+</BaseLayout>

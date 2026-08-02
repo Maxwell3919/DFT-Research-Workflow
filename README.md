@@ -1,71 +1,53 @@
 # DFT Research Workflow
 
-An original, teaching-oriented map of how a reliable density-functional-theory
-research project moves from a scientific question to validated, reproducible
-results.
+DFT Research Workflow is an English, operation-led learning framework for the
+practical process of density-functional-theory research. It is organized around
+35 operations that researchers carry out from defining a scientific question
+through calculation, property analysis, result checking, archiving, and reuse.
 
-This learning website is not a workflow engine. Its software checks do not
-establish numerical validity or scientific acceptance.
+The framework is software-neutral: it does not teach one code, utility, or
+scheduler. Its visual treatment is informed by the public Electronic Structure
+Atlas, while its content, operation taxonomy, and repository authority remain
+independent.
 
-This repository is public and is intentionally separate from:
+The current release establishes the complete directory, stable routes, content
+schema, and chapter containers. Detailed chapter content has not been written.
+Future work proceeds by discussing, writing, and reviewing one operation at a
+time rather than filling all chapters automatically.
 
-- `Electronic-Structure-Learning`, which remains the authority for electronic-
-  structure theory and reference content;
-- `Vibe-DFT-Skills`, whose broad automation expansion remains frozen; and
-- real calculation workspaces, schedulers, raw outputs, restart data, licensed
-  potentials, and unpublished research data.
-
-Website build success is software evidence only. It does not validate a DFT
-protocol, numerical result, physical interpretation, or scientific claim.
+Public site: <https://maxwell3919.github.io/DFT-Research-Workflow/>
 
 ## Information architecture
 
-The first implementation organizes the subject as:
-
-- eight teaching stages along the common research trunk;
-- thirty-five machine-readable operations beneath those stages;
-- five property branches with distinct parent calculations, convergence axes,
-  and claim traps; and
-- seven evidence gates separating identity, completion, numerical convergence,
-  physical validity, independent validation, and scientific claims.
-
-See [docs/architecture.md](docs/architecture.md) and the source registry at
-[src/data/operations.json](src/data/operations.json).
-
-## Local development
-
-Requires Node.js 22 or newer.
-
-```bash
-npm ci
-npm run dev
+```text
+Home
+Operations
+├── Part I · Common DFT Workflow (Operations 00–17)
+├── Part II · Property Workflows (Operations 18–33)
+└── Part III · Closing the Loop (Operation 34)
 ```
 
-Run all deterministic repository checks and the production build with:
+The operation entries in `src/content/operations/` are the structural
+authority. See [docs/architecture.md](docs/architecture.md) and
+[docs/content-contract.md](docs/content-contract.md).
+
+## Local development and validation
+
+Node.js 22.12 or newer is required.
 
 ```bash
+npm ci --no-audit --no-fund
+npm run dev
 npm run check
 ```
 
-With a local preview running on port `4322`, exercise key routes, the workflow
-filter, the 390 px layout, and the no-JavaScript fallback with:
+For browser validation, start a production preview and run the smoke suite:
 
 ```bash
 npm run preview -- --host 127.0.0.1 --port 4322
 npm run smoke:browser
 ```
 
-The generated site is static. It has no scheduler integration, calculation
-backend, or production data connection. GitHub Pages deployment is bound to the
-exact `main` SHA through `deployment-manifest.json` and a post-deploy browser
-smoke.
-
-Public site: <https://maxwell3919.github.io/DFT-Research-Workflow/>
-
-## Delivery model
-
-The initial `main` commit is a minimal recoverable project marker. Website
-architecture and content are developed through short-lived branches and pull
-requests. The public repository and GitHub Pages deployment were explicitly
-approved on 2026-08-02; future visibility or deployment-architecture changes
-remain separate decisions.
+The GitHub Pages workflow builds the same static site, writes an exact-SHA
+`deployment-manifest.json`, deploys it, and runs the browser suite against the
+public URL.

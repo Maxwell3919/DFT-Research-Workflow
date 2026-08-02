@@ -2,33 +2,37 @@
 
 ## Project boundary
 
-This repository is the source authority for the DFT Research Workflow learning
-website. It teaches research reasoning and evidence gates; it is not a workflow
-engine and does not authorize or run production calculations.
+This repository is the source authority for the public DFT Research Workflow
+learning website. The site is an English, operation-led, static-first framework
+for how researchers carry out a DFT study.
 
-## Content and evidence
+## Content authority
 
-- Use original explanations and synthetic examples.
-- Do not commit textbook/manual bodies, restricted figures, licensed potential
-  contents, credentials, private host details, or unpublished raw calculation
-  data.
-- Keep program exit, electronic convergence, ionic convergence, observable
-  convergence, physical validity, and scientific acceptance as separate gates.
-- External theory and software documentation should be linked, not copied.
+- The 35 entries in `src/content/operations/` are the public directory,
+  learning order, stable route authority, and future chapter boundary.
+- Operation numbers, titles, parts, and slugs must pass the deterministic
+  validators before they change.
+- Detailed chapters are written and reviewed one operation at a time. Do not
+  bulk-generate tutorial prose, commands, parameters, formulae, examples,
+  results, references, or automation advice.
+- Keep the public information architecture limited to Home and Operations until
+  a later explicit decision.
+- Public pages, metadata, navigation, aria labels, and the 404 page use English.
 
-## Implementation
+## Design and implementation
 
-- Keep the site static-first and TypeScript strict.
-- Interactions must add explanatory value and retain an understandable no-JS
-  representation.
-- Machine-readable operation records are the structural authority for workflow
-  coverage and must pass repository validators.
-- Public visibility and GitHub Pages deployment were explicitly approved on
-  2026-08-02. Future visibility or deployment-architecture changes require a
-  separate explicit user decision.
+- Use the current Electronic Structure Atlas `/theory/` page only as a visual
+  reference: narrow serif reading column, white background, simple text links,
+  restrained headings, and light rules.
+- Do not copy its content, data, taxonomy, or project identity.
+- Keep the site fully readable without client-side JavaScript.
+- Do not add cards, dashboards, filters, badges, status chips, decorative
+  graphics, workflow rails, or automation-maturity interfaces.
+- Preserve the GitHub Pages project base and exact-SHA deployment manifest.
 
-## Delivery
+## Safety and delivery
 
-Use single-purpose short-lived branches and pull requests. Before claiming
-completion, run the project checks and distinguish software validation from
-scientific validation.
+Do not commit credentials, licensed potential contents, private host details,
+unpublished calculation data, or production DFT inputs and outputs. Use one
+short-lived branch and pull request. Build and browser success establish
+software behavior only; they do not establish numerical or scientific validity.

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "A static-first learning map for reliable DFT research.",
+  "description": "An English, operation-led, static-first framework for practical DFT research.",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -16,7 +16,8 @@
     "validate:operations": "node scripts/validate-operations.mjs",
     "validate:base-paths": "node scripts/validate-base-paths.mjs",
     "validate:content": "node scripts/validate-content.mjs",
-    "check": "npm run validate:operations && npm run validate:base-paths && npm run validate:content && npm run typecheck && npm run build"
+    "validate:site": "node scripts/validate-public-site.mjs",
+    "check": "npm run validate:operations && npm run validate:base-paths && npm run validate:content && npm run typecheck && npm run build && npm run validate:site"
   },
   "dependencies": {
     "astro": "7.1.4"

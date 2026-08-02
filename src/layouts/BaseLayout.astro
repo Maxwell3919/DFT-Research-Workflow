@@ -5,21 +5,19 @@ import { withBase } from '../lib/paths';
 interface Props {
   title: string;
   description: string;
-  current?: string;
+  current?: 'home' | 'operations';
 }
 
-const { title, description, current = '' } = Astro.props;
+const { title, description, current } = Astro.props;
 const pageTitle = title === 'DFT Research Workflow' ? title : `${title} · DFT Research Workflow`;
-const nav = [
-  { href: withBase('workflow/'), label: '工作流', key: 'workflow' },
-  { href: withBase('branches/'), label: '性质分支', key: 'branches' },
-  { href: withBase('evidence/'), label: '证据门', key: 'evidence' },
-  { href: withBase('registry/'), label: 'Operation registry', key: 'registry' },
-];
+const navigation = [
+  { id: 'home', label: 'Home', href: withBase() },
+  { id: 'operations', label: 'Operations', href: withBase('operations/') },
+] as const;
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -29,31 +27,22 @@ const nav = [
     <title>{pageTitle}</title>
   </head>
   <body>
-    <a class="skip-link" href="#main">跳到正文</a>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href={withBase()} aria-label="DFT Research Workflow 首页">
-        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span><b>DFT</b><small>Research Workflow</small></span>
-      </a>
-      <nav aria-label="主导航">
-        {nav.map((item) => (
-          <a href={item.href} aria-current={current === item.key ? 'page' : undefined}>{item.label}</a>
+      <a class="site-name" href={withBase()}>DFT Research Workflow</a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        {navigation.map((item) => (
+          <a href={item.href} aria-current={current === item.id ? 'page' : undefined}>
+            {item.label}
+          </a>
         ))}
       </nav>
-      <span class="status-chip"><i></i> public learning map</span>
     </header>
-    <main id="main">
+    <main id="main-content">
       <slot />
     </main>
-    <footer class="site-footer">
-      <div>
-        <p class="footer-kicker">DFT Research Workflow</p>
-        <p>先理解可靠研究如何工作，再决定什么值得自动化。</p>
-      </div>
-      <div class="footer-boundary">
-        <strong>证据边界</strong>
-        <span>网站构建通过 ≠ 数值收敛 ≠ 物理有效 ≠ 科学接受</span>
-      </div>
+    <footer>
+      <p>An independent, software-neutral framework for learning practical DFT research.</p>
     </footer>
   </body>
 </html>
