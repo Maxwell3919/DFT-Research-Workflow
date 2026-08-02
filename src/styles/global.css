@@ -13,6 +13,7 @@
   font-synthesis: none;
   line-height: 1.68;
 }
+
 * { box-sizing: border-box; }
 
 html { background: #ffffff; }
@@ -125,6 +126,12 @@ p { margin: 0 0 1.2rem; }
   font-size: 0.94rem;
 }
 
+.framework-note {
+  margin-top: 1.2rem;
+  color: #555555;
+  font-size: 0.96rem;
+}
+
 .part-section { margin-top: 3.5rem; }
 
 .part-section > header {
@@ -175,11 +182,48 @@ p { margin: 0 0 1.2rem; }
   text-transform: uppercase;
 }
 
-.chapter-placeholder {
-  margin-top: 2rem;
-  color: #555555;
-  font-style: italic;
+.operation-summary {
+  max-width: 43rem;
+  margin-bottom: 2.4rem;
+  font-size: 1.18rem;
 }
+
+.operation-contract {
+  margin: 0;
+  border-top: 1px solid #dcdcdc;
+}
+
+.operation-contract > div {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.34fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid #ececec;
+}
+
+.operation-contract dt { font-weight: 600; }
+
+.operation-contract dd { margin: 0; }
+
+.operation-contract ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.legacy-notice {
+  margin-top: 3rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid #dcdcdc;
+  background: #fafafa;
+}
+
+.legacy-notice h2 { margin-bottom: 0.7rem; }
+
+.legacy-notice p:last-child { margin-bottom: 0; }
+
+.legacy-mapping { margin-top: 2.5rem; }
+
+.legacy-mapping ul { padding-left: 1.25rem; }
 
 .chapter-nav {
   display: grid;
@@ -232,8 +276,13 @@ footer p { margin: 0; }
   .page-intro { font-size: 1.08rem; }
 
   .operations-list a {
-    grid-template-columns: 2.65rem minmax(0, 1fr);
+    grid-template-columns: 2.9rem minmax(0, 1fr);
     gap: 0.55rem;
+  }
+
+  .operation-contract > div {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
   }
 
   .chapter-nav {
