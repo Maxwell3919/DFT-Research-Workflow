@@ -7,7 +7,7 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const deployedSha = process.env.DEPLOYED_SHA;
 const deployedRepository = process.env.DEPLOYED_REPOSITORY ?? 'Maxwell3919/DFT-Research-Workflow';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
-const representativeCoreSlugs = [
+const representativeTransitionalSlugs = [
   'o01-acquire-source-objects',
   'o13-solve-an-electronic-state',
   'o20-verify-numerical-completion-and-convergence',
@@ -27,12 +27,12 @@ const frameworkSlugs = [
 ];
 const requiredRoutes = [
   { route: '/', status: 200, name: 'Home' },
-  { route: '/operations/', status: 200, name: 'Operations' },
+  { route: '/operations/', status: 200, name: 'Research Workflow' },
   { route: '/recipes/', status: 200, name: 'Recipes directory' },
-  { route: '/recipes/bulk-structure-and-bands/', status: 200, name: 'Tier 1 recipe' },
+  { route: '/recipes/bulk-structure-and-bands/', status: 200, name: 'Research workflow example' },
   { route: '/framework/', status: 200, name: 'Framework directory' },
   ...frameworkSlugs.map((slug) => ({ route: `/framework/${slug}/`, status: 200, name: slug })),
-  ...representativeCoreSlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
+  ...representativeTransitionalSlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
   ...representativeLegacySlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
   { route: '/missing-page-for-smoke/', status: 404, name: '404' },
 ];
@@ -80,6 +80,7 @@ async function inspectPage(page, expectedStatus) {
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
     nav: [...document.querySelectorAll('.primary-nav a')].map((link) => link.textContent?.trim()),
     oldUi: document.querySelectorAll('.operation-card, .explorer-toolbar, .status-chip, .stage-rail, [data-filter]').length,
+    fixedContracts: document.querySelectorAll('.operation-contract').length,
     background: getComputedStyle(document.body).backgroundColor,
     fontFamily: getComputedStyle(document.body).fontFamily,
   }));
@@ -88,6 +89,7 @@ async function inspectPage(page, expectedStatus) {
   if (prohibitedText.test(observation.text)) throw new Error('public page contains retired governance text');
   if (observation.overflow) throw new Error('page has horizontal overflow');
   if (observation.oldUi !== 0) throw new Error(`page exposes ${observation.oldUi} retired UI elements`);
+  if (observation.fixedContracts !== 0) throw new Error('page exposes a fixed operation contract');
   if (JSON.stringify(observation.nav) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework'])) throw new Error(`navigation mismatch: ${JSON.stringify(observation.nav)}`);
   if (observation.background !== 'rgb(255, 255, 255)') throw new Error(`background is not white: ${observation.background}`);
   if (!/Iowan Old Style|Palatino|Book Antiqua|Georgia|Times New Roman|serif/i.test(observation.fontFamily)) {
@@ -116,65 +118,64 @@ try {
   }
 
   await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
-  const directory = await page.$$eval('.operations-list a', (links) => links.map((link) => ({
-    id: link.querySelector('.operation-number')?.textContent?.trim(),
-    href: link.getAttribute('href'),
-  })));
-  if (directory.length !== 24) throw new Error(`Core Operations directory contains ${directory.length}/24 links`);
-  const ids = directory.map((entry) => entry.id);
-  const expectedIds = Array.from({ length: 24 }, (_, index) => `O${String(index + 1).padStart(2, '0')}`);
-  if (JSON.stringify(ids) !== JSON.stringify(expectedIds)) throw new Error('Core Operations directory order is not O01–O24');
+  const workflowState = await page.evaluate(() => ({
+    text: document.body.innerText,
+    transitionalLinks: document.querySelectorAll('a[href*="/operations/o"]').length,
+  }));
+  for (const label of [
+    'A · Structures',
+    'B · Calculation Preparation',
+    'C · Reference-State Calculations',
+    'D · Target Calculations',
+    'D1 · Energetics and Stability',
+    'D2 · Electronic and Magnetic Properties',
+    'D3 · Mechanical, Electric, and Lattice Response',
+    'D4 · Kinetics and Finite Temperature',
+    'D5 · Optical, Excited-State, Topological, and Transport Calculations',
+    'E · Research Completion',
+  ]) {
+    if (!workflowState.text.includes(label)) throw new Error(`Research Workflow is missing ${label}`);
+  }
+  if (workflowState.transitionalLinks !== 0) throw new Error('Research Workflow exposes transitional numbered routes');
+  if (/Core Operations|O01|O24|Operation 00/.test(workflowState.text)) throw new Error('Research Workflow exposes a superseded numbered taxonomy');
 
   await page.goto(`${base}/recipes/`, { waitUntil: 'domcontentloaded' });
   const recipeLinks = await page.$$eval('.directory-list a', (links) => links.length);
-  if (recipeLinks !== 16) throw new Error(`Workflow Recipes directory exposes ${recipeLinks}/16 recipes`);
+  if (recipeLinks !== 16) throw new Error(`Workflow Recipes directory exposes ${recipeLinks}/16 transitional workflow sources`);
   await page.goto(`${base}/framework/`, { waitUntil: 'domcontentloaded' });
   const frameworkLinks = await page.$$eval('.directory-list a', (links) => links.length);
   if (frameworkLinks !== 5) throw new Error(`Framework directory exposes ${frameworkLinks}/5 pages`);
 
-  await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
-  await page.focus('.operations-list a');
+  await page.goto(`${base}/`, { waitUntil: 'domcontentloaded' });
+  await page.focus('.primary-nav a');
   await page.keyboard.press('Tab');
   const keyboardHref = await page.evaluate(() => document.activeElement?.getAttribute('href'));
-  if (!keyboardHref?.endsWith('/operations/o02-parse-and-normalize-artifacts/')) throw new Error(`keyboard order mismatch: ${keyboardHref}`);
+  if (!keyboardHref?.endsWith('/operations/')) throw new Error(`keyboard navigation mismatch: ${keyboardHref}`);
 
-  const adjacency = [
-    ['o01-acquire-source-objects', null, 'o02-parse-and-normalize-artifacts'],
-    ['o13-solve-an-electronic-state', 'o12-orchestrate-monitor-and-recover-executions', 'o14-optimize-structures-or-paths'],
-    ['o20-verify-numerical-completion-and-convergence', 'o19-compare-and-aggregate-results', 'o21-validate-physical-consistency-and-method-robustness'],
-    ['o24-package-and-preserve-a-reproducible-research-bundle', 'o23-capture-provenance-and-lineage', null],
-  ];
-  for (const [slug, previous, next] of adjacency) {
+  for (const slug of [...representativeTransitionalSlugs, ...representativeLegacySlugs]) {
     await page.goto(`${base}/operations/${slug}/`, { waitUntil: 'domcontentloaded' });
-    const links = await page.evaluate(() => ({
-      previous: document.querySelector('[data-previous]')?.getAttribute('href') ?? null,
-      next: document.querySelector('[data-next]')?.getAttribute('href') ?? null,
-    }));
-    if ((previous && !links.previous?.endsWith(`/operations/${previous}/`)) || (!previous && links.previous)) throw new Error(`${slug}: previous link mismatch`);
-    if ((next && !links.next?.endsWith(`/operations/${next}/`)) || (!next && links.next)) throw new Error(`${slug}: next link mismatch`);
-  }
-
-  for (const slug of representativeLegacySlugs) {
-    await page.goto(`${base}/operations/${slug}/`, { waitUntil: 'domcontentloaded' });
-    const legacyState = await page.evaluate(() => ({
-      hasNotice: document.body.innerText.includes('Legacy route retained for compatibility.'),
+    const migrationState = await page.evaluate(() => ({
+      hasNotice: document.body.innerText.includes('This URL is retained while the site migrates'),
       previous: document.querySelector('[data-previous]'),
       next: document.querySelector('[data-next]'),
+      fixedContract: document.querySelector('.operation-contract'),
       mappedLinks: document.querySelectorAll('.legacy-mapping a').length,
     }));
-    if (!legacyState.hasNotice || legacyState.previous || legacyState.next || legacyState.mappedLinks < 1) {
-      throw new Error(`${slug}: invalid legacy compatibility page`);
+    if (!migrationState.hasNotice || migrationState.previous || migrationState.next || migrationState.fixedContract || migrationState.mappedLinks > 0) {
+      throw new Error(`${slug}: invalid migration route`);
     }
   }
 
   const noJsPage = await browser.newPage();
   await noJsPage.setJavaScriptEnabled(false);
   await noJsPage.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
-  const noJsLinks = await noJsPage.$$eval('.operations-list a', (links) => links.length);
-  if (noJsLinks !== 24) throw new Error(`no-JavaScript directory exposes ${noJsLinks}/24 core operations`);
+  const noJsWorkflowText = await noJsPage.$eval('body', (body) => body.innerText);
+  if (!noJsWorkflowText.includes('D · Target Calculations') || !noJsWorkflowText.includes('E · Research Completion')) {
+    throw new Error('no-JavaScript Research Workflow is incomplete');
+  }
   await noJsPage.goto(`${base}/recipes/`, { waitUntil: 'domcontentloaded' });
   const noJsRecipeLinks = await noJsPage.$$eval('.directory-list a', (links) => links.length);
-  if (noJsRecipeLinks !== 16) throw new Error(`no-JavaScript recipes directory exposes ${noJsRecipeLinks}/16 recipes`);
+  if (noJsRecipeLinks !== 16) throw new Error(`no-JavaScript recipes directory exposes ${noJsRecipeLinks}/16 workflow sources`);
 
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   for (const target of requiredRoutes) {
@@ -186,36 +187,35 @@ try {
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
     await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
-    await captureFullPage(page, join(artifactDirectory, 'operations-mobile.png'));
+    await captureFullPage(page, join(artifactDirectory, 'research-workflow-mobile.png'));
     await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
     await page.goto(`${base}/`, { waitUntil: 'domcontentloaded' });
     await captureFullPage(page, join(artifactDirectory, 'home-desktop.png'));
     await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
-    await captureFullPage(page, join(artifactDirectory, 'operations-desktop.png'));
+    await captureFullPage(page, join(artifactDirectory, 'research-workflow-desktop.png'));
     await page.goto(`${base}/operations/o13-solve-an-electronic-state/`, { waitUntil: 'domcontentloaded' });
-    await captureFullPage(page, join(artifactDirectory, 'core-operation-o13-desktop.png'));
-    await page.goto(`${base}/operations/25-electron-phonon-and-superconductivity/`, { waitUntil: 'domcontentloaded' });
-    await captureFullPage(page, join(artifactDirectory, 'legacy-operation-25-desktop.png'));
+    await captureFullPage(page, join(artifactDirectory, 'transitional-route-desktop.png'));
   }
 
   const summary = {
     site_url: base,
     deployment_manifest: deploymentManifest,
     routes: requiredRoutes.length,
-    core_operations: directory.length,
-    core_order: 'O01-O24',
-    workflow_recipes: recipeLinks,
+    reader_workflow: 'A-E',
+    target_calculation_groups: 5,
+    workflow_sources: recipeLinks,
     framework_pages: frameworkLinks,
-    legacy_routes_sampled: representativeLegacySlugs.length,
+    migration_routes_sampled: representativeTransitionalSlugs.length + representativeLegacySlugs.length,
+    fixed_contracts: 0,
     keyboard_navigation: true,
     mobile_width: 390,
     mobile_horizontal_overflow: false,
-    no_javascript_core_operations: noJsLinks,
+    no_javascript_workflow: true,
     no_javascript_recipes: noJsRecipeLinks,
     public_language: 'en',
   };
   if (artifactDirectory) await writeFile(join(artifactDirectory, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`);
-  console.log(`Browser smoke passed: ${requiredRoutes.length} routes including recipes, framework, legacy, and 404; 24 core operations in order, 16 recipes, 5 framework pages, adjacency, keyboard navigation, 390px no overflow, no-JS 24/24 and 16/16, English-only${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
+  console.log(`Browser smoke passed: ${requiredRoutes.length} routes, A–E workflow with five target-calculation groups, natural page layouts, migration-safe old routes, keyboard navigation, 390px no overflow, no-JavaScript reading, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
 } finally {
   await browser.close();
 }

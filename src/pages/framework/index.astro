@@ -6,9 +6,11 @@ import { withBase } from '../../lib/paths';
 const pages = await getCollection('framework');
 ---
 
-<BaseLayout title="Framework" description="The model, relations, tags, and evidence boundaries for this learning framework." current="framework">
+<BaseLayout title="Framework" description="Cross-cutting workflow relations, methods, evidence boundaries, provenance, and reproducibility." current="framework">
   <h1>Framework</h1>
-  <p class="page-intro">These pages provide context for using the core-operation ontology. They are not additional operations or recipes.</p>
+  <p class="page-intro">
+    These pages explain concepts that connect the A–E research workflow, including branching, feedback, contextual methods, evidence boundaries, provenance, and reproducibility. They are not additional tasks or mandatory page templates.
+  </p>
   <ol class="directory-list">
     {pages.sort((left, right) => left.data.slug.localeCompare(right.data.slug)).map((page) => (
       <li><a href={withBase(`framework/${page.data.slug}/`)}>{page.data.title}</a></li>

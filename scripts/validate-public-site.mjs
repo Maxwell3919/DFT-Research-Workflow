@@ -8,9 +8,9 @@ const errors = [];
 const operationsDocument = JSON.parse(await readFile(new URL('ontology/operations.json', root), 'utf8'));
 const legacyDocument = JSON.parse(await readFile(new URL('ontology/legacy-operations.json', root), 'utf8'));
 const recipesDocument = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8'));
-const coreOperations = operationsDocument.operations;
+const transitionalOperations = operationsDocument.operations;
 const legacyOperations = legacyDocument.entries;
-const coreSlugs = coreOperations.map((operation) => operation.slug);
+const transitionalSlugs = transitionalOperations.map((operation) => operation.slug);
 const legacySlugs = legacyOperations.map((operation) => operation.slug);
 const recipes = recipesDocument.recipes;
 const recipeSlugs = recipes.map((recipe) => recipe.slug);
@@ -54,9 +54,9 @@ function outputPath(href) {
 }
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
-const expectedHtmlCount = 4 + coreSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + 1;
+const expectedHtmlCount = 4 + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + 1;
 if (htmlFiles.length !== expectedHtmlCount) {
-  errors.push(`expected ${expectedHtmlCount} generated HTML files (Home, three directories, 24 core, 16 recipes, 5 framework pages, 35 legacy, 404), found ${htmlFiles.length}`);
+  errors.push(`expected ${expectedHtmlCount} generated HTML files including transitional and compatibility routes, found ${htmlFiles.length}`);
 }
 
 const htmlByPath = new Map();
@@ -67,6 +67,7 @@ for (const path of htmlFiles) {
   if (!/<html lang="en">/.test(html)) errors.push(`${path}: html language must be English`);
   if (/[\u3400-\u9fff]/u.test(text)) errors.push(`${path}: public HTML contains CJK text`);
   if (/<script(?:\s|>)/i.test(html)) errors.push(`${path}: client-side script is not allowed`);
+  if (/class="operation-contract"/.test(html)) errors.push(`${path}: fixed operation contract is not allowed`);
   for (const phrase of prohibitedText) {
     if (text.toLowerCase().includes(phrase.toLowerCase())) errors.push(`${path}: prohibited public phrase ${JSON.stringify(phrase)}`);
   }
@@ -91,13 +92,35 @@ for (const retired of retiredPaths) {
 }
 
 const home = htmlByPath.get(join(distPath, 'index.html')) ?? '';
+const homeText = stripMarkup(home);
 const homeNav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
 const navLabels = [...homeNav.matchAll(/<a[^>]*>([^<]+)<\/a>/g)].map((match) => match[1].trim());
 if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework'])) {
   errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
 }
-if (!stripMarkup(home).includes('24 typed core operations')) errors.push('Home does not identify the 24-operation authority');
-if (!stripMarkup(home).includes('former 35 chapter URLs')) errors.push('Home does not state the legacy compatibility boundary');
+for (const label of ['A · Structures', 'B · Calculation Preparation', 'C · Reference-State Calculations', 'D · Target Calculations', 'E · Research Completion']) {
+  if (!homeText.includes(label)) errors.push(`Home is missing ${label}`);
+}
+if (/24 typed core operations|former 35 chapter URLs/.test(homeText)) errors.push('Home advertises a superseded numbered taxonomy');
+
+const operationsDirectory = htmlByPath.get(join(distPath, 'operations', 'index.html')) ?? '';
+const operationsText = stripMarkup(operationsDirectory);
+for (const label of [
+  'A · Structures',
+  'B · Calculation Preparation',
+  'C · Reference-State Calculations',
+  'D · Target Calculations',
+  'D1 · Energetics and Stability',
+  'D2 · Electronic and Magnetic Properties',
+  'D3 · Mechanical, Electric, and Lattice Response',
+  'D4 · Kinetics and Finite Temperature',
+  'D5 · Optical, Excited-State, Topological, and Transport Calculations',
+  'E · Research Completion',
+]) {
+  if (!operationsText.includes(label)) errors.push(`Research Workflow directory is missing ${label}`);
+}
+if (/Core Operations|O01|O24|Operation 00/.test(operationsText)) errors.push('Research Workflow directory exposes a superseded numbered framework');
+if (/\/operations\/o\d{2}-/.test(operationsDirectory)) errors.push('Research Workflow directory links the transitional O routes as the current sequence');
 
 const recipesDirectory = htmlByPath.get(join(distPath, 'recipes', 'index.html')) ?? '';
 for (const recipe of recipes) {
@@ -107,8 +130,8 @@ for (const recipe of recipes) {
   if (!html) errors.push(`missing generated recipe route: ${recipe.slug}`);
   if (!recipesDirectory.includes(`${base}recipes/${recipe.slug}/`)) errors.push(`recipes directory is missing ${recipe.slug}`);
   if (!text.includes(recipe.title)) errors.push(`${recipe.slug}: recipe title mismatch`);
-  if (!text.includes('composite coverage projection')) errors.push(`${recipe.slug}: missing coverage-projection boundary`);
-  for (const operationId of recipe.operations) if (!text.includes(operationId)) errors.push(`${recipe.slug}: missing operation coverage ${operationId}`);
+  if (!text.includes('not an atomic operation or a universal execution sequence')) errors.push(`${recipe.slug}: missing research-workflow boundary`);
+  if (/System tags|Target tags|Method tags|Operation coverage/.test(text)) errors.push(`${recipe.slug}: recipe restores a fixed metadata contract`);
 }
 
 const frameworkDirectory = htmlByPath.get(join(distPath, 'framework', 'index.html')) ?? '';
@@ -118,58 +141,30 @@ for (const slug of frameworkSlugs) {
   if (!frameworkDirectory.includes(`${base}framework/${slug}/`)) errors.push(`framework directory is missing ${slug}`);
 }
 
-const directoryPath = join(distPath, 'operations', 'index.html');
-const directory = htmlByPath.get(directoryPath) ?? '';
-const directoryHrefs = [...directory.matchAll(/href="([^"]*\/operations\/o\d{2}-[^"]+\/?)"/g)].map((match) => match[1]);
-const expectedHrefs = coreSlugs.map((slug) => `${base}operations/${slug}/`);
-if (JSON.stringify(directoryHrefs) !== JSON.stringify(expectedHrefs)) {
-  errors.push('Core Operations directory must contain all 24 core links in O01–O24 order');
-}
-for (const heading of [
-  'Source and Identity',
-  'Model Preparation',
-  'Protocol Design',
-  'Computation',
-  'Analysis and Comparison',
-  'Evidence and Claim',
-  'Preservation',
-]) {
-  if (!directory.includes(heading)) errors.push(`Core Operations directory is missing lifecycle heading ${heading}`);
-}
-
-for (let index = 0; index < coreOperations.length; index += 1) {
-  const operation = coreOperations[index];
+for (const operation of transitionalOperations) {
   const path = join(distPath, 'operations', operation.slug, 'index.html');
   const html = htmlByPath.get(path) ?? '';
   if (!html) {
-    errors.push(`missing generated core-operation route: ${operation.slug}`);
+    errors.push(`missing transitional route: ${operation.slug}`);
     continue;
   }
   const text = stripMarkup(html);
-  if (!text.includes(`Core operation ${operation.id}`)) errors.push(`${operation.slug}: missing core-operation label`);
-  if (!text.includes(operation.definition)) errors.push(`${operation.slug}: definition mismatch`);
-  const previousCount = (html.match(/data-previous/g) ?? []).length;
-  const nextCount = (html.match(/data-next/g) ?? []).length;
-  if (previousCount !== (index === 0 ? 0 : 1)) errors.push(`${operation.slug}: previous link boundary mismatch`);
-  if (nextCount !== (index === coreOperations.length - 1 ? 0 : 1)) errors.push(`${operation.slug}: next link boundary mismatch`);
-  if (index > 0 && !html.includes(`${base}operations/${coreOperations[index - 1].slug}/`)) errors.push(`${operation.slug}: previous href mismatch`);
-  if (index < coreOperations.length - 1 && !html.includes(`${base}operations/${coreOperations[index + 1].slug}/`)) errors.push(`${operation.slug}: next href mismatch`);
+  if (!text.includes('This URL is retained while the site migrates')) errors.push(`${operation.slug}: missing migration notice`);
+  if (text.includes(`Core operation ${operation.id}`)) errors.push(`${operation.slug}: exposes superseded core identifier`);
+  if (html.includes('data-previous') || html.includes('data-next')) errors.push(`${operation.slug}: transitional page participates in numbered adjacency`);
 }
 
 for (const legacy of legacyOperations) {
   const path = join(distPath, 'operations', legacy.slug, 'index.html');
   const html = htmlByPath.get(path) ?? '';
   if (!html) {
-    errors.push(`missing generated legacy route: ${legacy.slug}`);
+    errors.push(`missing legacy route: ${legacy.slug}`);
     continue;
   }
   const text = stripMarkup(html);
-  if (!text.includes('Legacy route retained for compatibility.')) errors.push(`${legacy.slug}: missing compatibility notice`);
-  if (html.includes('data-previous') || html.includes('data-next')) errors.push(`${legacy.slug}: legacy page must not participate in core adjacency`);
-  for (const operationId of legacy.maps_to) {
-    const mapped = coreOperations.find((operation) => operation.id === operationId);
-    if (!mapped || !html.includes(`${base}operations/${mapped.slug}/`)) errors.push(`${legacy.slug}: missing mapped link ${operationId}`);
-  }
+  if (!text.includes('This URL is retained while the site migrates')) errors.push(`${legacy.slug}: missing migration notice`);
+  if (html.includes('data-previous') || html.includes('data-next')) errors.push(`${legacy.slug}: migration page participates in numbered adjacency`);
+  if (html.includes('legacy-mapping')) errors.push(`${legacy.slug}: migration page exposes the old mapping taxonomy`);
 }
 
 if (!htmlByPath.has(join(distPath, '404.html'))) errors.push('custom English 404 page was not generated');
@@ -180,4 +175,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Generated site valid: ${expectedHtmlCount} English no-JS pages, 24 core routes with adjacency, 16 recipe routes, 5 framework routes, 35 legacy mappings, base-safe links, and no retired public paths.`);
+console.log(`Generated site valid: ${expectedHtmlCount} English no-JS pages, A–E workflow directory, natural article layouts, research workflows, framework pages, and migration-safe legacy routes.`);

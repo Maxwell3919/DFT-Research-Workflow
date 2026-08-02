@@ -1,7 +1,7 @@
 ---
 slug: lifecycle-and-operation-map
-title: Lifecycle and Operation Map
+title: Research Workflow Map
 status: scaffold
 ---
 
-This page will explain its framework topic in a later reviewed content batch.
+This page will explain the A–E workflow, its branching target calculations, and the ways a study can return to earlier tasks.

@@ -2,13 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getRecipeBySlug, recipeTiers } from '../../lib/operations';
 import { withBase } from '../../lib/paths';
-
 ---
 
-<BaseLayout title="Workflow Recipes" description="Composite workflow recipes built from the core-operation ontology." current="recipes">
+<BaseLayout title="Workflow Recipes" description="Examples of how researcher-scale DFT tasks combine for specific scientific goals." current="recipes">
   <h1>Workflow Recipes</h1>
-  <p class="page-intro">These recipes are composite workflow scaffolds, not atomic operations. Each lists a coverage projection of the core operations it draws on; a real workflow can branch, repeat, nest, or follow a different valid order.</p>
-  <p>The tiers are a writing and dependency strategy, not a scientific ranking.</p>
+  <p class="page-intro">
+    Workflow recipes show how structures, calculation preparation, reference states, target calculations, analysis, validation, and preservation can combine for a scientific goal. They are examples rather than atomic operations or universal linear sequences.
+  </p>
+  <p>The current grouping is a writing and dependency strategy, not a scientific ranking.</p>
   {recipeTiers.map((tier) => (
     <section class="part-section" aria-labelledby={tier.label.replaceAll(/[^a-z0-9]+/gi, '-').toLowerCase()}>
       <h2 id={tier.label.replaceAll(/[^a-z0-9]+/gi, '-').toLowerCase()}>{tier.label}</h2>

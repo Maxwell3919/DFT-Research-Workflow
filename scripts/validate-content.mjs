@@ -101,12 +101,16 @@ const home = await readFile(new URL('src/pages/index.astro', root), 'utf8');
 const intro = home.match(/<p class="home-intro">([\s\S]*?)<\/p>/)?.[1] ?? '';
 const wordCount = (intro.replace(/<[^>]+>/g, ' ').match(/[A-Za-z]+(?:[-–][A-Za-z]+)*/g) ?? []).length;
 if (wordCount < 80 || wordCount > 170) errors.push(`home introduction must contain 80–170 English words, found ${wordCount}`);
+if (/24 typed core|former 35 chapter URLs|operations\.length/.test(home)) errors.push('home must not advertise a numbered operation taxonomy');
+for (const label of ['A · Structures', 'B · Calculation Preparation', 'C · Reference-State Calculations', 'D · Target Calculations', 'E · Research Completion']) {
+  if (!home.includes(label)) errors.push(`home is missing workflow label ${label}`);
+}
 
 const layout = await readFile(new URL('src/layouts/BaseLayout.astro', root), 'utf8');
 const navigationBlock = layout.match(/const navigation = \[([\s\S]*?)\] as const/)?.[1] ?? '';
 const navigationLabels = [...navigationBlock.matchAll(/label: '([^']+)'/g)].map((match) => match[1]);
 if (JSON.stringify(navigationLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework'])) {
-  errors.push(`primary navigation must separate the four public layers: ${JSON.stringify(navigationLabels)}`);
+  errors.push(`primary navigation mismatch: ${JSON.stringify(navigationLabels)}`);
 }
 
 function frontmatter(source) {
@@ -133,18 +137,39 @@ const expectedCoreFiles = operations.map((operation) => `${operation.slug}.md`).
 const expectedRecipeSlugs = recipes.map((recipe) => recipe.slug).sort();
 const expectedRecipeFiles = expectedRecipeSlugs.map((slug) => `${slug}.md`);
 const expectedFramework = ['workflow-model', 'lifecycle-and-operation-map', 'relations-and-feedback-loops', 'tags-and-methods', 'evidence-provenance-and-reproducibility'];
-const prohibitedAuthorityFields = new Set(['title', 'slug', 'lifecycle', 'definition', 'inputs', 'outputs', 'dependencies', 'alternatives', 'exclusions', 'operations', 'system_types', 'scientific_targets', 'methods']);
+const prohibitedAuthorityFields = new Set(['title', 'lifecycle', 'definition', 'inputs', 'outputs', 'dependencies', 'alternatives', 'exclusions', 'operations', 'system_types', 'scientific_targets', 'methods']);
 
-if (JSON.stringify(coreNarratives.map((entry) => entry.name)) !== JSON.stringify(expectedCoreFiles)) errors.push('core-operation narrative filenames do not match ontology slugs');
-if (JSON.stringify(coreNarratives.map((entry) => entry.data.operation_id).sort()) !== JSON.stringify(expectedCoreIds)) errors.push('core-operation narratives must bind O01-O24 exactly once');
-if (JSON.stringify(recipeNarratives.map((entry) => entry.name)) !== JSON.stringify(expectedRecipeFiles)) errors.push('recipe narrative filenames do not match recipe slugs');
-if (JSON.stringify(recipeNarratives.map((entry) => entry.data.recipe_slug).sort()) !== JSON.stringify(expectedRecipeSlugs)) errors.push('recipe narratives must bind all 16 recipe slugs exactly once');
-if (JSON.stringify(frameworkNarratives.map((entry) => entry.data.slug).sort()) !== JSON.stringify([...expectedFramework].sort())) errors.push('framework narratives must bind the five approved framework slugs exactly once');
+// These checks preserve transitional source integrity without making the old
+// item counts the public information architecture.
+if (JSON.stringify(coreNarratives.map((entry) => entry.name)) !== JSON.stringify(expectedCoreFiles)) errors.push('transitional narrative filenames do not match transitional source slugs');
+if (JSON.stringify(coreNarratives.map((entry) => entry.data.operation_id).sort()) !== JSON.stringify(expectedCoreIds)) errors.push('transitional narratives do not bind the current migration source exactly once');
+if (JSON.stringify(recipeNarratives.map((entry) => entry.name)) !== JSON.stringify(expectedRecipeFiles)) errors.push('transitional recipe filenames do not match recipe slugs');
+if (JSON.stringify(recipeNarratives.map((entry) => entry.data.recipe_slug).sort()) !== JSON.stringify(expectedRecipeSlugs)) errors.push('transitional recipe narratives do not bind the current recipe source exactly once');
+if (JSON.stringify(frameworkNarratives.map((entry) => entry.data.slug).sort()) !== JSON.stringify([...expectedFramework].sort())) errors.push('framework narratives must bind the current framework routes exactly once');
 for (const entry of [...coreNarratives, ...recipeNarratives]) {
-  for (const key of Object.keys(entry.data)) if (prohibitedAuthorityFields.has(key)) errors.push(`${entry.name}: narrative frontmatter duplicates authority field ${key}`);
+  for (const key of Object.keys(entry.data)) if (prohibitedAuthorityFields.has(key)) errors.push(`${entry.name}: narrative frontmatter duplicates migration-source field ${key}`);
   if (!['scaffold', 'draft', 'reviewed'].includes(entry.data.status)) errors.push(`${entry.name}: invalid internal status`);
 }
 for (const entry of frameworkNarratives) if (!['scaffold', 'draft', 'reviewed'].includes(entry.data.status)) errors.push(`${entry.name}: invalid framework status`);
+
+const operationPage = await readFile(new URL('src/pages/operations/[slug].astro', root), 'utf8');
+const recipePage = await readFile(new URL('src/pages/recipes/[slug].astro', root), 'utf8');
+const frameworkPage = await readFile(new URL('src/pages/framework/[slug].astro', root), 'utf8');
+const mechanicalPatterns = [
+  /operation-contract/,
+  /<dt>Inputs<\/dt>/,
+  /<dt>Outputs<\/dt>/,
+  /<dt>Requirement<\/dt>/,
+  /<dt>Repeatability<\/dt>/,
+  /<dt>Dependencies<\/dt>/,
+  /Alternative implementations/,
+  /<dt>Exclusions<\/dt>/,
+  /Detailed content/,
+];
+for (const [name, source] of [['operation page', operationPage], ['recipe page', recipePage], ['framework page', frameworkPage]]) {
+  for (const pattern of mechanicalPatterns) if (pattern.test(source)) errors.push(`${name} restores fixed page contract ${pattern}`);
+}
+if (/data-previous|data-next/.test(operationPage)) errors.push('transitional numbered routes must not expose previous/next adjacency');
 
 const componentDirectory = new URL('src/components/', root);
 if (await exists(componentDirectory)) {
@@ -162,13 +187,17 @@ for (const className of cssClasses) {
 
 const architecture = await readFile(new URL('docs/architecture.md', root), 'utf8');
 for (const statement of [
-  '24 typed core',
-  'Typed data and provenance DAG',
-  'Legacy compatibility',
+  'researcher-scale tasks',
+  'D · Target Calculations',
+  'Natural topic organization',
+  'Migration compatibility',
   'Talos handoff',
 ]) {
   if (!architecture.includes(statement)) errors.push(`architecture is missing required statement: ${statement}`);
 }
+const writingPolicy = await readFile(new URL('docs/content-contract.md', root), 'utf8');
+if (!writingPolicy.includes('There is no mandatory heading set')) errors.push('writing policy does not reject a mandatory heading set');
+if (!writingPolicy.includes('Review does not require identical section names')) errors.push('writing policy does not protect natural organization during review');
 
 if (errors.length > 0) {
   console.error(`Content validation failed (${errors.length}):`);
@@ -176,4 +205,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Content contract valid: ${requiredFiles.length} required files, 24/24 core bindings, 16/16 recipe bindings, 5/5 framework pages, legacy compatibility, English source, Home copy ${wordCount} words, and no unused component classes.`);
+console.log(`Content policy valid: A–E reader workflow, natural topic organization, transitional route integrity, English source, Home copy ${wordCount} words, and no unused component classes.`);
