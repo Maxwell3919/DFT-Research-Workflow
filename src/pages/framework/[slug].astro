@@ -19,7 +19,7 @@ const Content = (await render(page)).Content;
   <article class="chapter">
     <p class="breadcrumb"><a href={withBase('framework/')}>Framework</a></p>
     <h1>{page.data.title}</h1>
-    <section class="narrative-placeholder"><Content /></section>
+    <div class="article-content"><Content /></div>
     <p class="directory-link"><a href={withBase('framework/')}>Return to Framework</a></p>
   </article>
 </BaseLayout>
