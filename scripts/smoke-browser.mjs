@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import puppeteer from 'puppeteer-core';
 
@@ -7,6 +7,17 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const deployedSha = process.env.DEPLOYED_SHA;
 const deployedRepository = process.env.DEPLOYED_REPOSITORY ?? 'Maxwell3919/DFT-Research-Workflow';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
+const root = new URL('../', import.meta.url);
+const workflow = JSON.parse(await readFile(new URL('workflow/topics.json', root), 'utf8'));
+const topicSlugs = workflow.sections.flatMap((section) => section.groups.flatMap((group) => group.topics.map((topic) => topic.slug)));
+const representativeTopicSlugs = [
+  'obtain-material-structure',
+  'band-structure',
+  'harmonic-phonons',
+  'electron-phonon-coupling',
+  'conventional-superconductivity',
+  'validate-results-and-scientific-conclusions',
+];
 const representativeTransitionalSlugs = [
   'o01-acquire-source-objects',
   'o13-solve-an-electronic-state',
@@ -28,6 +39,7 @@ const frameworkSlugs = [
 const requiredRoutes = [
   { route: '/', status: 200, name: 'Home' },
   { route: '/operations/', status: 200, name: 'Research Workflow' },
+  ...representativeTopicSlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
   { route: '/recipes/', status: 200, name: 'Recipes directory' },
   { route: '/recipes/bulk-structure-and-bands/', status: 200, name: 'Research workflow example' },
   { route: '/framework/', status: 200, name: 'Framework directory' },
@@ -66,11 +78,7 @@ async function captureFullPage(page, path) {
     width: document.documentElement.scrollWidth,
     height: document.documentElement.scrollHeight,
   }));
-  await page.screenshot({
-    path,
-    captureBeyondViewport: true,
-    clip: { x: 0, y: 0, ...dimensions },
-  });
+  await page.screenshot({ path, captureBeyondViewport: true, clip: { x: 0, y: 0, ...dimensions } });
 }
 
 async function inspectPage(page, expectedStatus) {
@@ -92,19 +100,13 @@ async function inspectPage(page, expectedStatus) {
   if (observation.fixedContracts !== 0) throw new Error('page exposes a fixed operation contract');
   if (JSON.stringify(observation.nav) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework'])) throw new Error(`navigation mismatch: ${JSON.stringify(observation.nav)}`);
   if (observation.background !== 'rgb(255, 255, 255)') throw new Error(`background is not white: ${observation.background}`);
-  if (!/Iowan Old Style|Palatino|Book Antiqua|Georgia|Times New Roman|serif/i.test(observation.fontFamily)) {
-    throw new Error(`serif reading stack missing: ${observation.fontFamily}`);
-  }
+  if (!/Iowan Old Style|Palatino|Book Antiqua|Georgia|Times New Roman|serif/i.test(observation.fontFamily)) throw new Error(`serif reading stack missing: ${observation.fontFamily}`);
   if (expectedStatus === 404 && !observation.text.includes('Page Not Found')) throw new Error('custom 404 content missing');
   return observation;
 }
 
 const deploymentManifest = await waitForDeploymentManifest();
-const browser = await puppeteer.launch({
-  executablePath,
-  headless: true,
-  args: ['--no-sandbox', '--disable-dev-shm-usage'],
-});
+const browser = await puppeteer.launch({ executablePath, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
 
 try {
   const page = await browser.newPage();
@@ -120,24 +122,28 @@ try {
   await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
   const workflowState = await page.evaluate(() => ({
     text: document.body.innerText,
+    topicLinks: [...document.querySelectorAll('.topic-list a')].map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)),
     transitionalLinks: document.querySelectorAll('a[href*="/operations/o"]').length,
   }));
-  for (const label of [
-    'A · Structures',
-    'B · Calculation Preparation',
-    'C · Reference-State Calculations',
-    'D · Target Calculations',
-    'D1 · Energetics and Stability',
-    'D2 · Electronic and Magnetic Properties',
-    'D3 · Mechanical, Electric, and Lattice Response',
-    'D4 · Kinetics and Finite Temperature',
-    'D5 · Optical, Excited-State, Topological, and Transport Calculations',
-    'E · Research Completion',
-  ]) {
-    if (!workflowState.text.includes(label)) throw new Error(`Research Workflow is missing ${label}`);
+  for (const section of workflow.sections) {
+    if (!workflowState.text.includes(`${section.id} · ${section.title}`)) throw new Error(`Research Workflow is missing ${section.id} · ${section.title}`);
+    for (const group of section.groups) {
+      if (section.id === 'D' && !workflowState.text.includes(`${group.id} · ${group.title}`)) throw new Error(`Research Workflow is missing ${group.id} · ${group.title}`);
+    }
   }
+  if (JSON.stringify(workflowState.topicLinks) !== JSON.stringify(topicSlugs)) throw new Error('Research Workflow topic links do not match the registry order');
   if (workflowState.transitionalLinks !== 0) throw new Error('Research Workflow exposes transitional numbered routes');
   if (/Core Operations|O01|O24|Operation 00/.test(workflowState.text)) throw new Error('Research Workflow exposes a superseded numbered taxonomy');
+
+  for (const slug of representativeTopicSlugs) {
+    await page.goto(`${base}/operations/${slug}/`, { waitUntil: 'domcontentloaded' });
+    const state = await page.evaluate(() => ({
+      transitional: document.body.innerText.includes('Transitional route'),
+      fixedContract: document.querySelector('.operation-contract'),
+      hasStableNotice: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
+    }));
+    if (state.transitional || state.fixedContract || !state.hasStableNotice) throw new Error(`${slug}: invalid stable topic route`);
+  }
 
   await page.goto(`${base}/recipes/`, { waitUntil: 'domcontentloaded' });
   const recipeLinks = await page.$$eval('.directory-list a', (links) => links.length);
@@ -152,30 +158,27 @@ try {
   const keyboardHref = await page.evaluate(() => document.activeElement?.getAttribute('href'));
   if (!keyboardHref?.endsWith('/operations/')) throw new Error(`keyboard navigation mismatch: ${keyboardHref}`);
 
+  const migrationNotice = 'This URL is retained while useful material is migrated into the A–E workflow.';
   for (const slug of [...representativeTransitionalSlugs, ...representativeLegacySlugs]) {
     await page.goto(`${base}/operations/${slug}/`, { waitUntil: 'domcontentloaded' });
-    const migrationState = await page.evaluate(() => ({
-      hasNotice: document.body.innerText.includes('This URL is retained while the site migrates'),
+    const migrationState = await page.evaluate((notice) => ({
+      hasNotice: document.body.innerText.includes(notice),
       previous: document.querySelector('[data-previous]'),
       next: document.querySelector('[data-next]'),
       fixedContract: document.querySelector('.operation-contract'),
       mappedLinks: document.querySelectorAll('.legacy-mapping a').length,
-    }));
-    if (!migrationState.hasNotice || migrationState.previous || migrationState.next || migrationState.fixedContract || migrationState.mappedLinks > 0) {
-      throw new Error(`${slug}: invalid migration route`);
-    }
+    }), migrationNotice);
+    if (!migrationState.hasNotice || migrationState.previous || migrationState.next || migrationState.fixedContract || migrationState.mappedLinks > 0) throw new Error(`${slug}: invalid migration route`);
   }
 
   const noJsPage = await browser.newPage();
   await noJsPage.setJavaScriptEnabled(false);
   await noJsPage.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
-  const noJsWorkflowText = await noJsPage.$eval('body', (body) => body.innerText);
-  if (!noJsWorkflowText.includes('D · Target Calculations') || !noJsWorkflowText.includes('E · Research Completion')) {
-    throw new Error('no-JavaScript Research Workflow is incomplete');
-  }
-  await noJsPage.goto(`${base}/recipes/`, { waitUntil: 'domcontentloaded' });
-  const noJsRecipeLinks = await noJsPage.$$eval('.directory-list a', (links) => links.length);
-  if (noJsRecipeLinks !== 16) throw new Error(`no-JavaScript recipes directory exposes ${noJsRecipeLinks}/16 workflow sources`);
+  const noJsTopicLinks = await noJsPage.$$eval('.topic-list a', (links) => links.map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)));
+  if (JSON.stringify(noJsTopicLinks) !== JSON.stringify(topicSlugs)) throw new Error('no-JavaScript Research Workflow topic links are incomplete');
+  await noJsPage.goto(`${base}/operations/harmonic-phonons/`, { waitUntil: 'domcontentloaded' });
+  const noJsTopicText = await noJsPage.$eval('body', (body) => body.innerText);
+  if (!noJsTopicText.includes('Harmonic Phonons')) throw new Error('no-JavaScript topic page is incomplete');
 
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   for (const target of requiredRoutes) {
@@ -193,6 +196,8 @@ try {
     await captureFullPage(page, join(artifactDirectory, 'home-desktop.png'));
     await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
     await captureFullPage(page, join(artifactDirectory, 'research-workflow-desktop.png'));
+    await page.goto(`${base}/operations/harmonic-phonons/`, { waitUntil: 'domcontentloaded' });
+    await captureFullPage(page, join(artifactDirectory, 'topic-harmonic-phonons-desktop.png'));
     await page.goto(`${base}/operations/o13-solve-an-electronic-state/`, { waitUntil: 'domcontentloaded' });
     await captureFullPage(page, join(artifactDirectory, 'transitional-route-desktop.png'));
   }
@@ -202,6 +207,7 @@ try {
     deployment_manifest: deploymentManifest,
     routes: requiredRoutes.length,
     reader_workflow: 'A-E',
+    topic_routes_verified_from_registry: true,
     target_calculation_groups: 5,
     workflow_sources: recipeLinks,
     framework_pages: frameworkLinks,
@@ -211,11 +217,10 @@ try {
     mobile_width: 390,
     mobile_horizontal_overflow: false,
     no_javascript_workflow: true,
-    no_javascript_recipes: noJsRecipeLinks,
     public_language: 'en',
   };
   if (artifactDirectory) await writeFile(join(artifactDirectory, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`);
-  console.log(`Browser smoke passed: ${requiredRoutes.length} routes, A–E workflow with five target-calculation groups, natural page layouts, migration-safe old routes, keyboard navigation, 390px no overflow, no-JavaScript reading, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
+  console.log(`Browser smoke passed: registry-driven A–E workflow, stable topic routes, natural page layouts, migration-safe old routes, keyboard navigation, 390px no overflow, no-JavaScript reading, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
 } finally {
   await browser.close();
 }

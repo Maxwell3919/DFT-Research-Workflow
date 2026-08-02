@@ -13,12 +13,18 @@ article.
 
 - `docs/architecture.md` defines the reader-facing A–E structure and task
   granularity.
+- `workflow/topics.json` defines stable A–E section, group, topic title, and
+  route identity for the public Research Workflow directory.
 - Public narrative pages explain individual researcher-scale tasks, target
   calculations, or complete research workflows.
 - Machine-readable records may support routes, search, relationships, and
   migration, but they do not determine the visible article outline.
 - Existing O01–O24 and Operation 00–34 records are migration sources, not the
   current public taxonomy.
+
+The topic registry is an address book and navigation source. Its length is not
+presented as the number of DFT operations, and adding a scientifically justified
+page does not require redefining a claimed minimal set.
 
 No page, route, JSON file, or validator may silently restore a numbered 24- or
 35-operation framework as the current scientific structure.
@@ -110,6 +116,33 @@ a public template and need not appear as named headings:
 A mature page should answer the applicable questions in a coherent explanatory
 sequence. It need not answer irrelevant questions merely to fill a form.
 
+## Topic registry and narrative binding
+
+`workflow/topics.json` stores only the information needed to identify and place
+public workflow topics:
+
+- A–E section identity and label;
+- D1–D5 navigation groups;
+- stable topic slugs and titles;
+- optional references to superseded records used during migration.
+
+The registry must not store article prose, scientific conclusions, universal
+parameters, or a global execution order. Migration references are internal
+editorial aids and are not displayed as a second public taxonomy.
+
+Reviewed topic prose belongs under `src/content/topics/`. A topic Markdown file
+uses minimal frontmatter:
+
+```yaml
+topic_slug: harmonic-phonons
+status: draft
+```
+
+Allowed topic statuses are `draft` and `reviewed`. A registry route may exist
+before its narrative file; in that state the public page contains only a neutral
+content-development notice. Frontmatter must not duplicate the title, section,
+group, method choices, inputs, outputs, or proposed article headings.
+
 ## Metadata
 
 Frontmatter and machine-readable data should be minimal. They may identify a
@@ -188,6 +221,7 @@ During migration from the O01–O24 and Operation 00–34 structures:
 
 - useful material is reassigned to an A–E task, a D target calculation, a
   research workflow, or a framework page;
+- `workflow/topics.json` records the intended stable destination when known;
 - old routes remain only as temporary compatibility surfaces;
 - old IDs are not used as the primary public navigation or reading sequence;
 - previous/next links between old numbered pages are removed;

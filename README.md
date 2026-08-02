@@ -25,9 +25,13 @@ in which band structures, density of states, phonons, defect energetics,
 electron–phonon coupling, superconductivity, transport, optical calculations,
 and other concrete calculations may each have an independent page.
 
-The framework does not claim that DFT research has a fixed total number of
-operations. Earlier O01–O24 and Operation 00–34 records remain temporarily as
-migration and URL-compatibility data, not as competing public taxonomies.
+`workflow/topics.json` defines stable A–E sections, D1–D5 groups, public topic
+slugs and titles, and internal migration references. The home page, Research
+Workflow directory, and topic routes are generated from this registry. The
+registry length is not presented as the number of DFT operations.
+
+Earlier O01–O24 and Operation 00–34 records remain temporarily as migration and
+URL-compatibility data, not as competing public taxonomies.
 
 Every scientific page is organized naturally according to its subject. The site
 does not require a repeated Inputs/Outputs/Requirement-style contract or a
@@ -38,10 +42,20 @@ Public site: <https://maxwell3919.github.io/DFT-Research-Workflow/>
 ## Current repository structure
 
 ```text
+workflow/
+└── topics.json                   # current A–E topic and route authority
+
 docs/
 ├── architecture.md
 ├── content-contract.md
 └── content-population-plan.md
+
+src/content/
+├── topics/                      # optional natural topic narratives
+├── recipes/                     # transitional workflow bindings
+├── framework/                   # framework narrative pages
+├── core-operations/             # transitional O01–O24 bindings
+└── operations/                  # former 00–34 route metadata
 
 ontology/
 ├── operations.json              # transitional O01–O24 source
@@ -51,20 +65,14 @@ ontology/
 
 recipes/
 └── index.json                   # transitional workflow source
-
-src/content/
-├── core-operations/             # transitional narrative bindings
-├── recipes/                     # transitional workflow bindings
-├── framework/                   # framework narrative pages
-└── operations/                  # former route metadata
 ```
 
 See [docs/architecture.md](docs/architecture.md) for the current A–E information
 architecture and migration policy. See
 [docs/content-contract.md](docs/content-contract.md) for natural writing,
-review, source, and migration rules. See
-[docs/content-population-plan.md](docs/content-population-plan.md) for the topic
-inventory and content-development order.
+review, source, registry-binding, and migration rules. See
+[docs/content-population-plan.md](docs/content-population-plan.md) for the active
+writing and migration sequence.
 
 ## Local development and validation
 
@@ -75,6 +83,10 @@ npm ci --no-audit --no-fund
 npm run dev
 npm run check
 ```
+
+`npm run check` validates the current topic registry, transitional migration
+sources, project-base-safe links, content policy, Astro types, the static build,
+and generated routes.
 
 For browser validation:
 

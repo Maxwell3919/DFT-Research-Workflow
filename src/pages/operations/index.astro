@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { workflowSections } from '../../lib/workflow';
+import { withBase } from '../../lib/paths';
 ---
 
 <BaseLayout
@@ -12,114 +14,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     The workflow is organized around tasks that researchers plan and discuss as meaningful units of work. A–C establish the structure, setup, and reference state; D branches into the calculations required by the scientific question; E turns the results into a supported and reproducible conclusion.
   </p>
 
-  <section class="part-section" id="part-a" aria-labelledby="part-a-heading">
-    <header>
-      <h2 id="part-a-heading">A · Structures</h2>
-      <p>Obtain a trustworthy structure and build the model required by the study.</p>
-    </header>
-    <ul class="directory-list">
-      <li><strong>Obtain a Material Structure</strong><br />Database, publication, experiment, previous calculation, or generated structure; source, parsing, identity, and crystallographic inspection belong within this task.</li>
-      <li><strong>Build or Modify a Computational Model</strong><br />Supercells, slabs, defects, adsorbates, interfaces, heterostructures, constraints, magnetic candidates, and disorder models.</li>
-    </ul>
-  </section>
+  {workflowSections.map((section) => (
+    <section class="part-section" id={`part-${section.id.toLowerCase()}`} aria-labelledby={`part-${section.id.toLowerCase()}-heading`}>
+      <header>
+        <h2 id={`part-${section.id.toLowerCase()}-heading`}>{section.id} · {section.title}</h2>
+        <p>{section.summary}</p>
+      </header>
 
-  <section class="part-section" id="part-b" aria-labelledby="part-b-heading">
-    <header>
-      <h2 id="part-b-heading">B · Calculation Preparation</h2>
-      <p>Choose a physically appropriate setup and establish numerical reliability.</p>
-    </header>
-    <ul class="directory-list">
-      <li><strong>Choose the DFT Method and Computational Setup</strong><br />Physical approximation, core treatment, basis or representation, spin, relativity, interactions, boundaries, occupations, and sampling.</li>
-      <li><strong>Test Numerical Convergence</strong><br />Converge the settings that control the intended observable and comparison.</li>
-    </ul>
-  </section>
-
-  <section class="part-section" id="part-c" aria-labelledby="part-c-heading">
-    <header>
-      <h2 id="part-c-heading">C · Reference-State Calculations</h2>
-      <p>Establish the structure and electronic state used by later calculations.</p>
-    </header>
-    <ul class="directory-list">
-      <li><strong>Optimize the Structure</strong><br />Atomic, lattice, constrained, interface, or other relevant structural degrees of freedom.</li>
-      <li><strong>Calculate the Reference Ground State</strong><br />Produce the consistent electronic reference needed by the target calculation.</li>
-    </ul>
-  </section>
-
-  <section class="part-section" id="part-d" aria-labelledby="part-d-heading">
-    <header>
-      <h2 id="part-d-heading">D · Target Calculations</h2>
-      <p>Each concrete calculation may be documented independently. The group headings are navigation categories, not extra operations.</p>
-    </header>
-
-    <h3>D1 · Energetics and Stability</h3>
-    <ul>
-      <li>Relative Energies and Formation Energies</li>
-      <li>Equation of State and Structural Phase Stability</li>
-      <li>Compositional Phase Stability and Convex Hulls</li>
-      <li>Defect Formation Energies and Charge States</li>
-      <li>Surface Energy and Work Function</li>
-      <li>Adsorption Energies</li>
-      <li>Interface and Heterostructure Energetics</li>
-    </ul>
-
-    <h3>D2 · Electronic and Magnetic Properties</h3>
-    <ul>
-      <li>Band Structure</li>
-      <li>Density of States and Projected Density of States</li>
-      <li>Fermi Surface and Full-Brillouin-Zone Analysis</li>
-      <li>Charge Density and Charge Redistribution</li>
-      <li>Electrostatic Potential and Band Alignment</li>
-      <li>Chemical Bonding Analysis</li>
-      <li>Magnetic Configuration and Ground-State Comparison</li>
-      <li>Magnetic Anisotropy and Exchange Interactions</li>
-    </ul>
-
-    <h3>D3 · Mechanical, Electric, and Lattice Response</h3>
-    <ul>
-      <li>Elastic Constants and Mechanical Properties</li>
-      <li>Dielectric Response and Born Effective Charges</li>
-      <li>Polarization and Ferroelectricity</li>
-      <li>Piezoelectric Response</li>
-      <li>Harmonic Phonons</li>
-      <li>Anharmonic Phonons</li>
-      <li>Lattice Thermal Transport</li>
-      <li>Electron–Phonon Coupling</li>
-      <li>Conventional Superconductivity</li>
-    </ul>
-
-    <h3>D4 · Kinetics and Finite Temperature</h3>
-    <ul>
-      <li>Reaction Paths and Transition States</li>
-      <li>Diffusion Barriers</li>
-      <li>Ab Initio Molecular Dynamics</li>
-      <li>Finite-Temperature Structural Sampling</li>
-    </ul>
-
-    <h3>D5 · Optical, Excited-State, Topological, and Transport Calculations</h3>
-    <ul>
-      <li>Independent-Particle Optical Properties</li>
-      <li>Time-Dependent Response and Spectroscopy</li>
-      <li>Quasiparticle Corrections</li>
-      <li>Excitons and the Bethe–Salpeter Equation</li>
-      <li>Wannier Function Construction</li>
-      <li>Berry Phase and Berry Curvature</li>
-      <li>Topological Invariants and Boundary States</li>
-      <li>Electronic Transport</li>
-      <li>Quantum Transport</li>
-    </ul>
-  </section>
-
-  <section class="part-section" id="part-e" aria-labelledby="part-e-heading">
-    <header>
-      <h2 id="part-e-heading">E · Research Completion</h2>
-      <p>Turn calculations into an interpretable, supported, and reusable study.</p>
-    </header>
-    <ul class="directory-list">
-      <li><strong>Analyze and Compare Results</strong><br />Normalize, align, aggregate, compare, and interpret the calculated quantities.</li>
-      <li><strong>Validate Results and Scientific Conclusions</strong><br />Separate numerical completion, physical consistency, method robustness, and support for the stated conclusion.</li>
-      <li><strong>Document and Preserve the Study</strong><br />Record provenance, evidence, software environment, derived data, and reconstruction instructions.</li>
-    </ul>
-  </section>
+      {section.groups.map((group) => (
+        <div class="workflow-group">
+          {section.id === 'D' && <h3>{group.id} · {group.title}</h3>}
+          {section.id === 'D' && <p class="group-summary">{group.summary}</p>}
+          <ul class="directory-list topic-list">
+            {group.topics.map((topic) => (
+              <li><a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  ))}
 
   <p class="framework-note">
     Older direct links remain temporarily available while their useful content is migrated. They are not part of the current reading structure.
