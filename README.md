@@ -41,7 +41,8 @@ src/content/operations/
 
 docs/
 ├── architecture.md
-└── content-contract.md
+├── content-contract.md
+└── content-population-plan.md
 ```
 
 The public `/operations/` directory renders O01–O24 by lifecycle. Existing
@@ -50,7 +51,9 @@ legacy URLs remain available and explain their mapping.
 See [docs/architecture.md](docs/architecture.md) for the authority model,
 workflow graph, migration boundaries, and Talos handoff. See
 [docs/content-contract.md](docs/content-contract.md) for record schemas and
-writing requirements.
+writing requirements. See
+[docs/content-population-plan.md](docs/content-population-plan.md) for the
+placeholder framework, chapter coverage, writing sequence, and review gates.
 
 ## Local development and validation
 
