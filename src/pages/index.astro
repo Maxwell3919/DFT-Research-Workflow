@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { workflowSections } from '../lib/workflow';
 import { withBase } from '../lib/paths';
 ---
 
@@ -16,11 +17,12 @@ import { withBase } from '../lib/paths';
   <section class="parts-overview" aria-labelledby="workflow-heading">
     <h2 id="workflow-heading">Research workflow</h2>
     <ol>
-      <li><a href={withBase('operations/#part-a')}>A · Structures</a><span>Obtain a structure and build the computational model.</span></li>
-      <li><a href={withBase('operations/#part-b')}>B · Calculation Preparation</a><span>Choose the method and establish numerical convergence.</span></li>
-      <li><a href={withBase('operations/#part-c')}>C · Reference-State Calculations</a><span>Optimize the structure and calculate the reference ground state.</span></li>
-      <li><a href={withBase('operations/#part-d')}>D · Target Calculations</a><span>Select and perform the calculations required by the scientific question.</span></li>
-      <li><a href={withBase('operations/#part-e')}>E · Research Completion</a><span>Analyze, validate, document, and preserve the study.</span></li>
+      {workflowSections.map((section) => (
+        <li>
+          <a href={withBase(`operations/#part-${section.id.toLowerCase()}`)}>{section.id} · {section.title}</a>
+          <span>{section.summary}</span>
+        </li>
+      ))}
     </ol>
   </section>
 
