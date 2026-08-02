@@ -45,7 +45,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const page = Astro.props as Props;
-const title = page.operation.title ?? page.operation.name;
+const title = page.kind === 'core' ? page.operation.name : page.operation.title;
 const description = page.kind === 'core' ? page.operation.definition : page.operation.disposition;
 const Narrative = page.kind === 'core' && page.narrative ? (await render(page.narrative)).Content : null;
 ---
