@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "authority": "reader-facing A–E workflow topic registry",
+  "scope_note": "This registry defines stable topic routes and navigation. Its size is not presented as the number of DFT operations.",
+  "sections": [
+    {
+      "id": "A",
+      "slug": "structures",
+      "title": "Structures",
+      "role": "backbone",
+      "summary": "Obtain a trustworthy structure and build the model required by the study.",
+      "groups": [
+        {
+          "id": "A",
+          "slug": "structures",
+          "title": "Structures",
+          "summary": "Obtain or construct the structural model used by the calculation.",
+          "topics": [
+            { "slug": "obtain-material-structure", "title": "Obtain a Material Structure" },
+            { "slug": "build-or-modify-computational-model", "title": "Build or Modify a Computational Model" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "slug": "calculation-preparation",
+      "title": "Calculation Preparation",
+      "role": "backbone",
+      "summary": "Choose a physically appropriate setup and establish numerical reliability.",
+      "groups": [
+        {
+          "id": "B",
+          "slug": "calculation-preparation",
+          "title": "Calculation Preparation",
+          "summary": "Define the method and converge the settings needed by the target observable.",
+          "topics": [
+            { "slug": "choose-dft-method-and-computational-setup", "title": "Choose the DFT Method and Computational Setup" },
+            { "slug": "test-numerical-convergence", "title": "Test Numerical Convergence" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "slug": "reference-state-calculations",
+      "title": "Reference-State Calculations",
+      "role": "backbone",
+      "summary": "Establish the structure and electronic state used by later calculations.",
+      "groups": [
+        {
+          "id": "C",
+          "slug": "reference-state-calculations",
+          "title": "Reference-State Calculations",
+          "summary": "Create the optimized structure and consistent electronic reference state.",
+          "topics": [
+            { "slug": "optimize-structure", "title": "Optimize the Structure" },
+            { "slug": "calculate-reference-ground-state", "title": "Calculate the Reference Ground State" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "slug": "target-calculations",
+      "title": "Target Calculations",
+      "role": "branching-library",
+      "summary": "Select the calculations required by the scientific question.",
+      "groups": [
+        {
+          "id": "D1",
+          "slug": "energetics-and-stability",
+          "title": "Energetics and Stability",
+          "summary": "Energy differences, thermodynamic references, and structural or compositional stability.",
+          "topics": [
+            { "slug": "relative-and-formation-energies", "title": "Relative Energies and Formation Energies" },
+            { "slug": "equation-of-state-and-structural-phase-stability", "title": "Equation of State and Structural Phase Stability" },
+            { "slug": "compositional-phase-stability-and-convex-hulls", "title": "Compositional Phase Stability and Convex Hulls" },
+            { "slug": "defect-formation-energies-and-charge-states", "title": "Defect Formation Energies and Charge States" },
+            { "slug": "surface-energy-and-work-function", "title": "Surface Energy and Work Function" },
+            { "slug": "adsorption-energies", "title": "Adsorption Energies" },
+            { "slug": "interface-and-heterostructure-energetics", "title": "Interface and Heterostructure Energetics" }
+          ]
+        },
+        {
+          "id": "D2",
+          "slug": "electronic-and-magnetic-properties",
+          "title": "Electronic and Magnetic Properties",
+          "summary": "Electronic structure, charge, bonding, and magnetic observables.",
+          "topics": [
+            { "slug": "band-structure", "title": "Band Structure" },
+            { "slug": "density-of-states-and-projected-density-of-states", "title": "Density of States and Projected Density of States" },
+            { "slug": "fermi-surface-and-full-brillouin-zone-analysis", "title": "Fermi Surface and Full-Brillouin-Zone Analysis" },
+            { "slug": "charge-density-and-charge-redistribution", "title": "Charge Density and Charge Redistribution" },
+            { "slug": "electrostatic-potential-and-band-alignment", "title": "Electrostatic Potential and Band Alignment" },
+            { "slug": "chemical-bonding-analysis", "title": "Chemical Bonding Analysis" },
+            { "slug": "magnetic-configuration-and-ground-state-comparison", "title": "Magnetic Configuration and Ground-State Comparison" },
+            { "slug": "magnetic-anisotropy-and-exchange-interactions", "title": "Magnetic Anisotropy and Exchange Interactions" }
+          ]
+        },
+        {
+          "id": "D3",
+          "slug": "mechanical-electric-and-lattice-response",
+          "title": "Mechanical, Electric, and Lattice Response",
+          "summary": "Mechanical, dielectric, polar, vibrational, thermal, and electron–phonon response.",
+          "topics": [
+            { "slug": "elastic-constants-and-mechanical-properties", "title": "Elastic Constants and Mechanical Properties" },
+            { "slug": "dielectric-response-and-born-effective-charges", "title": "Dielectric Response and Born Effective Charges" },
+            { "slug": "polarization-and-ferroelectricity", "title": "Polarization and Ferroelectricity" },
+            { "slug": "piezoelectric-response", "title": "Piezoelectric Response" },
+            { "slug": "harmonic-phonons", "title": "Harmonic Phonons" },
+            { "slug": "anharmonic-phonons", "title": "Anharmonic Phonons" },
+            { "slug": "lattice-thermal-transport", "title": "Lattice Thermal Transport" },
+            { "slug": "electron-phonon-coupling", "title": "Electron–Phonon Coupling" },
+            { "slug": "conventional-superconductivity", "title": "Conventional Superconductivity" }
+          ]
+        },
+        {
+          "id": "D4",
+          "slug": "kinetics-and-finite-temperature",
+          "title": "Kinetics and Finite Temperature",
+          "summary": "Transition pathways, diffusion, dynamics, and finite-temperature sampling.",
+          "topics": [
+            { "slug": "reaction-paths-and-transition-states", "title": "Reaction Paths and Transition States" },
+            { "slug": "diffusion-barriers", "title": "Diffusion Barriers" },
+            { "slug": "ab-initio-molecular-dynamics", "title": "Ab Initio Molecular Dynamics" },
+            { "slug": "finite-temperature-structural-sampling", "title": "Finite-Temperature Structural Sampling" }
+          ]
+        },
+        {
+          "id": "D5",
+          "slug": "optical-excited-state-topological-and-transport",
+          "title": "Optical, Excited-State, Topological, and Transport Calculations",
+          "summary": "Spectroscopy, quasiparticles, excitons, topology, and electronic transport.",
+          "topics": [
+            { "slug": "independent-particle-optical-properties", "title": "Independent-Particle Optical Properties" },
+            { "slug": "time-dependent-response-and-spectroscopy", "title": "Time-Dependent Response and Spectroscopy" },
+            { "slug": "quasiparticle-corrections", "title": "Quasiparticle Corrections" },
+            { "slug": "excitons-and-bethe-salpeter-equation", "title": "Excitons and the Bethe–Salpeter Equation" },
+            { "slug": "wannier-function-construction", "title": "Wannier Function Construction" },
+            { "slug": "berry-phase-and-berry-curvature", "title": "Berry Phase and Berry Curvature" },
+            { "slug": "topological-invariants-and-boundary-states", "title": "Topological Invariants and Boundary States" },
+            { "slug": "electronic-transport", "title": "Electronic Transport" },
+            { "slug": "quantum-transport", "title": "Quantum Transport" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "E",
+      "slug": "research-completion",
+      "title": "Research Completion",
+      "role": "backbone",
+      "summary": "Turn calculations into an interpretable, supported, and reusable study.",
+      "groups": [
+        {
+          "id": "E",
+          "slug": "research-completion",
+          "title": "Research Completion",
+          "summary": "Analyze, validate, document, and preserve the study.",
+          "topics": [
+            { "slug": "analyze-and-compare-results", "title": "Analyze and Compare Results" },
+            { "slug": "validate-results-and-scientific-conclusions", "title": "Validate Results and Scientific Conclusions" },
+            { "slug": "document-and-preserve-study", "title": "Document and Preserve the Study" }
+          ]
+        }
+      ]
+    }
+  ],
+  "migration_sources": {
+    "obtain-material-structure": { "core_operations": ["O01", "O02", "O03", "O04"], "legacy_routes": ["02-source-structures", "03-structure-standardization"] },
+    "build-or-modify-computational-model": { "core_operations": ["O05", "O06"], "legacy_routes": ["04-computational-model", "05-candidate-configurations", "26-defects-doping-and-disorder", "27-surfaces-interfaces-and-adsorption"] },
+    "choose-dft-method-and-computational-setup": { "core_operations": ["O07", "O08", "O09", "O10"], "legacy_routes": ["06-electronic-structure-method", "07-core-treatment-and-basis", "08-boundary-conditions", "10-workflow-planning", "11-inputs-and-preflight"] },
+    "test-numerical-convergence": { "core_operations": ["O09", "O20"], "legacy_routes": ["09-convergence-tests"] },
+    "optimize-structure": { "core_operations": ["O13", "O14", "O20"], "legacy_routes": ["15-structure-optimization"] },
+    "calculate-reference-ground-state": { "core_operations": ["O13", "O20"], "legacy_routes": ["14-ground-state-scf", "16-high-accuracy-static", "17-status-and-initial-results"] },
+    "equation-of-state-and-structural-phase-stability": { "legacy_routes": ["21-equations-of-state-and-phase-stability"] },
+    "defect-formation-energies-and-charge-states": { "legacy_routes": ["26-defects-doping-and-disorder"], "recipes": ["defect-formation-energy"] },
+    "surface-energy-and-work-function": { "legacy_routes": ["27-surfaces-interfaces-and-adsorption"], "recipes": ["surface-and-adsorption"] },
+    "adsorption-energies": { "legacy_routes": ["27-surfaces-interfaces-and-adsorption"], "recipes": ["surface-and-adsorption"] },
+    "interface-and-heterostructure-energetics": { "legacy_routes": ["27-surfaces-interfaces-and-adsorption"], "recipes": ["heterostructure-band-alignment"] },
+    "band-structure": { "legacy_routes": ["18-bands-dos-and-fermi-surfaces"], "recipes": ["bulk-structure-and-bands", "two-dimensional-electronic-structure"] },
+    "density-of-states-and-projected-density-of-states": { "legacy_routes": ["18-bands-dos-and-fermi-surfaces"], "recipes": ["bulk-structure-and-bands", "two-dimensional-electronic-structure"] },
+    "fermi-surface-and-full-brillouin-zone-analysis": { "legacy_routes": ["18-bands-dos-and-fermi-surfaces"] },
+    "charge-density-and-charge-redistribution": { "legacy_routes": ["19-charge-potential-and-bonding"] },
+    "electrostatic-potential-and-band-alignment": { "legacy_routes": ["19-charge-potential-and-bonding"], "recipes": ["heterostructure-band-alignment"] },
+    "chemical-bonding-analysis": { "legacy_routes": ["19-charge-potential-and-bonding"] },
+    "magnetic-configuration-and-ground-state-comparison": { "legacy_routes": ["20-magnetism"], "recipes": ["magnetic-order-comparison"] },
+    "magnetic-anisotropy-and-exchange-interactions": { "legacy_routes": ["20-magnetism"], "recipes": ["magnetic-order-comparison", "soc-and-topology"] },
+    "elastic-constants-and-mechanical-properties": { "legacy_routes": ["22-elastic-mechanical-and-piezoelectric"] },
+    "dielectric-response-and-born-effective-charges": { "legacy_routes": ["29-dielectric-polarization-and-response"], "recipes": ["dielectric-polarization-piezoelectric"] },
+    "polarization-and-ferroelectricity": { "legacy_routes": ["29-dielectric-polarization-and-response"], "recipes": ["dielectric-polarization-piezoelectric"] },
+    "piezoelectric-response": { "legacy_routes": ["22-elastic-mechanical-and-piezoelectric"], "recipes": ["dielectric-polarization-piezoelectric"] },
+    "harmonic-phonons": { "legacy_routes": ["23-phonons-and-harmonic-vibrations"], "recipes": ["harmonic-phonons"] },
+    "anharmonic-phonons": { "legacy_routes": ["24-anharmonicity-and-thermal-transport"], "recipes": ["anharmonic-thermal-transport"] },
+    "lattice-thermal-transport": { "legacy_routes": ["24-anharmonicity-and-thermal-transport"], "recipes": ["anharmonic-thermal-transport"] },
+    "electron-phonon-coupling": { "legacy_routes": ["25-electron-phonon-and-superconductivity"], "recipes": ["electron-phonon-superconductivity"] },
+    "conventional-superconductivity": { "legacy_routes": ["25-electron-phonon-and-superconductivity"], "recipes": ["electron-phonon-superconductivity"] },
+    "reaction-paths-and-transition-states": { "legacy_routes": ["28-reaction-paths-and-barriers"], "recipes": ["reaction-path-and-diffusion"] },
+    "diffusion-barriers": { "legacy_routes": ["28-reaction-paths-and-barriers"], "recipes": ["reaction-path-and-diffusion"] },
+    "ab-initio-molecular-dynamics": { "legacy_routes": ["32-molecular-dynamics-and-sampling"], "recipes": ["ab-initio-molecular-dynamics"] },
+    "finite-temperature-structural-sampling": { "legacy_routes": ["32-molecular-dynamics-and-sampling"], "recipes": ["ab-initio-molecular-dynamics"] },
+    "independent-particle-optical-properties": { "legacy_routes": ["30-optical-and-excited-state-properties"], "recipes": ["optical-and-excited-states"] },
+    "time-dependent-response-and-spectroscopy": { "legacy_routes": ["30-optical-and-excited-state-properties"], "recipes": ["optical-and-excited-states"] },
+    "quasiparticle-corrections": { "legacy_routes": ["33-beyond-kohn-sham-dft"], "recipes": ["gw-bse"] },
+    "excitons-and-bethe-salpeter-equation": { "legacy_routes": ["30-optical-and-excited-state-properties", "33-beyond-kohn-sham-dft"], "recipes": ["gw-bse"] },
+    "wannier-function-construction": { "legacy_routes": ["31-wannier-topology-and-transport"], "recipes": ["soc-and-topology"] },
+    "berry-phase-and-berry-curvature": { "legacy_routes": ["31-wannier-topology-and-transport"], "recipes": ["soc-and-topology"] },
+    "topological-invariants-and-boundary-states": { "legacy_routes": ["31-wannier-topology-and-transport"], "recipes": ["soc-and-topology"] },
+    "electronic-transport": { "legacy_routes": ["31-wannier-topology-and-transport"] },
+    "quantum-transport": { "legacy_routes": ["31-wannier-topology-and-transport"] },
+    "analyze-and-compare-results": { "core_operations": ["O18", "O19"], "legacy_routes": ["34-postprocessing-validation-and-reuse"] },
+    "validate-results-and-scientific-conclusions": { "core_operations": ["O20", "O21", "O22"], "legacy_routes": ["34-postprocessing-validation-and-reuse"] },
+    "document-and-preserve-study": { "core_operations": ["O23", "O24"], "legacy_routes": ["34-postprocessing-validation-and-reuse"] }
+  }
+}
