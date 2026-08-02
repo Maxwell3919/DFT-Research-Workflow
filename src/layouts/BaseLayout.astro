@@ -12,7 +12,7 @@ const { title, description, current } = Astro.props;
 const pageTitle = title === 'DFT Research Workflow' ? title : `${title} · DFT Research Workflow`;
 const navigation = [
   { id: 'home', label: 'Home', href: withBase() },
-  { id: 'operations', label: 'Research Workflow', href: withBase('operations/') },
+  { id: 'operations', label: 'Operations', href: withBase('operations/') },
   { id: 'recipes', label: 'Workflow Recipes', href: withBase('recipes/') },
   { id: 'framework', label: 'Framework', href: withBase('framework/') },
 ] as const;
