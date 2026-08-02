@@ -4,10 +4,7 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
   getLegacyOperations,
-  getLifecycle,
-  getOperationById,
   getOperations,
-  humanizeToken,
   type CoreOperation,
   type LegacyOperation,
 } from '../../lib/operations';
@@ -16,30 +13,24 @@ import { withBase } from '../../lib/paths';
 type CoreProps = {
   kind: 'core';
   operation: CoreOperation;
-  previous: CoreOperation | null;
-  next: CoreOperation | null;
   narrative: CollectionEntry<'coreOperations'> | undefined;
 };
 
 type LegacyProps = {
   kind: 'legacy';
   operation: LegacyOperation;
-  mappedOperations: CoreOperation[];
 };
 
 type Props = CoreProps | LegacyProps;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const operations = getOperations();
   const narratives = await getCollection('coreOperations');
   const narrativeById = new Map(narratives.map((entry) => [entry.data.operation_id, entry]));
-  const corePaths = operations.map((operation, index) => ({
+  const transitionalCorePaths = getOperations().map((operation) => ({
     params: { slug: operation.slug },
     props: {
       kind: 'core',
       operation,
-      previous: operations[index - 1] ?? null,
-      next: operations[index + 1] ?? null,
       narrative: narrativeById.get(operation.id),
     } satisfies CoreProps,
   }));
@@ -48,125 +39,33 @@ export const getStaticPaths: GetStaticPaths = async () => {
     props: {
       kind: 'legacy',
       operation,
-      mappedOperations: operation.maps_to.map(getOperationById),
     } satisfies LegacyProps,
   }));
-  return [...corePaths, ...legacyPaths];
+  return [...transitionalCorePaths, ...legacyPaths];
 };
 
 const page = Astro.props as Props;
-const title = page.kind === 'core' ? page.operation.id : `Legacy ${page.operation.display_number}`;
+const title = page.operation.title ?? page.operation.name;
 const description = page.kind === 'core' ? page.operation.definition : page.operation.disposition;
 const Narrative = page.kind === 'core' && page.narrative ? (await render(page.narrative)).Content : null;
 ---
 
 <BaseLayout title={title} description={description} current="operations">
-  {page.kind === 'core' ? (
-    <article class="chapter">
-      <p class="breadcrumb">
-        <a href={withBase(`operations/#${getLifecycle(page.operation.lifecycle).anchor}`)}>
-          {getLifecycle(page.operation.lifecycle).label}
-        </a>
+  <article class="chapter">
+    <p class="breadcrumb"><a href={withBase('operations/')}>Research Workflow</a></p>
+    <p class="operation-label">Transitional route</p>
+    <h1>{title}</h1>
+
+    <div class="legacy-notice">
+      <p>
+        This URL is retained while the site migrates to the researcher-scale A–E workflow. It is not a current chapter number or evidence that DFT research contains a fixed number of operations.
       </p>
-      <p class="operation-label">Core operation {page.operation.id}</p>
-      <h1>{page.operation.name}</h1>
-      <p class="operation-summary">{page.operation.definition}</p>
+    </div>
 
-      <dl class="operation-contract">
-        <div>
-          <dt>Inputs</dt>
-          <dd>
-            <ul>{page.operation.inputs.map((item) => <li>{humanizeToken(item)}</li>)}</ul>
-          </dd>
-        </div>
-        <div>
-          <dt>Outputs</dt>
-          <dd>
-            <ul>{page.operation.outputs.map((item) => <li>{humanizeToken(item)}</li>)}</ul>
-          </dd>
-        </div>
-        <div>
-          <dt>Requirement</dt>
-          <dd>{humanizeToken(page.operation.requirement)}</dd>
-        </div>
-        <div>
-          <dt>Repeatability</dt>
-          <dd>{humanizeToken(page.operation.repeatability)}</dd>
-        </div>
-        <div>
-          <dt>Dependencies</dt>
-          <dd>
-            {page.operation.dependencies.length > 0 ? (
-              <ul>
-                {page.operation.dependencies.map((id) => {
-                  const dependency = getOperationById(id);
-                  return <li><a href={withBase(`operations/${dependency.slug}/`)}>{id} · {dependency.name}</a></li>;
-                })}
-              </ul>
-            ) : 'None'}
-          </dd>
-        </div>
-        <div>
-          <dt>Alternative implementations</dt>
-          <dd>
-            <ul>{page.operation.alternatives.map((item) => <li>{humanizeToken(item)}</li>)}</ul>
-          </dd>
-        </div>
-        <div>
-          <dt>Exclusions</dt>
-          <dd>
-            <ul>{page.operation.exclusions.map((item) => <li>{humanizeToken(item)}</li>)}</ul>
-          </dd>
-        </div>
-      </dl>
+    {page.kind === 'core' && Narrative && (
+      <div class="article-content"><Narrative /></div>
+    )}
 
-      <section class="narrative-placeholder" aria-labelledby="detailed-content-heading">
-        <h2 id="detailed-content-heading">Detailed content</h2>
-        {Narrative && <Narrative />}
-      </section>
-
-      <nav class="chapter-nav" aria-label="Core operation navigation">
-        <div>
-          {page.previous && (
-            <a data-previous href={withBase(`operations/${page.previous.slug}/`)}>
-              <span>Previous core operation</span>
-              <strong>{page.previous.id} · {page.previous.name}</strong>
-            </a>
-          )}
-        </div>
-        <div>
-          {page.next && (
-            <a data-next href={withBase(`operations/${page.next.slug}/`)}>
-              <span>Next core operation</span>
-              <strong>{page.next.id} · {page.next.name}</strong>
-            </a>
-          )}
-        </div>
-      </nav>
-
-      <p class="directory-link"><a href={withBase('operations/')}>Return to Core Operations</a></p>
-    </article>
-  ) : (
-    <article class="chapter">
-      <p class="breadcrumb"><a href={withBase('operations/')}>Core Operations</a></p>
-      <p class="operation-label">Legacy chapter {page.operation.display_number}</p>
-      <h1>{page.operation.title}</h1>
-      <div class="legacy-notice">
-        <p><strong>Legacy route retained for compatibility.</strong> This page is not one atomic operation in the current ontology.</p>
-        <p><strong>Former entry type:</strong> {humanizeToken(page.operation.entry_kind)}</p>
-        <p>{page.operation.disposition}</p>
-      </div>
-
-      <section class="legacy-mapping" aria-labelledby="mapped-operations-heading">
-        <h2 id="mapped-operations-heading">Mapped core operations</h2>
-        <ul>
-          {page.mappedOperations.map((operation) => (
-            <li><a href={withBase(`operations/${operation.slug}/`)}>{operation.id} · {operation.name}</a></li>
-          ))}
-        </ul>
-      </section>
-
-      <p class="directory-link"><a href={withBase('operations/')}>Return to Core Operations</a></p>
-    </article>
-  )}
+    <p class="directory-link"><a href={withBase('operations/')}>Return to the Research Workflow</a></p>
+  </article>
 </BaseLayout>
