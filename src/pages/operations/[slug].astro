@@ -8,7 +8,14 @@ import {
   type CoreOperation,
   type LegacyOperation,
 } from '../../lib/operations';
+import { getWorkflowTopics, type WorkflowTopic } from '../../lib/workflow';
 import { withBase } from '../../lib/paths';
+
+type TopicProps = {
+  kind: 'topic';
+  topic: WorkflowTopic;
+  narrative: CollectionEntry<'topics'> | undefined;
+};
 
 type CoreProps = {
   kind: 'core';
@@ -21,19 +28,31 @@ type LegacyProps = {
   operation: LegacyOperation;
 };
 
-type Props = CoreProps | LegacyProps;
+type Props = TopicProps | CoreProps | LegacyProps;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const narratives = await getCollection('coreOperations');
-  const narrativeById = new Map(narratives.map((entry) => [entry.data.operation_id, entry]));
+  const topicNarratives = await getCollection('topics');
+  const topicNarrativeBySlug = new Map(topicNarratives.map((entry) => [entry.data.topic_slug, entry]));
+  const topicPaths = getWorkflowTopics().map((topic) => ({
+    params: { slug: topic.slug },
+    props: {
+      kind: 'topic',
+      topic,
+      narrative: topicNarrativeBySlug.get(topic.slug),
+    } satisfies TopicProps,
+  }));
+
+  const coreNarratives = await getCollection('coreOperations');
+  const coreNarrativeById = new Map(coreNarratives.map((entry) => [entry.data.operation_id, entry]));
   const transitionalCorePaths = getOperations().map((operation) => ({
     params: { slug: operation.slug },
     props: {
       kind: 'core',
       operation,
-      narrative: narrativeById.get(operation.id),
+      narrative: coreNarrativeById.get(operation.id),
     } satisfies CoreProps,
   }));
+
   const legacyPaths = getLegacyOperations().map((operation) => ({
     params: { slug: operation.slug },
     props: {
@@ -41,29 +60,55 @@ export const getStaticPaths: GetStaticPaths = async () => {
       operation,
     } satisfies LegacyProps,
   }));
-  return [...transitionalCorePaths, ...legacyPaths];
+
+  return [...topicPaths, ...transitionalCorePaths, ...legacyPaths];
 };
 
 const page = Astro.props as Props;
-const title = page.kind === 'core' ? page.operation.name : page.operation.title;
-const description = page.kind === 'core' ? page.operation.definition : page.operation.disposition;
-const Narrative = page.kind === 'core' && page.narrative ? (await render(page.narrative)).Content : null;
+const title = page.kind === 'topic'
+  ? page.topic.title
+  : page.kind === 'core'
+    ? page.operation.name
+    : page.operation.title;
+const description = page.kind === 'topic'
+  ? `${page.topic.section} · ${page.topic.sectionTitle}: ${page.topic.title}.`
+  : page.kind === 'core'
+    ? page.operation.definition
+    : page.operation.disposition;
+const Narrative = page.kind === 'topic' && page.narrative
+  ? (await render(page.narrative)).Content
+  : page.kind === 'core' && page.narrative
+    ? (await render(page.narrative)).Content
+    : null;
 ---
 
 <BaseLayout title={title} description={description} current="operations">
   <article class="chapter">
     <p class="breadcrumb"><a href={withBase('operations/')}>Research Workflow</a></p>
-    <p class="operation-label">Transitional route</p>
-    <h1>{title}</h1>
 
-    <div class="legacy-notice">
-      <p>
-        This URL is retained while the site migrates to the researcher-scale A–E workflow. It is not a current chapter number or evidence that DFT research contains a fixed number of operations.
-      </p>
-    </div>
-
-    {page.kind === 'core' && Narrative && (
-      <div class="article-content"><Narrative /></div>
+    {page.kind === 'topic' ? (
+      <>
+        <p class="operation-label">{page.topic.group} · {page.topic.groupTitle}</p>
+        <h1>{page.topic.title}</h1>
+        {Narrative ? (
+          <div class="article-content"><Narrative /></div>
+        ) : (
+          <p class="page-intro">
+            This stable destination is reserved for a later reviewed content batch. The final article will be organized around this scientific topic rather than a fixed Inputs/Outputs-style contract.
+          </p>
+        )}
+      </>
+    ) : (
+      <>
+        <p class="operation-label">Transitional route</p>
+        <h1>{title}</h1>
+        <div class="legacy-notice">
+          <p>
+            This URL is retained while useful material is migrated into the A–E workflow. It is not a current chapter number or evidence that DFT research contains a fixed number of operations.
+          </p>
+        </div>
+        {Narrative && <div class="article-content"><Narrative /></div>}
+      </>
     )}
 
     <p class="directory-link"><a href={withBase('operations/')}>Return to the Research Workflow</a></p>
