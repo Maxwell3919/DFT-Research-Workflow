@@ -2,14 +2,39 @@
 
 ## Purpose
 
-This plan replaces the former O01–O24 chapter-writing sequence.
+Content is developed around researcher-scale workflow tasks, concrete target
+calculations, and complete research workflows. The project does not advertise a
+fixed total number of DFT operations.
 
-Future content is developed around researcher-scale workflow tasks, concrete
-target calculations, and complete research workflows. The site does not aim to
-prove or advertise a fixed total number of DFT operations.
+Every article uses natural topic organization. This plan defines scope, order,
+and migration boundaries; it does not define a mandatory visible template.
 
-Every page is written with natural topic organization. The plan defines content
-coverage and migration order, not a mandatory visible template.
+## Current implementation state
+
+The first two migration stages are complete at the framework level:
+
+1. **A–E architecture and presentation** — the public directory uses A–E,
+   numbered counts and adjacency are removed, and old URLs remain only as
+   migration surfaces.
+2. **Topic registry and stable destinations** — `workflow/topics.json` defines
+   A–E sections, D1–D5 groups, stable topic slugs and titles, and internal
+   migration references. The home page, workflow directory, and topic routes are
+   generated from that registry.
+
+Stable routes are not scientific content. Most current topic pages contain only
+a neutral notice. The next stage is reviewed writing and migration one topic at
+a time.
+
+## Current authority
+
+- `docs/architecture.md` defines task granularity and the A–E structure.
+- `workflow/topics.json` defines stable topic identity, grouping, and routes.
+- `docs/content-contract.md` defines writing and review rules.
+- `src/content/topics/*.md` holds optional topic narratives.
+- O01–O24, former 00–34 routes, and current recipe coverage arrays are migration
+  sources only.
+
+The registry is an address book, not a claim about how many operations exist.
 
 ## Reader-facing architecture
 
@@ -21,277 +46,163 @@ D · Target Calculations
 E · Research Completion
 ```
 
-A, B, C, and E provide the common research backbone. D is a branching library
-of calculations selected according to the scientific question.
+A, B, C, and E provide the common backbone. D is a branching library selected
+according to the scientific question. The complete topic inventory is stored in
+`workflow/topics.json` and rendered at `/operations/`.
 
-## A · Structures
+## Content families
 
-### Obtain a Material Structure
+### A · Structures
 
-Later content should integrate:
+- Obtain a Material Structure
+- Build or Modify a Computational Model
 
-- database, publication, experimental, previous-calculation, and generated
-  structures;
-- source identity, citation, version, licence, and integrity;
-- CIF, POSCAR, XYZ, and other relevant representations;
-- parsing, units, occupancies, disorder, duplicate sites, and missing fields;
-- crystallographic cells, symmetry tolerances, equivalent sites, and
-  representation choices;
-- the distinction between correcting a representation and changing the physical
-  model.
+### B · Calculation Preparation
 
-These are parts of one research task. They should not be restored as parallel
-public chapters merely because software records them as separate events.
+- Choose the DFT Method and Computational Setup
+- Test Numerical Convergence
 
-### Build or Modify a Computational Model
+### C · Reference-State Calculations
 
-Later content should cover model construction appropriate to the chosen system:
+- Optimize the Structure
+- Calculate the Reference Ground State
 
-- supercells and commensurate cells;
-- surfaces, slabs, vacuum, dipoles, and electrostatic boundaries;
-- defects, dopants, charge states, and chemical substitutions;
-- adsorption sites and coverages;
-- interfaces, heterostructures, stackings, registries, and strain;
-- clusters, molecules, embedding, and constraints;
-- magnetic orders, disorder models, SQS structures, and candidate reduction.
+### D · Target Calculations
 
-## B · Calculation Preparation
+Each registered D topic is eligible for an independent article. D1–D5 are
+navigation groups only:
 
-### Choose the DFT Method and Computational Setup
+- D1 · Energetics and Stability
+- D2 · Electronic and Magnetic Properties
+- D3 · Mechanical, Electric, and Lattice Response
+- D4 · Kinetics and Finite Temperature
+- D5 · Optical, Excited-State, Topological, and Transport Calculations
 
-Later content should connect the physical question to:
+The registry keeps band structure, DOS, Fermi surfaces, harmonic phonons,
+anharmonic phonons, lattice thermal transport, electron–phonon coupling,
+superconductivity, topology, and transport as separate topics where their
+setup, output, convergence, or interpretation differs.
 
-- exchange–correlation treatment;
-- pseudopotential, PAW, all-electron, basis, or real-space representation;
-- spin polarization, noncollinearity, SOC, relativistic treatment, and DFT+U;
-- dispersion and long-range interactions;
-- charge, occupations, smearing, ensemble, and boundary conditions;
-- k-point and q-point strategies;
-- software and version-specific implementation choices.
+### E · Research Completion
 
-The article structure should follow the scientific decisions rather than a
-fixed parameter checklist.
+- Analyze and Compare Results
+- Validate Results and Scientific Conclusions
+- Document and Preserve the Study
 
-### Test Numerical Convergence
-
-Later content should explain observable-specific convergence, including:
-
-- basis, cutoff, grids, supercell, vacuum, k/q sampling, smearing, and
-  interpolation;
-- reference-state consistency across comparisons;
-- coupled convergence variables;
-- uncertainty and indeterminate results;
-- why program completion, SCF convergence, total-energy convergence, and target
-  observable convergence are different.
-
-## C · Reference-State Calculations
-
-### Optimize the Structure
-
-Later content should address:
-
-- atomic, cell, constrained, interface, and path-related optimization;
-- nested electronic convergence;
-- force, stress, displacement, and energy criteria;
-- local minima, metastability, symmetry breaking, and initial-condition
-  dependence;
-- consistency between the optimized structure and the later target calculation.
-
-### Calculate the Reference Ground State
-
-Later content should explain how to establish the electronic reference used by
-subsequent work, including SCF/static/NSCF roles, spin and charge state,
-sampling, precision, saved quantities, and the limits of calling one converged
-branch the ground state.
-
-## D · Target Calculations
-
-Each item below is eligible for an independent page. Group names are navigation
-categories only.
-
-### D1 · Energetics and Stability
-
-1. Relative Energies and Formation Energies
-2. Equation of State and Structural Phase Stability
-3. Compositional Phase Stability and Convex Hulls
-4. Defect Formation Energies and Charge States
-5. Surface Energy and Work Function
-6. Adsorption Energies
-7. Interface and Heterostructure Energetics
-
-### D2 · Electronic and Magnetic Properties
-
-1. Band Structure
-2. Density of States and Projected Density of States
-3. Fermi Surface and Full-Brillouin-Zone Analysis
-4. Charge Density and Charge Redistribution
-5. Electrostatic Potential and Band Alignment
-6. Chemical Bonding Analysis
-7. Magnetic Configuration and Ground-State Comparison
-8. Magnetic Anisotropy and Exchange Interactions
-
-### D3 · Mechanical, Electric, and Lattice Response
-
-1. Elastic Constants and Mechanical Properties
-2. Dielectric Response and Born Effective Charges
-3. Polarization and Ferroelectricity
-4. Piezoelectric Response
-5. Harmonic Phonons
-6. Anharmonic Phonons
-7. Lattice Thermal Transport
-8. Electron–Phonon Coupling
-9. Conventional Superconductivity
-
-### D4 · Kinetics and Finite Temperature
-
-1. Reaction Paths and Transition States
-2. Diffusion Barriers
-3. Ab Initio Molecular Dynamics
-4. Finite-Temperature Structural Sampling
-
-### D5 · Optical, Excited-State, Topological, and Transport Calculations
-
-1. Independent-Particle Optical Properties
-2. Time-Dependent Response and Spectroscopy
-3. Quasiparticle Corrections
-4. Excitons and the Bethe–Salpeter Equation
-5. Wannier Function Construction
-6. Berry Phase and Berry Curvature
-7. Topological Invariants and Boundary States
-8. Electronic Transport
-9. Quantum Transport
-
-## E · Research Completion
-
-### Analyze and Compare Results
-
-Later content should cover reference alignment, normalization, aggregation,
-relative stability, uncertainty, comparisons across structures or methods, and
-the distinction between recorded output and interpreted scientific quantity.
-
-### Validate Results and Scientific Conclusions
-
-Later content should integrate numerical convergence, physical consistency,
-symmetry and sum-rule checks, method sensitivity, benchmark comparison, and the
-strength of the stated scientific conclusion.
-
-### Document and Preserve the Study
-
-Later content should cover provenance, model and parameter identity, software
-environment, raw and derived evidence, workflow reconstruction, integrity
-checks, archiving, and reuse.
-
-## Research-workflow pages
-
-Research-workflow pages show how A–E tasks combine for a scientific goal. The
-initial set may include:
-
-- bulk structure and electronic properties;
-- two-dimensional materials;
-- magnetic-order comparison;
-- defect formation energies and charge states;
-- surfaces and adsorption;
-- heterostructure band alignment;
-- harmonic phonons;
-- anharmonic phonons and thermal transport;
-- electron–phonon superconductivity;
-- dielectric, polarization, and piezoelectric response;
-- reaction paths and diffusion;
-- molecular dynamics;
-- optical spectra and excited states;
-- SOC and topology;
-- GW and BSE;
-- high-throughput screening.
-
-The existing `recipes/index.json` can provide migration hints, but its O01–O24
-coverage arrays are not the final reader-facing workflow model.
-
-## Page organization
+## Natural page organization
 
 No page has a required public outline.
 
-Authors choose the explanatory order that best suits the subject. A page may
-use narrative sections, equations, diagrams, tables, examples, comparisons, or
-implementation notes where useful. It does not have to display Inputs, Outputs,
-Requirement, Repeatability, Dependencies, Alternatives, or Exclusions as fixed
-headings.
+Authors choose the explanatory sequence that suits the subject. Inputs,
+Outputs, Requirement, Repeatability, Dependencies, Alternatives, and Exclusions
+may be discussed where useful, but they are not compulsory headings or contract
+rows.
 
 The following are planning questions, not a template:
 
-- What does the task calculate or decide?
-- Why is it scientifically useful?
-- What model or reference state does it require?
-- Which method and numerical choices control the result?
-- How is convergence established for the target quantity?
-- What common failures or false interpretations occur?
+- What scientific question does the topic address?
+- What structure, model, or reference state is required?
+- Which physical and numerical decisions control the result?
+- How is convergence established for the intended observable?
+- What failures, ambiguities, or false interpretations are common?
 - What can the result support, and what remains unsupported?
-- How does the task connect to other parts of the workflow?
+- How does the topic connect to a complete research workflow?
+- Which official or primary sources support version-sensitive statements?
 
-Only applicable questions need to be discussed.
+Only applicable questions should appear in the final article.
 
-## Migration from the numbered structures
+## Topic narrative files
 
-The current repository still contains O01–O24 and Operation 00–34 routes. They
-are migration material only.
+A reviewed topic article is added under `src/content/topics/` with minimal
+frontmatter:
 
-Migration proceeds in four stages.
+```yaml
+topic_slug: obtain-material-structure
+status: draft
+```
 
-### Stage 1 · Architecture and presentation
+The title, section, group, and route come from `workflow/topics.json`. Markdown
+frontmatter must not duplicate those fields or predetermine article headings.
 
-- adopt A–E in documentation and the public workflow directory;
-- remove public 24/35 counts;
-- remove automatic fixed-contract rendering;
-- remove numbered previous/next navigation from old routes;
-- retain old URLs temporarily.
+A topic moves to `reviewed` only after scientific, editorial, source, route,
+responsive-layout, and no-JavaScript checks pass.
 
-### Stage 2 · Topic registry and destination pages
+## Research-workflow pages
 
-- define stable A–E topic slugs and category relationships;
-- create one narrative destination for each backbone task and each D
-  calculation;
-- keep metadata minimal and independent of visible article structure;
-- update navigation and deterministic route checks.
+Research-workflow pages show how A–E topics combine for a scientific goal. The
+existing recipe pages provide migration starting points for bulk materials, 2D
+materials, magnetism, defects, surfaces, heterostructures, phonons, thermal
+transport, electron–phonon superconductivity, response, reaction paths,
+molecular dynamics, optics, topology, GW/BSE, and high-throughput screening.
 
-### Stage 3 · Content migration
+Their old O01–O24 coverage arrays are not the final reader-facing workflow
+model. A mature workflow should show relevant dependencies, branches, repeated
+calculations, failure returns, comparisons, validation boundaries, and the
+strongest conclusion it can support.
 
-- move useful material from old operation scaffolds and recipe records into the
-  appropriate A–E pages;
-- merge implementation-level fragments into the researcher-scale topic that
-  gives them meaning;
-- preserve source and historical mapping notes internally;
-- write and review one coherent topic or research workflow at a time.
+## Migration stages
 
-### Stage 4 · Route retirement or redirection
+### Stage 1 · Architecture and presentation — complete
 
-- verify destination coverage;
-- decide whether each old route redirects, remains as a short migration page, or
-  is retired;
-- avoid exposing old identifiers or mappings as a second scientific taxonomy;
-- update Pages and link validation.
+- A–E is the public framework.
+- Public 24/35 counts and numbered adjacency are removed.
+- Fixed Inputs/Outputs-style rendering is removed.
+- Old URLs remain as short migration pages.
 
-## Writing order
+### Stage 2 · Topic registry and destination routes — complete
 
-A practical content order is:
+- Stable slugs and category relationships are stored in
+  `workflow/topics.json`.
+- The home page and workflow directory are registry-driven.
+- Every registered topic has a stable route.
+- Optional narrative binding exists under `src/content/topics/`.
+- Deterministic validators check uniqueness, route coverage, reference
+  resolution, collisions, and migration continuity.
 
-1. Obtain a Material Structure;
-2. Build or Modify a Computational Model;
-3. Choose the DFT Method and Computational Setup;
-4. Test Numerical Convergence;
-5. Optimize the Structure;
-6. Calculate the Reference Ground State;
-7. Band Structure;
-8. Density of States and Projected Density of States;
-9. Charge Density and Electrostatic Potential topics;
-10. Harmonic Phonons;
-11. Relative Energies and Formation Energies;
-12. Analyze and Compare Results;
-13. Validate Results and Scientific Conclusions;
-14. Document and Preserve the Study;
-15. remaining D pages in dependency-aware groups;
-16. complete research-workflow pages.
+### Stage 3 · Scientific writing and content migration — active next stage
 
-This order supports incremental learning. It is not a universal scientific
-ranking or a fixed execution sequence.
+For each bounded batch:
+
+1. choose one registry topic or one complete research workflow;
+2. review relevant migration sources and authoritative external sources;
+3. write a naturally organized article;
+4. validate scientific scope, numerical and physical boundaries, citations, and
+   readability;
+5. merge only after software checks and explicit scientific review;
+6. keep old routes unchanged until destination coverage is sufficient.
+
+### Stage 4 · Route redirection or retirement — later
+
+- verify reviewed destination coverage;
+- decide whether each old route redirects, remains a short migration page, or is
+  retired;
+- ensure old identifiers and mappings never reappear as a second taxonomy;
+- update link and Pages validation.
+
+## Recommended writing order
+
+The initial content sequence is:
+
+1. Obtain a Material Structure
+2. Build or Modify a Computational Model
+3. Choose the DFT Method and Computational Setup
+4. Test Numerical Convergence
+5. Optimize the Structure
+6. Calculate the Reference Ground State
+7. Band Structure
+8. Density of States and Projected Density of States
+9. Charge Density and Charge Redistribution
+10. Electrostatic Potential and Band Alignment
+11. Harmonic Phonons
+12. Relative Energies and Formation Energies
+13. Analyze and Compare Results
+14. Validate Results and Scientific Conclusions
+15. Document and Preserve the Study
+16. remaining D topics in dependency-aware groups
+17. complete research-workflow pages
+
+This is a writing strategy, not a universal scientific ranking or execution
+sequence.
 
 ## Sources and examples
 
@@ -302,7 +213,7 @@ ranking or a fixed execution sequence.
 - Preserve structure source, software version, method, numerical settings, raw
   evidence, derived data, and validation limits for reproducible examples.
 - Do not present one material's parameters as universal defaults.
-- Do not imply that a named code, workflow framework, or successful job proves
+- Do not imply that a named code, successful build, or completed job proves
   scientific validity.
 
 ## Review boundary
