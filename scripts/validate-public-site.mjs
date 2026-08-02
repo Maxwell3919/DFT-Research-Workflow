@@ -5,9 +5,14 @@ const root = new URL('../', import.meta.url);
 const distPath = new URL('dist/', root).pathname;
 const base = '/DFT-Research-Workflow/';
 const errors = [];
+const workflowDocument = JSON.parse(await readFile(new URL('workflow/topics.json', root), 'utf8'));
 const operationsDocument = JSON.parse(await readFile(new URL('ontology/operations.json', root), 'utf8'));
 const legacyDocument = JSON.parse(await readFile(new URL('ontology/legacy-operations.json', root), 'utf8'));
 const recipesDocument = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8'));
+const workflowTopics = workflowDocument.sections.flatMap((section) =>
+  section.groups.flatMap((group) => group.topics.map((topic) => ({ ...topic, section: section.id, group: group.id }))),
+);
+const topicSlugs = workflowTopics.map((topic) => topic.slug);
 const transitionalOperations = operationsDocument.operations;
 const legacyOperations = legacyDocument.entries;
 const transitionalSlugs = transitionalOperations.map((operation) => operation.slug);
@@ -40,6 +45,8 @@ function stripMarkup(html) {
     .replace(/<style[\s\S]*?<\/style>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&middot;/g, '·')
+    .replace(/&ndash;/g, '–')
+    .replace(/&mdash;/g, '—')
     .replace(/&[a-z]+;/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
@@ -54,10 +61,8 @@ function outputPath(href) {
 }
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
-const expectedHtmlCount = 4 + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + 1;
-if (htmlFiles.length !== expectedHtmlCount) {
-  errors.push(`expected ${expectedHtmlCount} generated HTML files including transitional and compatibility routes, found ${htmlFiles.length}`);
-}
+const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + 1;
+if (htmlFiles.length !== expectedHtmlCount) errors.push(`generated HTML route set mismatch: expected ${expectedHtmlCount}, found ${htmlFiles.length}`);
 
 const htmlByPath = new Map();
 for (const path of htmlFiles) {
@@ -68,9 +73,7 @@ for (const path of htmlFiles) {
   if (/[\u3400-\u9fff]/u.test(text)) errors.push(`${path}: public HTML contains CJK text`);
   if (/<script(?:\s|>)/i.test(html)) errors.push(`${path}: client-side script is not allowed`);
   if (/class="operation-contract"/.test(html)) errors.push(`${path}: fixed operation contract is not allowed`);
-  for (const phrase of prohibitedText) {
-    if (text.toLowerCase().includes(phrase.toLowerCase())) errors.push(`${path}: prohibited public phrase ${JSON.stringify(phrase)}`);
-  }
+  for (const phrase of prohibitedText) if (text.toLowerCase().includes(phrase.toLowerCase())) errors.push(`${path}: prohibited public phrase ${JSON.stringify(phrase)}`);
   for (const href of [...html.matchAll(/href="([^"]+)"/g)].map((match) => match[1])) {
     if (/^(?:https?:|mailto:|#)/.test(href)) continue;
     if (!href.startsWith(base)) {
@@ -95,32 +98,37 @@ const home = htmlByPath.get(join(distPath, 'index.html')) ?? '';
 const homeText = stripMarkup(home);
 const homeNav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
 const navLabels = [...homeNav.matchAll(/<a[^>]*>([^<]+)<\/a>/g)].map((match) => match[1].trim());
-if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework'])) {
-  errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
-}
-for (const label of ['A · Structures', 'B · Calculation Preparation', 'C · Reference-State Calculations', 'D · Target Calculations', 'E · Research Completion']) {
-  if (!homeText.includes(label)) errors.push(`Home is missing ${label}`);
-}
+if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
+for (const section of workflowDocument.sections) if (!homeText.includes(`${section.id} · ${section.title}`)) errors.push(`Home is missing ${section.id} · ${section.title}`);
 if (/24 typed core operations|former 35 chapter URLs/.test(homeText)) errors.push('Home advertises a superseded numbered taxonomy');
 
 const operationsDirectory = htmlByPath.get(join(distPath, 'operations', 'index.html')) ?? '';
 const operationsText = stripMarkup(operationsDirectory);
-for (const label of [
-  'A · Structures',
-  'B · Calculation Preparation',
-  'C · Reference-State Calculations',
-  'D · Target Calculations',
-  'D1 · Energetics and Stability',
-  'D2 · Electronic and Magnetic Properties',
-  'D3 · Mechanical, Electric, and Lattice Response',
-  'D4 · Kinetics and Finite Temperature',
-  'D5 · Optical, Excited-State, Topological, and Transport Calculations',
-  'E · Research Completion',
-]) {
-  if (!operationsText.includes(label)) errors.push(`Research Workflow directory is missing ${label}`);
+for (const section of workflowDocument.sections) if (!operationsText.includes(`${section.id} · ${section.title}`)) errors.push(`Research Workflow directory is missing ${section.id} · ${section.title}`);
+for (const section of workflowDocument.sections) {
+  for (const group of section.groups) {
+    if (section.id === 'D' && !operationsText.includes(`${group.id} · ${group.title}`)) errors.push(`Research Workflow directory is missing ${group.id} · ${group.title}`);
+  }
 }
 if (/Core Operations|O01|O24|Operation 00/.test(operationsText)) errors.push('Research Workflow directory exposes a superseded numbered framework');
-if (/\/operations\/o\d{2}-/.test(operationsDirectory)) errors.push('Research Workflow directory links the transitional O routes as the current sequence');
+if (/\/operations\/o\d{2}-/.test(operationsDirectory)) errors.push('Research Workflow directory links transitional O routes as the current sequence');
+
+const directoryTopicLinks = [...operationsDirectory.matchAll(new RegExp(`href="${base.replaceAll('/', '\\/')}operations\/([a-z0-9-]+)\/"`, 'g'))].map((match) => match[1]);
+if (JSON.stringify(directoryTopicLinks) !== JSON.stringify(topicSlugs)) errors.push('Research Workflow directory topic links do not match workflow/topics.json order');
+
+for (const topic of workflowTopics) {
+  const path = join(distPath, 'operations', topic.slug, 'index.html');
+  const html = htmlByPath.get(path) ?? '';
+  const text = stripMarkup(html);
+  if (!html) {
+    errors.push(`missing A–E topic route: ${topic.slug}`);
+    continue;
+  }
+  if (!text.includes(topic.title)) errors.push(`${topic.slug}: topic title mismatch`);
+  if (!text.includes(`${topic.group} ·`)) errors.push(`${topic.slug}: topic group label missing`);
+  if (text.includes('Transitional route')) errors.push(`${topic.slug}: current topic is rendered as a transitional route`);
+  if (/Inputs|Outputs|Requirement|Repeatability|Alternative implementations|Exclusions/.test(text)) errors.push(`${topic.slug}: topic restores a fixed page contract`);
+}
 
 const recipesDirectory = htmlByPath.get(join(distPath, 'recipes', 'index.html')) ?? '';
 for (const recipe of recipes) {
@@ -141,6 +149,7 @@ for (const slug of frameworkSlugs) {
   if (!frameworkDirectory.includes(`${base}framework/${slug}/`)) errors.push(`framework directory is missing ${slug}`);
 }
 
+const migrationNotice = 'This URL is retained while useful material is migrated into the A–E workflow.';
 for (const operation of transitionalOperations) {
   const path = join(distPath, 'operations', operation.slug, 'index.html');
   const html = htmlByPath.get(path) ?? '';
@@ -149,7 +158,7 @@ for (const operation of transitionalOperations) {
     continue;
   }
   const text = stripMarkup(html);
-  if (!text.includes('This URL is retained while the site migrates')) errors.push(`${operation.slug}: missing migration notice`);
+  if (!text.includes(migrationNotice)) errors.push(`${operation.slug}: missing migration notice`);
   if (text.includes(`Core operation ${operation.id}`)) errors.push(`${operation.slug}: exposes superseded core identifier`);
   if (html.includes('data-previous') || html.includes('data-next')) errors.push(`${operation.slug}: transitional page participates in numbered adjacency`);
 }
@@ -162,7 +171,7 @@ for (const legacy of legacyOperations) {
     continue;
   }
   const text = stripMarkup(html);
-  if (!text.includes('This URL is retained while the site migrates')) errors.push(`${legacy.slug}: missing migration notice`);
+  if (!text.includes(migrationNotice)) errors.push(`${legacy.slug}: missing migration notice`);
   if (html.includes('data-previous') || html.includes('data-next')) errors.push(`${legacy.slug}: migration page participates in numbered adjacency`);
   if (html.includes('legacy-mapping')) errors.push(`${legacy.slug}: migration page exposes the old mapping taxonomy`);
 }
@@ -175,4 +184,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Generated site valid: ${expectedHtmlCount} English no-JS pages, A–E workflow directory, natural article layouts, research workflows, framework pages, and migration-safe legacy routes.`);
+console.log('Generated site valid: registry-driven A–E directory, stable topic routes, natural article layouts, research workflows, framework pages, and migration-safe old URLs.');
