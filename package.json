@@ -17,8 +17,9 @@
     "validate:migration": "node scripts/validate-operations.mjs",
     "validate:base-paths": "node scripts/validate-base-paths.mjs",
     "validate:content": "node scripts/validate-content.mjs",
+    "validate:reviewed-topics": "node scripts/validate-reviewed-topics.mjs",
     "validate:site": "node scripts/validate-public-site.mjs",
-    "check": "npm run validate:workflow && npm run validate:migration && npm run validate:base-paths && npm run validate:content && npm run typecheck && npm run build && npm run validate:site"
+    "check": "npm run validate:workflow && npm run validate:migration && npm run validate:base-paths && npm run validate:content && npm run validate:reviewed-topics && npm run typecheck && npm run build && npm run validate:site"
   },
   "dependencies": {
     "astro": "7.1.4"
