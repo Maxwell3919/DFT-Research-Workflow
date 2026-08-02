@@ -131,6 +131,59 @@ const reviewedTopicSpecifications = {
       'It does not restore the former\nInputs/Outputs-style contract',
     ],
   },
+  'choose-dft-method-and-computational-setup': {
+    review: 'docs/reviews/2026-08-03-choose-dft-method-and-setup.md',
+    sections: [
+      '## Begin with the scientific comparison',
+      '## Separate the physical approximation from its discretization',
+      '## Choose exchange–correlation treatment by the physics and error',
+      '## Define the core and valence treatment',
+      '## Choose a numerical representation that can express the method',
+      '## Decide which spin and relativistic degrees of freedom are active',
+      '## Treat DFT+U as a defined extension, not a generic repair',
+      '## Include dispersion and other long-range interactions deliberately',
+      '## Distinguish electron number, occupations, smearing, and temperature',
+      '## Match electrostatic boundary treatment to the model',
+      '## Keep reference calculations method-compatible',
+      '## Respect implementation and feature compatibility',
+      '## Record the setup as a versioned method identity',
+      '## The result of this task',
+      '## Sources and methods',
+    ],
+    boundaries: [
+      'This task establishes a **versioned method identity** and a defensible starting setup.',
+      'Increasing these controls should approach a method-specific limit; it does not repair an inappropriate physical approximation.',
+      'A formally higher rung is not automatically better for every observable or material.',
+      'A pseudopotential file being readable does not establish its accuracy or transferability.',
+      'Initial magnetic moments and spin directions help select a starting basin, but they are not evidence that the final state is the magnetic ground state.',
+      'DFT+U is not a universal elemental constant and not a knob to force a preferred gap or magnetic state.',
+      'They are not interchangeable switches',
+      'A smearing width used to stabilize metallic integration is not automatically a physical electronic temperature.',
+      'A successful program exit establishes neither methodological suitability nor numerical convergence.',
+      'There is no universal best functional, pseudopotential library, all-electron method, code, basis, cutoff, k-point mesh, smearing width, Hubbard parameter, or boundary correction.',
+    ],
+    sources: [
+      'https://www.quantum-espresso.org/Doc/INPUT_PW.html',
+      'https://pseudopotentials.quantum-espresso.org/',
+      'https://pseudopotentials.quantum-espresso.org/home/unified-pseudopotential-format',
+      'https://doi.org/10.1103/PhysRevLett.77.3865',
+      'https://doi.org/10.1103/PhysRevLett.115.036402',
+      'https://doi.org/10.1063/1.1564060',
+      'https://doi.org/10.1103/PhysRevB.50.17953',
+      'https://doi.org/10.1103/PhysRevB.43.1993',
+      'https://doi.org/10.1016/j.cpc.2018.01.012',
+      'https://doi.org/10.1103/PhysRevB.71.035105',
+      'https://doi.org/10.1103/PhysRevLett.92.246401',
+      'https://doi.org/10.1103/PhysRev.137.A1441',
+      'https://doi.org/10.1103/PhysRevB.40.3616',
+      'https://doi.org/10.1103/PhysRevB.73.233103',
+    ],
+    reviewStatements: [
+      'reviewed within the declared educational scope',
+      'does not validate any particular functional',
+      'It does not restore O07 and O08 as parallel public operations.',
+    ],
+  },
 };
 
 for (const [slug, specification] of Object.entries(reviewedTopicSpecifications)) {
@@ -174,4 +227,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Reviewed topics valid: ${reviewed.size} reviewed narrative(s), including structure acquisition and computational-model construction with topic-specific boundaries, reviews, and official or primary sources.`);
+console.log(`Reviewed topics valid: ${reviewed.size} reviewed narrative(s) with topic-specific boundaries, review records, and official or primary sources.`);
