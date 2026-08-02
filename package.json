@@ -11,7 +11,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "smoke:browser": "node scripts/smoke-browser.mjs && node scripts/smoke-reviewed-model.mjs",
+    "smoke:browser": "node scripts/smoke-browser.mjs && node scripts/smoke-reviewed-model.mjs && node scripts/smoke-reviewed-method-setup.mjs",
     "typecheck": "astro check",
     "validate:workflow": "node scripts/validate-workflow.mjs",
     "validate:migration": "node scripts/validate-operations.mjs",
