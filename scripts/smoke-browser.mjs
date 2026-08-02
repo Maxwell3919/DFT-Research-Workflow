@@ -123,7 +123,10 @@ try {
   const workflowState = await page.evaluate(() => ({
     text: document.body.innerText,
     topicLinks: [...document.querySelectorAll('.topic-list a')].map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)),
-    transitionalLinks: document.querySelectorAll('a[href*="/operations/o"]').length,
+    transitionalLinks: [...document.querySelectorAll('a[href*="/operations/"]')].filter((link) => {
+      const slug = link.getAttribute('href')?.split('/').filter(Boolean).at(-1) ?? '';
+      return /^o\d{2}-/.test(slug);
+    }).length,
   }));
   for (const section of workflow.sections) {
     if (!workflowState.text.includes(`${section.id} · ${section.title}`)) throw new Error(`Research Workflow is missing ${section.id} · ${section.title}`);
