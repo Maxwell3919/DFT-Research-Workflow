@@ -39,14 +39,21 @@ recipes/
 src/content/operations/
 └── legacy route metadata
 
+src/content/
+├── core-operations/             # one-to-one narrative bindings for O01–O24
+├── recipes/                     # one-to-one narrative bindings for registered recipes
+└── framework/                   # framework-context narrative pages
+
 docs/
 ├── architecture.md
 ├── content-contract.md
 └── content-population-plan.md
 ```
 
-The public `/operations/` directory renders O01–O24 by lifecycle. Existing
-legacy URLs remain available and explain their mapping.
+The public `/operations/` directory renders O01–O24 by lifecycle. `/recipes/`
+renders composite workflow recipes, and `/framework/` renders workflow-model,
+relation, tag, and evidence context. Existing legacy URLs remain available and
+explain their mapping without entering the core sequence.
 
 See [docs/architecture.md](docs/architecture.md) for the authority model,
 workflow graph, migration boundaries, and Talos handoff. See

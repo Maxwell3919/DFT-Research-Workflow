@@ -1,0 +1,25 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/paths';
+
+type Props = { page: CollectionEntry<'framework'> };
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const pages = await getCollection('framework');
+  return pages.map((page) => ({ params: { slug: page.data.slug }, props: { page } satisfies Props }));
+};
+
+const { page } = Astro.props as Props;
+const Content = (await render(page)).Content;
+---
+
+<BaseLayout title={page.data.title} description={`Framework page: ${page.data.title}.`} current="framework">
+  <article class="chapter">
+    <p class="breadcrumb"><a href={withBase('framework/')}>Framework</a></p>
+    <h1>{page.data.title}</h1>
+    <section class="narrative-placeholder"><Content /></section>
+    <p class="directory-link"><a href={withBase('framework/')}>Return to Framework</a></p>
+  </article>
+</BaseLayout>

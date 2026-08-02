@@ -58,6 +58,9 @@ for (const [index, operation] of operations.entries()) {
   for (const field of ['inputs', 'outputs', 'dependencies', 'alternatives', 'exclusions']) {
     if (!Array.isArray(operation[field])) errors.push(`${operation.id}: ${field} must be an array`);
   }
+  for (const field of ['inputs', 'outputs']) {
+    if (Array.isArray(operation[field]) && operation[field].length === 0) errors.push(`${operation.id}: ${field} must be non-empty`);
+  }
   for (const dependency of operation.dependencies ?? []) {
     if (!expectedIds.includes(dependency)) errors.push(`${operation.id}: unknown dependency ${dependency}`);
   }
@@ -124,13 +127,15 @@ const tagSets = {
   system_types: new Set(tagsDocument?.system_types ?? []),
   scientific_targets: new Set(tagsDocument?.scientific_targets ?? []),
   methods: new Set(tagsDocument?.methods ?? []),
+  implementations: new Set(tagsDocument?.implementations ?? []),
 };
 for (const [name, values] of Object.entries(tagSets)) {
   if (values.size === 0) errors.push(`tag family ${name} must be non-empty`);
+  if (values.size !== (tagsDocument?.[name] ?? []).length) errors.push(`tag family ${name} contains duplicate values`);
 }
 
 const recipes = recipesDocument?.recipes ?? [];
-if (recipes.length < 12) errors.push(`recipe registry must contain at least 12 representative workflows, found ${recipes.length}`);
+if (recipes.length !== 16) errors.push(`recipe registry must contain exactly 16 workflow recipes, found ${recipes.length}`);
 const recipeSlugs = recipes.map((recipe) => recipe.slug);
 if (new Set(recipeSlugs).size !== recipeSlugs.length) errors.push('duplicate recipe slug');
 for (const recipe of recipes) {
@@ -153,6 +158,8 @@ for (const recipe of recipes) {
 
 const relationTypes = new Set(relationsDocument?.relation_types ?? []);
 for (const relation of relationsDocument?.relations ?? []) {
+  if (typeof relation.source !== 'string' || relation.source.length === 0) errors.push('relation source must be a non-empty string');
+  if (typeof relation.target !== 'string' || relation.target.length === 0) errors.push('relation target must be a non-empty string');
   if (!relationTypes.has(relation.relation)) errors.push(`unknown relation type ${relation.relation}`);
   if (/^O\d{2}$/.test(relation.source) && !expectedIds.includes(relation.source)) errors.push(`unknown relation source ${relation.source}`);
   if (/^O\d{2}$/.test(relation.target) && !expectedIds.includes(relation.target)) errors.push(`unknown relation target ${relation.target}`);
@@ -164,4 +171,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Operation ontology valid: 24 core operations, ${recipes.length} recipe scaffolds, 35 legacy route mappings, seven lifecycle projections, and typed tags/relations.`);
+console.log(`Operation ontology valid: 24 core operations with non-empty typed inputs/outputs, ${recipes.length} recipe scaffolds, 35 legacy route mappings, seven lifecycle projections, and resolvable typed tags/relations.`);

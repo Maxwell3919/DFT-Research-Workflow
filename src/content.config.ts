@@ -13,4 +13,29 @@ const legacyOperations = defineCollection({
   }),
 });
 
-export const collections = { legacyOperations };
+const coreOperations = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/core-operations' }),
+  schema: z.object({
+    operation_id: z.string().regex(/^O\d{2}$/),
+    status: z.enum(['scaffold', 'draft', 'reviewed']),
+  }),
+});
+
+const recipes = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/recipes' }),
+  schema: z.object({
+    recipe_slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    status: z.enum(['scaffold', 'draft', 'reviewed']),
+  }),
+});
+
+const framework = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/framework' }),
+  schema: z.object({
+    slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    title: z.string().min(1),
+    status: z.enum(['scaffold', 'draft', 'reviewed']),
+  }),
+});
+
+export const collections = { legacyOperations, coreOperations, recipes, framework };

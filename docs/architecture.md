@@ -107,24 +107,32 @@ ontology.
 
 ## Public information architecture
 
-The current transition keeps two top-level public entries:
+The current framework has four distinct public entries:
 
 ```text
 Home
-Operations
+├── Operations
+├── Workflow Recipes
+└── Framework
 ```
 
-`/operations/` now lists the 24 core operations by lifecycle. Core operation
+`/operations/` lists the 24 core operations by lifecycle. Core operation
 pages expose the operation contract: definition, typed inputs and outputs,
 requirement, repeatability, dependencies, alternatives, and exclusions.
+
+`/recipes/` renders the 16 registered composite recipes. Their operation arrays
+are coverage projections, not automatic complete topological execution orders.
+
+`/framework/` renders the workflow model, lifecycle map, relations and feedback
+loops, tags and methods, and evidence/provenance/reproducibility context. These
+are not additional operations or recipes.
 
 The 35 former `/operations/<legacy-slug>/` URLs remain generated. Each legacy
 page states that it is a compatibility route and links to its mapped core
 operations.
 
-Workflow recipes and tag browsers are machine-readable in this release but are
-not yet separate public navigation entries. Talos may add those views in the
-next implementation batch without changing the ontology.
+The 35 former `/operations/<legacy-slug>/` URLs remain generated as a separate
+compatibility layer and do not enter the main learning sequence.
 
 ## Lifecycle projection
 

@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/paths';
+
+const pages = await getCollection('framework');
+---
+
+<BaseLayout title="Framework" description="The model, relations, tags, and evidence boundaries for this learning framework." current="framework">
+  <h1>Framework</h1>
+  <p class="page-intro">These pages provide context for using the core-operation ontology. They are not additional operations or recipes.</p>
+  <ol class="directory-list">
+    {pages.sort((left, right) => left.data.slug.localeCompare(right.data.slug)).map((page) => (
+      <li><a href={withBase(`framework/${page.data.slug}/`)}>{page.data.title}</a></li>
+    ))}
+  </ol>
+</BaseLayout>

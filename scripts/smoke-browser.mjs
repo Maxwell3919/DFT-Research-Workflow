@@ -18,9 +18,20 @@ const representativeLegacySlugs = [
   '25-electron-phonon-and-superconductivity',
   '34-postprocessing-validation-and-reuse',
 ];
+const frameworkSlugs = [
+  'workflow-model',
+  'lifecycle-and-operation-map',
+  'relations-and-feedback-loops',
+  'tags-and-methods',
+  'evidence-provenance-and-reproducibility',
+];
 const requiredRoutes = [
   { route: '/', status: 200, name: 'Home' },
   { route: '/operations/', status: 200, name: 'Operations' },
+  { route: '/recipes/', status: 200, name: 'Recipes directory' },
+  { route: '/recipes/bulk-structure-and-bands/', status: 200, name: 'Tier 1 recipe' },
+  { route: '/framework/', status: 200, name: 'Framework directory' },
+  ...frameworkSlugs.map((slug) => ({ route: `/framework/${slug}/`, status: 200, name: slug })),
   ...representativeCoreSlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
   ...representativeLegacySlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
   { route: '/missing-page-for-smoke/', status: 404, name: '404' },
@@ -77,7 +88,7 @@ async function inspectPage(page, expectedStatus) {
   if (prohibitedText.test(observation.text)) throw new Error('public page contains retired governance text');
   if (observation.overflow) throw new Error('page has horizontal overflow');
   if (observation.oldUi !== 0) throw new Error(`page exposes ${observation.oldUi} retired UI elements`);
-  if (JSON.stringify(observation.nav) !== JSON.stringify(['Home', 'Operations'])) throw new Error(`navigation mismatch: ${JSON.stringify(observation.nav)}`);
+  if (JSON.stringify(observation.nav) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework'])) throw new Error(`navigation mismatch: ${JSON.stringify(observation.nav)}`);
   if (observation.background !== 'rgb(255, 255, 255)') throw new Error(`background is not white: ${observation.background}`);
   if (!/Iowan Old Style|Palatino|Book Antiqua|Georgia|Times New Roman|serif/i.test(observation.fontFamily)) {
     throw new Error(`serif reading stack missing: ${observation.fontFamily}`);
@@ -114,6 +125,14 @@ try {
   const expectedIds = Array.from({ length: 24 }, (_, index) => `O${String(index + 1).padStart(2, '0')}`);
   if (JSON.stringify(ids) !== JSON.stringify(expectedIds)) throw new Error('Core Operations directory order is not O01–O24');
 
+  await page.goto(`${base}/recipes/`, { waitUntil: 'domcontentloaded' });
+  const recipeLinks = await page.$$eval('.directory-list a', (links) => links.length);
+  if (recipeLinks !== 16) throw new Error(`Workflow Recipes directory exposes ${recipeLinks}/16 recipes`);
+  await page.goto(`${base}/framework/`, { waitUntil: 'domcontentloaded' });
+  const frameworkLinks = await page.$$eval('.directory-list a', (links) => links.length);
+  if (frameworkLinks !== 5) throw new Error(`Framework directory exposes ${frameworkLinks}/5 pages`);
+
+  await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
   await page.focus('.operations-list a');
   await page.keyboard.press('Tab');
   const keyboardHref = await page.evaluate(() => document.activeElement?.getAttribute('href'));
@@ -153,6 +172,9 @@ try {
   await noJsPage.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
   const noJsLinks = await noJsPage.$$eval('.operations-list a', (links) => links.length);
   if (noJsLinks !== 24) throw new Error(`no-JavaScript directory exposes ${noJsLinks}/24 core operations`);
+  await noJsPage.goto(`${base}/recipes/`, { waitUntil: 'domcontentloaded' });
+  const noJsRecipeLinks = await noJsPage.$$eval('.directory-list a', (links) => links.length);
+  if (noJsRecipeLinks !== 16) throw new Error(`no-JavaScript recipes directory exposes ${noJsRecipeLinks}/16 recipes`);
 
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   for (const target of requiredRoutes) {
@@ -182,15 +204,18 @@ try {
     routes: requiredRoutes.length,
     core_operations: directory.length,
     core_order: 'O01-O24',
+    workflow_recipes: recipeLinks,
+    framework_pages: frameworkLinks,
     legacy_routes_sampled: representativeLegacySlugs.length,
     keyboard_navigation: true,
     mobile_width: 390,
     mobile_horizontal_overflow: false,
     no_javascript_core_operations: noJsLinks,
+    no_javascript_recipes: noJsRecipeLinks,
     public_language: 'en',
   };
   if (artifactDirectory) await writeFile(join(artifactDirectory, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`);
-  console.log(`Browser smoke passed: ${requiredRoutes.length} routes including legacy and 404, 24 core operations in order, adjacency, keyboard navigation, 390px no overflow, no-JS 24/24, English-only${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
+  console.log(`Browser smoke passed: ${requiredRoutes.length} routes including recipes, framework, legacy, and 404; 24 core operations in order, 16 recipes, 5 framework pages, adjacency, keyboard navigation, 390px no overflow, no-JS 24/24 and 16/16, English-only${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
 } finally {
   await browser.close();
 }
