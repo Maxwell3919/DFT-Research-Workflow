@@ -7,10 +7,14 @@ const base = '/DFT-Research-Workflow/';
 const errors = [];
 const operationsDocument = JSON.parse(await readFile(new URL('ontology/operations.json', root), 'utf8'));
 const legacyDocument = JSON.parse(await readFile(new URL('ontology/legacy-operations.json', root), 'utf8'));
+const recipesDocument = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8'));
 const coreOperations = operationsDocument.operations;
 const legacyOperations = legacyDocument.entries;
 const coreSlugs = coreOperations.map((operation) => operation.slug);
 const legacySlugs = legacyOperations.map((operation) => operation.slug);
+const recipes = recipesDocument.recipes;
+const recipeSlugs = recipes.map((recipe) => recipe.slug);
+const frameworkSlugs = ['workflow-model', 'lifecycle-and-operation-map', 'relations-and-feedback-loops', 'tags-and-methods', 'evidence-provenance-and-reproducibility'];
 const prohibitedText = [
   'View contract',
   'Operation registry',
@@ -50,9 +54,9 @@ function outputPath(href) {
 }
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
-const expectedHtmlCount = 2 + coreSlugs.length + legacySlugs.length + 1;
+const expectedHtmlCount = 4 + coreSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + 1;
 if (htmlFiles.length !== expectedHtmlCount) {
-  errors.push(`expected ${expectedHtmlCount} generated HTML files (Home, Operations, 24 core, 35 legacy, 404), found ${htmlFiles.length}`);
+  errors.push(`expected ${expectedHtmlCount} generated HTML files (Home, three directories, 24 core, 16 recipes, 5 framework pages, 35 legacy, 404), found ${htmlFiles.length}`);
 }
 
 const htmlByPath = new Map();
@@ -89,11 +93,30 @@ for (const retired of retiredPaths) {
 const home = htmlByPath.get(join(distPath, 'index.html')) ?? '';
 const homeNav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
 const navLabels = [...homeNav.matchAll(/<a[^>]*>([^<]+)<\/a>/g)].map((match) => match[1].trim());
-if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Operations'])) {
+if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework'])) {
   errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
 }
 if (!stripMarkup(home).includes('24 typed core operations')) errors.push('Home does not identify the 24-operation authority');
 if (!stripMarkup(home).includes('former 35 chapter URLs')) errors.push('Home does not state the legacy compatibility boundary');
+
+const recipesDirectory = htmlByPath.get(join(distPath, 'recipes', 'index.html')) ?? '';
+for (const recipe of recipes) {
+  const path = join(distPath, 'recipes', recipe.slug, 'index.html');
+  const html = htmlByPath.get(path) ?? '';
+  const text = stripMarkup(html);
+  if (!html) errors.push(`missing generated recipe route: ${recipe.slug}`);
+  if (!recipesDirectory.includes(`${base}recipes/${recipe.slug}/`)) errors.push(`recipes directory is missing ${recipe.slug}`);
+  if (!text.includes(recipe.title)) errors.push(`${recipe.slug}: recipe title mismatch`);
+  if (!text.includes('composite coverage projection')) errors.push(`${recipe.slug}: missing coverage-projection boundary`);
+  for (const operationId of recipe.operations) if (!text.includes(operationId)) errors.push(`${recipe.slug}: missing operation coverage ${operationId}`);
+}
+
+const frameworkDirectory = htmlByPath.get(join(distPath, 'framework', 'index.html')) ?? '';
+for (const slug of frameworkSlugs) {
+  const path = join(distPath, 'framework', slug, 'index.html');
+  if (!htmlByPath.has(path)) errors.push(`missing generated framework route: ${slug}`);
+  if (!frameworkDirectory.includes(`${base}framework/${slug}/`)) errors.push(`framework directory is missing ${slug}`);
+}
 
 const directoryPath = join(distPath, 'operations', 'index.html');
 const directory = htmlByPath.get(directoryPath) ?? '';
@@ -157,4 +180,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Generated site valid: ${expectedHtmlCount} English no-JS pages, 24 core routes with adjacency, 35 legacy mappings, base-safe links, and no retired public paths.`);
+console.log(`Generated site valid: ${expectedHtmlCount} English no-JS pages, 24 core routes with adjacency, 16 recipe routes, 5 framework routes, 35 legacy mappings, base-safe links, and no retired public paths.`);

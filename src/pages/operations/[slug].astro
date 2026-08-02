@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
   getLegacyOperations,
@@ -17,6 +18,7 @@ type CoreProps = {
   operation: CoreOperation;
   previous: CoreOperation | null;
   next: CoreOperation | null;
+  narrative: CollectionEntry<'coreOperations'> | undefined;
 };
 
 type LegacyProps = {
@@ -29,6 +31,8 @@ type Props = CoreProps | LegacyProps;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const operations = getOperations();
+  const narratives = await getCollection('coreOperations');
+  const narrativeById = new Map(narratives.map((entry) => [entry.data.operation_id, entry]));
   const corePaths = operations.map((operation, index) => ({
     params: { slug: operation.slug },
     props: {
@@ -36,6 +40,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       operation,
       previous: operations[index - 1] ?? null,
       next: operations[index + 1] ?? null,
+      narrative: narrativeById.get(operation.id),
     } satisfies CoreProps,
   }));
   const legacyPaths = getLegacyOperations().map((operation) => ({
@@ -52,6 +57,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 const page = Astro.props as Props;
 const title = page.kind === 'core' ? page.operation.id : `Legacy ${page.operation.display_number}`;
 const description = page.kind === 'core' ? page.operation.definition : page.operation.disposition;
+const Narrative = page.kind === 'core' && page.narrative ? (await render(page.narrative)).Content : null;
 ---
 
 <BaseLayout title={title} description={description} current="operations">
@@ -113,6 +119,11 @@ const description = page.kind === 'core' ? page.operation.definition : page.oper
           </dd>
         </div>
       </dl>
+
+      <section class="narrative-placeholder" aria-labelledby="detailed-content-heading">
+        <h2 id="detailed-content-heading">Detailed content</h2>
+        {Narrative && <Narrative />}
+      </section>
 
       <nav class="chapter-nav" aria-label="Core operation navigation">
         <div>

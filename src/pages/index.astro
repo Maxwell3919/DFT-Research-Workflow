@@ -13,7 +13,7 @@ const operations = getOperations();
 >
   <h1>DFT Research Workflow</h1>
   <p class="home-intro">
-    DFT Research Workflow explains how a study moves from acquiring or constructing a material structure to producing claim-assessed, reproducibility-ready results. Its scientific authority is a scope-bounded ontology of 24 typed core operations rather than one fixed linear pipeline. Real studies compose these operations as dependency graphs with branching, repeated solvers, parallel candidates, and feedback after failed convergence or validation. Material classes, scientific targets, methods, and software implementations remain separate tags, while phonons, defects, superconductivity, topology, and GW/BSE are represented as workflow recipes. The former 35 chapter URLs are retained only as a compatibility map. Begin with the <a href={withBase('operations/')}>Core Operations directory</a>.
+    DFT Research Workflow explains how a study moves from acquiring or constructing a material structure to producing claim-assessed, reproducibility-ready results. Its scientific authority is a scope-bounded ontology of 24 typed core operations rather than one fixed linear pipeline. Real studies compose these operations as dependency graphs with branching, repeated solvers, parallel candidates, and feedback after failed convergence or validation. Material classes, scientific targets, methods, and software implementations remain separate tags, while phonons, defects, superconductivity, topology, and GW/BSE are represented as workflow recipes. The former 35 chapter URLs are retained only as a compatibility map. Begin with the <a href={withBase('operations/')}>Core Operations directory</a>, then consult <a href={withBase('recipes/')}>Workflow Recipes</a> and the <a href={withBase('framework/')}>Framework</a>.
   </p>
 
   <section class="parts-overview" aria-labelledby="contents-heading">
@@ -29,5 +29,14 @@ const operations = getOperations();
     <p class="framework-note">
       The lifecycle is a teaching view, not a universal execution order. The directory contains {operations.length} core operations; workflow recipes and tags are separate layers.
     </p>
+  </section>
+
+  <section class="parts-overview" aria-labelledby="learning-layers-heading">
+    <h2 id="learning-layers-heading">Learning layers</h2>
+    <ol>
+      <li><a href={withBase('operations/')}>Core Operations</a><span>Reusable typed actions, grouped by lifecycle.</span></li>
+      <li><a href={withBase('recipes/')}>Workflow Recipes</a><span>Composite coverage projections for target-specific work.</span></li>
+      <li><a href={withBase('framework/')}>Framework</a><span>Workflow model, relations, tags, and evidence boundaries.</span></li>
+    </ol>
   </section>
 </BaseLayout>
