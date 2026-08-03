@@ -110,7 +110,9 @@
     { "id": "wannier90-copper-tutorial", "url": "https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_6/", "kind": "page" },
     { "id": "qe-fermi-postprocessing", "url": "https://quantum-espresso.org/Doc/pp_user_guide/node8.html", "kind": "page" },
     { "id": "qe-pp-density", "url": "https://www.quantum-espresso.org/Doc/INPUT_PP.html", "kind": "page" },
-    { "id": "vasp-chgcar-density", "url": "https://vasp.at/wiki/CHGCAR", "kind": "page" }
+    { "id": "vasp-chgcar-density", "url": "https://vasp.at/wiki/CHGCAR", "kind": "page" },
+    { "id": "van-de-walle-martin-lineup", "url": "https://doi.org/10.1103/PhysRevB.35.8154", "kind": "doi" },
+    { "id": "qe-pp-potential", "url": "https://www.quantum-espresso.org/Doc/INPUT_PP.html", "kind": "page" }
   ],
   "guides": [
     {
@@ -244,6 +246,7 @@
     { "guide_slug": "compare-band-path-and-full-zone-extrema", "source_ids": ["bloch-paper", "kohn-sham", "setyawan-curtarolo"] },
     { "guide_slug": "check-dos-normalization-and-projection-closure", "source_ids": ["qe-dos-docs", "qe-projwfc-docs", "vasp-doscar", "vasp-lorbit"] },
     { "guide_slug": "compare-full-zone-isovalue-and-band-path", "source_ids": ["wannier90-fermi-parameters", "wannier90-copper-tutorial", "qe-fermi-postprocessing"] },
-    { "guide_slug": "check-charge-difference-closure", "source_ids": ["qe-pp-density", "vasp-chgcar-density"] }
+    { "guide_slug": "check-charge-difference-closure", "source_ids": ["qe-pp-density", "vasp-chgcar-density"] },
+    { "guide_slug": "assemble-a-potential-lineup", "source_ids": ["van-de-walle-martin-lineup", "qe-pp-potential"] }
   ]
 }
