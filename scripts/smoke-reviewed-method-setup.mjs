@@ -52,6 +52,24 @@ async function inspect(page, expectedWidth) {
   return result;
 }
 
+async function captureStablePage(page, path) {
+  await page.waitForFunction(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    return root.scrollWidth > 0 && root.scrollHeight > 0 && body.scrollWidth > 0 && body.scrollHeight > 0;
+  }, { timeout: 15000 });
+  const dimensions = await page.evaluate(() => ({
+    width: Math.ceil(Math.max(document.documentElement.scrollWidth, document.body.scrollWidth)),
+    height: Math.ceil(Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)),
+  }));
+  if (dimensions.width < 1 || dimensions.height < 1) throw new Error(`invalid screenshot dimensions ${JSON.stringify(dimensions)}`);
+  await page.screenshot({
+    path,
+    captureBeyondViewport: true,
+    clip: { x: 0, y: 0, width: dimensions.width, height: dimensions.height },
+  });
+}
+
 const browser = await puppeteer.launch({ executablePath, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
 
 try {
@@ -85,10 +103,7 @@ try {
     await mkdir(artifactDirectory, { recursive: true });
     await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
     await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
-    await page.screenshot({
-      path: join(artifactDirectory, 'topic-choose-dft-method-setup-desktop.png'),
-      fullPage: true,
-    });
+    await captureStablePage(page, join(artifactDirectory, 'topic-choose-dft-method-setup-desktop.png'));
     await writeFile(join(artifactDirectory, 'reviewed-method-setup-summary.json'), `${JSON.stringify({
       site_url: base,
       route,
