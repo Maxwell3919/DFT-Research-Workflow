@@ -192,6 +192,12 @@ const reviewRequirements = new Map([
     'Execution success is not stress convergence',
     'The media are an original diagram generated from invented values',
   ]],
+  ['docs/reviews/2026-08-04-dielectric-response-and-born-effective-charges.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented tensor entries',
+    'Execution success is not dielectric-response convergence',
+    'The media are an original diagram generated from invented values',
+  ]],
 ]);
 
 function parseFrontmatter(source) {

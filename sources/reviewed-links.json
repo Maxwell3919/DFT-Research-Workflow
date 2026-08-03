@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 158,
+  "expected_unique_urls": 161,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -348,6 +348,20 @@
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.90.224104" },
         { "kind": "page", "url": "https://vasp.at/wiki/Phonons_from_finite_differences" },
         { "kind": "page", "url": "https://vasp.at/py4vasp/latest/calculation/elastic_modulus/" }
+      ]
+    },
+    {
+      "topic_slug": "dielectric-response-and-born-effective-charges",
+      "article": "src/content/topics/dielectric-response-and-born-effective-charges.md",
+      "review": "docs/reviews/2026-08-04-dielectric-response-and-born-effective-charges.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.136.B864" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.140.A1133" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.73.515" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.55.10355" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Born_effective_charges" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Electric_field_response_from_density-functional-perturbation_theory" }
       ]
     },
     {
