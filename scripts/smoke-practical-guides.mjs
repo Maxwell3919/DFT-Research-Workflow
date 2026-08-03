@@ -112,6 +112,7 @@ try {
   for (const guide of guides) await inspectGuide(page, guide, 390);
 
   const noJsPage = await browser.newPage();
+  await noJsPage.setCacheEnabled(false);
   await noJsPage.setJavaScriptEnabled(false);
   for (const guide of guides) {
     response = await noJsPage.goto(`${base}${guide.route}`, { waitUntil: 'domcontentloaded' });
