@@ -8,6 +8,11 @@ import {
   type CoreOperation,
   type LegacyOperation,
 } from '../../lib/operations';
+import {
+  practicalGuidePath,
+  practicalSectionLabel,
+  type PracticalGuideKind,
+} from '../../lib/practical-guides';
 import { getWorkflowTopics, type WorkflowTopic } from '../../lib/workflow';
 import { withBase } from '../../lib/paths';
 
@@ -15,6 +20,7 @@ type TopicProps = {
   kind: 'topic';
   topic: WorkflowTopic;
   narrative: CollectionEntry<'topics'> | undefined;
+  practicalGuides: CollectionEntry<'practicalGuides'>[];
 };
 
 type CoreProps = {
@@ -33,12 +39,16 @@ type Props = TopicProps | CoreProps | LegacyProps;
 export const getStaticPaths: GetStaticPaths = async () => {
   const topicNarratives = await getCollection('topics');
   const topicNarrativeBySlug = new Map(topicNarratives.map((entry) => [entry.data.topic_slug, entry]));
+  const practicalGuides = await getCollection('practicalGuides');
   const topicPaths = getWorkflowTopics().map((topic) => ({
     params: { slug: topic.slug },
     props: {
       kind: 'topic',
       topic,
       narrative: topicNarrativeBySlug.get(topic.slug),
+      practicalGuides: practicalGuides
+        .filter((entry) => entry.data.topic_slug === topic.slug)
+        .sort((left, right) => left.data.title.localeCompare(right.data.title)),
     } satisfies TopicProps,
   }));
 
@@ -80,6 +90,7 @@ const Narrative = page.kind === 'topic' && page.narrative
   : page.kind === 'core' && page.narrative
     ? (await render(page.narrative)).Content
     : null;
+const practicalOrder: PracticalGuideKind[] = ['implementation', 'worked-example', 'visual-note'];
 ---
 
 <BaseLayout title={title} description={description} current="operations">
@@ -96,6 +107,35 @@ const Narrative = page.kind === 'topic' && page.narrative
           <p class="page-intro">
             This stable destination is reserved for a later reviewed content batch. The final article will follow the scientific logic of this topic rather than a uniform article template.
           </p>
+        )}
+
+        {page.practicalGuides.length > 0 && (
+          <section class="practical-resources" aria-labelledby="practical-resources-heading">
+            <header>
+              <h2 id="practical-resources-heading">Practical resources</h2>
+              <p>Implementation detail and bounded examples for this researcher-scale task.</p>
+            </header>
+            {practicalOrder.map((kind) => {
+              const entries = page.practicalGuides.filter((entry) => entry.data.kind === kind);
+              if (entries.length === 0) return null;
+              return (
+                <section class="practical-group" aria-labelledby={`practical-${kind}`}>
+                  <h3 id={`practical-${kind}`}>{practicalSectionLabel[kind]}</h3>
+                  <ul class="practical-card-list">
+                    {entries.map((entry) => (
+                      <li>
+                        <a href={withBase(practicalGuidePath(entry))}>{entry.data.title}</a>
+                        <p>{entry.data.summary}</p>
+                        <div class="tool-list" aria-label="Tools">
+                          {entry.data.tools.map((tool) => <span class="tool-tag">{tool}</span>)}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              );
+            })}
+          </section>
         )}
       </>
     ) : (

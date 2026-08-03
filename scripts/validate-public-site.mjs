@@ -31,6 +31,34 @@ const prohibitedText = [
 ];
 const retiredPaths = ['workflow', 'branches', 'evidence', 'registry', 'stages'];
 
+function parseFrontmatter(source) {
+  const match = source.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+  if (!match) return {};
+  const data = {};
+  for (const line of match[1].split('\n')) {
+    const scalar = line.match(/^([a-z_]+):\s*(.+)$/);
+    if (scalar) data[scalar[1]] = scalar[2].trim().replace(/^['"]|['"]$/g, '');
+  }
+  return data;
+}
+
+const practicalDirectory = new URL('src/content/practical-guides/', root);
+const practicalFiles = (await readdir(practicalDirectory)).filter((name) => name.endsWith('.md')).sort();
+const practicalGuides = [];
+const practicalSegments = {
+  implementation: 'guides',
+  'worked-example': 'examples',
+  'visual-note': 'notes',
+};
+for (const file of practicalFiles) {
+  const source = await readFile(new URL(`src/content/practical-guides/${file}`, root), 'utf8');
+  const data = parseFrontmatter(source);
+  practicalGuides.push({
+    ...data,
+    segment: practicalSegments[data.kind],
+  });
+}
+
 async function walk(directory) {
   const paths = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -61,7 +89,7 @@ function outputPath(href) {
 }
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
-const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + 1;
+const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + 1;
 if (htmlFiles.length !== expectedHtmlCount) errors.push(`generated HTML route set mismatch: expected ${expectedHtmlCount}, found ${htmlFiles.length}`);
 
 const htmlByPath = new Map();
@@ -83,6 +111,17 @@ for (const path of htmlFiles) {
     const target = outputPath(href);
     if (target) {
       try { await access(target); } catch { errors.push(`${path}: broken internal link ${href}`); }
+    }
+  }
+  for (const src of [...html.matchAll(/(?:src|poster)="([^"]+)"/g)].map((match) => match[1])) {
+    if (/^(?:https?:|data:)/.test(src)) continue;
+    if (!src.startsWith(base)) {
+      errors.push(`${path}: media path misses project base: ${src}`);
+      continue;
+    }
+    const target = outputPath(src);
+    if (target) {
+      try { await access(target); } catch { errors.push(`${path}: broken media path ${src}`); }
     }
   }
 }
@@ -128,6 +167,42 @@ for (const topic of workflowTopics) {
   if (!text.includes(`${topic.group} ·`)) errors.push(`${topic.slug}: topic group label missing`);
   if (text.includes('Transitional route')) errors.push(`${topic.slug}: current topic is rendered as a transitional route`);
   if (/Inputs|Outputs|Requirement|Repeatability|Alternative implementations|Exclusions/.test(text)) errors.push(`${topic.slug}: topic restores a fixed page contract`);
+}
+
+const practicalParentPaths = new Set();
+for (const guide of practicalGuides) {
+  if (!guide.segment) {
+    errors.push(`${guide.guide_slug}: invalid practical kind ${guide.kind}`);
+    continue;
+  }
+  const path = join(distPath, 'operations', guide.topic_slug, guide.segment, guide.guide_slug, 'index.html');
+  const html = htmlByPath.get(path) ?? '';
+  const text = stripMarkup(html);
+  if (!html) {
+    errors.push(`missing practical route: ${guide.guide_slug}`);
+    continue;
+  }
+  if (!text.includes(guide.title)) errors.push(`${guide.guide_slug}: practical title mismatch`);
+  if (!text.includes('Execution checks confirm only the structural transformations asserted by this page.')) {
+    errors.push(`${guide.guide_slug}: missing execution evidence boundary`);
+  }
+  if (!html.includes('class="guide-meta"')) errors.push(`${guide.guide_slug}: missing guide metadata`);
+  if (!html.includes('class="guide-media"')) errors.push(`${guide.guide_slug}: missing declared media`);
+  const parentHref = `${base}operations/${guide.topic_slug}/`;
+  if (!html.includes(parentHref)) errors.push(`${guide.guide_slug}: missing parent-topic link`);
+  practicalParentPaths.add(guide.topic_slug);
+}
+
+for (const parentSlug of practicalParentPaths) {
+  const path = join(distPath, 'operations', parentSlug, 'index.html');
+  const html = htmlByPath.get(path) ?? '';
+  const text = stripMarkup(html);
+  if (!text.includes('Practical resources')) errors.push(`${parentSlug}: missing practical resource section`);
+  const childGuides = practicalGuides.filter((guide) => guide.topic_slug === parentSlug);
+  for (const guide of childGuides) {
+    const href = `${base}operations/${guide.topic_slug}/${guide.segment}/${guide.guide_slug}/`;
+    if (!html.includes(href)) errors.push(`${parentSlug}: missing practical child link ${guide.guide_slug}`);
+  }
 }
 
 const recipesDirectory = htmlByPath.get(join(distPath, 'recipes', 'index.html')) ?? '';
@@ -184,4 +259,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log('Generated site valid: registry-driven A–E directory, stable topic routes, natural article layouts, research workflows, framework pages, and migration-safe old URLs.');
+console.log(`Generated site valid: registry-driven A–E directory, ${practicalGuides.length} practical subpages with parent cards, research workflows, framework pages, and migration-safe old URLs.`);

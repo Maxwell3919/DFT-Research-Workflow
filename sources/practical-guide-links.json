@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "authority": "official-source inventory for reviewed practical guides",
+  "scope_note": "These URLs support version-specific implementation claims in the four model-building pilot pages. Reachability and semantic support remain separate checks.",
+  "sources": [
+    {
+      "id": "ase-docs-home",
+      "url": "https://docs.ase-lib.org/",
+      "kind": "page"
+    },
+    {
+      "id": "ase-atoms",
+      "url": "https://docs.ase-lib.org/ase/atoms.html",
+      "kind": "page"
+    },
+    {
+      "id": "ase-build-tools",
+      "url": "https://docs.ase-lib.org/ase/build/tools.html",
+      "kind": "page"
+    },
+    {
+      "id": "ase-surface",
+      "url": "https://docs.ase-lib.org/ase/build/surface.html",
+      "kind": "page"
+    },
+    {
+      "id": "ase-building",
+      "url": "https://docs.ase-lib.org/ase/build/build.html",
+      "kind": "page"
+    },
+    {
+      "id": "ase-pypi-3290",
+      "url": "https://pypi.org/project/ase/3.29.0/",
+      "kind": "page"
+    },
+    {
+      "id": "pymatgen-transformations",
+      "url": "https://pymatgen.org/pymatgen.transformations.html",
+      "kind": "page"
+    },
+    {
+      "id": "pymatgen-core-docs",
+      "url": "https://pymatgen.org/pymatgen.core.html",
+      "kind": "page"
+    },
+    {
+      "id": "pymatgen-core-pypi-2026-7-31",
+      "url": "https://pypi.org/project/pymatgen-core/2026.7.31/",
+      "kind": "page"
+    }
+  ],
+  "guides": [
+    {
+      "guide_slug": "ase-build-repeat-cells",
+      "source_ids": ["ase-docs-home", "ase-atoms", "ase-build-tools", "ase-pypi-3290"]
+    },
+    {
+      "guide_slug": "ase-surfaces-vacuum-adsorbates",
+      "source_ids": ["ase-docs-home", "ase-surface", "ase-building", "ase-pypi-3290"]
+    },
+    {
+      "guide_slug": "pymatgen-structure-transformations",
+      "source_ids": ["pymatgen-transformations", "pymatgen-core-docs", "pymatgen-core-pypi-2026-7-31"]
+    },
+    {
+      "guide_slug": "two-dimensional-monolayer-model",
+      "source_ids": ["ase-docs-home", "ase-building", "ase-atoms", "ase-pypi-3290"]
+    }
+  ]
+}
