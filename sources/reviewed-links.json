@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 145,
+  "expected_unique_urls": 151,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -296,6 +296,19 @@
         { "kind": "page", "url": "https://quantum-espresso.org/Doc/pp_user_guide/node6.html" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PP.html" },
         { "kind": "page", "url": "https://vasp.at/wiki/LOCPOT" }
+      ]
+    },
+    {
+      "topic_slug": "chemical-bonding-analysis",
+      "article": "src/content/topics/chemical-bonding-analysis.md",
+      "review": "docs/reviews/2026-08-04-chemical-bonding-analysis.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1021/j100135a014" },
+        { "kind": "doi", "url": "https://doi.org/10.1021/jp202489s" },
+        { "kind": "doi", "url": "https://doi.org/10.1063/1.458517" },
+        { "kind": "doi", "url": "https://doi.org/10.1002/anie.199718081" },
+        { "kind": "doi", "url": "https://doi.org/10.1007/s002140000233" },
+        { "kind": "page", "url": "https://schmeling.ac.rwth-aachen.de/cohp/" }
       ]
     },
     {

@@ -168,6 +168,12 @@ const reviewRequirements = new Map([
     'Execution success is not potential convergence',
     'The media are original conceptual diagrams of invented data.',
   ]],
+  ['docs/reviews/2026-08-04-chemical-bonding-analysis.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented energy-resolved pair contributions.',
+    'Execution success is not a projection-quality result',
+    'The media are original conceptual diagrams of invented data.',
+  ]],
 ]);
 
 function parseFrontmatter(source) {

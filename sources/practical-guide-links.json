@@ -112,7 +112,9 @@
     { "id": "qe-pp-density", "url": "https://www.quantum-espresso.org/Doc/INPUT_PP.html", "kind": "page" },
     { "id": "vasp-chgcar-density", "url": "https://vasp.at/wiki/CHGCAR", "kind": "page" },
     { "id": "van-de-walle-martin-lineup", "url": "https://doi.org/10.1103/PhysRevB.35.8154", "kind": "doi" },
-    { "id": "qe-pp-potential", "url": "https://www.quantum-espresso.org/Doc/INPUT_PP.html", "kind": "page" }
+    { "id": "qe-pp-potential", "url": "https://www.quantum-espresso.org/Doc/INPUT_PP.html", "kind": "page" },
+    { "id": "dronskowski-bloechl-cohp", "url": "https://doi.org/10.1021/j100135a014", "kind": "doi" },
+    { "id": "deringer-plane-wave-cohp", "url": "https://doi.org/10.1021/jp202489s", "kind": "doi" }
   ],
   "guides": [
     {
@@ -247,6 +249,7 @@
     { "guide_slug": "check-dos-normalization-and-projection-closure", "source_ids": ["qe-dos-docs", "qe-projwfc-docs", "vasp-doscar", "vasp-lorbit"] },
     { "guide_slug": "compare-full-zone-isovalue-and-band-path", "source_ids": ["wannier90-fermi-parameters", "wannier90-copper-tutorial", "qe-fermi-postprocessing"] },
     { "guide_slug": "check-charge-difference-closure", "source_ids": ["qe-pp-density", "vasp-chgcar-density"] },
-    { "guide_slug": "assemble-a-potential-lineup", "source_ids": ["van-de-walle-martin-lineup", "qe-pp-potential"] }
+    { "guide_slug": "assemble-a-potential-lineup", "source_ids": ["van-de-walle-martin-lineup", "qe-pp-potential"] },
+    { "guide_slug": "integrate-a-declared-cohp-energy-window", "source_ids": ["dronskowski-bloechl-cohp", "deringer-plane-wave-cohp"] }
   ]
 }
