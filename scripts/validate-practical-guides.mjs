@@ -180,6 +180,12 @@ const reviewRequirements = new Map([
     'Execution success is not magnetic convergence',
     'The media are original conceptual diagrams of invented data.',
   ]],
+  ['docs/reviews/2026-08-04-magnetic-anisotropy-and-exchange-interactions.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented compatible energies',
+    'Execution success is not magnetic convergence',
+    'The media are an original diagram generated from invented values',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
