@@ -180,6 +180,7 @@ Later tasks must still optimize or establish the reference state, test physical 
 - [Lejaeghere et al., reproducibility in solid-state DFT](https://doi.org/10.1126/science.aad3000)
 - [Prandini et al., precision and efficiency in pseudopotential calculations](https://doi.org/10.1038/s41524-018-0127-2)
 - [Materials Cloud SSSP archive and provenance record](https://archive.materialscloud.org/record/2021.76)
+- [PseudoDojo training and grading paper](https://doi.org/10.1016/j.cpc.2018.01.012)
 - [Ismail-Beigi, truncation of periodic image interactions](https://doi.org/10.1103/PhysRevB.73.233103)
 - [Freysoldt et al., first-principles point-defect calculations](https://doi.org/10.1103/RevModPhys.86.253)
 - [Baroni et al., density-functional perturbation theory](https://doi.org/10.1103/RevModPhys.73.515)
