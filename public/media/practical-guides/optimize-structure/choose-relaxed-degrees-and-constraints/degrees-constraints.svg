@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-labelledby="title desc">
+  <title id="title">Optimization degrees of freedom and constraints</title>
+  <desc id="desc">A conceptual matrix separates atomic positions, cell shape, volume, and boundary dimensions into active and fixed variables.</desc>
+  <rect width="900" height="500" fill="#ffffff"/>
+  <text x="450" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#1a1a1a">Declare the active optimization subspace</text>
+  <g font-family="Georgia, serif" font-size="20" fill="#1a1a1a">
+    <text x="250" y="105" text-anchor="middle">Atomic variables</text>
+    <text x="650" y="105" text-anchor="middle">Cell and boundary variables</text>
+  </g>
+  <g stroke="#1a1a1a" stroke-width="2" fill="none">
+    <rect x="80" y="135" width="340" height="255" rx="8"/>
+    <rect x="480" y="135" width="340" height="255" rx="8"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="18">
+    <rect x="110" y="175" width="280" height="48" rx="6" fill="#eaf2f8" stroke="#123f70"/>
+    <text x="250" y="206" text-anchor="middle" fill="#123f70">Free coordinates</text>
+    <rect x="110" y="245" width="280" height="48" rx="6" fill="#f3f3f3" stroke="#666666"/>
+    <text x="250" y="276" text-anchor="middle" fill="#444444">Fixed atoms or components</text>
+    <rect x="110" y="315" width="280" height="48" rx="6" fill="#f3f3f3" stroke="#666666"/>
+    <text x="250" y="346" text-anchor="middle" fill="#444444">Symmetry-restricted motion</text>
+    <rect x="510" y="175" width="280" height="48" rx="6" fill="#eaf2f8" stroke="#123f70"/>
+    <text x="650" y="206" text-anchor="middle" fill="#123f70">Active strain components</text>
+    <rect x="510" y="245" width="280" height="48" rx="6" fill="#f3f3f3" stroke="#666666"/>
+    <text x="650" y="276" text-anchor="middle" fill="#444444">Fixed lattice components</text>
+    <rect x="510" y="315" width="280" height="48" rx="6" fill="#fff4df" stroke="#8a5a00"/>
+    <text x="650" y="346" text-anchor="middle" fill="#6a4300">Vacuum direction: boundary</text>
+  </g>
+  <path d="M420 263 H480" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+  <text x="450" y="437" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#1a1a1a">Only declared active variables define the stationary subspace.</text>
+</svg>
