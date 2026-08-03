@@ -40,6 +40,9 @@ const requiredGuideSlugs = new Set([
   'stress-test-hull-phase-set',
   'build-defect-formation-ledger',
   'trace-charge-state-envelope',
+  'build-surface-energy-ledger',
+  'extract-work-function-potential',
+  'compare-intermat-si-surfaces',
 ]);
 const requiredParentMinimum = new Map([
   ['build-or-modify-computational-model', 4],
@@ -50,6 +53,7 @@ const requiredParentMinimum = new Map([
   ['equation-of-state-and-structural-phase-stability', 3],
   ['compositional-phase-stability-and-convex-hulls', 2],
   ['defect-formation-energies-and-charge-states', 2],
+  ['surface-energy-and-work-function', 3],
 ]);
 const reviewRequirements = new Map([
   ['docs/reviews/2026-08-03-practical-guides-model-building-pilot.md', [
@@ -106,6 +110,14 @@ const reviewRequirements = new Map([
     'Execution success is not defect convergence for a real calculation.',
     'It does not establish a real defect configuration',
     'They are conceptual plots of invented data',
+  ]],
+  ['docs/reviews/2026-08-04-surface-energy-and-work-function.md', [
+    'reviewed within the declared educational and execution scope',
+    'The first two scripts execute no DFT code and ingest no material data.',
+    'The repository does not claim to have rerun the underlying InterMat calculations.',
+    'Execution success is not surface or work-function convergence for a real calculation.',
+    'It does not establish a real surface energy',
+    'The first two are conceptual plots of invented data.',
   ]],
 ]);
 

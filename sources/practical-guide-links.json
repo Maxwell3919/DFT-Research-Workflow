@@ -72,7 +72,16 @@
     { "id": "kumagai-oba-correction", "url": "https://doi.org/10.1103/PhysRevB.89.195205", "kind": "doi" },
     { "id": "doped-thermodynamics", "url": "https://doped.readthedocs.io/en/stable/doped.thermodynamics.html", "kind": "page" },
     { "id": "imperfections-not-zero-k", "url": "https://doi.org/10.1039/D3CS00432E", "kind": "doi" },
-    { "id": "py-sc-fermi", "url": "https://doi.org/10.21105/joss.04962", "kind": "doi" }
+    { "id": "py-sc-fermi", "url": "https://doi.org/10.21105/joss.04962", "kind": "doi" },
+    { "id": "fiorentini-methfessel-surfaces", "url": "https://doi.org/10.1088/0953-8984/8/36/005", "kind": "doi" },
+    { "id": "boettger-surface-nonconvergence", "url": "https://doi.org/10.1103/PhysRevB.49.16798", "kind": "doi" },
+    { "id": "gpaw-al-surface", "url": "https://gpaw.readthedocs.io/tutorialsexercises/basics/surface/surface.html", "kind": "page" },
+    { "id": "bengtsson-dipole-correction", "url": "https://doi.org/10.1103/PhysRevB.59.12301", "kind": "doi" },
+    { "id": "vasp-work-function", "url": "https://vasp.at/wiki/Computing_the_work_function", "kind": "page" },
+    { "id": "gpaw-dipole-correction", "url": "https://gpaw.readthedocs.io/tutorialsexercises/electrostatics/dipole_correction/dipole.html", "kind": "page" },
+    { "id": "intermat-paper", "url": "https://doi.org/10.1039/D4DD00031E", "kind": "doi" },
+    { "id": "intermat-nist-pdf", "url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957179", "kind": "page" },
+    { "id": "cc-by-3", "url": "https://creativecommons.org/licenses/by/3.0/", "kind": "page" }
   ],
   "guides": [
     {
@@ -174,6 +183,18 @@
     {
       "guide_slug": "trace-charge-state-envelope",
       "source_ids": ["van-de-walle-neugebauer-defects", "freysoldt-defects", "imperfections-not-zero-k", "py-sc-fermi", "doped-thermodynamics"]
+    },
+    {
+      "guide_slug": "build-surface-energy-ledger",
+      "source_ids": ["fiorentini-methfessel-surfaces", "boettger-surface-nonconvergence", "gpaw-al-surface"]
+    },
+    {
+      "guide_slug": "extract-work-function-potential",
+      "source_ids": ["bengtsson-dipole-correction", "vasp-work-function", "gpaw-dipole-correction"]
+    },
+    {
+      "guide_slug": "compare-intermat-si-surfaces",
+      "source_ids": ["intermat-paper", "intermat-nist-pdf", "cc-by-3"]
     }
   ]
 }

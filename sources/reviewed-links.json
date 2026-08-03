@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 91,
+  "expected_unique_urls": 102,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -180,6 +180,24 @@
         { "kind": "doi", "url": "https://doi.org/10.1039/D3CS00432E" },
         { "kind": "doi", "url": "https://doi.org/10.1016/j.cpc.2018.01.004" },
         { "kind": "page", "url": "https://doped.readthedocs.io/en/stable/doped.thermodynamics.html" }
+      ]
+    },
+    {
+      "topic_slug": "surface-energy-and-work-function",
+      "article": "src/content/topics/surface-energy-and-work-function.md",
+      "review": "docs/reviews/2026-08-04-surface-energy-and-work-function.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1088/0953-8984/8/36/005" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.49.16798" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.59.12301" },
+        { "kind": "doi", "url": "https://doi.org/10.1088/0022-3719/12/22/036" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.82.87" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.65.035406" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevApplied.19.037001" },
+        { "kind": "doi", "url": "https://doi.org/10.1116/1.4934685" },
+        { "kind": "doi", "url": "https://doi.org/10.1039/D4DD00031E" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Computing_the_work_function" },
+        { "kind": "page", "url": "https://gpaw.readthedocs.io/tutorialsexercises/electrostatics/dipole_correction/dipole.html" }
       ]
     }
   ]

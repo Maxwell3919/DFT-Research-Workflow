@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "title": "Silicon surface values transcribed from InterMat Table 1",
+  "source": {
+    "article_title": "InterMat: accelerating band offset prediction in semiconductor interfaces with DFT and deep learning",
+    "doi": "https://doi.org/10.1039/D4DD00031E",
+    "article_url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957179",
+    "table": "Table 1",
+    "license": "CC BY 3.0",
+    "license_url": "https://creativecommons.org/licenses/by/3.0/",
+    "accessed_at": "2026-08-04"
+  },
+  "calculation_scope": {
+    "jarvis_id": "JVASP-1002",
+    "method_label_reported_by_source": "OptB88vdW (OPT)",
+    "surface_class_reported_by_source": "unreconstructed non-polar slabs",
+    "note": "Values are published results, not calculations rerun by this repository. Experimental columns are the values cited by the source article."
+  },
+  "rows": [
+    {
+      "material": "Si",
+      "miller": "111",
+      "work_function_opt_eV": 5.00,
+      "work_function_experiment_eV": 4.77,
+      "surface_energy_opt_J_m2": 1.60,
+      "surface_energy_experiment_J_m2": 1.14
+    },
+    {
+      "material": "Si",
+      "miller": "110",
+      "work_function_opt_eV": 5.30,
+      "work_function_experiment_eV": 4.89,
+      "surface_energy_opt_J_m2": 1.66,
+      "surface_energy_experiment_J_m2": 1.90
+    },
+    {
+      "material": "Si",
+      "miller": "001",
+      "work_function_opt_eV": 5.64,
+      "work_function_experiment_eV": 4.92,
+      "surface_energy_opt_J_m2": 2.22,
+      "surface_energy_experiment_J_m2": 2.13
+    }
+  ]
+}
