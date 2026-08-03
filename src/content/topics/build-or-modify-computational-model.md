@@ -144,10 +144,10 @@ This stage does not establish that a model is stable, experimentally realized, n
 
 ## Sources and methods
 
-- [ASE: Building things](https://wiki.fysik.dtu.dk/ase/ase/build/build.html)
-- [ASE: Surfaces, vacuum, and adsorbates](https://wiki.fysik.dtu.dk/ase/ase/build/surface.html)
-- [ASE: The Atoms object and periodic boundary conditions](https://wiki.fysik.dtu.dk/ase/ase/atoms.html)
-- [ASE: Constraints](https://wiki.fysik.dtu.dk/ase/ase/constraints.html)
+- [ASE: Building things](https://docs.ase-lib.org/ase/build/build.html)
+- [ASE: Surfaces, vacuum, and adsorbates](https://docs.ase-lib.org/ase/build/surface.html)
+- [ASE: The Atoms object and periodic boundary conditions](https://docs.ase-lib.org/ase/atoms.html)
+- [ASE: Constraints](https://docs.ase-lib.org/ase/constraints.html)
 - [pymatgen transformations](https://pymatgen.org/pymatgen.transformations.html)
 - [pymatgen interface construction](https://pymatgen.org/pymatgen.analysis.interfaces.html)
 - [pymatgen magnetic-structure analysis and enumeration](https://pymatgen.org/pymatgen.analysis.magnetism.html)
