@@ -146,6 +146,54 @@
       "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
       "caption": "Different starting candidates can relax into distinct local basins; all verified minima remain part of the evidence before comparable ranking.",
       "alt": "Double-well conceptual landscape with four starts descending into two retained local minima."
+    },
+    {
+      "id": "reference-protocol-continuity",
+      "guide_slug": "prepare-fixed-geometry-reference-calculation",
+      "path": "media/practical-guides/calculate-reference-ground-state/prepare-fixed-geometry-reference-calculation/protocol-continuity.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "An accepted geometry, preserved Hamiltonian identity, and declared numerical refinements feed one independently identified fixed-geometry reference calculation.",
+      "alt": "Flow from an optimized geometry through preserved method identity and declared numerical refinements to a fixed-geometry reference protocol."
+    },
+    {
+      "id": "fresh-restart-state-map",
+      "guide_slug": "compare-fresh-and-restarted-electronic-states",
+      "path": "media/practical-guides/calculate-reference-ground-state/compare-fresh-and-restarted-electronic-states/fresh-restart-map.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "A fresh path and one compatible restart reproduce the same declared state, while another completed restart remains a separate candidate branch.",
+      "alt": "Three electronic initialization paths, with a fresh and compatible restart joining one state and an alternative restart reaching a different state."
+    },
+    {
+      "id": "candidate-state-comparison",
+      "guide_slug": "compare-charge-spin-and-magnetic-candidates",
+      "path": "media/practical-guides/calculate-reference-ground-state/compare-charge-spin-and-magnetic-candidates/candidate-comparison.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "Candidate states enter a comparability and completion filter before a ranking that remains bounded by the accepted enumerated set.",
+      "alt": "Four electronic-state candidates passing through eligibility filters, leaving two states in a bounded energy ranking."
+    },
+    {
+      "id": "reference-state-lineage",
+      "guide_slug": "package-reusable-reference-state-lineage",
+      "path": "media/practical-guides/calculate-reference-ground-state/package-reusable-reference-state-lineage/reference-lineage.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "A hashed reference-state manifest binds structure, method, state, electronic artifacts, outputs, and declared downstream compatibility.",
+      "alt": "Structure, method, state, charge density, wavefunction, and output artifacts feeding a reference-state manifest and downstream compatibility check."
     }
   ]
 }
