@@ -3,9 +3,9 @@ from __future__ import annotations
 import json
 
 from pymatgen.core import Lattice, Structure
+from pymatgen.transformations.site_transformations import ReplaceSiteSpeciesTransformation
 from pymatgen.transformations.standard_transformations import (
     DeformStructureTransformation,
-    ReplaceSiteSpeciesTransformation,
     SupercellTransformation,
 )
 
