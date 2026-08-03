@@ -1,0 +1,27 @@
+from __future__ import annotations
+import argparse
+import json
+from pathlib import Path
+
+def run():
+    area, n_interfaces = 20.0, 2
+    cell, reservoirs = -1000.0, -998.8
+    matched_a, matched_b = -499.35, -499.15
+    cleaved_a, cleaved_b = -499.20, -499.00
+    gamma = (cell - reservoirs) / (n_interfaces * area)
+    binding = (cell - matched_a - matched_b) / area
+    separation = (cleaved_a + cleaved_b - cell) / area
+    assert round(gamma, 6) == -0.03 and round(binding, 6) == -0.075 and round(separation, 6) == 0.09
+    return {"fixture_type":"invented deterministic interface-energy ledger", "area_A2":area, "interfaces_in_periodic_cell":n_interfaces,
+            "interface_excess_eV_per_A2":gamma, "constrained_binding_eV_per_A2":binding, "work_of_separation_eV_per_A2":separation,
+            "terms_eV":{"combined_interface":cell,"reservoir_sum":reservoirs,"matched_fragment_A":matched_a,"matched_fragment_B":matched_b,"cleaved_fragment_A":cleaved_a,"cleaved_fragment_B":cleaved_b},
+            "evidence_boundary":"Arithmetic fixture only; no DFT calculation, convergence, stable interface, or fracture prediction."}
+
+def svg(r, p):
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(f'''<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" role="img" aria-labelledby="t d"><title id="t">Three interface energy cycles</title><desc id="d">Invented ledger distinguishes reservoir excess, constrained binding, and work of separation.</desc><rect width="1000" height="520" fill="#f8f5ee"/><text x="55" y="55" font-family="sans-serif" font-size="27" font-weight="700" fill="#172a3a">One contact, three distinct energy cycles</text><text x="55" y="90" font-family="sans-serif" font-size="16" fill="#52616b">Invented deterministic values · all results normalized by declared area</text><g font-family="sans-serif"><rect x="55" y="135" width="270" height="250" rx="14" fill="#e7eef1"/><text x="80" y="180" font-size="20" font-weight="700">Interface excess</text><text x="80" y="220" font-size="17">(Ecell − reservoirs)</text><text x="80" y="250" font-size="17">/ (2 interfaces × area)</text><text x="80" y="315" font-size="31" fill="#2b6f8c">{r['interface_excess_eV_per_A2']:.3f}</text><text x="80" y="345" font-size="15">eV / Å²</text><rect x="365" y="135" width="270" height="250" rx="14" fill="#fff" stroke="#9aa8af"/><text x="390" y="180" font-size="20" font-weight="700">Constrained binding</text><text x="390" y="220" font-size="17">Econtact − matched</text><text x="390" y="250" font-size="17">isolated fragments</text><text x="390" y="315" font-size="31" fill="#a33d2d">{r['constrained_binding_eV_per_A2']:.3f}</text><text x="390" y="345" font-size="15">eV / Å²</text><rect x="675" y="135" width="270" height="250" rx="14" fill="#fff" stroke="#9aa8af"/><text x="700" y="180" font-size="20" font-weight="700">Separation work</text><text x="700" y="220" font-size="17">cleaved fragments −</text><text x="700" y="250" font-size="17">contact, then / area</text><text x="700" y="315" font-size="31" fill="#704c8a">{r['work_of_separation_eV_per_A2']:.3f}</text><text x="700" y="345" font-size="15">eV / Å²</text></g><text x="500" y="455" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="700" fill="#243746">A shared unit does not make reference states interchangeable</text><text x="500" y="485" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#52616b">No DFT, material structure, convergence series, or fracture calculation was run.</text></svg>''', encoding="utf8")
+
+if __name__ == '__main__':
+    a=argparse.ArgumentParser(); a.add_argument('--svg',type=Path); x=a.parse_args(); r=run()
+    if x.svg: svg(r,x.svg)
+    print(json.dumps(r,indent=2))

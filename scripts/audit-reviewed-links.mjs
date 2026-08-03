@@ -284,7 +284,10 @@ async function mapWithConcurrency(values, concurrency, mapper) {
 }
 
 const startedAt = new Date().toISOString();
-let results = await mapWithConcurrency(allEntries, 4, auditEntry);
+// Some official documentation hosts throttle bursts even when every URL is valid.
+// A bounded two-request audit keeps the reachability check strict while avoiding
+// self-induced transient transport failures.
+let results = await mapWithConcurrency(allEntries, 2, auditEntry);
 const fallbackIndices = results
   .map((result, index) => ({ result, index }))
   .filter(({ result }) => [401, 403].includes(result.status))

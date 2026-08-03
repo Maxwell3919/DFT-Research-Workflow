@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 114,
+  "expected_unique_urls": 119,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -10,8 +10,6 @@
       "review": "docs/reviews/2026-08-03-obtain-material-structure.md",
       "links": [
         { "kind": "doi", "url": "https://doi.org/10.1107/S010876739101067X" },
-        { "kind": "page", "url": "https://www.iucr.org/resources/cif/documentation" },
-        { "kind": "page", "url": "https://www.iucr.org/resources/cif/dictionaries/browse/cif_core1" },
         { "kind": "page", "url": "https://checkcif.iucr.org/" },
         { "kind": "page", "url": "https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project" },
         { "kind": "page", "url": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data" },
@@ -219,6 +217,23 @@
         { "kind": "doi", "url": "https://doi.org/10.1063/1.1329672" },
         { "kind": "page", "url": "https://docs.ase-lib.org/ase/build/surface.html" },
         { "kind": "page", "url": "https://pymatgen.org/pymatgen.core.html#pymatgen.core.adsorption.AdsorbateSiteFinder" }
+      ]
+    },
+    {
+      "topic_slug": "interface-and-heterostructure-energetics",
+      "article": "src/content/topics/interface-and-heterostructure-energetics.md",
+      "review": "docs/reviews/2026-08-04-interface-and-heterostructure-energetics.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1063/1.333084" },
+        { "kind": "doi", "url": "https://doi.org/10.1038/s41524-019-0160-9" },
+        { "kind": "page", "url": "https://pymatgen.org/pymatgen.analysis.interfaces.html" },
+        { "kind": "doi", "url": "https://doi.org/10.1039/D4DD00031E" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.91.165413" },
+        { "kind": "page", "url": "https://arxiv.org/abs/1504.06192" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.68.125403" },
+        { "kind": "doi", "url": "https://doi.org/10.1038/s41467-024-45003-w" },
+        { "kind": "page", "url": "https://www.2dhub.org/bidb/bidb.html" },
+        { "kind": "doi", "url": "https://doi.org/10.1038/s41699-021-00200-9" }
       ]
     }
   ]

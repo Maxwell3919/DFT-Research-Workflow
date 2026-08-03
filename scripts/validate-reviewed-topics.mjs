@@ -71,8 +71,6 @@ const reviewedTopicSpecifications = {
     ],
     sources: [
       'https://doi.org/10.1107/S010876739101067X',
-      'https://www.iucr.org/resources/cif/documentation',
-      'https://www.iucr.org/resources/cif/dictionaries/browse/cif_core1',
       'https://checkcif.iucr.org/',
       'https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project',
       'https://docs.materialsproject.org/downloading-data/using-the-api/querying-data',
