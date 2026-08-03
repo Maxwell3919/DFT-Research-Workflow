@@ -92,6 +92,10 @@ artifact.
 
 - A normal documentation page must return HTTP 2xx after redirects and must not
   expose a 404/not-found title or first-level heading.
+- A page that returns HTTP 401 or 403 to the ordinary client is retried once in a
+  controlled headless Chrome session. The resulting access method, HTTP status,
+  final URL, title/heading check, and outcome are written to the artifact. Other
+  non-success statuses do not receive this fallback.
 - A DOI is checked at `doi.org`. HTTP 2xx or a valid redirect to a publisher is
   accepted. This proves that the DOI resolver recognizes the identifier; it does
   not assert publisher access after the redirect.
@@ -103,6 +107,25 @@ The network job is independent of the static build. A source outage therefore
 cannot be disguised as a successful browser-rendering check, and an external
 outage is not misreported as an Astro build failure.
 
+## Observed corrective runs
+
+The first network run tested all 33 URLs. It returned 31 successes and two HTTP
+403 responses from the IUCr documentation host. The four replacement ASE pages
+all returned HTTP 200, and every DOI resolver returned an accepted redirect.
+
+The follow-up run retained the original HTTP results and applied the controlled
+browser fallback only to the two IUCr 403 cases. Both IUCr pages then returned
+HTTP 200 with non-404 documents. The complete result was 33/33 reachable under
+the declared semantics:
+
+- 31 sources passed through ordinary HTTP requests;
+- 2 IUCr sources passed through the recorded browser fallback;
+- no 404 or soft-404 destination remained;
+- the machine-readable audit artifact was uploaded by CI.
+
+The exact accepted run and final project commit are recorded after merge in the
+project PR and Research-Ops handoff.
+
 ## Time boundary
 
 External reachability is an observation at the audit run time, not a permanent
@@ -110,6 +133,3 @@ property. A passing run does not guarantee future availability, regional access,
 publisher access, or semantic correctness. A failing future scheduled run means
 the link requires review; it does not automatically invalidate every scientific
 statement previously supported by that source.
-
-The accepted project PR and Research-Ops handoff record the exact successful CI
-run, final project commit, and Pages deployment associated with this audit.
