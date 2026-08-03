@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+  <title id="title">Slab, adsorbate, and vacuum model</title>
+  <desc id="desc">Three atomic layers occupy the middle of a tall periodic cell, with an adsorbate above the top layer and vacuum above and below.</desc>
+  <rect width="960" height="500" fill="#ffffff"/>
+  <rect x="150" y="50" width="660" height="390" fill="none" stroke="#455a64" stroke-width="4"/>
+  <g stroke="#b0bec5" stroke-width="2" stroke-dasharray="10 9">
+    <line x1="150" y1="145" x2="810" y2="145"/>
+    <line x1="150" y1="365" x2="810" y2="365"/>
+  </g>
+  <g fill="#607d8b">
+    <circle cx="240" cy="285" r="18"/><circle cx="360" cy="285" r="18"/><circle cx="480" cy="285" r="18"/><circle cx="600" cy="285" r="18"/><circle cx="720" cy="285" r="18"/>
+    <circle cx="300" cy="325" r="18"/><circle cx="420" cy="325" r="18"/><circle cx="540" cy="325" r="18"/><circle cx="660" cy="325" r="18"/>
+    <circle cx="240" cy="365" r="18"/><circle cx="360" cy="365" r="18"/><circle cx="480" cy="365" r="18"/><circle cx="600" cy="365" r="18"/><circle cx="720" cy="365" r="18"/>
+  </g>
+  <circle cx="480" cy="225" r="16" fill="#123f70"/>
+  <g fill="#1a1a1a" font-family="Georgia, serif" font-size="25">
+    <text x="185" y="105">vacuum region</text>
+    <text x="515" y="220">adsorbate candidate</text>
+    <text x="185" y="420">finite slab</text>
+  </g>
+  <g stroke="#123f70" stroke-width="3" fill="none">
+    <path d="M460 220 H390"/><path d="M402 208 L388 220 L402 232"/>
+    <path d="M855 95 V390"/><path d="M843 110 L855 95 L867 110"/><path d="M843 375 L855 390 L867 375"/>
+  </g>
+  <text x="875" y="250" transform="rotate(90 875 250)" fill="#123f70" font-family="Georgia, serif" font-size="24">declared out-of-plane direction</text>
+</svg>
