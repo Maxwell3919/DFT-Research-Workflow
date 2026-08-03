@@ -59,6 +59,11 @@ SURFACE_ANALYSIS_SCRIPTS = [
     "work_function_potential.py",
     "intermat_si_surfaces.py",
 ]
+ADSORPTION_ANALYSIS_SCRIPTS = [
+    "adsorption_energy_ledger.py",
+    "adsorption_state_grid.py",
+    "cmr_co_adsorption.py",
+]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
@@ -69,6 +74,7 @@ SCRIPTS = [
     *CONVEX_HULL_ANALYSIS_SCRIPTS,
     *DEFECT_ANALYSIS_SCRIPTS,
     *SURFACE_ANALYSIS_SCRIPTS,
+    *ADSORPTION_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -98,9 +104,9 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 27
+    assert len(results) == 30
     report = {
-        "schema_version": 9,
+        "schema_version": 10,
         "project_root": str(ROOT),
         "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "versions": observed_versions,
@@ -113,14 +119,15 @@ def main() -> None:
         "convex_hull_analysis_scripts": CONVEX_HULL_ANALYSIS_SCRIPTS,
         "defect_analysis_scripts": DEFECT_ANALYSIS_SCRIPTS,
         "surface_analysis_scripts": SURFACE_ANALYSIS_SCRIPTS,
+        "adsorption_analysis_scripts": ADSORPTION_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
             "Execution establishes declared structural transformations, synthetic convergence-table "
             "analysis, bounded ASE/EMT or synthetic optimization diagnostics, and deterministic "
-            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect and surface analysis, and frozen public-data convex-hull and Si-surface redraws only; "
+            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface and adsorption analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
             "it does not establish DFT convergence, a physical minimum, a real reference ground state, "
-            "a material formation or surface energy, real work function, defect charge state or concentration, physical EOS or phase transition, independent database validation, "
+            "a material formation, surface or adsorption energy, real work function, defect charge state or concentration, physical EOS or phase transition, independent database validation, "
             "candidate completeness, stability, transferability, or a scientific conclusion."
         ),
     }
@@ -135,11 +142,11 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 27/27 examples; four structural transformations, "
+        "Practical guide execution passed: 30/30 examples; four structural transformations, "
         "four synthetic convergence analyses, four bounded optimization diagnostics, and "
         "four deterministic reference-state diagnostics, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
-        "and one frozen public-data Si-surface redraw under pinned versions."
+        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, and one frozen public-data CMR adsorption redraw under pinned versions."
     )
 
 

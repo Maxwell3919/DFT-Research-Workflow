@@ -81,7 +81,17 @@
     { "id": "gpaw-dipole-correction", "url": "https://gpaw.readthedocs.io/tutorialsexercises/electrostatics/dipole_correction/dipole.html", "kind": "page" },
     { "id": "intermat-paper", "url": "https://doi.org/10.1039/D4DD00031E", "kind": "doi" },
     { "id": "intermat-nist-pdf", "url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957179", "kind": "page" },
-    { "id": "cc-by-3", "url": "https://creativecommons.org/licenses/by/3.0/", "kind": "page" }
+    { "id": "cc-by-3", "url": "https://creativecommons.org/licenses/by/3.0/", "kind": "page" },
+    { "id": "cmr-adsorption-paper", "url": "https://doi.org/10.1021/acs.jpcc.7b12258", "kind": "doi" },
+    { "id": "cmr-adsorption-page", "url": "https://cmr.fysik.dtu.dk/adsorption/adsorption.html", "kind": "page" },
+    { "id": "cmr-adsorption-db", "url": "https://wiki.fysik.dtu.dk/cmr-files/adsorption.db", "kind": "page" },
+    { "id": "cmr-data-license", "url": "https://cmr.fysik.dtu.dk/index.html", "kind": "page" },
+    { "id": "campbell-adsorbate-entropy", "url": "https://doi.org/10.1021/ja3080117", "kind": "doi" },
+    { "id": "campbell-entropy-correction", "url": "https://doi.org/10.1021/ja407293b", "kind": "doi" },
+    { "id": "norskov-che", "url": "https://doi.org/10.1021/jp047349j", "kind": "doi" },
+    { "id": "reuter-surface-thermodynamics", "url": "https://doi.org/10.1103/PhysRevB.65.035406", "kind": "doi" },
+    { "id": "neugebauer-scheffler-adlayers", "url": "https://doi.org/10.1103/PhysRevB.46.16067", "kind": "doi" },
+    { "id": "pymatgen-adsorption-api", "url": "https://pymatgen.org/pymatgen.core.html#pymatgen.core.adsorption.AdsorbateSiteFinder", "kind": "page" }
   ],
   "guides": [
     {
@@ -195,6 +205,18 @@
     {
       "guide_slug": "compare-intermat-si-surfaces",
       "source_ids": ["intermat-paper", "intermat-nist-pdf", "cc-by-3"]
+    },
+    {
+      "guide_slug": "build-adsorption-energy-ledger",
+      "source_ids": ["cmr-adsorption-paper", "campbell-adsorbate-entropy", "campbell-entropy-correction", "norskov-che", "reuter-surface-thermodynamics"]
+    },
+    {
+      "guide_slug": "compare-adsorption-sites-and-coverage",
+      "source_ids": ["neugebauer-scheffler-adlayers", "ase-surface", "pymatgen-adsorption-api", "cmr-adsorption-paper"]
+    },
+    {
+      "guide_slug": "replot-cmr-co-adsorption",
+      "source_ids": ["cmr-adsorption-paper", "cmr-adsorption-page", "cmr-adsorption-db", "cmr-data-license"]
     }
   ]
 }
