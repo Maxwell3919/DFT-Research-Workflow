@@ -92,6 +92,7 @@ try {
   await inspect(page, 390);
 
   const noJsPage = await browser.newPage();
+  await noJsPage.setCacheEnabled(false);
   await noJsPage.setJavaScriptEnabled(false);
   response = await noJsPage.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
   if (response?.status() !== 200) throw new Error(`convergence overview no-JavaScript route returned ${response?.status()}`);

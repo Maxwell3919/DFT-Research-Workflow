@@ -217,6 +217,7 @@ try {
   }
 
   const noJsPage = await browser.newPage();
+  await noJsPage.setCacheEnabled(false);
   await noJsPage.setJavaScriptEnabled(false);
   await noJsPage.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
   const noJsTopicLinks = await noJsPage.$$eval('.topic-list a', (links) => links.map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)));
