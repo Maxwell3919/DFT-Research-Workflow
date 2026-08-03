@@ -18,6 +18,7 @@
     { "id": "phonopy-setting-tags", "url": "https://phonopy.github.io/phonopy/setting-tags.html", "kind": "page" },
     { "id": "phono3py-workflow", "url": "https://phonopy.github.io/phono3py/workflow.html", "kind": "page" },
     { "id": "phono3py-api", "url": "https://phonopy.github.io/phono3py/api-reference.html", "kind": "page" },
+    { "id": "phono3py-direct-lbte", "url": "https://phonopy.github.io/phono3py/direct-solution.html", "kind": "page" },
     { "id": "vasp-berry-phases-finite-fields", "url": "https://vasp.at/wiki/Berry_phases_and_finite_electric_fields", "kind": "page" },
     { "id": "qe-polarization-user-guide", "url": "https://www.quantum-espresso.org/Doc/pw_user_guide/node10.html", "kind": "page" },
     { "id": "monkhorst-pack", "url": "https://doi.org/10.1103/PhysRevB.13.5188", "kind": "doi" },
@@ -270,6 +271,7 @@
     { "guide_slug": "unwrap-a-polarization-branch-path", "source_ids": ["vasp-berry-phases-finite-fields", "qe-polarization-user-guide"] },
     { "guide_slug": "check-piezoelectric-tensor-ledger", "source_ids": ["vasp-electric-field-dfpt", "vasp-linear-response", "qe-ph-75"] },
     { "guide_slug": "check-harmonic-mode-ledger", "source_ids": ["qe-ph-75", "phonopy-command", "phonopy-setting-tags"] },
-    { "guide_slug": "check-anharmonic-linewidth-ledger", "source_ids": ["phono3py-workflow", "phono3py-api"] }
+    { "guide_slug": "check-anharmonic-linewidth-ledger", "source_ids": ["phono3py-workflow", "phono3py-api"] },
+    { "guide_slug": "check-lattice-transport-tensor-ledger", "source_ids": ["phono3py-direct-lbte", "phono3py-api"] }
   ]
 }
