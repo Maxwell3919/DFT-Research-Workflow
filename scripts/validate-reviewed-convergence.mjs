@@ -62,6 +62,7 @@ for (const source of [
   'https://doi.org/10.1126/science.aad3000',
   'https://doi.org/10.1038/s41524-018-0127-2',
   'https://archive.materialscloud.org/record/2021.76',
+  'https://doi.org/10.1016/j.cpc.2018.01.012',
   'https://doi.org/10.1103/PhysRevB.73.233103',
   'https://doi.org/10.1103/RevModPhys.86.253',
   'https://doi.org/10.1103/RevModPhys.73.515',
@@ -106,4 +107,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log('Reviewed convergence valid: 16 natural sections, observable-specific boundaries, exact source coverage, O09/O20 migration boundary, and no universal parameter prescription.');
+console.log('Reviewed convergence valid: 16 natural sections, observable-specific boundaries, exact 12-source coverage, O09/O20 migration boundary, and no universal parameter prescription.');
