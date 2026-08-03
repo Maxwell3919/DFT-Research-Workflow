@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 128,
+  "expected_unique_urls": 133,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -252,6 +252,22 @@
         { "kind": "page", "url": "https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/notes_interpolations/" },
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.139.A796" },
         { "kind": "doi", "url": "https://doi.org/10.1063/1.1564060" }
+      ]
+    },
+    {
+      "topic_slug": "density-of-states-and-projected-density-of-states",
+      "article": "src/content/topics/density-of-states-and-projected-density-of-states.md",
+      "review": "docs/reviews/2026-08-04-density-of-states-and-projected-density-of-states.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1007/BF01341914" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.140.A1133" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.49.16223" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.40.3616" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.82.3296" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_DOS.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html" },
+        { "kind": "page", "url": "https://vasp.at/wiki/DOSCAR" },
+        { "kind": "page", "url": "https://vasp.at/wiki/LORBIT" }
       ]
     }
   ]

@@ -144,6 +144,12 @@ const reviewRequirements = new Map([
     'Execution success is not eigenvalue convergence',
     'The media are original conceptual diagrams of invented data.',
   ]],
+  ['docs/reviews/2026-08-04-density-of-states-and-projected-density-of-states.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented DOS and projection arrays.',
+    'Execution success is not DOS convergence',
+    'The media are original conceptual diagrams of invented data.',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
