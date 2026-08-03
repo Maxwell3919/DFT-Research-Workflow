@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "source": {
+    "title": "Benchmark Database of Transition Metal Surface and Adsorption Energies from Many-Body Perturbation Theory",
+    "authors": "Per S. Schmidt and Kristian S. Thygesen",
+    "doi": "https://doi.org/10.1021/acs.jpcc.7b12258",
+    "project_page": "https://cmr.fysik.dtu.dk/adsorption/adsorption.html",
+    "database_url": "https://wiki.fysik.dtu.dk/cmr-files/adsorption.db",
+    "database_sha256": "2ea151bbf599868fb48d615b784f8bf9c82cac94f51baf85697e1c28e025e9bf",
+    "database_bytes": 3719168,
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://cmr.fysik.dtu.dk/index.html",
+    "accessed_at": "2026-08-04"
+  },
+  "calculation_scope": {
+    "reaction": "CO(g) + slab -> CO/slab",
+    "sign_convention": "products minus reactants; negative is favourable",
+    "coverage": "full coverage in the broad CMR benchmark",
+    "surface": "top site on fcc(111)",
+    "slab": "three layers; top layer and adsorbate positions relaxed with PBE as documented by CMR",
+    "reported_unit": "eV per written reaction",
+    "extraction": "exact selected scalar fields from database rows; no coordinates or publisher figure copied"
+  },
+  "rows": [
+    {
+      "db_row_id": 109,
+      "formula": "Cu3CO",
+      "surface": "Cu",
+      "adsorbate": "CO",
+      "PBE_adsorp_eV": 0.26296094060496955,
+      "RPBE_adsorp_eV": 0.7491507512699993,
+      "BEEFvdW_adsorp_eV": 0.5160245438000004,
+      "RPA_EXX_adsorp_eV": 0.20244727182249012
+    },
+    {
+      "db_row_id": 116,
+      "formula": "Pd3CO",
+      "surface": "Pd",
+      "adsorbate": "CO",
+      "PBE_adsorp_eV": -0.6815024201549509,
+      "RPBE_adsorp_eV": -0.2103305210999995,
+      "BEEFvdW_adsorp_eV": -0.33671274519997496,
+      "RPA_EXX_adsorp_eV": -0.6701934576978728
+    },
+    {
+      "db_row_id": 124,
+      "formula": "Pt3CO",
+      "surface": "Pt",
+      "adsorbate": "CO",
+      "PBE_adsorp_eV": -0.9462321972171281,
+      "RPBE_adsorp_eV": -0.4782006710000033,
+      "BEEFvdW_adsorp_eV": -0.5802242592000084,
+      "RPA_EXX_adsorp_eV": -0.8741823538689486
+    },
+    {
+      "db_row_id": 125,
+      "formula": "Au3CO",
+      "surface": "Au",
+      "adsorbate": "CO",
+      "PBE_adsorp_eV": 0.10460172409057478,
+      "RPBE_adsorp_eV": 0.4905864221599998,
+      "BEEFvdW_adsorp_eV": 0.31525864980005736,
+      "RPA_EXX_adsorp_eV": 0.22010958064846609
+    }
+  ],
+  "evidence_boundary": "This frozen subset is an attributed extraction from a public database. It is not a rerun or independent validation of the source calculations."
+}

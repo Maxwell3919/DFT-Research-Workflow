@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 102,
+  "expected_unique_urls": 114,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -198,6 +198,27 @@
         { "kind": "doi", "url": "https://doi.org/10.1039/D4DD00031E" },
         { "kind": "page", "url": "https://vasp.at/wiki/Computing_the_work_function" },
         { "kind": "page", "url": "https://gpaw.readthedocs.io/tutorialsexercises/electrostatics/dipole_correction/dipole.html" }
+      ]
+    },
+    {
+      "topic_slug": "adsorption-energies",
+      "article": "src/content/topics/adsorption-energies.md",
+      "review": "docs/reviews/2026-08-04-adsorption-energies.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1021/acs.jpcc.7b12258" },
+        { "kind": "page", "url": "https://cmr.fysik.dtu.dk/adsorption/adsorption.html" },
+        { "kind": "page", "url": "https://wiki.fysik.dtu.dk/cmr-files/adsorption.db" },
+        { "kind": "page", "url": "https://cmr.fysik.dtu.dk/index.html" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.85.235149" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.46.16067" },
+        { "kind": "doi", "url": "https://doi.org/10.1021/ja3080117" },
+        { "kind": "doi", "url": "https://doi.org/10.1021/ja407293b" },
+        { "kind": "doi", "url": "https://doi.org/10.1021/jp047349j" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.65.035406" },
+        { "kind": "doi", "url": "https://doi.org/10.1080/00268977000101561" },
+        { "kind": "doi", "url": "https://doi.org/10.1063/1.1329672" },
+        { "kind": "page", "url": "https://docs.ase-lib.org/ase/build/surface.html" },
+        { "kind": "page", "url": "https://pymatgen.org/pymatgen.core.html#pymatgen.core.adsorption.AdsorbateSiteFinder" }
       ]
     }
   ]

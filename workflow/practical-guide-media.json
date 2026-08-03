@@ -338,6 +338,42 @@
       "reuse_basis": "Original plot generated from numerical facts transcribed from InterMat Table 1 under CC BY 3.0 with attribution; no publisher figure or table layout was copied.",
       "caption": "Published OptB88vdW and experimental work functions and surface energies for three unreconstructed non-polar Si facets, redrawn from InterMat Table 1 without rerunning DFT.",
       "alt": "Two paired-dot panels comparing published InterMat OptB88vdW and experimental values for Si 111, 110, and 001 work functions and surface energies."
+    },
+    {
+      "id": "adsorption-energy-ledger",
+      "guide_slug": "build-adsorption-energy-ledger",
+      "path": "media/practical-guides/adsorption-energies/build-adsorption-energy-ledger/adsorption-energy-ledger.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-04",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original deterministic project diagram generated from invented adsorption-energy and free-energy ledger terms; no material calculation or external figure was copied.",
+      "caption": "An invented molecular adsorption reaction exposes its sign and large total-energy terms, while separate panels distinguish average from differential adsorption and add declared free-energy contributions once.",
+      "alt": "Conceptual adsorption ledger showing products-minus-reactants arithmetic, average and differential coverage energies, and additive free-energy terms."
+    },
+    {
+      "id": "adsorption-state-grid",
+      "guide_slug": "compare-adsorption-sites-and-coverage",
+      "path": "media/practical-guides/adsorption-energies/compare-adsorption-sites-and-coverage/adsorption-state-grid.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-04",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original deterministic project plot generated from an invented site, coverage, and cell grid; no material calculation or external figure was copied.",
+      "caption": "Synthetic site-energy curves illustrate coverage-dependent ordering, a starting-site label that changes after relaxation, and a separate fixed-coverage cell comparison.",
+      "alt": "Synthetic adsorption energies for top, bridge, and hollow starts at three coverages with notes about final-site relabelling and finite-cell spread."
+    },
+    {
+      "id": "cmr-co-adsorption",
+      "guide_slug": "replot-cmr-co-adsorption",
+      "path": "media/practical-guides/adsorption-energies/replot-cmr-co-adsorption/cmr-co-adsorption.svg",
+      "provenance_type": "derived-public-data",
+      "created_at": "2026-08-04",
+      "source_url": "https://cmr.fysik.dtu.dk/adsorption/adsorption.html",
+      "accessed_at": "2026-08-04",
+      "reuse_basis": "Original plot generated from four exact rows of the CC BY-SA 4.0 CMR adsorption database with attribution; no publisher or repository figure was copied.",
+      "caption": "Published full-coverage CO adsorption energies on Cu, Pd, Pt, and Au fcc(111) from four methods, redrawn from a hash-bound CMR snapshot without rerunning the calculations.",
+      "alt": "Dot plot of published PBE, RPBE, BEEF-vdW, and RPA plus exact-exchange CO adsorption energies for Cu, Pd, Pt, and Au 111 surfaces."
     }
   ]
 }
