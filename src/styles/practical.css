@@ -1,0 +1,161 @@
+.practical-resources {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #dcdcdc;
+}
+
+.practical-resources > header p {
+  margin-top: 0.35rem;
+  color: #666666;
+  font-size: 0.96rem;
+}
+
+.practical-group { margin-top: 2.4rem; }
+
+.practical-group h3 {
+  margin-top: 0;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.practical-card-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.practical-card-list li {
+  min-width: 0;
+  padding: 1rem 1.05rem;
+  border: 1px solid #dcdcdc;
+  background: #fafafa;
+}
+
+.practical-card-list li > a {
+  display: inline-block;
+  font-weight: 700;
+}
+
+.practical-card-list p {
+  margin: 0.5rem 0 0.8rem;
+  color: #4f4f4f;
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+.tool-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.tool-tag {
+  display: inline-block;
+  padding: 0.12rem 0.42rem;
+  border: 1px solid #d5d5d5;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #555555;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.practical-page .page-intro { margin-bottom: 2rem; }
+
+.guide-meta {
+  display: grid;
+  gap: 0;
+  margin: 0 0 1.5rem;
+  border-top: 1px solid #e4e4e4;
+}
+
+.guide-meta > div {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.guide-meta dt {
+  color: #666666;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.guide-meta dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.evidence-note {
+  margin: 1.5rem 0 2.4rem;
+  padding: 0.9rem 1rem;
+  border-left: 3px solid #7b8793;
+  background: #f7f8f9;
+  color: #444444;
+  font-size: 0.94rem;
+}
+
+.evidence-note p:last-child { margin-bottom: 0; }
+
+.article-content pre {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 1rem;
+  border: 1px solid #dedede;
+  background: #f7f7f7;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.article-content code,
+.guide-meta code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+}
+
+.article-content :not(pre) > code,
+.guide-meta code {
+  padding: 0.08rem 0.25rem;
+  background: #f1f1f1;
+  overflow-wrap: anywhere;
+}
+
+.guide-media {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #dcdcdc;
+}
+
+.guide-media figure { margin: 1.4rem 0 0; }
+
+.guide-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #dedede;
+  background: #ffffff;
+}
+
+.guide-media figcaption {
+  margin-top: 0.65rem;
+  color: #606060;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 42rem) {
+  .practical-card-list { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 32rem) {
+  .guide-meta > div {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}
