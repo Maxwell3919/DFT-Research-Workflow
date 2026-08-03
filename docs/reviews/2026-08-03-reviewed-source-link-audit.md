@@ -14,7 +14,7 @@ None of these checks validates a material, model, method, numerical result, or s
 
 ## Current scope
 
-The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers twenty-two reviewed article/review pairs:
+The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers twenty-three reviewed article/review pairs:
 
 - Obtain a Material Structure;
 - Build or Modify a Computational Model;
@@ -38,8 +38,9 @@ The machine-readable authority is `sources/reviewed-links.json`. The current inv
 - Magnetic Configuration and Ground-State Comparison.
 - Magnetic Anisotropy and Exchange Interactions.
 - Elastic Constants and Mechanical Properties.
+- Dielectric Response and Born Effective Charges.
 
-The manifest declares 158 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
+The manifest declares 161 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
 
 Any undeclared URL, missing URL, duplicate URL inside one topic, inconsistent source kind, non-HTTPS URL, unexpected unique-URL count, or retired ASE host fails deterministic validation.
 
@@ -60,7 +61,7 @@ The Adsorption Energies authoring environment completed a fresh 114/114 network 
 
 ## Semantic review boundary
 
-All twenty-two article/review pairs are required to use exact bounded source inventories. The current source classes include:
+All twenty-three article/review pairs are required to use exact bounded source inventories. The current source classes include:
 
 - crystallographic standards, databases, and symmetry documentation;
 - ASE and pymatgen implementation documentation plus primary model-construction methods;
@@ -74,6 +75,7 @@ All twenty-two article/review pairs are required to use exact bounded source inv
 - primary Bloch, Kohn--Sham, standardized reciprocal-path, density-of-states, Wannier-interpolation, Luttinger-volume, GW, screened-hybrid, charge-partitioning, potential-lineup, COHP, plane-wave projection, ELF, and density-topology sources, plus official SeeK-path, Quantum ESPRESSO, VASP, Wannier90, and COHP documentation for the D2 electronic-structure topics.
 - primary local-spin-density exchange theory and official noncollinear/SOC directional-energy documentation for the D2 magnetic-anisotropy and exchange topic.
 - primary quantum-mechanical stress and elastic-stability methods plus official finite-difference elastic-modulus documentation for the D3 elastic-response topic.
+- primary DFPT response methods and official Quantum ESPRESSO/VASP dielectric and Born-effective-charge documentation for the D3 dielectric-response topic.
 
 A source reused by two topics is not duplicated into two network requests. Reuse does not broaden the source beyond the statements reviewed in each topic.
 

@@ -117,7 +117,9 @@
     { "id": "deringer-plane-wave-cohp", "url": "https://doi.org/10.1021/jp202489s", "kind": "doi" },
     { "id": "vasp-magnetic-anisotropy", "url": "https://vasp.at/wiki/Determining_the_Magnetic_Anisotropy", "kind": "page" },
     { "id": "vasp-lsorbit", "url": "https://vasp.at/wiki/LSORBIT", "kind": "page" },
-    { "id": "vasp-phonons-finite-differences", "url": "https://vasp.at/wiki/Phonons_from_finite_differences", "kind": "page" }
+    { "id": "vasp-phonons-finite-differences", "url": "https://vasp.at/wiki/Phonons_from_finite_differences", "kind": "page" },
+    { "id": "vasp-born-effective-charges", "url": "https://vasp.at/wiki/Born_effective_charges", "kind": "page" },
+    { "id": "vasp-electric-field-dfpt", "url": "https://vasp.at/wiki/Electric_field_response_from_density-functional-perturbation_theory", "kind": "page" }
   ],
   "guides": [
     {
@@ -256,6 +258,7 @@
     { "guide_slug": "integrate-a-declared-cohp-energy-window", "source_ids": ["dronskowski-bloechl-cohp", "deringer-plane-wave-cohp"] },
     { "guide_slug": "compare-enumerated-magnetic-candidates", "source_ids": ["qe-pw-75", "vasp-magmom"] },
     { "guide_slug": "fit-anisotropy-and-exchange-ledger", "source_ids": ["qe-pw-75", "vasp-magnetic-anisotropy", "vasp-lsorbit"] },
-    { "guide_slug": "check-strain-stress-ledger", "source_ids": ["nielsen-martin-stress", "mouhat-elastic-stability", "vasp-phonons-finite-differences"] }
+    { "guide_slug": "check-strain-stress-ledger", "source_ids": ["nielsen-martin-stress", "mouhat-elastic-stability", "vasp-phonons-finite-differences"] },
+    { "guide_slug": "check-born-charge-and-dielectric-ledger", "source_ids": ["qe-ph-75", "vasp-born-effective-charges", "vasp-electric-field-dfpt"] }
   ]
 }
