@@ -27,6 +27,15 @@ const navigation = [
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
+    <style is:inline>
+      :root, html, body {
+        background: #ffffff;
+        color: #1a1a1a;
+      }
+      body {
+        font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, "Times New Roman", serif;
+      }
+    </style>
     <title>{pageTitle}</title>
   </head>
   <body>
