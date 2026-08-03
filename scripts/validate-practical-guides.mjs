@@ -228,6 +228,12 @@ const reviewRequirements = new Map([
     'Execution success is not a phonon calculation',
     'The media are an original diagram generated from invented values',
   ]],
+  ['docs/reviews/2026-08-04-electron-phonon-coupling.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented channel strengths and weights',
+    'Execution success is not an EPC calculation',
+    'The media are an original diagram generated from invented values',
+  ]],
 ]);
 
 function parseFrontmatter(source) {

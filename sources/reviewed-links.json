@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 187,
+  "expected_unique_urls": 192,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -429,6 +429,19 @@
         { "kind": "page", "url": "https://phonopy.github.io/phono3py/direct-solution.html" },
         { "kind": "page", "url": "https://phonopy.github.io/phono3py/inter-band-transport.html" },
         { "kind": "page", "url": "https://www.shengbte.org/documentation" }
+      ]
+    },
+    {
+      "topic_slug": "electron-phonon-coupling",
+      "article": "src/content/topics/electron-phonon-coupling.md",
+      "review": "docs/reviews/2026-08-04-electron-phonon-coupling.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.89.015003" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node10.html" },
+        { "kind": "page", "url": "https://docs.epw-code.org/Theory.html" },
+        { "kind": "page", "url": "https://docs.epw-code.org/doc/Electron-phononCoupling.html" },
+        { "kind": "page", "url": "https://docs.epw-code.org/tutorials/tutorial_01/index.html" }
       ]
     },
     {

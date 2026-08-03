@@ -89,6 +89,7 @@ PIEZOELECTRIC_ANALYSIS_SCRIPTS = ["piezoelectric_tensor_ledger.py"]
 HARMONIC_PHONON_ANALYSIS_SCRIPTS = ["harmonic_mode_ledger.py"]
 ANHARMONIC_PHONON_ANALYSIS_SCRIPTS = ["anharmonic_linewidth_ledger.py"]
 LATTICE_THERMAL_TRANSPORT_ANALYSIS_SCRIPTS = ["thermal_transport_tensor_ledger.py"]
+EPC_ANALYSIS_SCRIPTS = ["epc_channel_ledger.py"]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
@@ -116,6 +117,7 @@ SCRIPTS = [
     *HARMONIC_PHONON_ANALYSIS_SCRIPTS,
     *ANHARMONIC_PHONON_ANALYSIS_SCRIPTS,
     *LATTICE_THERMAL_TRANSPORT_ANALYSIS_SCRIPTS,
+    *EPC_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -145,7 +147,7 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 49
+    assert len(results) == 50
     report = {
         "schema_version": 10,
         "project_root": str(ROOT),
@@ -177,6 +179,7 @@ def main() -> None:
         "harmonic_phonon_analysis_scripts": HARMONIC_PHONON_ANALYSIS_SCRIPTS,
         "anharmonic_phonon_analysis_scripts": ANHARMONIC_PHONON_ANALYSIS_SCRIPTS,
         "lattice_thermal_transport_analysis_scripts": LATTICE_THERMAL_TRANSPORT_ANALYSIS_SCRIPTS,
+        "epc_analysis_scripts": EPC_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
