@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
+  "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
+  "topics": [
+    {
+      "topic_slug": "obtain-material-structure",
+      "article": "src/content/topics/obtain-material-structure.md",
+      "review": "docs/reviews/2026-08-03-obtain-material-structure.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1107/S010876739101067X" },
+        { "kind": "page", "url": "https://www.iucr.org/resources/cif/documentation" },
+        { "kind": "page", "url": "https://www.iucr.org/resources/cif/dictionaries/browse/cif_core1" },
+        { "kind": "page", "url": "https://checkcif.iucr.org/" },
+        { "kind": "page", "url": "https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project" },
+        { "kind": "page", "url": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data" },
+        { "kind": "page", "url": "https://docs.materialsproject.org/frequently-asked-questions" },
+        { "kind": "page", "url": "https://www.crystallography.net/cod/" },
+        { "kind": "page", "url": "https://spglib.readthedocs.io/en/v2.7.0/api/autodoc/spglib.html" }
+      ]
+    },
+    {
+      "topic_slug": "build-or-modify-computational-model",
+      "article": "src/content/topics/build-or-modify-computational-model.md",
+      "review": "docs/reviews/2026-08-03-build-computational-model.md",
+      "links": [
+        { "kind": "page", "url": "https://docs.ase-lib.org/ase/build/build.html" },
+        { "kind": "page", "url": "https://docs.ase-lib.org/ase/build/surface.html" },
+        { "kind": "page", "url": "https://docs.ase-lib.org/ase/atoms.html" },
+        { "kind": "page", "url": "https://docs.ase-lib.org/ase/constraints.html" },
+        { "kind": "page", "url": "https://pymatgen.org/pymatgen.transformations.html" },
+        { "kind": "page", "url": "https://pymatgen.org/pymatgen.analysis.interfaces.html" },
+        { "kind": "page", "url": "https://pymatgen.org/pymatgen.analysis.magnetism.html" },
+        { "kind": "doi", "url": "https://doi.org/10.1063/1.333084" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.65.353" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.86.253" }
+      ]
+    },
+    {
+      "topic_slug": "choose-dft-method-and-computational-setup",
+      "article": "src/content/topics/choose-dft-method-and-computational-setup.md",
+      "review": "docs/reviews/2026-08-03-choose-dft-method-and-setup.md",
+      "links": [
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
+        { "kind": "page", "url": "https://pseudopotentials.quantum-espresso.org/" },
+        { "kind": "page", "url": "https://pseudopotentials.quantum-espresso.org/home/unified-pseudopotential-format" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.77.3865" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.115.036402" },
+        { "kind": "doi", "url": "https://doi.org/10.1063/1.1564060" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.50.17953" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.43.1993" },
+        { "kind": "doi", "url": "https://doi.org/10.1016/j.cpc.2018.01.012" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.71.035105" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.92.246401" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.137.A1441" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.40.3616" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.73.233103" }
+      ]
+    }
+  ]
+}
