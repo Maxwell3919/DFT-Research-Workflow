@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 48,
+  "expected_unique_urls": 61,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -92,6 +92,28 @@
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.32.3780" },
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.97.170201" },
         { "kind": "doi", "url": "https://doi.org/10.1021/jp970984n" }
+      ]
+    },
+    {
+      "topic_slug": "calculate-reference-ground-state",
+      "article": "src/content/topics/calculate-reference-ground-state.md",
+      "review": "docs/reviews/2026-08-03-calculate-reference-ground-state.md",
+      "links": [
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Electronic_minimization" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Electronic_ground-state_properties" },
+        { "kind": "page", "url": "https://vasp.at/wiki/ISTART" },
+        { "kind": "page", "url": "https://vasp.at/wiki/ICHARG" },
+        { "kind": "page", "url": "https://vasp.at/wiki/MAGMOM" },
+        { "kind": "page", "url": "https://vasp.at/wiki/LCHARG" },
+        { "kind": "page", "url": "https://vasp.at/wiki/LWAVE" },
+        { "kind": "page", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html" },
+        { "kind": "page", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT.html" },
+        { "kind": "page", "url": "https://docs.abinit.org/tutorial/base1/" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.136.B864" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.140.A1133" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.137.A1441" },
+        { "kind": "doi", "url": "https://doi.org/10.1088/1361-648X/ab31c0" }
       ]
     }
   ]
