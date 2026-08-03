@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 137,
+  "expected_unique_urls": 143,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -268,6 +268,21 @@
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html" },
         { "kind": "page", "url": "https://vasp.at/wiki/DOSCAR" },
         { "kind": "page", "url": "https://vasp.at/wiki/LORBIT" }
+      ]
+    },
+    {
+      "topic_slug": "charge-density-and-charge-redistribution",
+      "article": "src/content/topics/charge-density-and-charge-redistribution.md",
+      "review": "docs/reviews/2026-08-04-charge-density-and-charge-redistribution.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.136.B864" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.140.A1133" },
+        { "kind": "doi", "url": "https://doi.org/10.1016/j.commatsci.2005.04.010" },
+        { "kind": "doi", "url": "https://doi.org/10.1088/0953-8984/21/8/084204" },
+        { "kind": "doi", "url": "https://doi.org/10.1002/ijch.197700033" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PP.html" },
+        { "kind": "page", "url": "https://quantum-espresso.org/Doc/pp_user_guide/node6.html" },
+        { "kind": "page", "url": "https://vasp.at/wiki/CHGCAR" }
       ]
     },
     {
