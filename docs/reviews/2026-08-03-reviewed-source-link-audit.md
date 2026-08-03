@@ -14,7 +14,7 @@ None of these checks validates a material, model, method, numerical result, or s
 
 ## Current scope
 
-The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers nineteen reviewed article/review pairs:
+The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers twenty reviewed article/review pairs:
 
 - Obtain a Material Structure;
 - Build or Modify a Computational Model;
@@ -34,9 +34,10 @@ The machine-readable authority is `sources/reviewed-links.json`. The current inv
 - Fermi Surface and Full-Brillouin-Zone Analysis;
 - Charge Density, Difference Density, and Charge Partitioning;
 - Electrostatic Potential and Band Alignment;
-- Chemical Bonding Analysis.
+- Chemical Bonding Analysis;
+- Magnetic Configuration and Ground-State Comparison.
 
-The manifest declares 151 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
+The manifest declares 153 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
 
 Any undeclared URL, missing URL, duplicate URL inside one topic, inconsistent source kind, non-HTTPS URL, unexpected unique-URL count, or retired ASE host fails deterministic validation.
 
@@ -53,7 +54,7 @@ The first accepted network audit covered 33 unique URLs across the first three t
 
 That result is historical evidence. Every expanded manifest requires a fresh network audit before its content batch can be merged. A later accepted eight-topic run covered 76/76 unique destinations; the nine-topic Compositional Phase Stability and Convex Hulls batch covered 82/82; the ten-topic Defect Formation Energies and Charge States batch covered 91/91; the eleven-topic Surface Energy and Work Function batch covered 102/102; the twelve-topic Adsorption Energies batch expands the inventory to 114 and therefore requires its own Hosted CI result.
 
-The Adsorption Energies authoring environment completed a fresh 114/114 network audit on 2026-08-04. The later Interface and Heterostructure Energetics batch expanded the inventory to 119 and completed a fresh local 119/119 audit before its successful Hosted CI run. The Band Structure batch expanded the inventory to 128 and completed a fresh local 128/128 network audit on 2026-08-04. Density of States and Projected Density of States expanded it to 133, Fermi Surface and Full-Brillouin-Zone Analysis to 137, Charge Density, Difference Density, and Charge Partitioning to 143, Electrostatic Potential and Band Alignment to 145, and Chemical Bonding Analysis to 151. The chemical-bonding authoring environment completed a fresh 151/151 network audit on 2026-08-04. Each local observation is separate from the required Hosted CI evidence for its pull request.
+The Adsorption Energies authoring environment completed a fresh 114/114 network audit on 2026-08-04. The later Interface and Heterostructure Energetics batch expanded the inventory to 119 and completed a fresh local 119/119 audit before its successful Hosted CI run. The Band Structure batch expanded the inventory to 128 and completed a fresh local 128/128 network audit on 2026-08-04. Density of States and Projected Density of States expanded it to 133, Fermi Surface and Full-Brillouin-Zone Analysis to 137, Charge Density, Difference Density, and Charge Partitioning to 143, Electrostatic Potential and Band Alignment to 145, Chemical Bonding Analysis to 151, and Magnetic Configuration and Ground-State Comparison to 153. Two local 153-source runs each encountered one transient `fetch failed` result on a different pre-existing Phonopy document; direct HTTPS header checks returned 200 for both affected URLs. The required Hosted CI audit remains the independent acceptance record for this batch. Each local observation is separate from the required Hosted CI evidence for its pull request.
 
 ## Semantic review boundary
 

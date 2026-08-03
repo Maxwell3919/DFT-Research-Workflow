@@ -250,6 +250,7 @@
     { "guide_slug": "compare-full-zone-isovalue-and-band-path", "source_ids": ["wannier90-fermi-parameters", "wannier90-copper-tutorial", "qe-fermi-postprocessing"] },
     { "guide_slug": "check-charge-difference-closure", "source_ids": ["qe-pp-density", "vasp-chgcar-density"] },
     { "guide_slug": "assemble-a-potential-lineup", "source_ids": ["van-de-walle-martin-lineup", "qe-pp-potential"] },
-    { "guide_slug": "integrate-a-declared-cohp-energy-window", "source_ids": ["dronskowski-bloechl-cohp", "deringer-plane-wave-cohp"] }
+    { "guide_slug": "integrate-a-declared-cohp-energy-window", "source_ids": ["dronskowski-bloechl-cohp", "deringer-plane-wave-cohp"] },
+    { "guide_slug": "compare-enumerated-magnetic-candidates", "source_ids": ["qe-pw-75", "vasp-magmom"] }
   ]
 }

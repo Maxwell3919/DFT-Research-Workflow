@@ -174,6 +174,12 @@ const reviewRequirements = new Map([
     'Execution success is not a projection-quality result',
     'The media are original conceptual diagrams of invented data.',
   ]],
+  ['docs/reviews/2026-08-04-magnetic-configuration-and-ground-state-comparison.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented compatible candidate energies and final moment labels.',
+    'Execution success is not magnetic convergence',
+    'The media are original conceptual diagrams of invented data.',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
