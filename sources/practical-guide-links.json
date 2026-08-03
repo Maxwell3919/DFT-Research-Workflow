@@ -14,6 +14,8 @@
     { "id": "pymatgen-core-pypi-2026-7-31", "url": "https://pypi.org/project/pymatgen-core/2026.7.31/", "kind": "page" },
     { "id": "qe-pw-75", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html", "kind": "page" },
     { "id": "qe-ph-75", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html", "kind": "page" },
+    { "id": "phonopy-command", "url": "https://phonopy.github.io/phonopy/phonopy.html", "kind": "page" },
+    { "id": "phonopy-setting-tags", "url": "https://phonopy.github.io/phonopy/setting-tags.html", "kind": "page" },
     { "id": "vasp-berry-phases-finite-fields", "url": "https://vasp.at/wiki/Berry_phases_and_finite_electric_fields", "kind": "page" },
     { "id": "qe-polarization-user-guide", "url": "https://www.quantum-espresso.org/Doc/pw_user_guide/node10.html", "kind": "page" },
     { "id": "monkhorst-pack", "url": "https://doi.org/10.1103/PhysRevB.13.5188", "kind": "doi" },
@@ -264,6 +266,7 @@
     { "guide_slug": "check-strain-stress-ledger", "source_ids": ["nielsen-martin-stress", "mouhat-elastic-stability", "vasp-phonons-finite-differences"] },
     { "guide_slug": "check-born-charge-and-dielectric-ledger", "source_ids": ["qe-ph-75", "vasp-born-effective-charges", "vasp-electric-field-dfpt"] },
     { "guide_slug": "unwrap-a-polarization-branch-path", "source_ids": ["vasp-berry-phases-finite-fields", "qe-polarization-user-guide"] },
-    { "guide_slug": "check-piezoelectric-tensor-ledger", "source_ids": ["vasp-electric-field-dfpt", "vasp-linear-response", "qe-ph-75"] }
+    { "guide_slug": "check-piezoelectric-tensor-ledger", "source_ids": ["vasp-electric-field-dfpt", "vasp-linear-response", "qe-ph-75"] },
+    { "guide_slug": "check-harmonic-mode-ledger", "source_ids": ["qe-ph-75", "phonopy-command", "phonopy-setting-tags"] }
   ]
 }
