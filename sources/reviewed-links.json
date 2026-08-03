@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 82,
+  "expected_unique_urls": 91,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -163,6 +163,23 @@
         { "kind": "page", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/chemical-potential-diagrams-cpds" },
         { "kind": "page", "url": "https://pymatgen.org/pymatgen.analysis.html#module-pymatgen.analysis.phase_diagram" },
         { "kind": "doi", "url": "https://doi.org/10.1007/s11837-013-0755-4" }
+      ]
+    },
+    {
+      "topic_slug": "defect-formation-energies-and-charge-states",
+      "article": "src/content/topics/defect-formation-energies-and-charge-states.md",
+      "review": "docs/reviews/2026-08-04-defect-formation-energies-and-charge-states.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.67.2339" },
+        { "kind": "doi", "url": "https://doi.org/10.1063/1.1682673" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.86.253" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.102.016402" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.89.195205" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.51.4014" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.78.235104" },
+        { "kind": "doi", "url": "https://doi.org/10.1039/D3CS00432E" },
+        { "kind": "doi", "url": "https://doi.org/10.1016/j.cpc.2018.01.004" },
+        { "kind": "page", "url": "https://doped.readthedocs.io/en/stable/doped.thermodynamics.html" }
       ]
     }
   ]

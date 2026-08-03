@@ -65,7 +65,14 @@
     { "id": "oqmd-api", "url": "https://static.oqmd.org/static/docs/restful.html", "kind": "page" },
     { "id": "oqmd-download-license", "url": "https://www.oqmd.org/download/", "kind": "page" },
     { "id": "oqmd-paper", "url": "https://doi.org/10.1007/s11837-013-0755-4", "kind": "doi" },
-    { "id": "pymatgen-phase-diagram-api", "url": "https://pymatgen.org/pymatgen.analysis.html#module-pymatgen.analysis.phase_diagram", "kind": "page" }
+    { "id": "pymatgen-phase-diagram-api", "url": "https://pymatgen.org/pymatgen.analysis.html#module-pymatgen.analysis.phase_diagram", "kind": "page" },
+    { "id": "zhang-northrup-defects", "url": "https://doi.org/10.1103/PhysRevLett.67.2339", "kind": "doi" },
+    { "id": "van-de-walle-neugebauer-defects", "url": "https://doi.org/10.1063/1.1682673", "kind": "doi" },
+    { "id": "fnv-correction", "url": "https://doi.org/10.1103/PhysRevLett.102.016402", "kind": "doi" },
+    { "id": "kumagai-oba-correction", "url": "https://doi.org/10.1103/PhysRevB.89.195205", "kind": "doi" },
+    { "id": "doped-thermodynamics", "url": "https://doped.readthedocs.io/en/stable/doped.thermodynamics.html", "kind": "page" },
+    { "id": "imperfections-not-zero-k", "url": "https://doi.org/10.1039/D3CS00432E", "kind": "doi" },
+    { "id": "py-sc-fermi", "url": "https://doi.org/10.21105/joss.04962", "kind": "doi" }
   ],
   "guides": [
     {
@@ -159,6 +166,14 @@
     {
       "guide_slug": "stress-test-hull-phase-set",
       "source_ids": ["oqmd-api", "oqmd-paper", "materials-project-phase-diagrams", "bartel-decomposition-reactions"]
+    },
+    {
+      "guide_slug": "build-defect-formation-ledger",
+      "source_ids": ["zhang-northrup-defects", "van-de-walle-neugebauer-defects", "fnv-correction", "kumagai-oba-correction", "doped-thermodynamics"]
+    },
+    {
+      "guide_slug": "trace-charge-state-envelope",
+      "source_ids": ["van-de-walle-neugebauer-defects", "freysoldt-defects", "imperfections-not-zero-k", "py-sc-fermi", "doped-thermodynamics"]
     }
   ]
 }

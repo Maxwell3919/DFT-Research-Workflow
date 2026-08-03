@@ -14,7 +14,7 @@ None of these checks validates a material, model, method, numerical result, or s
 
 ## Current scope
 
-The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers nine reviewed article/review pairs:
+The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers ten reviewed article/review pairs:
 
 - Obtain a Material Structure;
 - Build or Modify a Computational Model;
@@ -24,9 +24,10 @@ The machine-readable authority is `sources/reviewed-links.json`. The current inv
 - Calculate the Reference Ground State;
 - Relative Energies and Formation Energies;
 - Equation of State and Structural Phase Stability;
-- Compositional Phase Stability and Convex Hulls.
+- Compositional Phase Stability and Convex Hulls;
+- Defect Formation Energies and Charge States.
 
-The manifest declares 82 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
+The manifest declares 91 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
 
 Any undeclared URL, missing URL, duplicate URL inside one topic, inconsistent source kind, non-HTTPS URL, unexpected unique-URL count, or retired ASE host fails deterministic validation.
 
@@ -41,18 +42,19 @@ The original corrective batch replaced four retired `wiki.fysik.dtu.dk` links in
 
 The first accepted network audit covered 33 unique URLs across the first three topics. It returned 31 ordinary HTTP or DOI successes and used a controlled browser fallback for two IUCr pages that returned HTTP 403 to the ordinary client. All 33 were reachable under the declared semantics, and no 404 or soft-404 remained.
 
-That result is historical evidence. Every expanded manifest requires a fresh network audit before its content batch can be merged. A later accepted eight-topic run covered 76/76 unique destinations; the nine-topic Compositional Phase Stability and Convex Hulls batch expands that inventory to 82 and therefore requires its own Hosted CI result.
+That result is historical evidence. Every expanded manifest requires a fresh network audit before its content batch can be merged. A later accepted eight-topic run covered 76/76 unique destinations; the nine-topic Compositional Phase Stability and Convex Hulls batch covered 82/82; the ten-topic Defect Formation Energies and Charge States batch expands the inventory to 91 and therefore requires its own Hosted CI result.
 
 ## Semantic review boundary
 
-All nine article/review pairs are required to use exact bounded source inventories. The current source classes include:
+All ten article/review pairs are required to use exact bounded source inventories. The current source classes include:
 
 - crystallographic standards, databases, and symmetry documentation;
 - ASE and pymatgen implementation documentation plus primary model-construction methods;
 - Quantum ESPRESSO documentation and primary DFT method papers;
 - primary Brillouin-zone integration, pseudopotential verification, finite-size, reproducibility, and density-functional perturbation theory sources for numerical convergence;
 - official optimization, electronic-state, thermodynamic, and phase-diagram documentation;
-- primary optimization, reference-state, finite-temperature DFT, formation-energy correction, decomposition-reaction, finite-strain EOS, compression, elastic-stability, convex-hull, metastability, chemical-potential, and public materials-database methods.
+- primary optimization, reference-state, finite-temperature DFT, formation-energy correction, decomposition-reaction, finite-strain EOS, compression, elastic-stability, convex-hull, metastability, chemical-potential, public materials-database, charged-defect correction, transition-level, and finite-temperature defect-thermodynamics methods;
+- current official defect-thermodynamics implementation documentation.
 
 A source reused by two topics is not duplicated into two network requests. Reuse does not broaden the source beyond the statements reviewed in each topic.
 

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+<title id="title">Synthetic defect charge-state formation-energy envelope</title>
+<desc id="desc">Four charge-state lines cross within an invented three-electron-volt gap. The plus-one line never reaches the lower envelope. Thermodynamic transitions occur at 0.6 and 1.7 electron volts, and a separate toy charge-neutrality solution is marked.</desc>
+<rect width="960" height="540" fill="#ffffff"/>
+<text x="88" y="31" font-family="Georgia,serif" font-size="21" fill="#1a1a1a">Charge-state lines, their lower envelope, and one toy neutrality root</text>
+<line x1="88" y1="448.00" x2="915" y2="448.00" stroke="#e8e8e8"/>
+<text x="76" y="453.00" text-anchor="end" font-family="Arial,sans-serif" font-size="13" fill="#555">0</text>
+<line x1="88" y1="392.06" x2="915" y2="392.06" stroke="#e8e8e8"/>
+<text x="76" y="397.06" text-anchor="end" font-family="Arial,sans-serif" font-size="13" fill="#555">1</text>
+<line x1="88" y1="336.12" x2="915" y2="336.12" stroke="#e8e8e8"/>
+<text x="76" y="341.12" text-anchor="end" font-family="Arial,sans-serif" font-size="13" fill="#555">2</text>
+<line x1="88" y1="280.17" x2="915" y2="280.17" stroke="#e8e8e8"/>
+<text x="76" y="285.17" text-anchor="end" font-family="Arial,sans-serif" font-size="13" fill="#555">3</text>
+<line x1="88" y1="224.23" x2="915" y2="224.23" stroke="#e8e8e8"/>
+<text x="76" y="229.23" text-anchor="end" font-family="Arial,sans-serif" font-size="13" fill="#555">4</text>
+<line x1="88" y1="168.29" x2="915" y2="168.29" stroke="#e8e8e8"/>
+<text x="76" y="173.29" text-anchor="end" font-family="Arial,sans-serif" font-size="13" fill="#555">5</text>
+<line x1="88" y1="112.35" x2="915" y2="112.35" stroke="#e8e8e8"/>
+<text x="76" y="117.35" text-anchor="end" font-family="Arial,sans-serif" font-size="13" fill="#555">6</text>
+<line x1="88.00" y1="62" x2="88.00" y2="448" stroke="#f0f0f0"/>
+<text x="88.00" y="473" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#555">0.0</text>
+<line x1="225.83" y1="62" x2="225.83" y2="448" stroke="#f0f0f0"/>
+<text x="225.83" y="473" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#555">0.5</text>
+<line x1="363.67" y1="62" x2="363.67" y2="448" stroke="#f0f0f0"/>
+<text x="363.67" y="473" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#555">1.0</text>
+<line x1="501.50" y1="62" x2="501.50" y2="448" stroke="#f0f0f0"/>
+<text x="501.50" y="473" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#555">1.5</text>
+<line x1="639.33" y1="62" x2="639.33" y2="448" stroke="#f0f0f0"/>
+<text x="639.33" y="473" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#555">2.0</text>
+<line x1="777.17" y1="62" x2="777.17" y2="448" stroke="#f0f0f0"/>
+<text x="777.17" y="473" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#555">2.5</text>
+<line x1="915.00" y1="62" x2="915.00" y2="448" stroke="#f0f0f0"/>
+<text x="915.00" y="473" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#555">3.0</text>
+<line x1="88" y1="448" x2="915" y2="448" stroke="#222"/>
+<line x1="88" y1="62" x2="88" y2="448" stroke="#222"/>
+<line x1="88.00" y1="403.25" x2="915.00" y2="67.59" stroke="#26547c" stroke-width="2" stroke-dasharray="none"/>
+<text x="865.38" y="86.21" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#26547c">q = +2</text>
+<line x1="88.00" y1="347.30" x2="915.00" y2="179.48" stroke="#6c8ebf" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="865.38" y="185.79" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#6c8ebf">q = +1</text>
+<line x1="88.00" y1="336.12" x2="915.00" y2="336.12" stroke="#b56576" stroke-width="2" stroke-dasharray="none"/>
+<text x="865.38" y="330.12" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#b56576">q = +0</text>
+<line x1="88.00" y1="241.01" x2="915.00" y2="408.84" stroke="#7a5195" stroke-width="2" stroke-dasharray="none"/>
+<text x="865.38" y="390.53" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#7a5195">q = -1</text>
+<polyline points="88.00,403.25 253.40,336.12 556.63,336.12 915.00,408.84" fill="none" stroke="#111" stroke-width="5"/>
+<circle cx="253.40" cy="336.12" r="5" fill="#111"/>
+<text x="253.40" y="322.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#111">ε(+2/0)</text>
+<circle cx="556.63" cy="336.12" r="5" fill="#111"/>
+<text x="556.63" y="322.12" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#111">ε(0/−1)</text>
+<line x1="764.89" y1="62" x2="764.89" y2="448" stroke="#d17b0f" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="756.89" y="84" text-anchor="end" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#9a5b08">toy neutrality root: 2.455 eV</text>
+<text x="501.50" y="497" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" fill="#222">Fermi level above the fixture VBM (eV)</text>
+<text x="24" y="255.00" transform="rotate(-90 24 255.00)" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" fill="#222">formation energy (eV per defect)</text>
+<text x="88" y="516" font-family="Arial,sans-serif" font-size="12" fill="#666">Invented deterministic fixture; line slopes equal q. No DFT, measured gap, or material concentration.</text>
+</svg>
