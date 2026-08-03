@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 174,
+  "expected_unique_urls": 181,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -402,6 +402,20 @@
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node8.html" },
         { "kind": "page", "url": "https://phonopy.github.io/phonopy/phonopy.html" },
         { "kind": "page", "url": "https://phonopy.github.io/phonopy/setting-tags.html" }
+      ]
+    },
+    {
+      "topic_slug": "anharmonic-phonons",
+      "article": "src/content/topics/anharmonic-phonons.md",
+      "review": "docs/reviews/2026-08-04-anharmonic-phonons.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.77.144112" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.84.054303" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.91.054304" },
+        { "kind": "page", "url": "https://phonopy.github.io/phono3py/" },
+        { "kind": "page", "url": "https://phonopy.github.io/phono3py/workflow.html" },
+        { "kind": "page", "url": "https://phonopy.github.io/phono3py/api-reference.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node5.html" }
       ]
     },
     {

@@ -14,7 +14,7 @@ None of these checks validates a material, model, method, numerical result, or s
 
 ## Current scope
 
-The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers twenty-six reviewed article/review pairs:
+The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers twenty-seven reviewed article/review pairs:
 
 - Obtain a Material Structure;
 - Build or Modify a Computational Model;
@@ -43,8 +43,9 @@ The machine-readable authority is `sources/reviewed-links.json`. The current inv
 - Piezoelectric Response.
 
 - Harmonic Phonons.
+- Anharmonic Phonons.
 
-The manifest declares 174 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
+The manifest declares 181 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
 
 Any undeclared URL, missing URL, duplicate URL inside one topic, inconsistent source kind, non-HTTPS URL, unexpected unique-URL count, or retired ASE host fails deterministic validation.
 
@@ -65,7 +66,7 @@ The Adsorption Energies authoring environment completed a fresh 114/114 network 
 
 ## Semantic review boundary
 
-All twenty-six article/review pairs are required to use exact bounded source inventories. The current source classes include:
+All twenty-seven article/review pairs are required to use exact bounded source inventories. The current source classes include:
 
 - crystallographic standards, databases, and symmetry documentation;
 - ASE and pymatgen implementation documentation plus primary model-construction methods;
@@ -84,6 +85,7 @@ All twenty-six article/review pairs are required to use exact bounded source inv
 - primary DFPT strain/electric-field methods and official piezoelectric-response documentation for the D3 piezoelectric topic.
 
 - primary harmonic lattice-dynamics and non-analytic-correction methods plus official Quantum ESPRESSO and Phonopy documentation for the D3 harmonic-phonons topic.
+- primary higher-order force-constant, phonon-self-energy, and strongly anharmonic methods plus official Phono3py and Quantum ESPRESSO documentation for the D3 anharmonic-phonons topic.
 
 A source reused by two topics is not duplicated into two network requests. Reuse does not broaden the source beyond the statements reviewed in each topic.
 
