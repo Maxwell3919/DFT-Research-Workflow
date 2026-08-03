@@ -302,6 +302,42 @@
       "reuse_basis": "Original deterministic project diagram generated from invented charge-state intercepts and a toy neutrality model; no external image or computed material dataset was copied.",
       "caption": "Four synthetic charge-state lines form a lower envelope with two thermodynamic transitions, while a separate vertical marker identifies an invented charge-neutrality solution.",
       "alt": "Synthetic defect formation-energy lines, a lower charge-state envelope, two transition levels, a skipped plus-one state, and a separate toy neutrality root."
+    },
+    {
+      "id": "surface-energy-ledger",
+      "guide_slug": "build-surface-energy-ledger",
+      "path": "media/practical-guides/surface-energy-and-work-function/build-surface-energy-ledger/surface-energy-ledger.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-04",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original deterministic project diagram generated from invented slab-energy rows; no material calculation or external figure was copied.",
+      "caption": "A deliberately mismatched bulk reference makes the derived two-face surface excess drift with slab thickness, while a same-series linear fit supplies a bounded intercept.",
+      "alt": "Synthetic surface-energy plot showing thickness drift from a mismatched bulk reference and a horizontal fitted surface intercept."
+    },
+    {
+      "id": "work-function-potential",
+      "guide_slug": "extract-work-function-potential",
+      "path": "media/practical-guides/surface-energy-and-work-function/extract-work-function-potential/work-function-potential.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-04",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original deterministic project diagram generated from an invented analytic planar potential; no electronic-structure output or external figure was copied.",
+      "caption": "An invented asymmetric potential profile has two independently checked vacuum plateaus and therefore two side-specific work functions relative to one Fermi energy.",
+      "alt": "Synthetic planar potential through a slab with different flat left and right vacuum levels and one common Fermi level."
+    },
+    {
+      "id": "intermat-si-surfaces",
+      "guide_slug": "compare-intermat-si-surfaces",
+      "path": "media/practical-guides/surface-energy-and-work-function/compare-intermat-si-surfaces/intermat-si-surfaces.svg",
+      "provenance_type": "derived-public-data",
+      "created_at": "2026-08-04",
+      "source_url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957179",
+      "accessed_at": "2026-08-04",
+      "reuse_basis": "Original plot generated from numerical facts transcribed from InterMat Table 1 under CC BY 3.0 with attribution; no publisher figure or table layout was copied.",
+      "caption": "Published OptB88vdW and experimental work functions and surface energies for three unreconstructed non-polar Si facets, redrawn from InterMat Table 1 without rerunning DFT.",
+      "alt": "Two paired-dot panels comparing published InterMat OptB88vdW and experimental values for Si 111, 110, and 001 work functions and surface energies."
     }
   ]
 }
