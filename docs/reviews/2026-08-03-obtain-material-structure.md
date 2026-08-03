@@ -132,10 +132,21 @@ This batch does not include:
 Those omissions keep the article at the intended source-acquisition boundary.
 The next content topic is **Build or Modify a Computational Model**.
 
+## External-link verification
+
+The original review confirmed source relevance and rendered-link presence but did
+not request the external destinations. All external sources in this article and
+review are now declared in `sources/reviewed-links.json`. Deterministic
+validation requires exact agreement between the article, this review, and that
+manifest. A separate network CI job requests every declared destination under
+the rules documented in
+`docs/reviews/2026-08-03-reviewed-source-link-audit.md`.
+
 ## Evidence boundary
 
-The scientific review establishes that the article accurately represents the
-cited sources within its declared scope. Repository, type, build, link, and
-browser checks establish software behaviour only. Neither review establishes
-that an arbitrary structure file is correct, complete, stable, or suitable for a
-particular DFT calculation.
+The semantic source review establishes that the article represents the cited
+sources within its declared scope. The dedicated external-link audit establishes
+HTTP reachability only at its recorded run time. Browser smoke establishes that
+links are rendered in the public page; it does not establish destination
+availability. None of these checks establishes that an arbitrary structure file
+is correct, complete, stable, or suitable for a particular DFT calculation.

@@ -114,10 +114,10 @@ const reviewedTopicSpecifications = {
       'This stage does not establish that a model is stable, experimentally realized, numerically converged, or the ground state.',
     ],
     sources: [
-      'https://wiki.fysik.dtu.dk/ase/ase/build/build.html',
-      'https://wiki.fysik.dtu.dk/ase/ase/build/surface.html',
-      'https://wiki.fysik.dtu.dk/ase/ase/atoms.html',
-      'https://wiki.fysik.dtu.dk/ase/ase/constraints.html',
+      'https://docs.ase-lib.org/ase/build/build.html',
+      'https://docs.ase-lib.org/ase/build/surface.html',
+      'https://docs.ase-lib.org/ase/atoms.html',
+      'https://docs.ase-lib.org/ase/constraints.html',
       'https://pymatgen.org/pymatgen.transformations.html',
       'https://pymatgen.org/pymatgen.analysis.interfaces.html',
       'https://pymatgen.org/pymatgen.analysis.magnetism.html',
@@ -129,6 +129,7 @@ const reviewedTopicSpecifications = {
       'reviewed within the declared educational scope',
       'does not validate any particular model',
       'It does not restore the former\nInputs/Outputs-style contract',
+      '## External-link correction and verification',
     ],
   },
   'choose-dft-method-and-computational-setup': {

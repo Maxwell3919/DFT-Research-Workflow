@@ -4,6 +4,9 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * 1'
 
 permissions:
   contents: read
@@ -20,3 +23,38 @@ jobs:
           cache: npm
       - run: npm ci --no-audit --no-fund
       - run: npm run check
+
+  reviewed-source-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Locate Chrome for controlled browser fallback
+        shell: bash
+        run: |
+          for browser in google-chrome google-chrome-stable chromium chromium-browser; do
+            if command -v "$browser" >/dev/null 2>&1; then
+              echo "CHROME_BIN=$(command -v "$browser")" >> "$GITHUB_ENV"
+              "$browser" --version
+              exit 0
+            fi
+          done
+          echo "No supported Chrome or Chromium binary is available" >&2
+          exit 1
+      - name: Audit every reviewed external source
+        run: npm run audit:reviewed-links
+        env:
+          LINK_AUDIT_ARTIFACT_DIR: artifacts/reviewed-source-links
+      - name: Upload reviewed-source audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-source-links-${{ github.run_id }}
+          path: artifacts/reviewed-source-links/
+          if-no-files-found: warn
+          retention-days: 30

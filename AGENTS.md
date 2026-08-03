@@ -56,6 +56,24 @@ an authority for production calculations.
   workflow at a time.
 - Public content remains English and software-neutral at the conceptual level.
 
+## Source review and link verification
+
+- Semantic source review, external-link reachability, and rendered-link presence
+  are separate evidence classes. Never describe one as proof of another.
+- Every external source used by a reviewed topic must appear in both the article
+  and its scientific review and must be declared in
+  `sources/reviewed-links.json`.
+- `npm run validate:reviewed-sources` checks exact manifest coverage without
+  network access. `npm run audit:reviewed-links` performs the time-bounded
+  external HTTP audit and writes machine-readable evidence when configured.
+- A normal documentation URL must return a successful non-404 document. A DOI
+  check establishes resolver recognition only; it does not establish publisher
+  access after the redirect.
+- Link reachability is time-dependent. A passing audit does not guarantee future
+  availability, regional access, semantic correctness, or scientific validity.
+- Browser smoke may verify that links are rendered, but it must not be described
+  as an external link check.
+
 ## Migration rules
 
 - Preserve old URLs until reviewed destination pages exist.

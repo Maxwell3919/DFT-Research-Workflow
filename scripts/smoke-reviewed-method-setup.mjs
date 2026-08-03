@@ -102,7 +102,7 @@ try {
     }, null, 2)}\n`);
   }
 
-  console.log(`Reviewed DFT method smoke passed: natural article rendering, ${desktop.headings.length} topic sections, official or primary source links, 1440px and 390px no-overflow, and no-JavaScript reading.`);
+  console.log(`Reviewed DFT method smoke passed: natural article rendering, ${desktop.headings.length} topic sections, rendered source links, 1440px and 390px no-overflow, and no-JavaScript reading.`);
 } finally {
   await browser.close();
 }
