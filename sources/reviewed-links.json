@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 166,
+  "expected_unique_urls": 169,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -375,6 +375,19 @@
         { "kind": "page", "url": "https://vasp.at/wiki/LCALCPOL" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/pw_user_guide/node10.html" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" }
+      ]
+    },
+    {
+      "topic_slug": "piezoelectric-response",
+      "article": "src/content/topics/piezoelectric-response.md",
+      "review": "docs/reviews/2026-08-04-piezoelectric-response.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.72.035105" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.73.515" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Electric_field_response_from_density-functional-perturbation_theory" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Linear_response" },
+        { "kind": "page", "url": "https://vasp.at/py4vasp/0.9/raw/piezoelectric_tensor/" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html" }
       ]
     },
     {
