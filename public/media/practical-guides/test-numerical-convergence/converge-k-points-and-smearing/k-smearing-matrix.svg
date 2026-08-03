@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="360" viewBox="0 0 760 360" role="img" aria-labelledby="title desc">
+  <title id="title">k-point mesh and smearing convergence matrix</title>
+  <desc id="desc">A matrix with denser k-point meshes from left to right and narrower smearings from bottom to top, highlighting a stable window rather than one diagonal path.</desc>
+  <rect width="760" height="360" fill="#ffffff"/>
+  <text x="380" y="32" text-anchor="middle" font-family="serif" font-size="22">Mesh and smearing must be tested together</text>
+  <text x="54" y="190" transform="rotate(-90 54 190)" text-anchor="middle" font-family="serif" font-size="17">narrower smearing</text>
+  <text x="405" y="338" text-anchor="middle" font-family="serif" font-size="17">denser k-point mesh</text>
+  <g stroke="#666" fill="none"><path d="M125 290H680"/><path d="M125 290V70"/></g>
+  <g font-family="serif" font-size="14" text-anchor="middle">
+    <text x="205" y="315">K1</text><text x="325" y="315">K2</text><text x="445" y="315">K3</text><text x="565" y="315">K4</text>
+    <text x="100" y="252">S3</text><text x="100" y="182">S2</text><text x="100" y="112">S1</text>
+  </g>
+  <g stroke="#777" fill="#f7f7f7">
+    <rect x="160" y="225" width="90" height="42"/><rect x="280" y="225" width="90" height="42"/><rect x="400" y="225" width="90" height="42"/><rect x="520" y="225" width="90" height="42"/>
+    <rect x="160" y="155" width="90" height="42"/><rect x="280" y="155" width="90" height="42"/>
+    <rect x="160" y="85" width="90" height="42"/><rect x="280" y="85" width="90" height="42"/>
+  </g>
+  <g stroke="#244b6b" fill="#eaf1f6" stroke-width="2">
+    <rect x="400" y="155" width="90" height="42"/><rect x="520" y="155" width="90" height="42"/>
+    <rect x="400" y="85" width="90" height="42"/><rect x="520" y="85" width="90" height="42"/>
+  </g>
+  <path d="M205 246L565 106" stroke="#9a6a2a" stroke-dasharray="7 6" stroke-width="2"/>
+  <text x="330" y="235" font-family="serif" font-size="14">one diagonal can hide cancellation</text>
+  <text x="510" y="76" text-anchor="middle" font-family="serif" font-size="15">two-dimensional stable window</text>
+</svg>
