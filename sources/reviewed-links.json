@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 169,
+  "expected_unique_urls": 174,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -388,6 +388,20 @@
         { "kind": "page", "url": "https://vasp.at/wiki/Linear_response" },
         { "kind": "page", "url": "https://vasp.at/py4vasp/0.9/raw/piezoelectric_tensor/" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html" }
+      ]
+    },
+    {
+      "topic_slug": "harmonic-phonons",
+      "article": "src/content/topics/harmonic-phonons.md",
+      "review": "docs/reviews/2026-08-04-harmonic-phonons.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1016/j.scriptamat.2015.07.021" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.73.515" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html" },
+        { "kind": "page", "url": "https://quantum-espresso.org/Doc/INPUT_DYNMAT.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node8.html" },
+        { "kind": "page", "url": "https://phonopy.github.io/phonopy/phonopy.html" },
+        { "kind": "page", "url": "https://phonopy.github.io/phonopy/setting-tags.html" }
       ]
     },
     {
