@@ -138,6 +138,12 @@ const reviewRequirements = new Map([
     'Execution success is not interface-energy convergence',
     'The original SVG is a derived-public-data redraw',
   ]],
+  ['docs/reviews/2026-08-04-band-structure.md', [
+    'reviewed within the declared educational and execution scope',
+    'The two companion scripts use invented reciprocal vectors and eigenvalue fields',
+    'Execution success is not eigenvalue convergence',
+    'The media are original conceptual diagrams of invented data.',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
