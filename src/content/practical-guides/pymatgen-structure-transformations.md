@@ -18,7 +18,7 @@ source_ids:
 media_ids:
   - pymatgen-transformation-lineage-diagram
 review: docs/reviews/2026-08-03-practical-guides-model-building-pilot.md
-reviewed_at: 2026-08-03
+reviewed_at: "2026-08-03"
 ---
 
 pymatgen transformations are useful because they make a structural operation explicit and return a new structure object. The transformation class does not decide whether the operation preserves the same physical model. That interpretation must be recorded by the researcher.
@@ -73,8 +73,10 @@ The value `1.02` is a demonstration value. It is not a recommended strain magnit
 
 ## Replace a species as a compositional change
 
+Site-specific replacement belongs to pymatgen's site-transformation module:
+
 ```python
-from pymatgen.transformations.standard_transformations import ReplaceSiteSpeciesTransformation
+from pymatgen.transformations.site_transformations import ReplaceSiteSpeciesTransformation
 
 substitute = ReplaceSiteSpeciesTransformation({0: "Na"})
 substituted = substitute.apply_transformation(parent)
@@ -90,7 +92,7 @@ A useful lineage record contains entries such as:
 
 ```text
 parent structure checksum
-transformation class
+transformation module and class
 transformation parameters
 software version
 parent and child compositions
@@ -99,13 +101,14 @@ parent and child site counts
 scientific interpretation of the change
 ```
 
-The class name is not the interpretation. `SupercellTransformation` can preserve an ideal bulk representation, but the resulting cell may later host a physical perturbation. `DeformStructureTransformation` and species replacement explicitly change the model.
+The class name is not the interpretation. `SupercellTransformation` can preserve an ideal bulk representation, but the resulting cell may later host a physical perturbation. `DeformStructureTransformation` and site-specific species replacement explicitly change the model.
 
 ## What this guide verifies
 
 The companion script checks:
 
 - the pinned `pymatgen-core` distribution version;
+- import of standard and site-specific transformation modules;
 - supercell site-count and volume multipliers;
 - deformation-induced changes in lattice and volume;
 - the expected substituted species and composition;
@@ -116,11 +119,13 @@ It does not calculate energies, relax any child structure, establish phase stabi
 
 ## Common mistakes
 
+**Importing a class from the wrong transformation module.** Check the current API rather than assuming every transformation belongs to `standard_transformations`.
+
 **Overwriting the parent structure.** Preserve source and descendants as separate objects with stable identities.
 
 **Treating every transformation as normalization.** Deformation and substitution change the physical model.
 
-**Using a class name as provenance.** Parameters, version, parent checksum, and output identity are also required.
+**Using a class name as provenance.** Module, parameters, version, parent checksum, and output identity are also required.
 
 **Accepting a generated child as a ground state.** A transformation produces a candidate, not energetic evidence.
 
