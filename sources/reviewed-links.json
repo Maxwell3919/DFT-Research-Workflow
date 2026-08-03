@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 161,
+  "expected_unique_urls": 166,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -362,6 +362,19 @@
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html" },
         { "kind": "page", "url": "https://vasp.at/wiki/Born_effective_charges" },
         { "kind": "page", "url": "https://vasp.at/wiki/Electric_field_response_from_density-functional-perturbation_theory" }
+      ]
+    },
+    {
+      "topic_slug": "polarization-and-ferroelectricity",
+      "article": "src/content/topics/polarization-and-ferroelectricity.md",
+      "review": "docs/reviews/2026-08-04-polarization-and-ferroelectricity.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.47.1651" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.66.899" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Berry_phases_and_finite_electric_fields" },
+        { "kind": "page", "url": "https://vasp.at/wiki/LCALCPOL" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/pw_user_guide/node10.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" }
       ]
     },
     {
