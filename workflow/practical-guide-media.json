@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "authority": "media provenance for reviewed practical guides",
+  "scope_note": "Every media asset used by a reviewed practical guide must be declared here. Original diagrams are preferred; externally derived media require a source URL, access date, and reuse basis.",
+  "assets": [
+    {
+      "id": "ase-cell-repetition-diagram",
+      "guide_slug": "ase-build-repeat-cells",
+      "path": "media/practical-guides/build-or-modify-computational-model/ase-build-repeat-cells/cell-repetition.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image was copied.",
+      "caption": "A primitive cell repeated by an integer transformation becomes a larger periodic representation; later model changes must remain separately identified.",
+      "alt": "Diagram showing one primitive cell transformed into a two-by-two repeated periodic cell."
+    },
+    {
+      "id": "ase-slab-vacuum-diagram",
+      "guide_slug": "ase-surfaces-vacuum-adsorbates",
+      "path": "media/practical-guides/build-or-modify-computational-model/ase-surfaces-vacuum-adsorbates/slab-vacuum.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image was copied.",
+      "caption": "A slab model combines a selected termination, finite thickness, lateral periodicity, an adsorbate candidate, and a declared nonperiodic vacuum direction.",
+      "alt": "Side-view diagram of a three-layer slab with an adsorbate and vacuum above and below."
+    },
+    {
+      "id": "pymatgen-transformation-lineage-diagram",
+      "guide_slug": "pymatgen-structure-transformations",
+      "path": "media/practical-guides/build-or-modify-computational-model/pymatgen-structure-transformations/transformation-lineage.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image was copied.",
+      "caption": "Transformation objects should preserve a visible lineage from the parent structure to supercell, strained, and substituted descendants.",
+      "alt": "Flow diagram branching from a parent structure to supercell, deformation, and species-substitution structures."
+    },
+    {
+      "id": "monolayer-periodicity-diagram",
+      "guide_slug": "two-dimensional-monolayer-model",
+      "path": "media/practical-guides/build-or-modify-computational-model/two-dimensional-monolayer-model/monolayer-periodicity.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image was copied.",
+      "caption": "The illustrative monolayer model is periodic in plane and nonperiodic out of plane; vacuum and cell size remain convergence variables rather than certified values.",
+      "alt": "Diagram of a layered hexagonal monolayer with periodic arrows in plane and a nonperiodic vacuum direction out of plane."
+    }
+  ]
+}
