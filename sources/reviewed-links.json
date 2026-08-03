@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 153,
+  "expected_unique_urls": 156,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -322,6 +322,19 @@
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.62.11556" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
         { "kind": "page", "url": "https://vasp.at/wiki/MAGMOM" }
+      ]
+    },
+    {
+      "topic_slug": "magnetic-anisotropy-and-exchange-interactions",
+      "article": "src/content/topics/magnetic-anisotropy-and-exchange-interactions.md",
+      "review": "docs/reviews/2026-08-04-magnetic-anisotropy-and-exchange-interactions.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.136.B864" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.140.A1133" },
+        { "kind": "doi", "url": "https://doi.org/10.1016/0304-8853%2887%2990721-9" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Determining_the_Magnetic_Anisotropy" },
+        { "kind": "page", "url": "https://vasp.at/wiki/LSORBIT" }
       ]
     },
     {

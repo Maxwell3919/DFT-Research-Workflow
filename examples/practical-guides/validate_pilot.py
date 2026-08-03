@@ -81,6 +81,7 @@ CHARGE_DENSITY_ANALYSIS_SCRIPTS = ["charge_difference_closure.py"]
 POTENTIAL_ALIGNMENT_ANALYSIS_SCRIPTS = ["potential_lineup_fixture.py"]
 CHEMICAL_BONDING_ANALYSIS_SCRIPTS = ["cohp_window_fixture.py"]
 MAGNETIC_CONFIGURATION_ANALYSIS_SCRIPTS = ["magnetic_candidate_ledger.py"]
+MAGNETIC_ANISOTROPY_EXCHANGE_ANALYSIS_SCRIPTS = ["anisotropy_exchange_ledger.py"]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
@@ -100,6 +101,7 @@ SCRIPTS = [
     *POTENTIAL_ALIGNMENT_ANALYSIS_SCRIPTS,
     *CHEMICAL_BONDING_ANALYSIS_SCRIPTS,
     *MAGNETIC_CONFIGURATION_ANALYSIS_SCRIPTS,
+    *MAGNETIC_ANISOTROPY_EXCHANGE_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -129,7 +131,7 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 41
+    assert len(results) == 42
     report = {
         "schema_version": 10,
         "project_root": str(ROOT),
@@ -153,12 +155,13 @@ def main() -> None:
         "potential_alignment_analysis_scripts": POTENTIAL_ALIGNMENT_ANALYSIS_SCRIPTS,
         "chemical_bonding_analysis_scripts": CHEMICAL_BONDING_ANALYSIS_SCRIPTS,
         "magnetic_configuration_analysis_scripts": MAGNETIC_CONFIGURATION_ANALYSIS_SCRIPTS,
+        "magnetic_anisotropy_exchange_analysis_scripts": MAGNETIC_ANISOTROPY_EXCHANGE_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
             "Execution establishes declared structural transformations, synthetic convergence-table "
             "analysis, bounded ASE/EMT or synthetic optimization diagnostics, and deterministic "
-            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, Fermi-isovalue, charge-difference closure, potential-lineup, COHP-window, and magnetic-candidate analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
+            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, Fermi-isovalue, charge-difference closure, potential-lineup, COHP-window, magnetic-candidate, and magnetic-anisotropy/exchange-ledger analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
             "it does not establish DFT convergence, a physical minimum, a real reference ground state, "
             "a material formation, surface or adsorption energy, real work function, defect charge state or concentration, physical EOS or phase transition, independent database validation, "
             "candidate completeness, stability, transferability, or a scientific conclusion."
@@ -175,11 +178,11 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 41/41 examples; four structural transformations, "
+        "Practical guide execution passed: 42/42 examples; four structural transformations, "
         "four synthetic convergence analyses, four bounded optimization diagnostics, and "
         "four deterministic reference-state diagnostics, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
-        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, and one invented magnetic-candidate fixture under pinned versions."
+        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, and one invented magnetic-anisotropy/exchange-ledger fixture under pinned versions."
     )
 
 
