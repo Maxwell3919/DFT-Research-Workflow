@@ -194,7 +194,8 @@ async function mapWithConcurrency(values, concurrency, mapper) {
 }
 
 const startedAt = new Date().toISOString();
-let results = await mapWithConcurrency(manifest.sources, 4, audit);
+// Keep requests deliberately modest for documentation hosts that reject bursts.
+let results = await mapWithConcurrency(manifest.sources, 2, audit);
 const fallbackIndices = results
   .map((result, index) => ({ result, index }))
   .filter(({ result }) => [401, 403].includes(result.status))
