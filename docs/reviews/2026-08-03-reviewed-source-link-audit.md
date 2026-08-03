@@ -14,14 +14,17 @@ None of these checks validates a material, model, method, numerical result, or s
 
 ## Current scope
 
-The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers four reviewed article/review pairs:
+The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers seven reviewed article/review pairs:
 
 - Obtain a Material Structure;
 - Build or Modify a Computational Model;
 - Choose the DFT Method and Computational Setup;
-- Test Numerical Convergence.
+- Test Numerical Convergence;
+- Optimize the Structure;
+- Calculate the Reference Ground State;
+- Relative Energies and Formation Energies.
 
-The manifest declares 40 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
+The manifest declares 68 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
 
 Any undeclared URL, missing URL, duplicate URL inside one topic, inconsistent source kind, non-HTTPS URL, unexpected unique-URL count, or retired ASE host fails deterministic validation.
 
@@ -36,16 +39,18 @@ The original corrective batch replaced four retired `wiki.fysik.dtu.dk` links in
 
 The first accepted network audit covered 33 unique URLs across the first three topics. It returned 31 ordinary HTTP or DOI successes and used a controlled browser fallback for two IUCr pages that returned HTTP 403 to the ordinary client. All 33 were reachable under the declared semantics, and no 404 or soft-404 remained.
 
-That result is historical evidence. The expanded four-topic manifest requires a fresh network audit before the convergence batch can be merged.
+That result is historical evidence. Every expanded manifest requires a fresh network audit before its content batch can be merged. A later accepted six-topic run covered 61/61 unique destinations; the seven-topic Relative Energies and Formation Energies batch expands that inventory to 68 and therefore requires its own Hosted CI result.
 
 ## Semantic review boundary
 
-All four article/review pairs are required to use exact bounded source inventories. The current source classes include:
+All seven article/review pairs are required to use exact bounded source inventories. The current source classes include:
 
 - crystallographic standards, databases, and symmetry documentation;
 - ASE and pymatgen implementation documentation plus primary model-construction methods;
 - Quantum ESPRESSO documentation and primary DFT method papers;
-- primary Brillouin-zone integration, pseudopotential verification, finite-size, reproducibility, and density-functional perturbation theory sources for numerical convergence.
+- primary Brillouin-zone integration, pseudopotential verification, finite-size, reproducibility, and density-functional perturbation theory sources for numerical convergence;
+- official optimization, electronic-state, thermodynamic, and phase-diagram documentation;
+- primary optimization, reference-state, finite-temperature DFT, formation-energy correction, and decomposition-reaction methods.
 
 A source reused by two topics is not duplicated into two network requests. Reuse does not broaden the source beyond the statements reviewed in each topic.
 

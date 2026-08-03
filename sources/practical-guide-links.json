@@ -48,7 +48,12 @@
     { "id": "hohenberg-kohn", "url": "https://doi.org/10.1103/PhysRev.136.B864", "kind": "doi" },
     { "id": "kohn-sham", "url": "https://doi.org/10.1103/PhysRev.140.A1133", "kind": "doi" },
     { "id": "mermin-dft", "url": "https://doi.org/10.1103/PhysRev.137.A1441", "kind": "doi" },
-    { "id": "woods-scf-review", "url": "https://doi.org/10.1088/1361-648X/ab31c0", "kind": "doi" }
+    { "id": "woods-scf-review", "url": "https://doi.org/10.1088/1361-648X/ab31c0", "kind": "doi" },
+    { "id": "materials-project-phase-diagrams", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/phase-diagrams-pds", "kind": "page" },
+    { "id": "materials-project-energy-corrections", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/thermodynamic-stability", "kind": "page" },
+    { "id": "jain-formation-enthalpies", "url": "https://doi.org/10.1103/PhysRevB.84.045115", "kind": "doi" },
+    { "id": "stevanovic-fere", "url": "https://doi.org/10.1103/PhysRevB.85.115104", "kind": "doi" },
+    { "id": "bartel-decomposition-reactions", "url": "https://doi.org/10.1038/s41524-018-0143-2", "kind": "doi" }
   ],
   "guides": [
     {
@@ -114,6 +119,14 @@
     {
       "guide_slug": "package-reusable-reference-state-lineage",
       "source_ids": ["qe-pw-75", "vasp-electronic-ground-state-properties", "vasp-lcharg", "vasp-lwave", "cp2k-dft"]
+    },
+    {
+      "guide_slug": "build-comparable-energy-ledger",
+      "source_ids": ["materials-project-phase-diagrams", "materials-project-energy-corrections", "hohenberg-kohn", "kohn-sham"]
+    },
+    {
+      "guide_slug": "balance-reference-reactions-and-normalization",
+      "source_ids": ["materials-project-phase-diagrams", "materials-project-energy-corrections", "jain-formation-enthalpies", "stevanovic-fere", "bartel-decomposition-reactions"]
     }
   ]
 }

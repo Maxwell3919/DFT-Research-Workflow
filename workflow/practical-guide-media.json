@@ -194,6 +194,30 @@
       "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
       "caption": "A hashed reference-state manifest binds structure, method, state, electronic artifacts, outputs, and declared downstream compatibility.",
       "alt": "Structure, method, state, charge density, wavefunction, and output artifacts feeding a reference-state manifest and downstream compatibility check."
+    },
+    {
+      "id": "comparable-energy-ledger",
+      "guide_slug": "build-comparable-energy-ledger",
+      "path": "media/practical-guides/relative-and-formation-energies/build-comparable-energy-ledger/comparable-energy-ledger.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "Raw calculation records pass through explicit comparability, completion, state, and normalization checks before two accepted candidates enter a bounded relative-energy table.",
+      "alt": "Five raw calculation records passing through composition, charge, evaluator, completion, and normalization filters, leaving two accepted relative-energy rows."
+    },
+    {
+      "id": "balanced-reference-reactions",
+      "guide_slug": "balance-reference-reactions-and-normalization",
+      "path": "media/practical-guides/relative-and-formation-energies/balance-reference-reactions-and-normalization/balanced-reference-reactions.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "Two exactly balanced reservoir reactions reach the same abstract target but retain distinct reactants, energies, and interpretations under one normalization.",
+      "alt": "Elemental and compound-reservoir reaction paths forming abstract A2B3 and feeding an explicit reaction, sign, unit, denominator, and boundary record."
     }
   ]
 }
