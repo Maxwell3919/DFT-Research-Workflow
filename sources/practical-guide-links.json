@@ -24,7 +24,17 @@
     { "id": "freysoldt-defects", "url": "https://doi.org/10.1103/RevModPhys.86.253", "kind": "doi" },
     { "id": "finite-size-scaling-limits", "url": "https://doi.org/10.1103/PhysRevB.105.014103", "kind": "doi" },
     { "id": "baroni-dfpt", "url": "https://doi.org/10.1103/RevModPhys.73.515", "kind": "doi" },
-    { "id": "giustino-epc-review", "url": "https://doi.org/10.1103/RevModPhys.89.015003", "kind": "doi" }
+    { "id": "giustino-epc-review", "url": "https://doi.org/10.1103/RevModPhys.89.015003", "kind": "doi" },
+    { "id": "ase-optimize", "url": "https://docs.ase-lib.org/ase/optimize.html", "kind": "page" },
+    { "id": "ase-constraints", "url": "https://docs.ase-lib.org/ase/constraints.html", "kind": "page" },
+    { "id": "ase-filters", "url": "https://docs.ase-lib.org/ase/filters.html", "kind": "page" },
+    { "id": "vasp-isif", "url": "https://vasp.at/wiki/ISIF", "kind": "page" },
+    { "id": "vasp-structure-optimization", "url": "https://vasp.at/wiki/Structure_optimization", "kind": "page" },
+    { "id": "cp2k-geometry-cell-opt", "url": "https://manual.cp2k.org/trunk/methods/optimization/geometry_and_cell_opt.html", "kind": "page" },
+    { "id": "pulay-force-paper", "url": "https://doi.org/10.1080/00268976900100941", "kind": "doi" },
+    { "id": "nielsen-martin-stress", "url": "https://doi.org/10.1103/PhysRevB.32.3780", "kind": "doi" },
+    { "id": "fire-paper", "url": "https://doi.org/10.1103/PhysRevLett.97.170201", "kind": "doi" },
+    { "id": "basin-hopping-paper", "url": "https://doi.org/10.1021/jp970984n", "kind": "doi" }
   ],
   "guides": [
     {
@@ -58,6 +68,22 @@
     {
       "guide_slug": "converge-q-meshes-and-response-grids",
       "source_ids": ["qe-ph-75", "baroni-dfpt", "giustino-epc-review"]
+    },
+    {
+      "guide_slug": "choose-relaxed-degrees-and-constraints",
+      "source_ids": ["ase-optimize", "ase-constraints", "ase-filters", "vasp-isif", "cp2k-geometry-cell-opt"]
+    },
+    {
+      "guide_slug": "diagnose-forces-stress-and-state",
+      "source_ids": ["qe-pw-75", "vasp-structure-optimization", "cp2k-geometry-cell-opt", "pulay-force-paper", "nielsen-martin-stress"]
+    },
+    {
+      "guide_slug": "restart-and-verify-optimization",
+      "source_ids": ["ase-optimize", "qe-pw-75", "cp2k-geometry-cell-opt"]
+    },
+    {
+      "guide_slug": "compare-multiple-starts-and-minima",
+      "source_ids": ["ase-optimize", "vasp-structure-optimization", "fire-paper", "basin-hopping-paper"]
     }
   ]
 }
