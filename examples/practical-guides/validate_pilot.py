@@ -85,6 +85,7 @@ MAGNETIC_ANISOTROPY_EXCHANGE_ANALYSIS_SCRIPTS = ["anisotropy_exchange_ledger.py"
 ELASTIC_RESPONSE_ANALYSIS_SCRIPTS = ["strain_stress_ledger.py"]
 DIELECTRIC_RESPONSE_ANALYSIS_SCRIPTS = ["born_charge_dielectric_ledger.py"]
 POLARIZATION_ANALYSIS_SCRIPTS = ["polarization_branch_path.py"]
+PIEZOELECTRIC_ANALYSIS_SCRIPTS = ["piezoelectric_tensor_ledger.py"]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
@@ -108,6 +109,7 @@ SCRIPTS = [
     *ELASTIC_RESPONSE_ANALYSIS_SCRIPTS,
     *DIELECTRIC_RESPONSE_ANALYSIS_SCRIPTS,
     *POLARIZATION_ANALYSIS_SCRIPTS,
+    *PIEZOELECTRIC_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -137,7 +139,7 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 45
+    assert len(results) == 46
     report = {
         "schema_version": 10,
         "project_root": str(ROOT),
@@ -165,12 +167,13 @@ def main() -> None:
         "elastic_response_analysis_scripts": ELASTIC_RESPONSE_ANALYSIS_SCRIPTS,
         "dielectric_response_analysis_scripts": DIELECTRIC_RESPONSE_ANALYSIS_SCRIPTS,
         "polarization_analysis_scripts": POLARIZATION_ANALYSIS_SCRIPTS,
+        "piezoelectric_analysis_scripts": PIEZOELECTRIC_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
             "Execution establishes declared structural transformations, synthetic convergence-table "
             "analysis, bounded ASE/EMT or synthetic optimization diagnostics, and deterministic "
-            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, Fermi-isovalue, charge-difference closure, potential-lineup, COHP-window, magnetic-candidate, magnetic-anisotropy/exchange-ledger, elastic strain--stress-ledger, Born-charge/dielectric-ledger, and polarization-branch analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
+            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, Fermi-isovalue, charge-difference closure, potential-lineup, COHP-window, magnetic-candidate, magnetic-anisotropy/exchange-ledger, elastic strain--stress-ledger, Born-charge/dielectric-ledger, polarization-branch, and piezoelectric-ledger analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
             "it does not establish DFT convergence, a physical minimum, a real reference ground state, "
             "a material formation, surface or adsorption energy, real work function, defect charge state or concentration, physical EOS or phase transition, independent database validation, "
             "candidate completeness, stability, transferability, or a scientific conclusion."
@@ -187,11 +190,11 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 45/45 examples; four structural transformations, "
+        "Practical guide execution passed: 46/46 examples; four structural transformations, "
         "four synthetic convergence analyses, four bounded optimization diagnostics, and "
         "four deterministic reference-state diagnostics, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
-        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, and one invented polarization-branch fixture under pinned versions."
+        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, one invented polarization-branch fixture, and one invented piezoelectric ledger fixture under pinned versions."
     )
 
 

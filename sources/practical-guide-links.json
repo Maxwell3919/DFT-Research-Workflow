@@ -121,7 +121,8 @@
     { "id": "vasp-lsorbit", "url": "https://vasp.at/wiki/LSORBIT", "kind": "page" },
     { "id": "vasp-phonons-finite-differences", "url": "https://vasp.at/wiki/Phonons_from_finite_differences", "kind": "page" },
     { "id": "vasp-born-effective-charges", "url": "https://vasp.at/wiki/Born_effective_charges", "kind": "page" },
-    { "id": "vasp-electric-field-dfpt", "url": "https://vasp.at/wiki/Electric_field_response_from_density-functional-perturbation_theory", "kind": "page" }
+    { "id": "vasp-electric-field-dfpt", "url": "https://vasp.at/wiki/Electric_field_response_from_density-functional-perturbation_theory", "kind": "page" },
+    { "id": "vasp-linear-response", "url": "https://vasp.at/wiki/Linear_response", "kind": "page" }
   ],
   "guides": [
     {
@@ -262,6 +263,7 @@
     { "guide_slug": "fit-anisotropy-and-exchange-ledger", "source_ids": ["qe-pw-75", "vasp-magnetic-anisotropy", "vasp-lsorbit"] },
     { "guide_slug": "check-strain-stress-ledger", "source_ids": ["nielsen-martin-stress", "mouhat-elastic-stability", "vasp-phonons-finite-differences"] },
     { "guide_slug": "check-born-charge-and-dielectric-ledger", "source_ids": ["qe-ph-75", "vasp-born-effective-charges", "vasp-electric-field-dfpt"] },
-    { "guide_slug": "unwrap-a-polarization-branch-path", "source_ids": ["vasp-berry-phases-finite-fields", "qe-polarization-user-guide"] }
+    { "guide_slug": "unwrap-a-polarization-branch-path", "source_ids": ["vasp-berry-phases-finite-fields", "qe-polarization-user-guide"] },
+    { "guide_slug": "check-piezoelectric-tensor-ledger", "source_ids": ["vasp-electric-field-dfpt", "vasp-linear-response", "qe-ph-75"] }
   ]
 }

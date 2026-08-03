@@ -204,6 +204,12 @@ const reviewRequirements = new Map([
     'Execution success is not Berry-phase convergence',
     'The media are an original diagram generated from invented values',
   ]],
+  ['docs/reviews/2026-08-04-piezoelectric-response.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented clamped-ion terms',
+    'Execution success is not piezoelectric-response convergence',
+    'The media are an original diagram generated from invented values',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
