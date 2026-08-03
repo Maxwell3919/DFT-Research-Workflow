@@ -76,6 +76,7 @@ BAND_STRUCTURE_ANALYSIS_SCRIPTS = [
 DOS_ANALYSIS_SCRIPTS = [
     "dos_projection_closure.py",
 ]
+FERMI_SURFACE_ANALYSIS_SCRIPTS = ["fermi_surface_isovalue_fixture.py"]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
@@ -90,6 +91,7 @@ SCRIPTS = [
     *INTERFACE_ANALYSIS_SCRIPTS,
     *BAND_STRUCTURE_ANALYSIS_SCRIPTS,
     *DOS_ANALYSIS_SCRIPTS,
+    *FERMI_SURFACE_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -119,7 +121,7 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 36
+    assert len(results) == 37
     report = {
         "schema_version": 10,
         "project_root": str(ROOT),
@@ -138,12 +140,13 @@ def main() -> None:
         "interface_analysis_scripts": INTERFACE_ANALYSIS_SCRIPTS,
         "band_structure_analysis_scripts": BAND_STRUCTURE_ANALYSIS_SCRIPTS,
         "dos_analysis_scripts": DOS_ANALYSIS_SCRIPTS,
+        "fermi_surface_analysis_scripts": FERMI_SURFACE_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
             "Execution establishes declared structural transformations, synthetic convergence-table "
             "analysis, bounded ASE/EMT or synthetic optimization diagnostics, and deterministic "
-            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface and adsorption analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
+            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, and Fermi-isovalue analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
             "it does not establish DFT convergence, a physical minimum, a real reference ground state, "
             "a material formation, surface or adsorption energy, real work function, defect charge state or concentration, physical EOS or phase transition, independent database validation, "
             "candidate completeness, stability, transferability, or a scientific conclusion."
@@ -160,11 +163,11 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 36/36 examples; four structural transformations, "
+        "Practical guide execution passed: 37/37 examples; four structural transformations, "
         "four synthetic convergence analyses, four bounded optimization diagnostics, and "
         "four deterministic reference-state diagnostics, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
-        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, and one frozen public-data CMR adsorption redraw under pinned versions."
+        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, and one invented Fermi-isovalue fixture under pinned versions."
     )
 
 
