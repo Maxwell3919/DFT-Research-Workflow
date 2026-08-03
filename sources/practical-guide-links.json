@@ -53,7 +53,15 @@
     { "id": "materials-project-energy-corrections", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/thermodynamic-stability", "kind": "page" },
     { "id": "jain-formation-enthalpies", "url": "https://doi.org/10.1103/PhysRevB.84.045115", "kind": "doi" },
     { "id": "stevanovic-fere", "url": "https://doi.org/10.1103/PhysRevB.85.115104", "kind": "doi" },
-    { "id": "bartel-decomposition-reactions", "url": "https://doi.org/10.1038/s41524-018-0143-2", "kind": "doi" }
+    { "id": "bartel-decomposition-reactions", "url": "https://doi.org/10.1038/s41524-018-0143-2", "kind": "doi" },
+    { "id": "birch-eos", "url": "https://doi.org/10.1103/PhysRev.71.809", "kind": "doi" },
+    { "id": "murnaghan-eos", "url": "https://doi.org/10.1073/pnas.30.9.244", "kind": "doi" },
+    { "id": "vinet-eos", "url": "https://doi.org/10.1029/JB092iB09p09319", "kind": "doi" },
+    { "id": "mouhat-elastic-stability", "url": "https://doi.org/10.1103/PhysRevB.90.224104", "kind": "doi" },
+    { "id": "ase-equation-of-state", "url": "https://docs.ase-lib.org/ase/eos.html", "kind": "page" },
+    { "id": "vasp-volume-relaxation", "url": "https://vasp.at/wiki/Volume_relaxation", "kind": "page" },
+    { "id": "phonopy-qha", "url": "https://phonopy.github.io/phonopy/qha.html", "kind": "page" },
+    { "id": "iupac-enthalpy", "url": "https://goldbook.iupac.org/terms/view/H02752", "kind": "page" }
   ],
   "guides": [
     {
@@ -127,6 +135,18 @@
     {
       "guide_slug": "balance-reference-reactions-and-normalization",
       "source_ids": ["materials-project-phase-diagrams", "materials-project-energy-corrections", "jain-formation-enthalpies", "stevanovic-fere", "bartel-decomposition-reactions"]
+    },
+    {
+      "guide_slug": "design-traceable-energy-volume-series",
+      "source_ids": ["birch-eos", "murnaghan-eos", "vasp-volume-relaxation", "ase-equation-of-state"]
+    },
+    {
+      "guide_slug": "fit-and-challenge-equation-of-state",
+      "source_ids": ["ase-equation-of-state", "birch-eos", "murnaghan-eos", "vinet-eos"]
+    },
+    {
+      "guide_slug": "compare-phase-enthalpies-common-pressure",
+      "source_ids": ["iupac-enthalpy", "vinet-eos", "mouhat-elastic-stability", "phonopy-qha"]
     }
   ]
 }

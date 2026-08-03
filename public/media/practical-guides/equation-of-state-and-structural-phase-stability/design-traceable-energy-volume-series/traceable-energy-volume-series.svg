@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">Traceable energy-volume series</title>
+  <desc id="desc">Nine abstract records pass through method, relaxation-policy, completion, and state checks, leaving seven ordered volumes that bracket one sampled minimum.</desc>
+  <rect width="960" height="420" rx="28" fill="#f5f7f2"/>
+  <text x="48" y="55" font-family="system-ui, sans-serif" font-size="26" font-weight="700" fill="#17332b">One state-labelled energy–volume branch</text>
+  <g font-family="system-ui, sans-serif" font-size="16" text-anchor="middle">
+    <path d="M92 268 Q300 86 492 260 T862 174" fill="none" stroke="#55766b" stroke-width="4"/>
+    <g fill="#17332b">
+      <circle cx="112" cy="250" r="9"/><circle cx="214" cy="177" r="9"/><circle cx="318" cy="137" r="9"/>
+      <circle cx="420" cy="126" r="11" fill="#c78b2c"/><circle cx="524" cy="145" r="9"/><circle cx="628" cy="196" r="9"/><circle cx="732" cy="268" r="9"/>
+    </g>
+    <text x="420" y="102" fill="#5a4411" font-weight="700">sampled minimum bracketed</text>
+  </g>
+  <rect x="72" y="310" width="816" height="62" rx="16" fill="#17332b"/>
+  <text x="96" y="338" font-family="system-ui, sans-serif" font-size="17" fill="#f7fbf8">same composition · charge · evaluator · relaxation policy · electronic state</text>
+  <text x="96" y="362" font-family="system-ui, sans-serif" font-size="16" fill="#d8eadf">excluded: one state switch and one unfinished point — reasons retained</text>
+  <text x="82" y="286" font-family="system-ui, sans-serif" font-size="16" fill="#17332b">smaller V</text>
+  <text x="750" y="286" font-family="system-ui, sans-serif" font-size="16" fill="#17332b">larger V</text>
+</svg>

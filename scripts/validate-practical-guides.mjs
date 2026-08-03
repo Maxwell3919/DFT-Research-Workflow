@@ -33,6 +33,9 @@ const requiredGuideSlugs = new Set([
   'package-reusable-reference-state-lineage',
   'build-comparable-energy-ledger',
   'balance-reference-reactions-and-normalization',
+  'design-traceable-energy-volume-series',
+  'fit-and-challenge-equation-of-state',
+  'compare-phase-enthalpies-common-pressure',
 ]);
 const requiredParentMinimum = new Map([
   ['build-or-modify-computational-model', 4],
@@ -40,6 +43,7 @@ const requiredParentMinimum = new Map([
   ['optimize-structure', 4],
   ['calculate-reference-ground-state', 4],
   ['relative-and-formation-energies', 2],
+  ['equation-of-state-and-structural-phase-stability', 3],
 ]);
 const reviewRequirements = new Map([
   ['docs/reviews/2026-08-03-practical-guides-model-building-pilot.md', [
@@ -74,6 +78,13 @@ const reviewRequirements = new Map([
     'The scripts use Python 3.12 standard-library arithmetic.',
     'Execution success is not energy convergence for a real calculation.',
     'It does not establish a real formation energy',
+    'They are conceptual diagrams, not plots of calculated data.',
+  ]],
+  ['docs/reviews/2026-08-03-equation-of-state-and-structural-phase-stability.md', [
+    'reviewed within the declared educational and execution scope',
+    'They execute no DFT code and ingest no material data.',
+    'Execution success is not EOS convergence for a real calculation.',
+    'It does not establish a real equilibrium volume',
     'They are conceptual diagrams, not plots of calculated data.',
   ]],
 ]);
