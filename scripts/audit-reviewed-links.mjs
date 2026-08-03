@@ -80,15 +80,19 @@ if (manifestOnly) {
 }
 
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
-const userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 DFT-Research-Workflow-Link-Audit/1.0';
+const userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36';
 
-function soft404Title(body) {
-  const title = body.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
-  const heading = body.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
+function soft404Marker(title, heading) {
   const marker = `${title} ${heading}`.toLowerCase();
   return /(?:^|\b)404(?:\b|$)|page not found|document not found|requested page could not be found/.test(marker)
     ? { title, heading }
     : null;
+}
+
+function soft404Title(body) {
+  const title = body.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
+  const heading = body.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
+  return soft404Marker(title, heading);
 }
 
 async function request(entry, attempt) {
@@ -152,6 +156,7 @@ async function request(entry, attempt) {
       status,
       final_url: response.url,
       redirect_location: location,
+      access_method: 'http-fetch',
       detail,
       attempt,
     };
@@ -181,9 +186,61 @@ async function auditEntry(entry) {
     status: null,
     final_url: null,
     redirect_location: null,
+    access_method: 'http-fetch',
     detail: String(lastError ?? 'unknown network failure'),
     attempt: 3,
   };
+}
+
+async function browserAuditEntry(browser, entry) {
+  const page = await browser.newPage();
+  try {
+    await page.setUserAgent(userAgent);
+    await page.setExtraHTTPHeaders({
+      'accept-language': 'en-US,en;q=0.8',
+      'cache-control': 'no-cache',
+    });
+    const response = await page.goto(entry.url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    const status = response?.status() ?? null;
+    const finalUrl = page.url();
+    const observation = await page.evaluate(() => ({
+      title: document.title?.trim() ?? '',
+      heading: document.querySelector('h1')?.textContent?.replace(/\s+/g, ' ').trim() ?? '',
+    }));
+    const soft404 = soft404Marker(observation.title, observation.heading);
+    const reachable = status !== null && status >= 200 && status < 300 && !soft404;
+    return {
+      topic_slug: entry.topic_slug,
+      kind: entry.kind,
+      requested_url: entry.url,
+      state: reachable ? 'reachable' : 'failed',
+      status,
+      final_url: finalUrl,
+      redirect_location: null,
+      access_method: 'headless-browser-fallback',
+      detail: reachable
+        ? 'page returned a successful non-404 document in a controlled browser fallback'
+        : soft404
+          ? `browser exposed a soft-404 marker: ${JSON.stringify(soft404)}`
+          : `browser returned HTTP ${status ?? 'unknown'}`,
+      attempt: 1,
+    };
+  } catch (error) {
+    return {
+      topic_slug: entry.topic_slug,
+      kind: entry.kind,
+      requested_url: entry.url,
+      state: 'failed',
+      status: null,
+      final_url: page.url() || null,
+      redirect_location: null,
+      access_method: 'headless-browser-fallback',
+      detail: String(error),
+      attempt: 1,
+    };
+  } finally {
+    await page.close();
+  }
 }
 
 async function mapWithConcurrency(values, concurrency, mapper) {
@@ -201,7 +258,39 @@ async function mapWithConcurrency(values, concurrency, mapper) {
 }
 
 const startedAt = new Date().toISOString();
-const results = await mapWithConcurrency(allEntries, 4, auditEntry);
+let results = await mapWithConcurrency(allEntries, 4, auditEntry);
+const fallbackIndices = results
+  .map((result, index) => ({ result, index }))
+  .filter(({ result }) => result.kind === 'page' && [401, 403].includes(result.status))
+  .map(({ index }) => index);
+
+if (fallbackIndices.length > 0) {
+  const executablePath = process.env.CHROME_BIN;
+  if (!executablePath) {
+    for (const index of fallbackIndices) {
+      results[index].detail += '; no CHROME_BIN was available for browser fallback';
+    }
+  } else {
+    const { default: puppeteer } = await import('puppeteer-core');
+    const browser = await puppeteer.launch({
+      executablePath,
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-blink-features=AutomationControlled',
+      ],
+    });
+    try {
+      for (const index of fallbackIndices) {
+        results[index] = await browserAuditEntry(browser, allEntries[index]);
+      }
+    } finally {
+      await browser.close();
+    }
+  }
+}
+
 const completedAt = new Date().toISOString();
 const failures = results.filter((result) => result.state !== 'reachable');
 const report = {
@@ -209,7 +298,7 @@ const report = {
   started_at: startedAt,
   completed_at: completedAt,
   semantics: {
-    page: 'A current non-DOI page must return HTTP 2xx after redirects and must not expose a 404/not-found title or h1.',
+    page: 'A current non-DOI page must return HTTP 2xx after redirects and must not expose a 404/not-found title or h1. HTTP 401/403 may be retried once through a controlled headless browser, and that access method is recorded.',
     doi: 'A DOI link is considered reachable when doi.org returns HTTP 2xx or a valid publisher redirect. Publisher access after the redirect is not asserted.',
     boundary: 'Reachability is time-bound and does not establish scientific correctness, long-term availability, or unrestricted regional access.',
   },
@@ -226,7 +315,7 @@ if (artifactDirectory) {
 }
 
 for (const result of results) {
-  console.log(`${result.state === 'reachable' ? 'PASS' : 'FAIL'} ${result.status ?? 'ERR'} ${result.requested_url}${result.final_url && result.final_url !== result.requested_url ? ` -> ${result.final_url}` : ''}`);
+  console.log(`${result.state === 'reachable' ? 'PASS' : 'FAIL'} ${result.status ?? 'ERR'} ${result.access_method} ${result.requested_url}${result.final_url && result.final_url !== result.requested_url ? ` -> ${result.final_url}` : ''}`);
 }
 
 if (failures.length > 0) {
