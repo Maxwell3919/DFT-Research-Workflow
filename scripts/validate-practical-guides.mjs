@@ -162,6 +162,12 @@ const reviewRequirements = new Map([
     'Execution success is not DFT convergence',
     'The media are original conceptual diagrams of invented data.',
   ]],
+  ['docs/reviews/2026-08-04-electrostatic-potential-and-band-alignment.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented bulk-reference and interface-step values.',
+    'Execution success is not potential convergence',
+    'The media are original conceptual diagrams of invented data.',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
