@@ -34,7 +34,21 @@
     { "id": "pulay-force-paper", "url": "https://doi.org/10.1080/00268976900100941", "kind": "doi" },
     { "id": "nielsen-martin-stress", "url": "https://doi.org/10.1103/PhysRevB.32.3780", "kind": "doi" },
     { "id": "fire-paper", "url": "https://doi.org/10.1103/PhysRevLett.97.170201", "kind": "doi" },
-    { "id": "basin-hopping-paper", "url": "https://doi.org/10.1021/jp970984n", "kind": "doi" }
+    { "id": "basin-hopping-paper", "url": "https://doi.org/10.1021/jp970984n", "kind": "doi" },
+    { "id": "vasp-electronic-minimization", "url": "https://vasp.at/wiki/Electronic_minimization", "kind": "page" },
+    { "id": "vasp-electronic-ground-state-properties", "url": "https://vasp.at/wiki/Electronic_ground-state_properties", "kind": "page" },
+    { "id": "vasp-istart", "url": "https://vasp.at/wiki/ISTART", "kind": "page" },
+    { "id": "vasp-icharg", "url": "https://vasp.at/wiki/ICHARG", "kind": "page" },
+    { "id": "vasp-magmom", "url": "https://vasp.at/wiki/MAGMOM", "kind": "page" },
+    { "id": "vasp-lcharg", "url": "https://vasp.at/wiki/LCHARG", "kind": "page" },
+    { "id": "vasp-lwave", "url": "https://vasp.at/wiki/LWAVE", "kind": "page" },
+    { "id": "cp2k-scf", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html", "kind": "page" },
+    { "id": "cp2k-dft", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT.html", "kind": "page" },
+    { "id": "abinit-basic1", "url": "https://docs.abinit.org/tutorial/base1/", "kind": "page" },
+    { "id": "hohenberg-kohn", "url": "https://doi.org/10.1103/PhysRev.136.B864", "kind": "doi" },
+    { "id": "kohn-sham", "url": "https://doi.org/10.1103/PhysRev.140.A1133", "kind": "doi" },
+    { "id": "mermin-dft", "url": "https://doi.org/10.1103/PhysRev.137.A1441", "kind": "doi" },
+    { "id": "woods-scf-review", "url": "https://doi.org/10.1088/1361-648X/ab31c0", "kind": "doi" }
   ],
   "guides": [
     {
@@ -84,6 +98,22 @@
     {
       "guide_slug": "compare-multiple-starts-and-minima",
       "source_ids": ["ase-optimize", "vasp-structure-optimization", "fire-paper", "basin-hopping-paper"]
+    },
+    {
+      "guide_slug": "prepare-fixed-geometry-reference-calculation",
+      "source_ids": ["qe-pw-75", "vasp-electronic-minimization", "cp2k-scf", "abinit-basic1"]
+    },
+    {
+      "guide_slug": "compare-fresh-and-restarted-electronic-states",
+      "source_ids": ["qe-pw-75", "vasp-istart", "vasp-icharg", "cp2k-scf", "cp2k-dft"]
+    },
+    {
+      "guide_slug": "compare-charge-spin-and-magnetic-candidates",
+      "source_ids": ["vasp-magmom", "vasp-electronic-minimization", "cp2k-dft", "hohenberg-kohn", "kohn-sham", "mermin-dft", "woods-scf-review"]
+    },
+    {
+      "guide_slug": "package-reusable-reference-state-lineage",
+      "source_ids": ["qe-pw-75", "vasp-electronic-ground-state-properties", "vasp-lcharg", "vasp-lwave", "cp2k-dft"]
     }
   ]
 }

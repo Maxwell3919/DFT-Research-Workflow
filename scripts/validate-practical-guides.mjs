@@ -27,11 +27,16 @@ const requiredGuideSlugs = new Set([
   'diagnose-forces-stress-and-state',
   'restart-and-verify-optimization',
   'compare-multiple-starts-and-minima',
+  'prepare-fixed-geometry-reference-calculation',
+  'compare-fresh-and-restarted-electronic-states',
+  'compare-charge-spin-and-magnetic-candidates',
+  'package-reusable-reference-state-lineage',
 ]);
 const requiredParentMinimum = new Map([
   ['build-or-modify-computational-model', 4],
   ['test-numerical-convergence', 4],
   ['optimize-structure', 4],
+  ['calculate-reference-ground-state', 4],
 ]);
 const reviewRequirements = new Map([
   ['docs/reviews/2026-08-03-practical-guides-model-building-pilot.md', [
@@ -52,6 +57,13 @@ const reviewRequirements = new Map([
     'The scripts calculate no electronic energy with a DFT code',
     'Execution success is not structural convergence for a real calculation',
     'None of those checks establishes a local or global minimum for a real calculation',
+    'They are conceptual diagrams, not plots of calculated data.',
+  ]],
+  ['docs/reviews/2026-08-03-calculate-reference-ground-state.md', [
+    'reviewed within the declared educational and execution scope',
+    'The scripts calculate no electronic energy with a DFT code',
+    'Execution success is not reference-ground-state verification for a real calculation',
+    'None of those checks establishes global ground-state identity for a real calculation',
     'They are conceptual diagrams, not plots of calculated data.',
   ]],
 ]);

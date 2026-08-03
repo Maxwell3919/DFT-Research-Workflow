@@ -32,10 +32,17 @@ OPTIMIZATION_DIAGNOSTIC_SCRIPTS = [
     "optimization_restart_verification.py",
     "optimization_multiple_starts.py",
 ]
+REFERENCE_STATE_DIAGNOSTIC_SCRIPTS = [
+    "reference_state_protocol_continuity.py",
+    "reference_state_fresh_restart.py",
+    "reference_state_candidate_comparison.py",
+    "reference_state_lineage_manifest.py",
+]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
     *OPTIMIZATION_DIAGNOSTIC_SCRIPTS,
+    *REFERENCE_STATE_DIAGNOSTIC_SCRIPTS,
 ]
 
 
@@ -65,21 +72,23 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 12
+    assert len(results) == 16
     report = {
-        "schema_version": 3,
+        "schema_version": 4,
         "project_root": str(ROOT),
         "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "versions": observed_versions,
         "structure_scripts": STRUCTURE_SCRIPTS,
         "convergence_analysis_scripts": CONVERGENCE_ANALYSIS_SCRIPTS,
         "optimization_diagnostic_scripts": OPTIMIZATION_DIAGNOSTIC_SCRIPTS,
+        "reference_state_diagnostic_scripts": REFERENCE_STATE_DIAGNOSTIC_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
             "Execution establishes declared structural transformations, synthetic convergence-table "
-            "analysis, and bounded ASE/EMT or synthetic optimization diagnostics only; it does not "
-            "establish DFT convergence, a physical minimum, stability, transferability, or a scientific conclusion."
+            "analysis, bounded ASE/EMT or synthetic optimization diagnostics, and deterministic "
+            "reference-state metadata and comparison logic only; it does not establish DFT convergence, "
+            "a physical minimum, a real reference ground state, stability, transferability, or a scientific conclusion."
         ),
     }
 
@@ -93,8 +102,9 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 12/12 examples; four structural transformations, "
-        "four synthetic convergence analyses, and four bounded optimization diagnostics under pinned versions."
+        "Practical guide execution passed: 16/16 examples; four structural transformations, "
+        "four synthetic convergence analyses, four bounded optimization diagnostics, and "
+        "four deterministic reference-state diagnostics under pinned versions."
     )
 
 
