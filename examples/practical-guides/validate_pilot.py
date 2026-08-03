@@ -50,6 +50,10 @@ EOS_ANALYSIS_SCRIPTS = [
 CONVEX_HULL_ANALYSIS_SCRIPTS = [
     "li_p_convex_hull.py",
 ]
+DEFECT_ANALYSIS_SCRIPTS = [
+    "defect_formation_ledger.py",
+    "defect_charge_state_envelope.py",
+]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
@@ -58,6 +62,7 @@ SCRIPTS = [
     *ENERGY_LEDGER_SCRIPTS,
     *EOS_ANALYSIS_SCRIPTS,
     *CONVEX_HULL_ANALYSIS_SCRIPTS,
+    *DEFECT_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -87,9 +92,9 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 22
+    assert len(results) == 24
     report = {
-        "schema_version": 7,
+        "schema_version": 8,
         "project_root": str(ROOT),
         "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "versions": observed_versions,
@@ -100,14 +105,15 @@ def main() -> None:
         "energy_ledger_scripts": ENERGY_LEDGER_SCRIPTS,
         "eos_analysis_scripts": EOS_ANALYSIS_SCRIPTS,
         "convex_hull_analysis_scripts": CONVEX_HULL_ANALYSIS_SCRIPTS,
+        "defect_analysis_scripts": DEFECT_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
             "Execution establishes declared structural transformations, synthetic convergence-table "
             "analysis, bounded ASE/EMT or synthetic optimization diagnostics, and deterministic "
-            "reference-state metadata, energy-ledger arithmetic, synthetic EOS analysis, and a frozen public-data convex-hull rebuild only; "
+            "reference-state metadata, energy-ledger arithmetic, synthetic EOS and defect analysis, and a frozen public-data convex-hull rebuild only; "
             "it does not establish DFT convergence, a physical minimum, a real reference ground state, "
-            "a material formation energy, physical EOS or phase transition, independent database validation, "
+            "a material formation energy, real defect charge state or concentration, physical EOS or phase transition, independent database validation, "
             "candidate completeness, stability, transferability, or a scientific conclusion."
         ),
     }
@@ -122,10 +128,10 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 22/22 examples; four structural transformations, "
+        "Practical guide execution passed: 24/24 examples; four structural transformations, "
         "four synthetic convergence analyses, four bounded optimization diagnostics, and "
         "four deterministic reference-state diagnostics, two energy-ledger fixtures, three synthetic EOS analyses, "
-        "and one frozen public-data convex-hull reconstruction under pinned versions."
+        "one frozen public-data convex-hull reconstruction, and two synthetic defect analyses under pinned versions."
     )
 
 

@@ -38,6 +38,8 @@ const requiredGuideSlugs = new Set([
   'compare-phase-enthalpies-common-pressure',
   'rebuild-oqmd-li-p-convex-hull',
   'stress-test-hull-phase-set',
+  'build-defect-formation-ledger',
+  'trace-charge-state-envelope',
 ]);
 const requiredParentMinimum = new Map([
   ['build-or-modify-computational-model', 4],
@@ -47,6 +49,7 @@ const requiredParentMinimum = new Map([
   ['relative-and-formation-energies', 2],
   ['equation-of-state-and-structural-phase-stability', 3],
   ['compositional-phase-stability-and-convex-hulls', 2],
+  ['defect-formation-energies-and-charge-states', 2],
 ]);
 const reviewRequirements = new Map([
   ['docs/reviews/2026-08-03-practical-guides-model-building-pilot.md', [
@@ -96,6 +99,13 @@ const reviewRequirements = new Map([
     'Execution success is not DFT convergence for a real calculation.',
     'It does not independently establish OQMD accuracy',
     'They are plots of a real public DFT database snapshot',
+  ]],
+  ['docs/reviews/2026-08-04-defect-formation-energies-and-charge-states.md', [
+    'reviewed within the declared educational and execution scope',
+    'The scripts execute no DFT code and ingest no material data.',
+    'Execution success is not defect convergence for a real calculation.',
+    'It does not establish a real defect configuration',
+    'They are conceptual plots of invented data',
   ]],
 ]);
 
