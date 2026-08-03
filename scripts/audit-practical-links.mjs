@@ -5,7 +5,7 @@ const root = new URL('../', import.meta.url);
 const manifest = JSON.parse(await readFile(new URL('sources/practical-guide-links.json', root), 'utf8'));
 const artifactDirectory = process.env.PRACTICAL_LINK_AUDIT_ARTIFACT_DIR;
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
-const userAgent = 'Mozilla/5.0 DFT-Research-Workflow-Practical-Link-Audit/1.0';
+const userAgent = 'Mozilla/5.0 DFT-Research-Workflow-Practical-Link-Audit/2.0';
 
 function soft404(body) {
   const title = body.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
@@ -20,7 +20,7 @@ async function request(source, attempt) {
   const timer = setTimeout(() => controller.abort(), 25000);
   try {
     const response = await fetch(source.url, {
-      redirect: 'follow',
+      redirect: source.kind === 'doi' ? 'manual' : 'follow',
       signal: controller.signal,
       headers: {
         'user-agent': userAgent,
@@ -29,9 +29,22 @@ async function request(source, attempt) {
       },
     });
     const status = response.status;
+    const location = response.headers.get('location');
     let state = 'failed';
     let detail = `HTTP ${status}`;
-    if (status >= 200 && status < 300) {
+
+    if (source.kind === 'doi') {
+      if (status >= 200 && status < 300) {
+        state = 'reachable';
+        detail = 'DOI resolver returned a successful response';
+      } else if (status >= 300 && status < 400 && location) {
+        state = 'reachable';
+        detail = 'DOI resolver returned a publisher redirect';
+      } else {
+        detail = `DOI resolver returned HTTP ${status} without a usable redirect`;
+      }
+      await response.body?.cancel();
+    } else if (status >= 200 && status < 300) {
       const contentType = response.headers.get('content-type') ?? '';
       if (/text\/html|application\/xhtml\+xml/i.test(contentType)) {
         const body = await response.text();
@@ -49,10 +62,13 @@ async function request(source, attempt) {
     } else {
       await response.body?.cancel();
     }
+
     return {
       source_id: source.id,
+      kind: source.kind,
       requested_url: source.url,
       final_url: response.url,
+      redirect_location: location,
       status,
       state,
       detail,
@@ -78,8 +94,10 @@ async function audit(source) {
   }
   return result ?? {
     source_id: source.id,
+    kind: source.kind,
     requested_url: source.url,
     final_url: null,
+    redirect_location: null,
     status: null,
     state: 'failed',
     detail: String(lastError ?? 'unknown network failure'),
@@ -93,11 +111,14 @@ for (const source of manifest.sources) results.push(await audit(source));
 const completedAt = new Date().toISOString();
 const failures = results.filter((result) => result.state !== 'reachable');
 const report = {
-  schema_version: 1,
+  schema_version: 2,
   started_at: startedAt,
   completed_at: completedAt,
-  semantics: 'Each official practical-guide page must return a live HTTP 2xx non-soft-404 document after redirects.',
-  boundary: 'Reachability is time-bound and does not establish semantic accuracy, software execution, or scientific validity.',
+  semantics: {
+    page: 'A practical-guide page must return HTTP 2xx after redirects and must not expose a 404/not-found title or h1.',
+    doi: 'A DOI is reachable when doi.org returns HTTP 2xx or a valid publisher redirect; publisher access after the redirect is not asserted.',
+    boundary: 'Reachability is time-bound and does not establish semantic accuracy, software execution, numerical convergence, or scientific validity.',
+  },
   source_count: results.length,
   reachable_count: results.length - failures.length,
   failed_count: failures.length,
@@ -108,9 +129,9 @@ if (artifactDirectory) {
   await mkdir(artifactDirectory, { recursive: true });
   await writeFile(join(artifactDirectory, 'practical-link-audit.json'), `${JSON.stringify(report, null, 2)}\n`);
 }
-for (const result of results) console.log(`${result.state === 'reachable' ? 'PASS' : 'FAIL'} ${result.status ?? 'ERR'} ${result.source_id} ${result.requested_url}`);
+for (const result of results) console.log(`${result.state === 'reachable' ? 'PASS' : 'FAIL'} ${result.status ?? 'ERR'} ${result.kind} ${result.requested_url}`);
 if (failures.length > 0) {
   console.error(`Practical-guide source audit failed: ${failures.length}/${results.length} destinations unavailable.`);
   process.exit(1);
 }
-console.log(`Practical-guide source audit passed: ${results.length}/${results.length} official destinations returned live non-404 documents.`);
+console.log(`Practical-guide source audit passed: ${results.length}/${results.length} official pages or primary DOI resolvers satisfied the declared access semantics.`);
