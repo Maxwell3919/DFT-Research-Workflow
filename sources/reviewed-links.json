@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 76,
+  "expected_unique_urls": 82,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -146,6 +146,23 @@
         { "kind": "page", "url": "https://vasp.at/wiki/Volume_relaxation" },
         { "kind": "page", "url": "https://phonopy.github.io/phonopy/qha.html" },
         { "kind": "page", "url": "https://goldbook.iupac.org/terms/view/H02752" }
+      ]
+    },
+    {
+      "topic_slug": "compositional-phase-stability-and-convex-hulls",
+      "article": "src/content/topics/compositional-phase-stability-and-convex-hulls.md",
+      "review": "docs/reviews/2026-08-04-compositional-phase-stability-and-convex-hulls.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1021/cm702327g" },
+        { "kind": "doi", "url": "https://doi.org/10.1038/s41524-018-0143-2" },
+        { "kind": "doi", "url": "https://doi.org/10.1126/sciadv.1600225" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.84.045115" },
+        { "kind": "doi", "url": "https://doi.org/10.1021/jacs.1c06229" },
+        { "kind": "page", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/phase-diagrams-pds" },
+        { "kind": "page", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/thermodynamic-stability" },
+        { "kind": "page", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/chemical-potential-diagrams-cpds" },
+        { "kind": "page", "url": "https://pymatgen.org/pymatgen.analysis.html#module-pymatgen.analysis.phase_diagram" },
+        { "kind": "doi", "url": "https://doi.org/10.1007/s11837-013-0755-4" }
       ]
     }
   ]

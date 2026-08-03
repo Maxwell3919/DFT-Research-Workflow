@@ -36,6 +36,8 @@ const requiredGuideSlugs = new Set([
   'design-traceable-energy-volume-series',
   'fit-and-challenge-equation-of-state',
   'compare-phase-enthalpies-common-pressure',
+  'rebuild-oqmd-li-p-convex-hull',
+  'stress-test-hull-phase-set',
 ]);
 const requiredParentMinimum = new Map([
   ['build-or-modify-computational-model', 4],
@@ -44,6 +46,7 @@ const requiredParentMinimum = new Map([
   ['calculate-reference-ground-state', 4],
   ['relative-and-formation-energies', 2],
   ['equation-of-state-and-structural-phase-stability', 3],
+  ['compositional-phase-stability-and-convex-hulls', 2],
 ]);
 const reviewRequirements = new Map([
   ['docs/reviews/2026-08-03-practical-guides-model-building-pilot.md', [
@@ -86,6 +89,13 @@ const reviewRequirements = new Map([
     'Execution success is not EOS convergence for a real calculation.',
     'It does not establish a real equilibrium volume',
     'They are conceptual diagrams, not plots of calculated data.',
+  ]],
+  ['docs/reviews/2026-08-04-compositional-phase-stability-and-convex-hulls.md', [
+    'reviewed within the declared educational and execution scope',
+    'The repository does not claim to have rerun the underlying OQMD calculations.',
+    'Execution success is not DFT convergence for a real calculation.',
+    'It does not independently establish OQMD accuracy',
+    'They are plots of a real public DFT database snapshot',
   ]],
 ]);
 
