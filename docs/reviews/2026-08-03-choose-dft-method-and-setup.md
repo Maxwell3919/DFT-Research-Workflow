@@ -220,10 +220,22 @@ This batch does not provide:
 These omissions keep the article at the method-selection boundary. The next
 content topic is **Test Numerical Convergence**.
 
+## External-link verification
+
+The original review confirmed source relevance and rendered-link presence but did
+not request the external destinations. All external sources in this article and
+review are now declared in `sources/reviewed-links.json`. Deterministic
+validation requires exact agreement between the article, this review, and that
+manifest. A separate network CI job requests every declared destination under
+the rules documented in
+`docs/reviews/2026-08-03-reviewed-source-link-audit.md`.
+
 ## Evidence boundary
 
-The source review establishes that the article represents the cited methods and
-official documentation accurately within its declared educational scope.
-Repository, type, build, link, and browser checks establish software behaviour
-only. Neither form of review validates a real computational setup, a production
-calculation, a numerical result, or a scientific conclusion.
+The semantic source review establishes that the article represents the cited
+methods and official documentation within its declared educational scope. The
+dedicated external-link audit establishes HTTP reachability only at its recorded
+run time. Browser smoke establishes rendered-link presence and page behaviour;
+it does not establish external destination availability. None of these checks
+validates a real computational setup, a production calculation, a numerical
+result, or a scientific conclusion.
