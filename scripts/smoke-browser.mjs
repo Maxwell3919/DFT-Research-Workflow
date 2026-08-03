@@ -131,12 +131,12 @@ try {
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
 
   for (const target of requiredRoutes) {
-    const response = await page.goto(`${base}${target.route}`, { waitUntil: 'domcontentloaded' });
+    const response = await page.goto(`${base}${target.route}`, { waitUntil: 'load' });
     if (response?.status() !== target.status) throw new Error(`${target.route}: expected HTTP ${target.status}, found ${response?.status() ?? 'no response'}`);
     await inspectPage(page, target.status);
   }
 
-  await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${base}/operations/`, { waitUntil: 'load' });
   const workflowState = await page.evaluate(() => ({
     text: document.body.innerText,
     topicLinks: [...document.querySelectorAll('.topic-list a')].map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)),
@@ -156,7 +156,7 @@ try {
   if (/Core Operations|O01|O24|Operation 00/.test(workflowState.text)) throw new Error('Research Workflow exposes a superseded numbered taxonomy');
 
   for (const slug of representativeTopicSlugs) {
-    await page.goto(`${base}/operations/${slug}/`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}/operations/${slug}/`, { waitUntil: 'load' });
     const state = await page.evaluate(() => ({
       transitional: document.body.innerText.includes('Transitional route'),
       fixedContract: document.querySelector('.operation-contract'),
@@ -169,7 +169,7 @@ try {
     if (!hasNarrative && (state.articleContent || !state.hasStableNotice)) throw new Error(`${slug}: neutral destination state mismatch`);
   }
 
-  await page.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'load' });
   const reviewedArticle = await page.evaluate(() => ({
     text: document.body.innerText,
     links: [...document.querySelectorAll('.article-content a')].map((link) => link.href),
@@ -190,14 +190,14 @@ try {
     if (!reviewedArticle.links.some((link) => link.includes(domain))) throw new Error(`Obtain a Material Structure is missing source domain ${domain}`);
   }
 
-  await page.goto(`${base}/recipes/`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${base}/recipes/`, { waitUntil: 'load' });
   const recipeLinks = await page.$$eval('.directory-list a', (links) => links.length);
   if (recipeLinks !== 16) throw new Error(`Workflow Recipes directory exposes ${recipeLinks}/16 transitional workflow sources`);
-  await page.goto(`${base}/framework/`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${base}/framework/`, { waitUntil: 'load' });
   const frameworkLinks = await page.$$eval('.directory-list a', (links) => links.length);
   if (frameworkLinks !== 5) throw new Error(`Framework directory exposes ${frameworkLinks}/5 pages`);
 
-  await page.goto(`${base}/`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${base}/`, { waitUntil: 'load' });
   await page.focus('.primary-nav a');
   await page.keyboard.press('Tab');
   const keyboardHref = await page.evaluate(() => document.activeElement?.getAttribute('href'));
@@ -205,7 +205,7 @@ try {
 
   const migrationNotice = 'This URL is retained while useful material is migrated into the A–E workflow.';
   for (const slug of [...representativeTransitionalSlugs, ...representativeLegacySlugs]) {
-    await page.goto(`${base}/operations/${slug}/`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}/operations/${slug}/`, { waitUntil: 'load' });
     const migrationState = await page.evaluate((notice) => ({
       hasNotice: document.body.innerText.includes(notice),
       previous: document.querySelector('[data-previous]'),
@@ -219,10 +219,10 @@ try {
   const noJsPage = await browser.newPage();
   await noJsPage.setCacheEnabled(false);
   await noJsPage.setJavaScriptEnabled(false);
-  await noJsPage.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
+  await noJsPage.goto(`${base}/operations/`, { waitUntil: 'load' });
   const noJsTopicLinks = await noJsPage.$$eval('.topic-list a', (links) => links.map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)));
   if (JSON.stringify(noJsTopicLinks) !== JSON.stringify(topicSlugs)) throw new Error('no-JavaScript Research Workflow topic links are incomplete');
-  await noJsPage.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'domcontentloaded' });
+  await noJsPage.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'load' });
   const noJsTopicText = await noJsPage.$eval('body', (body) => body.innerText);
   if (!noJsTopicText.includes('A structure file is not yet a computational model.') || !noJsTopicText.includes('Sources and standards')) {
     throw new Error('no-JavaScript reviewed topic page is incomplete');
@@ -230,23 +230,23 @@ try {
 
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   for (const target of requiredRoutes) {
-    const response = await page.goto(`${base}${target.route}`, { waitUntil: 'domcontentloaded' });
+    const response = await page.goto(`${base}${target.route}`, { waitUntil: 'load' });
     if (response?.status() !== target.status) throw new Error(`mobile ${target.route}: HTTP ${response?.status()}`);
     await inspectPage(page, target.status);
   }
 
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
-    await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}/operations/`, { waitUntil: 'load' });
     await captureFullPage(page, join(artifactDirectory, 'research-workflow-mobile.png'));
     await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-    await page.goto(`${base}/`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}/`, { waitUntil: 'load' });
     await captureFullPage(page, join(artifactDirectory, 'home-desktop.png'));
-    await page.goto(`${base}/operations/`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}/operations/`, { waitUntil: 'load' });
     await captureFullPage(page, join(artifactDirectory, 'research-workflow-desktop.png'));
-    await page.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'load' });
     await captureFullPage(page, join(artifactDirectory, 'topic-obtain-material-structure-desktop.png'));
-    await page.goto(`${base}/operations/o13-solve-an-electronic-state/`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}/operations/o13-solve-an-electronic-state/`, { waitUntil: 'load' });
     await captureFullPage(page, join(artifactDirectory, 'transitional-route-desktop.png'));
   }
 

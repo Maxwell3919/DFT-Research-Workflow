@@ -64,19 +64,19 @@ try {
   const page = await browser.newPage();
   await page.setCacheEnabled(false);
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-  let response = await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+  let response = await page.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`energy desktop route returned ${response?.status()}`);
   const desktop = await inspect(page, 1440);
 
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
-  response = await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+  response = await page.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`energy mobile route returned ${response?.status()}`);
   await inspect(page, 390);
 
   const noJsPage = await browser.newPage();
   await noJsPage.setCacheEnabled(false);
   await noJsPage.setJavaScriptEnabled(false);
-  response = await noJsPage.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+  response = await noJsPage.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`energy no-JavaScript route returned ${response?.status()}`);
   const noJsText = await noJsPage.$eval('body', (body) => body.innerText);
   for (const phrase of ['A raw total energy is not yet a comparable result', 'Formation energy alone establishes neither equilibrium stability nor experimental synthesizability.', 'Sources and methods']) {
@@ -86,7 +86,7 @@ try {
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
     await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-    await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}${route}`, { waitUntil: 'load' });
     await captureStablePage(page, join(artifactDirectory, 'topic-relative-and-formation-energies-desktop.png'));
     await writeFile(join(artifactDirectory, 'reviewed-energies-summary.json'), `${JSON.stringify({
       site_url: base,

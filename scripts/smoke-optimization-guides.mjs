@@ -42,7 +42,7 @@ const guides = [
 ];
 
 async function inspectGuide(page, guide, width) {
-  const response = await page.goto(`${base}${guide.route}`, { waitUntil: 'domcontentloaded' });
+  const response = await page.goto(`${base}${guide.route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`${guide.route} returned ${response?.status()}`);
   const result = await page.evaluate(() => ({
     language: document.documentElement.lang,
@@ -94,7 +94,7 @@ try {
   await page.setCacheEnabled(false);
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
 
-  let response = await page.goto(`${base}${parentRoute}`, { waitUntil: 'domcontentloaded' });
+  let response = await page.goto(`${base}${parentRoute}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`optimization parent returned ${response?.status()}`);
   const parent = await page.evaluate(() => ({
     text: document.body.innerText,
@@ -120,7 +120,7 @@ try {
   await noJsPage.setCacheEnabled(false);
   await noJsPage.setJavaScriptEnabled(false);
   for (const guide of guides) {
-    response = await noJsPage.goto(`${base}${guide.route}`, { waitUntil: 'domcontentloaded' });
+    response = await noJsPage.goto(`${base}${guide.route}`, { waitUntil: 'load' });
     if (response?.status() !== 200) throw new Error(`${guide.route}: no-JavaScript response ${response?.status()}`);
     const text = await noJsPage.$eval('body', (body) => body.innerText);
     if (!text.includes(guide.title) || !text.includes(guide.phrase)) throw new Error(`${guide.route}: no-JavaScript content incomplete`);
@@ -129,9 +129,9 @@ try {
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
     await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-    await page.goto(`${base}${parentRoute}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}${parentRoute}`, { waitUntil: 'load' });
     await captureStablePage(page, join(artifactDirectory, 'optimization-guides-parent-desktop.png'));
-    await page.goto(`${base}${guides[2].route}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}${guides[2].route}`, { waitUntil: 'load' });
     await captureStablePage(page, join(artifactDirectory, 'optimization-guide-restart-desktop.png'));
     await writeFile(join(artifactDirectory, 'optimization-guides-summary.json'), `${JSON.stringify({
       site_url: base,

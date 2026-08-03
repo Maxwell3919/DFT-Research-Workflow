@@ -76,19 +76,19 @@ try {
   await page.setCacheEnabled(false);
 
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-  let response = await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+  let response = await page.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`model-building desktop route returned ${response?.status()}`);
   const desktop = await inspect(page, 1440);
 
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
-  response = await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+  response = await page.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`model-building mobile route returned ${response?.status()}`);
   await inspect(page, 390);
 
   const noJsPage = await browser.newPage();
   await noJsPage.setCacheEnabled(false);
   await noJsPage.setJavaScriptEnabled(false);
-  response = await noJsPage.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+  response = await noJsPage.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`model-building no-JavaScript route returned ${response?.status()}`);
   const noJsText = await noJsPage.$eval('body', (body) => body.innerText);
   for (const phrase of ['A computational model is the explicit system', 'One ordered cell is not a random alloy.', 'Sources and methods']) {
@@ -98,7 +98,7 @@ try {
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
     await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-    await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}${route}`, { waitUntil: 'load' });
     await captureStablePage(page, join(artifactDirectory, 'topic-build-computational-model-desktop.png'));
     await writeFile(join(artifactDirectory, 'reviewed-model-summary.json'), `${JSON.stringify({
       site_url: base,
