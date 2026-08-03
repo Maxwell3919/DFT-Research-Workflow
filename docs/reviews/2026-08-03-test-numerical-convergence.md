@@ -65,6 +65,22 @@ The source set was checked for relevance to the claims made:
 
 Every source appears in the appropriate article or guide and in the corresponding source manifest. Semantic source support, DOI or page reachability, rendered-link presence, and software execution remain independent checks.
 
+## Exact overview source record
+
+The reviewed overview and this review use the same bounded source set:
+
+- [Quantum ESPRESSO 7.5 `pw.x` input description](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
+- [Quantum ESPRESSO 7.5 `ph.x` input description](https://www.quantum-espresso.org/Doc/INPUT_PH.html)
+- [Monkhorst and Pack](https://doi.org/10.1103/PhysRevB.13.5188)
+- [Methfessel and Paxton](https://doi.org/10.1103/PhysRevB.40.3616)
+- [Blöchl, Jepsen, and Andersen](https://doi.org/10.1103/PhysRevB.49.16223)
+- [Lejaeghere et al.](https://doi.org/10.1126/science.aad3000)
+- [Prandini et al.](https://doi.org/10.1038/s41524-018-0127-2)
+- [Materials Cloud SSSP archive](https://archive.materialscloud.org/record/2021.76)
+- [Ismail-Beigi](https://doi.org/10.1103/PhysRevB.73.233103)
+- [Freysoldt et al.](https://doi.org/10.1103/RevModPhys.86.253)
+- [Baroni et al.](https://doi.org/10.1103/RevModPhys.73.515)
+
 ## Executable evidence
 
 The four new companion scripts use only the Python 3.12 standard library:
