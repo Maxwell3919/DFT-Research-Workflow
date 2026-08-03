@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 40,
+  "expected_unique_urls": 48,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -75,6 +75,23 @@
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.73.233103" },
         { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.86.253" },
         { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.73.515" }
+      ]
+    },
+    {
+      "topic_slug": "optimize-structure",
+      "article": "src/content/topics/optimize-structure.md",
+      "review": "docs/reviews/2026-08-03-optimize-structure.md",
+      "links": [
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
+        { "kind": "page", "url": "https://docs.ase-lib.org/ase/optimize.html" },
+        { "kind": "page", "url": "https://docs.ase-lib.org/ase/constraints.html" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Structure_optimization" },
+        { "kind": "page", "url": "https://vasp.at/wiki/ISIF" },
+        { "kind": "page", "url": "https://manual.cp2k.org/trunk/methods/optimization/geometry_and_cell_opt.html" },
+        { "kind": "doi", "url": "https://doi.org/10.1080/00268976900100941" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.32.3780" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.97.170201" },
+        { "kind": "doi", "url": "https://doi.org/10.1021/jp970984n" }
       ]
     }
   ]
