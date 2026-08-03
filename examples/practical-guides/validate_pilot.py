@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import sys
 from importlib.metadata import version
 from pathlib import Path
 from types import ModuleType
@@ -13,12 +14,19 @@ EXPECTED_VERSIONS = {
     "ase": "3.29.0",
     "pymatgen-core": "2026.7.31",
 }
-SCRIPTS = [
+STRUCTURE_SCRIPTS = [
     "ase_repeat_cells.py",
     "ase_surface_vacuum_adsorbates.py",
     "pymatgen_structure_transformations.py",
     "ase_monolayer_model.py",
 ]
+CONVERGENCE_ANALYSIS_SCRIPTS = [
+    "convergence_basis_grids.py",
+    "convergence_kpoints_smearing.py",
+    "convergence_finite_size.py",
+    "convergence_response_grids.py",
+]
+SCRIPTS = [*STRUCTURE_SCRIPTS, *CONVERGENCE_ANALYSIS_SCRIPTS]
 
 
 def load_module(path: Path) -> ModuleType:
@@ -31,6 +39,9 @@ def load_module(path: Path) -> ModuleType:
 
 
 def main() -> None:
+    assert sys.version_info[:2] == (3, 12), (
+        f"Practical-guide Python version changed: {sys.version_info.major}.{sys.version_info.minor}"
+    )
     observed_versions = {name: version(name) for name in EXPECTED_VERSIONS}
     assert observed_versions == EXPECTED_VERSIONS, (
         f"Pinned practical-guide versions changed: {observed_versions}"
@@ -44,16 +55,20 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
+    assert len(results) == 8
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "project_root": str(ROOT),
+        "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "versions": observed_versions,
+        "structure_scripts": STRUCTURE_SCRIPTS,
+        "convergence_analysis_scripts": CONVERGENCE_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
-            "Execution establishes the declared structural transformations only; "
-            "it does not establish numerical convergence, energetic stability, "
-            "transferability, or a scientific conclusion."
+            "Execution establishes the declared structural transformations and synthetic "
+            "convergence-table analysis logic only; it does not establish numerical "
+            "convergence, energetic stability, transferability, or a scientific conclusion."
         ),
     }
 
@@ -66,7 +81,10 @@ def main() -> None:
         )
 
     print(json.dumps(report, indent=2))
-    print("Practical guide execution passed: 4/4 structural examples with pinned versions.")
+    print(
+        "Practical guide execution passed: 8/8 examples; four structural transformations "
+        "and four synthetic convergence analyses under pinned versions."
+    )
 
 
 if __name__ == "__main__":
