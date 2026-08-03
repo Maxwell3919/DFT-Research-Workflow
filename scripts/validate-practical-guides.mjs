@@ -186,6 +186,12 @@ const reviewRequirements = new Map([
     'Execution success is not magnetic convergence',
     'The media are an original diagram generated from invented values',
   ]],
+  ['docs/reviews/2026-08-04-elastic-constants-and-mechanical-properties.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented signed strain--stress rows',
+    'Execution success is not stress convergence',
+    'The media are an original diagram generated from invented values',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
