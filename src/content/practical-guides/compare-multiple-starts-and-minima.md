@@ -133,7 +133,7 @@ It does not run DFT, validate any material, prove global optimality, prescribe a
 
 **Calling a global-search best-so-far candidate proven.** Search completeness needs its own evidence.
 
-## Official and primary sources
+## Official sources
 
 - [ASE local and global structure optimization](https://docs.ase-lib.org/ase/optimize.html)
 - [VASP structure optimization and local-minimum boundary](https://vasp.at/wiki/Structure_optimization)
