@@ -50,6 +50,54 @@
       "reuse_basis": "Original project diagram created for this repository; no external image was copied.",
       "caption": "The illustrative monolayer model is periodic in plane and nonperiodic out of plane; vacuum and cell size remain convergence variables rather than certified values.",
       "alt": "Diagram of a layered hexagonal monolayer with periodic arrows in plane and a nonperiodic vacuum direction out of plane."
+    },
+    {
+      "id": "convergence-basis-grid-map",
+      "guide_slug": "converge-basis-cutoffs-and-grids",
+      "path": "media/practical-guides/test-numerical-convergence/converge-basis-cutoffs-and-grids/basis-grid-map.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "Basis and real-space grid controls form a coupled surface; a stable region is stronger evidence than one isolated setting.",
+      "alt": "Matrix of basis and grid settings with a highlighted stable region at stricter settings."
+    },
+    {
+      "id": "convergence-k-smearing-matrix",
+      "guide_slug": "converge-k-points-and-smearing",
+      "path": "media/practical-guides/test-numerical-convergence/converge-k-points-and-smearing/k-smearing-matrix.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "Metallic convergence should be assessed over a mesh-by-smearing matrix because one diagonal path can hide cancellation.",
+      "alt": "Matrix of k-point meshes and smearing widths with a two-dimensional stable window and a misleading diagonal path."
+    },
+    {
+      "id": "convergence-finite-size-asymptote",
+      "guide_slug": "converge-finite-size-vacuum-and-images",
+      "path": "media/practical-guides/test-numerical-convergence/converge-finite-size-vacuum-and-images/finite-size-asymptote.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "Lateral size and vacuum or boundary treatment can approach different residual-interaction limits, while a false plateau remains offset.",
+      "alt": "Two convergence curves for different finite-size directions and a dashed false plateau away from the asymptotic region."
+    },
+    {
+      "id": "convergence-response-grid-chain",
+      "guide_slug": "converge-q-meshes-and-response-grids",
+      "path": "media/practical-guides/test-numerical-convergence/converge-q-meshes-and-response-grids/response-grid-chain.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "Reference-state, per-q response, coarse-grid interpolation, and final fine-grid integration require separate convergence evidence.",
+      "alt": "Four-stage response calculation chain with separate convergence checks and a direct-versus-interpolated validation loop."
     }
   ]
 }
