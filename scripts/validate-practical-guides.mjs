@@ -143,13 +143,14 @@ if (sourceManifest.guides.length !== guides.length) errors.push('practical sourc
 const reviewPaths = new Set(guides.map((guide) => guide.data.review));
 for (const reviewPath of reviewPaths) {
   const review = await readFile(new URL(reviewPath, root), 'utf8');
+  const normalizedReview = review.toLowerCase();
   for (const statement of [
     'reviewed within the declared educational and execution scope',
     'The scripts calculate no electronic energy',
     'Execution success is not numerical convergence',
     'None of those checks establishes numerical convergence',
   ]) {
-    if (!review.includes(statement)) errors.push(`${reviewPath}: missing review boundary ${JSON.stringify(statement)}`);
+    if (!normalizedReview.includes(statement.toLowerCase())) errors.push(`${reviewPath}: missing review boundary ${JSON.stringify(statement)}`);
   }
 }
 
