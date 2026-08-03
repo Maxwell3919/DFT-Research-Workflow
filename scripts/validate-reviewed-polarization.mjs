@@ -1,0 +1,8 @@
+import { readFile } from 'node:fs/promises';
+const root = new URL('../', import.meta.url);
+const article = await readFile(new URL('src/content/topics/polarization-and-ferroelectricity.md', root), 'utf8');
+const review = await readFile(new URL('docs/reviews/2026-08-04-polarization-and-ferroelectricity.md', root), 'utf8');
+const manifest = JSON.parse(await readFile(new URL('sources/reviewed-links.json', root), 'utf8'));
+const expected=['https://doi.org/10.1103/PhysRevB.47.1651','https://doi.org/10.1103/RevModPhys.66.899','https://vasp.at/wiki/Berry_phases_and_finite_electric_fields','https://vasp.at/wiki/LCALCPOL','https://www.quantum-espresso.org/Doc/pw_user_guide/node10.html','https://www.quantum-espresso.org/Doc/INPUT_PW.html'];
+const required=['A bulk polarization is defined modulo a quantum','Choose the physical comparison before running it','From a structural distortion to a polarization path','It cannot by itself establish experimental ferroelectricity'];
+const errors=[]; for(const phrase of required)if(!article.includes(phrase))errors.push(phrase); const record=manifest.topics.find(t=>t.topic_slug==='polarization-and-ferroelectricity'); if(!record||JSON.stringify(record.links.map(l=>l.url))!==JSON.stringify(expected))errors.push('manifest'); for(const url of expected)if(!article.includes(url)||!review.includes(url))errors.push(url); if(!review.includes('Execution success is not Berry-phase convergence'))errors.push('review boundary'); if(errors.length){console.error(errors.join('\n'));process.exit(1)} console.log('Reviewed polarization topic valid: branch, path, and ferroelectricity boundaries.');
