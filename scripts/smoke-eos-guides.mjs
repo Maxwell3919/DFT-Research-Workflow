@@ -13,7 +13,7 @@ const guides = [
 ];
 
 async function inspect(page, guide, width) {
-  const response = await page.goto(`${base}${guide.route}`, { waitUntil: 'domcontentloaded' });
+  const response = await page.goto(`${base}${guide.route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`${guide.route} returned ${response?.status()}`);
   const result = await page.evaluate(() => ({ language: document.documentElement.lang, title: document.querySelector('h1')?.textContent?.trim(), text: document.body.innerText, links: [...document.querySelectorAll('.article-content a')].map((link) => link.href), images: [...document.querySelectorAll('.guide-media img')].map((image) => image.alt), tools: [...document.querySelectorAll('.tool-tag')].map((tag) => tag.textContent?.trim()), meta: Boolean(document.querySelector('.guide-meta')), evidence: Boolean(document.querySelector('.evidence-note')), scripts: document.querySelectorAll('script').length, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1 }));
   if (result.language !== 'en' || result.title !== guide.title) throw new Error(`${guide.route}: identity mismatch`);
@@ -36,7 +36,7 @@ try {
   const page = await browser.newPage();
   await page.setCacheEnabled(false);
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-  let response = await page.goto(`${base}${parentRoute}`, { waitUntil: 'domcontentloaded' });
+  let response = await page.goto(`${base}${parentRoute}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`EOS parent returned ${response?.status()}`);
   const parent = await page.evaluate(() => ({ cards: document.querySelectorAll('.practical-card-list li').length, links: [...document.querySelectorAll('.practical-card-list a')].map((link) => link.href), scripts: document.querySelectorAll('script').length, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1 }));
   if (parent.cards !== 3 || parent.scripts !== 0 || parent.overflow) throw new Error(`EOS parent mismatch: ${JSON.stringify(parent)}`);
@@ -50,7 +50,7 @@ try {
   await noJs.setCacheEnabled(false);
   await noJs.setJavaScriptEnabled(false);
   for (const guide of guides) {
-    response = await noJs.goto(`${base}${guide.route}`, { waitUntil: 'domcontentloaded' });
+    response = await noJs.goto(`${base}${guide.route}`, { waitUntil: 'load' });
     if (response?.status() !== 200) throw new Error(`${guide.route}: no-JavaScript ${response?.status()}`);
     const text = await noJs.$eval('body', (body) => body.innerText);
     if (!text.includes(guide.title) || !text.includes(guide.phrase)) throw new Error(`${guide.route}: no-JavaScript incomplete`);
@@ -58,7 +58,7 @@ try {
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
     await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-    await page.goto(`${base}${guides[1].route}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}${guides[1].route}`, { waitUntil: 'load' });
     await capture(page, join(artifactDirectory, 'eos-guide-fit-sensitivity-desktop.png'));
     await writeFile(join(artifactDirectory, 'eos-guides-summary.json'), `${JSON.stringify({ site_url: base, parent_route: parentRoute, parent_cards: parent.cards, routes: guides.map((guide) => guide.route), source_links: desktop.reduce((sum, result) => sum + result.links.length, 0), original_media: desktop.reduce((sum, result) => sum + result.images.length, 0), desktop_width: 1440, mobile_width: 390, no_javascript: true, deterministic_synthetic_eos_only: true }, null, 2)}\n`);
   }

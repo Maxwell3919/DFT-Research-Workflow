@@ -56,18 +56,18 @@ try {
   const page = await browser.newPage();
   await page.setCacheEnabled(false);
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-  let response = await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+  let response = await page.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`EOS desktop returned ${response?.status()}`);
   const desktop = await inspect(page, 1440);
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
-  response = await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+  response = await page.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`EOS mobile returned ${response?.status()}`);
   await inspect(page, 390);
 
   const noJs = await browser.newPage();
   await noJs.setCacheEnabled(false);
   await noJs.setJavaScriptEnabled(false);
-  response = await noJs.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+  response = await noJs.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`EOS no-JavaScript returned ${response?.status()}`);
   const text = await noJs.$eval('body', (body) => body.innerText);
   for (const phrase of ['The equation of state is a derivative relation', 'Hydrostatic curvature does not prove structural stability', 'Sources and methods']) if (!text.includes(phrase)) throw new Error(`EOS no-JavaScript missing ${phrase}`);
@@ -75,7 +75,7 @@ try {
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
     await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-    await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${base}${route}`, { waitUntil: 'load' });
     await capture(page, join(artifactDirectory, 'topic-equation-of-state-desktop.png'));
     await writeFile(join(artifactDirectory, 'reviewed-eos-summary.json'), `${JSON.stringify({ site_url: base, route, natural_sections: desktop.headings, practical_cards: desktop.cards, source_links: desktop.links.length, desktop_width: 1440, mobile_width: 390, no_javascript: true, fixed_contract: false, common_pressure_boundary: true, hydrostatic_stability_boundary: true }, null, 2)}\n`);
   }
