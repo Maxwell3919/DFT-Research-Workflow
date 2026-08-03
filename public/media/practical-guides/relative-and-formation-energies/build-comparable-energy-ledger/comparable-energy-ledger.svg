@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">Comparable energy ledger</title>
+  <desc id="desc">Five raw calculation records pass through composition, charge, evaluator, completion, and normalization checks, leaving two accepted candidates in a bounded relative-energy table.</desc>
+  <rect width="960" height="420" rx="28" fill="#f5f7f2"/>
+  <g font-family="system-ui, sans-serif" fill="#17332b">
+    <text x="56" y="54" font-size="24" font-weight="700">Raw calculation records</text>
+    <text x="372" y="54" font-size="24" font-weight="700">Comparison filter</text>
+    <text x="706" y="54" font-size="24" font-weight="700">Bounded result</text>
+  </g>
+  <g font-family="system-ui, sans-serif" font-size="18">
+    <rect x="48" y="84" width="222" height="48" rx="12" fill="#d8eadf"/><text x="68" y="115" fill="#17332b">alpha · 2 formula units</text>
+    <rect x="48" y="144" width="222" height="48" rx="12" fill="#d8eadf"/><text x="68" y="175" fill="#17332b">beta · 1 formula unit</text>
+    <rect x="48" y="204" width="222" height="48" rx="12" fill="#f0d8d1"/><text x="68" y="235" fill="#6b2c21">charged candidate</text>
+    <rect x="48" y="264" width="222" height="48" rx="12" fill="#f0d8d1"/><text x="68" y="295" fill="#6b2c21">different evaluator</text>
+    <rect x="48" y="324" width="222" height="48" rx="12" fill="#f0d8d1"/><text x="68" y="355" fill="#6b2c21">unfinished state</text>
+  </g>
+  <path d="M286 228H346" stroke="#55766b" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="366" y="90" width="264" height="276" rx="22" fill="#17332b"/>
+  <g font-family="system-ui, sans-serif" font-size="18" fill="#f7fbf8">
+    <text x="398" y="132">same composition</text>
+    <text x="398" y="174">same charge</text>
+    <text x="398" y="216">same evaluator and field</text>
+    <text x="398" y="258">complete, verified state</text>
+    <text x="398" y="300">normalize cell → formula</text>
+    <text x="398" y="342">retain exclusion reasons</text>
+  </g>
+  <path d="M648 228H690" stroke="#55766b" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="708" y="116" width="204" height="104" rx="18" fill="#d8eadf"/>
+  <text x="732" y="154" font-family="system-ui, sans-serif" font-size="18" fill="#17332b">alpha  0.000 eV/fu</text>
+  <text x="732" y="190" font-family="system-ui, sans-serif" font-size="18" fill="#17332b">beta  +0.120 eV/fu</text>
+  <rect x="708" y="244" width="204" height="86" rx="18" fill="#fff3cf"/>
+  <text x="732" y="278" font-family="system-ui, sans-serif" font-size="17" fill="#5a4411">ordering applies only to</text>
+  <text x="732" y="306" font-family="system-ui, sans-serif" font-size="17" fill="#5a4411">the accepted fixture set</text>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#55766b"/></marker></defs>
+</svg>

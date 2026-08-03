@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 61,
+  "expected_unique_urls": 68,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -114,6 +114,23 @@
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.140.A1133" },
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.137.A1441" },
         { "kind": "doi", "url": "https://doi.org/10.1088/1361-648X/ab31c0" }
+      ]
+    },
+    {
+      "topic_slug": "relative-and-formation-energies",
+      "article": "src/content/topics/relative-and-formation-energies.md",
+      "review": "docs/reviews/2026-08-03-relative-and-formation-energies.md",
+      "links": [
+        { "kind": "page", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/phase-diagrams-pds" },
+        { "kind": "page", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/thermodynamic-stability" },
+        { "kind": "page", "url": "https://goldbook.iupac.org/terms/view/G02629" },
+        { "kind": "page", "url": "https://phonopy.github.io/phonopy/formulation.html" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.136.B864" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.140.A1133" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.137.A1441" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.84.045115" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.85.115104" },
+        { "kind": "doi", "url": "https://doi.org/10.1038/s41524-018-0143-2" }
       ]
     }
   ]

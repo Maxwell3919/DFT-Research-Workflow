@@ -31,12 +31,15 @@ const requiredGuideSlugs = new Set([
   'compare-fresh-and-restarted-electronic-states',
   'compare-charge-spin-and-magnetic-candidates',
   'package-reusable-reference-state-lineage',
+  'build-comparable-energy-ledger',
+  'balance-reference-reactions-and-normalization',
 ]);
 const requiredParentMinimum = new Map([
   ['build-or-modify-computational-model', 4],
   ['test-numerical-convergence', 4],
   ['optimize-structure', 4],
   ['calculate-reference-ground-state', 4],
+  ['relative-and-formation-energies', 2],
 ]);
 const reviewRequirements = new Map([
   ['docs/reviews/2026-08-03-practical-guides-model-building-pilot.md', [
@@ -64,6 +67,13 @@ const reviewRequirements = new Map([
     'The scripts calculate no electronic energy with a DFT code',
     'Execution success is not reference-ground-state verification for a real calculation',
     'None of those checks establishes global ground-state identity for a real calculation',
+    'They are conceptual diagrams, not plots of calculated data.',
+  ]],
+  ['docs/reviews/2026-08-03-relative-and-formation-energies.md', [
+    'reviewed within the declared educational and execution scope',
+    'The scripts use Python 3.12 standard-library arithmetic.',
+    'Execution success is not energy convergence for a real calculation.',
+    'It does not establish a real formation energy',
     'They are conceptual diagrams, not plots of calculated data.',
   ]],
 ]);
