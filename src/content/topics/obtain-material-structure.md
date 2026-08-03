@@ -131,8 +131,6 @@ The handoff to **Build or Modify a Computational Model** should preserve the ori
 ## Sources and standards
 
 - S. R. Hall, F. H. Allen, and I. D. Brown, “[The crystallographic information file (CIF): a new standard archive file for crystallography](https://doi.org/10.1107/S010876739101067X),” *Acta Crystallographica Section A* **47**, 655–685 (1991).
-- International Union of Crystallography, “[CIF documentation and specifications](https://www.iucr.org/resources/cif/documentation).”
-- International Union of Crystallography, “[Core CIF dictionary](https://www.iucr.org/resources/cif/dictionaries/browse/cif_core1).”
 - International Union of Crystallography, “[checkCIF](https://checkcif.iucr.org/).”
 - Materials Project, “[Understanding Structures and Properties in the Materials Project](https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project).”
 - Materials Project, “[Querying Data](https://docs.materialsproject.org/downloading-data/using-the-api/querying-data)” and “[Frequently Asked Questions](https://docs.materialsproject.org/frequently-asked-questions).”

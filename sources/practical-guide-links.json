@@ -91,7 +91,12 @@
     { "id": "norskov-che", "url": "https://doi.org/10.1021/jp047349j", "kind": "doi" },
     { "id": "reuter-surface-thermodynamics", "url": "https://doi.org/10.1103/PhysRevB.65.035406", "kind": "doi" },
     { "id": "neugebauer-scheffler-adlayers", "url": "https://doi.org/10.1103/PhysRevB.46.16067", "kind": "doi" },
-    { "id": "pymatgen-adsorption-api", "url": "https://pymatgen.org/pymatgen.core.html#pymatgen.core.adsorption.AdsorbateSiteFinder", "kind": "page" }
+    { "id": "pymatgen-adsorption-api", "url": "https://pymatgen.org/pymatgen.core.html#pymatgen.core.adsorption.AdsorbateSiteFinder", "kind": "page" },
+    { "id": "zur-mcgill", "url": "https://doi.org/10.1063/1.333084", "kind": "doi" },
+    { "id": "interface-energy-review", "url": "https://doi.org/10.1038/s41524-019-0160-9", "kind": "doi" },
+    { "id": "pymatgen-interface-docs", "url": "https://pymatgen.org/pymatgen.analysis.interfaces.html", "kind": "page" },
+    { "id": "feldbauer-al-tin", "url": "https://doi.org/10.1103/PhysRevB.91.165413", "kind": "doi" },
+    { "id": "feldbauer-al-tin-arxiv", "url": "https://arxiv.org/abs/1504.06192", "kind": "page" }
   ],
   "guides": [
     {
@@ -217,6 +222,9 @@
     {
       "guide_slug": "replot-cmr-co-adsorption",
       "source_ids": ["cmr-adsorption-paper", "cmr-adsorption-page", "cmr-adsorption-db", "cmr-data-license"]
-    }
+    },
+    { "guide_slug": "build-interface-energy-and-separation-ledger", "source_ids": ["interface-energy-review", "zur-mcgill"] },
+    { "guide_slug": "enumerate-lattice-matches-and-registry", "source_ids": ["zur-mcgill", "pymatgen-interface-docs"] },
+    { "guide_slug": "replot-al-tin-interface-adhesion", "source_ids": ["feldbauer-al-tin", "feldbauer-al-tin-arxiv"] }
   ]
 }

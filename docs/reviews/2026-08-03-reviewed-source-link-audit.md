@@ -29,7 +29,7 @@ The machine-readable authority is `sources/reviewed-links.json`. The current inv
 - Surface Energy and Work Function;
 - Adsorption Energies.
 
-The manifest declares 114 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
+The manifest declares 119 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
 
 Any undeclared URL, missing URL, duplicate URL inside one topic, inconsistent source kind, non-HTTPS URL, unexpected unique-URL count, or retired ASE host fails deterministic validation.
 
@@ -46,7 +46,7 @@ The first accepted network audit covered 33 unique URLs across the first three t
 
 That result is historical evidence. Every expanded manifest requires a fresh network audit before its content batch can be merged. A later accepted eight-topic run covered 76/76 unique destinations; the nine-topic Compositional Phase Stability and Convex Hulls batch covered 82/82; the ten-topic Defect Formation Energies and Charge States batch covered 91/91; the eleven-topic Surface Energy and Work Function batch covered 102/102; the twelve-topic Adsorption Energies batch expands the inventory to 114 and therefore requires its own Hosted CI result.
 
-The Adsorption Energies authoring environment also completed a fresh 114/114 network audit on 2026-08-04. The new CMR project page, binary database, licence page, adsorption DOI resolvers, and official ASE and pymatgen pages all satisfied the declared semantics. This local observation is separate from the required Hosted CI evidence.
+The Adsorption Energies authoring environment completed a fresh 114/114 network audit on 2026-08-04. The later Interface and Heterostructure Energetics batch expands the inventory to 119 and requires a fresh 119/119 audit before merge. This local observation is separate from the required Hosted CI evidence.
 
 ## Semantic review boundary
 

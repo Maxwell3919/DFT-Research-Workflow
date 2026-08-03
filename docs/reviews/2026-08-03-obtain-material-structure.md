@@ -39,8 +39,6 @@ meaning of atom-site data, including occupancy. They support the distinction
 between the crystallographic record and a simplified coordinate export.
 
 - https://doi.org/10.1107/S010876739101067X
-- https://www.iucr.org/resources/cif/documentation
-- https://www.iucr.org/resources/cif/dictionaries/browse/cif_core1
 
 ### Crystallographic validation
 

@@ -131,6 +131,13 @@ const reviewRequirements = new Map([
     'It does not establish a real adsorption configuration',
     'The first two media assets are conceptual plots of invented data.',
   ]],
+  ['docs/reviews/2026-08-04-interface-and-heterostructure-energetics.md', [
+    'reviewed within the declared educational and execution scope',
+    'The two ledger and lattice-match scripts use invented teaching values.',
+    'The repository does not claim to have rerun the underlying calculations.',
+    'Execution success is not interface-energy convergence',
+    'The original SVG is a derived-public-data redraw',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
