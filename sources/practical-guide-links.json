@@ -61,7 +61,11 @@
     { "id": "ase-equation-of-state", "url": "https://docs.ase-lib.org/ase/eos.html", "kind": "page" },
     { "id": "vasp-volume-relaxation", "url": "https://vasp.at/wiki/Volume_relaxation", "kind": "page" },
     { "id": "phonopy-qha", "url": "https://phonopy.github.io/phonopy/qha.html", "kind": "page" },
-    { "id": "iupac-enthalpy", "url": "https://goldbook.iupac.org/terms/view/H02752", "kind": "page" }
+    { "id": "iupac-enthalpy", "url": "https://goldbook.iupac.org/terms/view/H02752", "kind": "page" },
+    { "id": "oqmd-api", "url": "https://static.oqmd.org/static/docs/restful.html", "kind": "page" },
+    { "id": "oqmd-download-license", "url": "https://www.oqmd.org/download/", "kind": "page" },
+    { "id": "oqmd-paper", "url": "https://doi.org/10.1007/s11837-013-0755-4", "kind": "doi" },
+    { "id": "pymatgen-phase-diagram-api", "url": "https://pymatgen.org/pymatgen.analysis.html#module-pymatgen.analysis.phase_diagram", "kind": "page" }
   ],
   "guides": [
     {
@@ -147,6 +151,14 @@
     {
       "guide_slug": "compare-phase-enthalpies-common-pressure",
       "source_ids": ["iupac-enthalpy", "vinet-eos", "mouhat-elastic-stability", "phonopy-qha"]
+    },
+    {
+      "guide_slug": "rebuild-oqmd-li-p-convex-hull",
+      "source_ids": ["oqmd-api", "oqmd-download-license", "oqmd-paper", "pymatgen-phase-diagram-api"]
+    },
+    {
+      "guide_slug": "stress-test-hull-phase-set",
+      "source_ids": ["oqmd-api", "oqmd-paper", "materials-project-phase-diagrams", "bartel-decomposition-reactions"]
     }
   ]
 }

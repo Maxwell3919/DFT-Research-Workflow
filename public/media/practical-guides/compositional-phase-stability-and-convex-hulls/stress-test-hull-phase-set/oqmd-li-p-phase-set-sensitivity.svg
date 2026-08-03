@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+<title id="title">Li-P convex-hull sensitivity to withholding one competing phase</title>
+<desc id="desc">Two plots compare the same frozen public OQMD data. With LiP entry 17007 present, Li4P3 lies slightly above the hull. With that competitor withheld, Li4P3 becomes a hull vertex, demonstrating phase-set sensitivity.</desc>
+<rect width="960" height="500" fill="#ffffff"/>
+<text x="82" y="30" font-family="Georgia,serif" font-size="20" fill="#1a1a1a">One missing competitor changes the Li–P lower envelope</text>
+<line x1="82" y1="391.22" x2="467" y2="391.22" stroke="#e8e8e8"/>
+<line x1="82" y1="317.30" x2="467" y2="317.30" stroke="#e8e8e8"/>
+<line x1="82" y1="243.39" x2="467" y2="243.39" stroke="#e8e8e8"/>
+<line x1="82" y1="169.48" x2="467" y2="169.48" stroke="#e8e8e8"/>
+<line x1="82" y1="95.57" x2="467" y2="95.57" stroke="#e8e8e8"/>
+<line x1="82" y1="406" x2="467" y2="406" stroke="#222"/>
+<line x1="82" y1="66" x2="82" y2="406" stroke="#222"/>
+<text x="274.50" y="54" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#333">Complete frozen candidate set</text>
+<polyline points="82.00,95.57 178.25,377.86 274.50,337.31 351.50,294.22 384.50,269.20 418.88,235.12 467.00,95.57" fill="none" stroke="#171717" stroke-width="3"/>
+<circle cx="210.33" cy="357.23" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="178.25" cy="377.86" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="384.50" cy="269.20" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="236.00" cy="342.83" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="302.00" cy="306.03" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="351.50" cy="294.22" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="159.00" cy="306.08" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="247.00" cy="347.22" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="146.17" cy="265.65" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="192.00" cy="262.67" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="253.11" cy="342.44" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="137.00" cy="223.62" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="167.56" cy="301.82" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="274.50" cy="337.31" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="338.67" cy="286.00" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="370.75" cy="189.23" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="402.83" cy="244.44" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="412.00" cy="223.01" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="418.88" cy="235.12" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="418.88" cy="234.20" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="247.00" cy="347.22" r="9" fill="none" stroke="#286f8e" stroke-width="2"/>
+<text x="247.00" y="332.22" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#286f8e">Li₄P₃: 4.526 meV/atom above hull</text>
+<line x1="537" y1="391.22" x2="922" y2="391.22" stroke="#e8e8e8"/>
+<line x1="537" y1="317.30" x2="922" y2="317.30" stroke="#e8e8e8"/>
+<line x1="537" y1="243.39" x2="922" y2="243.39" stroke="#e8e8e8"/>
+<line x1="537" y1="169.48" x2="922" y2="169.48" stroke="#e8e8e8"/>
+<line x1="537" y1="95.57" x2="922" y2="95.57" stroke="#e8e8e8"/>
+<line x1="537" y1="406" x2="922" y2="406" stroke="#222"/>
+<line x1="537" y1="66" x2="537" y2="406" stroke="#222"/>
+<text x="729.50" y="54" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#333">OQMD entry 17007 (LiP) withheld</text>
+<polyline points="537.00,95.57 633.25,377.86 702.00,347.22 806.50,294.22 839.50,269.20 873.88,235.12 922.00,95.57" fill="none" stroke="#171717" stroke-width="3"/>
+<circle cx="665.33" cy="357.23" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="633.25" cy="377.86" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="839.50" cy="269.20" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="691.00" cy="342.83" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="757.00" cy="306.03" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="806.50" cy="294.22" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="614.00" cy="306.08" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="702.00" cy="347.22" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="601.17" cy="265.65" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="647.00" cy="262.67" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="708.11" cy="342.44" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="592.00" cy="223.62" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="622.56" cy="301.82" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="729.50" cy="278.63" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="793.67" cy="286.00" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="825.75" cy="189.23" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="857.83" cy="244.44" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="867.00" cy="223.01" r="3.8" fill="#78838c" stroke="#fff" stroke-width="0.8"/>
+<circle cx="873.88" cy="235.12" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="873.88" cy="234.20" r="4.8" fill="#bd5d38" stroke="#fff" stroke-width="0.8"/>
+<circle cx="702.00" cy="347.22" r="9" fill="none" stroke="#286f8e" stroke-width="2"/>
+<text x="702.00" y="332.22" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#286f8e">Li₄P₃: hull vertex in reduced set</text>
+<text x="480" y="440" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#222">phosphorus atomic fraction, x(P)</text>
+<text x="22" y="238" transform="rotate(-90 22 238)" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#222">formation energy (eV/atom)</text>
+<text x="82" y="480" font-family="Arial,sans-serif" font-size="12" fill="#555">OQMD REST API snapshot (CC BY 4.0), retrieved 2026-08-04. Original comparison; no DFT was executed.</text>
+</svg>
