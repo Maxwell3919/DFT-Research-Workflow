@@ -23,10 +23,15 @@ const requiredGuideSlugs = new Set([
   'converge-k-points-and-smearing',
   'converge-finite-size-vacuum-and-images',
   'converge-q-meshes-and-response-grids',
+  'choose-relaxed-degrees-and-constraints',
+  'diagnose-forces-stress-and-state',
+  'restart-and-verify-optimization',
+  'compare-multiple-starts-and-minima',
 ]);
 const requiredParentMinimum = new Map([
   ['build-or-modify-computational-model', 4],
   ['test-numerical-convergence', 4],
+  ['optimize-structure', 4],
 ]);
 const reviewRequirements = new Map([
   ['docs/reviews/2026-08-03-practical-guides-model-building-pilot.md', [
@@ -40,6 +45,13 @@ const reviewRequirements = new Map([
     'The scripts calculate no electronic energy',
     'Execution success is not numerical convergence',
     'None of those checks establishes numerical convergence for a real calculation',
+    'They are conceptual diagrams, not plots of calculated data.',
+  ]],
+  ['docs/reviews/2026-08-03-optimize-structure.md', [
+    'reviewed within the declared educational and execution scope',
+    'The scripts calculate no electronic energy with a DFT code',
+    'Execution success is not structural convergence for a real calculation',
+    'None of those checks establishes a local or global minimum for a real calculation',
     'They are conceptual diagrams, not plots of calculated data.',
   ]],
 ]);

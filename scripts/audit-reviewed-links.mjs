@@ -103,6 +103,13 @@ function soft404Marker(title, heading) {
     : null;
 }
 
+function accessBlockMarker(title, heading) {
+  const marker = `${title} ${heading}`.toLowerCase();
+  return /access denied|forbidden|request blocked|just a moment|verify you are human/.test(marker)
+    ? { title, heading }
+    : null;
+}
+
 function soft404Title(body) {
   const title = body.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
   const heading = body.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? '';
@@ -222,7 +229,8 @@ async function browserAuditEntry(browser, entry) {
       heading: document.querySelector('h1')?.textContent?.replace(/\s+/g, ' ').trim() ?? '',
     }));
     const soft404 = soft404Marker(observation.title, observation.heading);
-    const reachable = status !== null && status >= 200 && status < 300 && !soft404;
+    const blocked = accessBlockMarker(observation.title, observation.heading);
+    const reachable = status !== null && status >= 200 && status < 300 && !soft404 && !blocked;
     return {
       topic_slugs: entry.topic_slugs,
       kind: entry.kind,
@@ -233,10 +241,14 @@ async function browserAuditEntry(browser, entry) {
       redirect_location: null,
       access_method: 'headless-browser-fallback',
       detail: reachable
-        ? 'page returned a successful non-404 document in a controlled browser fallback'
+        ? entry.kind === 'doi'
+          ? 'DOI resolved through a controlled browser to a successful non-404 destination'
+          : 'page returned a successful non-404 document in a controlled browser fallback'
         : soft404
           ? `browser exposed a soft-404 marker: ${JSON.stringify(soft404)}`
-          : `browser returned HTTP ${status ?? 'unknown'}`,
+          : blocked
+            ? `browser exposed an access-block marker: ${JSON.stringify(blocked)}`
+            : `browser returned HTTP ${status ?? 'unknown'}`,
       attempt: 1,
     };
   } catch (error) {
@@ -275,7 +287,7 @@ const startedAt = new Date().toISOString();
 let results = await mapWithConcurrency(allEntries, 4, auditEntry);
 const fallbackIndices = results
   .map((result, index) => ({ result, index }))
-  .filter(({ result }) => result.kind === 'page' && [401, 403].includes(result.status))
+  .filter(({ result }) => [401, 403].includes(result.status))
   .map(({ index }) => index);
 
 if (fallbackIndices.length > 0) {
@@ -296,9 +308,12 @@ if (fallbackIndices.length > 0) {
       ],
     });
     try {
-      for (const index of fallbackIndices) {
-        results[index] = await browserAuditEntry(browser, allEntries[index]);
-      }
+      const fallbackResults = await mapWithConcurrency(
+        fallbackIndices,
+        3,
+        async (index) => ({ index, result: await browserAuditEntry(browser, allEntries[index]) }),
+      );
+      for (const item of fallbackResults) results[item.index] = item.result;
     } finally {
       await browser.close();
     }
@@ -308,13 +323,13 @@ if (fallbackIndices.length > 0) {
 const completedAt = new Date().toISOString();
 const failures = results.filter((result) => result.state !== 'reachable');
 const report = {
-  schema_version: 1,
+  schema_version: 2,
   started_at: startedAt,
   completed_at: completedAt,
   semantics: {
-    page: 'A current non-DOI page must return HTTP 2xx after redirects and must not expose a 404/not-found title or h1. HTTP 401/403 may be retried once through a controlled headless browser, and that access method is recorded.',
-    doi: 'A DOI link is considered reachable when doi.org returns HTTP 2xx or a valid publisher redirect. Publisher access after the redirect is not asserted.',
-    boundary: 'Reachability is time-bound and does not establish scientific correctness, long-term availability, or unrestricted regional access.',
+    page: 'A current non-DOI page must return HTTP 2xx after redirects and must not expose a 404/not-found or access-block title or h1. HTTP 401/403 may be retried once through a controlled headless browser, and that access method is recorded.',
+    doi: 'A DOI link is reachable when doi.org returns HTTP 2xx or a valid publisher redirect. HTTP 401/403 may be retried through a controlled browser; the final destination must return HTTP 2xx without a 404 or access-block marker. Publisher content is not semantically reviewed by this reachability check.',
+    boundary: 'Reachability is time-bound and does not establish scientific correctness, long-term availability, unrestricted regional access, or publisher reuse rights.',
   },
   topic_count: manifest.topics.length,
   unique_url_count: allEntries.length,

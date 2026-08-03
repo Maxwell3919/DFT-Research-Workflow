@@ -26,7 +26,17 @@ CONVERGENCE_ANALYSIS_SCRIPTS = [
     "convergence_finite_size.py",
     "convergence_response_grids.py",
 ]
-SCRIPTS = [*STRUCTURE_SCRIPTS, *CONVERGENCE_ANALYSIS_SCRIPTS]
+OPTIMIZATION_DIAGNOSTIC_SCRIPTS = [
+    "optimization_degrees_constraints.py",
+    "optimization_history_diagnostics.py",
+    "optimization_restart_verification.py",
+    "optimization_multiple_starts.py",
+]
+SCRIPTS = [
+    *STRUCTURE_SCRIPTS,
+    *CONVERGENCE_ANALYSIS_SCRIPTS,
+    *OPTIMIZATION_DIAGNOSTIC_SCRIPTS,
+]
 
 
 def load_module(path: Path) -> ModuleType:
@@ -55,20 +65,21 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 8
+    assert len(results) == 12
     report = {
-        "schema_version": 2,
+        "schema_version": 3,
         "project_root": str(ROOT),
         "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "versions": observed_versions,
         "structure_scripts": STRUCTURE_SCRIPTS,
         "convergence_analysis_scripts": CONVERGENCE_ANALYSIS_SCRIPTS,
+        "optimization_diagnostic_scripts": OPTIMIZATION_DIAGNOSTIC_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
-            "Execution establishes the declared structural transformations and synthetic "
-            "convergence-table analysis logic only; it does not establish numerical "
-            "convergence, energetic stability, transferability, or a scientific conclusion."
+            "Execution establishes declared structural transformations, synthetic convergence-table "
+            "analysis, and bounded ASE/EMT or synthetic optimization diagnostics only; it does not "
+            "establish DFT convergence, a physical minimum, stability, transferability, or a scientific conclusion."
         ),
     }
 
@@ -82,8 +93,8 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 8/8 examples; four structural transformations "
-        "and four synthetic convergence analyses under pinned versions."
+        "Practical guide execution passed: 12/12 examples; four structural transformations, "
+        "four synthetic convergence analyses, and four bounded optimization diagnostics under pinned versions."
     )
 
 

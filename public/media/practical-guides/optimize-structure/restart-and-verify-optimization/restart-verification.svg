@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" role="img" aria-labelledby="title desc">
+  <title id="title">Optimization restart and final verification chain</title>
+  <desc id="desc">A traceable chain links an initial relaxation segment, accepted restart object, continued segment, and fresh final energy-and-gradient verification.</desc>
+  <rect width="900" height="430" fill="#ffffff"/>
+  <text x="450" y="50" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#1a1a1a">Restart without erasing lineage</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+  <g font-family="Arial, sans-serif" font-size="18" text-anchor="middle">
+    <rect x="55" y="145" width="180" height="105" rx="8" fill="#eaf2f8" stroke="#123f70" stroke-width="2"/>
+    <text x="145" y="182" fill="#123f70">segment 1</text>
+    <text x="145" y="212" fill="#1a1a1a">trajectory + state</text>
+    <rect x="270" y="145" width="160" height="105" rx="8" fill="#fff4df" stroke="#8a5a00" stroke-width="2"/>
+    <text x="350" y="182" fill="#6a4300">accepted restart</text>
+    <text x="350" y="212" fill="#1a1a1a">geometry + history</text>
+    <rect x="465" y="145" width="180" height="105" rx="8" fill="#eaf2f8" stroke="#123f70" stroke-width="2"/>
+    <text x="555" y="182" fill="#123f70">segment 2</text>
+    <text x="555" y="212" fill="#1a1a1a">compatible continuation</text>
+    <rect x="680" y="145" width="165" height="105" rx="8" fill="#eaf7ee" stroke="#326b3f" stroke-width="2"/>
+    <text x="762" y="182" fill="#326b3f">fresh verification</text>
+    <text x="762" y="212" fill="#1a1a1a">energy + gradient</text>
+  </g>
+  <g stroke="#1a1a1a" stroke-width="3" marker-end="url(#arrow)">
+    <line x1="235" y1="198" x2="270" y2="198"/>
+    <line x1="430" y1="198" x2="465" y2="198"/>
+    <line x1="645" y1="198" x2="680" y2="198"/>
+  </g>
+  <line x1="350" y1="250" x2="350" y2="315" stroke="#a12a2a" stroke-width="2" stroke-dasharray="7 6"/>
+  <rect x="210" y="315" width="280" height="60" rx="7" fill="#fbe9e9" stroke="#a12a2a"/>
+  <text x="350" y="350" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#8a1f1f">new segment if model or optimizer identity changes</text>
+</svg>
