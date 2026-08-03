@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 181,
+  "expected_unique_urls": 187,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -416,6 +416,19 @@
         { "kind": "page", "url": "https://phonopy.github.io/phono3py/workflow.html" },
         { "kind": "page", "url": "https://phonopy.github.io/phono3py/api-reference.html" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node5.html" }
+      ]
+    },
+    {
+      "topic_slug": "lattice-thermal-transport",
+      "article": "src/content/topics/lattice-thermal-transport.md",
+      "review": "docs/reviews/2026-08-04-lattice-thermal-transport.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1063/1.5064602" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.86.174307" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.110.265506" },
+        { "kind": "page", "url": "https://phonopy.github.io/phono3py/direct-solution.html" },
+        { "kind": "page", "url": "https://phonopy.github.io/phono3py/inter-band-transport.html" },
+        { "kind": "page", "url": "https://www.shengbte.org/documentation" }
       ]
     },
     {
