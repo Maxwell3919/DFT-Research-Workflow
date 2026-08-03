@@ -36,10 +36,10 @@ boundary flags, integer supercells, surface construction, vacuum insertion,
 adsorbate placement, and explicit constraints. The article uses these as
 implementation examples, not as definitions of DFT or universal settings.
 
-- https://wiki.fysik.dtu.dk/ase/ase/build/build.html
-- https://wiki.fysik.dtu.dk/ase/ase/build/surface.html
-- https://wiki.fysik.dtu.dk/ase/ase/atoms.html
-- https://wiki.fysik.dtu.dk/ase/ase/constraints.html
+- https://docs.ase-lib.org/ase/build/build.html
+- https://docs.ase-lib.org/ase/build/surface.html
+- https://docs.ase-lib.org/ase/atoms.html
+- https://docs.ase-lib.org/ase/constraints.html
 
 ### Structure transformations, disorder, interfaces, and magnetic candidates
 
@@ -160,10 +160,24 @@ These omissions keep the article at the model-construction boundary. The next
 content topic is **Choose the DFT Method and Computational Setup** only after the
 A-section model topics are complete and reviewed.
 
+## External-link correction and verification
+
+The original review confirmed source relevance and rendered-link presence but did
+not request the external destinations. Four ASE URLs on the retired
+`wiki.fysik.dtu.dk` host later returned 404. They have been replaced with the
+current official `docs.ase-lib.org` documentation URLs listed above.
+
+All external sources in this article and review are now declared in
+`sources/reviewed-links.json`. Deterministic validation requires exact agreement
+between the article, this review, and that manifest. A separate network CI job
+requests every declared destination under the rules documented in
+`docs/reviews/2026-08-03-reviewed-source-link-audit.md`.
+
 ## Evidence boundary
 
-The source review establishes that the article represents the cited methods and
-official documentation accurately within its declared scope. Repository, type,
-build, link, and browser checks establish software behaviour only. Neither form
-of review validates a real computational model, a numerical protocol, or a
-scientific conclusion.
+The semantic source review establishes that the article represents the cited
+methods within its declared scope. The dedicated external-link audit establishes
+HTTP reachability only at its recorded run time. Browser smoke establishes that
+links are rendered in the public page; it does not establish destination
+availability. None of these checks validates a real computational model, a
+numerical protocol, or a scientific conclusion.
