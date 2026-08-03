@@ -96,7 +96,12 @@
     { "id": "interface-energy-review", "url": "https://doi.org/10.1038/s41524-019-0160-9", "kind": "doi" },
     { "id": "pymatgen-interface-docs", "url": "https://pymatgen.org/pymatgen.analysis.interfaces.html", "kind": "page" },
     { "id": "feldbauer-al-tin", "url": "https://doi.org/10.1103/PhysRevB.91.165413", "kind": "doi" },
-    { "id": "feldbauer-al-tin-arxiv", "url": "https://arxiv.org/abs/1504.06192", "kind": "page" }
+    { "id": "feldbauer-al-tin-arxiv", "url": "https://arxiv.org/abs/1504.06192", "kind": "page" },
+    { "id": "bloch-paper", "url": "https://doi.org/10.1007/BF01341914", "kind": "doi" },
+    { "id": "setyawan-curtarolo", "url": "https://doi.org/10.1016/j.commatsci.2010.05.010", "kind": "doi" },
+    { "id": "seekpath-paper", "url": "https://doi.org/10.1016/j.commatsci.2016.01.017", "kind": "doi" },
+    { "id": "seekpath-docs", "url": "https://seekpath.readthedocs.io/en/latest/", "kind": "page" },
+    { "id": "qe-bands-docs", "url": "https://www.quantum-espresso.org/Doc/INPUT_BANDS.html", "kind": "page" }
   ],
   "guides": [
     {
@@ -225,6 +230,8 @@
     },
     { "guide_slug": "build-interface-energy-and-separation-ledger", "source_ids": ["interface-energy-review", "zur-mcgill"] },
     { "guide_slug": "enumerate-lattice-matches-and-registry", "source_ids": ["zur-mcgill", "pymatgen-interface-docs"] },
-    { "guide_slug": "replot-al-tin-interface-adhesion", "source_ids": ["feldbauer-al-tin", "feldbauer-al-tin-arxiv"] }
+    { "guide_slug": "replot-al-tin-interface-adhesion", "source_ids": ["feldbauer-al-tin", "feldbauer-al-tin-arxiv"] },
+    { "guide_slug": "build-reciprocal-path-ledger", "source_ids": ["seekpath-paper", "seekpath-docs", "qe-bands-docs"] },
+    { "guide_slug": "compare-band-path-and-full-zone-extrema", "source_ids": ["bloch-paper", "kohn-sham", "setyawan-curtarolo"] }
   ]
 }

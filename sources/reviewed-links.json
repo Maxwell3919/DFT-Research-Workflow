@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 119,
+  "expected_unique_urls": 128,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -234,6 +234,24 @@
         { "kind": "doi", "url": "https://doi.org/10.1038/s41467-024-45003-w" },
         { "kind": "page", "url": "https://www.2dhub.org/bidb/bidb.html" },
         { "kind": "doi", "url": "https://doi.org/10.1038/s41699-021-00200-9" }
+      ]
+    },
+    {
+      "topic_slug": "band-structure",
+      "article": "src/content/topics/band-structure.md",
+      "review": "docs/reviews/2026-08-04-band-structure.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1007/BF01341914" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.140.A1133" },
+        { "kind": "doi", "url": "https://doi.org/10.1016/j.commatsci.2010.05.010" },
+        { "kind": "doi", "url": "https://doi.org/10.1016/j.commatsci.2016.01.017" },
+        { "kind": "page", "url": "https://seekpath.readthedocs.io/en/latest/" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_BANDS.html" },
+        { "kind": "page", "url": "https://quantum-espresso.org/Doc/pp_user_guide/node8.html" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.56.12847" },
+        { "kind": "page", "url": "https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/notes_interpolations/" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.139.A796" },
+        { "kind": "doi", "url": "https://doi.org/10.1063/1.1564060" }
       ]
     }
   ]

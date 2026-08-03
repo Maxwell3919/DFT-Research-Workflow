@@ -69,6 +69,10 @@ INTERFACE_ANALYSIS_SCRIPTS = [
     "interface_lattice_match.py",
     "al_tin_interface_adhesion.py",
 ]
+BAND_STRUCTURE_ANALYSIS_SCRIPTS = [
+    "band_path_ledger.py",
+    "band_extrema_fixture.py",
+]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
@@ -81,6 +85,7 @@ SCRIPTS = [
     *SURFACE_ANALYSIS_SCRIPTS,
     *ADSORPTION_ANALYSIS_SCRIPTS,
     *INTERFACE_ANALYSIS_SCRIPTS,
+    *BAND_STRUCTURE_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -110,7 +115,7 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 33
+    assert len(results) == 35
     report = {
         "schema_version": 10,
         "project_root": str(ROOT),
@@ -127,6 +132,7 @@ def main() -> None:
         "surface_analysis_scripts": SURFACE_ANALYSIS_SCRIPTS,
         "adsorption_analysis_scripts": ADSORPTION_ANALYSIS_SCRIPTS,
         "interface_analysis_scripts": INTERFACE_ANALYSIS_SCRIPTS,
+        "band_structure_analysis_scripts": BAND_STRUCTURE_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
@@ -149,7 +155,7 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 33/33 examples; four structural transformations, "
+        "Practical guide execution passed: 35/35 examples; four structural transformations, "
         "four synthetic convergence analyses, four bounded optimization diagnostics, and "
         "four deterministic reference-state diagnostics, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
