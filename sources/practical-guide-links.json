@@ -273,5 +273,6 @@
     { "guide_slug": "check-harmonic-mode-ledger", "source_ids": ["qe-ph-75", "phonopy-command", "phonopy-setting-tags"] },
     { "guide_slug": "check-anharmonic-linewidth-ledger", "source_ids": ["phono3py-workflow", "phono3py-api"] },
     { "guide_slug": "check-lattice-transport-tensor-ledger", "source_ids": ["phono3py-direct-lbte", "phono3py-api"] }
+    ,{ "guide_slug": "check-epc-channel-ledger", "source_ids": ["qe-ph-75", "giustino-epc-review"] }
   ]
 }
