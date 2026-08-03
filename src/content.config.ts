@@ -63,7 +63,7 @@ const practicalGuides = defineCollection({
     source_ids: z.array(slug).min(1),
     media_ids: z.array(slug).default([]),
     review: z.string().regex(/^docs\/reviews\/[a-z0-9-]+\.md$/),
-    reviewed_at: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    reviewed_at: z.coerce.date(),
   }),
 });
 
