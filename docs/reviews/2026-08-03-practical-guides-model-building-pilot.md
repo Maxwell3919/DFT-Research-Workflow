@@ -27,7 +27,7 @@ The execution environment is pinned to:
 
 ASE documentation supports the `Atoms` object, integer repetition, general supercell construction, surface builders, adsorbate placement, vacuum centering, and the `mx2` builder used by the pages. The ASE PyPI release page supports the exact installed distribution version.
 
-pymatgen documentation supports core `Structure` objects and the standard transformation classes used for supercells, deformation, and species replacement. The `pymatgen-core` PyPI release page supports the exact installed distribution version.
+pymatgen documentation supports core `Structure` objects, standard transformations used for supercells and deformation, and the site-specific transformation used for indexed species replacement. The `pymatgen-core` PyPI release page supports the exact installed distribution version.
 
 All implementation sources are declared in `sources/practical-guide-links.json`. Source relevance, current link reachability, rendered-link presence, and software execution are checked separately.
 
@@ -50,7 +50,7 @@ The assertions cover only the statements made by the pages:
 - adsorbate placement above the substrate candidate;
 - actual cell and empty-region geometry;
 - supercell and deformation volume ratios;
-- species substitution and preservation of the parent object;
+- site-specific species substitution and preservation of the parent object;
 - composition, periodicity, atomic extent, and cell geometry of the generated monolayer.
 
 The scripts calculate no electronic energy and call no electronic-structure engine.
