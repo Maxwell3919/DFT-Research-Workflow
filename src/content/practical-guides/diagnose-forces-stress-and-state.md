@@ -135,7 +135,7 @@ It does not run an electronic-structure code, calculate forces or stress, valida
 
 **Merging recovery segments without settings.** Preserve every change to the evaluator or optimizer.
 
-## Official and primary sources
+## Official sources and primary papers
 
 - [Quantum ESPRESSO `pw.x` input description](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
 - [VASP structure optimization](https://vasp.at/wiki/Structure_optimization)
