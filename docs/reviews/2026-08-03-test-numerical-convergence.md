@@ -77,6 +77,7 @@ The reviewed overview and this review use the same bounded source set:
 - [Lejaeghere et al.](https://doi.org/10.1126/science.aad3000)
 - [Prandini et al.](https://doi.org/10.1038/s41524-018-0127-2)
 - [Materials Cloud SSSP archive](https://archive.materialscloud.org/record/2021.76)
+- [PseudoDojo](https://doi.org/10.1016/j.cpc.2018.01.012)
 - [Ismail-Beigi](https://doi.org/10.1103/PhysRevB.73.233103)
 - [Freysoldt et al.](https://doi.org/10.1103/RevModPhys.86.253)
 - [Baroni et al.](https://doi.org/10.1103/RevModPhys.73.515)
