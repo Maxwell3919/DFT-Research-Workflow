@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">Common-pressure enthalpy crossing</title>
+  <desc id="desc">Two invented phase enthalpy branches cross at one common pressure while each phase occupies its own minimizing volume.</desc>
+  <rect width="960" height="420" rx="28" fill="#f5f7f2"/>
+  <text x="48" y="54" font-family="system-ui, sans-serif" font-size="26" font-weight="700" fill="#17332b">Compare H at one common pressure</text>
+  <path d="M110 328H666M110 328V88" stroke="#55766b" stroke-width="3"/>
+  <path d="M128 142 C300 164 466 224 646 304" fill="none" stroke="#4b6fa7" stroke-width="5"/>
+  <path d="M128 282 C300 250 466 210 646 144" fill="none" stroke="#c78b2c" stroke-width="5"/>
+  <circle cx="410" cy="218" r="10" fill="#6b2c21"/>
+  <path d="M410 218V328" stroke="#6b2c21" stroke-width="2" stroke-dasharray="7 6"/>
+  <g font-family="system-ui, sans-serif" font-size="18" fill="#17332b">
+    <text x="152" y="130" fill="#4b6fa7" font-weight="700">Hα(p)</text>
+    <text x="152" y="298" fill="#a56813" font-weight="700">Hβ(p)</text>
+    <text x="364" y="354" fill="#6b2c21">fixture crossing</text>
+    <text x="610" y="354">pressure p</text>
+  </g>
+  <rect x="704" y="102" width="206" height="210" rx="20" fill="#17332b"/>
+  <g font-family="system-ui, sans-serif" font-size="17" fill="#f7fbf8">
+    <text x="730" y="142" font-weight="700">For each phase</text>
+    <text x="730" y="182">minimize E(V)+pV</text>
+    <text x="730" y="222">use its own V(p)</text>
+    <text x="730" y="262">retain uncertainty</text>
+    <text x="730" y="294" fill="#d8eadf">no kinetics implied</text>
+  </g>
+  <text x="72" y="392" font-family="system-ui, sans-serif" font-size="17" fill="#5a4411">Lower fixture enthalpy among two branches is not a complete material phase diagram.</text>
+</svg>

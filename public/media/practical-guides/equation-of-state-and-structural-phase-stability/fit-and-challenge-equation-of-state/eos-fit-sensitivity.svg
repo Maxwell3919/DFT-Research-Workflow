@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">Equation-of-state fit sensitivity</title>
+  <desc id="desc">Synthetic energy-volume points are compared with three close but non-identical analytic curves over full and narrow fit windows.</desc>
+  <rect width="960" height="420" rx="28" fill="#f5f7f2"/>
+  <text x="48" y="54" font-family="system-ui, sans-serif" font-size="26" font-weight="700" fill="#17332b">Challenge form and fit window</text>
+  <rect x="68" y="84" width="560" height="272" rx="20" fill="#ffffff" stroke="#c9d5ce"/>
+  <path d="M98 286 C240 82 416 90 594 286" fill="none" stroke="#17332b" stroke-width="4"/>
+  <path d="M98 278 C246 92 420 84 594 276" fill="none" stroke="#4b6fa7" stroke-width="3" stroke-dasharray="12 8"/>
+  <path d="M98 292 C236 76 410 98 594 284" fill="none" stroke="#c78b2c" stroke-width="3" stroke-dasharray="5 7"/>
+  <g fill="#6b2c21"><circle cx="110" cy="270" r="7"/><circle cx="168" cy="210" r="7"/><circle cx="228" cy="160" r="7"/><circle cx="288" cy="130" r="7"/><circle cx="348" cy="120" r="7"/><circle cx="408" cy="132" r="7"/><circle cx="468" cy="166" r="7"/><circle cx="528" cy="216" r="7"/><circle cx="586" cy="277" r="7"/></g>
+  <rect x="668" y="98" width="232" height="230" rx="18" fill="#17332b"/>
+  <g font-family="system-ui, sans-serif" font-size="18" fill="#f7fbf8">
+    <text x="696" y="138" font-weight="700">Record together</text>
+    <text x="696" y="176">fit form</text><text x="696" y="210">volume window</text><text x="696" y="244">residual pattern</text><text x="696" y="278">parameter covariance</text><text x="696" y="312">model spread</text>
+  </g>
+  <text x="72" y="390" font-family="system-ui, sans-serif" font-size="17" fill="#5a4411">A visually smooth curve does not validate extrapolation or physical stability.</text>
+</svg>

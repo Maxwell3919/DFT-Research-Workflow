@@ -42,12 +42,18 @@ ENERGY_LEDGER_SCRIPTS = [
     "formation_energy_ledger.py",
     "formation_energy_reactions.py",
 ]
+EOS_ANALYSIS_SCRIPTS = [
+    "eos_sampling_protocol.py",
+    "eos_fit_sensitivity.py",
+    "eos_phase_enthalpy.py",
+]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
     *OPTIMIZATION_DIAGNOSTIC_SCRIPTS,
     *REFERENCE_STATE_DIAGNOSTIC_SCRIPTS,
     *ENERGY_LEDGER_SCRIPTS,
+    *EOS_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -77,9 +83,9 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 18
+    assert len(results) == 21
     report = {
-        "schema_version": 5,
+        "schema_version": 6,
         "project_root": str(ROOT),
         "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "versions": observed_versions,
@@ -88,14 +94,15 @@ def main() -> None:
         "optimization_diagnostic_scripts": OPTIMIZATION_DIAGNOSTIC_SCRIPTS,
         "reference_state_diagnostic_scripts": REFERENCE_STATE_DIAGNOSTIC_SCRIPTS,
         "energy_ledger_scripts": ENERGY_LEDGER_SCRIPTS,
+        "eos_analysis_scripts": EOS_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
             "Execution establishes declared structural transformations, synthetic convergence-table "
             "analysis, bounded ASE/EMT or synthetic optimization diagnostics, and deterministic "
-            "reference-state metadata, energy-ledger filtering, and balanced-reaction arithmetic only; "
+            "reference-state metadata, energy-ledger arithmetic, and synthetic EOS analysis only; "
             "it does not establish DFT convergence, a physical minimum, a real reference ground state, "
-            "a material formation energy, stability, transferability, or a scientific conclusion."
+            "a material formation energy, physical EOS or phase transition, stability, transferability, or a scientific conclusion."
         ),
     }
 
@@ -109,9 +116,9 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 18/18 examples; four structural transformations, "
+        "Practical guide execution passed: 21/21 examples; four structural transformations, "
         "four synthetic convergence analyses, four bounded optimization diagnostics, and "
-        "four deterministic reference-state diagnostics plus two energy-ledger fixtures under pinned versions."
+        "four deterministic reference-state diagnostics, two energy-ledger fixtures, and three synthetic EOS analyses under pinned versions."
     )
 
 

@@ -218,6 +218,42 @@
       "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
       "caption": "Two exactly balanced reservoir reactions reach the same abstract target but retain distinct reactants, energies, and interpretations under one normalization.",
       "alt": "Elemental and compound-reservoir reaction paths forming abstract A2B3 and feeding an explicit reaction, sign, unit, denominator, and boundary record."
+    },
+    {
+      "id": "traceable-energy-volume-series",
+      "guide_slug": "design-traceable-energy-volume-series",
+      "path": "media/practical-guides/equation-of-state-and-structural-phase-stability/design-traceable-energy-volume-series/traceable-energy-volume-series.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "A state-labelled energy–volume ledger retains one comparable seven-point branch, a bracketed sampled minimum, and explicit exclusion reasons.",
+      "alt": "Seven energy-volume points on one conceptual curve with a bracketed minimum and a compatibility record below."
+    },
+    {
+      "id": "eos-fit-sensitivity",
+      "guide_slug": "fit-and-challenge-equation-of-state",
+      "path": "media/practical-guides/equation-of-state-and-structural-phase-stability/fit-and-challenge-equation-of-state/eos-fit-sensitivity.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "The same synthetic points support close but non-identical analytic fits; form, window, residuals, covariance, and model spread remain part of the result.",
+      "alt": "Synthetic energy-volume points with three slightly different fitted curves and a checklist of fit evidence."
+    },
+    {
+      "id": "common-pressure-enthalpy-crossing",
+      "guide_slug": "compare-phase-enthalpies-common-pressure",
+      "path": "media/practical-guides/equation-of-state-and-structural-phase-stability/compare-phase-enthalpies-common-pressure/common-pressure-enthalpy-crossing.svg",
+      "provenance_type": "original",
+      "created_at": "2026-08-03",
+      "source_url": null,
+      "accessed_at": null,
+      "reuse_basis": "Original project diagram created for this repository; no external image or computed dataset was copied.",
+      "caption": "Two invented phase enthalpy branches are minimized at the same pressure and cross without implying kinetics or a complete phase diagram.",
+      "alt": "Two conceptual enthalpy-versus-pressure curves crossing at a marked fixture pressure with common-pressure comparison notes."
     }
   ]
 }

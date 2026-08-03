@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 68,
+  "expected_unique_urls": 76,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -131,6 +131,21 @@
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.84.045115" },
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.85.115104" },
         { "kind": "doi", "url": "https://doi.org/10.1038/s41524-018-0143-2" }
+      ]
+    },
+    {
+      "topic_slug": "equation-of-state-and-structural-phase-stability",
+      "article": "src/content/topics/equation-of-state-and-structural-phase-stability.md",
+      "review": "docs/reviews/2026-08-03-equation-of-state-and-structural-phase-stability.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.71.809" },
+        { "kind": "doi", "url": "https://doi.org/10.1073/pnas.30.9.244" },
+        { "kind": "doi", "url": "https://doi.org/10.1029/JB092iB09p09319" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.90.224104" },
+        { "kind": "page", "url": "https://docs.ase-lib.org/ase/eos.html" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Volume_relaxation" },
+        { "kind": "page", "url": "https://phonopy.github.io/phonopy/qha.html" },
+        { "kind": "page", "url": "https://goldbook.iupac.org/terms/view/H02752" }
       ]
     }
   ]
