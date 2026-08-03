@@ -183,7 +183,7 @@ for (const guide of practicalGuides) {
     continue;
   }
   if (!text.includes(guide.title)) errors.push(`${guide.guide_slug}: practical title mismatch`);
-  if (!text.includes('Execution checks confirm only the structural transformations asserted by this page.')) {
+  if (!text.includes('Execution checks confirm only the bounded software or analysis assertions made by this page.')) {
     errors.push(`${guide.guide_slug}: missing execution evidence boundary`);
   }
   if (!html.includes('class="guide-meta"')) errors.push(`${guide.guide_slug}: missing guide metadata`);

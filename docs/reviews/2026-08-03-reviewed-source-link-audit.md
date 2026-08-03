@@ -1,135 +1,82 @@
-# Reviewed source links — corrective audit
+# Reviewed source links — corrective and continuing audit
 
 ## Why this audit exists
 
-The first three reviewed topic batches checked that cited URLs were present in the
-rendered pages and that the cited sources supported the surrounding scientific
-statements. Their browser smoke tests did **not** request the external
-destinations. Describing those checks as if they established source-link
-availability was therefore too broad.
+The initial reviewed-topic batches checked that cited URLs were present in rendered pages and that the sources supported the surrounding scientific statements. Browser smoke did not request the external destinations. A later manual check also found that four ASE links used a retired documentation host and returned 404.
 
-A later manual check found that all four ASE links in the model-construction
-article used the retired `wiki.fysik.dtu.dk` documentation host and returned 404.
-The current official ASE documentation is hosted at `docs.ase-lib.org`.
+This audit therefore keeps three questions separate:
 
-This corrective audit separates three questions that must not be conflated:
+1. **Semantic source review** — whether a source supports the statement for which it is cited.
+2. **External-link reachability** — whether the cited destination responds under declared audit rules at a stated time.
+3. **Rendered-link presence** — whether the public page contains the intended hyperlink.
 
-1. **Semantic source review** — whether a source supports the statement for which
-   it is cited.
-2. **External-link reachability** — whether the cited destination responds under
-   declared HTTP audit rules at a stated time.
-3. **Rendered-link presence** — whether the public page contains the intended
-   hyperlink.
+None of these checks validates a material, model, method, numerical result, or scientific conclusion.
 
-## Scope
+## Current scope
 
-The audit covers every external URL in the three currently reviewed article and
-review pairs:
+The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers four reviewed article/review pairs:
 
 - Obtain a Material Structure;
 - Build or Modify a Computational Model;
-- Choose the DFT Method and Computational Setup.
+- Choose the DFT Method and Computational Setup;
+- Test Numerical Convergence.
 
-The machine-readable authority for this bounded inventory is
-`sources/reviewed-links.json`. It contains 33 unique HTTPS URLs. Every URL must be
-present in both its public article and its corresponding scientific review. Any
-undeclared URL, missing URL, duplicate cross-topic URL, non-HTTPS URL, or retired
-ASE host fails deterministic validation.
+The manifest declares 40 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
 
-## Corrective changes
+Any undeclared URL, missing URL, duplicate URL inside one topic, inconsistent source kind, non-HTTPS URL, unexpected unique-URL count, or retired ASE host fails deterministic validation.
 
-The following four links were replaced in both the model-construction article and
-its review:
+## Historical ASE correction
+
+The original corrective batch replaced four retired `wiki.fysik.dtu.dk` links in both the model-construction article and its review:
 
 - ASE Building things → `https://docs.ase-lib.org/ase/build/build.html`;
-- ASE Surfaces, vacuum, and adsorbates →
-  `https://docs.ase-lib.org/ase/build/surface.html`;
-- ASE Atoms and periodic boundary conditions →
-  `https://docs.ase-lib.org/ase/atoms.html`;
+- ASE Surfaces, vacuum, and adsorbates → `https://docs.ase-lib.org/ase/build/surface.html`;
+- ASE Atoms and periodic boundary conditions → `https://docs.ase-lib.org/ase/atoms.html`;
 - ASE Constraints → `https://docs.ase-lib.org/ase/constraints.html`.
 
-The source meaning did not change: these are the current official locations for
-the same ASE documentation subjects. The retired host is now prohibited in all
-reviewed article/review pairs.
+The first accepted network audit covered 33 unique URLs across the first three topics. It returned 31 ordinary HTTP or DOI successes and used a controlled browser fallback for two IUCr pages that returned HTTP 403 to the ordinary client. All 33 were reachable under the declared semantics, and no 404 or soft-404 remained.
 
-## Full semantic re-review
+That result is historical evidence. The expanded four-topic manifest requires a fresh network audit before the convergence batch can be merged.
 
-All three article/review pairs were read again against their declared sources.
-The bounded re-review found no additional source-to-statement contradiction that
-required changing the scientific prose. This result is limited to the statements
-and sources currently declared by these three articles; it is not a universal
-literature review and does not validate any material, model, method, or result.
+## Semantic review boundary
 
-The reviewed source classes remain:
+All four article/review pairs are required to use exact bounded source inventories. The current source classes include:
 
-- IUCr standards and validation documentation, Materials Project, COD, and
-  spglib for structure acquisition and crystallographic interpretation;
-- ASE, pymatgen, Zur–McGill lattice matching, SQS, and the point-defect review
-  for model construction;
-- Quantum ESPRESSO documentation and primary method papers for the DFT method
-  and setup article.
+- crystallographic standards, databases, and symmetry documentation;
+- ASE and pymatgen implementation documentation plus primary model-construction methods;
+- Quantum ESPRESSO documentation and primary DFT method papers;
+- primary Brillouin-zone integration, pseudopotential verification, finite-size, reproducibility, and density-functional perturbation theory sources for numerical convergence.
 
-## Automated reachability semantics
+A source reused by two topics is not duplicated into two network requests. Reuse does not broaden the source beyond the statements reviewed in each topic.
 
-`scripts/audit-reviewed-links.mjs` performs two separate modes.
+## Deterministic manifest mode
 
-### Deterministic manifest mode
+`scripts/audit-reviewed-links.mjs --manifest-only` runs without network access and verifies:
 
-`--manifest-only` runs without network access. It verifies:
-
-- exact agreement between each article, its review, and the source manifest;
-- 33 unique HTTPS URLs across the three reviewed topics;
-- valid source kinds;
+- exact agreement between every reviewed article, its review, and its topic source set;
+- the manifest-declared unique URL count;
+- valid `page` and `doi` source kinds;
+- consistent kinds when a URL supports multiple topics;
+- HTTPS-only sources;
 - absence of the retired ASE documentation host;
 - presence of this audit record.
 
 This mode is part of the ordinary repository check.
 
-### Network audit mode
+## Network audit mode
 
-The dedicated CI job requests every declared URL and stores a JSON evidence
-artifact.
+The dedicated CI job requests every unique destination and stores a JSON evidence artifact.
 
-- A normal documentation page must return HTTP 2xx after redirects and must not
-  expose a 404/not-found title or first-level heading.
-- A page that returns HTTP 401 or 403 to the ordinary client is retried once in a
-  controlled headless Chrome session. The resulting access method, HTTP status,
-  final URL, title/heading check, and outcome are written to the artifact. Other
-  non-success statuses do not receive this fallback.
-- A DOI is checked at `doi.org`. HTTP 2xx or a valid redirect to a publisher is
-  accepted. This proves that the DOI resolver recognizes the identifier; it does
-  not assert publisher access after the redirect.
-- Transient network failures and selected 429/5xx responses are retried within a
-  bounded policy.
+- A normal documentation page must return HTTP 2xx after redirects and must not expose a 404/not-found title or first-level heading.
+- A page that returns HTTP 401 or 403 to the ordinary client is retried once in controlled headless Chrome. The access method and result are recorded.
+- A DOI is checked at `doi.org`. HTTP 2xx or a valid publisher redirect is accepted. This establishes resolver recognition, not publisher access after the redirect.
+- Transient network failures and selected 429/5xx responses receive bounded retries.
 - Any remaining failed destination fails the job.
 
-The network job is independent of the static build. A source outage therefore
-cannot be disguised as a successful browser-rendering check, and an external
-outage is not misreported as an Astro build failure.
+The report stores the topic slugs associated with every unique source, so cross-topic reuse remains auditable without repeated network requests.
 
-## Observed corrective runs
+## Evidence boundary
 
-The first network run tested all 33 URLs. It returned 31 successes and two HTTP
-403 responses from the IUCr documentation host. The four replacement ASE pages
-all returned HTTP 200, and every DOI resolver returned an accepted redirect.
+The network job is independent of the static build. A source outage cannot be disguised as successful page rendering, and an external outage is not misreported as an Astro build failure.
 
-The follow-up run retained the original HTTP results and applied the controlled
-browser fallback only to the two IUCr 403 cases. Both IUCr pages then returned
-HTTP 200 with non-404 documents. The complete result was 33/33 reachable under
-the declared semantics:
-
-- 31 sources passed through ordinary HTTP requests;
-- 2 IUCr sources passed through the recorded browser fallback;
-- no 404 or soft-404 destination remained;
-- the machine-readable audit artifact was uploaded by CI.
-
-The exact accepted run and final project commit are recorded after merge in the
-project PR and Research-Ops handoff.
-
-## Time boundary
-
-External reachability is an observation at the audit run time, not a permanent
-property. A passing run does not guarantee future availability, regional access,
-publisher access, or semantic correctness. A failing future scheduled run means
-the link requires review; it does not automatically invalidate every scientific
-statement previously supported by that source.
+External reachability is time-bound. A passing run does not guarantee future availability, regional access, publisher access, semantic correctness, or scientific validity. A failing future run requires link review; it does not automatically invalidate every scientific statement previously supported by that source.

@@ -1,53 +1,30 @@
 {
   "schema_version": 1,
   "authority": "official-source inventory for reviewed practical guides",
-  "scope_note": "These URLs support version-specific implementation claims in the four model-building pilot pages. Reachability and semantic support remain separate checks.",
+  "scope_note": "These URLs support version-specific implementation or analysis claims in reviewed practical pages. Reachability, semantic support, execution, numerical convergence, and scientific validity remain separate checks.",
   "sources": [
-    {
-      "id": "ase-docs-home",
-      "url": "https://docs.ase-lib.org/",
-      "kind": "page"
-    },
-    {
-      "id": "ase-atoms",
-      "url": "https://docs.ase-lib.org/ase/atoms.html",
-      "kind": "page"
-    },
-    {
-      "id": "ase-build-tools",
-      "url": "https://docs.ase-lib.org/ase/build/tools.html",
-      "kind": "page"
-    },
-    {
-      "id": "ase-surface",
-      "url": "https://docs.ase-lib.org/ase/build/surface.html",
-      "kind": "page"
-    },
-    {
-      "id": "ase-building",
-      "url": "https://docs.ase-lib.org/ase/build/build.html",
-      "kind": "page"
-    },
-    {
-      "id": "ase-pypi-3290",
-      "url": "https://pypi.org/project/ase/3.29.0/",
-      "kind": "page"
-    },
-    {
-      "id": "pymatgen-transformations",
-      "url": "https://pymatgen.org/pymatgen.transformations.html",
-      "kind": "page"
-    },
-    {
-      "id": "pymatgen-core-docs",
-      "url": "https://pymatgen.org/pymatgen.core.html",
-      "kind": "page"
-    },
-    {
-      "id": "pymatgen-core-pypi-2026-7-31",
-      "url": "https://pypi.org/project/pymatgen-core/2026.7.31/",
-      "kind": "page"
-    }
+    { "id": "ase-docs-home", "url": "https://docs.ase-lib.org/", "kind": "page" },
+    { "id": "ase-atoms", "url": "https://docs.ase-lib.org/ase/atoms.html", "kind": "page" },
+    { "id": "ase-build-tools", "url": "https://docs.ase-lib.org/ase/build/tools.html", "kind": "page" },
+    { "id": "ase-surface", "url": "https://docs.ase-lib.org/ase/build/surface.html", "kind": "page" },
+    { "id": "ase-building", "url": "https://docs.ase-lib.org/ase/build/build.html", "kind": "page" },
+    { "id": "ase-pypi-3290", "url": "https://pypi.org/project/ase/3.29.0/", "kind": "page" },
+    { "id": "pymatgen-transformations", "url": "https://pymatgen.org/pymatgen.transformations.html", "kind": "page" },
+    { "id": "pymatgen-core-docs", "url": "https://pymatgen.org/pymatgen.core.html", "kind": "page" },
+    { "id": "pymatgen-core-pypi-2026-7-31", "url": "https://pypi.org/project/pymatgen-core/2026.7.31/", "kind": "page" },
+    { "id": "qe-pw-75", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html", "kind": "page" },
+    { "id": "qe-ph-75", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html", "kind": "page" },
+    { "id": "monkhorst-pack", "url": "https://doi.org/10.1103/PhysRevB.13.5188", "kind": "doi" },
+    { "id": "methfessel-paxton", "url": "https://doi.org/10.1103/PhysRevB.40.3616", "kind": "doi" },
+    { "id": "blochl-tetrahedron", "url": "https://doi.org/10.1103/PhysRevB.49.16223", "kind": "doi" },
+    { "id": "sssp-paper", "url": "https://doi.org/10.1038/s41524-018-0127-2", "kind": "doi" },
+    { "id": "sssp-archive", "url": "https://archive.materialscloud.org/record/2021.76", "kind": "page" },
+    { "id": "pseudodojo-paper", "url": "https://doi.org/10.1016/j.cpc.2018.01.012", "kind": "doi" },
+    { "id": "ismail-beigi-truncation", "url": "https://doi.org/10.1103/PhysRevB.73.233103", "kind": "doi" },
+    { "id": "freysoldt-defects", "url": "https://doi.org/10.1103/RevModPhys.86.253", "kind": "doi" },
+    { "id": "finite-size-scaling-limits", "url": "https://doi.org/10.1103/PhysRevB.105.014103", "kind": "doi" },
+    { "id": "baroni-dfpt", "url": "https://doi.org/10.1103/RevModPhys.73.515", "kind": "doi" },
+    { "id": "giustino-epc-review", "url": "https://doi.org/10.1103/RevModPhys.89.015003", "kind": "doi" }
   ],
   "guides": [
     {
@@ -65,6 +42,22 @@
     {
       "guide_slug": "two-dimensional-monolayer-model",
       "source_ids": ["ase-docs-home", "ase-building", "ase-atoms", "ase-pypi-3290"]
+    },
+    {
+      "guide_slug": "converge-basis-cutoffs-and-grids",
+      "source_ids": ["qe-pw-75", "sssp-paper", "sssp-archive", "pseudodojo-paper"]
+    },
+    {
+      "guide_slug": "converge-k-points-and-smearing",
+      "source_ids": ["qe-pw-75", "monkhorst-pack", "methfessel-paxton", "blochl-tetrahedron"]
+    },
+    {
+      "guide_slug": "converge-finite-size-vacuum-and-images",
+      "source_ids": ["ismail-beigi-truncation", "freysoldt-defects", "finite-size-scaling-limits"]
+    },
+    {
+      "guide_slug": "converge-q-meshes-and-response-grids",
+      "source_ids": ["qe-ph-75", "baroni-dfpt", "giustino-epc-review"]
     }
   ]
 }

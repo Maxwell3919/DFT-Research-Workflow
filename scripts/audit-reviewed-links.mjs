@@ -23,11 +23,11 @@ function setDifference(left, right) {
   return [...left].filter((value) => !right.has(value)).sort();
 }
 
-const allEntries = [];
-const globalUrls = new Set();
+const sourcesByUrl = new Map();
 
 if (manifest.schema_version !== 1) errors.push(`unsupported manifest schema_version ${manifest.schema_version}`);
 if (!Array.isArray(manifest.topics) || manifest.topics.length === 0) errors.push('manifest must declare reviewed topics');
+if (!Number.isInteger(manifest.expected_unique_urls) || manifest.expected_unique_urls < 1) errors.push('manifest must declare expected_unique_urls');
 
 try {
   await readFile(new URL(manifest.audit_record, root), 'utf8');
@@ -37,14 +37,22 @@ try {
 
 for (const topic of manifest.topics ?? []) {
   const expected = new Set(topic.links.map((entry) => entry.url));
-  if (expected.size !== topic.links.length) errors.push(`${topic.topic_slug}: duplicate URLs in manifest`);
+  if (expected.size !== topic.links.length) errors.push(`${topic.topic_slug}: duplicate URLs inside topic manifest`);
 
   for (const entry of topic.links) {
     if (!['page', 'doi'].includes(entry.kind)) errors.push(`${topic.topic_slug}: invalid link kind ${entry.kind}`);
     if (!entry.url.startsWith('https://')) errors.push(`${topic.topic_slug}: source is not HTTPS: ${entry.url}`);
-    if (globalUrls.has(entry.url)) errors.push(`duplicate URL across reviewed topics: ${entry.url}`);
-    globalUrls.add(entry.url);
-    allEntries.push({ ...entry, topic_slug: topic.topic_slug });
+    const existing = sourcesByUrl.get(entry.url);
+    if (existing) {
+      if (existing.kind !== entry.kind) errors.push(`${entry.url}: inconsistent link kinds ${existing.kind} and ${entry.kind}`);
+      existing.topic_slugs.push(topic.topic_slug);
+    } else {
+      sourcesByUrl.set(entry.url, {
+        kind: entry.kind,
+        url: entry.url,
+        topic_slugs: [topic.topic_slug],
+      });
+    }
   }
 
   for (const path of [topic.article, topic.review]) {
@@ -66,7 +74,13 @@ for (const topic of manifest.topics ?? []) {
   }
 }
 
-if (globalUrls.size !== 33) errors.push(`reviewed source manifest must contain 33 unique URLs, found ${globalUrls.size}`);
+const allEntries = [...sourcesByUrl.values()].map((entry) => ({
+  ...entry,
+  topic_slugs: [...new Set(entry.topic_slugs)].sort(),
+}));
+if (allEntries.length !== manifest.expected_unique_urls) {
+  errors.push(`reviewed source manifest expected ${manifest.expected_unique_urls} unique URLs, found ${allEntries.length}`);
+}
 
 if (errors.length > 0) {
   console.error(`Reviewed-source manifest validation failed (${errors.length}):`);
@@ -75,7 +89,7 @@ if (errors.length > 0) {
 }
 
 if (manifestOnly) {
-  console.log(`Reviewed-source manifest valid: ${manifest.topics.length} reviewed topics, ${globalUrls.size} unique HTTPS sources, exact article/review coverage, and no retired ASE URLs.`);
+  console.log(`Reviewed-source manifest valid: ${manifest.topics.length} reviewed topics, ${allEntries.length} unique HTTPS sources, exact article/review coverage, reusable cross-topic sources, and no retired ASE URLs.`);
   process.exit(0);
 }
 
@@ -149,7 +163,7 @@ async function request(entry, attempt) {
     }
 
     return {
-      topic_slug: entry.topic_slug,
+      topic_slugs: entry.topic_slugs,
       kind: entry.kind,
       requested_url: entry.url,
       state,
@@ -179,7 +193,7 @@ async function auditEntry(entry) {
     await delay(1000 * attempt);
   }
   return lastResult ?? {
-    topic_slug: entry.topic_slug,
+    topic_slugs: entry.topic_slugs,
     kind: entry.kind,
     requested_url: entry.url,
     state: 'failed',
@@ -210,7 +224,7 @@ async function browserAuditEntry(browser, entry) {
     const soft404 = soft404Marker(observation.title, observation.heading);
     const reachable = status !== null && status >= 200 && status < 300 && !soft404;
     return {
-      topic_slug: entry.topic_slug,
+      topic_slugs: entry.topic_slugs,
       kind: entry.kind,
       requested_url: entry.url,
       state: reachable ? 'reachable' : 'failed',
@@ -227,7 +241,7 @@ async function browserAuditEntry(browser, entry) {
     };
   } catch (error) {
     return {
-      topic_slug: entry.topic_slug,
+      topic_slugs: entry.topic_slugs,
       kind: entry.kind,
       requested_url: entry.url,
       state: 'failed',
@@ -323,4 +337,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Reviewed external-link audit passed: ${results.length} unique sources across ${manifest.topics.length} reviewed topics; page destinations returned live non-404 documents and DOI links resolved successfully.`);
+console.log(`Reviewed external-link audit passed: ${results.length} unique sources across ${manifest.topics.length} reviewed topics; reusable URLs were requested once, page destinations returned live non-404 documents, and DOI links resolved successfully.`);

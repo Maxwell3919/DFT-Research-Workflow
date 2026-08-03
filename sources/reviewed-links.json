@@ -2,6 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
+  "expected_unique_urls": 40,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -55,6 +56,25 @@
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.137.A1441" },
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.40.3616" },
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.73.233103" }
+      ]
+    },
+    {
+      "topic_slug": "test-numerical-convergence",
+      "article": "src/content/topics/test-numerical-convergence.md",
+      "review": "docs/reviews/2026-08-03-test-numerical-convergence.md",
+      "links": [
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.13.5188" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.40.3616" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.49.16223" },
+        { "kind": "doi", "url": "https://doi.org/10.1126/science.aad3000" },
+        { "kind": "doi", "url": "https://doi.org/10.1038/s41524-018-0127-2" },
+        { "kind": "page", "url": "https://archive.materialscloud.org/record/2021.76" },
+        { "kind": "doi", "url": "https://doi.org/10.1016/j.cpc.2018.01.012" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.73.233103" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.86.253" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.73.515" }
       ]
     }
   ]
