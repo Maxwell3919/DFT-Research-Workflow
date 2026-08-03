@@ -1,0 +1,15 @@
+import { readFile } from 'node:fs/promises';
+const root=new URL('../',import.meta.url);
+const article=await readFile(new URL('src/content/topics/fermi-surface-and-full-brillouin-zone-analysis.md',root),'utf8');
+const review=await readFile(new URL('docs/reviews/2026-08-04-fermi-surface-and-full-brillouin-zone-analysis.md',root),'utf8');
+const manifest=JSON.parse(await readFile(new URL('sources/reviewed-links.json',root),'utf8'));
+const expected=['https://doi.org/10.1007/BF01341914','https://doi.org/10.1103/PhysRev.140.A1133','https://doi.org/10.1103/PhysRev.119.1153','https://doi.org/10.1103/PhysRevB.56.12847','https://doi.org/10.1103/PhysRevB.75.195121','https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/parameters/','https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_6/','https://quantum-espresso.org/Doc/pp_user_guide/node8.html'];
+const required=['status: reviewed','The object is an equal-energy set over the full zone','A high-symmetry path cannot establish a Fermi surface','Luttinger\'s relation connects the volume','Interpolation makes a dense mesh practical','Geometry alone is not a transport calculation','It does not establish an experimental Fermi surface']; const errors=[];
+for(const phrase of required)if(!article.includes(phrase))errors.push(`article missing ${phrase}`);
+if((article.match(/^## /gm)??[]).length!==9)errors.push('article natural-section count changed');
+const record=manifest.topics.find(x=>x.topic_slug==='fermi-surface-and-full-brillouin-zone-analysis');
+if(!record||JSON.stringify(record.links.map(x=>x.url))!==JSON.stringify(expected))errors.push('reviewed source manifest mismatch');
+for(const url of expected)if(!article.includes(url)||!review.includes(url))errors.push(`source not represented ${url}`);
+if(!review.includes('Execution success is not Fermi-surface convergence'))errors.push('review lacks execution boundary');
+if(/use a universal (?:k mesh|interpolation window|energy offset|pocket-volume tolerance|number of empty bands)/i.test(article))errors.push('universal numerical prescription');
+if(errors.length){console.error(errors.join('\n'));process.exit(1)}console.log('Reviewed Fermi-surface topic valid: exact sources, full-zone/interpolation/Luttinger/transport boundaries, no universal numerical prescription.');

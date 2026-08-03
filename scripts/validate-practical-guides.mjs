@@ -150,6 +150,12 @@ const reviewRequirements = new Map([
     'Execution success is not DOS convergence',
     'The media are original conceptual diagrams of invented data.',
   ]],
+  ['docs/reviews/2026-08-04-fermi-surface-and-full-brillouin-zone-analysis.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses an invented two-dimensional reciprocal-space energy field.',
+    'Execution success is not Fermi-surface convergence',
+    'The media are original conceptual diagrams of invented data.',
+  ]],
 ]);
 
 function parseFrontmatter(source) {

@@ -105,7 +105,10 @@
     { "id": "qe-dos-docs", "url": "https://www.quantum-espresso.org/Doc/INPUT_DOS.html", "kind": "page" },
     { "id": "qe-projwfc-docs", "url": "https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html", "kind": "page" },
     { "id": "vasp-doscar", "url": "https://vasp.at/wiki/DOSCAR", "kind": "page" },
-    { "id": "vasp-lorbit", "url": "https://vasp.at/wiki/LORBIT", "kind": "page" }
+    { "id": "vasp-lorbit", "url": "https://vasp.at/wiki/LORBIT", "kind": "page" },
+    { "id": "wannier90-fermi-parameters", "url": "https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/parameters/", "kind": "page" },
+    { "id": "wannier90-copper-tutorial", "url": "https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_6/", "kind": "page" },
+    { "id": "qe-fermi-postprocessing", "url": "https://quantum-espresso.org/Doc/pp_user_guide/node8.html", "kind": "page" }
   ],
   "guides": [
     {
@@ -237,6 +240,7 @@
     { "guide_slug": "replot-al-tin-interface-adhesion", "source_ids": ["feldbauer-al-tin", "feldbauer-al-tin-arxiv"] },
     { "guide_slug": "build-reciprocal-path-ledger", "source_ids": ["seekpath-paper", "seekpath-docs", "qe-bands-docs"] },
     { "guide_slug": "compare-band-path-and-full-zone-extrema", "source_ids": ["bloch-paper", "kohn-sham", "setyawan-curtarolo"] },
-    { "guide_slug": "check-dos-normalization-and-projection-closure", "source_ids": ["qe-dos-docs", "qe-projwfc-docs", "vasp-doscar", "vasp-lorbit"] }
+    { "guide_slug": "check-dos-normalization-and-projection-closure", "source_ids": ["qe-dos-docs", "qe-projwfc-docs", "vasp-doscar", "vasp-lorbit"] },
+    { "guide_slug": "compare-full-zone-isovalue-and-band-path", "source_ids": ["wannier90-fermi-parameters", "wannier90-copper-tutorial", "qe-fermi-postprocessing"] }
   ]
 }
