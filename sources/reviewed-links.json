@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 151,
+  "expected_unique_urls": 153,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -309,6 +309,19 @@
         { "kind": "doi", "url": "https://doi.org/10.1002/anie.199718081" },
         { "kind": "doi", "url": "https://doi.org/10.1007/s002140000233" },
         { "kind": "page", "url": "https://schmeling.ac.rwth-aachen.de/cohp/" }
+      ]
+    },
+    {
+      "topic_slug": "magnetic-configuration-and-ground-state-comparison",
+      "article": "src/content/topics/magnetic-configuration-and-ground-state-comparison.md",
+      "review": "docs/reviews/2026-08-04-magnetic-configuration-and-ground-state-comparison.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.136.B864" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.140.A1133" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.57.1505" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.62.11556" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
+        { "kind": "page", "url": "https://vasp.at/wiki/MAGMOM" }
       ]
     },
     {
