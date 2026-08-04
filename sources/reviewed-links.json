@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 192,
+  "expected_unique_urls": 196,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -442,6 +442,19 @@
         { "kind": "page", "url": "https://docs.epw-code.org/Theory.html" },
         { "kind": "page", "url": "https://docs.epw-code.org/doc/Electron-phononCoupling.html" },
         { "kind": "page", "url": "https://docs.epw-code.org/tutorials/tutorial_01/index.html" }
+      ]
+    },
+    {
+      "topic_slug": "conventional-superconductivity",
+      "article": "src/content/topics/conventional-superconductivity.md",
+      "review": "docs/reviews/2026-08-04-conventional-superconductivity.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.167.331" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.12.905" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node10.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/user_guide_PDF/ph_user_guide.pdf" },
+        { "kind": "page", "url": "https://docs.epw-code.org/Inputs/Inputs.html" },
+        { "kind": "page", "url": "https://docs.epw-code.org/doc/Electron-phononCoupling.html" }
       ]
     },
     {
