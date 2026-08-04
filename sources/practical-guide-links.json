@@ -253,7 +253,7 @@
     },
     {
       "guide_slug": "build-surface-energy-ledger",
-      "source_ids": ["fiorentini-methfessel-surfaces", "boettger-surface-nonconvergence", "gpaw-al-surface"]
+      "source_ids": ["fiorentini-methfessel-surfaces", "boettger-surface-nonconvergence", "gpaw-al-surface", "intermat-paper", "intermat-nist-pdf", "cc-by-3"]
     },
     {
       "guide_slug": "extract-work-function-potential",

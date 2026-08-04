@@ -61,6 +61,7 @@ SURFACE_ANALYSIS_SCRIPTS = [
     "surface_energy_ledger.py",
     "work_function_potential.py",
     "intermat_si_surfaces.py",
+    "surface_ledger_intermat.py",
 ]
 ADSORPTION_ANALYSIS_SCRIPTS = [
     "adsorption_energy_ledger.py",
@@ -169,9 +170,9 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 63
+    assert len(results) == 64
     report = {
-        "schema_version": 15,
+        "schema_version": 16,
         "project_root": str(ROOT),
         "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "versions": observed_versions,
@@ -237,7 +238,7 @@ def main() -> None:
         "four synthetic convergence analyses plus one hash-bound Silicon QE SCF reconstruction, four bounded optimization diagnostics plus one hash-bound Silicon QE BFGS reconstruction, and "
         "four deterministic reference-state diagnostics plus one hash-bound Silicon QE restart reconstruction, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
-            "one hash-bound Silicon QE path/mesh reconstruction, one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one frozen public-output CoSb3 transport redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, one invented polarization-branch fixture, one invented piezoelectric ledger fixture, one invented harmonic-mode ledger fixture, one invented anharmonic-linewidth ledger fixture, one invented lattice-transport tensor ledger fixture, one invented EPC channel ledger fixture, one invented superconductivity spectral-moment ledger fixture, one invented reaction-path barrier ledger fixture, one invented diffusion-network ledger fixture, one invented AIMD segment ledger fixture, one invented structural-sampling overlap ledger fixture, one invented optical-spectrum comparison ledger fixture, one invented time-dependent-response ledger fixture, and one invented quasiparticle-comparison ledger fixture under pinned versions; the real-output companions perform no additional DFT, dielectric-response, GW, transport rerun, or material-property calculation."
+            "one hash-bound Silicon QE path/mesh reconstruction, one frozen public-data Si-surface redraw, one hash-bound InterMat surface ledger, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one frozen public-output CoSb3 transport redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, one invented polarization-branch fixture, one invented piezoelectric ledger fixture, one invented harmonic-mode ledger fixture, one invented anharmonic-linewidth ledger fixture, one invented lattice-transport tensor ledger fixture, one invented EPC channel ledger fixture, one invented superconductivity spectral-moment ledger fixture, one invented reaction-path barrier ledger fixture, one invented diffusion-network ledger fixture, one invented AIMD segment ledger fixture, one invented structural-sampling overlap ledger fixture, one invented optical-spectrum comparison ledger fixture, one invented time-dependent-response ledger fixture, and one invented quasiparticle-comparison ledger fixture under pinned versions; the real-output companions perform no additional DFT, dielectric-response, GW, transport rerun, or material-property calculation."
     )
 
 
