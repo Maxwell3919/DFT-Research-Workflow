@@ -24,7 +24,8 @@
       "media_ids": [
         "ase-cell-repetition-diagram"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "structure-silicon-cell-lineage"
     },
     {
       "guide_slug": "ase-surfaces-vacuum-adsorbates",
@@ -41,7 +42,8 @@
       "media_ids": [
         "ase-slab-vacuum-diagram"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "structure-graphene-vacuum-adsorbate"
     },
     {
       "guide_slug": "pymatgen-structure-transformations",
@@ -58,7 +60,8 @@
       "media_ids": [
         "pymatgen-transformation-lineage-diagram"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "structure-silicon-cell-lineage"
     },
     {
       "guide_slug": "two-dimensional-monolayer-model",
@@ -75,7 +78,8 @@
       "media_ids": [
         "monolayer-periodicity-diagram"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "structure-graphene-vacuum-adsorbate"
     },
     {
       "guide_slug": "rebuild-oqmd-li-p-convex-hull",
@@ -194,7 +198,8 @@
       "media_ids": [
         "silicon-qe-bands"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "compare-band-path-and-full-zone-extrema",
@@ -212,7 +217,8 @@
         "silicon-qe-path-full-zone",
         "band-path-full-zone-extrema"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "check-dos-normalization-and-projection-closure",
@@ -229,7 +235,8 @@
       "media_ids": [
         "silicon-qe-dos"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "check-harmonic-mode-ledger",
@@ -246,7 +253,8 @@
       "media_ids": [
         "silicon-gamma-phonon"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "check-born-charge-and-dielectric-ledger",
@@ -263,7 +271,8 @@
       "media_ids": [
         "silicon-qe-dielectric"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "check-epc-channel-ledger",
@@ -519,7 +528,8 @@
         "al-qe-full-zone",
         "fermi-surface-isovalue-fixture"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "aluminium-metallic-electronic-structure"
     },
     {
       "guide_slug": "check-charge-difference-closure",
@@ -843,7 +853,8 @@
         "convergence-basis-grid-map",
         "silicon-qe-cutoff-matrix"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "converge-k-points-and-smearing",
@@ -861,7 +872,8 @@
         "convergence-k-smearing-matrix",
         "silicon-qe-kmesh-matrix"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "converge-finite-size-vacuum-and-images",
@@ -912,7 +924,8 @@
       "media_ids": [
         "optimization-degrees-constraint-map"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "diagnose-forces-stress-and-state",
@@ -930,7 +943,8 @@
         "optimization-history-diagnostics",
         "silicon-qe-relax-force"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "restart-and-verify-optimization",
@@ -947,7 +961,8 @@
       "media_ids": [
         "optimization-restart-verification-chain"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "compare-multiple-starts-and-minima",
@@ -981,7 +996,8 @@
       "media_ids": [
         "reference-protocol-continuity"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "compare-fresh-and-restarted-electronic-states",
@@ -998,7 +1014,8 @@
       "media_ids": [
         "fresh-restart-state-map"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     },
     {
       "guide_slug": "compare-charge-spin-and-magnetic-candidates",
@@ -1032,7 +1049,8 @@
       "media_ids": [
         "reference-state-lineage"
       ],
-      "upgrade_readiness": "completed"
+      "upgrade_readiness": "completed",
+      "case_id": "silicon-ground-state-electronic-structure"
     }
   ]
 }

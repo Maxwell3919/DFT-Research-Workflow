@@ -10,6 +10,7 @@ const operationsDocument = JSON.parse(await readFile(new URL('ontology/operation
 const legacyDocument = JSON.parse(await readFile(new URL('ontology/legacy-operations.json', root), 'utf8'));
 const recipesDocument = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8'));
 const toolsDocument = JSON.parse(await readFile(new URL('workflow/tools.json', root), 'utf8'));
+const practicalEvidence = JSON.parse(await readFile(new URL('workflow/practical-evidence.json', root), 'utf8'));
 const workflowTopics = workflowDocument.sections.flatMap((section) =>
   section.groups.flatMap((group) => group.topics.map((topic) => ({ ...topic, section: section.id, group: group.id }))),
 );
@@ -190,6 +191,13 @@ for (const guide of practicalGuides) {
   }
   if (!html.includes('class="guide-meta"')) errors.push(`${guide.guide_slug}: missing guide metadata`);
   if (!html.includes('class="guide-media"')) errors.push(`${guide.guide_slug}: missing declared media`);
+  const evidenceRecord = practicalEvidence.guides.find((record) => record.guide_slug === guide.guide_slug);
+  if (evidenceRecord?.evidence_class === 'real-execution') {
+    if (!evidenceRecord.case_id || !text.includes('Terminal-first execution case') || !text.includes(evidenceRecord.case_id)) {
+      errors.push(`${guide.guide_slug}: real-execution page is not visibly bound to its terminal-first case`);
+    }
+    if (!text.includes('G4 ') || !text.includes('G5 ')) errors.push(`${guide.guide_slug}: terminal-first gate ceiling is not rendered`);
+  }
   const parentHref = `${base}operations/${guide.topic_slug}/`;
   if (!html.includes(parentHref)) errors.push(`${guide.guide_slug}: missing parent-topic link`);
   practicalParentPaths.add(guide.topic_slug);
