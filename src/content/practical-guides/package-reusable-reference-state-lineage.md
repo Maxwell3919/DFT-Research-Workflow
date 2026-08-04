@@ -4,18 +4,20 @@ guide_slug: package-reusable-reference-state-lineage
 title: Package a Reusable Reference-State Lineage
 kind: implementation
 tools:
+  - quantum-espresso
   - python
 status: reviewed
 summary: Bind structure, method, state, charge density, wavefunctions, outputs, and downstream compatibility into one hashed reference-state manifest.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/reference_state_lineage_manifest.py
+execution_script: examples/practical-guides/silicon_qe_convergence.py
 source_ids:
   - qe-pw-75
   - vasp-electronic-ground-state-properties
   - vasp-lcharg
   - vasp-lwave
   - cp2k-dft
+  - cod-9013102
 media_ids:
   - reference-state-lineage
 review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
@@ -43,7 +45,10 @@ primary output
 parent and supersession links
 ```
 
-The companion script creates deterministic fixture payloads and SHA-256 hashes:
+The retained companion fixture creates deterministic payload hashes. Alongside it,
+the public Silicon evidence package binds nine actual QE inputs and outputs using
+`checksums.sha256`; its reconstruction refuses altered output bytes before reading
+the electronic-completion markers or energies.
 
 ```python
 from reference_state_lineage_manifest import run
@@ -75,9 +80,11 @@ An immutable parent reference makes later provenance auditable. Silent replaceme
 
 ## What this guide verifies
 
-The companion script hashes deterministic fixture payloads, constructs a reference-state manifest, verifies its digest, accepts one matching downstream request, and rejects one request with a changed state-defining field.
-
-It does not run a DFT code, read a real charge density or wavefunction, validate a code-specific restart file, or establish scientific compatibility beyond the declared fixture fields.
+The deterministic fixture checks manifest logic. The real Silicon companion
+checks input/output identity and completion for a public fixed-geometry evidence
+set. It does not publish charge density or wavefunction files, validate a restart,
+or establish scientific compatibility beyond the explicit structure, method and
+file identities.
 
 ## Common mistakes
 
@@ -96,3 +103,4 @@ It does not run a DFT code, read a real charge density or wavefunction, validate
 - [VASP `LCHARG`](https://vasp.at/wiki/LCHARG)
 - [VASP `LWAVE`](https://vasp.at/wiki/LWAVE)
 - [CP2K DFT section](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT.html)
+- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)

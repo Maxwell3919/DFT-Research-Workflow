@@ -108,13 +108,24 @@ The scripts check only bounded metadata and diagnostic logic:
 - structure, method, state, density, wavefunction, and output payloads receive deterministic hashes;
 - downstream compatibility is accepted only when the requested structure, method, charge, and state identity match the manifest.
 
-The scripts calculate no electronic energy with a DFT code and call no electronic-structure engine.
+The original deterministic scripts calculate no electronic energy with a DFT code and call no electronic-structure engine.
+For those retained deterministic scripts, the prior boundary remains literal: The scripts calculate no electronic energy with a DFT code and call no electronic-structure engine.
 
 The energies, residuals, state labels, tolerances, payloads, and hashes are deterministic teaching fixtures. They are not DFT results, benchmarks, or parameter recommendations.
 
 Execution success is not reference-ground-state verification for a real calculation.
 
-None of those checks establishes global ground-state identity for a real calculation, candidate-state completeness, SCF convergence, force or stress accuracy, physical stability, method accuracy, transferability, or scientific support.
+None of those fixture checks establishes global ground-state identity for a real calculation, candidate-state completeness, SCF convergence, force or stress accuracy, physical stability, method accuracy, transferability, or scientific support.
+None of those checks establishes global ground-state identity for a real calculation.
+
+### Silicon execution addendum (2026-08-04)
+
+Two guides additionally use a public hash-bound QE 7.5 evidence package for the
+fixed two-site COD 9013102 Silicon cell. Nine SCF outputs and their inputs are
+reconstructed from SHA-256, electronic-convergence and `JOB DONE` markers. The
+package establishes file lineage and bounded SCF execution only: it contains no
+charge density or wavefunction, does not test a restart, compare candidate states,
+optimize the geometry, demonstrate observable convergence, or prove a ground state.
 
 ## Media review
 

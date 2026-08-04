@@ -102,7 +102,8 @@ They analyse small synthetic tables created solely for deterministic testing. Th
 - independent refinement of coupled axes;
 - direct-versus-interpolated error in the response-grid example.
 
-The scripts calculate no electronic energy and call no electronic-structure engine.
+The original synthetic scripts calculate no electronic energy and call no electronic-structure engine.
+For those retained synthetic scripts, the prior boundary remains literal: The scripts calculate no electronic energy and call no electronic-structure engine.
 
 Execution success is not numerical convergence. It establishes only that the documented analysis logic executes under the tested Python version and returns the declared synthetic diagnostics.
 
@@ -118,6 +119,17 @@ The four displayed convergence diagrams are original project SVGs. They illustra
 - the reference-state, response, interpolation, and final-integration chain.
 
 They are conceptual diagrams, not plots of calculated data. Every asset is declared in `workflow/practical-guide-media.json` with a stable ID, guide binding, repository path, creation date, original-media reuse basis, caption, and alt text. No publisher figure, manual screenshot, GUI asset, or unpublished calculation plot is copied.
+
+### Silicon execution addendum (2026-08-04)
+
+Two guides now additionally bind the actual QE 7.5 outputs in
+`examples/practical-guides/data/silicon-qe/convergence/`: nine fixed-cell SCF
+runs of CC0 COD 9013102 Silicon over 30/40/50 Ry and 6³/8³/10³ meshes. The
+standard-library reconstruction verifies all output SHA-256 values plus the
+electronic-convergence and `JOB DONE` markers and regenerates two original SVGs.
+The calculation has fixed occupations, so it is not a smearing study. It reports
+only total-energy differences to one stored comparison row; it does not establish
+force, stress, band, DOS, response, transferable-cutoff, or material convergence.
 
 ## Interface review
 

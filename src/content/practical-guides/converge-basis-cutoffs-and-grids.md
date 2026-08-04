@@ -4,19 +4,22 @@ guide_slug: converge-basis-cutoffs-and-grids
 title: Converge Basis Cutoffs and Real-Space Grids
 kind: implementation
 tools:
+  - quantum-espresso
   - python
 status: reviewed
 summary: Design a coupled basis and grid study around the observable that matters, rather than accepting one cutoff or one library recommendation as universal evidence.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/convergence_basis_grids.py
+execution_script: examples/practical-guides/silicon_qe_convergence.py
 source_ids:
   - qe-pw-75
   - sssp-paper
   - sssp-archive
   - pseudodojo-paper
+  - cod-9013102
 media_ids:
   - convergence-basis-grid-map
+  - silicon-qe-cutoff-matrix
 review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
@@ -41,26 +44,25 @@ stress component or pressure
 runtime and memory
 ```
 
-The illustrative script uses a small synthetic table with a wavefunction-like control and a density-grid multiplier. The values are generated solely to test the analysis logic.
+The retained conceptual diagram explains why the controls are coupled. The main
+case is a hash-bound, nine-run Silicon matrix: the same COD 9013102 primitive
+cell and SSSP Si potential were evaluated by QE 7.5 at 30, 40, and 50 Ry with
+charge-density cutoff fixed at eight times `ecutwfc`, and at 6³, 8³, and 10³
+k meshes. This is a real, deliberately small teaching dataset—not a library
+recommendation or transferable convergence result.
 
 ## Scan the coupled control surface
 
 A one-dimensional cutoff sweep can hide dependence on the associated real-space grid. Test a small matrix first, then refine the region where all target quantities stabilize.
 
-```python
-from convergence_basis_grids import analyse_basis_grid_table
-
-report = analyse_basis_grid_table()
-print(report["accepted_region"])
+```bash
+python3 examples/practical-guides/silicon_qe_convergence.py
 ```
 
-The companion script checks that:
-
-- every basis setting is represented at more than one grid setting;
-- the apparent stable region contains more than one point;
-- energy differences, forces, and stress are checked independently;
-- the accepted point has at least one stricter tested neighbour;
-- the script reports unresolved coupled dependence instead of selecting the largest point automatically.
+The companion reconstruction verifies SHA-256 for all nine committed `pw.x`
+outputs, their electronic-convergence and `JOB DONE` markers, and the full
+cutoff-by-mesh coverage. It reports each total energy relative to the 50 Ry,
+10³ row; that row is a comparison reference, not an accepted production setting.
 
 ## Use recommendations as prior evidence
 
@@ -82,9 +84,11 @@ The selected point should be followed by at least one stricter point that remain
 
 ## What this guide verifies
 
-The companion script verifies a deterministic analysis of an illustrative two-dimensional basis/grid table. It checks coupled coverage, state consistency, stricter-neighbour support, independent observable tolerances, and the declared stopping rule.
-
-It does not run Quantum ESPRESSO or another electronic-structure program. It does not establish a transferable cutoff, validate a pseudopotential, or converge a real material.
+The stored outputs come from actual QE 7.5 `pw.x` executions and establish only
+electronic completion for the nine declared inputs plus a reproducible total-energy
+comparison. They do not test force, stress, band, DOS, phonon, or response
+convergence; they do not validate the SSSP potential, establish a transferable
+cutoff, or support a Silicon material conclusion.
 
 ## Common mistakes
 
@@ -102,3 +106,4 @@ It does not run Quantum ESPRESSO or another electronic-structure program. It doe
 - [Prandini et al., precision and efficiency in solid-state pseudopotential calculations](https://doi.org/10.1038/s41524-018-0127-2)
 - [Materials Cloud SSSP archive and provenance record](https://archive.materialscloud.org/record/2021.76)
 - [PseudoDojo training and grading paper](https://doi.org/10.1016/j.cpc.2018.01.012)
+- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)

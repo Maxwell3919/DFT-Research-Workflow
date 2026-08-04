@@ -5,18 +5,20 @@ title: Choose Relaxed Degrees of Freedom and Constraints
 kind: implementation
 tools:
   - ase
+  - quantum-espresso
 status: reviewed
 summary: Define which atomic and cell variables may change, express constraints explicitly, and verify that the executed optimization respects the intended active subspace.
 tested_versions:
   - ASE 3.29.0
   - Python 3.12
-execution_script: examples/practical-guides/optimization_degrees_constraints.py
+execution_script: examples/practical-guides/silicon_qe_relax.py
 source_ids:
   - ase-optimize
   - ase-constraints
   - ase-filters
   - vasp-isif
   - cp2k-geometry-cell-opt
+  - cod-9013102
 media_ids:
   - optimization-degrees-constraint-map
 review: docs/reviews/2026-08-03-optimize-structure.md
@@ -24,6 +26,15 @@ reviewed_at: "2026-08-03"
 ---
 
 A relaxation protocol begins with a declaration of active variables. “Relax the structure” is ambiguous until the atomic coordinates, cell components, constraints, symmetry treatment, and external stress condition are specified.
+
+## Actual fixed-cell Silicon case
+
+The accompanying QE 7.5 run starts from an intentionally displaced two-site
+COD 9013102 Silicon primitive cell. Its `calculation='relax'` input uses BFGS,
+keeps all cell vectors fixed, and leaves both atomic sites active. The committed
+output and input have SHA-256 checks, so this is an actual executed degree-of-
+freedom declaration rather than an invented trajectory. It does not test a
+constraint, variable cell, or alternative starting basin.
 
 ## Map the active subspace before execution
 
@@ -108,9 +119,11 @@ If a supposedly fixed atom moved, or a vacuum vector changed, the optimization e
 
 ## What this guide verifies
 
-The companion script runs a small ASE/EMT positions-only optimization and checks that the fixed atom and lattice remain unchanged, free atoms respond to the force evaluator, and the final active-force diagnostic improves.
-
-It does not run DFT, validate EMT for copper research, establish a universal force threshold, test a variable-cell implementation, or prove that the resulting structure is a physical minimum.
+`silicon_qe_relax.py` reconstructs the actual QE output, verifies the input/output
+hashes, five electronic completions and the BFGS completion marker. The retained
+ASE fixture illustrates an explicit fixed-atom constraint. Neither example sets
+a universal force threshold, validates variable-cell behavior, or proves a
+physical minimum.
 
 ## Common mistakes
 
@@ -131,3 +144,4 @@ It does not run DFT, validate EMT for copper research, establish a universal for
 - [ASE filters for cell degrees of freedom](https://docs.ase-lib.org/ase/filters.html)
 - [VASP `ISIF` degrees of freedom](https://vasp.at/wiki/ISIF)
 - [CP2K geometry and cell optimization](https://manual.cp2k.org/trunk/methods/optimization/geometry_and_cell_opt.html)
+- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)

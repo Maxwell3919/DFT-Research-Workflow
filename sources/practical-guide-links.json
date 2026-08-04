@@ -169,11 +169,11 @@
     },
     {
       "guide_slug": "converge-basis-cutoffs-and-grids",
-      "source_ids": ["qe-pw-75", "sssp-paper", "sssp-archive", "pseudodojo-paper"]
+      "source_ids": ["qe-pw-75", "sssp-paper", "sssp-archive", "pseudodojo-paper", "cod-9013102"]
     },
     {
       "guide_slug": "converge-k-points-and-smearing",
-      "source_ids": ["qe-pw-75", "monkhorst-pack", "methfessel-paxton", "blochl-tetrahedron"]
+      "source_ids": ["qe-pw-75", "monkhorst-pack", "methfessel-paxton", "blochl-tetrahedron", "cod-9013102"]
     },
     {
       "guide_slug": "converge-finite-size-vacuum-and-images",
@@ -185,11 +185,11 @@
     },
     {
       "guide_slug": "choose-relaxed-degrees-and-constraints",
-      "source_ids": ["ase-optimize", "ase-constraints", "ase-filters", "vasp-isif", "cp2k-geometry-cell-opt"]
+      "source_ids": ["ase-optimize", "ase-constraints", "ase-filters", "vasp-isif", "cp2k-geometry-cell-opt", "cod-9013102"]
     },
     {
       "guide_slug": "diagnose-forces-stress-and-state",
-      "source_ids": ["qe-pw-75", "vasp-structure-optimization", "cp2k-geometry-cell-opt", "pulay-force-paper", "nielsen-martin-stress"]
+      "source_ids": ["qe-pw-75", "vasp-structure-optimization", "cp2k-geometry-cell-opt", "pulay-force-paper", "nielsen-martin-stress", "cod-9013102"]
     },
     {
       "guide_slug": "restart-and-verify-optimization",
@@ -201,7 +201,7 @@
     },
     {
       "guide_slug": "prepare-fixed-geometry-reference-calculation",
-      "source_ids": ["qe-pw-75", "vasp-electronic-minimization", "cp2k-scf", "abinit-basic1"]
+      "source_ids": ["qe-pw-75", "vasp-electronic-minimization", "cp2k-scf", "abinit-basic1", "cod-9013102"]
     },
     {
       "guide_slug": "compare-fresh-and-restarted-electronic-states",
@@ -213,7 +213,7 @@
     },
     {
       "guide_slug": "package-reusable-reference-state-lineage",
-      "source_ids": ["qe-pw-75", "vasp-electronic-ground-state-properties", "vasp-lcharg", "vasp-lwave", "cp2k-dft"]
+      "source_ids": ["qe-pw-75", "vasp-electronic-ground-state-properties", "vasp-lcharg", "vasp-lwave", "cp2k-dft", "cod-9013102"]
     },
     {
       "guide_slug": "build-comparable-energy-ledger",

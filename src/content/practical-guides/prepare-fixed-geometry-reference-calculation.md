@@ -4,17 +4,19 @@ guide_slug: prepare-fixed-geometry-reference-calculation
 title: Prepare a Fixed-Geometry Reference Calculation
 kind: implementation
 tools:
+  - quantum-espresso
   - python
 status: reviewed
 summary: Convert an accepted optimization result into a fixed-geometry reference protocol while preserving model and Hamiltonian identity and recording every numerical refinement.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/reference_state_protocol_continuity.py
+execution_script: examples/practical-guides/silicon_qe_convergence.py
 source_ids:
   - qe-pw-75
   - vasp-electronic-minimization
   - cp2k-scf
   - abinit-basic1
+  - cod-9013102
 media_ids:
   - reference-protocol-continuity
 review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
@@ -22,6 +24,15 @@ reviewed_at: "2026-08-03"
 ---
 
 A reference-state calculation begins from one exact accepted structure and one declared electronic method. The final fixed-geometry protocol should preserve that identity while allowing documented numerical refinement.
+
+## A real fixed-cell Silicon record
+
+The companion case freezes the two-site COD 9013102 Silicon primitive cell and
+runs QE 7.5 SCF calculations with fixed occupations. Each committed input gives
+the cell, ordered sites, SSSP Si potential filename, 8× density-cutoff ratio,
+and k mesh; each output is hash-checked before its final energy is read. This
+is an actual electronic-state calculation, but it is not a geometry optimization
+and does not establish a ground state.
 
 ## Bind the exact final structure
 
@@ -35,7 +46,7 @@ Method-defining fields include the exchange–correlation treatment, potentials 
 
 Numerical controls such as basis size, k-point density, grids, and internal solver thresholds may be tightened for the final calculation. Record old and new values, why the refinement was made, and which observables established its adequacy.
 
-The companion fixture uses an explicit immutable-key set and a refinement ledger:
+The retained deterministic fixture uses an explicit immutable-key set and a refinement ledger:
 
 ```python
 from reference_state_protocol_continuity import run
@@ -82,9 +93,10 @@ This edge prevents the later reference calculation from becoming an untraceable 
 
 ## What this guide verifies
 
-The companion script checks deterministic protocol records. It verifies one exact structure checksum, fixed geometry, preserved method and potential identity, unchanged charge and boundary fields, and a declared refinement of selected numerical controls.
-
-It does not run a DFT code, calculate an electronic state, validate the fixture settings, or establish that the resulting protocol would produce a ground state.
+`silicon_qe_convergence.py` checks the real-output hashes and completion markers
+for the frozen-geometry inputs. The separate continuity fixture still checks
+metadata rules. Neither establishes candidate completeness, numerical convergence
+of the intended observable, a physical minimum, or global ground-state identity.
 
 ## Common mistakes
 
@@ -102,3 +114,4 @@ It does not run a DFT code, calculate an electronic state, validate the fixture 
 - [VASP electronic minimization](https://vasp.at/wiki/Electronic_minimization)
 - [CP2K SCF section](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html)
 - [ABINIT basic ground-state tutorial](https://docs.abinit.org/tutorial/base1/)
+- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)

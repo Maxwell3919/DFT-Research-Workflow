@@ -98,13 +98,24 @@ The scripts check only bounded implementation and analysis claims:
 - an interrupted ASE/EMT BFGS run writes restart and trajectory evidence, continues compatibly, and receives a fresh final force evaluation;
 - a deterministic tilted double-well sends four starts into two retained local basins.
 
-The scripts calculate no electronic energy with a DFT code and call no first-principles electronic-structure engine.
+The original fixture scripts calculate no electronic energy with a DFT code and call no first-principles electronic-structure engine.
+For those retained fixture scripts, the prior boundary remains literal: The scripts calculate no electronic energy with a DFT code and call no first-principles electronic-structure engine.
 
 The Cu/EMT structures, force criteria, synthetic histories, and double-well potential are test fixtures. They are not benchmark data, parameter recommendations, or evidence for a material.
 
 Execution success is not structural convergence for a real calculation.
 
 None of those checks establishes a local or global minimum for a real calculation, force or stress accuracy, DFT convergence, physical stability, or support for a scientific conclusion.
+
+### Silicon execution addendum (2026-08-04)
+
+Two guides additionally bind one real, hash-checked QE 7.5 fixed-cell BFGS
+relaxation of an intentionally displaced two-site CC0 COD 9013102 Silicon cell.
+The reconstruction verifies its input/output identity, five electronic completion
+markers, five total-force rows and `End of BFGS Geometry Optimization`. It does
+not validate a constrained or variable-cell implementation, compare independent
+initial structures or electronic states, establish force/stress convergence, or
+prove a local or global physical minimum.
 
 ## Media review
 

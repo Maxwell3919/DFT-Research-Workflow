@@ -4,19 +4,22 @@ guide_slug: converge-k-points-and-smearing
 title: Converge k-Point Sampling and Smearing
 kind: implementation
 tools:
+  - quantum-espresso
   - python
 status: reviewed
 summary: Test Brillouin-zone sampling and occupation broadening as a coupled problem, especially when metallic states or Fermi-surface-sensitive observables are involved.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/convergence_kpoints_smearing.py
+execution_script: examples/practical-guides/silicon_qe_convergence.py
 source_ids:
   - qe-pw-75
   - monkhorst-pack
   - methfessel-paxton
   - blochl-tetrahedron
+  - cod-9013102
 media_ids:
   - convergence-k-smearing-matrix
+  - silicon-qe-kmesh-matrix
 review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
@@ -31,16 +34,19 @@ For comparisons across cells, record a reciprocal-space spacing or density measu
 
 ## Build a mesh-by-smearing matrix
 
-For a metal, test several meshes at several smearing widths. The illustrative script analyses a synthetic matrix:
+For a metal, test several meshes at several smearing widths. Silicon is not a
+metallic-smearing example, so the real teaching case holds `occupations='fixed'`
+and samples 6³, 8³, and 10³ meshes at three QE cutoffs. It establishes the
+provenance and mesh dimension of a real calculation without pretending to test
+smearing or a Fermi surface.
 
-```python
-from convergence_kpoints_smearing import analyse_k_smearing_matrix
-
-report = analyse_k_smearing_matrix()
-print(report["stable_window"])
+```bash
+python3 examples/practical-guides/silicon_qe_convergence.py
 ```
 
-The table contains an energy difference, a density-of-states-like diagnostic, and a state label for every mesh/width pair. The script does not run a DFT code.
+The reconstruction validates all nine committed QE outputs and displays their
+energies relative to the 50 Ry, 10³ row. The neighbouring conceptual matrix
+remains useful for the separate metallic mesh-by-smearing question.
 
 ## Keep the observable and integration purpose explicit
 
@@ -67,9 +73,10 @@ Do not declare convergence by averaging points that represent different states.
 
 ## What this guide verifies
 
-The companion script verifies that a synthetic k-point/smearing matrix has complete coverage, consistent state identity in the accepted region, a stable tail in more than one mesh and width direction, and at least one stricter confirmation point.
-
-It does not identify a universal k-point density, smearing method, smearing width, electronic temperature, or Fermi-surface resolution for a real system.
+The stored QE outputs establish electronic completion and a bounded mesh comparison
+for one fixed Silicon cell, potential, and code version. They do not test a
+smearing width, establish a universal k-point density, converge the DOS/bands,
+resolve a Fermi surface, or establish any physical material property.
 
 ## Common mistakes
 
@@ -87,3 +94,4 @@ It does not identify a universal k-point density, smearing method, smearing widt
 - [Monkhorst and Pack, special points for Brillouin-zone integrations](https://doi.org/10.1103/PhysRevB.13.5188)
 - [Methfessel and Paxton, high-precision sampling for metals](https://doi.org/10.1103/PhysRevB.40.3616)
 - [Blöchl, Jepsen, and Andersen, improved tetrahedron method](https://doi.org/10.1103/PhysRevB.49.16223)
+- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)
