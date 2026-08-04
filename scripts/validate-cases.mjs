@@ -7,6 +7,7 @@ import { join, relative, resolve, sep } from 'node:path';
 const root = resolve(new URL('../', import.meta.url).pathname);
 const casesRoot = join(root, 'examples', 'cases');
 const execute = process.argv.includes('--execute');
+const casePython = process.env.CASE_PYTHON ?? 'python3';
 const errors = [];
 const requiredFiles = ['README.md', 'environment.txt', 'run.sh', 'check.sh', 'extract.sh', 'parse.py', 'manifest.json'];
 const requiredDirectories = ['source', 'input', 'output', 'derived', 'figures'];
@@ -86,7 +87,7 @@ for (const entry of caseEntries) {
 
   if (execute) {
     run(caseId, caseDirectory, 'bash', ['extract.sh']);
-    run(caseId, caseDirectory, 'python3', ['parse.py']);
+    run(caseId, caseDirectory, casePython, ['parse.py']);
     run(caseId, caseDirectory, 'bash', ['check.sh']);
   }
 
