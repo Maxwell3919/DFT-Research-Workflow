@@ -10,7 +10,7 @@ const phrases = [
   'A point-defect calculation compares a host crystal',
   'Formation energy is a grand-canonical difference',
   'Atomic reservoirs delimit growth conditions',
-  'The Fermi level is an electron reservoir coordinate',
+  'The Fermi level is an electron-reservoir coordinate',
   'A periodic charged supercell is not an isolated charged defect',
   'Potential alignment must not be counted twice',
   'Thermodynamic transition levels come from total energies',
