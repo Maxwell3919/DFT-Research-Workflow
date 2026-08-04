@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 263,
+  "expected_unique_urls": 268,
   "topics": [
     {"topic_slug":"validate-results-and-scientific-conclusions","article":"src/content/topics/validate-results-and-scientific-conclusions.md","review":"docs/reviews/2026-08-04-validate-results-and-scientific-conclusions.md","links":[{"kind":"doi","url":"https://doi.org/10.1016/S0376-0421%2802%2900005-2"},{"kind":"doi","url":"https://doi.org/10.6028/NIST.IR.8298"},{"kind":"page","url":"https://www.nationalacademies.org/read/25303/chapter/3"},{"kind":"doi","url":"https://doi.org/10.1126/science.aad3000"},{"kind":"doi","url":"https://doi.org/10.1063/1.1390175"}]},
     {"topic_slug":"analyze-and-compare-results","article":"src/content/topics/analyze-and-compare-results.md","review":"docs/reviews/2026-08-04-analyze-and-compare-results.md","links":[{"kind":"doi","url":"https://doi.org/10.1126/science.aad3000"},{"kind":"page","url":"https://arxiv.org/abs/2008.10402"},{"kind":"page","url":"https://arxiv.org/abs/2001.01851"},{"kind":"page","url":"https://pml.nist.gov/cuu/Uncertainty/international1.html"},{"kind":"page","url":"https://arxiv.org/abs/2003.12510"}]},
@@ -36,6 +36,19 @@
         { "kind": "page", "url": "https://vasp.at/wiki/index.php/LOPTICS" },
         { "kind": "page", "url": "https://wiki.yambo-code.eu/wiki/index.php?title=RPA%2FIP" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_pw2gw.html" }
+      ]
+    },
+    {
+      "topic_slug": "document-and-preserve-study",
+      "article": "src/content/topics/document-and-preserve-study.md",
+      "review": "docs/reviews/2026-08-04-document-and-preserve-study.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1038/sdata.2016.18" },
+        { "kind": "doi", "url": "https://doi.org/10.1016/j.commatsci.2015.09.013" },
+        { "kind": "page", "url": "https://arxiv.org/abs/2003.12510" },
+        { "kind": "page", "url": "https://www.researchobject.org/ro-crate/specification/1.1/introduction.html" },
+        { "kind": "page", "url": "https://datatracker.ietf.org/doc/rfc8493/" },
+        { "kind": "page", "url": "https://schema.datacite.org/" }
       ]
     },
     {
