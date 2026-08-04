@@ -3,6 +3,7 @@
   "authority": "official-source inventory for reviewed practical guides",
   "scope_note": "These URLs support version-specific implementation or analysis claims in reviewed practical pages. Reachability, semantic support, execution, numerical convergence, and scientific validity remain separate checks.",
   "sources": [
+    {"id":"cod-9013102","url":"https://www.crystallography.net/cod/9013102.html","kind":"page"},
     {"id":"boltztrap-original-paper","url":"https://arxiv.org/abs/cond-mat/0602203","kind":"page"},
     {"id":"boltztrap2-paper","url":"https://arxiv.org/abs/1712.07946","kind":"page"},
     {"id":"boltztrap2-public-repository","url":"https://gitlab.com/sousaw/BoltzTraP2/-/tree/public","kind":"page"},
@@ -277,7 +278,7 @@
     { "guide_slug": "build-interface-energy-and-separation-ledger", "source_ids": ["interface-energy-review", "zur-mcgill"] },
     { "guide_slug": "enumerate-lattice-matches-and-registry", "source_ids": ["zur-mcgill", "pymatgen-interface-docs"] },
     { "guide_slug": "replot-al-tin-interface-adhesion", "source_ids": ["feldbauer-al-tin", "feldbauer-al-tin-arxiv"] },
-    { "guide_slug": "build-reciprocal-path-ledger", "source_ids": ["seekpath-paper", "seekpath-docs", "qe-bands-docs"] },
+    { "guide_slug": "build-reciprocal-path-ledger", "source_ids": ["seekpath-paper", "seekpath-docs", "qe-bands-docs", "cod-9013102"] },
     { "guide_slug": "compare-band-path-and-full-zone-extrema", "source_ids": ["bloch-paper", "kohn-sham", "setyawan-curtarolo"] },
     { "guide_slug": "check-dos-normalization-and-projection-closure", "source_ids": ["qe-dos-docs", "qe-projwfc-docs", "vasp-doscar", "vasp-lorbit"] },
     { "guide_slug": "compare-full-zone-isovalue-and-band-path", "source_ids": ["wannier90-fermi-parameters", "wannier90-copper-tutorial", "qe-fermi-postprocessing"] },

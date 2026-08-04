@@ -140,9 +140,10 @@ const reviewRequirements = new Map([
   ]],
   ['docs/reviews/2026-08-04-band-structure.md', [
     'reviewed within the declared educational and execution scope',
-    'The two companion scripts use invented reciprocal vectors and eigenvalue fields',
-    'Execution success is not eigenvalue convergence',
-    'The media are original conceptual diagrams of invented data.',
+    'bounded real Silicon execution',
+    'COD 9013102 → spglib/SeeK-path → QE 7.5 SCF and band path → `bands.x` output',
+    'The paired full-zone comparison remains an invented teaching fixture',
+    'not numerical convergence',
   ]],
   ['docs/reviews/2026-08-04-density-of-states-and-projected-density-of-states.md', [
     'reviewed within the declared educational and execution scope',

@@ -22,9 +22,9 @@ The overview defines a band diagram as state-specific eigenvalues on a declared 
 
 ## Numerical and execution boundary
 
-The topic gives no universal path density, k mesh, empty-band count, smearing, cutoff, force threshold, gap tolerance, or interpolation setting. The two companion scripts use invented reciprocal vectors and eigenvalue fields; they execute no DFT code and ingest no material data. They verify path metadata arithmetic and the logical distinction between path extrema and a full-grid search.
+The topic gives no universal path density, k mesh, empty-band count, smearing, cutoff, force threshold, gap tolerance, or interpolation setting. `build-reciprocal-path-ledger` is now a bounded real Silicon execution: COD 9013102 → spglib/SeeK-path → QE 7.5 SCF and band path → `bands.x` output → hash-bound local redraw. The paired full-zone comparison remains an invented teaching fixture and does not inherit the Silicon run.
 
-The media are original conceptual diagrams of invented data. Execution success is not eigenvalue convergence, a real band structure, a direct or indirect material gap, a symmetry representation, a carrier valley, a quasiparticle spectrum, an optical gap, a transport result, or a scientific conclusion.
+The Silicon band SVG is an original redraw from committed real output; the remaining conceptual media are invented explanatory diagrams. The bounded Silicon execution is not numerical convergence, a direct or indirect material gap, a symmetry representation, a carrier valley, a quasiparticle spectrum, an optical gap, a transport result, or a scientific conclusion.
 
 ## Review conclusion
 

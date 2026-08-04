@@ -38,9 +38,10 @@ if (!record || JSON.stringify(record.links.map((link) => link.url)) !== JSON.str
 for (const url of expected) if (!article.includes(url) || !review.includes(url)) errors.push(`source not represented ${url}`);
 for (const phrase of [
   'reviewed within the declared educational and execution scope',
-  'The two companion scripts use invented reciprocal vectors and eigenvalue fields',
-  'Execution success is not eigenvalue convergence',
-  'The media are original conceptual diagrams of invented data.',
+  'bounded real Silicon execution',
+  'COD 9013102 → spglib/SeeK-path → QE 7.5 SCF and band path → `bands.x` output',
+  'The paired full-zone comparison remains an invented teaching fixture',
+  'not numerical convergence',
 ]) if (!review.includes(phrase)) errors.push(`review missing ${phrase}`);
 if (/universal (?:path density|k mesh|empty-band count|smearing|cutoff|force threshold|gap tolerance)/i.test(article)) errors.push('universal numerical prescription');
 if (errors.length) {
