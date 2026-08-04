@@ -19,27 +19,27 @@ def main() -> None:
         raise SystemExit(f"FAIL source SHA-256 mismatch: {actual_hash}")
     analysis = json.loads(ANALYSIS.read_text(encoding="utf-8"))
     structure = analysis["structure"]
-    if analysis["source"]["sha256"] != actual_hash:
+    if analysis["source_sha256"] != actual_hash:
         raise SystemExit("FAIL analysis source hash does not bind to downloaded CIF")
     if structure["formula"] != "Si8" or structure["atom_count"] != 8:
         raise SystemExit("FAIL expected conventional Si8 structure was not parsed")
-    if structure["cell"]["a"] != 5.4304:
+    if structure["cell_a_ang"] != 5.4304:
         raise SystemExit("FAIL expected CIF a axis was not parsed")
     result = {
         "source_file": "source/9013102.cif",
         "source_sha256": actual_hash,
-        "analysis_status": analysis["status"],
+        "analysis_status": analysis["symmetry"]["status"],
         "formula": structure["formula"],
         "atom_count": structure["atom_count"],
-        "cell_a_ang": structure["cell"]["a"],
-        "minimum_distance_ang": structure["nearest_distances"]["min_distance_ang"],
-        "symmetry_status": structure["symmetry_attempt"]["status"],
+        "cell_a_ang": structure["cell_a_ang"],
+        "minimum_distance_ang": structure["minimum_distance_ang"],
+        "symmetry_status": analysis["symmetry"]["status"],
         "boundary": "Parsing establishes file identity and selected representation only; it does not validate COD identity, structure quality, stability, or any DFT result.",
     }
     SUMMARY.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print("PASS parsed COD 9013102: Si8 conventional representation")
     print(f"INFO source_sha256={actual_hash}")
-    print(f"INFO analysis_status={analysis['status']}")
+    print(f"INFO analysis_status={analysis['symmetry']['status']}")
 
 
 if __name__ == "__main__":

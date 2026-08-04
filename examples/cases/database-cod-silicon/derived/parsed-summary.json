@@ -1,5 +1,5 @@
 {
-  "analysis_status": "WARN",
+  "analysis_status": "PASS",
   "atom_count": 8,
   "boundary": "Parsing establishes file identity and selected representation only; it does not validate COD identity, structure quality, stability, or any DFT result.",
   "cell_a_ang": 5.4304,
@@ -7,5 +7,5 @@
   "minimum_distance_ang": 2.351432,
   "source_file": "source/9013102.cif",
   "source_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e",
-  "symmetry_status": "DETECTED"
+  "symmetry_status": "PASS"
 }

@@ -3,7 +3,8 @@
 This terminal-first case records a real direct download from the Crystallography
 Open Database (COD), followed by deterministic CIF inspection. `source/` is the
 downloaded CIF; `output/` preserves the HTTP headers, retrieval time, and run
-summary; `derived/` holds analysis generated from that exact file.
+summary; `derived/` holds analysis generated from that exact file by the
+case-local ASE/spglib script.
 
 Run `bash run.sh` to re-download and inspect the record. The parser and check
 are intentionally hash-bound to the captured object, so a changed upstream

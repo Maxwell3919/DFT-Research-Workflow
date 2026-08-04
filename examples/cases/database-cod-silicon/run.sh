@@ -15,8 +15,5 @@ printf 'downloaded_at_utc=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > output/downlo
 printf 'http_status=%s\nbytes=%s\n' \
   "$(awk 'toupper($1) ~ /^HTTP/ {code=$2} END {print code}' output/cod-response.headers)" \
   "$(wc -c < source/9013102.cif)" > output/run.log
-python3 /home/talos/.codex/Vibe-DFT-Skills/skills/cif-structure-analysis/scripts/analyze_cif.py \
-  --input source/9013102.cif \
-  --json derived/9013102.analysis.json \
-  --markdown derived/9013102.analysis.md
+python3 analyze_structure.py
 python3 parse.py
