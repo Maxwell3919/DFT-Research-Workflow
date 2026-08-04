@@ -1,0 +1,3 @@
+run_status=BLOCKED docker build failed; inspect output/docker-build.*
+#2 ERROR: failed to do request: Head "https://registry-1.docker.io/v2/library/ubuntu/manifests/24.04": dial tcp 74.86.226.234:443: i/o timeout
+ERROR: failed to build: failed to solve: DeadlineExceeded: ubuntu:24.04: failed to resolve source metadata for docker.io/library/ubuntu:24.04: failed to do request: Head "https://registry-1.docker.io/v2/library/ubuntu/manifests/24.04": dial tcp 74.86.226.234:443: i/o timeout

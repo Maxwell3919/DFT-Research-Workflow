@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 INPUT = ROOT / "input"
-OUTPUT = Path(os.environ.get("CASE_OUTPUT_ROOT", ROOT / "output")).resolve()
+OUTPUT = Path(os.environ.get("CASE_OUTPUT_ROOT", ROOT / "output" / "attempt-02-pmix")).resolve()
 DERIVED = ROOT / "derived"
 FIGURES = ROOT / "figures"
 PRIVATE_PATH = re.compile(r"/(?:home|Users)/[A-Za-z0-9._-]+/")

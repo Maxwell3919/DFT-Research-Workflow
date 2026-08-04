@@ -17,11 +17,15 @@ const evidenceClasses = new Set(['real-execution', 'derived-public-data', 'real-
 const shaPattern = /^[0-9a-f]{64}$/;
 const privatePathPattern = /(?:\/home\/[A-Za-z0-9._-]+\/|\/Users\/[A-Za-z0-9._-]+\/)/;
 
-function run(caseId, cwd, command, args) {
-  const result = spawnSync(command, args, { cwd, encoding: 'utf8', env: { ...process.env, LC_ALL: 'C.UTF-8' } });
+function run(caseId, cwd, command, args, extraEnv = {}) {
+  const result = spawnSync(command, args, { cwd, encoding: 'utf8', env: { ...process.env, ...extraEnv, LC_ALL: 'C.UTF-8' } });
   if (result.status !== 0) {
     errors.push(`${caseId}: ${command} ${args.join(' ')} exited ${result.status}\n${result.stdout}${result.stderr}`);
   }
+}
+
+function runResult(cwd, command, args) {
+  return spawnSync(command, args, { cwd, encoding: 'utf8', env: { ...process.env, LC_ALL: 'C.UTF-8' } });
 }
 
 async function sha256(path) {
@@ -85,12 +89,6 @@ for (const entry of caseEntries) {
     }
   }
 
-  if (execute) {
-    run(caseId, caseDirectory, 'bash', ['extract.sh']);
-    run(caseId, caseDirectory, casePython, ['parse.py']);
-    run(caseId, caseDirectory, 'bash', ['check.sh']);
-  }
-
   let manifest;
   try {
     manifest = JSON.parse(await readFile(join(caseDirectory, 'manifest.json'), 'utf8'));
@@ -113,6 +111,23 @@ for (const entry of caseEntries) {
     const record = manifest.gates?.[gate];
     if (!record || !gateStatuses.has(record.status) || typeof record.summary !== 'string' || record.summary.length === 0) {
       errors.push(`${caseId}: invalid ${gate} gate`);
+    }
+  }
+
+  if (execute) {
+    run(caseId, caseDirectory, 'bash', ['extract.sh']);
+    run(caseId, caseDirectory, casePython, ['parse.py'], { CASE_REUSE_DERIVED: '1' });
+    const check = runResult(caseDirectory, 'bash', ['check.sh']);
+    const declaredFailure = gateNames.some((gate) => manifest.gates?.[gate]?.status === 'FAIL');
+    if (declaredFailure) {
+      if (check.status === 0) {
+        errors.push(`${caseId}: check.sh exited zero despite a manifest FAIL gate`);
+      }
+      if (!`${check.stdout}${check.stderr}`.includes('FAIL')) {
+        errors.push(`${caseId}: check.sh did not emit a FAIL line for the manifest FAIL gate`);
+      }
+    } else if (check.status !== 0) {
+      errors.push(`${caseId}: check.sh exited ${check.status} without a manifest FAIL gate\n${check.stdout}${check.stderr}`);
     }
   }
 

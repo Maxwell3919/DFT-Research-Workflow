@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 root="$(cd "$(dirname "$0")" && pwd)"
-output_root="${CASE_OUTPUT_ROOT:-$root/output}"
+output_root="${CASE_OUTPUT_ROOT:-$root/output/attempt-02-pmix}"
 if ! compgen -G "$output_root/*.out" >/dev/null; then
   printf 'NOT TESTED: no QE outputs are present; run only in an authorized allocation.\n'
   exit 0

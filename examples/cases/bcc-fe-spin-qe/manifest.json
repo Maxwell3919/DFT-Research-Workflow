@@ -48,7 +48,7 @@
     {"role": "NM 12 cubed mesh input", "path": "input/nm-k12.scf.in", "sha256": "57b779d99d537af0ad2df444e617f8af60464323831d2519a42ca3550390818a", "bytes": 497},
     {"role": "recorded execution environment and launcher", "path": "environment.txt", "sha256": "3fb3ba6a9ac92781bc73389fc01d5e60e5c4038bc4832055e7451ea8f8f578db", "bytes": 837},
     {"role": "runtime command", "path": "run.sh", "sha256": "585253c60bd14b92b4b88c81d0a36c353a1e4434562fe381df08d1381a3b42f8", "bytes": 3300},
-    {"role": "strict output parser", "path": "parse.py", "sha256": "f1833df909da42c966f838ed5680b9ddc990b181ddac11a0ff3faf609392eb7d", "bytes": 13941},
+    {"role": "strict output parser", "path": "parse.py", "sha256": "bf12a9b9f71d9d1541600e2621ff282b5d4c7163623f5753f4dca12e1e9c6446", "bytes": 13961},
     {"role": "attempt-01 failure manifest", "path": "output/attempt-01-slurm-launch-failure/failure-manifest.json", "sha256": "697972a2182013742f4c236061318a0bdcc96dc5ea5734253a49702a5573467c", "bytes": 1282},
     {"role": "attempt-02 run status", "path": "output/attempt-02-pmix/run-status.json", "sha256": "7801f01272d3a6b791a606309f77ec33a6f258795dd25c0c96e6ad84d6ea9dac", "bytes": 332},
     {"role": "attempt-02 FM 8 cubed stdout", "path": "output/attempt-02-pmix/fm-k8.out", "sha256": "b63267b2a44f0f8d9dc3268cbaa32e6a9fa4d0b511b9396bee0b00cbbd6cc738", "bytes": 26634},

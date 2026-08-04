@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 root="$(cd "$(dirname "$0")" && pwd)"
-output_root="${CASE_OUTPUT_ROOT:-$root/output}"
+output_root="${CASE_OUTPUT_ROOT:-$root/output/attempt-02-pmix}"
 failed=0
 required=(README.md environment.txt run.sh check.sh extract.sh parse.py manifest.json input/qe_plan.json input/candidate-set.json input/pseudopotential-manifest.json input/fm-k8.scf.in input/fm-k10.scf.in input/fm-k12.scf.in input/nm-k12.scf.in source/pseudopotential-provenance.json source/qe-7.5-reference-index.json output/README.md derived/README.md figures/README.md)
 for path in "${required[@]}"; do

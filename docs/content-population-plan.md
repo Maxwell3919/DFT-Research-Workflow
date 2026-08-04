@@ -11,7 +11,8 @@ and migration boundaries; it does not define a mandatory visible template.
 
 ## Current implementation state
 
-The first two migration stages are complete at the framework level:
+The architecture migration and first terminal-first release slice are complete
+at the repository level:
 
 1. **A–E architecture and presentation** — the public directory uses A–E,
    numbered counts and adjacency are removed, and old URLs remain only as
@@ -20,10 +21,15 @@ The first two migration stages are complete at the framework level:
    A–E sections, D1–D5 groups, stable topic slugs and titles, and internal
    migration references. The home page, workflow directory, and topic routes are
    generated from that registry.
+3. **Navigation migration** — Framework content has moved into the relevant A–E
+   narratives, `/framework/*` and `/recipes/*` are continuity surfaces, and the
+   primary route for complete examples is `/workflows/`.
+4. **Terminal-first evidence** — practical pages marked `real-execution` bind
+   to hash-checked case directories. Silicon and aluminium are the initial
+   public continuous Worked Workflows.
 
-Stable routes are not scientific content. Most current topic pages contain only
-a neutral notice. The next stage is reviewed writing and migration one topic at
-a time.
+Stable routes and passing software checks are not scientific acceptance. Topic
+and case expansion continues one coherent scientific unit at a time.
 
 ## Current authority
 
@@ -31,8 +37,8 @@ a time.
 - `workflow/topics.json` defines stable topic identity, grouping, and routes.
 - `docs/content-contract.md` defines writing and review rules.
 - `src/content/topics/*.md` holds optional topic narratives.
-- O01–O24, former 00–34 routes, and current recipe coverage arrays are migration
-  sources only.
+- O01–O24, former 00–34 routes, Framework sources, and recipe coverage arrays
+  are migration sources only.
 
 The registry is an address book, not a claim about how many operations exist.
 
@@ -127,13 +133,15 @@ frontmatter must not duplicate those fields or predetermine article headings.
 A topic moves to `reviewed` only after scientific, editorial, source, route,
 responsive-layout, and no-JavaScript checks pass.
 
-## Research-workflow pages
+## Worked Workflow pages
 
-Research-workflow pages show how A–E topics combine for a scientific goal. The
-existing recipe pages provide migration starting points for bulk materials, 2D
-materials, magnetism, defects, surfaces, heterostructures, phonons, thermal
-transport, electron–phonon superconductivity, response, reaction paths,
-molecular dynamics, optics, topology, GW/BSE, and high-throughput screening.
+Worked Workflow pages show how A–E topics combine around a continuous real
+execution lineage. The initial public set is Silicon Ground-State and
+Electronic-Structure Workflow and Aluminium Metallic Electronic-Structure
+Workflow. Former recipe pages are migration sources, not publishable
+placeholders; a candidate is added to `/workflows/` only when its case directory
+has the actual commands, outputs, checks, parsers, hashes, gates, and claim
+boundary needed by the page.
 
 Their old O01–O24 coverage arrays are not the final reader-facing workflow
 model. A mature workflow should show relevant dependencies, branches, repeated

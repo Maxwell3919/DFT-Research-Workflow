@@ -17,6 +17,9 @@ article.
   route identity for the public Research Workflow directory.
 - Public narrative pages explain individual researcher-scale tasks, target
   calculations, or complete research workflows.
+- `examples/cases/<case-id>/manifest.json` is the authority for the commands,
+  artifacts, hashes, gates, and claim boundary displayed by a terminal-first
+  worked execution.
 - Machine-readable records may support routes, search, relationships, and
   migration, but they do not determine the visible article outline.
 - Existing O01–O24 and Operation 00–34 records are migration sources, not the
@@ -82,11 +85,22 @@ thermodynamics, adsorption, heterostructure band alignment, electron–phonon
 superconductivity, topology, or GW/BSE. It may branch, repeat, omit, or revisit
 tasks and must not claim that one example is a universal execution order.
 
-### Framework page
+### Cross-cutting framework material
 
-A framework page explains cross-cutting concepts such as workflow branching,
-convergence, evidence levels, provenance, or the distinction between numerical
-completion and scientific validity. It is not a new research task.
+Framework is not a public top-level content family. Useful cross-cutting
+material is written into the topic where readers apply it: branching and
+feedback in the Research Workflow introduction, method context in setup,
+evidence boundaries in results validation, and provenance in study
+preservation. `/framework/*` pages are migration surfaces only.
+
+### Terminal-first practical page
+
+A page labelled `real-execution` must name its `case_id` and render or link the
+case's actual input, launcher, raw output or hash-bound excerpt, quick check,
+strict parser, derived data, figure lineage, G0–G5 statuses, and two-sided claim
+boundary. `JOB DONE`, an SCF marker, a plot, or a successful build cannot stand
+in for a higher gate. A guide without this bundle must use a lower evidence
+class and say what remains unverified.
 
 ### Migration page
 
