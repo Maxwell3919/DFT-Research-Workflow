@@ -14,7 +14,7 @@ None of these checks validates a material, model, method, numerical result, or s
 
 ## Current scope
 
-The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers thirty reviewed article/review pairs:
+The machine-readable authority is `sources/reviewed-links.json`. The current inventory covers thirty-one reviewed article/review pairs:
 
 - Obtain a Material Structure;
 - Build or Modify a Computational Model;
@@ -47,8 +47,9 @@ The machine-readable authority is `sources/reviewed-links.json`. The current inv
 - Lattice Thermal Transport.
 - Electron--Phonon Coupling.
 - Conventional Superconductivity.
+- Reaction Paths and Transition States.
 
-The manifest declares 196 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
+The manifest declares 200 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
 
 Any undeclared URL, missing URL, duplicate URL inside one topic, inconsistent source kind, non-HTTPS URL, unexpected unique-URL count, or retired ASE host fails deterministic validation.
 
@@ -69,7 +70,7 @@ The Adsorption Energies authoring environment completed a fresh 114/114 network 
 
 ## Semantic review boundary
 
-All thirty article/review pairs are required to use exact bounded source inventories. The current source classes include:
+All thirty-one article/review pairs are required to use exact bounded source inventories. The current source classes include:
 
 - crystallographic standards, databases, and symmetry documentation;
 - ASE and pymatgen implementation documentation plus primary model-construction methods;
@@ -92,6 +93,7 @@ All thirty article/review pairs are required to use exact bounded source invento
 - primary first-principles phonon-BTE methods plus official Phono3py and ShengBTE documentation for the D3 lattice-thermal-transport topic.
 - the Giustino first-principles EPC review plus official Quantum ESPRESSO and EPW documentation for the D3 electron-phonon-coupling topic.
 - the McMillan and Allen--Dynes transition-temperature methods plus official Quantum ESPRESSO and EPW documentation for the D3 conventional-superconductivity topic.
+- the Henkelman--Jónsson NEB and climbing-image methods plus official Quantum ESPRESSO and ASE documentation for the D4 reaction-paths-and-transition-states topic.
 
 A source reused by two topics is not duplicated into two network requests. Reuse does not broaden the source beyond the statements reviewed in each topic.
 
