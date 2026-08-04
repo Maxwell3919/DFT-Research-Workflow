@@ -1,0 +1,130 @@
+{
+  "candidates": [
+    {
+      "absolute_magnetization_bohr_mag_per_cell": 2.39,
+      "absolute_magnetization_match_count": 11,
+      "candidate_family": "ferromagnetic seed",
+      "completion": {
+        "job_done": true,
+        "qe_version": "7.5",
+        "scf_converged": true
+      },
+      "energy_ry_per_fe_primitive_cell": -329.26610739,
+      "id": "fm-k8",
+      "input_sha256": "2d6d3764dc014e75a59df7782d9be0565938f582449cb0a2d1553e497c52439f",
+      "k_mesh": [
+        8,
+        8,
+        8
+      ],
+      "nspin": 2,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "b63267b2a44f0f8d9dc3268cbaa32e6a9fa4d0b511b9396bee0b00cbbd6cc738",
+      "total_magnetization_bohr_mag_per_cell": 2.25,
+      "total_magnetization_match_count": 11
+    },
+    {
+      "absolute_magnetization_bohr_mag_per_cell": 2.27,
+      "absolute_magnetization_match_count": 12,
+      "candidate_family": "ferromagnetic seed",
+      "completion": {
+        "job_done": true,
+        "qe_version": "7.5",
+        "scf_converged": true
+      },
+      "energy_ry_per_fe_primitive_cell": -329.26720258,
+      "id": "fm-k10",
+      "input_sha256": "2ad378358a86968907be88f2b98ba2788b4d2a1ed648a10ed894c11043114ae3",
+      "k_mesh": [
+        10,
+        10,
+        10
+      ],
+      "nspin": 2,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "0f5a16d41d9a6f9de6102d21f22841bf13adf9eb12925c223d5232f8f6bfb3b8",
+      "total_magnetization_bohr_mag_per_cell": 2.12,
+      "total_magnetization_match_count": 12
+    },
+    {
+      "absolute_magnetization_bohr_mag_per_cell": 2.35,
+      "absolute_magnetization_match_count": 10,
+      "candidate_family": "ferromagnetic seed",
+      "completion": {
+        "job_done": true,
+        "qe_version": "7.5",
+        "scf_converged": true
+      },
+      "energy_ry_per_fe_primitive_cell": -329.26710558,
+      "id": "fm-k12",
+      "input_sha256": "3882e632520833e8754857517291ad3c0c005d1327cecdbadc5a243c719a5732",
+      "k_mesh": [
+        12,
+        12,
+        12
+      ],
+      "nspin": 2,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "0c42b31f219b4a3ff28c08469c24b007dee3af3062b8d8b1209de6c23884ef61",
+      "total_magnetization_bohr_mag_per_cell": 2.23,
+      "total_magnetization_match_count": 10
+    },
+    {
+      "absolute_magnetization_bohr_mag_per_cell": null,
+      "absolute_magnetization_match_count": 0,
+      "candidate_family": "non-spin-polarized candidate",
+      "completion": {
+        "job_done": true,
+        "qe_version": "7.5",
+        "scf_converged": true
+      },
+      "energy_ry_per_fe_primitive_cell": -329.22527362,
+      "id": "nm-k12",
+      "input_sha256": "57b779d99d537af0ad2df444e617f8af60464323831d2519a42ca3550390818a",
+      "k_mesh": [
+        12,
+        12,
+        12
+      ],
+      "nspin": 1,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "5825efdcd1c1b84bdc0a27b840aad91d82a5195e964e23642e2d1bb1f3706447",
+      "total_magnetization_bohr_mag_per_cell": null,
+      "total_magnetization_match_count": 0
+    }
+  ],
+  "case_id": "bcc-fe-spin-qe",
+  "claim_boundary": "FM and NM only; AFM, ferrimagnetic, noncollinear, SOC, structural, strain, defect, surface, finite-temperature, and other seed candidates are outside this case.",
+  "gates": {
+    "G1": {
+      "status": "PASS",
+      "summary": "All four declared pw.x outputs have one QE 7.5 banner, one JOB DONE marker, and zero exit status in run-status.json."
+    },
+    "G2": {
+      "status": "PASS",
+      "summary": "All four declared outputs contain the SCF convergence marker and no parser-listed fatal or nonconvergence marker."
+    },
+    "G3": {
+      "status": "PASS",
+      "summary": "Separate stdout/stderr, strict parsed candidate records, and an original derived PNG are present."
+    },
+    "G4": {
+      "status": "FAIL",
+      "summary": "FM 8/10/12 mesh adjacent total-energy changes are [0.0010951900000009118, 9.699999998247222e-05] Ry; tolerance is 0.0005 Ry."
+    },
+    "G5": {
+      "status": "NOT CLAIMED",
+      "summary": "FM/NM candidate comparison is not a complete magnetic ground-state, magnetic-order, finite-temperature, or experimental claim."
+    }
+  },
+  "primary_comparison": {
+    "definition": "E_nm-k12 - E_fm-k12",
+    "delta_mev_per_fe_primitive_cell": 569.1528104936939,
+    "delta_ry_per_fe_primitive_cell": 0.04183196000002454,
+    "fm_total_magnetization_bohr_mag_per_cell": 2.23,
+    "nm_total_magnetization_bohr_mag_per_cell": null
+  },
+  "protocol_id": "bcc-fe-fm-nm-screen-v1",
+  "pseudopotential_sha256": "2317a0d3b136c09b6263e1ba328b505fb1ebf33bb4b28dc3df9e39af3184ef19",
+  "run_status_sha256": "7801f01272d3a6b791a606309f77ec33a6f258795dd25c0c96e6ad84d6ea9dac"
+}

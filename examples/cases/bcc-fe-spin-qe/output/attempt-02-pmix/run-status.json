@@ -1,0 +1,11 @@
+{
+  "case_id": "bcc-fe-spin-qe",
+  "attempt_id": "attempt-02-pmix",
+  "pseudopotential_sha256": "2317a0d3b136c09b6263e1ba328b505fb1ebf33bb4b28dc3df9e39af3184ef19",
+  "runs": [
+    {"id": "fm-k8", "exit_code": 0},
+    {"id": "fm-k10", "exit_code": 0},
+    {"id": "fm-k12", "exit_code": 0},
+    {"id": "nm-k12", "exit_code": 0}
+  ]
+}

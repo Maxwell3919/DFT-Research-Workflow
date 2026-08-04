@@ -1,0 +1,15 @@
+{
+  "accessed_at": "2026-08-05",
+  "executable": "pw.x",
+  "manual": "INPUT_PW",
+  "manual_version": "7.5",
+  "official_url": "https://www.quantum-espresso.org/Doc/INPUT_PW.txt",
+  "official_manual_sha256": "344932e399030687217a5a311ab4504a7b21a6a2281680dfa92074aec29c491d",
+  "verified_complete_entries": {
+    "ecutwfc": "3f80e4e3afec4d4524fbc9b1faf5e8250b54c0cb9b8062dddbcc1b76b08a9528",
+    "ecutrho": "36d22ef2595c63b01e4cb1a89879ec619c116f356b9050d86556789a0b8a2374",
+    "smearing": "4ea7105a8c57011d1ae452acb728057b7638ca8b448295cc201c04490da6f6c7",
+    "starting_magnetization": "e89894564e662a6cccf0165da4ba20d6221f8206577cc1f836211418259d3f63"
+  },
+  "resolver_boundary": "The local official-entry resolver returned blocked_ambiguous for generic terms nspin, occupations, degauss, and conv_thr. This index therefore records only independently verified complete entries and the authoritative INPUT_PW location; it does not claim resolver validation for the ambiguous generic term lookups."
+}

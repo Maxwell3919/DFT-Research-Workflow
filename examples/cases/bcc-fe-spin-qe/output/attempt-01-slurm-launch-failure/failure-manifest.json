@@ -1,0 +1,28 @@
+{
+  "attempt_id": "attempt-01-slurm-launch-failure",
+  "case_id": "bcc-fe-spin-qe",
+  "status": "launch_failed_before_pwscf",
+  "launcher": "srun direct launch",
+  "failure_boundary": "The Open MPI runtime reported that it lacked Slurm PMI support and aborted before MPI_Init. This is a launcher integration failure, not a QE pw.x completion, SCF convergence result, numerical-convergence result, or magnetic observation.",
+  "artifacts": [
+    {
+      "path": "fm-k8.out",
+      "role": "captured stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fm-k8.err",
+      "role": "captured launcher stderr",
+      "bytes": 1333,
+      "sha256": "132ba8024a09d45a885b7246e45093a1cbb1600faacd803bb579c0203039e9b2"
+    },
+    {
+      "path": "run-status.json",
+      "role": "original early-exit run status",
+      "bytes": 184,
+      "sha256": "0f1e45b0f4307fee6d19fe1679d9eb138e56d79e3c1c85d39e599e28d6ffdc57"
+    }
+  ],
+  "preservation": "The original three files are retained byte-for-byte. The original run-status JSON has a trailing comma because the first-generation shell script exited before writing its array closure; this defect is itself preserved as part of the recorded failed attempt."
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "case_id": "bcc-fe-spin-qe",
+  "title": "bcc Fe FM and non-spin-polarized QE 7.5 screening attempt",
+  "case_kind": "calculation",
+  "evidence_class": "real-execution",
+  "public_host_label": "Talos one-task QE execution",
+  "started_at": "2026-08-05T02:28:13+08:00",
+  "completed_at": null,
+  "exit_code": 1,
+  "software": [
+    {"name": "Quantum ESPRESSO pw.x", "version": "7.5", "interface": "Open MPI one-rank command; four recorded SCF stages"},
+    {"name": "case-local strict QE parser", "version": "1.0", "interface": "Python CLI"}
+  ],
+  "sources": [
+    {
+      "id": "pslibrary-0.2.1-fe-pbe-spn-kjpaw",
+      "role": "pseudopotential provenance and runtime identity declaration",
+      "path": "source/pseudopotential-provenance.json",
+      "sha256": "6a6e654fddfe754503f70b00797a078f117157b70ca59cfebf58489dadb362f8",
+      "url": "https://dalcorso.github.io/pslibrary/",
+      "accessed_at": "2026-08-05",
+      "licence_boundary": "The PSLibrary page and release identifier are recorded; the UPF body is not redistributed."
+    },
+    {
+      "id": "qe-input-pw-7.5",
+      "role": "official QE input reference index",
+      "path": "source/qe-7.5-reference-index.json",
+      "sha256": "862126454fc0007b54f2222e99aa2cc7245e45700532337f4ea809711e5db9f7",
+      "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.txt",
+      "accessed_at": "2026-08-05",
+      "licence_boundary": "This is a short hash and retrieval index, not a reproduction of the manual."
+    }
+  ],
+  "commands": [
+    {"stage": "attempt-01-launch", "command": "CASE_ATTEMPT_ID=attempt-01-slurm-launch-failure QE_LAUNCHER='srun --ntasks=1 --cpus-per-task=1' bash run.sh", "exit_code": 1},
+    {"stage": "attempt-02-launch", "command": "QE_LAUNCHER='mpirun -np 1' CASE_ATTEMPT_ID=attempt-02-pmix bash run.sh", "exit_code": 1},
+    {"stage": "attempt-02-strict-parse", "command": "CASE_OUTPUT_ROOT=output/attempt-02-pmix python3 parse.py", "exit_code": 0},
+    {"stage": "attempt-02-acceptance", "command": "CASE_OUTPUT_ROOT=output/attempt-02-pmix bash check.sh", "exit_code": 1}
+  ],
+  "artifacts": [
+    {"role": "QE objective plan", "path": "input/qe_plan.json", "sha256": "54b9188a1710fed6126fe7cd2ad9e34ec7bf73ad8d6ac2f0177f12f940f40ed5", "bytes": 822},
+    {"role": "candidate and convergence declaration", "path": "input/candidate-set.json", "sha256": "3581e629e873c8679b0465a7e61dbad3e9832c82e63219228bab23bca3fe479d", "bytes": 2084},
+    {"role": "pseudopotential manifest", "path": "input/pseudopotential-manifest.json", "sha256": "ba3cc147e10a507bef55203181299c208e249c79b2c478901d09348fa329cbf6", "bytes": 767},
+    {"role": "FM 8 cubed mesh input", "path": "input/fm-k8.scf.in", "sha256": "2d6d3764dc014e75a59df7782d9be0565938f582449cb0a2d1553e497c52439f", "bytes": 527},
+    {"role": "FM 10 cubed mesh input", "path": "input/fm-k10.scf.in", "sha256": "2ad378358a86968907be88f2b98ba2788b4d2a1ed648a10ed894c11043114ae3", "bytes": 532},
+    {"role": "FM 12 cubed mesh input", "path": "input/fm-k12.scf.in", "sha256": "3882e632520833e8754857517291ad3c0c005d1327cecdbadc5a243c719a5732", "bytes": 532},
+    {"role": "NM 12 cubed mesh input", "path": "input/nm-k12.scf.in", "sha256": "57b779d99d537af0ad2df444e617f8af60464323831d2519a42ca3550390818a", "bytes": 497},
+    {"role": "runtime command", "path": "run.sh", "sha256": "d630a3cdcde68eef56836baf1bab6573511acb952db58c36df2f9072ce32a92d", "bytes": 3263},
+    {"role": "strict output parser", "path": "parse.py", "sha256": "f1833df909da42c966f838ed5680b9ddc990b181ddac11a0ff3faf609392eb7d", "bytes": 13941},
+    {"role": "attempt-01 failure manifest", "path": "output/attempt-01-slurm-launch-failure/failure-manifest.json", "sha256": "697972a2182013742f4c236061318a0bdcc96dc5ea5734253a49702a5573467c", "bytes": 1282},
+    {"role": "attempt-02 run status", "path": "output/attempt-02-pmix/run-status.json", "sha256": "7801f01272d3a6b791a606309f77ec33a6f258795dd25c0c96e6ad84d6ea9dac", "bytes": 332},
+    {"role": "attempt-02 FM 8 cubed stdout", "path": "output/attempt-02-pmix/fm-k8.out", "sha256": "b63267b2a44f0f8d9dc3268cbaa32e6a9fa4d0b511b9396bee0b00cbbd6cc738", "bytes": 26634},
+    {"role": "attempt-02 FM 8 cubed stderr", "path": "output/attempt-02-pmix/fm-k8.err", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "bytes": 0},
+    {"role": "attempt-02 FM 10 cubed stdout", "path": "output/attempt-02-pmix/fm-k10.out", "sha256": "0f5a16d41d9a6f9de6102d21f22841bf13adf9eb12925c223d5232f8f6bfb3b8", "bytes": 34893},
+    {"role": "attempt-02 FM 10 cubed stderr", "path": "output/attempt-02-pmix/fm-k10.err", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "bytes": 0},
+    {"role": "attempt-02 FM 12 cubed stdout", "path": "output/attempt-02-pmix/fm-k12.out", "sha256": "0c42b31f219b4a3ff28c08469c24b007dee3af3062b8d8b1209de6c23884ef61", "bytes": 19113},
+    {"role": "attempt-02 FM 12 cubed stderr", "path": "output/attempt-02-pmix/fm-k12.err", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "bytes": 0},
+    {"role": "attempt-02 NM 12 cubed stdout", "path": "output/attempt-02-pmix/nm-k12.out", "sha256": "5825efdcd1c1b84bdc0a27b840aad91d82a5195e964e23642e2d1bb1f3706447", "bytes": 29461},
+    {"role": "attempt-02 NM 12 cubed stderr", "path": "output/attempt-02-pmix/nm-k12.err", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "bytes": 0},
+    {"role": "attempt-02 parsed candidate summary", "path": "derived/attempt-02-pmix/bcc-fe-spin-summary.json", "sha256": "00db76f93de63a65fba005de7869a67ed56dc8ccf33996688abd866d0ac5a3e7", "bytes": 4917},
+    {"role": "attempt-02 FM mesh screen", "path": "derived/attempt-02-pmix/fm-kmesh-screen.json", "sha256": "b9630c65c5c6237e4cab3e2ef3931875a44937d7552c0115b51a37ccf96369c1", "bytes": 396},
+    {"role": "attempt-02 FM NM energy PNG", "path": "figures/attempt-02-pmix/fm-nm-energy-comparison.png", "sha256": "df02f0c8a6ec6f763ac2d37a8013b5667a91d8af3afe251562d537ec72b887b9", "bytes": 2593}
+  ],
+  "gates": {
+    "G0": {"status": "PASS", "summary": "Input plan, public pseudo provenance/hash, raw output, parser, derived records, figure, and both attempt lineages are hash-bound."},
+    "G1": {"status": "PASS", "summary": "Attempt 02 records zero exits for all four declared pw.x stages; Attempt 01 launcher failure remains separately preserved."},
+    "G2": {"status": "PASS", "summary": "Each Attempt 02 output has one QE 7.5 banner, one JOB DONE marker, and an SCF-convergence marker; stderr files are separate and empty."},
+    "G3": {"status": "PASS", "summary": "The Attempt 02 raw outputs, strict parsed summary, FM mesh record, and original PNG are present and hash-bound."},
+    "G4": {"status": "FAIL", "summary": "The predeclared FM 8/10/12 total-energy screen fails: 8-to-10 is 0.00109519 Ry, above 0.0005 Ry; 10-to-12 is 0.000097 Ry."},
+    "G5": {"status": "NOT CLAIMED", "summary": "The FM/NM pair does not establish a complete magnetic ground state, exhaustive magnetic-state search, or finite-temperature magnetic property."}
+  },
+  "claim_boundary": {
+    "supports": [
+      "The four recorded QE 7.5 SCF stages, their bounded FM/NM energy difference, and the final reported FM magnetic moments for the explicitly declared fixed-geometry candidates."
+    ],
+    "does_not_support": [
+      "A passing numerical-convergence claim: the predeclared FM k-mesh G4 test failed.",
+      "A converged basis, smearing, lattice, magnetic-state, or all-observable protocol.",
+      "A magnetic ground state, exhaustive candidate search, finite-temperature magnetic property, experimental agreement, or general Fe recommendation."
+    ]
+  }
+}
