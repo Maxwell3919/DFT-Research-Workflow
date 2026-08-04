@@ -14,6 +14,6 @@ curl --fail --location --silent --show-error \
 printf 'downloaded_at_utc=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > output/downloaded-at.txt
 printf 'http_status=%s\nbytes=%s\n' \
   "$(awk 'toupper($1) ~ /^HTTP/ {code=$2} END {print code}' output/cod-response.headers)" \
-  "$(wc -c < source/9013102.cif)" > output/run.log
+  "$(wc -c < source/9013102.cif)" > output/run.txt
 python3 analyze_structure.py
 python3 parse.py

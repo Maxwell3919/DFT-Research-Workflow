@@ -23,9 +23,9 @@
     {"stage": "parse", "command": "python3 parse.py", "exit_code": 0}
   ],
   "artifacts": [
-    {"role": "HTTP response headers", "path": "output/cod-response.headers", "sha256": "44152c25f40fa6accca68df0fc18efbdb8dc7fc9355eb1ad3656dc6c7aa1a61d", "bytes": 237},
-    {"role": "retrieval timestamp", "path": "output/downloaded-at.txt", "sha256": "4e4109e786d9c8a8a2876bd52c1183637befa354f53788dda5f3142716819704", "bytes": 21},
-    {"role": "run result", "path": "output/run.log", "sha256": "b4bfb8c4e9cc300038332e5398593990894d91b96c429a627d6a3fae94796e6f", "bytes": 29},
+    {"role": "HTTP response headers", "path": "output/cod-response.headers", "sha256": "44152c25f40fa6accca68df0fc18efbdb8dc7fc9355eb1ad3656dc6c7aa1a61d", "bytes": 236},
+    {"role": "retrieval timestamp", "path": "output/downloaded-at.txt", "sha256": "4e4109e786d9c8a8a2876bd52c1183637befa354f53788dda5f3142716819704", "bytes": 39},
+    {"role": "run result", "path": "output/run.txt", "sha256": "b4bfb8c4e9cc300038332e5398593990894d91b96c429a627d6a3fae94796e6f", "bytes": 27},
     {"role": "CIF analysis", "path": "derived/9013102.analysis.json", "sha256": "5ff9b8518a52061d87b0d8b5ee779bd3d9bf430c5b0fa2832868cf579bd7428b", "bytes": 856},
     {"role": "strict parser summary", "path": "derived/parsed-summary.json", "sha256": "7b0703b162d8f22f21a4b262b95ccad41de0c2a01aac23a5ed570c282aa8de64", "bytes": 455}
   ],

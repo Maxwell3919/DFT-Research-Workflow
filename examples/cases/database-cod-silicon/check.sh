@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 failed=0
-required=(README.md environment.txt source/9013102.cif input/retrieval.json output/cod-response.headers output/downloaded-at.txt output/run.log derived/9013102.analysis.json derived/parsed-summary.json figures/README.md run.sh check.sh extract.sh parse.py analyze_structure.py manifest.json)
+required=(README.md environment.txt source/9013102.cif input/retrieval.json output/cod-response.headers output/downloaded-at.txt output/run.txt derived/9013102.analysis.json derived/parsed-summary.json figures/README.md run.sh check.sh extract.sh parse.py analyze_structure.py manifest.json)
 for path in "${required[@]}"; do
   if [[ -s "$path" ]]; then printf 'PASS required artifact exists: %s\n' "$path"; else printf 'FAIL missing or empty artifact: %s\n' "$path"; failed=1; fi
 done
