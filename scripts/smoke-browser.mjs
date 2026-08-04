@@ -103,7 +103,6 @@ async function captureFullPage(page, path) {
 
 async function waitForRecipeRedirect(page) {
   await page.waitForFunction(() => location.pathname.includes('/workflows/') && document.readyState === 'complete', { timeout: 5000 });
-  await page.waitForNetworkIdle({ idleTime: 50, timeout: 5000 });
   if (!new URL(page.url()).pathname.includes('/workflows/')) throw new Error(`recipe redirect did not reach Worked Workflows: ${page.url()}`);
 }
 

@@ -665,8 +665,8 @@
     },
     {
       "path": "examples/cases/database-cod-silicon/run.sh",
-      "sha256": "07420e8bfe6642c6d83182ffd09107fc9c4e71cc7724a4a0a66115e494f351b8",
-      "bytes": 2044
+      "sha256": "b23c47166c2ab3559d7735af02539c3bed203f259a3408cd423771ae82c00818",
+      "bytes": 2092
     },
     {
       "path": "examples/cases/database-cod-silicon/source/9013102.cif",
@@ -860,8 +860,8 @@
     },
     {
       "path": "examples/cases/graphene-electronic-structure-qe/run.sh",
-      "sha256": "2d87400a9720878606d5f5d2b5aa7a2708eb08d94037ed2a156de215070f31f1",
-      "bytes": 6747
+      "sha256": "2f52af9b671b037e34181b1678979dce830b16cbdaec789b202f97d8a6381f48",
+      "bytes": 6795
     },
     {
       "path": "examples/cases/graphene-electronic-structure-qe/source/graphene-primitive-model.json",
@@ -940,8 +940,8 @@
     },
     {
       "path": "examples/cases/gui-chromium-headless-homepage/run.sh",
-      "sha256": "de6ee8bbd3c17ff67d409f3a5d649e6f2a7abd4ed8afd71fe7450c22ec4d0323",
-      "bytes": 3704
+      "sha256": "47b8dcfe978d623c89f86b52339a019f8f2a461287765d77b126262d8c98ec53",
+      "bytes": 3752
     },
     {
       "path": "examples/cases/gui-chromium-headless-homepage/source/walkthrough.html",
@@ -1030,8 +1030,8 @@
     },
     {
       "path": "examples/cases/gui-xvfb-mesa-smoke/run.sh",
-      "sha256": "62d77504ff5dfad3508b2bd8d921e66ff38bcd627e02ba30f05cd39ce87fbf1b",
-      "bytes": 3522
+      "sha256": "c52260a525d2ccfa5cbb47b9686a0cfea1460278fb473614b026d70e23746c80",
+      "bytes": 3570
     },
     {
       "path": "examples/cases/gui-xvfb-mesa-smoke/source/x11-smoke.sh",
@@ -1670,8 +1670,8 @@
     },
     {
       "path": "examples/cases/structure-graphene-vacuum-adsorbate/run.sh",
-      "sha256": "30f0359f1c5febe7f65c35f2359eab7728b65a0ebbc3f891c8c755f92967f891",
-      "bytes": 1355
+      "sha256": "5a8b7c95b100c7dca2048606f882a37dcf220caafc15d93db225a32812d9f9dc",
+      "bytes": 1403
     },
     {
       "path": "examples/cases/structure-graphene-vacuum-adsorbate/source/graphene-unit.xyz",
@@ -1775,8 +1775,8 @@
     },
     {
       "path": "examples/cases/structure-silicon-cell-lineage/run.sh",
-      "sha256": "f8099294505f1fac4b3b7cd908ed69af2f9acc008826e1119b01a95354eb0984",
-      "bytes": 1402
+      "sha256": "60cd1ff77618283398bd2823bf03704634fc548a85f2204cfbf06ec61473ad6f",
+      "bytes": 1450
     },
     {
       "path": "examples/cases/structure-silicon-cell-lineage/source/silicon-cod-9013102.cif",
