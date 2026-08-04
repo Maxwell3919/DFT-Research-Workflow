@@ -1,0 +1,145 @@
+{
+  "artifacts": [
+    {
+      "bytes": 670,
+      "path": "output/silicon-conventional.xyz",
+      "role": "converted_xyz",
+      "sha256": "642ac438e6b2772d3fe71da004d2186c9411a004983b7f592f6c12b72d766b34"
+    },
+    {
+      "bytes": 375,
+      "path": "output/POSCAR.primitive",
+      "role": "primitive_poscar",
+      "sha256": "d16f73a424e7af48c711bf904c14c2167f01716f6465135c50e4220f100bbb39"
+    },
+    {
+      "bytes": 1040,
+      "path": "output/silicon-primitive-2x2x2.xyz",
+      "role": "supercell",
+      "sha256": "38d0a47627dcd09be29d77c4a3784cfd7e73bc1dd9329181bb31ce2363fd84fb"
+    },
+    {
+      "bytes": 3196,
+      "path": "derived/structure-report.json",
+      "role": "structure_report",
+      "sha256": "a8de2b6e843082439eb4e5edac938a772fdd53cd1e2b79d6859a122a9cb30646"
+    },
+    {
+      "bytes": 548,
+      "path": "derived/symmetry-tolerance-sweep.json",
+      "role": "symmetry_sweep",
+      "sha256": "e53eb468a2d0edbd6f4665bbf3ede3506e57af36c1ba964aac31ae10334a3ed6"
+    },
+    {
+      "bytes": 684,
+      "path": "derived/seekpath-primitive.json",
+      "role": "reciprocal_path",
+      "sha256": "da13d9c9c7f0631234ed308fc5f4b266ca61940297e997b59e11cfd81136f6d1"
+    },
+    {
+      "bytes": 264,
+      "path": "derived/structure-summary.csv",
+      "role": "summary_table",
+      "sha256": "95c557a32d60acf8dfd3899d8f92211f16ea52b430e405bd0625a89a36b8d2d4"
+    },
+    {
+      "bytes": 33554,
+      "path": "figures/silicon-conventional-xy.png",
+      "role": "figure",
+      "sha256": "6ea6f0b037db7dd0b35c38501b2445cb884bfc01875d68c329e3874e0f6af681"
+    }
+  ],
+  "case_id": "structure-silicon-cell-lineage",
+  "case_kind": "structure-operation",
+  "claim_boundary": {
+    "does_not_support": [
+      "DFT convergence, material stability, band extrema, or a calculation-parameter recommendation."
+    ],
+    "supports": [
+      "The recorded local format conversion, standardization, tolerance sweep, supercell construction, and SeeK-path call."
+    ]
+  },
+  "commands": [
+    {
+      "command": "PYTHON=<pinned-python> bash run.sh",
+      "exit_code": 0,
+      "stage": "materialize"
+    },
+    {
+      "command": "<cif-skill-python> analyze_cif.py --input source/silicon-cod-9013102.cif ...",
+      "exit_code": 0,
+      "stage": "cif-analysis"
+    },
+    {
+      "command": "bash check.sh",
+      "exit_code": 0,
+      "stage": "acceptance"
+    }
+  ],
+  "completed_at": "2026-08-05T00:00:00+08:00",
+  "evidence_class": "real-execution",
+  "exit_code": 0,
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "summary": "required source and generated artifacts are hash-bound"
+    },
+    "G1": {
+      "status": "PASS",
+      "summary": "deterministic structure transformation script exited zero"
+    },
+    "G2": {
+      "status": "WARN",
+      "summary": "no electronic solver or geometry optimizer was run"
+    },
+    "G3": {
+      "status": "PASS",
+      "summary": "converted structures, symmetry report, reciprocal path, and plot are present"
+    },
+    "G4": {
+      "status": "NOT TESTED",
+      "summary": "no observable convergence study"
+    },
+    "G5": {
+      "status": "NOT CLAIMED",
+      "summary": "no physical stability or DFT conclusion"
+    }
+  },
+  "public_host_label": "Talos local execution",
+  "schema_version": "1.0",
+  "software": [
+    {
+      "interface": "Python API",
+      "name": "ASE",
+      "version": "3.29.0"
+    },
+    {
+      "interface": "Python API",
+      "name": "spglib",
+      "version": "2.7.0"
+    },
+    {
+      "interface": "Python API",
+      "name": "SeeK-path",
+      "version": "2.2.1"
+    },
+    {
+      "interface": "import verified",
+      "name": "pymatgen-core",
+      "version": "2026.7.31"
+    }
+  ],
+  "sources": [
+    {
+      "accessed_at": "2026-08-05",
+      "id": "cod-9013102",
+      "licence_boundary": "CIF header requires attribution to the underlying journal; no database identity claim beyond the copied entry.",
+      "path": "source/silicon-cod-9013102.cif",
+      "role": "CIF source",
+      "sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e",
+      "url": "https://www.crystallography.net/cod/9013102.html"
+    }
+  ],
+  "started_at": null,
+  "title": "Silicon CIF cell lineage and reciprocal path"
+}

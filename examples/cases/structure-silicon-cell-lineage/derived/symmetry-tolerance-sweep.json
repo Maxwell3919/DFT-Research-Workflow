@@ -1,0 +1,30 @@
+[
+  {
+    "symprec_ang": 1e-06,
+    "international": "Fd-3m",
+    "number": 227,
+    "hall": "F 4d 2 3 -1d",
+    "n_operations": 192
+  },
+  {
+    "symprec_ang": 1e-05,
+    "international": "Fd-3m",
+    "number": 227,
+    "hall": "F 4d 2 3 -1d",
+    "n_operations": 192
+  },
+  {
+    "symprec_ang": 0.0001,
+    "international": "Fd-3m",
+    "number": 227,
+    "hall": "F 4d 2 3 -1d",
+    "n_operations": 192
+  },
+  {
+    "symprec_ang": 0.001,
+    "international": "Fd-3m",
+    "number": 227,
+    "hall": "F 4d 2 3 -1d",
+    "n_operations": 192
+  }
+]
