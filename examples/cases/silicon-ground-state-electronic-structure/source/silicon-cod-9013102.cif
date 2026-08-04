@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 #$Date: 2024-05-16 09:36:09 +0300 (Thu, 16 May 2024) $
 #$Revision: 291877 $
-#$URL: file:///home/coder/svn-repositories/_RELOADED_COD/cod-reloaded/cif/9/01/31/9013102.cif $
+#$URL: [upstream repository path removed from public copy] $
 #------------------------------------------------------------------------------
 #
 # This file is available in the Crystallography Open Database (COD),

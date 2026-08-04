@@ -136,7 +136,14 @@ try {
   for (const target of requiredRoutes) {
     const response = await page.goto(`${base}${target.route}`, { waitUntil: 'load' });
     if (response?.status() !== target.status) throw new Error(`${target.route}: expected HTTP ${target.status}, found ${response?.status() ?? 'no response'}`);
-    await inspectPage(page, target.status);
+    if (target.route.startsWith('/recipes/')) {
+      await page.waitForFunction(() => location.pathname.includes('/workflows/'), { timeout: 5000 });
+    }
+    try {
+      await inspectPage(page, target.status);
+    } catch (error) {
+      throw new Error(`${target.route}: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }
 
   await page.goto(`${base}/operations/`, { waitUntil: 'load' });

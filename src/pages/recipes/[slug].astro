@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import recipesDocument from '../../../recipes/index.json';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/paths';
 
 type Props = { destination: string | null };
@@ -16,16 +17,9 @@ const { destination } = Astro.props as Props;
 const target = withBase(destination ? `workflows/${destination}/` : 'workflows/');
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta http-equiv="refresh" content={`0; url=${target}`} />
-    <link rel="canonical" href={target} />
-    <title>Moved to Worked Workflows</title>
-  </head>
-  <body>
-    <p>This legacy recipe has moved to <a href={target}>Worked Workflows</a>.</p>
-  </body>
-</html>
+<BaseLayout title="Moved to Worked Workflows" description="This legacy recipe has moved to Worked Workflows." redirectTo={target}>
+  <article class="chapter">
+    <h1>Moved to Worked Workflows</h1>
+    <p class="page-intro">This legacy recipe has moved to <a href={target}>Worked Workflows</a>.</p>
+  </article>
+</BaseLayout>

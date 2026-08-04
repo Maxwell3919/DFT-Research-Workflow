@@ -130,9 +130,17 @@
       "id": "cod-9013102",
       "licence_boundary": "CIF header requires attribution to the underlying journal; no database identity claim beyond the copied entry.",
       "path": "source/silicon-cod-9013102.cif",
-      "role": "CIF source",
-      "sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e",
+      "raw_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e",
+      "role": "deterministic public CIF copy",
+      "sanitization": "Only the upstream absolute repository metadata line was replaced; see the hash-bound rule record.",
+      "sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55",
       "url": "https://www.crystallography.net/cod/9013102.html"
+    },
+    {
+      "id": "cod-9013102-sanitization",
+      "path": "source/silicon-cod-9013102.sanitization.json",
+      "role": "raw-to-public CIF sanitization record",
+      "sha256": "033b32c6c583ae213d7bb995a73e67ff9cc4a02ad16456118638eb7994f172b2"
     }
   ],
   "started_at": null,

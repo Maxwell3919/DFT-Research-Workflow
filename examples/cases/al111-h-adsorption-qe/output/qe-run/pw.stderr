@@ -1,5 +1,5 @@
 srun: forcing job termination
 srun: got SIGCONT
 srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
-slurmstepd-talos-MS-7D54: error: *** STEP 34.0 ON talos-MS-7D54 CANCELLED AT 2026-08-05T02:51:53 ***
-srun: error: talos-MS-7D54: task 0: Killed
+[host-withheld]: error: *** STEP 34.0 ON [host-withheld] CANCELLED AT 2026-08-05T02:51:53 ***
+srun: error: [host-withheld]: task 0: Killed

@@ -7,10 +7,11 @@ committed inputs fix a 20.0 Angstrom out-of-plane cell length and use exactly
 one k point along the reciprocal third direction (`kz=1`).  They are a 2D
 periodic model, not a finite cluster.
 
-The case is prepared from a read-only QE 7.5 and pseudopotential identity
-check.  It contains no pseudopotential payload and no calculation output yet.
-After an allocation is obtained, run it with a separately supplied public
-PSLibrary pseudopotential:
+The case was executed with QE 7.5 and a separately supplied, hash-checked
+PSLibrary pseudopotential. It retains the independent SCF audit, the fresh
+bands-parent SCF, `pw.x` bands output, `bands.x` data, strict parsed tables, and
+an original raw-derived PNG. It contains no pseudopotential payload, restart,
+or wavefunction files. To reproduce it inside an authorized allocation, use:
 
 ```bash
 cd examples/cases/graphene-electronic-structure-qe

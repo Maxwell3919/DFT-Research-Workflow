@@ -5,9 +5,9 @@
     "qe_75_banner": true,
     "scf_converged": false,
     "slurm_cancellation": true,
-    "slurm_cancellation_marker": "STEP 34.0 ON talos-MS-7D54 CANCELLED AT 2026-08-05T02:51:53 "
+    "slurm_cancellation_marker": "STEP 34.0 ON [host-withheld] CANCELLED AT 2026-08-05T02:51:53 "
   },
-  "record_origin": "historical-recovery/generated-from-raw",
+  "record_origin": "historical-recovery/generated-from-sanitized-public-copy",
   "runtime": {
     "host_label": "Talos",
     "launcher": "srun --ntasks=1 --cpus-per-task=1",
@@ -47,9 +47,9 @@
           "sha256": "a8e66b4b00ea0a29468dee05be3aeca83b70a6523aaa2aa87312e6ce37e5d995"
         },
         {
-          "bytes": 265,
+          "bytes": 260,
           "path": "pw.stderr",
-          "sha256": "0829323df44ce929bcf85966f6ed9159af33796124cef93d732b6ce2a5dc1adc"
+          "sha256": "25bdaa5ddab0202f91c1faa42897ce5af70935067927df01da26d19f59626d53"
         }
       ],
       "exit_code": null,

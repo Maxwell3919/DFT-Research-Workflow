@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/paths';
@@ -19,12 +20,12 @@ type CaseManifest = {
   public_host_label?: string;
   software?: Array<{ name?: string; version?: string; interface?: string }>;
   commands?: Array<{ stage?: string; command?: string; exit_code?: number }>;
-  artifacts?: Array<{ path?: string; role?: string; sha256?: string; bytes?: number }>;
+  artifacts?: Array<{ path?: string; role?: string; sha256?: string; bytes?: number; alt?: string; caption?: string }>;
   gates?: Record<string, { status?: string; summary?: string }>;
   claim_boundary?: { supports?: string[]; does_not_support?: string[] };
 };
 
-type Figure = { path: string; role: string; sha256: string; dataUrl: string };
+type Figure = { path: string; role: string; sha256: string; alt: string; caption?: string; dataUrl: string };
 type Props = { workflow: Workflow; manifest: CaseManifest; excerpt: string; figures: Figure[] };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -39,6 +40,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
       ]);
       if (readme.trim().length === 0) throw new Error('README.md is empty');
       const parsed = JSON.parse(manifest) as CaseManifest;
+      const excerptArtifact = (parsed.artifacts ?? []).find((artifact) => artifact.path === workflow.excerpt_path);
+      const excerptSha256 = createHash('sha256').update(excerpt).digest('hex');
+      if (!excerptArtifact || excerptArtifact.sha256 !== excerptSha256 || excerptArtifact.bytes !== Buffer.byteLength(excerpt)) {
+        throw new Error(`excerpt ${workflow.excerpt_path} is not bound by the case manifest hash and byte count`);
+      }
       const figures = await Promise.all((parsed.artifacts ?? [])
         .filter((artifact) => artifact.path?.startsWith('figures/') && /\.(?:png|webp)$/i.test(artifact.path))
         .map(async (artifact) => {
@@ -49,6 +55,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
             path,
             role: artifact.role ?? 'Case-derived data figure',
             sha256: artifact.sha256 ?? 'declared in manifest',
+            alt: artifact.alt ?? `${workflow.material} data figure generated from the case's hash-bound raw data`,
+            caption: artifact.caption,
             dataUrl: `data:${mime};base64,${data.toString('base64')}`,
           };
         }));
@@ -71,7 +79,8 @@ const commands = manifest.commands ?? [];
 const artifacts = manifest.artifacts ?? [];
 const gates = Object.entries(manifest.gates ?? {}).sort(([a], [b]) => a.localeCompare(b));
 const caseRoot = `examples/cases/${workflow.case_id}/`;
-const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Research-Workflow/blob/main/${caseRoot}${file}`;
+const sourceRevision = process.env.GITHUB_SHA ?? 'main';
+const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Research-Workflow/blob/${sourceRevision}/${caseRoot}${file}`;
 ---
 
 <BaseLayout title={workflow.title} description={workflow.summary} current="workflows">
@@ -121,8 +130,8 @@ const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Resear
       </ul>
       {figures.map((figure) => (
         <figure>
-          <img src={figure.dataUrl} alt={`${workflow.material} ${figure.role}, generated from the case's hash-bound raw data`} loading="lazy" />
-          <figcaption>{figure.path} · {figure.role} · SHA-256 <code>{figure.sha256}</code></figcaption>
+          <img src={figure.dataUrl} alt={figure.alt} loading="lazy" />
+          <figcaption>{figure.caption ?? figure.role} · {figure.path} · SHA-256 <code>{figure.sha256}</code></figcaption>
         </figure>
       ))}
     </section>

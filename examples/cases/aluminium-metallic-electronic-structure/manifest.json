@@ -1,6 +1,12 @@
 {
   "artifacts": [
     {
+      "bytes": 661,
+      "path": "output/compact-source-excerpt.txt",
+      "role": "deterministic public output excerpt rendered by the Worked Workflow",
+      "sha256": "3177b6ab03f645ff35656b115cae0c179a59221cc42aa48b3cbda6e6bf0633a9"
+    },
+    {
       "bytes": 468,
       "path": "input/scf.in",
       "role": "SCF input",
@@ -73,9 +79,10 @@
       "sha256": "c5396e8ba99b5f90da8f1b639c767f4cd98cb2a5c946886ffaf65785aded612b"
     },
     {
+      "alt": "Histogram of Aluminium band 2 eigenvalues minus the Fermi level over the captured 8 by 8 by 8 NSCF k-point sample, with the zero-energy Fermi reference marked in red.",
       "bytes": 43935,
       "path": "figures/raw-nscf-band2-sampling.png",
-      "role": "raw-derived PNG",
+      "role": "raw-output-derived NSCF band sampling histogram",
       "sha256": "ae57110886c7b21e66a164ab6114b89dfa757c218f9b7df35112b404e98a698a"
     }
   ],

@@ -57,6 +57,8 @@
           "role": { "type": "string", "minLength": 1 },
           "path": { "$ref": "#/$defs/relativePath" },
           "sha256": { "$ref": "#/$defs/sha256" },
+          "raw_sha256": { "$ref": "#/$defs/sha256" },
+          "sanitization": { "type": "string" },
           "url": { "type": "string", "format": "uri" },
           "accessed_at": { "type": "string", "format": "date" },
           "licence_boundary": { "type": "string" }
@@ -100,7 +102,9 @@
           "sha256": { "$ref": "#/$defs/sha256" },
           "bytes": { "type": "integer", "minimum": 0 },
           "raw_sha256": { "$ref": "#/$defs/sha256" },
-          "sanitization": { "type": "string" }
+          "sanitization": { "type": "string" },
+          "alt": { "type": "string", "minLength": 1 },
+          "caption": { "type": "string", "minLength": 1 }
         }
       }
     },

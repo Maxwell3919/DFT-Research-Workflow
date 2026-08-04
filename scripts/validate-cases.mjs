@@ -15,7 +15,8 @@ const gateNames = ['G0', 'G1', 'G2', 'G3', 'G4', 'G5'];
 const gateStatuses = new Set(['PASS', 'FAIL', 'WARN', 'NOT TESTED', 'NOT CLAIMED']);
 const evidenceClasses = new Set(['real-execution', 'derived-public-data', 'real-interface-walkthrough']);
 const shaPattern = /^[0-9a-f]{64}$/;
-const privatePathPattern = /(?:\/home\/[A-Za-z0-9._-]+\/|\/Users\/[A-Za-z0-9._-]+\/)/;
+const privatePathPattern = /(?:file:\/\/\/(?:home|Users|Volumes)\/|\/(?:home|Users|Volumes)\/[A-Za-z0-9._-]+\/)/;
+const privateHostPattern = /\b[A-Za-z0-9]+-MS-[A-Za-z0-9]+\b/;
 
 function run(caseId, cwd, command, args, extraEnv = {}) {
   const result = spawnSync(command, args, { cwd, encoding: 'utf8', env: { ...process.env, ...extraEnv, LC_ALL: 'C.UTF-8' } });
@@ -162,9 +163,12 @@ for (const entry of caseEntries) {
   }
 
   for (const path of await listFiles(caseDirectory)) {
-    if (!/\.(?:md|txt|json|csv|sh|py|in|out|err)$/i.test(path)) continue;
-    const text = await readFile(path, 'utf8').catch(() => null);
-    if (text !== null && privatePathPattern.test(text)) errors.push(`${caseId}: private absolute path in ${relative(caseDirectory, path)}`);
+    if (/\.(?:png|webp|jpe?g)$/i.test(path)) continue;
+    const bytes = await readFile(path);
+    if (bytes.includes(0)) continue;
+    const text = bytes.toString('utf8');
+    if (privatePathPattern.test(text)) errors.push(`${caseId}: private absolute path in ${relative(caseDirectory, path)}`);
+    if (privateHostPattern.test(text)) errors.push(`${caseId}: private host identity in ${relative(caseDirectory, path)}`);
   }
 }
 

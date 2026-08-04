@@ -1,6 +1,12 @@
 {
   "artifacts": [
     {
+      "bytes": 361,
+      "path": "source/output-excerpt.txt",
+      "role": "deterministic public output excerpt rendered by the Worked Workflow",
+      "sha256": "c5a49549aeebaafca49944bbc72a4d1901c8812979151de9328d7bc2f573127a"
+    },
+    {
       "bytes": 433,
       "path": "derived/convergence.csv",
       "role": "convergence_table",
@@ -65,33 +71,38 @@
       "sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"
     },
     {
+      "alt": "Silicon total-energy differences relative to the 50 Ry, 10 by 10 by 10 reference across 30, 40, and 50 Ry cutoffs and three k meshes; all three curves decrease toward the reference.",
       "bytes": 66124,
       "path": "figures/convergence-matrix.png",
-      "role": "figure",
+      "role": "cutoff and k-mesh energy-difference plot",
       "sha256": "1fd386c9b80a8bc76d37ff7e9abb073aae65079f99b2696e01745e4c1d86e984"
     },
     {
+      "alt": "Eight stored Silicon line-path bands plotted against cumulative path coordinate, with a dashed zero-energy reference and the solver-warning boundary stated in the title.",
       "bytes": 126248,
       "path": "figures/band-path.png",
-      "role": "figure",
+      "role": "line-path band plot with solver warning retained",
       "sha256": "50108e1b6c391380d85f35bc8fae59fa747fee1f053ba4ffdfadbda62e1cdc0f"
     },
     {
+      "alt": "Scatter plot of Silicon band 4 occupied and band 5 empty eigenvalues over 260 points of the 8 by 8 by 8 full-zone enumeration; the sampled bands remain separated.",
       "bytes": 62583,
       "path": "figures/full-zone-bands.png",
-      "role": "figure",
+      "role": "full-zone occupied and empty band samples",
       "sha256": "b1fffd7acbe40d02c51b6ba3fe21489766aa1e9d130d1951995a7ceb955c29dd"
     },
     {
+      "alt": "Stored Silicon 12 by 12 by 12 tetrahedron density of states versus energy relative to the Fermi level, showing a zero-DOS interval near the reference.",
       "bytes": 63844,
       "path": "figures/dos.png",
-      "role": "figure",
+      "role": "tetrahedron density-of-states plot",
       "sha256": "33f2d775d055c51805eae489a0a1ff3f816e1059760ca42aeded51b1fb965494"
     },
     {
+      "alt": "Silicon Gamma-point response plot with three acoustic-mode frequencies near zero, three optical modes near 514 inverse centimetres, and three equal electronic dielectric diagonal components near 14.",
       "bytes": 46963,
       "path": "figures/gamma-response.png",
-      "role": "figure",
+      "role": "Gamma-point phonon and electronic-response plot",
       "sha256": "10f3f85fb24856d21ed404bd648b4d3b95d32bb6b12292eecd55319e10bb5257"
     }
   ],
@@ -189,11 +200,19 @@
     {
       "accessed_at": "2026-08-04",
       "id": "cod-9013102",
-      "licence_boundary": "COD source is retained as a public teaching copy.",
+      "licence_boundary": "The CIF header requests attribution to the underlying journal source; COD access alone does not waive that record-level attribution.",
       "path": "source/silicon-cod-9013102.cif",
-      "role": "structure source",
-      "sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e",
+      "raw_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e",
+      "role": "deterministic public structure copy",
+      "sanitization": "Only the upstream absolute repository metadata line was replaced; the raw and public identities are bound by the adjacent rule record.",
+      "sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55",
       "url": "https://www.crystallography.net/cod/9013102.html"
+    },
+    {
+      "id": "cod-9013102-sanitization",
+      "path": "source/silicon-cod-9013102.sanitization.json",
+      "role": "raw-to-public CIF sanitization record",
+      "sha256": "033b32c6c583ae213d7bb995a73e67ff9cc4a02ad16456118638eb7994f172b2"
     },
     {
       "accessed_at": "2026-08-04",

@@ -36,7 +36,7 @@ def run() -> dict[str, object]:
     return {
         "schema_version": 1,
         "evidence_class": "real-execution",
-        "material": {"formula": "Si", "structure_source": "COD 9013102", "structure_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e"},
+        "material": {"formula": "Si", "structure_source": "COD 9013102 deterministic public copy", "structure_sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55", "raw_download_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e"},
         "software": {"pw.x": "7.5", "ph.x": "7.5"},
         "workflow": "SCF followed by Gamma-point ph.x using the same prefix/outdir lineage",
         "q_point_fractional": [0.0, 0.0, 0.0],

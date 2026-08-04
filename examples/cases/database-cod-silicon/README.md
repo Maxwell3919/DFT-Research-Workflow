@@ -4,7 +4,10 @@ This terminal-first case records a real direct download from the Crystallography
 Open Database (COD), followed by deterministic CIF inspection. `source/` is the
 downloaded CIF; `output/` preserves the HTTP headers, retrieval time, and run
 summary; `derived/` holds analysis generated from that exact file by the
-case-local ASE/spglib script.
+case-local ASE/spglib script. The downloaded object's SHA-256 is retained in
+`source/9013102.sanitization.json`; the committed CIF is a deterministic public
+copy in which only COD's upstream absolute repository metadata line
+is replaced. The record binds both hashes and the exact rule.
 
 Run `bash run.sh` to re-download and inspect the record. The parser and check
 are intentionally hash-bound to the captured object, so a changed upstream

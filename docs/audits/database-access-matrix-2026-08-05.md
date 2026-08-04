@@ -21,9 +21,14 @@ presence and was absent.
 ## COD case lineage
 
 `database-cod-silicon` downloaded COD record `9013102` over HTTPS on Talos,
-captured its HTTP 200 response headers and raw CIF, then ran the installed
-`cif-structure-analysis` CLI and strict local parser. The source hash is
-`99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e`.
+recorded raw SHA-256 `99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e`,
+and commits a deterministic public copy SHA-256
+`cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55`.
+Only COD's upstream absolute repository metadata line is replaced;
+the rule and both identities are stored beside the public copy.
+The retrieval captured its HTTP 200 response headers and raw CIF, then ran the
+installed `cif-structure-analysis` CLI and strict local parser on the public
+copy.
 The first proxy-mediated rerun ended at the TLS handshake; an isolated direct
 TLS probe returned HTTP 200 and the same source hash, so `run.sh` explicitly
 unsets only proxy variables for COD. This is a host-specific transport note,

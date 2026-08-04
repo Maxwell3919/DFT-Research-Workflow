@@ -1,5 +1,5 @@
-[talos-MS-7D54:424788] OPAL ERROR: Unreachable in file ext3x_client.c at line 111
-srun: error: talos-MS-7D54: task 0: Exited with exit code 1
+[[host-withheld]:424788] OPAL ERROR: Unreachable in file ext3x_client.c at line 111
+srun: error: [host-withheld]: task 0: Exited with exit code 1
 --------------------------------------------------------------------------
 The application appears to have been direct launched using "srun",
 but OMPI was not built with SLURM's PMI support and therefore cannot
@@ -20,4 +20,4 @@ Please configure as appropriate and try again.
 *** on a NULL communicator
 *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
 ***    and potentially your MPI job)
-[talos-MS-7D54:424788] Local abort before MPI_INIT completed completed successfully, but am not able to aggregate error messages, and not able to guarantee that all other processes were killed!
+[[host-withheld]:424788] Local abort before MPI_INIT completed completed successfully, but am not able to aggregate error messages, and not able to guarantee that all other processes were killed!

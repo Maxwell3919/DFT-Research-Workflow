@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "source/9013102.cif"
 ANALYSIS = ROOT / "derived/9013102.analysis.json"
 SUMMARY = ROOT / "derived/parsed-summary.json"
-EXPECTED_SHA256 = "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e"
+EXPECTED_SHA256 = "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55"
 
 
 def main() -> None:

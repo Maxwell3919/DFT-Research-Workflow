@@ -1,18 +1,12 @@
 ---
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/paths';
 const target = withBase('workflows/');
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta http-equiv="refresh" content={`0; url=${target}`} />
-    <link rel="canonical" href={target} />
-    <title>Moved to Worked Workflows</title>
-  </head>
-  <body>
-    <p>This directory has moved to <a href={target}>Worked Workflows</a>.</p>
-  </body>
-</html>
+<BaseLayout title="Moved to Worked Workflows" description="Recipes has moved to Worked Workflows." redirectTo={target}>
+  <article class="chapter">
+    <h1>Moved to Worked Workflows</h1>
+    <p class="page-intro">This directory has moved to <a href={target}>Worked Workflows</a>.</p>
+  </article>
+</BaseLayout>

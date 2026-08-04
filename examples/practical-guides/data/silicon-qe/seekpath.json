@@ -71,7 +71,8 @@
       14
     ]
   ],
-  "input_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e",
+  "input_sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55",
+  "raw_download_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e",
   "symprec": 1e-05,
   "seekpath_version": "2.2.1",
   "spglib_version": "2.7.0",

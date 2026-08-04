@@ -31,10 +31,16 @@
       "sha256": "e0df79d0463b5cfe44c7479acebf58333bab7c0462971773b5cf7c27bda220e8"
     },
     {
-      "bytes": 1797,
+      "bytes": 612,
+      "path": "output/qe-run/sanitization.json",
+      "role": "public-copy-sanitization-record",
+      "sha256": "bacc7fdb2ac2eb8272e92fea9b038b52ef325803249d3e91e007cfc52e5b19f5"
+    },
+    {
+      "bytes": 1817,
       "path": "output/qe-run/execution-record.json",
       "role": "historical-recovery-record",
-      "sha256": "29e82b4ae60a353c2c8c119bbbc852f8226fcbad930f4fb5eb0c97a4ea2da1e9"
+      "sha256": "be1fd041013c6b5b01937de25eba53b6032765f358933f4a08a93f95a89e1f50"
     },
     {
       "bytes": 8316,
@@ -43,16 +49,18 @@
       "sha256": "a8e66b4b00ea0a29468dee05be3aeca83b70a6523aaa2aa87312e6ce37e5d995"
     },
     {
-      "bytes": 265,
+      "bytes": 260,
       "path": "output/qe-run/pw.stderr",
-      "role": "qe-stderr",
-      "sha256": "0829323df44ce929bcf85966f6ed9159af33796124cef93d732b6ce2a5dc1adc"
+      "raw_sha256": "0829323df44ce929bcf85966f6ed9159af33796124cef93d732b6ce2a5dc1adc",
+      "role": "deterministically sanitized qe-stderr",
+      "sanitization": "Local machine host tokens matching *-MS-* are replaced with [host-withheld]; see output/qe-run/sanitization.json.",
+      "sha256": "25bdaa5ddab0202f91c1faa42897ce5af70935067927df01da26d19f59626d53"
     },
     {
-      "bytes": 811,
+      "bytes": 829,
       "path": "derived/qe-scf-summary.json",
       "role": "terminal-failure-summary",
-      "sha256": "e686a9ef96435f3201ce29119cd9ef7cfe41548e417e38993f1c72cc544df520"
+      "sha256": "0ff8a1fa950f42771ae122c1d28fb1550369b2a6c28632c6ba418c992bd60df5"
     },
     {
       "bytes": 24,
@@ -84,7 +92,12 @@
       "stage": "construct"
     },
     {
-      "command": "python3 recover_execution.py --evidence-dir output/qe-run --origin historical-recovery/generated-from-raw --job-id 34 --host-label Talos --launcher \"srun --ntasks=1 --cpus-per-task=1\" --walltime-boundary 00:10:00",
+      "command": "python3 ../../../scripts/sanitize-public-text.py --input \"$RAW_STDERR\" --output output/qe-run/pw.stderr --record output/qe-run/sanitization.json --kind local-hostname",
+      "exit_code": 0,
+      "stage": "public-copy-sanitization"
+    },
+    {
+      "command": "python3 recover_execution.py --evidence-dir output/qe-run --origin historical-recovery/generated-from-sanitized-public-copy --job-id 34 --host-label Talos --launcher \"srun --ntasks=1 --cpus-per-task=1\" --walltime-boundary 00:10:00",
       "exit_code": 0,
       "stage": "historical-recovery"
     },

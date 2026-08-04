@@ -15,10 +15,12 @@
     {"name": "spglib", "version": "2.7.0"}
   ],
   "sources": [
-    {"id": "cod-9013102", "role": "downloaded CIF", "path": "source/9013102.cif", "sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e", "url": "https://www.crystallography.net/cod/9013102.cif", "accessed_at": "2026-08-05", "licence_boundary": "COD open-data access was used for this bounded record; record-level provenance and reuse remain the user's responsibility."}
+    {"id": "cod-9013102", "role": "deterministic public copy of the downloaded CIF", "path": "source/9013102.cif", "sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55", "raw_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e", "sanitization": "Only the upstream absolute repository metadata line was replaced; the raw and public identities are bound by the adjacent rule record.", "url": "https://www.crystallography.net/cod/9013102.cif", "accessed_at": "2026-08-05", "licence_boundary": "The CIF header requests attribution to the underlying journal source; COD access alone does not waive that record-level attribution."},
+    {"id": "cod-9013102-sanitization", "role": "raw-to-public CIF sanitization record", "path": "source/9013102.sanitization.json", "sha256": "033b32c6c583ae213d7bb995a73e67ff9cc4a02ad16456118638eb7994f172b2"}
   ],
   "commands": [
     {"stage": "retrieve", "command": "env -u https_proxy -u http_proxy -u all_proxy -u HTTPS_PROXY -u HTTP_PROXY -u ALL_PROXY curl --fail --location --silent --show-error --dump-header output/cod-response.headers --output source/9013102.cif https://www.crystallography.net/cod/9013102.cif", "exit_code": 0},
+    {"stage": "public-copy-sanitization", "command": "python3 ../../../scripts/sanitize-public-text.py --input \"$RAW_CIF\" --output source/9013102.cif --record source/9013102.sanitization.json --kind cod-upstream-path", "exit_code": 0},
     {"stage": "inspect", "command": "python3 analyze_structure.py", "exit_code": 0},
     {"stage": "parse", "command": "python3 parse.py", "exit_code": 0}
   ],
@@ -26,8 +28,8 @@
     {"role": "HTTP response headers", "path": "output/cod-response.headers", "sha256": "44152c25f40fa6accca68df0fc18efbdb8dc7fc9355eb1ad3656dc6c7aa1a61d", "bytes": 236},
     {"role": "retrieval timestamp", "path": "output/downloaded-at.txt", "sha256": "4e4109e786d9c8a8a2876bd52c1183637befa354f53788dda5f3142716819704", "bytes": 39},
     {"role": "run result", "path": "output/run.txt", "sha256": "b4bfb8c4e9cc300038332e5398593990894d91b96c429a627d6a3fae94796e6f", "bytes": 27},
-    {"role": "CIF analysis", "path": "derived/9013102.analysis.json", "sha256": "5ff9b8518a52061d87b0d8b5ee779bd3d9bf430c5b0fa2832868cf579bd7428b", "bytes": 856},
-    {"role": "strict parser summary", "path": "derived/parsed-summary.json", "sha256": "7b0703b162d8f22f21a4b262b95ccad41de0c2a01aac23a5ed570c282aa8de64", "bytes": 455}
+    {"role": "CIF analysis", "path": "derived/9013102.analysis.json", "sha256": "79dd66a1bb13d75fb2b098896581a2d7df4f9acfd797f4f7e12b03625e10eb68", "bytes": 856},
+    {"role": "strict parser summary", "path": "derived/parsed-summary.json", "sha256": "aea23503e3e007924d76328d0b123a752b629fa7208959e2afd92c21bc96d0ed", "bytes": 455}
   ],
   "gates": {
     "G0": {"status": "PASS", "summary": "Required case files exist and the CIF SHA-256 binds source and parser output."},
@@ -38,7 +40,7 @@
     "G5": {"status": "NOT CLAIMED", "summary": "Retrieval and parsing do not support a physical or scientific conclusion."}
   },
   "claim_boundary": {
-    "supports": ["The specified COD URL returned the hash-bound CIF through a real Talos HTTPS command.", "The captured CIF parsed as an eight-atom Si representation."],
+    "supports": ["The specified COD URL returned the raw object whose SHA-256 is recorded, and the deterministic public copy is independently hash-bound.", "The public copy parsed as an eight-atom Si representation."],
     "does_not_support": ["COD record identity or crystallographic quality.", "Material stability, DFT execution, numerical convergence, or a scientific conclusion."]
   }
 }

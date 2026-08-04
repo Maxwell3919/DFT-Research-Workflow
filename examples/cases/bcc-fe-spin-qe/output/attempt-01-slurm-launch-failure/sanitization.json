@@ -1,0 +1,12 @@
+{
+  "boundary": "The raw file is not committed. This record binds its identity to the deterministic public copy; no scientific content beyond the matched private-path or host token is changed.",
+  "kind": "local-hostname",
+  "public_bytes": 1339,
+  "public_sha256": "538825433a604b26ab21f5f384e1f28bf5398badc6ad41f3d02941db4e360bf9",
+  "raw_bytes": 1333,
+  "raw_sha256": "132ba8024a09d45a885b7246e45093a1cbb1600faacd803bb579c0203039e9b2",
+  "replacement_count": 3,
+  "rule": "Replace local machine host tokens matching *-MS-* with [host-withheld].",
+  "rule_version": "public-text-v1",
+  "schema_version": "1.0"
+}

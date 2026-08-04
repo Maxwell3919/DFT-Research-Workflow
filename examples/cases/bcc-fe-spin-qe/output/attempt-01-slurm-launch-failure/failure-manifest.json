@@ -13,9 +13,11 @@
     },
     {
       "path": "fm-k8.err",
-      "role": "captured launcher stderr",
-      "bytes": 1333,
-      "sha256": "132ba8024a09d45a885b7246e45093a1cbb1600faacd803bb579c0203039e9b2"
+      "role": "deterministically sanitized launcher stderr",
+      "bytes": 1339,
+      "sha256": "538825433a604b26ab21f5f384e1f28bf5398badc6ad41f3d02941db4e360bf9",
+      "raw_sha256": "132ba8024a09d45a885b7246e45093a1cbb1600faacd803bb579c0203039e9b2",
+      "sanitization": "Local machine host tokens matching *-MS-* are replaced with [host-withheld]."
     },
     {
       "path": "run-status.json",
@@ -24,5 +26,5 @@
       "sha256": "0f1e45b0f4307fee6d19fe1679d9eb138e56d79e3c1c85d39e599e28d6ffdc57"
     }
   ],
-  "preservation": "The original three files are retained byte-for-byte. The original run-status JSON has a trailing comma because the first-generation shell script exited before writing its array closure; this defect is itself preserved as part of the recorded failed attempt."
+  "preservation": "The zero-byte stdout and original early-exit run-status JSON are retained byte-for-byte. Stderr is a deterministic public-safe copy bound to the uncommitted raw SHA-256 by sanitization.json. The run-status JSON has a trailing comma because the first-generation shell script exited before writing its array closure; this defect is preserved as part of the recorded failed attempt."
 }
