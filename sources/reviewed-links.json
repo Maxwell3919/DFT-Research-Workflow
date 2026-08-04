@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 200,
+  "expected_unique_urls": 202,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -467,6 +467,19 @@
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_NEB.html" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/user_guide_PDF/neb_user_guide.pdf" },
         { "kind": "page", "url": "https://docs.ase-lib.org/ase/neb.html" }
+      ]
+    },
+    {
+      "topic_slug": "diffusion-barriers",
+      "article": "src/content/topics/diffusion-barriers.md",
+      "review": "docs/reviews/2026-08-04-diffusion-barriers.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1016%2F0022-3697%2857%2990059-8" },
+        { "kind": "doi", "url": "https://doi.org/10.1063/1.1329672" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_NEB.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/user_guide_PDF/neb_user_guide.pdf" },
+        { "kind": "page", "url": "https://docs.ase-lib.org/ase/neb.html" },
+        { "kind": "page", "url": "https://ase.gitlab.io/ase/examples_generated/03-tutorials/neb_selfdiffusion.html" }
       ]
     },
     {

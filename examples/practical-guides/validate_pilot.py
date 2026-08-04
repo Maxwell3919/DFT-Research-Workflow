@@ -92,6 +92,7 @@ LATTICE_THERMAL_TRANSPORT_ANALYSIS_SCRIPTS = ["thermal_transport_tensor_ledger.p
 EPC_ANALYSIS_SCRIPTS = ["epc_channel_ledger.py"]
 SUPERCONDUCTIVITY_ANALYSIS_SCRIPTS = ["superconductivity_moment_ledger.py"]
 REACTION_PATH_ANALYSIS_SCRIPTS = ["reaction_path_barrier_ledger.py"]
+DIFFUSION_ANALYSIS_SCRIPTS = ["diffusion_network_ledger.py"]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
@@ -122,6 +123,7 @@ SCRIPTS = [
     *EPC_ANALYSIS_SCRIPTS,
     *SUPERCONDUCTIVITY_ANALYSIS_SCRIPTS,
     *REACTION_PATH_ANALYSIS_SCRIPTS,
+    *DIFFUSION_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -151,7 +153,7 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 52
+    assert len(results) == 53
     report = {
         "schema_version": 10,
         "project_root": str(ROOT),
@@ -186,12 +188,13 @@ def main() -> None:
         "epc_analysis_scripts": EPC_ANALYSIS_SCRIPTS,
         "superconductivity_analysis_scripts": SUPERCONDUCTIVITY_ANALYSIS_SCRIPTS,
         "reaction_path_analysis_scripts": REACTION_PATH_ANALYSIS_SCRIPTS,
+        "diffusion_analysis_scripts": DIFFUSION_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
             "Execution establishes declared structural transformations, synthetic convergence-table "
             "analysis, bounded ASE/EMT or synthetic optimization diagnostics, and deterministic "
-            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, Fermi-isovalue, charge-difference closure, potential-lineup, COHP-window, magnetic-candidate, magnetic-anisotropy/exchange-ledger, elastic strain--stress-ledger, Born-charge/dielectric-ledger, polarization-branch, piezoelectric-ledger, harmonic-mode-ledger, anharmonic-linewidth-ledger, lattice-transport-tensor-ledger, EPC-channel-ledger, superconductivity-spectral-moment-ledger, and reaction-path-barrier-ledger analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
+            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, Fermi-isovalue, charge-difference closure, potential-lineup, COHP-window, magnetic-candidate, magnetic-anisotropy/exchange-ledger, elastic strain--stress-ledger, Born-charge/dielectric-ledger, polarization-branch, piezoelectric-ledger, harmonic-mode-ledger, anharmonic-linewidth-ledger, lattice-transport-tensor-ledger, EPC-channel-ledger, superconductivity-spectral-moment-ledger, reaction-path-barrier-ledger, and diffusion-network-ledger analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
             "it does not establish DFT convergence, a physical minimum, a real reference ground state, "
             "a material formation, surface or adsorption energy, real work function, defect charge state or concentration, physical EOS or phase transition, independent database validation, "
             "candidate completeness, stability, transferability, or a scientific conclusion."
@@ -208,11 +211,11 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 52/52 examples; four structural transformations, "
+        "Practical guide execution passed: 53/53 examples; four structural transformations, "
         "four synthetic convergence analyses, four bounded optimization diagnostics, and "
         "four deterministic reference-state diagnostics, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
-        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, one invented polarization-branch fixture, one invented piezoelectric ledger fixture, one invented harmonic-mode ledger fixture, one invented anharmonic-linewidth ledger fixture, one invented lattice-transport tensor ledger fixture, one invented EPC channel ledger fixture, one invented superconductivity spectral-moment ledger fixture, and one invented reaction-path barrier ledger fixture under pinned versions."
+        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, one invented polarization-branch fixture, one invented piezoelectric ledger fixture, one invented harmonic-mode ledger fixture, one invented anharmonic-linewidth ledger fixture, one invented lattice-transport tensor ledger fixture, one invented EPC channel ledger fixture, one invented superconductivity spectral-moment ledger fixture, one invented reaction-path barrier ledger fixture, and one invented diffusion-network ledger fixture under pinned versions."
     )
 
 
