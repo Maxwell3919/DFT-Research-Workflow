@@ -4,7 +4,7 @@ const base = (process.env.SITE_URL ?? 'http://127.0.0.1:4322/DFT-Research-Workfl
 const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const topicRoute = '/operations/band-structure/';
 const guides = [
-  { route: `${topicRoute}guides/build-reciprocal-path-ledger/`, title: 'Build a Reciprocal-Path Ledger Before Plotting Bands', phrase: 'Execution verifies reciprocal-coordinate conversion' },
+  { route: `${topicRoute}guides/build-reciprocal-path-ledger/`, title: 'Build a Reciprocal-Path Ledger Before Plotting Bands', phrase: 'Execution verifies the stored-output hash' },
   { route: `${topicRoute}guides/compare-band-path-and-full-zone-extrema/`, title: 'Compare a Band Path with a Full-Zone Extremum Search', phrase: 'Execution verifies a deterministic comparison' },
 ];
 const topicPhrases = [
