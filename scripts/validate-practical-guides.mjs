@@ -282,6 +282,12 @@ const reviewRequirements = new Map([
     'Execution success is not a GW calculation',
     'The media are an original diagram generated from invented labels',
   ]],
+  ['docs/reviews/2026-08-04-electronic-transport.md', [
+    'reviewed within the declared educational and execution scope',
+    'The repository does not claim to have rerun the underlying WIEN2k or BoltzTraP calculations',
+    'Execution success is not transport convergence for a real calculation',
+    'The media asset is an original derived-public-data redraw',
+  ]],
 ]);
 
 function parseFrontmatter(source) {

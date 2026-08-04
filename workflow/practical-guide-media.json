@@ -4,6 +4,18 @@
   "scope_note": "Every media asset used by a reviewed practical guide must be declared here. Original diagrams are preferred; externally derived media require a source URL, access date, and reuse basis.",
   "assets": [
     {
+      "id": "boltztrap-cosb3-transport",
+      "guide_slug": "replot-boltztrap-cosb3-transport",
+      "path": "media/practical-guides/electronic-transport/replot-boltztrap-cosb3-transport/boltztrap-cosb3-transport.svg",
+      "provenance_type": "derived-public-data",
+      "created_at": "2026-08-04",
+      "source_url": "https://gitlab.com/sousaw/BoltzTraP2/-/tree/public",
+      "accessed_at": "2026-08-04",
+      "reuse_basis": "Original plot generated from all 14 rows of the GPL-3.0-or-later CoSb3 condtens member at commit 7ed9146c42d671562daee86d87e253fcbdedaeab; no source or publisher figure was copied.",
+      "caption": "Published CoSb3 diagonal conductivity per relaxation time and Seebeck output versus temperature, redrawn from a hash-bound BoltzTraP2 archive member without rerunning the calculations.",
+      "alt": "Two-panel plot of published CoSb3 conductivity divided by relaxation time and Seebeck coefficient from 100 to 750 kelvin, with a Seebeck sign-change bracket between 200 and 250 kelvin."
+    },
+    {
       "id": "ase-cell-repetition-diagram",
       "guide_slug": "ase-build-repeat-cells",
       "path": "media/practical-guides/build-or-modify-computational-model/ase-build-repeat-cells/cell-repetition.svg",
