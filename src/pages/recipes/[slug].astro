@@ -1,36 +1,30 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import { getCollection, render, type CollectionEntry } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getRecipes, type Recipe } from '../../lib/operations';
-import { withBase } from '../../lib/paths';
+import recipesDocument from '../../../recipes/index.json';
 
-type Props = { recipe: Recipe; narrative: CollectionEntry<'recipes'> | undefined };
+type Props = { destination: string | null };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const narratives = await getCollection('recipes');
-  const narrativeBySlug = new Map(narratives.map((entry) => [entry.data.recipe_slug, entry]));
-  return getRecipes().map((recipe) => ({
+  return recipesDocument.legacy_recipe_redirects.map((recipe) => ({
     params: { slug: recipe.slug },
-    props: { recipe, narrative: narrativeBySlug.get(recipe.slug) } satisfies Props,
+    props: { destination: recipe.destination } satisfies Props,
   }));
 };
 
-const { recipe, narrative } = Astro.props as Props;
-const Narrative = narrative ? (await render(narrative)).Content : null;
+const { destination } = Astro.props as Props;
+const target = destination ? `../../workflows/${destination}/` : '../../workflows/';
 ---
 
-<BaseLayout title={recipe.title} description={`Research workflow: ${recipe.title}.`} current="recipes">
-  <article class="chapter">
-    <p class="breadcrumb"><a href={withBase('recipes/')}>Workflow Recipes</a></p>
-    <p class="operation-label">Research workflow</p>
-    <h1>{recipe.title}</h1>
-    <p class="operation-summary">
-      This page will explain one way to combine researcher-scale tasks for the stated scientific goal. It is not an atomic operation or a universal execution sequence.
-    </p>
-
-    {Narrative && <div class="article-content"><Narrative /></div>}
-
-    <p class="directory-link"><a href={withBase('recipes/')}>Return to Workflow Recipes</a></p>
-  </article>
-</BaseLayout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+    <title>Moved to Worked Workflows</title>
+  </head>
+  <body>
+    <p>This legacy recipe has moved to <a href={target}>Worked Workflows</a>.</p>
+  </body>
+</html>

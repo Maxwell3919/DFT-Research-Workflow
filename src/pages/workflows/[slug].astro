@@ -1,0 +1,105 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { readFile } from 'node:fs/promises';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/paths';
+import workflowsDocument from '../../../recipes/index.json';
+
+type Workflow = {
+  slug: string;
+  title: string;
+  case_id: string;
+  material: string;
+  summary: string;
+};
+
+type CaseManifest = {
+  evidence_class?: string;
+  claim_boundary?: string;
+  host?: string;
+  software?: string | { name?: string; version?: string };
+};
+
+type Props = { workflow: Workflow; manifest: CaseManifest };
+const workflows = workflowsDocument.workflows as Workflow[];
+
+async function readPublishedCase(workflow: Workflow): Promise<CaseManifest> {
+  const root = new URL(`../../../examples/cases/${workflow.case_id}/`, import.meta.url);
+  let manifestText: string;
+  try {
+    const [readme, manifest] = await Promise.all([
+      readFile(new URL('README.md', root), 'utf8'),
+      readFile(new URL('manifest.json', root), 'utf8'),
+    ]);
+    if (readme.trim().length === 0) throw new Error('README.md is empty');
+    manifestText = manifest;
+  } catch (error) {
+    throw new Error(
+      `Worked workflow ${workflow.slug} is blocked: its case README.md and manifest.json are required before publication (${String(error)}).`,
+    );
+  }
+
+  try {
+    return JSON.parse(manifestText) as CaseManifest;
+  } catch {
+    throw new Error(`Worked workflow ${workflow.slug} is blocked: its case manifest.json is not valid JSON.`);
+  }
+}
+
+export const getStaticPaths: GetStaticPaths = async () => Promise.all(
+  workflows.map(async (workflow) => ({
+    params: { slug: workflow.slug },
+    props: { workflow, manifest: await readPublishedCase(workflow) } satisfies Props,
+  })),
+);
+
+const { workflow, manifest } = Astro.props as Props;
+const software = typeof manifest.software === 'string'
+  ? manifest.software
+  : [manifest.software?.name, manifest.software?.version].filter(Boolean).join(' ');
+const caseRoot = `examples/cases/${workflow.case_id}/`;
+const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Research-Workflow/blob/main/${caseRoot}${file}`;
+---
+
+<BaseLayout title={workflow.title} description={workflow.summary} current="workflows">
+  <article class="chapter">
+    <p class="breadcrumb"><a href={withBase('workflows/')}>Worked Workflows</a></p>
+    <p class="operation-label">Published terminal-first case</p>
+    <h1>{workflow.title}</h1>
+    <p class="operation-summary">{workflow.summary}</p>
+
+    <section class="article-content" aria-labelledby="case-bundle-heading">
+      <h2 id="case-bundle-heading">Case bundle</h2>
+      <p>
+        This page is a reader-facing entry point for the case directory. Inspect the files themselves for the exact source record, input, command line, raw or sanitized output, checks, extraction, parser, derived data, and figure lineage.
+      </p>
+      <ul>
+        <li><a href={caseFileUrl('README.md')}>Case README</a></li>
+        <li><a href={caseFileUrl('manifest.json')}>Execution manifest</a></li>
+        <li><a href={caseFileUrl('run.sh')}>Executed command script</a></li>
+        <li><a href={caseFileUrl('check.sh')}>Quick acceptance check</a></li>
+        <li><a href={caseFileUrl('parse.py')}>Strict parser</a></li>
+      </ul>
+    </section>
+
+    <section class="article-content" aria-labelledby="evidence-heading">
+      <h2 id="evidence-heading">Evidence boundary</h2>
+      <p><strong>Evidence class:</strong> {manifest.evidence_class ?? 'declared in the case manifest'}.</p>
+      {software && <p><strong>Software:</strong> {software}.</p>}
+      {manifest.host && <p><strong>Execution host:</strong> {manifest.host}.</p>}
+      <p>{manifest.claim_boundary ?? 'Read the case manifest before making any claim beyond the recorded execution and checks.'}</p>
+      <p>
+        Program completion, solver convergence, observable convergence, and physical interpretation are separate gates. The case check and parser report their tested scope; an absent gate is not implied by a passing earlier one.
+      </p>
+    </section>
+
+    <section class="article-content" aria-labelledby="workflow-context-heading">
+      <h2 id="workflow-context-heading">Research-workflow context</h2>
+      <p>
+        Use this case together with <a href={withBase('operations/')}>Research Workflow</a> for the A–E scientific map. The case illustrates one material and one bounded route; it does not prescribe parameters or establish a general material conclusion.
+      </p>
+    </section>
+
+    <p class="directory-link"><a href={withBase('workflows/')}>Return to Worked Workflows</a></p>
+  </article>
+</BaseLayout>
