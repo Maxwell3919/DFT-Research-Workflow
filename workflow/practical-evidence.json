@@ -251,19 +251,19 @@
     {
       "guide_slug": "check-born-charge-and-dielectric-ledger",
       "parent_topic": "dielectric-response-and-born-effective-charges",
-      "evidence_class": "synthetic-only",
-      "material": "invented tensor fixture",
-      "real_result": false,
+      "evidence_class": "real-execution",
+      "material": "COD 9013102 Silicon; QE 7.5 SCF plus Gamma-point ph.x epsil response",
+      "real_result": true,
       "interface": false,
-      "traceable_data": false,
-      "upgrade": "open DFPT tutorial data",
-      "blocker": "DFPT execution and source selection pending",
+      "traceable_data": true,
+      "upgrade": "completed bounded Silicon QE 7.5 dielectric/Born-charge DFPT reconstruction",
+      "blocker": "single Gamma point and one fixed cutoff/k-mesh; no dielectric observable convergence series",
       "priority": 2,
-      "execution_script": "examples/practical-guides/born_charge_dielectric_ledger.py",
+      "execution_script": "examples/practical-guides/silicon_qe_dielectric.py",
       "media_ids": [
-        "born-charge-dielectric-ledger"
+        "silicon-qe-dielectric"
       ],
-      "upgrade_readiness": "blocked"
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "check-epc-channel-ledger",

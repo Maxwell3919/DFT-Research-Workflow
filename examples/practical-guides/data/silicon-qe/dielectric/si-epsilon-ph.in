@@ -1,0 +1,8 @@
+&INPUTPH
+  tr2_ph = 1.0d-14,
+  prefix = 'si_epsilon',
+  outdir = './out',
+  fildyn = 'si_epsilon.dyn',
+  epsil = .true.,
+/
+0.0 0.0 0.0

@@ -288,7 +288,7 @@
     { "guide_slug": "compare-enumerated-magnetic-candidates", "source_ids": ["qe-pw-75", "vasp-magmom"] },
     { "guide_slug": "fit-anisotropy-and-exchange-ledger", "source_ids": ["qe-pw-75", "vasp-magnetic-anisotropy", "vasp-lsorbit"] },
     { "guide_slug": "check-strain-stress-ledger", "source_ids": ["nielsen-martin-stress", "mouhat-elastic-stability", "vasp-phonons-finite-differences"] },
-    { "guide_slug": "check-born-charge-and-dielectric-ledger", "source_ids": ["qe-ph-75", "vasp-born-effective-charges", "vasp-electric-field-dfpt"] },
+    { "guide_slug": "check-born-charge-and-dielectric-ledger", "source_ids": ["qe-ph-75", "vasp-born-effective-charges", "vasp-electric-field-dfpt", "cod-9013102"] },
     { "guide_slug": "unwrap-a-polarization-branch-path", "source_ids": ["vasp-berry-phases-finite-fields", "qe-polarization-user-guide"] },
     { "guide_slug": "check-piezoelectric-tensor-ledger", "source_ids": ["vasp-electric-field-dfpt", "vasp-linear-response", "qe-ph-75"] },
     { "guide_slug": "check-harmonic-mode-ledger", "source_ids": ["qe-ph-75", "phonopy-command", "phonopy-setting-tags"] },
