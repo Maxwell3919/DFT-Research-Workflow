@@ -1,0 +1,7 @@
+host=Talos local Docker host
+docker_client=29.5.3
+docker_server=29.5.3
+docker_server_os=Ubuntu 24.04.4 LTS
+container_base=ubuntu:24.04
+execution_state=blocked before container creation by Docker Hub metadata timeout
+
