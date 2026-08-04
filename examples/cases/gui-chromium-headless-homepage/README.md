@@ -10,16 +10,19 @@ available to install them.
 Run from this directory:
 
 ```bash
-bash run.sh
+CASE_RUN_ROOT=/absolute/empty/chromium-run bash run.sh
+cd /absolute/empty/chromium-run
 bash check.sh
 python3 parse.py
 ```
 
-`run.sh` records the DISPLAY/X11 capability probes in `environment.txt` before asking Chromium's
+`CASE_RUN_ROOT` must be an existing empty directory outside this case. The
+entrypoint reconstructs the case there and rejects an omitted, non-empty,
+in-case, or child-of-case root. `run.sh` records the DISPLAY/X11 capability probes in `environment.txt` before asking Chromium's
 documented headless mode to render `source/walkthrough.html`.  The resulting
-PNG is copied to `public/media/gui/chromium-headless-homepage/` so it can be
-inspected as a public asset.  It demonstrates only that the named browser
-rendered the named local document at the recorded viewport.  It does not prove
+PNG, raw stderr, sanitized stderr, and derived record remain in the external
+run root; it never writes repository `public/media`. It demonstrates only that
+the named browser rendered the named local document at the recorded viewport. It does not prove
 an X11 window was created, that a GUI structure viewer worked, or anything
 about a DFT structure or calculation.
 

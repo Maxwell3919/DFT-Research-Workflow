@@ -15,19 +15,24 @@ or wavefunction files. To reproduce it inside an authorized allocation, use:
 
 ```bash
 cd examples/cases/graphene-electronic-structure-qe
+CASE_RUN_ROOT=/absolute/empty/graphene-qe-run \
 PSEUDO_DIR=/path/to/public/pseudos RUN_STAGE=scf \
 PW_COMMAND=pw.x BANDS_COMMAND=bands.x \
 QE_LAUNCHER='srun --ntasks=1 --cpus-per-task=1 --hint=nomultithread' \
 bash run.sh
 ```
 
-`run.sh` does not submit a job.  It is intended to run *inside* an existing
-Slurm allocation, hash-checks the selected pseudo before use, and executes in
-a temporary directory.  It keeps only small, public text outputs and the
+`run.sh` requires `CASE_RUN_ROOT` to name an existing empty directory outside
+this case. It reconstructs the complete case there and rejects an omitted,
+non-empty, in-case, or child-of-case root, so no committed evidence is
+overwritten. It does not submit a job. It is intended to run *inside* an
+existing Slurm allocation, hash-checks the selected pseudo before use, and
+executes in a temporary directory. It keeps only small, public text outputs and the
 band-data file; temporary charge density, wavefunctions, and the pseudo link
 are removed on exit.  First run `RUN_STAGE=scf`, then independently audit its
-separate stdout/stderr with `qe_guard`.  Only after that audit has passed,
-write `output/scf-parent-evidence.json` with this exact shape (all SHA-256
+separate stdout/stderr with `qe_guard` in the external reconstructed case.
+Only after that audit has passed, write `output/scf-parent-evidence.json` there
+with this exact shape (all SHA-256
 values bind the files named by their relative keys):
 
 ```json

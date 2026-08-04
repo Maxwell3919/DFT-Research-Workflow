@@ -7,12 +7,17 @@ test, not a VESTA walkthrough and not a structure or DFT result.
 From this directory, run:
 
 ```bash
-bash run.sh
+CASE_RUN_ROOT=/absolute/empty/xvfb-run bash run.sh
+cd /absolute/empty/xvfb-run
 bash check.sh
 python3 parse.py
 ```
 
-`run.sh` builds the local `Dockerfile`, then runs `source/x11-smoke.sh` in the
+`CASE_RUN_ROOT` must be an existing empty directory outside this case. The
+entrypoint reconstructs the case there and rejects an omitted, non-empty,
+in-case, or child-of-case root, leaving committed outputs, figures, manifests,
+and public media untouched. Raw Docker-build stderr is retained in that external
+root alongside the normalized record. `run.sh` builds the local `Dockerfile`, then runs `source/x11-smoke.sh` in the
 image.  The container uses `LIBGL_ALWAYS_SOFTWARE=1`; the smoke script records
 the `llvmpipe` renderer, starts Openbox and `xmessage`, finds the xmessage
 window with `xdotool`, and captures it with `scrot`.  The browser/VESTA
