@@ -1,0 +1,122 @@
+{
+  "interface_candidate": {
+    "boundary": "The 0.0 percent mismatch is a construction constraint from assigning h-BN the graphene in-plane coordinates, not a relaxed mismatch or epitaxial feasibility result.",
+    "candidate": {
+      "atoms": 16,
+      "cell_vectors_ang": [
+        [
+          4.92,
+          0.0,
+          0.0
+        ],
+        [
+          -2.46,
+          4.26084499,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          24.0
+        ]
+      ],
+      "formula": "C8B4N4",
+      "minimum_distance_ang": 1.42028166,
+      "pbc": [
+        true,
+        true,
+        false
+      ],
+      "volume_ang3": 503.12057602
+    },
+    "candidate_atoms": 16,
+    "common_lattice_parameter_ang": 2.46,
+    "formula": "C8B4N4",
+    "graphene_atoms": 8,
+    "hbn_atoms": 8,
+    "imposed_inplane_mismatch_percent": 0.0,
+    "interlayer_separation_ang": 3.35,
+    "pbc": [
+      true,
+      true,
+      false
+    ]
+  },
+  "pymatgen_crosscheck": {
+    "interface_atoms": 16,
+    "interface_formula": "BC2N",
+    "vacancy_atoms": 63,
+    "vacancy_formula": "Si"
+  },
+  "software": {
+    "ase": "3.29.0",
+    "pymatgen_core": "2026.7.31",
+    "python": "3.12.3"
+  },
+  "vacancy_candidate": {
+    "candidate": {
+      "atoms": 63,
+      "cell_vectors_ang": [
+        [
+          10.862,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10.862,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          10.862
+        ]
+      ],
+      "formula": "Si63",
+      "minimum_distance_ang": 2.35169198,
+      "pbc": [
+        true,
+        true,
+        true
+      ],
+      "volume_ang3": 1281.53182393
+    },
+    "candidate_atoms": 63,
+    "parent": {
+      "atoms": 64,
+      "cell_vectors_ang": [
+        [
+          10.862,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10.862,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          10.862
+        ]
+      ],
+      "formula": "Si64",
+      "minimum_distance_ang": 2.35169198,
+      "pbc": [
+        true,
+        true,
+        true
+      ],
+      "volume_ang3": 1281.53182393
+    },
+    "parent_atoms": 64,
+    "removed_site_index": 0,
+    "vacancy_site_fractional_coordinate": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

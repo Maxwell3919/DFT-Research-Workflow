@@ -1,0 +1,143 @@
+{
+  "artifacts": [
+    {
+      "bytes": 3503,
+      "path": "output/si-2x2x2-vacancy.xyz",
+      "role": "vacancy_structure",
+      "sha256": "23b2148628e5ab537af3a820d30e839699926c9d4fa895c2347200a37b191db5"
+    },
+    {
+      "bytes": 974,
+      "path": "output/graphene-hbn-bilayer.xyz",
+      "role": "interface_structure",
+      "sha256": "b3b472859a8277e7c7f18392bebea3a6b1060bef71d837d8694bf8ef79d04136"
+    },
+    {
+      "bytes": 4086,
+      "path": "input/POSCAR.si-2x2x2-vacancy",
+      "role": "vacancy_calculation_structure",
+      "sha256": "06f08beb4fe26f6bb6606c083f09e473d821aed64ac5dd6ddf5def1bd6ab696c"
+    },
+    {
+      "bytes": 1305,
+      "path": "input/POSCAR.graphene-hbn-bilayer",
+      "role": "interface_calculation_structure",
+      "sha256": "1d07e0221e1004ba9923c2cfe246e8ff3c7ec3be74ba411a23eca4dac42bc3af"
+    },
+    {
+      "bytes": 2290,
+      "path": "derived/structure-candidates-report.json",
+      "role": "metrics_report",
+      "sha256": "cb45366e5bd161264692370656f653befcb54ee752df37ab1e8af6eab7a2f173"
+    },
+    {
+      "bytes": 257,
+      "path": "derived/structure-candidates-metrics.csv",
+      "role": "metrics_table",
+      "sha256": "10ebfdd0de8c72aaf7a2ec739e044e704f29fdb826eb54a639d31a1783eb3ef4"
+    },
+    {
+      "alt": "x-z projection of the constructed Si vacancy supercell and imposed-common-cell graphene h-BN bilayer.",
+      "bytes": 49765,
+      "caption": "Generated from the recorded ASE structures; a geometric presentation, not an energy result.",
+      "path": "figures/structure-candidates-xz.png",
+      "role": "structure_projection",
+      "sha256": "77376eb60e7d324c8950ab80737f4b6322e512c94c564325c1eb9e2a22b16712"
+    }
+  ],
+  "case_id": "structure-defect-interface-candidates",
+  "case_kind": "structure-operation",
+  "claim_boundary": {
+    "does_not_support": [
+      "Vacancy formation energy, charge-state preference, concentration, relaxed geometry, or defect thermodynamics.",
+      "Interfacial adhesion, stability, optimal registry, strain accommodation, band alignment, or electronic structure.",
+      "Any DFT parameter, convergence, or material-level scientific conclusion."
+    ],
+    "supports": [
+      "The recorded ASE deletion of one explicitly indexed Si site from a 2x2x2 parent supercell.",
+      "The recorded ASE/pymatgen construction and metric check of an imposed-common-cell graphene/h-BN bilayer candidate."
+    ]
+  },
+  "commands": [
+    {
+      "command": "CASE_RUN_ROOT=/absolute/empty/directory PYTHON=python3 bash run.sh",
+      "exit_code": 0,
+      "stage": "construct"
+    },
+    {
+      "command": "bash check.sh",
+      "exit_code": 0,
+      "stage": "acceptance"
+    }
+  ],
+  "completed_at": "2026-08-05T00:00:00+08:00",
+  "evidence_class": "real-execution",
+  "exit_code": 0,
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "summary": "Required source, structures, derived report/table, figure, and manifest are hash-bound."
+    },
+    "G1": {
+      "status": "PASS",
+      "summary": "ASE construction and independent pymatgen materialization checks exited zero."
+    },
+    "G2": {
+      "status": "WARN",
+      "summary": "No electronic solver or geometry optimizer was run."
+    },
+    "G3": {
+      "status": "PASS",
+      "summary": "Both exported candidates, source record, metrics, stdout, and PNG exist."
+    },
+    "G4": {
+      "status": "NOT TESTED",
+      "summary": "No supercell-size, registry, strain, vacuum, or observable-convergence study was performed."
+    },
+    "G5": {
+      "status": "NOT CLAIMED",
+      "summary": "No defect, interfacial, stability, band, or energetic conclusion is claimed."
+    }
+  },
+  "public_host_label": "Talos local execution",
+  "schema_version": "1.0",
+  "software": [
+    {
+      "interface": "Python API",
+      "name": "ASE",
+      "version": "3.29.0"
+    },
+    {
+      "interface": "Python API",
+      "name": "pymatgen-core",
+      "version": "2026.7.31"
+    },
+    {
+      "interface": "Python API",
+      "name": "matplotlib",
+      "version": "3.11.0"
+    }
+  ],
+  "sources": [
+    {
+      "accessed_at": "2026-08-05",
+      "id": "ase-silicon-diamond",
+      "licence_boundary": "Generated locally through ASE API calls; this tutorial geometry is not a database identity or a published relaxed structure.",
+      "path": "source/si-diamond-conventional.xyz",
+      "role": "procedural parent structure",
+      "sha256": "12fd90585c3eed203658f29d05c329ad6c905985ab2bf11764c1f74e9ff509db",
+      "url": "https://wiki.fysik.dtu.dk/ase/ase/build/build.html"
+    },
+    {
+      "accessed_at": "2026-08-05",
+      "id": "ase-graphene-hbn-components",
+      "licence_boundary": "Generated locally through ASE API calls; this tutorial geometry is not a database identity or a published relaxed structure.",
+      "path": "source/graphene-hbn-component-model.json",
+      "role": "procedural interface components",
+      "sha256": "be0a20d5eaff1a6060cfa01da9440e644e075178161596c16f1b5910f17d4ecf",
+      "url": "https://wiki.fysik.dtu.dk/ase/ase/build/build.html"
+    }
+  ],
+  "started_at": null,
+  "title": "Silicon vacancy and graphene/h-BN interface construction candidates"
+}
