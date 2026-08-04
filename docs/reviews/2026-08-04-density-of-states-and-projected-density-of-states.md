@@ -21,9 +21,9 @@ The overview distinguishes the full-zone DOS integral from a band path, a stated
 
 ## Numerical and execution boundary
 
-The companion script uses invented DOS and projection arrays. It executes no DFT code and ingests no material data. Execution success is not DOS convergence, a real electron count, projector validation, a material band gap, bonding, charge transfer, magnetic order, lifetime, or a scientific conclusion.
+The companion reconstructs the hash-bound total-DOS output from a bounded Silicon QE 7.5 SCF → NSCF → `dos.x` execution on the CC0 COD 9013102 structure. It verifies the stored-output identity, Fermi reference, parsing, and plot reconstruction. Execution success is not DOS convergence, a real electron count, projector validation, a material band gap, bonding, charge transfer, magnetic order, lifetime, or a scientific conclusion.
 
-The media are original conceptual diagrams of invented data. No external figure was copied.
+The media are original plots reconstructed from the project's actual `dos.x` output. No external figure was copied.
 
 ## Review conclusion
 

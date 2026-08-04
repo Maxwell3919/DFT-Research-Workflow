@@ -4,7 +4,7 @@ const base = (process.env.SITE_URL ?? 'http://127.0.0.1:4322/DFT-Research-Workfl
 const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const routes = [
   ['/operations/density-of-states-and-projected-density-of-states/', 'Density of States and Projected Density of States', 'A DOS is a full-zone integration, not a band path'],
-  ['/operations/density-of-states-and-projected-density-of-states/guides/check-dos-normalization-and-projection-closure/', 'Check a DOS Integral and Projected-Weight Closure', 'Execution verifies deterministic numerical integration'],
+  ['/operations/density-of-states-and-projected-density-of-states/guides/check-dos-normalization-and-projection-closure/', 'Check a DOS Integral and Projected-Weight Closure', 'Execution verifies the stored-output hash'],
 ];
 const browser = await puppeteer.launch({ executablePath, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
 try {
