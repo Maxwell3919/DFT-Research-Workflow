@@ -234,6 +234,12 @@ const reviewRequirements = new Map([
     'Execution success is not an EPC calculation',
     'The media are an original diagram generated from invented values',
   ]],
+  ['docs/reviews/2026-08-04-conventional-superconductivity.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented weighted spectral terms',
+    'Execution success is not an alpha-squared-F calculation',
+    'The media are an original diagram generated from invented values',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
