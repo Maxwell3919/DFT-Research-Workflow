@@ -710,19 +710,19 @@
     {
       "guide_slug": "build-interface-energy-and-separation-ledger",
       "parent_topic": "interface-and-heterostructure-energetics",
-      "evidence_class": "synthetic-only",
-      "material": "invented interface energies",
+      "evidence_class": "derived-public-data",
+      "material": "published Al/TiN Table 2 contact-separation data",
       "real_result": false,
       "interface": false,
-      "traceable_data": false,
-      "upgrade": "published Al/TiN data",
-      "blocker": null,
+      "traceable_data": true,
+      "upgrade": "completed source-bound Al/TiN table reconstruction",
+      "blocker": "published-data redraw; no geometry or DFT rerun",
       "priority": 2,
-      "execution_script": "examples/practical-guides/interface_energy_ledger.py",
+      "execution_script": "examples/practical-guides/interface_ledger_al_tin.py",
       "media_ids": [
-        "interface-energy-ledger"
+        "al-tin-interface-ledger"
       ],
-      "upgrade_readiness": "candidate"
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "enumerate-lattice-matches-and-registry",

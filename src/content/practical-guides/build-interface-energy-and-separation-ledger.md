@@ -6,41 +6,43 @@ kind: implementation
 tools:
   - python
 status: reviewed
-summary: Keep reservoir excess energy, constrained binding, and separation work as distinct, explicitly normalized energy cycles.
+summary: Reconstruct published Al/TiN contact and separation quantities while keeping their per-cell definitions distinct from an area-normalized interface ledger.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/interface_energy_ledger.py
+execution_script: examples/practical-guides/interface_ledger_al_tin.py
 source_ids:
-  - interface-energy-review
-  - zur-mcgill
+  - feldbauer-al-tin
+  - feldbauer-al-tin-arxiv
 media_ids:
-  - interface-energy-ledger
+  - al-tin-interface-ledger
 review: docs/reviews/2026-08-04-interface-and-heterostructure-energetics.md
 reviewed_at: "2026-08-04"
 ---
 
-An interface result is easy to mislabel when the fragments and reservoirs are hidden. This fixture makes three distinct subtractions visible with invented energies. It contains no atomic structure and does not run DFT.
+An interface result is easy to mislabel when the fragments and reservoirs are hidden. This worked reconstruction uses the seven published Al/TiN Table 2 rows as a traceable public-data ledger. It keeps the paper's negative adhesion or interaction energy and Al-layer removal energy distinct; it does not invent a common denominator or convert either quantity into a work of separation.
+
+![Published Al/TiN interface ledger comparing adhesion or interaction magnitude with Al-layer removal energy.](/DFT-Research-Workflow/media/practical-guides/interface-and-heterostructure-energetics/build-interface-energy-and-separation-ledger/al-tin-interface-ledger.svg)
 
 ## Keep the denominators and reference states visible
 
-The first ledger uses a periodic cell with two equivalent interfaces and subtracts invented reservoir energies before dividing by `2A`; that is an interface excess per area. A second subtraction uses isolated fragments held in the same matched cell, giving a constrained binding energy per area. A third separates the contact into explicitly stated cleavage fragments, giving a work of separation for that path.
+The public rows are reported in eV per interface cell. Their adhesion or interaction values and layer-removal values are not interchangeable with an area-normalized interface excess, constrained binding energy, or fracture work. The source's geometry, definitions, and transfer labels remain authoritative.
 
-Those labels cannot be interchanged merely because all values are reported in energy per area. The [interface-energy review](https://doi.org/10.1038/s41524-019-0160-9) discusses the reservoir dependence and thickness/strain issues behind the first quantity; the matching step remains a separate structural problem.
+Those labels cannot be interchanged merely because all values are reported in an energy unit. The source's table definitions and interface matching choices remain part of the evidence; the reconstruction does not infer missing reservoirs, areas, or structural details.
 
-## Run the deterministic ledger
+## Reconstruct the published ledger
 
 ```text
-python3 examples/practical-guides/interface_energy_ledger.py \
-  --svg public/media/practical-guides/interface-and-heterostructure-energetics/build-interface-energy-and-separation-ledger/interface-energy-ledger.svg
+python3 examples/practical-guides/interface_ledger_al_tin.py \
+  --svg public/media/practical-guides/interface-and-heterostructure-energetics/build-interface-energy-and-separation-ledger/al-tin-interface-ledger.svg
 ```
 
-The printed JSON records the invented combined, reservoir, matched-fragment, and cleavage-fragment terms together with interface count and area. A real calculation must replace the fixture only with hashes and state metadata for every matching term.
+The printed JSON records the source DOI/preprint, snapshot hash, table identity, units, and all seven selected rows. It is a public-data reconstruction; it does not rerun the source calculations.
 
 ## What this guide verifies
 
-Execution checks arithmetic, sign, area normalization, the two-interface denominator, and deterministic SVG rendering. It is not a DFT calculation, a convergence study, a proof of a stable interface, a work-of-fracture prediction, or evidence for a material conclusion.
+Execution checks source identity, table identity, selected values, units, and deterministic SVG rendering. It does not establish interface geometry, DFT execution, area normalization, convergence, a stable interface, a fracture energy, or a material conclusion.
 
 ## Official sources
 
-- [Interface-energy review](https://doi.org/10.1038/s41524-019-0160-9)
-- [Zur and McGill, lattice-match construction](https://doi.org/10.1063/1.333084)
+- [Feldbauer and co-workers, Al/TiN contacts](https://doi.org/10.1103/PhysRevB.91.165413)
+- [Open preprint of the Al/TiN study](https://arxiv.org/abs/1504.06192)

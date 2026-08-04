@@ -275,7 +275,7 @@
       "guide_slug": "replot-cmr-co-adsorption",
       "source_ids": ["cmr-adsorption-paper", "cmr-adsorption-page", "cmr-adsorption-db", "cmr-data-license"]
     },
-    { "guide_slug": "build-interface-energy-and-separation-ledger", "source_ids": ["interface-energy-review", "zur-mcgill"] },
+    { "guide_slug": "build-interface-energy-and-separation-ledger", "source_ids": ["feldbauer-al-tin", "feldbauer-al-tin-arxiv"] },
     { "guide_slug": "enumerate-lattice-matches-and-registry", "source_ids": ["zur-mcgill", "pymatgen-interface-docs"] },
     { "guide_slug": "replot-al-tin-interface-adhesion", "source_ids": ["feldbauer-al-tin", "feldbauer-al-tin-arxiv"] },
     { "guide_slug": "build-reciprocal-path-ledger", "source_ids": ["seekpath-paper", "seekpath-docs", "qe-bands-docs", "cod-9013102"] },
