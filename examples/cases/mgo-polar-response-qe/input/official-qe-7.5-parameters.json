@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "manual_version": "7.5",
+  "verified_by": "qe_guard 1.1.0 live-check on 2026-08-04T18:01:06Z",
+  "manuals": [
+    {
+      "name": "INPUT_PW",
+      "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.txt",
+      "official_sha256": "344932e399030687217a5a311ab4504a7b21a6a2281680dfa92074aec29c491d"
+    },
+    {
+      "name": "INPUT_PH",
+      "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html",
+      "official_sha256": "2390c593c99833da82b470e7b72d2b39c20ae6b6613e904e270e2ae9d673d4fc"
+    }
+  ],
+  "fields": [
+    {"field": "ecutwfc", "manual": "INPUT_PW", "meaning": "required wavefunction kinetic-energy cutoff in Ry"},
+    {"field": "ecutrho", "manual": "INPUT_PW", "meaning": "charge-density/potential cutoff in Ry; testing remains mandatory"},
+    {"field": "occupations='fixed'", "manual": "INPUT_PW", "meaning": "documented option for insulators with a gap"},
+    {"field": "conv_thr", "manual": "INPUT_PW", "meaning": "estimated SCF energy-error threshold; extensive"},
+    {"field": "prefix and outdir", "manual": "INPUT_PH", "meaning": "must match the unperturbed calculation"},
+    {"field": "tr2_ph", "manual": "INPUT_PH", "meaning": "DFPT self-consistency threshold"},
+    {"field": "epsil=.true.", "manual": "INPUT_PH", "meaning": "for nonmetals at q=0, request the macroscopic dielectric response; invalid for metals or q not equal to zero"},
+    {"field": "fildyn", "manual": "INPUT_PH", "meaning": "dynamical-matrix output filename"}
+  ],
+  "boundary": "These version-matched official input facts validate documented syntax/semantics only. They do not validate the staged structure, pseudopotential suitability, runtime output, numerical convergence, LO--TO splitting, or a material claim."
+}

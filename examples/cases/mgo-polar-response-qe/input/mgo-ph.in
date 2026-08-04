@@ -1,0 +1,8 @@
+&INPUTPH
+  tr2_ph = 1.0d-14,
+  prefix = 'mgo_polar',
+  outdir = './out',
+  fildyn = 'mgo_polar.dyn',
+  epsil = .true.,
+/
+0.0 0.0 0.0

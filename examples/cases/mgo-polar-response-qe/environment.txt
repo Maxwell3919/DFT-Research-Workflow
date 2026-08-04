@@ -1,0 +1,7 @@
+Observed bounded execution: Talos, 2026-08-05T02:55:53+08:00 to 2026-08-05T02:57:25+08:00.
+Target code: Quantum ESPRESSO 7.5 (pw.x followed by ph.x).
+Observed executable identities: pw.x SHA-256 9fbf73734fa54df64b99846c64555d020d89de6af09399f51e92bdc2b5688452; ph.x SHA-256 4f46c0fedf6a4cb5ecbef60b183af02a6934e0bec5daf56eb2f2ad47f81748de.
+Observed launcher: srun --exclusive --mpi=pmix --ntasks=1 --cpus-per-task=1 --time=00:10:00.
+Pseudopotential declaration: QE official portal Mg XML UPF plus SSSP 1.3.0 PBE precision O UPF; exact filenames and SHA-256 are in input/pseudopotentials.json.
+Model boundary: fixed two-atom rock-salt MgO primitive cell; no relaxation or convergence evidence.
+The two recorded stage exit files are zero and both captured stderr files are empty. No host path, UPF body, restart, or WFC is public evidence.

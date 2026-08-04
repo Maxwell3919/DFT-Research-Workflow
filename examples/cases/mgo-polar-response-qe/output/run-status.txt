@@ -1,0 +1,1 @@
+pw.x and ph.x commands exited zero; run extract.sh and check.sh before any claim.

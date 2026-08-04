@@ -1,0 +1,14 @@
+{
+  "formula": "MgO",
+  "model_role": "fixed teaching-model input for one Gamma-point DFPT entry",
+  "crystal_description": "two-atom rock-salt primitive cell in an fcc primitive basis",
+  "lattice_parameter_angstrom": 4.212,
+  "lattice_parameter_boundary": "Chosen fixed model value for this bounded entry; it is not a relaxation result, experimental fit, or recommendation.",
+  "coordinates": {
+    "unit": "crystal",
+    "sites": [
+      {"element": "Mg", "fractional": [0.0, 0.0, 0.0]},
+      {"element": "O", "fractional": [0.5, 0.5, 0.5]}
+    ]
+  }
+}
