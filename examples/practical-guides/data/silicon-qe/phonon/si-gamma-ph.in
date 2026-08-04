@@ -1,0 +1,7 @@
+&INPUTPH
+  tr2_ph = 1.0d-14,
+  prefix = 'si_gamma_phonon',
+  outdir = './out',
+  fildyn = 'si_gamma.dyn',
+/
+0.0 0.0 0.0

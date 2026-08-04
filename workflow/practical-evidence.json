@@ -234,19 +234,19 @@
     {
       "guide_slug": "check-harmonic-mode-ledger",
       "parent_topic": "harmonic-phonons",
-      "evidence_class": "synthetic-only",
-      "material": "invented modes",
-      "real_result": false,
+      "evidence_class": "real-execution",
+      "material": "COD 9013102 Silicon; QE 7.5 SCF plus Gamma-point ph.x",
+      "real_result": true,
       "interface": false,
-      "traceable_data": false,
-      "upgrade": "open phonon tutorial data",
-      "blocker": "DFPT execution and source selection pending",
+      "traceable_data": true,
+      "upgrade": "completed bounded Silicon Gamma-point QE 7.5 DFPT reconstruction",
+      "blocker": "not a dispersion or phonon-frequency convergence study",
       "priority": 2,
-      "execution_script": "examples/practical-guides/harmonic_mode_ledger.py",
+      "execution_script": "examples/practical-guides/silicon_gamma_phonon.py",
       "media_ids": [
-        "harmonic-mode-ledger"
+        "silicon-gamma-phonon"
       ],
-      "upgrade_readiness": "blocked"
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "check-born-charge-and-dielectric-ledger",
