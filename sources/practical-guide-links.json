@@ -33,6 +33,8 @@
     { "id": "baroni-dfpt", "url": "https://doi.org/10.1103/RevModPhys.73.515", "kind": "doi" },
     { "id": "giustino-epc-review", "url": "https://doi.org/10.1103/RevModPhys.89.015003", "kind": "doi" },
     { "id": "qe-epc-coefficients", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node10.html", "kind": "page" },
+    { "id": "qe-neb-input", "url": "https://www.quantum-espresso.org/Doc/INPUT_NEB.html", "kind": "page" },
+    { "id": "ase-neb", "url": "https://docs.ase-lib.org/ase/neb.html", "kind": "page" },
     { "id": "ase-optimize", "url": "https://docs.ase-lib.org/ase/optimize.html", "kind": "page" },
     { "id": "ase-constraints", "url": "https://docs.ase-lib.org/ase/constraints.html", "kind": "page" },
     { "id": "ase-filters", "url": "https://docs.ase-lib.org/ase/filters.html", "kind": "page" },
@@ -276,5 +278,6 @@
     { "guide_slug": "check-lattice-transport-tensor-ledger", "source_ids": ["phono3py-direct-lbte", "phono3py-api"] }
     ,{ "guide_slug": "check-epc-channel-ledger", "source_ids": ["qe-ph-75", "giustino-epc-review"] }
     ,{ "guide_slug": "check-superconductivity-moment-ledger", "source_ids": ["qe-epc-coefficients", "giustino-epc-review"] }
+    ,{ "guide_slug": "check-reaction-path-barrier-ledger", "source_ids": ["qe-neb-input", "ase-neb"] }
   ]
 }
