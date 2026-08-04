@@ -76,6 +76,8 @@ free-energy bookkeeping. Neither establishes adsorption-energy convergence,
 thermodynamic accuracy, a real site/coverage series, entropy model, solvent,
 pressure, electrode condition, or a material conclusion.
 
+Execution success is not adsorption-energy convergence for a real calculation.
+
 ## Official sources
 
 - [Schmidt and Thygesen, adsorption benchmark reactions](https://doi.org/10.1021/acs.jpcc.7b12258)
