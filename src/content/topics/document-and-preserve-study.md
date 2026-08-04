@@ -9,7 +9,7 @@ Preservation turns that working history into an identifiable research object. An
 
 The unit of preservation is the study and its lineage, not every byte ever written.
 
-## Preserve a versioned research object
+## Give every preserved state an identity
 
 Freeze a release instead of silently updating a shared directory. Assign it a version, creation date, responsible authors, and stable identifier. Cite that version from the article or report. A later correction should create a new version with a change record and a link to the state it supersedes.
 
@@ -26,7 +26,7 @@ Relative paths make a package relocatable. Logical identifiers keep the graph st
 
 Persistent identifiers solve discoverability and citation rather than fixity. A DOI or repository record should resolve to metadata that identifies the version, creators, license or access conditions, related publications, and object. A checksum without a durable location is difficult to find; a DOI without usable files and metadata is difficult to reuse.
 
-## Preserve the route from question to claim
+## Preserve the path from question to claim
 
 Computational provenance is naturally represented as a graph. Data nodes describe structures, parameters, inputs, outputs, and derived products. Process nodes describe calculations, conversions, fits, and analyses. Directed edges identify what each process consumed and produced.
 
@@ -68,7 +68,7 @@ Licenses and access conditions may differ between code, original data, external 
 
 Choose repositories according to object size, retention commitment, versioning, identifiers, access controls, and domain metadata. A source-code host is suitable for small text, scripts, schemas, and review history, but not automatically for large calculation outputs. The manifest can link code, archival datasets, restricted assets, and host-canonical raw data without pretending that one service is authoritative for every object class.
 
-## Test recovery, not only deposit
+## Test recovery, not just deposit
 
 Preservation is demonstrated by retrieval and reconstruction from the released state. In a clean environment:
 
