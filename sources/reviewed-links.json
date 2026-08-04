@@ -2,8 +2,9 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 223,
+  "expected_unique_urls": 229,
   "topics": [
+    {"topic_slug":"quasiparticle-corrections","article":"src/content/topics/quasiparticle-corrections.md","review":"docs/reviews/2026-08-04-quasiparticle-corrections.md","links":[{"kind":"doi","url":"https://doi.org/10.1103/PhysRev.139.A796"},{"kind":"doi","url":"https://doi.org/10.1103/PhysRevB.34.5390"},{"kind":"doi","url":"https://doi.org/10.1103/PhysRevB.75.235102"},{"kind":"page","url":"https://docs.abinit.org/tutorial/gw1/"},{"kind":"page","url":"https://docs.abinit.org/tutorial/gw2/"},{"kind":"page","url":"https://wiki.yambo-code.eu/wiki/index.php?title=GW"},{"kind":"page","url":"https://berkeleygw.org/documentation/tutorial/"}]},
     {
       "topic_slug": "time-dependent-response-and-spectroscopy",
       "article": "src/content/topics/time-dependent-response-and-spectroscopy.md",

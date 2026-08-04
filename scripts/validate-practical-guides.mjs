@@ -276,6 +276,12 @@ const reviewRequirements = new Map([
     'Execution success is not a TDDFT calculation',
     'The media are an original diagram generated from invented labels',
   ]],
+  ['docs/reviews/2026-08-04-quasiparticle-corrections.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented quasiparticle metadata',
+    'Execution success is not a GW calculation',
+    'The media are an original diagram generated from invented labels',
+  ]],
 ]);
 
 function parseFrontmatter(source) {

@@ -3,6 +3,7 @@
   "authority": "official-source inventory for reviewed practical guides",
   "scope_note": "These URLs support version-specific implementation or analysis claims in reviewed practical pages. Reachability, semantic support, execution, numerical convergence, and scientific validity remain separate checks.",
   "sources": [
+    {"id":"hedin-gw","url":"https://doi.org/10.1103/PhysRev.139.A796","kind":"doi"},{"id":"hybertsen-louie-gw","url":"https://doi.org/10.1103/PhysRevB.34.5390","kind":"doi"},{"id":"abinit-gw1","url":"https://docs.abinit.org/tutorial/gw1/","kind":"page"},
     { "id": "runge-gross-tddft", "url": "https://doi.org/10.1103/PhysRevLett.52.997", "kind": "doi" },
     { "id": "casida-linear-response", "url": "https://doi.org/10.1103/PhysRevA.71.032514", "kind": "doi" },
     { "id": "octopus-response-tutorial", "url": "https://octopus-code.org/documentation/main/tutorial/response/", "kind": "page" },
@@ -295,5 +296,6 @@
     ,{ "guide_slug": "check-structural-sampling-window-overlap", "source_ids": ["torrie-valleau-umbrella", "kumar-wham"] }
     ,{ "guide_slug": "check-optical-spectrum-comparison-ledger", "source_ids": ["adler-dielectric-response", "wiser-dielectric-constant", "vasp-loptics"] }
     ,{ "guide_slug": "check-time-dependent-response-ledger", "source_ids": ["runge-gross-tddft", "casida-linear-response", "octopus-response-tutorial"] }
+    ,{ "guide_slug": "check-quasiparticle-comparison-ledger", "source_ids": ["hedin-gw", "hybertsen-louie-gw", "abinit-gw1"] }
   ]
 }

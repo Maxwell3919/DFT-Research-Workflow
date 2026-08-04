@@ -97,6 +97,7 @@ AIMD_ANALYSIS_SCRIPTS = ["aimd_segment_ledger.py"]
 STRUCTURAL_SAMPLING_ANALYSIS_SCRIPTS = ["structural_sampling_overlap.py"]
 OPTICAL_SPECTRUM_ANALYSIS_SCRIPTS = ["optical_spectrum_comparison_ledger.py"]
 TIME_DEPENDENT_RESPONSE_ANALYSIS_SCRIPTS = ["time_dependent_response_ledger.py"]
+QUASIPARTICLE_ANALYSIS_SCRIPTS = ["quasiparticle_comparison_ledger.py"]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
@@ -132,6 +133,7 @@ SCRIPTS = [
     *STRUCTURAL_SAMPLING_ANALYSIS_SCRIPTS,
     *OPTICAL_SPECTRUM_ANALYSIS_SCRIPTS,
     *TIME_DEPENDENT_RESPONSE_ANALYSIS_SCRIPTS,
+    *QUASIPARTICLE_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -161,7 +163,7 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 57
+    assert len(results) == 58
     report = {
         "schema_version": 10,
         "project_root": str(ROOT),
@@ -201,15 +203,16 @@ def main() -> None:
         "structural_sampling_analysis_scripts": STRUCTURAL_SAMPLING_ANALYSIS_SCRIPTS,
         "optical_spectrum_analysis_scripts": OPTICAL_SPECTRUM_ANALYSIS_SCRIPTS,
         "time_dependent_response_analysis_scripts": TIME_DEPENDENT_RESPONSE_ANALYSIS_SCRIPTS,
+        "quasiparticle_analysis_scripts": QUASIPARTICLE_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
             "Execution establishes declared structural transformations, synthetic convergence-table "
             "analysis, bounded ASE/EMT or synthetic optimization diagnostics, and deterministic "
-            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, Fermi-isovalue, charge-difference closure, potential-lineup, COHP-window, magnetic-candidate, magnetic-anisotropy/exchange-ledger, elastic strain--stress-ledger, Born-charge/dielectric-ledger, polarization-branch, piezoelectric-ledger, harmonic-mode-ledger, anharmonic-linewidth-ledger, lattice-transport-tensor-ledger, EPC-channel-ledger, superconductivity-spectral-moment-ledger, reaction-path-barrier-ledger, diffusion-network-ledger, AIMD-segment-ledger, structural-sampling-overlap, and optical-spectrum-comparison metadata analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
+            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, Fermi-isovalue, charge-difference closure, potential-lineup, COHP-window, magnetic-candidate, magnetic-anisotropy/exchange-ledger, elastic strain--stress-ledger, Born-charge/dielectric-ledger, polarization-branch, piezoelectric-ledger, harmonic-mode-ledger, anharmonic-linewidth-ledger, lattice-transport-tensor-ledger, EPC-channel-ledger, superconductivity-spectral-moment-ledger, reaction-path-barrier-ledger, diffusion-network-ledger, AIMD-segment-ledger, structural-sampling-overlap, optical-spectrum-comparison, time-dependent-response, and quasiparticle-comparison metadata analysis, and frozen public-data convex-hull, Si-surface and CMR adsorption redraws only; "
             "it does not establish DFT convergence, a physical minimum, a real reference ground state, "
             "a material formation, surface or adsorption energy, real work function, defect charge state or concentration, physical EOS or phase transition, independent database validation, "
-            "candidate completeness, stability, transferability, or a scientific conclusion."
+            "candidate completeness, stability, transferability, a dielectric response, GW result, or a scientific conclusion."
         ),
     }
 
@@ -223,11 +226,11 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 57/57 examples; four structural transformations, "
+        "Practical guide execution passed: 58/58 examples; four structural transformations, "
         "four synthetic convergence analyses, four bounded optimization diagnostics, and "
         "four deterministic reference-state diagnostics, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
-        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, one invented polarization-branch fixture, one invented piezoelectric ledger fixture, one invented harmonic-mode ledger fixture, one invented anharmonic-linewidth ledger fixture, one invented lattice-transport tensor ledger fixture, one invented EPC channel ledger fixture, one invented superconductivity spectral-moment ledger fixture, one invented reaction-path barrier ledger fixture, one invented diffusion-network ledger fixture, one invented AIMD segment ledger fixture, one invented structural-sampling overlap ledger fixture, one invented optical-spectrum comparison ledger fixture, and one invented time-dependent-response ledger fixture under pinned versions."
+            "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, one invented polarization-branch fixture, one invented piezoelectric ledger fixture, one invented harmonic-mode ledger fixture, one invented anharmonic-linewidth ledger fixture, one invented lattice-transport tensor ledger fixture, one invented EPC channel ledger fixture, one invented superconductivity spectral-moment ledger fixture, one invented reaction-path barrier ledger fixture, one invented diffusion-network ledger fixture, one invented AIMD segment ledger fixture, one invented structural-sampling overlap ledger fixture, one invented optical-spectrum comparison ledger fixture, one invented time-dependent-response ledger fixture, and one invented quasiparticle-comparison ledger fixture under pinned versions; none performs a DFT, dielectric-response, GW, or material-property calculation."
     )
 
 
