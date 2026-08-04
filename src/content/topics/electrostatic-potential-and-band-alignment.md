@@ -3,15 +3,24 @@ topic_slug: electrostatic-potential-and-band-alignment
 status: reviewed
 ---
 
-Electrostatic-potential analysis provides a reference construction for comparing energies that otherwise carry an arbitrary periodic gauge. It can support a surface work function, a band lineup, or a charged-defect correction only when the potential quantity, averaging operation, geometry, electrostatic boundary condition, and comparison object are explicit. A plotted potential trace is not automatically a vacuum level, a band offset, a built-in field, or a device band diagram.
+Electrostatic-potential analysis creates a reference for comparing energies whose zero is otherwise arbitrary in a periodic calculation. It can support a surface work function, a bulk-to-bulk lineup, an explicit interface band offset, or a charged-defect correction. It does so only when the potential field, averaging operation, geometry, boundary conditions, and compared electronic states are specified.
 
-## A periodic potential needs a reference before it can align energies
+A plotted potential profile is therefore not automatically a vacuum level, built-in field, band offset, Schottky barrier, or device band diagram. The scientific result is the reference construction and its tested domain, not the plot alone.
 
-Adding a constant to an electrostatic potential changes no forces or charge density but shifts every displayed eigenvalue reference. Absolute values from separate periodic calculations are therefore not directly comparable. The useful quantity is a declared difference: a common core-like local reference, a bulk-like average, a vacuum plateau, or a lineup extracted from one explicit interface calculation.
+## Separate the arbitrary zero from a measurable difference
 
-The output must also be identified. A code can write an electrostatic contribution, a local ionic-plus-Hartree potential, a total local potential containing exchange--correlation terms, or spinor components. These are different fields. Do not replace one with another silently or compare profiles made with different pseudopotential, PAW reconstruction, charge, solvent, dipole-correction, or boundary conventions.
+Adding a constant to a periodic potential changes neither the charge density nor the forces, but it shifts the displayed energy reference. Absolute potential values from separate periodic calculations cannot therefore be compared directly.
 
-## Averaging reveals a reference only where a suitable region exists
+A useful alignment is a difference built from a common reference, such as:
+
+- a side-specific vacuum plateau in one slab calculation;
+- a bulk-like macroscopic average;
+- a local core-like marker with controlled chemical environment;
+- a reference shift extracted across one explicit interface.
+
+The potential field itself must be identified. Codes may output the Hartree contribution, an ionic-plus-Hartree local potential, a total local Kohn--Sham potential, reconstructed PAW fields, or spin-dependent components. These are not interchangeable. Use one compatible definition throughout the comparison and preserve the pseudopotential, PAW, charge, solvent, dipole-correction, and boundary conventions that determine it.
+
+## Averaging removes oscillations; it does not create a reference region
 
 For a slab periodic in the plane, a planar average may be written
 
@@ -19,39 +28,55 @@ For a slab periodic in the plane, a planar average may be written
 Vbar(z) = 1/A ∫_A V(x,y,z) dx dy,
 ```
 
-where `A` is the area of the declared plane. A macroscopic average further convolves this profile with a stated window. Averaging suppresses atomic oscillations; it does not manufacture a field-free vacuum or bulk-like region. Record direction, cell vectors, grid, interpolation, window, origin, unit, and the exact potential field used.
+where `A` is the area of the chosen plane. A macroscopic average then smooths the atomic-scale oscillations over a declared window.
 
-A vacuum level is defensible only when the chosen nonperiodic region displays a plateau under the declared electrostatic treatment. A residual slope can reflect a physical dipole, periodic-image interaction, an external field, insufficient separation, or a correction convention. For asymmetric slabs, the two sides may have different plateaus and therefore different work functions; averaging them would erase the surface-specific question.
+This operation helps reveal vacuum-like or bulk-like regions, but it cannot manufacture them. A valid reference region must already exist in the model and remain stable under reasonable changes to grid, averaging window, slab thickness, and vacuum.
 
-## Vacuum alignment and an interface lineup answer different questions
+Record the averaging direction, cell vectors, grid, origin, units, interpolation, window, and exact field used. Without those details, two visually similar profiles may represent different quantities.
 
-For an isolated surface, a work-function construction often uses a side-specific vacuum reference and an electron chemical potential from the same state. It is a surface property conditional on termination, dipole, adsorption, charge, field, and geometry. It does not determine the offset at a bonded heterojunction.
+## Vacuum alignment is a surface construction
 
-For a coherent, explicit interface, a common lineup decomposes a band offset into bulk band-edge-to-reference terms and a reference shift measured across the interface. In schematic form,
+For an isolated surface, the work function is commonly constructed from a side-specific vacuum level and the electron chemical potential of the same electronic state. The vacuum reference is defensible only where the profile reaches a plateau under the declared electrostatic treatment.
+
+A residual slope can indicate a physical dipole, an external field, periodic-image interaction, insufficient vacuum, or the effect of a correction convention. It must be diagnosed rather than averaged away. An asymmetric slab may have different vacuum levels on its two sides and therefore different work functions; averaging the two plateaus erases the surface-specific result.
+
+The work function remains conditional on termination, reconstruction, adsorption, charge, field, dipole, geometry, and electronic state. It is not a universal property of a composition.
+
+## An explicit interface lineup includes interface physics
+
+A bonded heterojunction cannot generally be reconstructed by aligning two independent vacuum slabs. The interface can introduce charge redistribution, chemical bonding, polarization, strain, and a potential step that does not exist in either isolated constituent.
+
+A common lineup separates bulk band-edge-to-reference terms from the reference shift measured in the interface calculation:
 
 ```text
-ΔE_v = (E_v^B − Vref^B) − (E_v^A − Vref^A) + ΔV_interface.
+ΔE_v = (E_v^B - Vref^B)
+       - (E_v^A - Vref^A)
+       + ΔV_interface .
 ```
 
-`E_v^A` and `E_v^B` are specified valence-band edges, `Vref` is the compatible bulk reference, and `ΔV_interface` is the reference shift from the interface calculation. Strain, orientation, registry, termination, atomic relaxation, polarization, defects, charge transfer, and interface chemistry all belong to the defined comparison object. Independently aligning two vacuum slabs omits that interface contribution.
+`E_v^A` and `E_v^B` are method-consistent valence-band edges, `Vref` is a compatible bulk reference, and `ΔV_interface` is the reference shift across the explicit interface. Orientation, registry, termination, strain partition, relaxation, polarization, defects, and charge state are part of the defined object.
 
-## Band edges and offsets require their own electronic evidence
+A vacuum-aligned electron affinity can be useful for an isolated constituent, but it does not include the interface lineup term and should not be reported as the bonded-interface offset without additional evidence.
 
-The lineup procedure does not repair an inaccurate band gap or change the meaning of a Kohn--Sham eigenvalue. Define how each edge is found over the full Brillouin zone, the Hamiltonian, spin/SOC, occupations, structural state, and any quasiparticle correction. If corrections differ between the two constituents, specify how they enter the offset. A shared plot origin or a shifted Fermi level is not an alignment construction.
+## Band edges require a separate electronic analysis
 
-Core levels can serve as local markers only after their chemical environment, strain, charge, pseudopotential/PAW convention, and site selection are controlled. A chemically shifted core state is not a universal ruler. The neighbouring Charge Density topic supplies real-space redistribution evidence; it does not by itself establish a potential lineup or band offset.
+Potential alignment sets the reference; it does not determine whether the band edges are accurate. Define how the valence and conduction extrema were found over the full Brillouin zone, the Hamiltonian and structural state used, spin and SOC treatment, occupations, and any quasiparticle correction.
 
-## Fields, screening, and finite models limit interpretation
+A shared plotting zero or shifted Fermi level is not an alignment construction. Likewise, a Kohn--Sham band offset remains a Kohn--Sham result unless a compatible correction is introduced and justified for both constituents.
 
-An observed slope is an electric-field diagnostic only after units, derivative direction, boundary conditions, and a field-free reference are specified. In a finite slab, band bending and depletion widths may not fit within the model. Metallic screening, dielectric response, charged defects, ferroelectric polarization, gates, solvent, and imposed fields can make the profile state dependent. A flat macroscopic average does not prove equilibrium contact, and a potential step does not prove a Schottky barrier, carrier injection, transport, or device performance.
+Core levels can act as local markers only when their site, chemical environment, strain, charge, and potential convention are controlled. A chemically shifted core state is not a universal ruler.
 
-## Preserve the alignment evidence
+## Fields and finite models constrain the interpretation
 
-Keep the parent structures, terminations, orientation and registry; cell and strain; charge/spin/SOC and occupations; pseudopotential/PAW and potential-output definition; grid and averaging parameters; unaveraged and averaged arrays; plateau or bulk-region selection; band-edge search; reference equations; interface and isolated-bulk calculations; corrections; sensitivity series; and plotting transforms. A band diagram without this lineage cannot be audited or transferred to a new state.
+A slope in a potential profile can diagnose an electric field only after the derivative direction, units, boundary conditions, and reference region are specified. Finite slabs may be too thin to contain realistic depletion widths or band bending. Metallic screening, ferroelectric polarization, charged defects, gates, solvent, and external fields can all make the profile strongly state dependent.
 
-## What this topic establishes
+A potential step does not by itself prove a Schottky barrier, carrier injection efficiency, contact resistance, or device performance. Those claims require compatible band-edge, occupation, transport, and often finite-temperature evidence.
 
-This topic establishes how to construct and test an electrostatic reference for a specified surface, bulk comparison, or explicit interface. It does not establish an absolute potential, universal electron affinity, experimental band offset, Schottky barrier, contact resistance, carrier concentration, band bending, transport coefficient, interface stability, or device behavior from one potential profile alone.
+## Preserve the complete alignment construction
+
+Keep the structures, surfaces or interface terminations, orientation and registry, cell and strain, charge/spin/SOC state, occupations, potential-output definition, pseudopotential or PAW convention, grid, raw and averaged arrays, reference-region selection, band-edge search, lineup equation, corrections, and sensitivity tests.
+
+This topic can establish a tested electrostatic reference for a specified surface, bulk comparison, or explicit interface. It does not establish an absolute universal potential, experimental band offset, Schottky barrier, carrier concentration, transport coefficient, interface stability, or device behaviour from one profile alone.
 
 ## Sources and methods
 
