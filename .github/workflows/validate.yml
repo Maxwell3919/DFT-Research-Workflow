@@ -104,12 +104,19 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements-practical.txt
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
       - name: Install pinned practical-guide dependencies
         run: python -m pip install --disable-pip-version-check -r requirements-practical.txt
       - name: Execute all practical-guide examples
         run: python examples/practical-guides/validate_pilot.py
         env:
           PRACTICAL_EXECUTION_ARTIFACT_DIR: artifacts/practical-guide-execution
+      - name: Execute terminal-first parsers and acceptance checks
+        run: node scripts/validate-cases.mjs --execute
+        env:
+          CASE_PYTHON: python
       - name: Upload practical-guide execution evidence
         if: always()
         uses: actions/upload-artifact@v4
