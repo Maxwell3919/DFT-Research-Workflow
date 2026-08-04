@@ -19,10 +19,10 @@
       "sha256": "38d0a47627dcd09be29d77c4a3784cfd7e73bc1dd9329181bb31ce2363fd84fb"
     },
     {
-      "bytes": 3196,
+      "bytes": 3194,
       "path": "derived/structure-report.json",
       "role": "structure_report",
-      "sha256": "a8de2b6e843082439eb4e5edac938a772fdd53cd1e2b79d6859a122a9cb30646"
+      "sha256": "cae88bb6771af246bc5c86dcbf5e1cccef1c2e847f579644cf102982f7f6b870"
     },
     {
       "bytes": 548,
@@ -46,7 +46,7 @@
       "bytes": 33554,
       "path": "figures/silicon-conventional-xy.png",
       "role": "figure",
-      "sha256": "6ea6f0b037db7dd0b35c38501b2445cb884bfc01875d68c329e3874e0f6af681"
+      "sha256": "90c3d0ccdbb09baba2e4e51c92f1cd2d5b765f4bfc9ca2994cd76e7ccc5c9109"
     }
   ],
   "case_id": "structure-silicon-cell-lineage",

@@ -1,0 +1,4 @@
+model,atoms,formula,volume_ang3,minimum_distance_ang,pbc
+si-parent-2x2x2,64,Si64,1281.53182393,2.35169198,True;True;True
+si-vacancy-2x2x2,63,Si63,1281.53182393,2.35169198,True;True;True
+graphene-hbn-bilayer,16,C8B4N4,503.12057602,1.42028166,True;True;False

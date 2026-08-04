@@ -41,7 +41,7 @@
   },
   "software": {
     "ase": "3.29.0",
-    "python": "3.12.3"
+    "python": "3.12"
   },
   "unit": {
     "atoms": 2,

@@ -1,0 +1,12 @@
+{
+  "construction": "ASE graphene C2 a=2.46 repeated [2,2,1]; h-BN derives from copied coordinates by alternating B/N labels; both layers share imposed in-plane cell.",
+  "graphene_atoms": 8,
+  "hbn_atoms": 8,
+  "imposed_a_ang": 2.46,
+  "interlayer_separation_ang": 3.35,
+  "pbc": [
+    true,
+    true,
+    false
+  ]
+}

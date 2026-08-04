@@ -156,6 +156,10 @@
       "source_ids": ["ase-docs-home", "ase-atoms", "ase-build-tools", "ase-pypi-3290"]
     },
     {
+      "guide_slug": "construct-defect-and-interface-candidates",
+      "source_ids": ["ase-building", "pymatgen-core-docs"]
+    },
+    {
       "guide_slug": "ase-surfaces-vacuum-adsorbates",
       "source_ids": ["ase-docs-home", "ase-surface", "ase-building", "ase-pypi-3290"]
     },

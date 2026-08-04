@@ -1,0 +1,30 @@
+&CONTROL
+  calculation = 'scf'
+  prefix = 'al-k12-d004'
+  pseudo_dir = './pseudo'
+  outdir = './tmp'
+  verbosity = 'high'
+/
+&SYSTEM
+  ibrav = 0
+  nat = 1
+  ntyp = 1
+  ecutwfc = 30.0
+  ecutrho = 240.0
+  occupations = 'smearing'
+  smearing = 'mv'
+  degauss = 0.04
+/
+&ELECTRONS
+  conv_thr = 1.0d-10
+/
+ATOMIC_SPECIES
+  Al  26.9815385  Al.pbe-n-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Al  0.0 0.0 0.0
+CELL_PARAMETERS bohr
+  -3.826500  0.000000  3.826500
+   0.000000  3.826500  3.826500
+  -3.826500  3.826500  0.000000
+K_POINTS automatic
+  12 12 12 0 0 0

@@ -35,6 +35,13 @@ const guides = [
     version: 'ASE 3.29.0',
     phrase: 'It is not derived from an experimental file',
   },
+  {
+    route: '/operations/build-or-modify-computational-model/examples/construct-defect-and-interface-candidates/',
+    title: 'Construct Defect and Interface Candidates without Overclaiming Them',
+    tool: 'ase',
+    version: 'ASE 3.29.0',
+    phrase: 'it is not a lattice-match prediction.',
+  },
 ];
 
 async function inspectGuide(page, guide, width) {
@@ -101,7 +108,7 @@ try {
   if (!parent.text.includes('Practical resources') || !parent.text.includes('Practical Guides') || !parent.text.includes('Worked Examples')) {
     throw new Error('parent topic is missing practical resource groups');
   }
-  if (parent.cards !== 4) throw new Error(`parent topic has ${parent.cards} practical cards instead of 4`);
+  if (parent.cards !== guides.length) throw new Error(`parent topic has ${parent.cards} practical cards instead of ${guides.length}`);
   for (const guide of guides) if (!parent.links.includes(`${base}${guide.route}`)) throw new Error(`parent topic is missing ${guide.route}`);
   if (parent.scripts !== 0 || parent.overflow) throw new Error('parent practical interface is not static or overflows');
 
@@ -141,7 +148,7 @@ try {
     }, null, 2)}\n`);
   }
 
-  console.log('Practical guide smoke passed: parent cards, 4 static routes, pinned versions, official links, original media, 1440px/390px layout, and no-JavaScript reading.');
+  console.log(`Practical guide smoke passed: parent cards, ${guides.length} static routes, pinned versions, official links, original media, 1440px/390px layout, and no-JavaScript reading.`);
 } finally {
   await browser.close();
 }

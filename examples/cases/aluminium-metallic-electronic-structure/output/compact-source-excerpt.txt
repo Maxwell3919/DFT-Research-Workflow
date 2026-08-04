@@ -1,6 +1,6 @@
-SCF: Quantum ESPRESSO PWSCF v.7.5; 29 symmetry-reduced k points; Marzari-Vanderbilt smearing width 0.0200 Ry.
-SCF: convergence has been achieved in 5 iterations; the Fermi energy is 7.8018 eV; JOB DONE.
-full-zone nscf: 512 k points with nosym=.true. and noinv=.true.; the Fermi energy is 7.8018 eV; JOB DONE.
-band path: 145 points from the explicit Γ–X–W–K–Γ–L–U–W–L–K crystal_b path; End of band structure calculation; JOB DONE.
-Selected band ledger: QE band 2 spans 3.4705–20.4207 eV on the mesh and crosses the declared μ on 3 ordered path intervals.
-All captured stdout runs exited 0 and all three captured stderr streams were empty.
+SCF/NSCF/bands: Quantum ESPRESSO 7.5; 8x8x8 full-zone NSCF; Fermi energy 7.8018 eV; each recorded program reached JOB DONE.
+Native DOS: dos.x 7.5 reached JOB DONE; al.dos has 2801 rows and prints E_F=7.802 eV.
+Native DOS lineage: dos.out SHA-256 c930a07ec54184fe102d308668a5895b629087fdd977ce36b9a602e705616f6e; al.dos SHA-256 95c3342cb9229b0ff2fbc8cb17d48aa13ebd6f3ddea7a5a1c4797de9e64be5f8.
+Exploratory k/smearing screen: FAIL; k10-to-k12 delta E=0.00164525 Ry/cell and delta E_F=0.2449 eV.
+Five-point E(V) entry: mathematical fit PASS; c2=2.33027885266e-05 Ry/bohr^6; residual RMS=5.34111987806e-05 Ry.
+The k/smearing screen FAIL is retained; the E(V) fit is not a converged EOS, bulk modulus, or elastic tensor. G4 NOT TESTED; G5 NOT CLAIMED.

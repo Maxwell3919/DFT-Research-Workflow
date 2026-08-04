@@ -1,0 +1,35 @@
+{
+  "case_id": "aluminium-metallic-electronic-structure",
+  "execution_status": "executed_isolated_talos_screen; see output/convergence-screen and derived/aluminium-convergence-assessment.json",
+  "fixed_protocol": {
+    "calculation": "scf",
+    "cell": "ibrav=0 explicit fcc primitive CELL_PARAMETERS bohr, equivalent cubic lattice parameter 7.653 bohr and determinant 7.653^3/4 bohr^3",
+    "pseudopotential": "Al.pbe-n-rrkjus_psl.1.0.0.UPF with the declared case SHA-256",
+    "ecutwfc_ry": 30.0,
+    "ecutrho_ry": 240.0,
+    "occupations": "smearing",
+    "smearing": "Marzari-Vanderbilt",
+    "cubic_lattice_parameter_bohr": 7.653
+  },
+  "samples": [
+    {"id": "al-k08-d002", "k_mesh": [8, 8, 8], "degauss_ry": 0.02},
+    {"id": "al-k10-d002", "k_mesh": [10, 10, 10], "degauss_ry": 0.02},
+    {"id": "al-k12-d002", "k_mesh": [12, 12, 12], "degauss_ry": 0.02},
+    {"id": "al-k12-d001", "k_mesh": [12, 12, 12], "degauss_ry": 0.01},
+    {"id": "al-k12-d004", "k_mesh": [12, 12, 12], "degauss_ry": 0.04}
+  ],
+  "predeclared_assessment": {
+    "scope": "Exploratory teaching screen for reported SCF total energy per one-atom primitive cell and printed Fermi level only; it is not a G4 acceptance gate.",
+    "k_mesh_tail": {
+      "comparison": "al-k10-d002 to al-k12-d002",
+      "max_abs_total_energy_delta_ry_per_cell": 0.0002,
+      "max_abs_fermi_delta_ev": 0.02
+    },
+    "smearing_probe": {
+      "comparison": "maximum deviation of al-k12-d001 and al-k12-d004 from al-k12-d002",
+      "max_abs_total_energy_delta_ry_per_cell": 0.0005,
+      "max_abs_fermi_delta_ev": 0.05
+    },
+    "boundary": "These are predeclared exploratory teaching thresholds for the named SCF samples, not universal settings, G4 evidence, scientific acceptance, or a DOS, EOS, elastic, Fermi-surface, or material-science criterion."
+  }
+}
