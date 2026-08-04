@@ -67,6 +67,7 @@ ADSORPTION_ANALYSIS_SCRIPTS = [
     "adsorption_energy_ledger.py",
     "adsorption_state_grid.py",
     "cmr_co_adsorption.py",
+    "adsorption_ledger_cmr.py",
 ]
 INTERFACE_ANALYSIS_SCRIPTS = [
     "interface_energy_ledger.py",
@@ -170,9 +171,9 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 64
+    assert len(results) == 65
     report = {
-        "schema_version": 16,
+        "schema_version": 17,
         "project_root": str(ROOT),
         "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "versions": observed_versions,

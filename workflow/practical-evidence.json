@@ -676,19 +676,19 @@
     {
       "guide_slug": "build-adsorption-energy-ledger",
       "parent_topic": "adsorption-energies",
-      "evidence_class": "synthetic-only",
-      "material": "invented energies",
+      "evidence_class": "derived-public-data",
+      "material": "CMR CO/fcc(111) public reaction ledger",
       "real_result": false,
       "interface": false,
-      "traceable_data": false,
-      "upgrade": "CMR public benchmark",
-      "blocker": null,
+      "traceable_data": true,
+      "upgrade": "completed hash-bound CMR reaction/sign ledger",
+      "blocker": "Frozen full-coverage top-site rows do not provide a coverage series, site search, free-energy correction, convergence evidence, or new adsorption result.",
       "priority": 2,
-      "execution_script": "examples/practical-guides/adsorption_energy_ledger.py",
+      "execution_script": "examples/practical-guides/adsorption_ledger_cmr.py",
       "media_ids": [
         "adsorption-energy-ledger"
       ],
-      "upgrade_readiness": "candidate"
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "compare-adsorption-sites-and-coverage",
