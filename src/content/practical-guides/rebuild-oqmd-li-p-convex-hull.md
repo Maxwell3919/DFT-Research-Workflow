@@ -25,7 +25,7 @@ This worked example reconstructs a binary lower convex envelope from a frozen re
 
 ## Read provenance before reading geometry
 
-The snapshot records the exact query URL, retrieval time, API version, source timestamp, returned field order, and OQMD's CC BY 4.0 reuse terms. Each row retains `entry_id`, `calculation_label`, formula, structure metadata, formation energy, and the database stability value. The OQMD [REST API documentation](https://static.oqmd.org/static/docs/restful.html) defines the query interface; its [download page](https://www.oqmd.org/download/) states the dataset licence, and the [original OQMD paper](https://doi.org/10.1007/s11837-013-0755-4) describes the database.
+The snapshot records the exact query URL, retrieval time, API version, source timestamp, returned field order, and OQMD's CC BY 4.0 reuse terms. Each row retains `entry_id`, `calculation_label`, formula, structure metadata, formation energy, and the database stability value. The OQMD [REST API documentation](https://static.oqmd.org/static/docs/restful.html) defines the query interface; an [archived copy of its download page](https://web.archive.org/web/20251110042317id_/https://www.oqmd.org/download/) preserves the dataset licence statement while the live OQMD site is unavailable, and the [original OQMD paper](https://doi.org/10.1007/s11837-013-0755-4) describes the database.
 
 The image is an original local rendering of those data, not a publisher figure or screenshot. Its attribution and evidence boundary appear in the figure itself as well as the media manifest.
 
@@ -77,6 +77,6 @@ The example does not rerun or independently validate any OQMD DFT calculation. I
 ## Official sources
 
 - [OQMD RESTful API documentation](https://static.oqmd.org/static/docs/restful.html)
-- [OQMD downloads and CC BY 4.0 terms](https://www.oqmd.org/download/)
+- [Archived OQMD download page and CC BY 4.0 terms](https://web.archive.org/web/20251110042317id_/https://www.oqmd.org/download/)
 - [Kirklin and co-workers, the OQMD](https://doi.org/10.1007/s11837-013-0755-4)
 - [pymatgen phase-diagram analysis API](https://pymatgen.org/pymatgen.analysis.html#module-pymatgen.analysis.phase_diagram)

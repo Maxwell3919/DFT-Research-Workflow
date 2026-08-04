@@ -164,6 +164,14 @@ p { margin: 0 0 1.2rem; }
 
 .directory-list li:last-child { border-bottom: 1px solid #ececec; }
 
+.directory-list li > span { display: block; margin-top: 0.2rem; color: #666666; font-size: 0.94rem; }
+.tool-category { margin-top: 3rem; }
+.tool-aliases { color: #666666; }
+.tool-facts { margin: 2rem 0 2.5rem; border-top: 1px solid #ececec; }
+.tool-facts div { display: grid; grid-template-columns: minmax(7rem, 0.35fr) 1fr; gap: 1rem; padding: 0.65rem 0; border-bottom: 1px solid #ececec; }
+.tool-facts dt { font-weight: 600; }
+.tool-facts dd { margin: 0; }
+
 .breadcrumb {
   margin-bottom: 2.2rem;
   color: #666666;

@@ -118,3 +118,26 @@ jobs:
           path: artifacts/practical-guide-execution/
           if-no-files-found: warn
           retention-days: 30
+
+  tool-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Audit tool official resources
+        run: npm run audit:tool-links
+        env:
+          TOOL_LINK_AUDIT_ARTIFACT_DIR: artifacts/tool-links
+      - name: Upload tool-link evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tool-links-${{ github.run_id }}
+          path: artifacts/tool-links/
+          if-no-files-found: warn
+          retention-days: 30

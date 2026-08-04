@@ -6,7 +6,7 @@ import { withBase } from '../lib/paths';
 interface Props {
   title: string;
   description: string;
-  current?: 'home' | 'operations' | 'recipes' | 'framework';
+  current?: 'home' | 'operations' | 'recipes' | 'framework' | 'tools';
 }
 
 const { title, description, current } = Astro.props;
@@ -16,6 +16,7 @@ const navigation = [
   { id: 'operations', label: 'Operations', href: withBase('operations/') },
   { id: 'recipes', label: 'Workflow Recipes', href: withBase('recipes/') },
   { id: 'framework', label: 'Framework', href: withBase('framework/') },
+  { id: 'tools', label: 'Tools', href: withBase('tools/') },
 ] as const;
 ---
 

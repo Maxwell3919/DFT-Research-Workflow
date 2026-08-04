@@ -114,7 +114,7 @@ for (const title of topicSlugs) if (directory.includes(`>${title}<`)) errors.pus
 const layout = await readFile(new URL('src/layouts/BaseLayout.astro', root), 'utf8');
 const navigationBlock = layout.match(/const navigation = \[([\s\S]*?)\] as const/)?.[1] ?? '';
 const navigationLabels = [...navigationBlock.matchAll(/label: '([^']+)'/g)].map((match) => match[1]);
-if (JSON.stringify(navigationLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework'])) errors.push(`primary navigation mismatch: ${JSON.stringify(navigationLabels)}`);
+if (JSON.stringify(navigationLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework', 'Tools'])) errors.push(`primary navigation mismatch: ${JSON.stringify(navigationLabels)}`);
 
 function frontmatter(source) {
   const match = source.match(/^---\s*\n([\s\S]*?)\n---/);

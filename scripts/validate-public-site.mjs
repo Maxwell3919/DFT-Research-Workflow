@@ -9,6 +9,7 @@ const workflowDocument = JSON.parse(await readFile(new URL('workflow/topics.json
 const operationsDocument = JSON.parse(await readFile(new URL('ontology/operations.json', root), 'utf8'));
 const legacyDocument = JSON.parse(await readFile(new URL('ontology/legacy-operations.json', root), 'utf8'));
 const recipesDocument = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8'));
+const toolsDocument = JSON.parse(await readFile(new URL('workflow/tools.json', root), 'utf8'));
 const workflowTopics = workflowDocument.sections.flatMap((section) =>
   section.groups.flatMap((group) => group.topics.map((topic) => ({ ...topic, section: section.id, group: group.id }))),
 );
@@ -89,7 +90,7 @@ function outputPath(href) {
 }
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
-const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + 1;
+const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.tools.length + 2;
 if (htmlFiles.length !== expectedHtmlCount) errors.push(`generated HTML route set mismatch: expected ${expectedHtmlCount}, found ${htmlFiles.length}`);
 
 const htmlByPath = new Map();
@@ -137,7 +138,7 @@ const home = htmlByPath.get(join(distPath, 'index.html')) ?? '';
 const homeText = stripMarkup(home);
 const homeNav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
 const navLabels = [...homeNav.matchAll(/<a[^>]*>([^<]+)<\/a>/g)].map((match) => match[1].trim());
-if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
+if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework', 'Tools'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
 for (const section of workflowDocument.sections) if (!homeText.includes(`${section.id} · ${section.title}`)) errors.push(`Home is missing ${section.id} · ${section.title}`);
 if (/24 typed core operations|former 35 chapter URLs/.test(homeText)) errors.push('Home advertises a superseded numbered taxonomy');
 

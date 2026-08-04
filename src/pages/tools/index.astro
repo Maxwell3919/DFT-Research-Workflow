@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';import{getTools}from'../../lib/tools';import{withBase}from'../../lib/paths';
+const tools=getTools(),categories=[...new Set(tools.map(x=>x.category))];
+---
+<BaseLayout title="Tools" description="A secondary index of verified tool identities and their connections to the scientific workflow." current="tools">
+  <h1>Tools</h1>
+  <p class="page-intro">This directory cross-indexes software that can implement, inspect, or preserve parts of the research workflow. Scientific questions remain organized under A–E; a tool name does not define a calculation or make one implementation universally preferable.</p>
+  <p>Each entry records official identity and access conditions verified on 4 August 2026. Capability, input semantics, and version compatibility must still be checked against the documentation that matches an actual calculation.</p>
+  {categories.map(category=><section class="tool-category"><h2>{category}</h2><ul class="directory-list">{tools.filter(x=>x.category===category).map(tool=><li><a href={withBase(`tools/${tool.slug}/`)}>{tool.name}</a><span>{tool.role}</span></li>)}</ul></section>)}
+</BaseLayout>
