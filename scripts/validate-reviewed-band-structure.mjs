@@ -40,7 +40,8 @@ for (const phrase of [
   'reviewed within the declared educational and execution scope',
   'bounded real Silicon execution',
   'COD 9013102 → spglib/SeeK-path → QE 7.5 SCF and band path → `bands.x` output',
-  'The paired full-zone comparison remains an invented teaching fixture',
+  'separate real QE 7.5 SCF → `bands` → `bands.x` 8×8×8 teaching mesh',
+  'two limited samplings cannot be silently equated',
   'not numerical convergence',
 ]) if (!review.includes(phrase)) errors.push(`review missing ${phrase}`);
 if (/universal (?:path density|k mesh|empty-band count|smearing|cutoff|force threshold|gap tolerance)/i.test(article)) errors.push('universal numerical prescription');
