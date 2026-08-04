@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "manifest_kind": "qeguard-compatible-pseudopotential-identity",
+  "pseudopotentials": [
+    {
+      "element": "Al",
+      "filename": "Al.pbe-n-kjpaw_psl.1.0.0.UPF",
+      "sha256": "fd7b78921e6d0939095b681c328732668eaefd1dee6882fdbc03be463550cc97",
+      "source": "SSSP 1.3.0 PBE Precision",
+      "source_url": "https://www.materialscloud.org/discover/sssp/table/precision",
+      "xc_functional": "SLA  PW   PBX  PBC",
+      "relativistic": "scalar"
+    },
+    {
+      "element": "H",
+      "filename": "H.pbe-kjpaw_psl.1.0.0.UPF",
+      "sha256": "dd48be99c7a91c4163ed123cdac938af189a9f62f382c41e3f664d00a586839d",
+      "source": "Quantum ESPRESSO pseudopotential portal; PSL PAW PBE family",
+      "source_url": "https://pseudopotentials.quantum-espresso.org/upf_files/H.pbe-kjpaw_psl.1.0.0.UPF",
+      "xc_functional": "SLA  PW   PBX  PBC",
+      "relativistic": "scalar"
+    }
+  ],
+  "boundary": "This identity manifest is compatible with qeguard-style filename/hash checks. It does not distribute UPF bodies or establish that the PBE PAW PSL-family file pair is suitable for an adsorption result."
+}

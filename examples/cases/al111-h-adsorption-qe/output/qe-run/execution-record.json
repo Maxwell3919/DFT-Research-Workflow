@@ -1,0 +1,60 @@
+{
+  "boundary": "This record is generated deterministically from retained public text. It records a terminal failure when that text contains the Slurm cancellation markers; it does not establish electronic convergence, numerical convergence, or an adsorption result.",
+  "markers": {
+    "job_done": false,
+    "qe_75_banner": true,
+    "scf_converged": false,
+    "slurm_cancellation": true,
+    "slurm_cancellation_marker": "STEP 34.0 ON talos-MS-7D54 CANCELLED AT 2026-08-05T02:51:53 "
+  },
+  "record_origin": "historical-recovery/generated-from-raw",
+  "runtime": {
+    "host_label": "Talos",
+    "launcher": "srun --ntasks=1 --cpus-per-task=1",
+    "scheduler_job_id": "34",
+    "walltime_boundary": "00:10:00",
+    "wrapper_exit_code": null
+  },
+  "schema_version": "1.0",
+  "stages": [
+    {
+      "artifacts": [
+        {
+          "bytes": 1415,
+          "path": "al111-h-fcc-scf.in",
+          "sha256": "315bbf0fa5dc3729d3df70d76b7ce3a79fbb14007d7c9845a7a11683868a2b2e"
+        }
+      ],
+      "exit_code": 0,
+      "name": "input-stage"
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 187,
+          "path": "pseudo.sha256",
+          "sha256": "e0df79d0463b5cfe44c7479acebf58333bab7c0462971773b5cf7c27bda220e8"
+        }
+      ],
+      "exit_code": 0,
+      "name": "pseudopotential-identity-and-hash-check"
+    },
+    {
+      "artifacts": [
+        {
+          "bytes": 8316,
+          "path": "pw.stdout",
+          "sha256": "a8e66b4b00ea0a29468dee05be3aeca83b70a6523aaa2aa87312e6ce37e5d995"
+        },
+        {
+          "bytes": 265,
+          "path": "pw.stderr",
+          "sha256": "0829323df44ce929bcf85966f6ed9159af33796124cef93d732b6ce2a5dc1adc"
+        }
+      ],
+      "exit_code": null,
+      "name": "pw-scf"
+    }
+  ],
+  "terminal_state": "failed"
+}

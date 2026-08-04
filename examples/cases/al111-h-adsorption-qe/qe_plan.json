@@ -1,0 +1,63 @@
+{
+  "case_id": "al111-h-adsorption-qe",
+  "case_parameters": {
+    "exchange_correlation": "PBE",
+    "ecutwfc_ry": 80.0,
+    "ecutrho_ry": 640.0,
+    "k_points_automatic": [6, 6, 1, 0, 0, 0],
+    "occupations": "smearing",
+    "smearing": "mv",
+    "degauss_ry": 0.02,
+    "conv_thr_ry": 1e-08
+  },
+  "claim_boundary": {
+    "supports": [
+      "A deterministic qe_guard 1.1.0 plan and input-audit contract for one explicitly named initial candidate, conditional on an audit pass."
+    ],
+    "does_not_support": [
+      "A relaxed geometry, adsorption energy, preferred site, coverage trend, numerical-convergence claim, or transferable parameter recommendation."
+    ]
+  },
+  "decision": "pass",
+  "limitations": [
+    "The minimum workflow is not a universal complete workflow.",
+    "Material-, model-, and observable-specific controls may add stages and convergence dimensions.",
+    "The 1.0e-8 Ry total-energy tolerance is the declared input-level SCF threshold for the guard plan; it is not evidence of cutoff, k-mesh, vacuum, slab, site, or adsorption-energy convergence."
+  ],
+  "model": {
+    "builder": "ASE ase.build.fcc111",
+    "substrate": "Al(111) 2x2 four-layer slab",
+    "adsorbate": "one H atom at the initial fcc hollow candidate",
+    "lattice_parameter_ang": 4.05,
+    "vacuum_target_ang": 12.0,
+    "periodicity": [true, true, false],
+    "atoms": {"Al": 16, "H": 1}
+  },
+  "minimum_workflow": [
+    "pw.x:scf"
+  ],
+  "objective": "Input-level QE 7.5 SCF audit for one unrelaxed Al(111)-H fcc-hollow candidate.",
+  "observable": {
+    "absolute_tolerance": 1e-08,
+    "name": "SCF total energy",
+    "relative_tolerance": null,
+    "unit": "Ry"
+  },
+  "provenance": {
+    "collector": "qe_guard",
+    "collector_version": "1.1.0",
+    "generated_utc": "2026-08-04T18:32:10+00:00"
+  },
+  "qe_version": "7.5",
+  "pseudopotential_provenance": "source/pseudopotential-provenance.json",
+  "qeguard_pseudopotential_manifest": "source/qeguard-pseudo-manifest.json",
+  "resource_suggestion": {
+    "launcher": "srun --ntasks=1 --cpus-per-task=1",
+    "walltime": "00:10:00",
+    "cost_boundary": "A planning estimate only; queue time, node policy, actual wall time, and memory use are not measured by this case. The 17-atom n=1 entry is intended as a small runtime smoke, not a convergence setting."
+  },
+  "schema_version": "1.0",
+  "scientific_protocol_id": "al111-h-fcc-scf-entry-v1",
+  "state": "plan_ready",
+  "task_type": "scf"
+}

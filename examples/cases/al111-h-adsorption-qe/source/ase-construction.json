@@ -1,0 +1,41 @@
+{
+  "H_above_highest_Al_ang": 1.65,
+  "ase_version": "3.29.0",
+  "atoms": {
+    "Al": 16,
+    "H": 1
+  },
+  "boundary": "Construction only: no relaxation, site comparison, adsorption energy, or convergence result.",
+  "builder": "ASE ase.build.fcc111",
+  "cell_ang": [
+    [
+      5.72756493,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      4.96021673,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      32.66480577
+    ]
+  ],
+  "empty_cell_length_ang": 24.0,
+  "initial_H_height_ang": 1.65,
+  "lattice_parameter_ang": 4.05,
+  "periodicity": [
+    true,
+    true,
+    false
+  ],
+  "repeat": [
+    2,
+    2,
+    4
+  ],
+  "site_label": "fcc hollow candidate"
+}

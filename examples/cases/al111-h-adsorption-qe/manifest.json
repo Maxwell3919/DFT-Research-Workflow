@@ -1,0 +1,171 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2454,
+      "path": "qe_plan.json",
+      "role": "qe-plan",
+      "sha256": "23c183829ae40793913c7ff1c897362dd287c720b46dbead8098b335a91a6df8"
+    },
+    {
+      "bytes": 1415,
+      "path": "input/al111-h-fcc-scf.in",
+      "role": "qe-input",
+      "sha256": "315bbf0fa5dc3729d3df70d76b7ce3a79fbb14007d7c9845a7a11683868a2b2e"
+    },
+    {
+      "bytes": 1215,
+      "path": "input/al111-h-fcc.xyz",
+      "role": "initial-structure",
+      "sha256": "9bdf018f61f85086dbb80703fdb979c6b6b14efc257fda0c5430d9620d8de56d"
+    },
+    {
+      "bytes": 1215,
+      "path": "output/al111-h-fcc-initial.xyz",
+      "role": "constructed-structure",
+      "sha256": "9bdf018f61f85086dbb80703fdb979c6b6b14efc257fda0c5430d9620d8de56d"
+    },
+    {
+      "bytes": 187,
+      "path": "output/qe-run/pseudo.sha256",
+      "role": "pseudopotential-identity-hashes",
+      "sha256": "e0df79d0463b5cfe44c7479acebf58333bab7c0462971773b5cf7c27bda220e8"
+    },
+    {
+      "bytes": 1797,
+      "path": "output/qe-run/execution-record.json",
+      "role": "historical-recovery-record",
+      "sha256": "29e82b4ae60a353c2c8c119bbbc852f8226fcbad930f4fb5eb0c97a4ea2da1e9"
+    },
+    {
+      "bytes": 8316,
+      "path": "output/qe-run/pw.stdout",
+      "role": "qe-stdout",
+      "sha256": "a8e66b4b00ea0a29468dee05be3aeca83b70a6523aaa2aa87312e6ce37e5d995"
+    },
+    {
+      "bytes": 265,
+      "path": "output/qe-run/pw.stderr",
+      "role": "qe-stderr",
+      "sha256": "0829323df44ce929bcf85966f6ed9159af33796124cef93d732b6ce2a5dc1adc"
+    },
+    {
+      "bytes": 811,
+      "path": "derived/qe-scf-summary.json",
+      "role": "terminal-failure-summary",
+      "sha256": "e686a9ef96435f3201ce29119cd9ef7cfe41548e417e38993f1c72cc544df520"
+    },
+    {
+      "bytes": 24,
+      "path": "derived/geometry-summary.csv",
+      "role": "geometry-table",
+      "sha256": "ad62d8dcba71d07cd8372e24c0b8279cb4e3ff2e14e777846b8eb60b0b115a83"
+    },
+    {
+      "bytes": 28542,
+      "path": "figures/al111-h-fcc-xz.png",
+      "role": "constructed-geometry-figure",
+      "sha256": "d8324da96a5460c84df7a9568472d2385ff768405c6af75ef01eec2864dd043e"
+    }
+  ],
+  "case_id": "al111-h-adsorption-qe",
+  "case_kind": "calculation",
+  "claim_boundary": {
+    "does_not_support": [
+      "A completed SCF, relaxed structure, adsorption energy, H reference state, site preference, coverage trend, convergence claim, or transferable adsorption conclusion."
+    ],
+    "supports": [
+      "The recorded ASE construction and terminal-failure recovery of one scheduler-cancelled QE 7.5 SCF attempt for an initial fcc-hollow H candidate."
+    ]
+  },
+  "commands": [
+    {
+      "command": "python3 parse.py --prepare",
+      "exit_code": 0,
+      "stage": "construct"
+    },
+    {
+      "command": "python3 recover_execution.py --evidence-dir output/qe-run --origin historical-recovery/generated-from-raw --job-id 34 --host-label Talos --launcher \"srun --ntasks=1 --cpus-per-task=1\" --walltime-boundary 00:10:00",
+      "exit_code": 0,
+      "stage": "historical-recovery"
+    },
+    {
+      "command": "bash extract.sh",
+      "exit_code": 0,
+      "stage": "terminal-extract"
+    }
+  ],
+  "completed_at": "2026-08-05T02:51:53+08:00",
+  "evidence_class": "real-execution",
+  "exit_code": null,
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "summary": "construction, public execution text, identity hashes, historical recovery record, and derived failure summary are hash-bound"
+    },
+    "G1": {
+      "status": "FAIL",
+      "summary": "Slurm cancelled Job 34 at the 00:10:00 boundary before normal QE completion or SCF convergence"
+    },
+    "G2": {
+      "status": "NOT TESTED",
+      "summary": "the terminated SCF cannot establish completed execution or any numerical result"
+    },
+    "G3": {
+      "status": "PASS",
+      "summary": "terminal-failure evidence and a construction PNG are present without retaining UPF, scratch, restart, WFC, or save artifacts"
+    },
+    "G4": {
+      "status": "NOT TESTED",
+      "summary": "no cutoff, k-mesh, slab-thickness, vacuum, site, reference-state, or adsorption-energy convergence study"
+    },
+    "G5": {
+      "status": "NOT CLAIMED",
+      "summary": "no adsorption energy, preferred site, relaxed geometry, stability, or physical conclusion"
+    }
+  },
+  "public_host_label": "Talos QE 7.5 local runtime",
+  "schema_version": "1.0",
+  "software": [
+    {
+      "interface": "Python API",
+      "name": "ASE",
+      "version": "3.29.0"
+    },
+    {
+      "interface": "pw.x SCF output",
+      "name": "Quantum ESPRESSO",
+      "version": "7.5"
+    }
+  ],
+  "sources": [
+    {
+      "accessed_at": "2026-08-05",
+      "id": "ase-construction",
+      "licence_boundary": "Generated locally with ASE; this is a tutorial model rather than a database structure identity.",
+      "path": "source/ase-construction.json",
+      "role": "locally generated structural construction record",
+      "sha256": "6f4af19f0d1f3b83b556a6e81cc37a2fbeb8a3a4946bfdd87789c58d9c590b5c",
+      "url": "https://wiki.fysik.dtu.dk/ase/ase/build/surface.html"
+    },
+    {
+      "accessed_at": "2026-08-05",
+      "id": "pseudopotential-provenance",
+      "licence_boundary": "Only public file identity and SHA-256 are recorded; no pseudopotential body is redistributed.",
+      "path": "source/pseudopotential-provenance.json",
+      "role": "public pseudopotential identity record",
+      "sha256": "cc7bb0fabbc649e79cc9f5a3df20425466daff48d24fe024343832e0c4e29913",
+      "url": "https://pseudopotentials.quantum-espresso.org/"
+    },
+    {
+      "accessed_at": "2026-08-05",
+      "id": "qeguard-pseudo-manifest",
+      "licence_boundary": "Only public file identity and SHA-256 are recorded; no pseudopotential body is redistributed.",
+      "path": "source/qeguard-pseudo-manifest.json",
+      "role": "qeguard-compatible pseudopotential identity record",
+      "sha256": "5bdf80db1f87d66d7b1b86461d0dd080f94d6d22c9926c157363c4307992b2d7",
+      "url": "https://pseudopotentials.quantum-espresso.org/"
+    }
+  ],
+  "started_at": "2026-08-05T02:41:54+08:00",
+  "title": "Al(111) 2x2 slab with one H fcc candidate: terminal-failed QE 7.5 SCF entry"
+}

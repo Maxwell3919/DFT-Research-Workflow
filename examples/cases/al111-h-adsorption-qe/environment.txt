@@ -1,0 +1,1 @@
+Python 3.12.11; ASE 3.29.0; matplotlib 3.11.1; Quantum ESPRESSO 7.5 (remote runtime checked read-only on 2026-08-05)
