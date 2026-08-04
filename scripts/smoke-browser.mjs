@@ -101,6 +101,12 @@ async function captureFullPage(page, path) {
   await page.screenshot({ path, captureBeyondViewport: true, clip: { x: 0, y: 0, ...dimensions } });
 }
 
+async function waitForRecipeRedirect(page) {
+  await page.waitForFunction(() => location.pathname.includes('/workflows/') && document.readyState === 'complete', { timeout: 5000 });
+  await page.waitForNetworkIdle({ idleTime: 50, timeout: 5000 });
+  if (!new URL(page.url()).pathname.includes('/workflows/')) throw new Error(`recipe redirect did not reach Worked Workflows: ${page.url()}`);
+}
+
 async function inspectPage(page, expectedStatus) {
   const observation = await page.evaluate(() => ({
     language: document.documentElement.lang,
@@ -137,7 +143,7 @@ try {
     const response = await page.goto(`${base}${target.route}`, { waitUntil: 'load' });
     if (response?.status() !== target.status) throw new Error(`${target.route}: expected HTTP ${target.status}, found ${response?.status() ?? 'no response'}`);
     if (target.route.startsWith('/recipes/')) {
-      await page.waitForFunction(() => location.pathname.includes('/workflows/'), { timeout: 5000 });
+      await waitForRecipeRedirect(page);
     }
     try {
       await inspectPage(page, target.status);
@@ -215,8 +221,9 @@ try {
     }
   }
   await page.goto(`${base}/recipes/`, { waitUntil: 'load' });
-  const recipeMigrationText = await page.$eval('body', (body) => body.innerText);
-  if (!recipeMigrationText.includes('moved to Worked Workflows')) throw new Error('Recipes root is not a migration surface');
+  await waitForRecipeRedirect(page);
+  const recipeRedirectText = await page.evaluate(() => document.body.innerText);
+  if (!recipeRedirectText.includes('Worked Workflows')) throw new Error('Recipes root did not redirect to Worked Workflows');
   await page.goto(`${base}/framework/`, { waitUntil: 'load' });
   const frameworkLinks = await page.$$eval('.directory-list a', (links) => links.length);
   if (frameworkLinks !== 4) throw new Error(`Framework migration surface exposes ${frameworkLinks}/4 current destinations`);
@@ -256,6 +263,7 @@ try {
   for (const target of requiredRoutes) {
     const response = await page.goto(`${base}${target.route}`, { waitUntil: 'load' });
     if (response?.status() !== target.status) throw new Error(`mobile ${target.route}: HTTP ${response?.status()}`);
+    if (target.route.startsWith('/recipes/')) await waitForRecipeRedirect(page);
     await inspectPage(page, target.status);
   }
 

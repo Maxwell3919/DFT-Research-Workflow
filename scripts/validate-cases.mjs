@@ -6,6 +6,7 @@ import { join, relative, resolve, sep } from 'node:path';
 
 const root = resolve(new URL('../', import.meta.url).pathname);
 const casesRoot = join(root, 'examples', 'cases');
+const fileLedgerPath = join(root, 'workflow', 'case-file-hashes.json');
 const execute = process.argv.includes('--execute');
 const casePython = process.env.CASE_PYTHON ?? 'python3';
 const errors = [];
@@ -58,6 +59,29 @@ try {
 }
 
 if (caseEntries.length === 0) errors.push('examples/cases must contain at least one terminal-first case');
+
+try {
+  const ledger = JSON.parse(await readFile(fileLedgerPath, 'utf8'));
+  const actualFiles = (await listFiles(casesRoot)).sort();
+  const expectedPaths = actualFiles.map((path) => relative(root, path));
+  const declaredPaths = (ledger.files ?? []).map((record) => record.path);
+  if (ledger.schema_version !== 1) errors.push('workflow/case-file-hashes.json: schema_version must be 1');
+  if (new Set(declaredPaths).size !== declaredPaths.length) errors.push('workflow/case-file-hashes.json: duplicate paths');
+  if (JSON.stringify(declaredPaths) !== JSON.stringify(expectedPaths)) {
+    errors.push('workflow/case-file-hashes.json: file coverage/order differs from examples/cases; run node scripts/update-case-file-hashes.mjs');
+  } else {
+    for (let index = 0; index < actualFiles.length; index += 1) {
+      const record = ledger.files[index];
+      const targetStat = await stat(actualFiles[index]);
+      if (!shaPattern.test(record.sha256) || record.sha256 !== await sha256(actualFiles[index])) {
+        errors.push(`workflow/case-file-hashes.json: sha256 mismatch for ${record.path}`);
+      }
+      if (record.bytes !== targetStat.size) errors.push(`workflow/case-file-hashes.json: byte count mismatch for ${record.path}`);
+    }
+  }
+} catch (error) {
+  errors.push(`workflow/case-file-hashes.json: unreadable ledger: ${error.message}`);
+}
 
 for (const entry of caseEntries) {
   const caseId = entry.name;
@@ -178,4 +202,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Terminal-first cases valid: ${caseEntries.length} case(s); required trees, shell syntax, manifests, hashes, gates, claim boundaries and privacy checks${execute ? ', plus extract/parser/check execution' : ''}.`);
+console.log(`Terminal-first cases valid: ${caseEntries.length} case(s); complete case-file ledger, required trees, shell syntax, manifests, hashes, gates, claim boundaries and privacy checks${execute ? ', plus extract/parser/check execution' : ''}.`);

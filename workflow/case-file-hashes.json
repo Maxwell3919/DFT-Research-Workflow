@@ -1,0 +1,1792 @@
+{
+  "schema_version": 1,
+  "scope": "Every regular file committed below examples/cases, including raw-text outputs, inputs, parsers, figures, and per-case manifests.",
+  "update_command": "node scripts/update-case-file-hashes.mjs",
+  "files": [
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/README.md",
+      "sha256": "917318c7f84058fc17d5997e6dd878a96e0ebee1d535dc066e9092391ddec661",
+      "bytes": 1797
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/check.sh",
+      "sha256": "f6def9787d708bc91600bf4dc83fbe5bc14ea7ebbceebad24b9dc6f6f4a53855",
+      "bytes": 1863
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/derived/geometry-summary.csv",
+      "sha256": "ad62d8dcba71d07cd8372e24c0b8279cb4e3ff2e14e777846b8eb60b0b115a83",
+      "bytes": 24
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/derived/qe-scf-summary.json",
+      "sha256": "0ff8a1fa950f42771ae122c1d28fb1550369b2a6c28632c6ba418c992bd60df5",
+      "bytes": 829
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/environment.txt",
+      "sha256": "6e5541ff92e0a507525625b00573d51610488ee6e67781088b1768157c2de422",
+      "bytes": 117
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/extract.sh",
+      "sha256": "675ba175b45e6a6916939d0cb74e37ddabdfb7423a4570d21cbb5a70cfdb6b62",
+      "bytes": 114
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/figures/al111-h-fcc-xz.png",
+      "sha256": "d8324da96a5460c84df7a9568472d2385ff768405c6af75ef01eec2864dd043e",
+      "bytes": 28542
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/input/al111-h-fcc-scf.in",
+      "sha256": "315bbf0fa5dc3729d3df70d76b7ce3a79fbb14007d7c9845a7a11683868a2b2e",
+      "bytes": 1415
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/input/al111-h-fcc.xyz",
+      "sha256": "9bdf018f61f85086dbb80703fdb979c6b6b14efc257fda0c5430d9620d8de56d",
+      "bytes": 1215
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/manifest.json",
+      "sha256": "7aed4cc92932fa4df7757e74a491939fba4d42c6ac5980969a308f53a7025449",
+      "bytes": 7021
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/output/al111-h-fcc-initial.xyz",
+      "sha256": "9bdf018f61f85086dbb80703fdb979c6b6b14efc257fda0c5430d9620d8de56d",
+      "bytes": 1215
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/output/qe-run/al111-h-fcc-scf.in",
+      "sha256": "315bbf0fa5dc3729d3df70d76b7ce3a79fbb14007d7c9845a7a11683868a2b2e",
+      "bytes": 1415
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/output/qe-run/execution-record.json",
+      "sha256": "be1fd041013c6b5b01937de25eba53b6032765f358933f4a08a93f95a89e1f50",
+      "bytes": 1817
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/output/qe-run/pseudo.sha256",
+      "sha256": "e0df79d0463b5cfe44c7479acebf58333bab7c0462971773b5cf7c27bda220e8",
+      "bytes": 187
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/output/qe-run/pw.stderr",
+      "sha256": "25bdaa5ddab0202f91c1faa42897ce5af70935067927df01da26d19f59626d53",
+      "bytes": 260
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/output/qe-run/pw.stdout",
+      "sha256": "a8e66b4b00ea0a29468dee05be3aeca83b70a6523aaa2aa87312e6ce37e5d995",
+      "bytes": 8316
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/output/qe-run/sanitization.json",
+      "sha256": "bacc7fdb2ac2eb8272e92fea9b038b52ef325803249d3e91e007cfc52e5b19f5",
+      "bytes": 612
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/parse.py",
+      "sha256": "e4472a833d8b33fcdcbcff6b07c24bce434a8b85a9d8c51b7b1ca6cc76c1f781",
+      "bytes": 12028
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/qe_plan.json",
+      "sha256": "23c183829ae40793913c7ff1c897362dd287c720b46dbead8098b335a91a6df8",
+      "bytes": 2454
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/recover_execution.py",
+      "sha256": "1437d48fe529b732117ef785b574114738bfd155f755872087e8ebfb3bb24170",
+      "bytes": 3399
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/run.sh",
+      "sha256": "68a97c57052ac8bf07901b7980d021c69d062c3bdecdcc68d51235eb7f9e79e8",
+      "bytes": 2908
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/source/ase-construction.json",
+      "sha256": "6f4af19f0d1f3b83b556a6e81cc37a2fbeb8a3a4946bfdd87789c58d9c590b5c",
+      "bytes": 662
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/source/pseudopotential-provenance.json",
+      "sha256": "cc7bb0fabbc649e79cc9f5a3df20425466daff48d24fe024343832e0c4e29913",
+      "bytes": 1623
+    },
+    {
+      "path": "examples/cases/al111-h-adsorption-qe/source/qeguard-pseudo-manifest.json",
+      "sha256": "5bdf80db1f87d66d7b1b86461d0dd080f94d6d22c9926c157363c4307992b2d7",
+      "bytes": 1142
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/README.md",
+      "sha256": "fe24ee5a54122ffde7c04f4d6f25020657783d89541303b88f54b2bf7a937b7f",
+      "bytes": 1497
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/check.sh",
+      "sha256": "c19b5eff208350ced57af81ceec3f4780f797643dac61e47c2a5c84e6fa40f1f",
+      "bytes": 1563
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/derived/al-mesh.csv",
+      "sha256": "5bc4e7bd565ea99e3fd774de860b9aeb37b90874dfbe8fa484c4d0202758c9b4",
+      "bytes": 29659
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/derived/al-path.csv",
+      "sha256": "e6de08c86aa1d17fae2bb17fe8ee2b63a27e72379795cc611660c5ca20a17242",
+      "bytes": 8563
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/derived/captured-run-summary.json",
+      "sha256": "c5396e8ba99b5f90da8f1b639c767f4cd98cb2a5c946886ffaf65785aded612b",
+      "bytes": 541
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/environment.txt",
+      "sha256": "fb1b221ecf7f61d9779c2fc819ea22998f374cf3ff88a730661ac675ceaa41b8",
+      "bytes": 320
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/extract.sh",
+      "sha256": "d563b0140968e645ba813dbeaf3177dffdf7c650e0e6caf285e906f90b8abf80",
+      "bytes": 387
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/figures/raw-nscf-band2-sampling.png",
+      "sha256": "ae57110886c7b21e66a164ab6114b89dfa757c218f9b7df35112b404e98a698a",
+      "bytes": 43935
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/input/bands.in",
+      "sha256": "62a0406cd30f6b85c358e2f8efb76aab1ee79f8d4fbc494329e9d5c906c53141",
+      "bytes": 692
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/input/nscf.in",
+      "sha256": "1fdef0bc99e977e96b5d7cec1b750fe009170253a2953f197212c01103ff259d",
+      "bytes": 494
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/input/scf.in",
+      "sha256": "660983565543f2bc154fe3d79a7bf480b2e02b9ae705d706457c661a64087ac0",
+      "bytes": 468
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/manifest.json",
+      "sha256": "917e8026d31f91e6cf8f24674126da7084d897d954c401383a0c21fd5af85242",
+      "bytes": 5770
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/output/bands.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/output/bands.out",
+      "sha256": "312a05a44bbb15ed5ee5c437ac52fd658a2e43e35b56a2b49cfb231d711b4a95",
+      "bytes": 79993
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/output/compact-source-excerpt.txt",
+      "sha256": "3177b6ab03f645ff35656b115cae0c179a59221cc42aa48b3cbda6e6bf0633a9",
+      "bytes": 661
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/output/nscf-full.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/output/nscf-full.out",
+      "sha256": "fe4e1ecb29004cfadecff46d6b81748b085682c0abfc987be0be4e28205fed66",
+      "bytes": 220999
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/output/recorded-commands.txt",
+      "sha256": "600d5ef310ab87171ae03d5a9951c08f922bd236a959500aae8cb2e08cd54014",
+      "bytes": 378
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/output/scf.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/output/scf.out",
+      "sha256": "3a48a4fade8c52fd1b5e4d816be439de79911b3c9d7ea3d71f16257b6c9e0b39",
+      "bytes": 44502
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/parse.py",
+      "sha256": "d86ec5886697b4dd0e0ae65c35bd4a73a3c401e0646911f6fc59d46aace662d3",
+      "bytes": 10875
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/qe_plan.json",
+      "sha256": "b99423bc0b715e5056c2f19b4a8072c955935a627cd48a8445865b019b134710",
+      "bytes": 877
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/run.sh",
+      "sha256": "439e1588a411fbe07be37a8c60fc70772803a18afca0bb970f1b460408049d89",
+      "bytes": 2085
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/source/fixture-band-path.csv",
+      "sha256": "e6de08c86aa1d17fae2bb17fe8ee2b63a27e72379795cc611660c5ca20a17242",
+      "bytes": 8563
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/source/fixture-mesh.csv",
+      "sha256": "5bc4e7bd565ea99e3fd774de860b9aeb37b90874dfbe8fa484c4d0202758c9b4",
+      "bytes": 29659
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/source/fixture-metadata.json",
+      "sha256": "ff43d63d3e654711a547a57cbf6f63170e56009b395dc6e7e83e4b46fd066cbd",
+      "bytes": 3143
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/source/pseudopotential-metadata.json",
+      "sha256": "04857ceb056820af3f09c0c8e82ee1b764e23ccc7d87696a25be3e3a24bec6ac",
+      "bytes": 524
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/README.md",
+      "sha256": "a434ceb9938c0478fe98e6b00458d51ee530846719fb132d06d46f62ae42d0b6",
+      "bytes": 3448
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/check.sh",
+      "sha256": "a659fc5aa25bcb991219f9bb71a01d21c22803087cf3fec513ddf43640b1fc54",
+      "bytes": 3561
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/derived/README.md",
+      "sha256": "03c77b8a8ee9871967ee67b1be063acca9918ef708ab8e8c1c508bd521b864de",
+      "bytes": 250
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/derived/attempt-02-pmix/bcc-fe-spin-summary.json",
+      "sha256": "00db76f93de63a65fba005de7869a67ed56dc8ccf33996688abd866d0ac5a3e7",
+      "bytes": 4917
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/derived/attempt-02-pmix/fm-kmesh-screen.json",
+      "sha256": "b9630c65c5c6237e4cab3e2ef3931875a44937d7552c0115b51a37ccf96369c1",
+      "bytes": 396
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/environment.txt",
+      "sha256": "3fb3ba6a9ac92781bc73389fc01d5e60e5c4038bc4832055e7451ea8f8f578db",
+      "bytes": 837
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/extract.sh",
+      "sha256": "876b97e4afa194e6498814d013d77d89ff1c87d14370f79db8acc0378846cc03",
+      "bytes": 987
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/figures/README.md",
+      "sha256": "53efbba14c6beaf5da284dbebb0fe2723fc31a195605df68d5ea0e1ee845cab6",
+      "bytes": 198
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/figures/attempt-02-pmix/fm-nm-energy-comparison.png",
+      "sha256": "df02f0c8a6ec6f763ac2d37a8013b5667a91d8af3afe251562d537ec72b887b9",
+      "bytes": 2593
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/input/candidate-set.json",
+      "sha256": "3581e629e873c8679b0465a7e61dbad3e9832c82e63219228bab23bca3fe479d",
+      "bytes": 2084
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/input/fm-k10.scf.in",
+      "sha256": "2ad378358a86968907be88f2b98ba2788b4d2a1ed648a10ed894c11043114ae3",
+      "bytes": 532
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/input/fm-k12.scf.in",
+      "sha256": "3882e632520833e8754857517291ad3c0c005d1327cecdbadc5a243c719a5732",
+      "bytes": 532
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/input/fm-k8.scf.in",
+      "sha256": "2d6d3764dc014e75a59df7782d9be0565938f582449cb0a2d1553e497c52439f",
+      "bytes": 527
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/input/nm-k12.scf.in",
+      "sha256": "57b779d99d537af0ad2df444e617f8af60464323831d2519a42ca3550390818a",
+      "bytes": 497
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/input/pseudopotential-manifest.json",
+      "sha256": "ba3cc147e10a507bef55203181299c208e249c79b2c478901d09348fa329cbf6",
+      "bytes": 767
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/input/qe_plan.json",
+      "sha256": "54b9188a1710fed6126fe7cd2ad9e34ec7bf73ad8d6ac2f0177f12f940f40ed5",
+      "bytes": 822
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/manifest.json",
+      "sha256": "3eba8ee3fd96a4f978d7f918092d56a83b3819bdf9d5a737b77b73be312462c5",
+      "bytes": 8567
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/README.md",
+      "sha256": "fe0d0ff3161a658447d5ce1c7a82e87b8cfcd869c7f08bc7775520c9f33e674f",
+      "bytes": 318
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-01-slurm-launch-failure/failure-manifest.json",
+      "sha256": "cba506420f5a395535ecb511a94eed0feba757a300c37a131c52565f4fae1a63",
+      "bytes": 1613
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-01-slurm-launch-failure/fm-k8.err",
+      "sha256": "538825433a604b26ab21f5f384e1f28bf5398badc6ad41f3d02941db4e360bf9",
+      "bytes": 1339
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-01-slurm-launch-failure/fm-k8.out",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-01-slurm-launch-failure/run-status.json",
+      "sha256": "0f1e45b0f4307fee6d19fe1679d9eb138e56d79e3c1c85d39e599e28d6ffdc57",
+      "bytes": 184
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-01-slurm-launch-failure/sanitization.json",
+      "sha256": "7c55b29904480a093b17834ebe8e3f77f74bc55575fc4d7335975115707bac65",
+      "bytes": 614
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-02-pmix/fm-k10.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-02-pmix/fm-k10.out",
+      "sha256": "0f5a16d41d9a6f9de6102d21f22841bf13adf9eb12925c223d5232f8f6bfb3b8",
+      "bytes": 34893
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-02-pmix/fm-k12.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-02-pmix/fm-k12.out",
+      "sha256": "0c42b31f219b4a3ff28c08469c24b007dee3af3062b8d8b1209de6c23884ef61",
+      "bytes": 19113
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-02-pmix/fm-k8.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-02-pmix/fm-k8.out",
+      "sha256": "b63267b2a44f0f8d9dc3268cbaa32e6a9fa4d0b511b9396bee0b00cbbd6cc738",
+      "bytes": 26634
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-02-pmix/nm-k12.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-02-pmix/nm-k12.out",
+      "sha256": "5825efdcd1c1b84bdc0a27b840aad91d82a5195e964e23642e2d1bb1f3706447",
+      "bytes": 29461
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/output/attempt-02-pmix/run-status.json",
+      "sha256": "7801f01272d3a6b791a606309f77ec33a6f258795dd25c0c96e6ad84d6ea9dac",
+      "bytes": 332
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/parse.py",
+      "sha256": "bf12a9b9f71d9d1541600e2621ff282b5d4c7163623f5753f4dca12e1e9c6446",
+      "bytes": 13961
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/run.sh",
+      "sha256": "585253c60bd14b92b4b88c81d0a36c353a1e4434562fe381df08d1381a3b42f8",
+      "bytes": 3300
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/source/pseudopotential-provenance.json",
+      "sha256": "6a6e654fddfe754503f70b00797a078f117157b70ca59cfebf58489dadb362f8",
+      "bytes": 772
+    },
+    {
+      "path": "examples/cases/bcc-fe-spin-qe/source/qe-7.5-reference-index.json",
+      "sha256": "862126454fc0007b54f2222e99aa2cc7245e45700532337f4ea809711e5db9f7",
+      "bytes": 1002
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/README.md",
+      "sha256": "55b0e9a3280c7876555b1883dbb6c37769cb867141195533fde3f68697b368a9",
+      "bytes": 1705
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/analyze_structure.py",
+      "sha256": "3cf8c0ec3eec1a588f264e3aa843ecba8199e39f8cdacbdcc6502c5bba2b83f1",
+      "bytes": 2127
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/check.sh",
+      "sha256": "a45a4988b1d26a5ad967725dd46a88e2e0a9aacead12a70d658ae88d74d093a6",
+      "bytes": 1366
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/derived/9013102.analysis.json",
+      "sha256": "79dd66a1bb13d75fb2b098896581a2d7df4f9acfd797f4f7e12b03625e10eb68",
+      "bytes": 856
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/derived/parsed-summary.json",
+      "sha256": "aea23503e3e007924d76328d0b123a752b629fa7208959e2afd92c21bc96d0ed",
+      "bytes": 455
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/environment.txt",
+      "sha256": "3cd45a2ddf3fa0e48b5c9e3d17b838ad5fcc4c1752fe49070fded4288eb8e0c6",
+      "bytes": 212
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/extract.sh",
+      "sha256": "630a20791ccb0239214f20554a94f5ecebf3a41b75ccce4d25b08fe6cb190b42",
+      "bytes": 345
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/figures/README.md",
+      "sha256": "91cacdf40daf252c67e84781360eb893c75edeed185a77aed0817214193f6fb9",
+      "bytes": 339
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/input/retrieval.json",
+      "sha256": "e30b8e36610c1f5f30dd323dc57fec49e9af5e9aa904dcea1b7802ce4377dd9f",
+      "bytes": 347
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/manifest.json",
+      "sha256": "0afe292553c47ae63dd0c867ccd57660a4ff1166737e7910310e543c2e607411",
+      "bytes": 4184
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/cod-response.headers",
+      "sha256": "44152c25f40fa6accca68df0fc18efbdb8dc7fc9355eb1ad3656dc6c7aa1a61d",
+      "bytes": 236
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/downloaded-at.txt",
+      "sha256": "4e4109e786d9c8a8a2876bd52c1183637befa354f53788dda5f3142716819704",
+      "bytes": 39
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/nomad-optimade-accessed-at.txt",
+      "sha256": "7eeffaaf911025c66c345ba797571d22a8a8484e681a11c2945ed1f9ebd24180",
+      "bytes": 21
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/nomad-optimade-response.json",
+      "sha256": "a4f7129dd469a197731814838ee38cfda695fe7279aec81abf914f1d2ed7b381",
+      "bytes": 31638
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/nomad-optimade.headers",
+      "sha256": "a386bc780d3f4b8002d13851348daf220670a6ce2cde6ac51feede54914c34bd",
+      "bytes": 218
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/run.txt",
+      "sha256": "b4bfb8c4e9cc300038332e5398593990894d91b96c429a627d6a3fae94796e6f",
+      "bytes": 27
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/aflow.body",
+      "sha256": "84e1d25d975533d29f867892c9fa0413aebc93391b5c578e210f2f2067b1383f",
+      "bytes": 12824
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/aflow.headers",
+      "sha256": "d72c5c1830b0a7a332c800f949f812abb92a02a9287b658d2d8b50b5c4ec29ec",
+      "bytes": 201
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/aflow.result",
+      "sha256": "6c36ef630d2249a5e8b24d72c0c1b58f534e5a5aa8ea914e17e168982f5a582b",
+      "bytes": 81
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/aflow.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/c2db.body",
+      "sha256": "a84eab69f76fc56f94e6cd054b3431e730038dd895f15835df86592953e439fe",
+      "bytes": 731
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/c2db.headers",
+      "sha256": "0103d50eed039f303da9292d6ebb428687411e0520ece756c50a4fb0dc85d976",
+      "bytes": 612
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/c2db.result",
+      "sha256": "0fb4d7068b13eea07b05fabaf1953dfd285ce76d9e34ffee5f12676daf4d3de0",
+      "bytes": 52
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/c2db.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/jarvis.body",
+      "sha256": "486ce512ed093e289b8ad3cd95288a84e581c7c7d057e9d80a0597d84347f9a3",
+      "bytes": 1117
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/jarvis.headers",
+      "sha256": "9c29523b86ac068d6a12fbb8fa6882388d119fee5f4c9569aea6a1545175e044",
+      "bytes": 923
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/jarvis.result",
+      "sha256": "5ae3b83836d2cccfffca47c83f96df9f858fd24e411aec009529c1cb032288b8",
+      "bytes": 66
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/jarvis.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/materials-cloud.body",
+      "sha256": "99060f0971cccf1e075dd6c5ab612f0e4ec14e8aa82434434500a39655ef9dfa",
+      "bytes": 148
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/materials-cloud.headers",
+      "sha256": "5fca2f00495b51240f03913e9ae0b59fdc5a9f9de55e48b5c3333b92a9012170",
+      "bytes": 723
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/materials-cloud.result",
+      "sha256": "61d20ea916b8e86fd4fb9213fe7b40ba293c52b94a28c6a56b62d892bd940cbc",
+      "bytes": 58
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/materials-cloud.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/materials-project.body",
+      "sha256": "8efef00176248e8d608514d37f8591256e1fe2a85cf55f2fe2536365d468c0cb",
+      "bytes": 45
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/materials-project.headers",
+      "sha256": "c57d91568cf77da753f3dcbce4ef39883da4772b6a2fda79fa93648b379090df",
+      "bytes": 804
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/materials-project.result",
+      "sha256": "39a47332afb950af892d2fb51f76d7ba7318dea116156767da0336d9bf45a1f0",
+      "bytes": 87
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/materials-project.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/optimade-providers.body",
+      "sha256": "ee0a6f8d00d8f5f636121a05633df20b4d68c7655dc494cf8ea8b3f87e578bfd",
+      "bytes": 13285
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/optimade-providers.headers",
+      "sha256": "88e832834ada2f3b881018be552e63a7ab5cb93d02c50c13cb83c819db9f162e",
+      "bytes": 442
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/optimade-providers.result",
+      "sha256": "c1e4da0ad2327fc1d3be4462655281c7de9081d2c579b7da6991ad504b0c28a2",
+      "bytes": 61
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/optimade-providers.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/oqmd.body",
+      "sha256": "5624ea1ba5a04bbf78719cd7da347a49dbb6a84159cb0cbf21e2fe9d86aef81b",
+      "bytes": 32296
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/oqmd.headers",
+      "sha256": "73b6d000c17213742c8fbc712700c8a826711dae0a1bc118ec1aefc104f62054",
+      "bytes": 262
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/oqmd.result",
+      "sha256": "27a8682943ecfc83b2ceea6ffbd0d2a42ffd5cef656c67bdb46c3ca2a965111b",
+      "bytes": 71
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/output/service-probes/oqmd.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/parse.py",
+      "sha256": "ef2b9a8b43dd5b8ec1288153152deb8b8df08a0e5d2dc2a1d496b00a7d0411fa",
+      "bytes": 2059
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/run.sh",
+      "sha256": "07420e8bfe6642c6d83182ffd09107fc9c4e71cc7724a4a0a66115e494f351b8",
+      "bytes": 2044
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/source/9013102.cif",
+      "sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55",
+      "bytes": 5199
+    },
+    {
+      "path": "examples/cases/database-cod-silicon/source/9013102.sanitization.json",
+      "sha256": "033b32c6c583ae213d7bb995a73e67ff9cc4a02ad16456118638eb7994f172b2",
+      "bytes": 647
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/.gitattributes",
+      "sha256": "3c5a4b793721bc3f364bafaad75a66f48bdd3386dbe01818977c5a1987ab18bd",
+      "bytes": 160
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/README.md",
+      "sha256": "35241bf219e45a2806af21f5c9c646c9b5114ac3c412a4a2f7ffcb37904d9e1c",
+      "bytes": 4163
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/check.sh",
+      "sha256": "a3f572f24651341e43d513f49f3f52b414351d5a2d68ec53784a34de765da635",
+      "bytes": 2187
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/derived/README.md",
+      "sha256": "47afad382000e04ef96417ec9d60a15a56d0a7ec61066d94045324f889136279",
+      "bytes": 202
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/derived/graphene-band-path.csv",
+      "sha256": "c3dafcfb60261cc370d028ab8b68767aa9c084a26c4ee99982c11a0e3777ac09",
+      "bytes": 23229
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/derived/graphene-band-summary.json",
+      "sha256": "c856ef0e3235680435c77939199f43c2a3ceb3bafac4c808d2996ba101982487",
+      "bytes": 2781
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/environment.txt",
+      "sha256": "7abdd17504d7ce69f9e681290aafef2bee2c3a4f438e667e22b8d8c67e713dc8",
+      "bytes": 484
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/extract.sh",
+      "sha256": "536b33430ad2b4d63e0c4360e1cc2d3bdf84bfd658f263a25122a98e666d13c6",
+      "bytes": 860
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/figures/README.md",
+      "sha256": "8f3aa5e8e79f57a1e421318f46b7b61cd70eee99dd690c900240989e6d08b2a2",
+      "bytes": 207
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/figures/graphene-band-path.png",
+      "sha256": "efdaccf722b19c6ce0417d7bc11ce0f3d88b29b32359470d7fd5accea5f107a2",
+      "bytes": 109199
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/input/graphene.bands.in",
+      "sha256": "556da106b068190fa1c093bbfc08f09d9869546cd3088bd712dc446a579caacf",
+      "bytes": 870
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/input/graphene.bands.x.in",
+      "sha256": "4abb40724e56d82ebc66a6e4b5d2da80cb56c31df0b535c1573cb568d3d4f4e7",
+      "bytes": 85
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/input/graphene.scf.in",
+      "sha256": "e15e0637ceb0ff4aff9cfd2cfecdffe0fe3d04992f6de5cce9337c1df99f0586",
+      "bytes": 685
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/manifest.json",
+      "sha256": "9ed2f5e099604df1bd34423098cd431fff5bc86c7ba422602b8992e0c4fb456a",
+      "bytes": 9326
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/README.md",
+      "sha256": "8906e26f02f524e3471bc435155446b7215065482269b6fc0f4f8e6f1bf01d41",
+      "bytes": 281
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/bands-execution-environment.txt",
+      "sha256": "7dc8c3af92e36d7758914713b496302df30a349174fac552e15485afa65adaad",
+      "bytes": 279
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/execution-environment.txt",
+      "sha256": "af846c1a6a9e4ebcac49465dd07b96ca1fd3ae178e0b8f2310046ca7e25dea28",
+      "bytes": 277
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.bands.dat",
+      "sha256": "548bdc30f0f7447dbd275beb31ebc8bbfa89655d6ce0280720baea0d7f5d475f",
+      "bytes": 13825
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.bands.parent-scf.exit",
+      "sha256": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+      "bytes": 12
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.bands.parent-scf.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.bands.parent-scf.stdout",
+      "sha256": "ec67d10ac3669560046a9e505c4c8273264faf88b6b4947aad6753776fd5dc94",
+      "bytes": 18219
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.bands.pw.exit",
+      "sha256": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+      "bytes": 12
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.bands.pw.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.bands.pw.stdout",
+      "sha256": "178ea566cd31b69f35b95b3e221d5859d8344b1f93d96ab4884255d4cc7590c2",
+      "bytes": 7198
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.bands.x.exit",
+      "sha256": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+      "bytes": 12
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.bands.x.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.bands.x.stdout",
+      "sha256": "b1a48c34b4d1e8a6c8f62cf30a621e2d3bf3d96321c9418fa55de46c44c9990b",
+      "bytes": 82288
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.scf-qeguard-audit.json",
+      "sha256": "396e6656c19471c5a36e49ab8549f356a93ae2b0c8ffe71585f1ecb0145dfae6",
+      "bytes": 3895
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.scf.exit",
+      "sha256": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+      "bytes": 12
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.scf.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/graphene.scf.stdout",
+      "sha256": "aa24dc9ed6f8d61beb7e23259c74a51254b4acb9776aee160c80bc218441e17f",
+      "bytes": 18219
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/output/scf-parent-evidence.json",
+      "sha256": "e2d4aec174567f349bcdf084e27635c4ba979e2f6bda432c6a93e08049eab385",
+      "bytes": 785
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/parse.py",
+      "sha256": "fc9ff9c840e560bf53a4d7bf2001ca79986d07ab762c9281855f4b59556624c1",
+      "bytes": 21366
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/pseudo-manifest.json",
+      "sha256": "22cc1ac0395f433fcafe3d4bef796bcdf793da5f6a74decb6769be74153c9cd7",
+      "bytes": 490
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/pseudo-provenance.json",
+      "sha256": "5be613ca5e49fbb6b034253ed2dc35995e94cc509e5cfd959f66fb508c2f60f0",
+      "bytes": 930
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/qe_plan.json",
+      "sha256": "0c2f779a1a30d8bb54ba97f5783bf8e8622f0d2ccae2d5a95d883f7bec987bc6",
+      "bytes": 2484
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/run.sh",
+      "sha256": "2d87400a9720878606d5f5d2b5aa7a2708eb08d94037ed2a156de215070f31f1",
+      "bytes": 6747
+    },
+    {
+      "path": "examples/cases/graphene-electronic-structure-qe/source/graphene-primitive-model.json",
+      "sha256": "1722c057775d219d638c716515377ef57371604c2f6d217c00a98f49dd96916f",
+      "bytes": 726
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/README.md",
+      "sha256": "4a8af347fb6dceb3f0bd1a3fd278f4e0309a10dfb9b586efee4909019ef38f54",
+      "bytes": 1505
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/check.sh",
+      "sha256": "d9626b9a8170b86f19b141f5cdf436c6f8b7e42351f83f326f1c0af4f960f702",
+      "bytes": 1810
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/derived/capture.json",
+      "sha256": "563325d0887ddd91830224026f241421b8c6bc8069ab67600960fc7db582f3e1",
+      "bytes": 478
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/environment.txt",
+      "sha256": "79cf28872b3d1d34e1417510d25869905445ce0aa41f73b5657b18da69cf1b8d",
+      "bytes": 622
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/extract.sh",
+      "sha256": "f863f2eb198dd8cf18b04e3bcb1f54ee31a609cf81f20a24ffd6cf1b475c054d",
+      "bytes": 415
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/figures/chromium-headless-walkthrough.png",
+      "sha256": "39934e227c45ca38003278b28bb6ac0bddd057d414bd1f925111efd335f9d975",
+      "bytes": 53159
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/input/README.md",
+      "sha256": "7858f5152c3fce9865bec4c69fccc15bf4162b8e71274a315d74f04f960fcb8d",
+      "bytes": 204
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/manifest.json",
+      "sha256": "39a1c2f54e6f92c99796de6e362895a332d86c5205bfe0b07e165f3a8d7e93b3",
+      "bytes": 4207
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/output/SHA256SUMS",
+      "sha256": "cd226de8e4ec20a420825431a6c6cd616bb22ae1a35b8e9750b7249265400573",
+      "bytes": 645
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/output/chromium.stderr",
+      "sha256": "3eda92763b716635b0d4643c68d825d4543938626e929813aa1060408ad9f9f6",
+      "bytes": 72
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/output/chromium.stdout",
+      "sha256": "19eaf43821a7660ec323a87c8457bf74823beb296c39f5e01aa8a683aa50f061",
+      "bytes": 7
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/output/environment-excerpt.txt",
+      "sha256": "c9d33cd1f27b6615d073b41317c9e5d3136040e02d52cd8927ececa6137bb2c2",
+      "bytes": 229
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/output/sanitization.txt",
+      "sha256": "450beb7230523189c8c1125eeaa0e4d61b19712374aa43242e7c9f5cd89c00f3",
+      "bytes": 225
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/parse.py",
+      "sha256": "3bfd013b3dc70ba0692e58a900e169cb2278c97288ed1ef8286659595d493bc3",
+      "bytes": 1924
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/run.sh",
+      "sha256": "de6ee8bbd3c17ff67d409f3a5d649e6f2a7abd4ed8afd71fe7450c22ec4d0323",
+      "bytes": 3704
+    },
+    {
+      "path": "examples/cases/gui-chromium-headless-homepage/source/walkthrough.html",
+      "sha256": "83419b6c73f3da8089364694fe4aca8c5ce0402334a74d8ca50c17df3839b435",
+      "bytes": 1230
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/Dockerfile",
+      "sha256": "2cfe4d7431f485f195fe63f64f5e2e5629825dbec4b95f0124e6dc30dacab869",
+      "bytes": 333
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/README.md",
+      "sha256": "4b7015f02e78f976aaab55e6af128c57730cc079559aae628ddc102366638f39",
+      "bytes": 1359
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/check.sh",
+      "sha256": "7275be4921e128772a9da520b0f8850b0290cae77c8c2e50ce1ec3f507a83b7c",
+      "bytes": 2432
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/derived/capture.json",
+      "sha256": "0b2cc61923de318b0c72d3af88ac0c4ed8a19c3558c4238d82e0f44f5e93d357",
+      "bytes": 264
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/environment.txt",
+      "sha256": "34c0c2ad06d5a7d9b7e418c93429bb0860d24f6989b0e70e6b32ff1a86107002",
+      "bytes": 217
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/extract.sh",
+      "sha256": "a9a3cd4b141eed9467b68a2396d32c564ff8b61d95d62d8d213d39e7a151b455",
+      "bytes": 598
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/figures/README.md",
+      "sha256": "be0cd2c78e91afd31056c510aad9db49397562e8384cced37b9fb3f9e9176e0b",
+      "bytes": 293
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/input/README.md",
+      "sha256": "cfe431287170b9f6dbaffd09f4bc8238f5f2f1290d04a1ee1e61b365387ded97",
+      "bytes": 218
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/manifest.json",
+      "sha256": "339561376fc2acd91c1ae3f70048f1a1a7f0e436e0c5d60e1b36a006eaf67199",
+      "bytes": 3656
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/output/SHA256SUMS",
+      "sha256": "a325d0e580b8a65f12136e9509c9e34d1532742535c32ee4c8cf96c4415dcad7",
+      "bytes": 705
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/output/docker-build.stderr",
+      "sha256": "daf1a3a61b4e89def6206f0ffa7fe4446b4ab83d2f7656f21bbecba57782239b",
+      "bytes": 858
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/output/docker-build.stdout",
+      "sha256": "cf205dbb8cea84897b488abcc281bf96698d5e94b1096b16657b4caba9082a22",
+      "bytes": 7
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/output/run-metadata.txt",
+      "sha256": "0e31f14610efa6f95a920839b19f2f2daab14c9e5f133736d347047b41d151e0",
+      "bytes": 168
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/output/sanitization.txt",
+      "sha256": "28b77582bd4c678dffbd003dadee8008c8138ddf066fe757903ffde812235ec5",
+      "bytes": 257
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/output/x11-excerpt.txt",
+      "sha256": "a3df6da3b3f42ee7e09a95525ed1601eba61160d887bab796bf1a3e6b34548fd",
+      "bytes": 489
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/parse.py",
+      "sha256": "8b952b7e5dcb7afe2bc76c157e711dde2e7c094ac0e49368075f60cdb27b397f",
+      "bytes": 2372
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/run.sh",
+      "sha256": "62d77504ff5dfad3508b2bd8d921e66ff38bcd627e02ba30f05cd39ce87fbf1b",
+      "bytes": 3522
+    },
+    {
+      "path": "examples/cases/gui-xvfb-mesa-smoke/source/x11-smoke.sh",
+      "sha256": "29b84a706696b2ec056339ae6e8f3067528e0886f604ddf482501a168c482b75",
+      "bytes": 1662
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/README.md",
+      "sha256": "4e58b40849bec18d9b23c58b02119c99183d6580b1a3f1b664e7b32153ada748",
+      "bytes": 3213
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/check.sh",
+      "sha256": "df083c92ba87f4278145df3bc59060f73c5fa9ad7788dda4f499f300525fc507",
+      "bytes": 1972
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/derived/response-report.json",
+      "sha256": "6fc9a4f063d605ca3d7c64490256447e38cad725e8207b6a15f9bfb221a9d287",
+      "bytes": 3580
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/environment.txt",
+      "sha256": "6f6276eb04629bf6a6a39631b2131ef7245c4ffed9c5ad56a373d100cb482801",
+      "bytes": 838
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/extract.sh",
+      "sha256": "6bef451bac6a97859cc0d12991989d369dda688206d9831b9c7c6b2a6b3fcf5b",
+      "bytes": 117
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/figures/mgo-polar-response.png",
+      "sha256": "98c2976b7d37d1ffb7e00facf001c8060e3bb0aaa8b91539ff502fe812ed0159",
+      "bytes": 58173
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/input/mgo-ph.in",
+      "sha256": "dbf78a8475c0baca79f8b6f762fa12a26a66f83b5c222a6869be7c3b47ca8185",
+      "bytes": 133
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/input/mgo-scf.in",
+      "sha256": "2ce356d54e34c1b7563e0656f8c020ad5055f94a1876def2a818ccd565ff137d",
+      "bytes": 625
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/input/official-qe-7.5-parameters.json",
+      "sha256": "0fbaeb374d0cde58e3140d272899561eeb0ac9d893a2aa3a6e98f2f921ffa7c6",
+      "bytes": 1754
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/input/pseudopotentials.json",
+      "sha256": "c3d1c7441d49e5d52e057b04efda948961448de9fa3275d37f0b990e97ffb6b5",
+      "bytes": 2052
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/input/qe_plan.json",
+      "sha256": "157acc9decf7ea17d020aa0a58ae140c9b34f8a15c6a4f8db7b6034ef9e6d970",
+      "bytes": 974
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/manifest.json",
+      "sha256": "7dbe3c6de6f7beeb9d5a72f5b521d69d419c25f62405178eed00097d9bec4e5b",
+      "bytes": 6257
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/output/mgo-ph.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/output/mgo-ph.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/output/mgo-ph.out",
+      "sha256": "57837045f38918dd9848e305156f02214e1b97da572f65cc9e087352e0b900f3",
+      "bytes": 18282
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/output/mgo-scf.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/output/mgo-scf.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/output/mgo-scf.out",
+      "sha256": "756b04461199e03b36dc8b95032e127ec0a535d8cc14fd33085f543743e5ed59",
+      "bytes": 16194
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/output/mgo_polar.dyn",
+      "sha256": "911743ac3ea3d6d020aa8ed68a2d403c4aa2d7b3e27e605776ef6c2a65a036ee",
+      "bytes": 3901
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/output/run-status.txt",
+      "sha256": "d0e4700bbfbb83a51a17d354192027b4e0f2cd9fc885e043ca0f9939e561e3b7",
+      "bytes": 82
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/parse.py",
+      "sha256": "62f42da93269b6ed900f79b46245da7e859d7d46ce1b2a6efe3255b7cf4ec90f",
+      "bytes": 14244
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/run.sh",
+      "sha256": "2fb5d5d1dc5ff1fa04c5072a39ad6b2b824dd81bdfb6ed00770c801dbbaf3a7f",
+      "bytes": 2748
+    },
+    {
+      "path": "examples/cases/mgo-polar-response-qe/source/model.json",
+      "sha256": "5054ce21c143f8fb38da0e71e649e2c1047d1387a2ead11e0c7ed76406db4366",
+      "bytes": 557
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/.gitattributes",
+      "sha256": "2fc7ac5355c8392694fd617ff95d97ff45b220bb874fdc787222a18a888f0a16",
+      "bytes": 136
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/README.md",
+      "sha256": "8683fedea3ea5daba7e2cbad2ce172cce2c1a115dc3a168531794ed443fd692f",
+      "bytes": 1958
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/check.sh",
+      "sha256": "d7eb401fad6ef520e0437ca19347b6552482a705f94c804035accb2d277241c6",
+      "bytes": 122
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/derived/band-path.csv",
+      "sha256": "5d140d9e2cf5ca039cd1d13e5dfd157aeabc2e969ca89f61fcefbc4e745a6841",
+      "bytes": 12756
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/derived/convergence.csv",
+      "sha256": "b9ad834441ec6f96c0871cdc6477d6f7d011ec401f3813d47bc01bd269a84c86",
+      "bytes": 433
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/derived/dos.csv",
+      "sha256": "b2bbe7e1f52bfb71a212a8ae3682d143a9faa00adfb1a68cf849f0cfdd94b941",
+      "bytes": 7955
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/derived/full-zone-bands.csv",
+      "sha256": "5f181b3b664353a5a46bdd71a0841975f623d7eaf26aa21260266f90d65b53b9",
+      "bytes": 21237
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/derived/full-zone-status.json",
+      "sha256": "3ab5ba090e21801a575d3b17d0fd8b266969f57689b30eb7114afa37cce63fb7",
+      "bytes": 2543
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/derived/observables.json",
+      "sha256": "eb88c3dd0d760294ab121b6d49bae58ac8f82e4031d403cdd256197f216d508d",
+      "bytes": 4957
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/environment.txt",
+      "sha256": "11fd90c6a54d49e0057a92e295e38944521ba5b46f49c250af4697b834240533",
+      "bytes": 273
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/extract.sh",
+      "sha256": "487d2b66cb4111bf82d8bdc2272a825213be7ab9734ed86b3ce6bde7d0f94d52",
+      "bytes": 124
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/figures/band-path.png",
+      "sha256": "50108e1b6c391380d85f35bc8fae59fa747fee1f053ba4ffdfadbda62e1cdc0f",
+      "bytes": 126248
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/figures/convergence-matrix.png",
+      "sha256": "1fd386c9b80a8bc76d37ff7e9abb073aae65079f99b2696e01745e4c1d86e984",
+      "bytes": 66124
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/figures/dos.png",
+      "sha256": "33f2d775d055c51805eae489a0a1ff3f816e1059760ca42aeded51b1fb965494",
+      "bytes": 63844
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/figures/full-zone-bands.png",
+      "sha256": "b1fffd7acbe40d02c51b6ba3fe21489766aa1e9d130d1951995a7ceb955c29dd",
+      "bytes": 62583
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/figures/gamma-response.png",
+      "sha256": "10f3f85fb24856d21ed404bd648b4d3b95d32bb6b12292eecd55319e10bb5257",
+      "bytes": 46963
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/bands.in",
+      "sha256": "5f017a9583b23e6e4a75bc14d5cb560bead47418dc690fb1453ca2b5f7c47c62",
+      "bytes": 997
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/bands.x.in",
+      "sha256": "7b3521e4f421805f66e60b51b5a767c75a09b8e099d167421c7331fd0dd447c7",
+      "bytes": 85
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/dos-nscf.in",
+      "sha256": "9c835aecfcaeb22e7f781e49830c6c82c229ed4ec3b44730cbf7f79585d03f10",
+      "bytes": 639
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/dos.x.in",
+      "sha256": "7feb4d73a54e75d68c24b274e4d6f4f4771ae9c37da04c8366c8ad5d2db6147e",
+      "bytes": 128
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/fresh.in",
+      "sha256": "e1f50a0c55bcd5c29face43312301817d8dfcca0121115fc647646ac90cf7fb6",
+      "bytes": 546
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/full-zone/bands.in",
+      "sha256": "2153d9f5ad8741912a3fb9bafa813047d88742e7486aa85f023da30d6e855a21",
+      "bytes": 659
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/full-zone/bands.x.in",
+      "sha256": "ca19df9cc6360576d9804063ea9f011e5be42f1e9fdcd4a7367459b7bca5a701",
+      "bytes": 103
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/full-zone/scf.in",
+      "sha256": "3e7c0d25eef9f669d1832d7495a878665e72c35f4015beab59cd44ee0193d62a",
+      "bytes": 599
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/restart.in",
+      "sha256": "7d2bd287e0a46ed541d507b6b9250f6bd1879330eeaacabc0fdcd00f3ff2f7c1",
+      "bytes": 570
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/scf.in",
+      "sha256": "5e01391cba99fe9cf4c2495ccc26ff107a72dedd16d34bd80fdbfd2ed693e59e",
+      "bytes": 630
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/segment1.in",
+      "sha256": "48be68f38990512f1b38e71438c64d20347b70ef86dea108ce11ba53d8d03779",
+      "bytes": 615
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/segment2-restart.in",
+      "sha256": "a12d62f66ad94b5582975f4035a11117fbbfc252ebfc073cc0a08f59bce8a935",
+      "bytes": 640
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si-epsilon-ph.in",
+      "sha256": "cf34f48238386f4f00c2d59e5142d1f990760fca90e3c9cb9f73877af8eb29a0",
+      "bytes": 135
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si-epsilon-scf.in",
+      "sha256": "aedbf4a5a68926c8db6b9cd6fde692102a6e27ed66245e10349afc9cf8dbbe73",
+      "bytes": 587
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si-gamma-ph.in",
+      "sha256": "971c47c1f1531f5bfe06a67fe675251b19452157c5521d57e00fed7edb64332c",
+      "bytes": 120
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si-gamma-scf.in",
+      "sha256": "e104bdb89fe2e0ebc76687982c33bd3404673dda03ca2fa0cd3dc904cda5f329",
+      "bytes": 592
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si-relax.in",
+      "sha256": "5c1ac303baa15b1414f1fbbcf4552a978d45246876c6b49540ca917662ba5aff",
+      "bytes": 660
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si_e30_k10.in",
+      "sha256": "8cbff52c4ba7b741f6f84d5db7641b19a3798ba9202e77c0610d117d7b89d32a",
+      "bytes": 601
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si_e30_k6.in",
+      "sha256": "d236e114e1dd49fe6e0f200a6172e2c6c91285b83230088285ed68a7aa83bba5",
+      "bytes": 596
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si_e30_k8.in",
+      "sha256": "22fdcb6f956da284a678f8cefb3ab8111240f7c10707f029cd41ecd08f361d1b",
+      "bytes": 596
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si_e40_k10.in",
+      "sha256": "dcd315e02ab39912fe15501e3a501f451a72bf964ebcf5ca54408b381aa9ad8c",
+      "bytes": 601
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si_e40_k6.in",
+      "sha256": "972079be1926fb43e27abff7e28a90b744a8a966e1fa82e1df5a4a5ecccd9119",
+      "bytes": 596
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si_e40_k8.in",
+      "sha256": "ae22aef32362a742d6859063bf945ce75782659bb76a1a50e205e868f494b218",
+      "bytes": 596
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si_e50_k10.in",
+      "sha256": "a28964993d4907984a4effd3bbfe9ff4318e6dc94afc463067e767b99f611b51",
+      "bytes": 601
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si_e50_k6.in",
+      "sha256": "6691ba6f619be556c46ecc36b40f299507dfc1c75c4353c49609e6a657c66246",
+      "bytes": 596
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/input/si_e50_k8.in",
+      "sha256": "27e5864a634c3b2598bd7b712eb24004e5e520196479ce82d9a90f3c3d32d8f7",
+      "bytes": 596
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/manifest.json",
+      "sha256": "6741dfaed48772113c273241309cbdcdb6409e3b1cfece6dfa0ead819d982cef",
+      "bytes": 9877
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/bands-pw.out",
+      "sha256": "964d94760e0da901e613010304160e8cffc6d0a0e9e75701ad2b5fb0e7fb41de",
+      "bytes": 7237
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/bandsx-main.out",
+      "sha256": "56234fe91b75190b2b83f28a2c4b978f6962b1050dd8440665d955132ac814ff",
+      "bytes": 83088
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/dos-nscf.out",
+      "sha256": "fee1adb51f1762cba08576b0eade9db159fa58a27e50308946e5fd10fe064b64",
+      "bytes": 22353
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/dosx.out",
+      "sha256": "4e2f80adabf55a95c31b48de68f29c7c1fde5e8b60f451fa880526350bf95c5d",
+      "bytes": 1739
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/fresh.out",
+      "sha256": "86266d6cf5a38b86e3a3918c8c73e4d29a7d84c0b1771cb5c32d166bd4af64a5",
+      "bytes": 15602
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/full-zone/bands-pw.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/full-zone/bands-pw.out",
+      "sha256": "3c25f43a5e4eaa78e35eff57a300ab3c51bd8bb974e34e30c2a20375aad2da5b",
+      "bytes": 6732
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/full-zone/bandsx.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/full-zone/bandsx.out",
+      "sha256": "9d4deac9e49b3e33ff3e8bdcdcb4139122074217fd721de134ec1539039cb6e6",
+      "bytes": 204497
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/full-zone/scf.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/full-zone/scf.out",
+      "sha256": "e7e5d0a752d0b5940c04eac630dc925e4a98c7537010d3d2899a62e84f9797ef",
+      "bytes": 15667
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/full-zone/si-fullzone.bands.dat",
+      "sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
+      "bytes": 29671
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/restart.out",
+      "sha256": "44743a2471b5714fb4799a447f0a615c7c6e8219e78044ce4c9963f66bd195eb",
+      "bytes": 12801
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/scf-main.out",
+      "sha256": "16567297a7394ea428f79e75ce4e2e2d821aa3ccf26d3d633e1e5de0ff5a484f",
+      "bytes": 16382
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/segment1.out",
+      "sha256": "8ad09cca7e20d1872c0ef3d4c1e018dae65e4cc1c60052d70d812373dd24204b",
+      "bytes": 15346
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/segment2-restart.out",
+      "sha256": "8c294032f4dc59db136957c90cb665f8ad376be5c3b4c4590257ec6ad1b7c421",
+      "bytes": 16629
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-ph.out",
+      "sha256": "4d77782884f40ef28402890a6a5efdaf375d73a41d646bf1926712d44470c931",
+      "bytes": 18900
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-scf.out",
+      "sha256": "604d40e7ba08e9fb4e5daf9a649dc21f8b06ddf45e5a901efb02843729f73ecb",
+      "bytes": 15584
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si-gamma-ph.out",
+      "sha256": "0cec5946997c8c20dfb9d2ac807ccb4db2985b1452650196b57a4ccfa0e7d0b3",
+      "bytes": 14632
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si-gamma-scf.out",
+      "sha256": "bfd2c08124f5a36a55095c3e60f529c190d15b2f14e07b5ea9458030c09d7614",
+      "bytes": 15598
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si-relax.out",
+      "sha256": "546a5b13878429c434e3957b115eb620dcaa5f5464ab0492b690c66d0ec1fac7",
+      "bytes": 24686
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si.bands.dat",
+      "sha256": "4903acde7e33eb79906fbcf72e3ea9f5d19593f65b3946818febf36678b6cc3f",
+      "bytes": 16105
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si.dos.dat",
+      "sha256": "dc3bd84a740a572d665b3e39bdfb642dd61746e4c3c095ec18ae24ff96123db3",
+      "bytes": 15928
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_e30_k10.out",
+      "sha256": "8b5424b52f08ebb1e079f0293d6c03c599e05c6737e8ee6d17e6bffd975290e6",
+      "bytes": 18525
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_e30_k6.out",
+      "sha256": "349854748a5288dcd27704797bf4e63ee86414b802591dd3b2d4738c234b86b5",
+      "bytes": 12973
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_e30_k8.out",
+      "sha256": "3f70ca07183b77ac0e2322077b0d3d3fe929fcda9710afa37840ca3c0e3ef2a7",
+      "bytes": 15615
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_e40_k10.out",
+      "sha256": "943502816834623b7ffdbaff75300208a0a296ab9613e9dc5c46a45ee133a4eb",
+      "bytes": 18525
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_e40_k6.out",
+      "sha256": "cebd59aa635954352dd07a4f4150d4db50901a66b4e2df01f50c80e5aaa772ea",
+      "bytes": 13288
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_e40_k8.out",
+      "sha256": "d4abab49a805fb8a7808e0f82dc4dcbf1548d3c7482b726c66c266fd84c0d6c2",
+      "bytes": 15615
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_e50_k10.out",
+      "sha256": "4593e3586e535581d5035765dc74654d2946ad62887e340b2105dec768fc6b2d",
+      "bytes": 18525
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_e50_k6.out",
+      "sha256": "31ad9449e0dcb920942c2e2eae6091e85187dafb9b70941a686ea58d3ed9337f",
+      "bytes": 12973
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_e50_k8.out",
+      "sha256": "94d7173a584cd2b8c4dcc181a3fb02c2553bdb1db60577725f0c724b1ca0348d",
+      "bytes": 14985
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_epsilon.dyn",
+      "sha256": "b77e8f57a6af944cc323593f79db76cc8162c3818bdd865a79710c15d94fb94c",
+      "bytes": 3848
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/output/si_gamma.dyn",
+      "sha256": "c44a64405fbb30c40901a4693f474a35dd07d87195ad4be6868e8df5e6fe1c51",
+      "bytes": 3083
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/parse.py",
+      "sha256": "36d7bb487733acc4eae1de87a538ac96024114abea7d35b44a9c01da0429b9fd",
+      "bytes": 25027
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/replay-derived.sh",
+      "sha256": "c189b3d55e12921f8cca5baf7e7d520e9069ee57ae2abbe6ad69500477e133a0",
+      "bytes": 119
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/run.sh",
+      "sha256": "3b601859fd16bf6d4f5caf4b0a0d1058ada61c961b417c6ba8a01c5e97f5e6c9",
+      "bytes": 3470
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/source/checksums.sha256",
+      "sha256": "a05c59aaed7f6f68a64918576aa06e3046c0770de2a72ac69c30021d46adad4e",
+      "bytes": 543
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/source/convergence-checksums.sha256",
+      "sha256": "ac465249d54461a92c57d22b737119f0b7a9bc8d406556bd22027572577564ca",
+      "bytes": 2304
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/source/full-zone-extrema.json",
+      "sha256": "2a30ebb89071af1b9aa5167547a5939ec3780be1c4722534704c165aaffd2ea3",
+      "bytes": 1449
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/source/output-excerpt.txt",
+      "sha256": "c5a49549aeebaafca49944bbc72a4d1901c8812979151de9328d7bc2f573127a",
+      "bytes": 361
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/source/pseudopotentials.json",
+      "sha256": "cd01fa4af67f1998b16b30cd40c0beabe80be0a20eb2e43fb713b244a8fe7893",
+      "bytes": 434
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/source/qe_plan.json",
+      "sha256": "75bd7ee6091b4ebf21d99f42ad81607977d6cc7a9e2366e42b89ce6f73ce6261",
+      "bytes": 870
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/source/seekpath.json",
+      "sha256": "a1ea0fd1012a41cbeab015b390e5a35c77fb7f10c638b87f414f5a3087eb1c5d",
+      "bytes": 2703
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/source/silicon-cod-9013102.cif",
+      "sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55",
+      "bytes": 5199
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/source/silicon-cod-9013102.sanitization.json",
+      "sha256": "033b32c6c583ae213d7bb995a73e67ff9cc4a02ad16456118638eb7994f172b2",
+      "bytes": 647
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/README.md",
+      "sha256": "7ab6e0310bffd7b02c5350d23fabed72a70186c7d7430d60a2ce3c79913f666b",
+      "bytes": 608
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/check.sh",
+      "sha256": "69c3ebf2a4d1b54de04e95aced4335bd7724a0f3e2673c69c2a67e00e3685043",
+      "bytes": 1040
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/derived/geometry-summary.csv",
+      "sha256": "7e8e7690b7b4151d669a5418e45a3bf55e4d0c84544ec50cade5482fb1807517",
+      "bytes": 168
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/derived/graphene-model-report.json",
+      "sha256": "cf682132546b2b462b13d97791ad5c8ff6874f18cf3229e4b0fa9dca5e848bf6",
+      "bytes": 1532
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/environment.txt",
+      "sha256": "9656f163fac0929512fc3202848e31a3e2c57f799223f0b27c7bf5052436d649",
+      "bytes": 46
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/extract.sh",
+      "sha256": "4a7181d14f8399cad791522b934876ae48c5961231299e9f005453b7fa105099",
+      "bytes": 340
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/figures/graphene-H-xz.png",
+      "sha256": "3a31370326dfad6288636f5d0fdf9ee5661fbead39e767449c5593563b385d59",
+      "bytes": 27567
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/input/POSCAR.graphene-2x2-vacuum",
+      "sha256": "3d467b293dec81683a6e064fd4fb906a9eff5a4cc6a58c253f0bb479f288e6b5",
+      "bytes": 745
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/manifest.json",
+      "sha256": "a354ec038ad187ba1de22043a955a5ef0dc2f089c60d3211b7e49d2262a32bd8",
+      "bytes": 3351
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/output/POSCAR.graphene-2x2-H-ontop",
+      "sha256": "11bc256ca04e3c592fa00062d5b0e7c6fc56fc52d1d926615628b56e981ed6ef",
+      "bytes": 818
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/output/graphene-2x2-H-ontop.xyz",
+      "sha256": "8e670ca2240115a01a74bd75a10ccaccc2b4897fd04e11dd63e3e8ad08d5d925",
+      "bytes": 596
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/output/graphene-2x2-vacuum.xyz",
+      "sha256": "905db1e1a6f9e8d046a893e6758c4ab68257cd4ff9b19983bbfcdcdc5531d11e",
+      "bytes": 542
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/output/run.stdout",
+      "sha256": "67f5d8df1c48251d7b7b89167473900b0cdc3bc0a1e04978a5b1694a383dcbdd",
+      "bytes": 91
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/parse.py",
+      "sha256": "2fb4ce5d60082fdc99207f385870182fb0b086cbebd61f347a343a2d74231b91",
+      "bytes": 5636
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/run.sh",
+      "sha256": "30f0359f1c5febe7f65c35f2359eab7728b65a0ebbc3f891c8c755f92967f891",
+      "bytes": 1355
+    },
+    {
+      "path": "examples/cases/structure-graphene-vacuum-adsorbate/source/graphene-unit.xyz",
+      "sha256": "6f2a67ff1c879d1e171036fdd1528b09d4a6ccaa29eaad7fd894ec6e8dd3ee6d",
+      "bytes": 218
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/README.md",
+      "sha256": "df740211605477bef28ab9df35ca9ae8e2f4809df942ebe4df7ff97b15ae884d",
+      "bytes": 779
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/check.sh",
+      "sha256": "a2476c2f45c91ae7cc6a5b3c5dc818f51c828056ebda147aa54e4adae48578ed",
+      "bytes": 1057
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/derived/seekpath-primitive.json",
+      "sha256": "da13d9c9c7f0631234ed308fc5f4b266ca61940297e997b59e11cfd81136f6d1",
+      "bytes": 684
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/derived/structure-report.json",
+      "sha256": "a8de2b6e843082439eb4e5edac938a772fdd53cd1e2b79d6859a122a9cb30646",
+      "bytes": 3196
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/derived/structure-summary.csv",
+      "sha256": "95c557a32d60acf8dfd3899d8f92211f16ea52b430e405bd0625a89a36b8d2d4",
+      "bytes": 264
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/derived/symmetry-tolerance-sweep.json",
+      "sha256": "e53eb468a2d0edbd6f4665bbf3ede3506e57af36c1ba964aac31ae10334a3ed6",
+      "bytes": 548
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/environment.txt",
+      "sha256": "d153d2a24a40954e78852b24e2b7502fa1d7de37775d3b8d1a24bddb4f124b6d",
+      "bytes": 101
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/extract.sh",
+      "sha256": "9f0f49683004fe0ea4d63e7994b0dd948dcf8a6413b8eb0d6834ab7dd58f0db5",
+      "bytes": 319
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/figures/silicon-conventional-xy.png",
+      "sha256": "6ea6f0b037db7dd0b35c38501b2445cb884bfc01875d68c329e3874e0f6af681",
+      "bytes": 33554
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/input/POSCAR.silicon-primitive",
+      "sha256": "d16f73a424e7af48c711bf904c14c2167f01716f6465135c50e4220f100bbb39",
+      "bytes": 375
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/manifest.json",
+      "sha256": "e47df80f16dff4542d8967c4ba8313ad4a3823e679408d826648ba7999fefc3c",
+      "bytes": 4550
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/output/POSCAR.conventional",
+      "sha256": "2c69f3865f9b2ec447dfafef24c5d64b8331272ce4aec1f2f4d4caa6d75034a7",
+      "bytes": 747
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/output/POSCAR.primitive",
+      "sha256": "d16f73a424e7af48c711bf904c14c2167f01716f6465135c50e4220f100bbb39",
+      "bytes": 375
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/output/run.stdout",
+      "sha256": "d2466e26e5a11071c27ce00b8589d339dd1f637cb0ac1917220730e5cc6c742b",
+      "bytes": 172
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/output/silicon-conventional.xyz",
+      "sha256": "642ac438e6b2772d3fe71da004d2186c9411a004983b7f592f6c12b72d766b34",
+      "bytes": 670
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/output/silicon-primitive-2x2x2.xyz",
+      "sha256": "38d0a47627dcd09be29d77c4a3784cfd7e73bc1dd9329181bb31ce2363fd84fb",
+      "bytes": 1040
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/output/silicon-primitive.xyz",
+      "sha256": "5e6b645afa8f47d1c148796b758fd78686672d8d5464e6378c5010ee36daca89",
+      "bytes": 289
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/output/silicon-standardized-conventional.xyz",
+      "sha256": "be24ce037e101fabf64330ee4db42fa1630590c5fe3c563131369bc96f3a9272",
+      "bytes": 565
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/parse.py",
+      "sha256": "9179e60e5fc596edee7aee9a8e8f6f873f817a3ea866ab81de5a707d4d7d74b7",
+      "bytes": 6983
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/run.sh",
+      "sha256": "f8099294505f1fac4b3b7cd908ed69af2f9acc008826e1119b01a95354eb0984",
+      "bytes": 1402
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/source/silicon-cod-9013102.cif",
+      "sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55",
+      "bytes": 5199
+    },
+    {
+      "path": "examples/cases/structure-silicon-cell-lineage/source/silicon-cod-9013102.sanitization.json",
+      "sha256": "033b32c6c583ae213d7bb995a73e67ff9cc4a02ad16456118638eb7994f172b2",
+      "bytes": 647
+    }
+  ]
+}
