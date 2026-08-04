@@ -1,0 +1,6 @@
+{
+  "blocker": "Docker Hub Ubuntu image metadata request failed before container execution.",
+  "case_id": "gui-xvfb-mesa-smoke",
+  "docker_build_stderr_sha256": "f979fcaa924f58eb65809df98718db55f95d65dcd9256b4e4b2fb5220d9773ca",
+  "execution_status": "blocked"
+}

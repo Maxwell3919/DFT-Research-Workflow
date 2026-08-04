@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "case_id": "gui-xvfb-mesa-smoke",
+  "title": "Talos Docker Xvfb Mesa X11 smoke",
+  "case_kind": "gui-walkthrough",
+  "evidence_class": "real-interface-walkthrough",
+  "public_host_label": "Talos local Docker host",
+  "exit_code": 1,
+  "software": [
+    {"name": "Docker", "version": "captured in output/run-metadata.txt", "interface": "container runtime"},
+    {"name": "Ubuntu", "version": "24.04", "interface": "container base image"}
+  ],
+  "sources": [
+    {"id": "local-dockerfile", "role": "reproducible GUI environment definition", "path": "Dockerfile", "sha256": "2cfe4d7431f485f195fe63f64f5e2e5629825dbec4b95f0124e6dc30dacab869"},
+    {"id": "local-x11-smoke", "role": "actual X11 probe and screenshot script", "path": "source/x11-smoke.sh", "sha256": "29b84a706696b2ec056339ae6e8f3067528e0886f604ddf482501a168c482b75"}
+  ],
+  "commands": [
+    {"stage": "build-and-run", "command": "bash run.sh", "exit_code": 1},
+    {"stage": "case-validation", "command": "bash check.sh", "exit_code": 0}
+  ],
+  "artifacts": [
+    {"role": "actual Docker build stdout", "path": "output/docker-build.stdout", "sha256": "cf205dbb8cea84897b488abcc281bf96698d5e94b1096b16657b4caba9082a22"},
+    {"role": "actual Docker build stderr", "path": "output/docker-build.stderr", "sha256": "f979fcaa924f58eb65809df98718db55f95d65dcd9256b4e4b2fb5220d9773ca"},
+    {"role": "actual run status metadata", "path": "output/run-metadata.txt", "sha256": "0e31f14610efa6f95a920839b19f2f2daab14c9e5f133736d347047b41d151e0"},
+    {"role": "parser record for the hash-bound Docker blocker", "path": "derived/capture.json", "sha256": "4f434a1a053271b9c9ec23a3f5e8604d3d5a977e702e47caa01baaaef65e69ea"},
+    {"role": "committed checksum ledger", "path": "output/SHA256SUMS", "sha256": "c9c0adbce3316fd1e3c96740692fe8422caeb3968608dffdd23b89a2af60293c"}
+  ],
+  "gates": {
+    "G0": {"status": "PASS", "summary": "The Dockerfile, X11 script, actual Docker build logs, parser record, and checksum ledger are committed and hash-bound."},
+    "G1": {"status": "WARN", "summary": "Docker 29.5.3 was reachable, but Ubuntu 24.04 image metadata retrieval from Docker Hub timed out before container execution."},
+    "G2": {"status": "NOT CLAIMED", "summary": "No scientific solver or optimizer is involved."},
+    "G3": {"status": "NOT TESTED", "summary": "The unavailable base image prevented Xvfb startup, llvmpipe inspection, GUI launch, window detection, and screenshot capture."},
+    "G4": {"status": "NOT TESTED", "summary": "No numerical observable is defined."},
+    "G5": {"status": "NOT CLAIMED", "summary": "GUI display cannot establish scientific validity."}
+  },
+  "claim_boundary": {
+    "supports": ["Talos Docker 29.5.3 attempted the versioned Ubuntu 24.04 GUI-image build and recorded its source-metadata timeout before container execution."],
+    "does_not_support": ["A VESTA walkthrough occurred.", "A GUI screenshot validates a structure or DFT calculation.", "The environment establishes numerical convergence or a scientific conclusion."]
+  }
+}

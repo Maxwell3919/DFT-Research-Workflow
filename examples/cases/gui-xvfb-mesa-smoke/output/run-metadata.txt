@@ -1,0 +1,3 @@
+image_tag=dft-rw-gui-xvfb-mesa-smoke:20260805
+docker_version=Docker version 29.5.3, build d1c06ef
+run_status=BLOCKED docker build failed; inspect output/docker-build.*
