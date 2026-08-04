@@ -3,65 +3,84 @@ topic_slug: validate-results-and-scientific-conclusions
 status: reviewed
 ---
 
-Validation asks whether an analyzed result is credible for the scientific use assigned to it and whether the proposed conclusion is no stronger than the evidence. It is not a final checkbox performed after plotting. It is a structured attempt to make the result fail through independent numerical, physical, methodological, and external challenges.
+Validation asks whether a result is credible for the scientific use assigned to it and whether the proposed conclusion is no stronger than the evidence. It is not a final checkbox after plotting. It is a structured attempt to make the result fail through numerical, physical, methodological, and external challenges.
 
-The first distinction is between verifying a computation and validating its use as a model of the physical world. Verification asks whether equations and analysis were solved and implemented as intended. Validation asks whether the chosen model represents the relevant physics adequately for a stated purpose. A reproducible calculation can reproduce the same bug or omission, while agreement with one experiment can arise from compensating errors.
+Two questions must remain separate. Verification asks whether the equations, software, and analysis were executed as intended. Validation asks whether the chosen model represents the relevant physical system adequately for a stated purpose. The workflow must distinguish verification from validation. A reproducible calculation can reproduce the same omission, while agreement with one experiment can arise from compensating errors.
 
 ## Build a claim–evidence map
 
-State each candidate conclusion as a bounded proposition. Identify the observable, material state, thermodynamic conditions, model class, uncertainty, and domain to which it applies. Then list the evidence required for that proposition and the alternatives that could produce the same observation.
+Write each candidate conclusion as a proposition that names:
 
-A calculated negative formation energy supports stability only relative to the declared references; it does not establish convex-hull stability. A real phonon spectrum on the sampled q mesh supports harmonic stability only within that model and sampling; it does not establish finite-temperature survival. A band gap supports an electronic excitation statement only within its method and momentum coverage; it does not prove optical onset or device performance. The wording of the claim must preserve these boundaries.
+- the material or model state;
+- the observable;
+- the thermodynamic or operating conditions;
+- the method and approximations;
+- the uncertainty or tested tolerance;
+- the domain over which the statement applies.
+
+Then identify the evidence required for that proposition and the alternative explanations that could produce the same observation.
+
+This prevents common category errors. A negative formation energy is relative to specified reservoirs, not proof of convex-hull stability. A real phonon spectrum on the sampled q mesh is not proof of finite-temperature survival. A high-symmetry-path band gap is not a full-zone guarantee, optical onset, or device prediction. The wording of the claim must preserve the actual evidence boundary.
 
 ## Verify identity, execution, and analysis first
 
-Before interpreting physics, establish that the intended inputs produced the inspected outputs. Check hashes and lineage, program termination, parsed units and normalization, spin and symmetry conventions, reference states, and the exact analysis transformation. Recompute a small number of derived quantities independently from the raw output when practical.
+First confirm that the intended inputs produced the inspected outputs. Check file identity and lineage, program termination, parsed units and normalization, structure and electronic state, reference energies, spin and symmetry conventions, and the exact transformations used in analysis.
 
-These checks can establish artifact integrity and software behaviour. They do not establish convergence or scientific accuracy. Likewise, SCF convergence, force convergence, `JOB DONE`, a validator pass, and successful rendering are different evidence classes; none substitutes for the target observable’s acceptance test.
+Where practical, recompute selected derived quantities independently from the raw outputs. This can expose parser, unit, sign, normalization, or plotting errors.
+
+These checks establish artifact integrity and software behaviour within their scope. They do not establish numerical convergence or physical accuracy. `JOB DONE`, SCF convergence, force convergence, a passing validator, and a correctly rendered figure are different evidence classes.
 
 ## Challenge numerical completion at the observable level
 
-Numerical verification varies representation and discretization while holding the physical problem fixed. Repeat the derived observable over the relevant basis, real-space grid, k or q sampling, supercell, vacuum, smearing or integration, band count, interpolation, time step, trajectory length, and solver controls. Which variables matter depends on the observable; a universal parameter threshold is not defensible.
+Vary the numerical representation while holding the physical problem fixed. Relevant axes may include basis size, real-space grid, k and q sampling, supercell and vacuum, smearing or integration, band count, interpolation, time step, trajectory length, and solver thresholds.
 
-For a sequence `y(h)` controlled by a resolution measure `h`, examine changes in the target quantity rather than assuming a monotonic trend:
+For a sequence controlled by resolution `h`, one may inspect
 
 ```text
-Delta_h = y(h_finer) - y(h_coarser).
+Δ_h = y(h_finer) - y(h_coarser) .
 ```
 
-`Delta_h` is a sensitivity over the tested interval, not automatically an error estimate. Extrapolation requires an identified asymptotic regime and a justified convergence model. If state character, phase, magnetic order, occupation, or geometry changes along the sequence, the test no longer isolates discretization error and must be interpreted as a state-change diagnostic.
+This is a measured sensitivity over the tested interval. It is not automatically the remaining numerical error. Extrapolation requires a justified convergence model and evidence that the sequence has reached its asymptotic regime.
+
+If the structure, magnetic order, occupation, phase, or state character changes along the sequence, the test no longer isolates discretization error. Treat the change as a physical-state diagnostic and compare like states separately.
 
 ## Test physical consistency and limiting behaviour
 
-Apply constraints that follow from the model: conservation of charge or current, acoustic sum rules, tensor symmetry, Hermiticity, positive or bounded quantities where required, thermodynamic cycles, degeneracies protected by symmetry, and correct zero-field, zero-temperature, long-wavelength, or non-interacting limits. Violating such a constraint can falsify the result. Satisfying it is necessary in its domain but rarely sufficient for accuracy.
+Apply constraints that follow from the model: conservation of charge or current, acoustic sum rules, Hermiticity, tensor symmetry, protected degeneracies, thermodynamic cycles, and appropriate zero-field, long-wavelength, non-interacting, or other limiting behaviour.
 
-Cross-check related observables derived through independent routes. Forces can be compared with finite differences of energy, polarization changes with integrated current where defined, dielectric response with sum rules, and a transport current with both terminal fluxes. Independence matters: two plots generated from the same erroneous intermediate are not independent confirmation.
+Violating a required constraint can falsify a result. Satisfying it is usually necessary but not sufficient for accuracy.
+
+Cross-check related quantities through genuinely independent routes where possible: forces against finite differences of energy, terminal currents from both contacts, a phase-energy difference through an alternative balanced cycle, or a derived quantity recomputed with an independent parser. Two figures generated from the same incorrect intermediate are not independent confirmation.
 
 ## Probe model-form and methodological sensitivity
 
-Change assumptions that could alter the conclusion: exchange–correlation approximation, core treatment, relativistic terms, magnetic and charge candidates, finite-size correction, structural ensemble, quasiparticle or excitonic treatment, scattering channels, or environmental model. Use controlled comparisons so that a method change is not silently mixed with a different structure or reference.
+Change assumptions that could alter the conclusion: exchange--correlation approximation, core treatment, relativistic terms, charge and magnetic candidates, structural ensemble, finite-size correction, quasiparticle or excitonic treatment, scattering channels, or environment.
 
-Robustness means the claim survives plausible alternatives relevant to its intended scope. It does not require every method to produce the same number. If the sign, ordering, phase assignment, or mechanism changes under a defensible alternative, report the conclusion as method-dependent and identify the unresolved decision. Agreement among implementations that share the same approximation tests reproducibility more directly than physical accuracy.
+Keep comparisons controlled so a method change is not silently mixed with a new structure, reference state, or numerical quality. Robustness does not mean that every method returns the same number. It means that the stated conclusion survives the defensible alternatives relevant to its intended scope.
+
+If the sign, ordering, phase assignment, or mechanism changes under a plausible alternative, report the result as method-dependent or unresolved. Cross-code agreement within the same approximation tests reproducibility more directly than physical accuracy.
 
 ## Compare with external evidence without tuning after the fact
 
-Align the modeled and measured quantities before comparing them. Experimental temperature, pressure, composition, defects, surfaces, domains, resolution, and sample history may differ from the idealized calculation. Instrument response and data reduction can transform the measured observable just as numerical broadening transforms a calculated spectrum.
+Before comparing with experiment or another calculation, align the physical objects. Temperature, pressure, composition, defects, surfaces, domains, sample history, instrument response, and data reduction may differ from the idealized model.
 
-Use experimental evidence that was not used to select or tune the model when possible. If a parameter was fitted to one datum, agreement with that datum is calibration, not validation. Predictions for withheld conditions, independent observables, or new systems provide stronger tests. A discrepancy should be decomposed into numerical uncertainty, model discrepancy, experimental uncertainty, and mismatch of physical object rather than assigned automatically to DFT or experiment.
+Separate calibration from withheld external tests. A fitted datum is calibration, not independent validation. Stronger tests use withheld conditions, independent observables, or systems not used to choose the model. A discrepancy should be separated into numerical uncertainty, model discrepancy, experimental uncertainty, and mismatch of the compared object rather than assigned automatically to either theory or experiment.
+
+Agreement with one value is not sufficient when other features that the model should also reproduce are absent or incorrect.
 
 ## Decide what the evidence can support
 
-Summarize each challenge with its scope, outcome, and consequence for the claim. A useful decision table distinguishes:
+For each test, record its scope, result, and consequence for the claim. A useful final classification is:
 
 - supported within the tested model and domain;
-- sensitive but qualitatively unchanged;
-- unresolved because relevant evidence is missing;
-- contradicted by a reliable check; or
-- outside the method’s capability.
+- sensitive, but the qualitative conclusion is unchanged;
+- unresolved because essential evidence is missing;
+- contradicted by a reliable check;
+- outside the method's capability.
 
-Absence of a detected failure is not proof that none exists. State which alternatives were tested, which were not, and what new evidence would change the conclusion. Negative and null results belong in the record because removing them creates a misleading evidence base.
+Absence of a detected failure is not proof that none exists. State which alternatives were tested, which were not, and what new evidence would change the conclusion. Preserve negative and null results when their omission would make the evidence base misleading.
 
-Validation concludes with a claim whose language matches the weakest essential link. **Analyze and Compare Results** constructs compatible observables and uncertainty statements. **Document and Preserve the Study** makes the evidence and its limits recoverable. Neither computational reproducibility nor archival completeness alone proves that the physical conclusion is correct.
+The final conclusion should match the weakest essential link. **Analyze and Compare Results** constructs comparable observables and uncertainty statements. **Document and Preserve the Study** keeps the evidence and its limits recoverable. Neither reproducibility nor archival completeness alone proves that the physical conclusion is correct. This page does not validate a project result; it defines the evidence needed to do so.
 
 ## Sources and methods
 

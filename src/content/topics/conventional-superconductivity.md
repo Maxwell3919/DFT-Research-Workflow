@@ -3,42 +3,64 @@ topic_slug: conventional-superconductivity
 status: reviewed
 ---
 
-Conventional superconductivity asks whether a declared electron--phonon pairing model predicts a superconducting instability and, if so, what transition temperature and gap properties follow within that model. It does not follow from a large electron--phonon matrix element, a soft mode, a high density of states, or a reported total `λ` alone. The question consumes compatible electronic states, phonons, and electron--phonon coupling data; it adds a treatment of retarded attraction, Coulomb repulsion, temperature, and the gap equation.
+Conventional superconductivity asks whether a declared phonon-mediated pairing model predicts an instability of a specified normal electronic state. If it does, the model may provide a transition temperature, gap function, and related thermodynamic quantities. The conclusion does not follow from a large density of states, a soft phonon, a large matrix element, or a total EPC constant `λ` alone.
+
+The calculation consumes mutually compatible electronic states, phonons, and electron--phonon coupling data. It then adds a treatment of retarded attraction, residual Coulomb repulsion, temperature, and the superconducting gap equation. Each step has its own numerical and physical boundary.
 
 ## From an Eliashberg spectrum to a pairing model
 
-The isotropic Eliashberg spectral function `α²F(ω)` combines a Fermi-surface-weighted electron--phonon interaction with phonon frequencies `ω`. Its standard moments include
+For an isotropic phonon-mediated model, the Eliashberg spectral function `α²F(ω)` organizes the Fermi-surface-weighted interaction by phonon frequency. Two commonly reported moments are
 
 ```text
-λ = 2 ∫₀∞ α²F(ω)/ω dω,
-ω_log = exp[(2/λ) ∫₀∞ ln(ω) α²F(ω)/ω dω].
+λ = 2 ∫₀∞ α²F(ω) / ω dω,
+
+ω_log = exp[(2/λ) ∫₀∞ ln(ω) α²F(ω) / ω dω].
 ```
 
-`λ` is a dimensionless coupling strength and `ω_log` is a logarithmic phonon-frequency average. The integrals require a declared frequency unit and a spectrum built from the same electronic state, Fermi level or carrier model, phonons, matrix elements, reciprocal meshes, and integration treatment. Neither quantity is a measured transition temperature. A change in the Fermi-surface model or in a low-frequency contribution can alter the integrals even when a plotted spectrum looks similar.
+`λ` is a dimensionless coupling measure, while `ω_log` is a logarithmic average of the phonon frequencies. Both depend on the full spectrum and on the electronic state, Fermi surface, phonons, matrix elements, reciprocal meshes, occupations, and integration treatment used to construct it.
 
-The Coulomb pseudopotential `μ*` represents an effective, retarded residual repulsion within a chosen model and cutoff convention. It is not a universal constant, an output automatically determined by a phonon calculation, or a parameter that may be silently reused across materials and electronic models. State its origin, cutoff treatment, and sensitivity whenever it enters a `T_c` estimate.
+Neither quantity is a transition temperature. Low-frequency spectral weight is amplified in the integral for `λ`, so unresolved soft modes, smearing sensitivity, or an unstable harmonic reference can strongly affect the result. A similar-looking plotted spectrum can also yield different moments if its low-frequency region or normalization changes.
+
+## Coulomb repulsion is an additional model input
+
+The Coulomb pseudopotential `μ*` represents a retarded residual repulsion within a chosen cutoff and effective model. It is not generated automatically by the phonon calculation and is not a universal constant that can be transferred silently between materials.
+
+State how `μ*` was chosen or calculated, the cutoff convention to which it belongs, and how the predicted observable changes over a defensible range. A `T_c` value quoted without its `μ*` convention is incomplete even when the underlying EPC data are well converged.
 
 ## Approximate transition-temperature formulas are conditional maps
 
-McMillan and Allen--Dynes-type expressions map `λ`, a frequency scale such as `ω_log`, and `μ*` to an approximate isotropic `T_c`; schematically, an Allen--Dynes form is
+McMillan and Allen--Dynes-type formulas map a small set of spectral moments and `μ*` to an approximate isotropic transition temperature. A schematic Allen--Dynes form is
 
 ```text
-T_c = f₁ f₂ ω_log/1.2 × exp[-1.04(1+λ)/(λ-μ*(1+0.62λ))].
+T_c = f₁ f₂ ω_log / 1.2
+      × exp[-1.04(1+λ) / (λ - μ*(1+0.62λ))].
 ```
 
-`f₁` and `f₂` are strong-coupling and spectral-shape corrections, and the temperature unit follows the unit convention for `ω_log`. The formula is useful for a sensitivity analysis under its assumptions, not a license to rank unlike calculations by one number. It can be unreliable outside its intended coupling, adiabatic, isotropic, and phonon-mediated setting; it does not repair poor reciprocal-space convergence, a questionable metallic state, unstable phonons, an inconsistent carrier model, or an untested Coulomb treatment.
+The factors `f₁` and `f₂` account for strong-coupling and spectral-shape effects, and the temperature unit follows the unit convention used for `ω_log`.
+
+Such a formula is useful for screening and sensitivity analysis within its intended regime. It cannot repair an unconverged Fermi surface, questionable metallic state, unresolved phonon instability, inconsistent carrier model, poor interpolation, or unexamined Coulomb treatment. Ranking unlike calculations by the resulting scalar `T_c` can therefore compare numerical and modelling choices rather than materials.
 
 ## Eliashberg solutions answer a more specific question
 
-Isotropic Eliashberg equations solve for temperature-dependent renormalization and gap functions from an `α²F` spectrum and a declared Coulomb kernel. An anisotropic, multiband formulation retains momentum, band, and gap structure and requires substantially denser, validated electronic and phonon sampling. A linearized equation can locate an instability temperature; a nonlinear solution below it provides a model gap function. Those are distinct calculations with distinct convergence checks.
+The isotropic Eliashberg equations solve for temperature-dependent renormalization and gap functions using `α²F(ω)` and a declared Coulomb kernel. A linearized equation can locate the onset of an instability. A nonlinear solution below the transition can provide the model gap function. These are related but distinct calculations.
 
-The energy cutoff, Matsubara or real-frequency grids, analytic continuation, gap convergence, Coulomb window, temperature bracketing, band resolution, and anisotropy treatment belong in provenance. Convergence of an EPC `λ` does not prove convergence of `T_c`, and convergence of a linearized eigenvalue does not establish the zero-temperature gap, isotope effect, critical field, coherence length, vortex behaviour, or experimental transition.
+An anisotropic or multiband treatment retains momentum, band, and gap variation over the Fermi surface. It can resolve distinct gaps or strongly anisotropic pairing, but it requires much denser and better validated electronic, phonon, and EPC sampling. An isotropic average can be adequate only when that loss of information is justified for the stated question.
 
-## Evidence boundary and downstream interpretation
+Solver settings belong to the scientific record: Matsubara or real-frequency grids, energy and Coulomb cutoffs, temperature bracketing, analytic continuation, number of bands, interpolation, gap tolerance, and the criterion used to identify the transition.
 
-Check that the normal reference is physically and numerically appropriate for the pairing model: its Fermi surface, occupations, magnetism, SOC, phonons, and EPC inputs must be mutually compatible. Where magnetic fluctuations, strong electronic correlations, nonadiabatic physics, disorder, competing order, low dimensionality, or anharmonic renormalization are plausible, an electron--phonon Eliashberg result needs an explicit limitation rather than an implicit claim of completeness.
+## Validate the normal state before interpreting the paired state
 
-Converge the claimed observable, including `α²F` moments, `T_c`, anisotropic gap structure, or a sensitivity envelope, against reciprocal meshes, integrations, interpolation, phonon/EPC lineage, Coulomb treatment, frequency and temperature grids, and all band or gap cutoffs. Preserve the full spectrum or matrix-element route, model definition, `μ*` convention, solver settings and convergence record, and sensitivity data. A calculation can support a conditional prediction within its declared pairing model; it does not establish experimental superconductivity, a synthesized phase, a record `T_c`, a mechanism excluding alternatives, or a device performance claim.
+The parent normal state must be physically and numerically appropriate for the pairing model. Check its structure, magnetic order, SOC treatment, carrier condition, Fermi-surface topology, phonons, and EPC lineage. Convergence of an SCF calculation does not establish convergence of the pairing kernel, and convergence of `λ` does not establish convergence of `T_c`.
+
+Where magnetic fluctuations, strong correlations, nonadiabatic effects, disorder, competing order, reduced dimensionality, or anharmonic phonon renormalization may be important, the phonon-mediated result should be presented as a conditional model rather than a complete mechanism.
+
+In low-dimensional systems, a mean-field pairing temperature is also not automatically the experimentally observed transition temperature. Phase fluctuations, finite-size effects, substrate coupling, and disorder can require additional evidence outside the present calculation.
+
+## Match the claim to the computed quantity
+
+Converge the quantity that will be reported: moments of `α²F`, an approximate `T_c`, the leading eigenvalue of a linearized equation, an anisotropic gap, or a sensitivity envelope. Test reciprocal meshes, Fermi-surface integration, phonon and EPC interpolation, carrier state, Coulomb treatment, frequency and temperature grids, and all band or solver cutoffs that affect that quantity.
+
+Preserve the full spectrum or matrix-element route, normal-state definition, `μ*` convention, solver settings, convergence evidence, and sensitivity analysis. A calculation may support a conditional prediction within its declared pairing model. It does not establish experimental superconductivity, synthesis of the phase, a unique pairing mechanism, a record transition temperature, critical fields, vortex behaviour, or device performance.
 
 ## Sources and methods
 

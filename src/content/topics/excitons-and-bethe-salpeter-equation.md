@@ -3,48 +3,70 @@ topic_slug: excitons-and-bethe-salpeter-equation
 status: reviewed
 ---
 
-The Bethe--Salpeter equation (BSE) is used when an optical or other two-particle excitation cannot be represented as an independent transition between one-electron levels. Light can create an electron and a hole whose Coulomb interaction changes both the excitation energies and their oscillator strengths. A BSE spectrum therefore answers a different question from a quasiparticle band structure, a Kohn--Sham transition spectrum, or a measured spectrum with temperature, disorder, substrates, phonons, and finite carrier populations.
+The Bethe--Salpeter equation (BSE) is used when a neutral excitation cannot be represented as an independent transition between one-electron levels. Light creates an electron and a hole, and their interaction can shift excitation energies, redistribute oscillator strength, and produce bound or resonant excitonic states.
+
+A BSE spectrum therefore answers a different question from a Kohn--Sham band structure, a quasiparticle gap, or a measured spectrum affected by temperature, disorder, substrates, phonons, and carrier populations.
 
 ## From electron--hole pairs to neutral excitations
 
-At fixed transferred momentum `Q`, an exciton can be expanded in electron--hole pair states,
+At transferred momentum `Q`, an excitonic state can be expanded as
 
 ```text
-|S_Q> = sum_vck A^S_vckQ |v k> |c, k+Q>.
+|S_Q⟩ = Σ_vck A^S_vckQ |v k⟩ |c, k+Q⟩ .
 ```
 
-`v` and `c` label occupied and empty bands, `k` is a Brillouin-zone point, `S` labels a neutral excitation, and `A` gives its composition. In the common static BSE formulation the coefficients and excitation energy `Omega_S` follow from
+`v` and `c` label occupied and empty states, `k` is a Brillouin-zone point, and the coefficients `A^S` describe the electron--hole composition of excitation `S`.
+
+In a common static formulation,
 
 ```text
-sum_v'c'k' H^BSE_vck,v'c'k' A^S_v'c'k'
-= Omega_S A^S_vck,
-H^BSE = (E^QP_ck - E^QP_vk) delta
-+ K^x + K^d.
+Σ_v'c'k' H^BSE_vck,v'c'k' A^S_v'c'k'
+= Ω_S A^S_vck,
+
+H^BSE = (E^QP_ck - E^QP_vk) δ + K^x + K^d .
 ```
 
-The diagonal term is a declared independent quasiparticle transition energy. `K^x` is the repulsive exchange/local-field contribution and `K^d` is the attractive screened direct electron--hole interaction. Their signs, screening model, Coulomb boundary treatment, spin/SOC convention, and transition basis are part of the result. The BSE is not a universal gap correction.
+The diagonal term contains compatible quasiparticle transition energies. `K^x` is the exchange or local-field contribution, and `K^d` is the screened direct electron--hole interaction. Their signs, screening model, spin and SOC convention, Coulomb boundary treatment, and transition basis are part of the result.
+
+The BSE does not apply one universal correction to a band gap. It diagonalizes a two-particle Hamiltonian whose eigenvalues and eigenvectors define neutral excitations.
 
 ## What an exciton binding energy compares
 
-For a specified bright or otherwise identified state, an often reported quantity is
+For an identified bound state, one often writes
 
 ```text
-E_b = E_g^QP - Omega_1.
+E_b = E_g^QP - Ω_S .
 ```
 
-Here `E_g^QP` must be the compatible quasiparticle continuum edge and `Omega_1` the compatible neutral excitation. The subtraction is meaningful only when geometry, Hamiltonian, spin/SOC state, k-grid, boundary model, and the definition of the continuum match. The lowest eigenvalue need not be optically bright, and a bright peak need not be a bound exciton: selection rules, momentum, polarization, and the continuum threshold must be inspected. In a reduced-dimensional model, dielectric environment and Coulomb truncation can change both terms, so a value from one supercell or substrate model is not directly transferable to another.
+`E_g^QP` must be the compatible quasiparticle continuum edge, and `Ω_S` must refer to the same geometry, Hamiltonian, spin/SOC state, k mesh, and boundary model.
+
+The lowest BSE eigenvalue need not be optically bright. A bright peak need not be bound. Determine the continuum threshold, oscillator strength, momentum, and polarization before assigning an exciton binding energy.
+
+This consistency is especially important in reduced-dimensional systems, where dielectric environment and Coulomb truncation can strongly affect both the quasiparticle gap and the electron--hole interaction. A binding energy from one vacuum or substrate model is not automatically transferable to another.
 
 ## Numerical representation is physical evidence
 
-The transition space is controlled by valence and conduction band windows, coarse and fine k grids, dielectric screening representation, local-field cutoff, quasiparticle input, and the treatment of `q -> 0`. Bound excitons can be sharply localized in reciprocal space or extended in real space; either case can make a seemingly smooth optical curve numerically misleading. Converge the target observable--for example a specified exciton energy, polarization-resolved oscillator strength, or continuum onset--rather than only the BSE solver residual.
+The numerical representation is defined by the valence and conduction band windows, k sampling, quasiparticle inputs, dielectric screening basis, local-field cutoff, and treatment of `q → 0`. Excitons that are extended in real space can require very dense reciprocal-space sampling; strongly localized states can require a broad transition basis.
 
-The Tamm--Dancoff approximation removes coupling between resonant and anti-resonant sectors. It can be a useful stated approximation, but it is not identical to the full BSE and should be challenged where coupling, low-energy collective response, or spectral redistribution matters. A broadened spectrum also does not establish a lifetime unless the broadening is tied to a separately justified physical model rather than a display parameter.
+A smooth broadened spectrum can therefore be misleading. Converge the quantity that will be interpreted: a specified excitation energy, continuum onset, oscillator strength, polarization dependence, or exciton character. Solver residual alone is not enough.
 
-## Reading a spectrum without overclaiming
+The Tamm--Dancoff approximation removes coupling between resonant and anti-resonant sectors. It can be useful within a stated regime, but it is not the full BSE. Challenge it when low-energy collective response, strong coupling between sectors, or spectral redistribution may matter.
 
-Diagonalising the BSE yields neutral excitation energies and amplitudes; a spectrum additionally requires transition matrix elements, polarization, normalization, and a chosen broadening. Compare like with like: absorption, reflectance, loss, and photoluminescence probe different response functions and experimental conditions. The optical onset is not automatically the fundamental quasiparticle gap, and agreement of one peak position does not validate screening, oscillator strength, exciton character, or a whole material model.
+Broadening also needs a clear role. A numerical broadening can make a spectrum readable; it does not establish a physical lifetime unless connected to an independently justified scattering or decay model.
 
-Retain the mean-field and QP lineage, dielectric matrices, band windows, k meshes and interpolation, kernel convention, solver and tolerance, polarization, broadening, eigenvectors or a reproducible state-selection record, and raw spectra. This topic consumes a compatible quasiparticle and screening description and produces conditional neutral-excitation evidence. It does not establish a radiative lifetime, exciton diffusion length, finite-temperature photophysics, experimental synthesis outcome, or device performance.
+## Read the spectrum as a response function
+
+Diagonalizing the BSE gives neutral excitation energies and amplitudes. Constructing an optical spectrum additionally requires transition matrix elements, polarization, normalization, and a stated broadening.
+
+Compare the same observable on both sides. Absorption, reflectance, loss spectra, and photoluminescence involve different response functions and experimental conditions. Agreement of one peak position does not validate the screening model, oscillator strength, exciton character, or the full material description.
+
+Inspect the excitation amplitudes when making a mechanistic statement. A label such as “valley exciton,” “charge-transfer exciton,” or “layer exciton” should follow from the electron--hole composition and real- or reciprocal-space localization, not from the energy of a peak alone.
+
+## Preserve the full two-particle lineage
+
+Retain the mean-field and quasiparticle parent calculations, dielectric matrices or their reproducible construction, valence and conduction windows, k meshes and interpolation, kernel convention, Coulomb treatment, solver settings, polarization, broadening, eigenvectors or state-selection records, and raw spectra.
+
+A BSE calculation can support a conditional statement about neutral excitations within its declared quasiparticle, screening, and kernel model. It does not establish a radiative lifetime, exciton diffusion length, finite-temperature photophysics, experimental synthesis, or device performance without additional evidence.
 
 ## Sources and methods
 
