@@ -1,0 +1,39 @@
+{
+  "source": {
+    "repository": "https://gitlab.com/sousaw/BoltzTraP2/-/tree/public",
+    "commit": "7ed9146c42d671562daee86d87e253fcbdedaeab",
+    "archive_member": "data/CoSb3/CoSb3.condtens",
+    "archive_bytes": 43752436,
+    "archive_sha256": "ec88d20ae4d00bd58ea98277ef8ee45281eb807160d3955406a819931f3f5169",
+    "member_sha256": "67b6d7e26fa62b4e0a0b56415fa87bade2b764f472b2ed627b09484fa7f81939",
+    "license": "GPL-3.0-or-later",
+    "accessed_at": "2026-08-04"
+  },
+  "material": "CoSb3",
+  "source_header": "Ef[Ry], T[K], N, cond(x,x'), seebeck(x,x'), kappae(x,x')",
+  "selection": {
+    "energy_coordinate_Ry": 0.5547,
+    "columns": {
+      "electron_count": 3,
+      "sigma_xx_per_tau": 4,
+      "seebeck_xx_V_per_K": 13
+    }
+  },
+  "rows": [
+    {"temperature_K": 100, "electron_count": 71.9912, "sigma_xx_per_tau": 2.49273e18, "seebeck_xx_V_per_K": -0.000371124},
+    {"temperature_K": 150, "electron_count": 71.9909, "sigma_xx_per_tau": 1.88487e18, "seebeck_xx_V_per_K": -0.000169587},
+    {"temperature_K": 200, "electron_count": 71.9907, "sigma_xx_per_tau": 1.57168e18, "seebeck_xx_V_per_K": -0.0000581124},
+    {"temperature_K": 250, "electron_count": 71.9905, "sigma_xx_per_tau": 1.39947e18, "seebeck_xx_V_per_K": 0.00000664648},
+    {"temperature_K": 300, "electron_count": 71.9903, "sigma_xx_per_tau": 1.3139e18, "seebeck_xx_V_per_K": 0.0000444614},
+    {"temperature_K": 350, "electron_count": 71.9901, "sigma_xx_per_tau": 1.30027e18, "seebeck_xx_V_per_K": 0.0000707878},
+    {"temperature_K": 400, "electron_count": 71.9897, "sigma_xx_per_tau": 1.35289e18, "seebeck_xx_V_per_K": 0.0000931883},
+    {"temperature_K": 450, "electron_count": 71.9892, "sigma_xx_per_tau": 1.46551e18, "seebeck_xx_V_per_K": 0.00011319},
+    {"temperature_K": 500, "electron_count": 71.9885, "sigma_xx_per_tau": 1.62978e18, "seebeck_xx_V_per_K": 0.000129892},
+    {"temperature_K": 550, "electron_count": 71.9876, "sigma_xx_per_tau": 1.83608e18, "seebeck_xx_V_per_K": 0.000142498},
+    {"temperature_K": 600, "electron_count": 71.9862, "sigma_xx_per_tau": 2.0746e18, "seebeck_xx_V_per_K": 0.000150994},
+    {"temperature_K": 650, "electron_count": 71.9844, "sigma_xx_per_tau": 2.33625e18, "seebeck_xx_V_per_K": 0.000155887},
+    {"temperature_K": 700, "electron_count": 71.982, "sigma_xx_per_tau": 2.6131e18, "seebeck_xx_V_per_K": 0.000157867},
+    {"temperature_K": 750, "electron_count": 71.979, "sigma_xx_per_tau": 2.89859e18, "seebeck_xx_V_per_K": 0.000157637}
+  ],
+  "evidence_boundary": "Frozen public-output post-processing only; no DFT or BoltzTraP rerun and no convergence or experimental claim."
+}

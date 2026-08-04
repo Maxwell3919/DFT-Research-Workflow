@@ -3,6 +3,10 @@
   "authority": "official-source inventory for reviewed practical guides",
   "scope_note": "These URLs support version-specific implementation or analysis claims in reviewed practical pages. Reachability, semantic support, execution, numerical convergence, and scientific validity remain separate checks.",
   "sources": [
+    {"id":"boltztrap-original-paper","url":"https://arxiv.org/abs/cond-mat/0602203","kind":"page"},
+    {"id":"boltztrap2-paper","url":"https://arxiv.org/abs/1712.07946","kind":"page"},
+    {"id":"boltztrap2-public-repository","url":"https://gitlab.com/sousaw/BoltzTraP2/-/tree/public","kind":"page"},
+    {"id":"boltztrap2-license","url":"https://gitlab.com/sousaw/BoltzTraP2/-/blob/public/LICENSE.txt","kind":"page"},
     {"id":"hedin-gw","url":"https://doi.org/10.1103/PhysRev.139.A796","kind":"doi"},{"id":"hybertsen-louie-gw","url":"https://doi.org/10.1103/PhysRevB.34.5390","kind":"doi"},{"id":"abinit-gw1","url":"https://docs.abinit.org/tutorial/gw1/","kind":"page"},
     { "id": "runge-gross-tddft", "url": "https://doi.org/10.1103/PhysRevLett.52.997", "kind": "doi" },
     { "id": "casida-linear-response", "url": "https://doi.org/10.1103/PhysRevA.71.032514", "kind": "doi" },
@@ -145,6 +149,7 @@
     { "id": "vasp-linear-response", "url": "https://vasp.at/wiki/Linear_response", "kind": "page" }
   ],
   "guides": [
+    {"guide_slug":"replot-boltztrap-cosb3-transport","source_ids":["boltztrap-original-paper","boltztrap2-paper","boltztrap2-public-repository","boltztrap2-license"]},
     {
       "guide_slug": "ase-build-repeat-cells",
       "source_ids": ["ase-docs-home", "ase-atoms", "ase-build-tools", "ase-pypi-3290"]
