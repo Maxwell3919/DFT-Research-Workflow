@@ -10,12 +10,12 @@ const phrases = [
   'A compositional phase diagram asks which combination of phases',
   'Formation energy supplies coordinates, not the verdict',
   'The lower convex envelope represents allowed mixtures',
-  'Energy above hull measures a represented decomposition driving force',
-  'Candidate completeness is part of every hull result',
+  'Energy above hull identifies the represented decomposition force',
+  'Candidate completeness limits every stability claim',
   'Open reservoirs lead to grand potentials',
   'Chemical-potential diagrams are a dual view',
   'Metastability is not a universal distance cutoff',
-  'A real-data rebuild is still a post-processing result',
+  'A real-data rebuild remains a post-processing result',
   'What this topic establishes',
   'Sources and methods',
 ];
@@ -69,7 +69,7 @@ try {
   response = await noJs.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`convex-hull no-JavaScript returned ${response?.status()}`);
   const text = await noJs.$eval('body', (body) => body.innerText);
-  for (const phrase of ['Formation energy supplies coordinates, not the verdict', 'Candidate completeness is part of every hull result', 'Sources and methods']) if (!text.includes(phrase)) throw new Error(`convex-hull no-JavaScript missing ${phrase}`);
+  for (const phrase of ['Formation energy supplies coordinates, not the verdict', 'Candidate completeness limits every stability claim', 'Sources and methods']) if (!text.includes(phrase)) throw new Error(`convex-hull no-JavaScript missing ${phrase}`);
 
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
