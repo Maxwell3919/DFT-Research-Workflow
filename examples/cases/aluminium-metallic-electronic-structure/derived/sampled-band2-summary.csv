@@ -1,3 +1,0 @@
-dataset,point_count,band_2_min_ev,band_2_max_ev,fermi_ev,boundary
-full-zone,512,3.4705,20.4207,7.8018,sampled band ledger; not a DOS
-band-path,145,3.4705,20.4207,7.8018,path; not Brillouin-zone integration

@@ -9,10 +9,13 @@ an 8x8x8 mesh; those are settings from this run, not universal or converged
 recommendations.
 
 Run `python3 parse.py`, `bash extract.sh`, and `bash check.sh` to reproduce the
-case-local checks and the PNG from the captured output/fixture tables.
-`run.sh` prints the recorded stage commands but deliberately refuses to submit
-another QE calculation.  A new run needs separate authorization, a fresh
-observable tolerance, isolated runtime paths, and a new evidence directory.
+case-local checks and the CSV tables/PNG directly from captured QE stdout.
+The source `fixture-*.csv` files are retained only as a historical audit aid;
+the parser never reads them.  To execute a new isolated run, provide an
+authorized executable/wrapper and pseudopotential directory through `QE_PW`
+and `QE_PSEUDO_DIR`, then point `RUN_OUTPUT_ROOT` at a **new** directory. The
+script hash-checks the Al UPF and refuses any runtime directory that exists or
+overlaps committed evidence.
 
 G1 and G2 cover only this captured QE execution and its SCF electronic
 threshold.  G3 confirms the captured stage artifacts.  There is no k-mesh,

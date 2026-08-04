@@ -55,46 +55,28 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "bytes": 3143,
-      "path": "source/fixture-metadata.json",
-      "role": "fixture metadata",
-      "sha256": "ff43d63d3e654711a547a57cbf6f63170e56009b395dc6e7e83e4b46fd066cbd"
-    },
-    {
       "bytes": 29659,
-      "path": "source/fixture-mesh.csv",
-      "role": "fixture mesh",
+      "path": "derived/al-mesh.csv",
+      "role": "raw-derived mesh table",
       "sha256": "5bc4e7bd565ea99e3fd774de860b9aeb37b90874dfbe8fa484c4d0202758c9b4"
     },
     {
       "bytes": 8563,
-      "path": "source/fixture-band-path.csv",
-      "role": "fixture path",
+      "path": "derived/al-path.csv",
+      "role": "raw-derived path table",
       "sha256": "e6de08c86aa1d17fae2bb17fe8ee2b63a27e72379795cc611660c5ca20a17242"
     },
     {
-      "bytes": 661,
-      "path": "output/compact-source-excerpt.txt",
-      "role": "compact excerpt",
-      "sha256": "3177b6ab03f645ff35656b115cae0c179a59221cc42aa48b3cbda6e6bf0633a9"
-    },
-    {
-      "bytes": 406,
+      "bytes": 541,
       "path": "derived/captured-run-summary.json",
-      "role": "strict summary",
-      "sha256": "cf2e1713a8567178daf620da8a998efe2662e55b8f57155aa413a82065afaa6f"
+      "role": "raw-derived summary",
+      "sha256": "c5396e8ba99b5f90da8f1b639c767f4cd98cb2a5c946886ffaf65785aded612b"
     },
     {
-      "bytes": 206,
-      "path": "derived/sampled-band2-summary.csv",
-      "role": "derived table",
-      "sha256": "51c8ca00f3132164d4f58124068065fc83b7a1469c3c5612cda4c5c7a66a8eaf"
-    },
-    {
-      "bytes": 40046,
-      "path": "figures/fixture-band2-sampling.png",
-      "role": "derived PNG",
-      "sha256": "ce5ff0b0d935996ed8a16fa1b7e8804e30138fbdfff897d697e08743fb07e33d"
+      "bytes": 43935,
+      "path": "figures/raw-nscf-band2-sampling.png",
+      "role": "raw-derived PNG",
+      "sha256": "ae57110886c7b21e66a164ab6114b89dfa757c218f9b7df35112b404e98a698a"
     }
   ],
   "case_id": "aluminium-metallic-electronic-structure",
@@ -106,7 +88,7 @@
       "A material-level physical or scientific conclusion."
     ],
     "supports": [
-      "A captured QE 7.5 metallic SCF, full-zone NSCF, and band-path execution record with hash-bound staged outputs."
+      "A captured QE 7.5 metallic SCF, full-zone NSCF, and band-path execution record with raw-output-derived tables and figure."
     ]
   },
   "commands": [
@@ -128,16 +110,16 @@
     {
       "command": "python3 parse.py",
       "exit_code": 0,
-      "stage": "case-parse"
+      "stage": "raw-output-parse"
     }
   ],
-  "completed_at": null,
+  "completed_at": "2026-08-05T00:47:36+08:00",
   "evidence_class": "real-execution",
   "exit_code": 0,
   "gates": {
     "G0": {
       "status": "PASS",
-      "summary": "Required tree and declared input/output hashes pass strict parsing."
+      "summary": "Required tree and declared raw-input/output hashes pass strict parsing."
     },
     "G1": {
       "status": "PASS",
@@ -149,7 +131,7 @@
     },
     "G3": {
       "status": "PASS",
-      "summary": "Three-stage stdout/stderr, exact inputs, compact excerpt, and hash-bound derived artifacts are present."
+      "summary": "Three-stage stdout/stderr and raw-output-derived tables/PNG are present."
     },
     "G4": {
       "status": "NOT TESTED",
@@ -170,19 +152,19 @@
     },
     {
       "interface": "Python CLI",
-      "name": "case-local strict parser",
-      "version": "1.0"
+      "name": "case-local raw-output parser",
+      "version": "2.0"
     }
   ],
   "sources": [
     {
-      "id": "al-qe-full-zone-fixture",
+      "id": "captured-qe-outputs",
       "licence_boundary": "No private host path, pseudopotential body, restart tree, or wavefunction payload is published.",
-      "path": "source/fixture-metadata.json",
-      "role": "project teaching fixture and captured-output ledger",
-      "sha256": "ff43d63d3e654711a547a57cbf6f63170e56009b395dc6e7e83e4b46fd066cbd"
+      "path": "output/scf.out",
+      "role": "hash-bound raw execution output",
+      "sha256": "3a48a4fade8c52fd1b5e4d816be439de79911b3c9d7ea3d71f16257b6c9e0b39"
     }
   ],
-  "started_at": null,
+  "started_at": "2026-08-05T00:45:36+08:00",
   "title": "Aluminium metallic electronic structure captured QE workflow"
 }
