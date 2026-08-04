@@ -1,3 +1,5 @@
 ase==3.29.0
 pymatgen-core==2026.7.31
 jsonschema==4.26.0
+seekpath==2.2.1
+spglib==2.7.0

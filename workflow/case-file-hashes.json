@@ -875,8 +875,8 @@
     },
     {
       "path": "examples/cases/gui-chromium-headless-homepage/check.sh",
-      "sha256": "d9626b9a8170b86f19b141f5cdf436c6f8b7e42351f83f326f1c0af4f960f702",
-      "bytes": 1810
+      "sha256": "5dca3f61c5eeb711aa8ab0e5e9f1520dc18e7a37f6d4e1512a2a247ddb1f7571",
+      "bytes": 1816
     },
     {
       "path": "examples/cases/gui-chromium-headless-homepage/derived/capture.json",
@@ -890,8 +890,8 @@
     },
     {
       "path": "examples/cases/gui-chromium-headless-homepage/extract.sh",
-      "sha256": "f863f2eb198dd8cf18b04e3bcb1f54ee31a609cf81f20a24ffd6cf1b475c054d",
-      "bytes": 415
+      "sha256": "c7e97720b64340efc74f01fc14dbc00a7ae84e989588c3c7a24a816a13ab9983",
+      "bytes": 420
     },
     {
       "path": "examples/cases/gui-chromium-headless-homepage/figures/chromium-headless-walkthrough.png",
@@ -960,8 +960,8 @@
     },
     {
       "path": "examples/cases/gui-xvfb-mesa-smoke/check.sh",
-      "sha256": "7275be4921e128772a9da520b0f8850b0290cae77c8c2e50ce1ec3f507a83b7c",
-      "bytes": 2432
+      "sha256": "d05bb862e551962396c6376ac62d16c919b3b9770de7b76345a1f73d2891178e",
+      "bytes": 2447
     },
     {
       "path": "examples/cases/gui-xvfb-mesa-smoke/derived/capture.json",
@@ -975,8 +975,8 @@
     },
     {
       "path": "examples/cases/gui-xvfb-mesa-smoke/extract.sh",
-      "sha256": "a9a3cd4b141eed9467b68a2396d32c564ff8b61d95d62d8d213d39e7a151b455",
-      "bytes": 598
+      "sha256": "25f75b3f898f6bab7b37d56018991c006a88687c6d6dbdf672dbde27d073fd80",
+      "bytes": 612
     },
     {
       "path": "examples/cases/gui-xvfb-mesa-smoke/figures/README.md",

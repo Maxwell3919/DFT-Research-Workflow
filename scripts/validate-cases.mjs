@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
-import { access, readFile, readdir, stat } from 'node:fs/promises';
+import { access, cp, mkdtemp, readFile, readdir, rm, stat } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { spawnSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
 import { join, relative, resolve, sep } from 'node:path';
 
 const root = resolve(new URL('../', import.meta.url).pathname);
@@ -140,24 +141,31 @@ for (const entry of caseEntries) {
   }
 
   if (execute) {
-    run(caseId, caseDirectory, 'bash', ['extract.sh']);
-    const parserArgs = manifest.validation?.parser_args ?? [];
-    if (!Array.isArray(parserArgs) || parserArgs.some((arg) => typeof arg !== 'string')) {
-      errors.push(`${caseId}: validation.parser_args must be an array of strings`);
-    } else {
-      run(caseId, caseDirectory, casePython, ['parse.py', ...parserArgs], { CASE_REUSE_DERIVED: '1' });
-    }
-    const check = runResult(caseDirectory, 'bash', ['check.sh']);
-    const declaredFailure = gateNames.some((gate) => manifest.gates?.[gate]?.status === 'FAIL');
-    if (declaredFailure) {
-      if (check.status === 0) {
-        errors.push(`${caseId}: check.sh exited zero despite a manifest FAIL gate`);
+    const temporaryRoot = await mkdtemp(join(tmpdir(), `dft-case-validate-${caseId}-`));
+    const executionDirectory = join(temporaryRoot, caseId);
+    try {
+      await cp(caseDirectory, executionDirectory, { recursive: true });
+      run(caseId, executionDirectory, 'bash', ['extract.sh']);
+      const parserArgs = manifest.validation?.parser_args ?? [];
+      if (!Array.isArray(parserArgs) || parserArgs.some((arg) => typeof arg !== 'string')) {
+        errors.push(`${caseId}: validation.parser_args must be an array of strings`);
+      } else {
+        run(caseId, executionDirectory, casePython, ['parse.py', ...parserArgs], { CASE_REUSE_DERIVED: '1' });
       }
-      if (!`${check.stdout}${check.stderr}`.includes('FAIL')) {
-        errors.push(`${caseId}: check.sh did not emit a FAIL line for the manifest FAIL gate`);
+      const check = runResult(executionDirectory, 'bash', ['check.sh']);
+      const declaredFailure = gateNames.some((gate) => manifest.gates?.[gate]?.status === 'FAIL');
+      if (declaredFailure) {
+        if (check.status === 0) {
+          errors.push(`${caseId}: check.sh exited zero despite a manifest FAIL gate`);
+        }
+        if (!`${check.stdout}${check.stderr}`.includes('FAIL')) {
+          errors.push(`${caseId}: check.sh did not emit a FAIL line for the manifest FAIL gate`);
+        }
+      } else if (check.status !== 0) {
+        errors.push(`${caseId}: check.sh exited ${check.status} without a manifest FAIL gate\n${check.stdout}${check.stderr}`);
       }
-    } else if (check.status !== 0) {
-      errors.push(`${caseId}: check.sh exited ${check.status} without a manifest FAIL gate\n${check.stdout}${check.stderr}`);
+    } finally {
+      await rm(temporaryRoot, { recursive: true, force: true });
     }
   }
 
