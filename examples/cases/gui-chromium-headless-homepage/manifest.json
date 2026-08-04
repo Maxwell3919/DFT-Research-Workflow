@@ -25,7 +25,7 @@
   "commands": [
     {
       "stage": "headless-render",
-      "command": "google-chrome --headless=new --disable-gpu --hide-scrollbars --window-size=1280,720 --screenshot=figures/chromium-headless-walkthrough.png file://.../source/walkthrough.html",
+      "command": "bash run.sh",
       "exit_code": 0
     },
     {
@@ -43,12 +43,6 @@
     {
       "role": "headless Chromium PNG capture",
       "path": "figures/chromium-headless-walkthrough.png",
-      "sha256": "39934e227c45ca38003278b28bb6ac0bddd057d414bd1f925111efd335f9d975",
-      "bytes": 53159
-    },
-    {
-      "role": "identical public PNG copy",
-      "path": "public/media/gui/chromium-headless-homepage/chromium-headless-walkthrough.png",
       "sha256": "39934e227c45ca38003278b28bb6ac0bddd057d414bd1f925111efd335f9d975",
       "bytes": 53159
     },
