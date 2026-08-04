@@ -7,7 +7,7 @@ Topological analysis asks whether a declared electronic subspace can be continuo
 
 It is not a label inferred from orbital character, “band inversion” language, one high-symmetry-path crossing, or a visually striking surface band. Those features can motivate a calculation, but they do not replace it.
 
-## Define the subspace, gap, and symmetry first
+## First identify the space in which the invariant lives
 
 Different symmetry classes support different invariants. A two-dimensional gapped subspace may carry a Chern number. A time-reversal-symmetric insulating state may carry a `Z2` index. Crystalline, chiral, particle-hole, and other symmetries lead to other classifications.
 
@@ -15,7 +15,7 @@ State which symmetries are actually present in the Hamiltonian, including spin--
 
 The relevant band separation must hold throughout the domain used for the invariant. A full-zone check is essential when the gap is small, the bands are entangled, the Fermi level intersects a band, or the system is semimetallic. A conventional band path can miss the gap closing that changes the classification.
 
-## Match the formula to its assumptions
+## Equivalent formulas are not interchangeable inputs
 
 For an appropriate two-dimensional gapped subspace, the Chern number is
 
@@ -39,7 +39,7 @@ Validate the reduced representation against the parent calculation over the comp
 
 The choice of disentanglement window can itself change the selected subspace. Preserve the projections, windows, symmetry constraints, and comparison with the parent Hamiltonian.
 
-## Boundary states require a second, geometry-specific calculation
+## A boundary spectrum is a second calculation
 
 Bulk--boundary correspondence connects suitable bulk topology to robust boundary phenomena under stated assumptions. It does not imply that every slab or ribbon band is topological.
 
@@ -59,7 +59,7 @@ Test every numerical or modelling change that could close the gap, alter the sub
 
 **Berry Phase and Berry Curvature** supplies geometric quantities but does not classify a phase. **Wannier Function Construction** supplies a representation but does not validate topology. **Electronic Transport** and **Quantum Transport** require additional response, scattering, and device models.
 
-This topic can establish a topological classification and a compatible boundary-state calculation for a declared Hamiltonian and domain. It does not establish synthesis, experimental observation, quantized transport, disorder robustness outside the tested model, or device performance.
+This topic does not establish synthesis, experimental observation, quantized transport, disorder robustness outside the tested model, or device performance. It can establish a topological classification and compatible boundary-state calculation only for the declared Hamiltonian, subspace, symmetry, and domain.
 
 ## Sources and methods
 
