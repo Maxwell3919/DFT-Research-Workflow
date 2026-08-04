@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "evidence_class": "real-execution",
+  "material": {
+    "formula": "Si",
+    "structure_source": "COD 9013102",
+    "structure_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e"
+  },
+  "software": {
+    "pw.x": "7.5",
+    "ph.x": "7.5"
+  },
+  "workflow": "SCF followed by Gamma-point ph.x using the same prefix/outdir lineage",
+  "q_point_fractional": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "modes": [
+    {
+      "mode": 1,
+      "frequency_thz": 0.036468,
+      "frequency_cm-1": 1.216451
+    },
+    {
+      "mode": 2,
+      "frequency_thz": 0.036468,
+      "frequency_cm-1": 1.216451
+    },
+    {
+      "mode": 3,
+      "frequency_thz": 0.036468,
+      "frequency_cm-1": 1.216451
+    },
+    {
+      "mode": 4,
+      "frequency_thz": 15.422602,
+      "frequency_cm-1": 514.442616
+    },
+    {
+      "mode": 5,
+      "frequency_thz": 15.422602,
+      "frequency_cm-1": 514.442616
+    },
+    {
+      "mode": 6,
+      "frequency_thz": 15.422602,
+      "frequency_cm-1": 514.442616
+    }
+  ],
+  "acoustic_diagnostic_cm-1": 1.216451,
+  "optical_triplet_cm-1": 514.442616,
+  "files_sha256": {
+    "si-gamma-scf.in": "e104bdb89fe2e0ebc76687982c33bd3404673dda03ca2fa0cd3dc904cda5f329",
+    "si-gamma-scf.out": "bfd2c08124f5a36a55095c3e60f529c190d15b2f14e07b5ea9458030c09d7614",
+    "si-gamma-scf.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "si-gamma-ph.in": "971c47c1f1531f5bfe06a67fe675251b19452157c5521d57e00fed7edb64332c",
+    "si-gamma-ph.out": "0cec5946997c8c20dfb9d2ac807ccb4db2985b1452650196b57a4ccfa0e7d0b3",
+    "si-gamma-ph.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "si_gamma.dyn": "c44a64405fbb30c40901a4693f474a35dd07d87195ad4be6868e8df5e6fe1c51"
+  },
+  "convergence_status": "not assessed for phonon frequency; one Gamma point only",
+  "claim_boundary": "This run documents a single QE 7.5 Gamma-point DFPT calculation. It is not a phonon dispersion, q-mesh/cutoff/k-mesh convergence study, acoustic-sum-rule study, dynamical-stability proof, finite-temperature result, or material conclusion."
+}
