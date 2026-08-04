@@ -167,5 +167,10 @@
     }
   ],
   "started_at": "2026-08-05T02:41:54+08:00",
-  "title": "Al(111) 2x2 slab with one H fcc candidate: terminal-failed QE 7.5 SCF entry"
+  "title": "Al(111) 2x2 slab with one H fcc candidate: terminal-failed QE 7.5 SCF entry",
+  "validation": {
+    "parser_args": [
+      "--extract-qe"
+    ]
+  }
 }

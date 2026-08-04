@@ -116,7 +116,12 @@ for (const entry of caseEntries) {
 
   if (execute) {
     run(caseId, caseDirectory, 'bash', ['extract.sh']);
-    run(caseId, caseDirectory, casePython, ['parse.py'], { CASE_REUSE_DERIVED: '1' });
+    const parserArgs = manifest.validation?.parser_args ?? [];
+    if (!Array.isArray(parserArgs) || parserArgs.some((arg) => typeof arg !== 'string')) {
+      errors.push(`${caseId}: validation.parser_args must be an array of strings`);
+    } else {
+      run(caseId, caseDirectory, casePython, ['parse.py', ...parserArgs], { CASE_REUSE_DERIVED: '1' });
+    }
     const check = runResult(caseDirectory, 'bash', ['check.sh']);
     const declaredFailure = gateNames.some((gate) => manifest.gates?.[gate]?.status === 'FAIL');
     if (declaredFailure) {
