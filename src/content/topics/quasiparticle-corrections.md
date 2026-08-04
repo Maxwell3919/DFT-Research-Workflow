@@ -3,43 +3,76 @@ topic_slug: quasiparticle-corrections
 status: reviewed
 ---
 
-Quasiparticle corrections address the energy required to add or remove an electron from a specified interacting electronic system. They are used when Kohn--Sham eigenvalue differences are not an adequate model for electron addition, removal, or a quasiparticle band gap. A GW result is not an automatic optical spectrum or experimental band gap: its observable, screening model, starting state, numerical representation, and comparison target must remain visible.
+Quasiparticle calculations address the energy required to add or remove an electron from a specified interacting electronic system. They are used when Kohn--Sham eigenvalue differences are not an adequate model for electron addition, removal, or a quasiparticle band gap.
 
-## From Kohn--Sham levels to a quasiparticle equation
+A GW result is not automatically an optical spectrum or an experimental band gap. It is a one-particle excitation result whose meaning depends on the starting state, screening model, self-energy approximation, numerical representation, boundary conditions, and comparison target.
 
-In the GW approximation the electronic self-energy is represented schematically as
+## The quasiparticle problem replaces a static potential with a self-energy
+
+In the GW approximation, the electronic self-energy is written schematically as
 
 ```text
 Σ(r,r',ω) = i G(r,r',ω) W(r,r',ω),
 ```
 
-where `G` is a one-particle Green function, `W` is the screened Coulomb interaction, and `ω` is frequency. A quasiparticle energy `E_nk^QP` is commonly obtained by solving
+where `G` is a one-particle Green function and `W` is the screened Coulomb interaction. A quasiparticle energy is often obtained from
 
 ```text
-E_nk^QP = ε_nk^KS + ⟨ψ_nk|Σ(E_nk^QP)-v_xc|ψ_nk⟩.
+E_nk^QP = ε_nk^KS
+          + ⟨ψ_nk | Σ(E_nk^QP) - v_xc | ψ_nk⟩ .
 ```
 
-`ε_nk^KS`, `ψ_nk`, and `v_xc` are the starting Kohn--Sham eigenvalue, orbital, and exchange--correlation potential. The expectation value is evaluated in a declared starting-state representation. This equation is not a universal shift: the correction may vary by band, momentum, spin, orbital character, structure, and screening environment. A single scissor shift is a stated interpolation model, not evidence that all dispersions or offsets are quasiparticle accurate.
+`ε_nk^KS`, `ψ_nk`, and `v_xc` belong to the declared starting Kohn--Sham calculation. The correction is generally band-, momentum-, spin-, orbital-, and environment-dependent. It is not a universal scissor shift.
 
-## Screening is a calculated object, not a label
+A scissor operator can be a useful reduced model when the relevant corrections have been shown to behave approximately rigidly over the bands and k region of interest. It must be labelled as that approximation rather than presented as a direct GW result for the entire spectrum.
 
-The screened interaction follows from a dielectric response, often expressed as `W=ε⁻¹v`. Its construction requires a polarizability model, reciprocal-space representation, frequency treatment, and a finite response space. Empty states, dielectric-matrix cutoff or basis, k-point integration, Coulomb treatment for reduced dimensionality, frequency grid or contour/deformation choice, and the treatment of the `q→0` limit can all change a reported gap or level. A converged ground-state SCF calculation does not establish convergence of `W` or `Σ`.
+## Screening is a calculated object
 
-For a slab, wire, molecule, interface, or charged finite model, periodic-image screening and vacuum representation are physical parts of the approximation. A bulk dielectric convention cannot simply be reused for an isolated two-dimensional layer. Preserve the Coulomb truncation or other boundary treatment, geometry, dielectric environment, and normalization before comparing quasiparticle shifts across models.
+The screened interaction is commonly represented as `W = ε⁻¹v`. Constructing it requires a polarizability model, reciprocal-space basis, response space, frequency treatment, and boundary convention.
 
-## G₀W₀, eigenvalue updates, and self-consistency answer different questions
+Important numerical axes include:
 
-`G₀W₀` evaluates `G` and `W` from a declared starting point. Its result can depend materially on the functional, hybrid fraction, Hubbard treatment, spin/SOC state, and starting gap. Eigenvalue-only updates alter energies entering later `G` or `W`; partial or fully self-consistent routes also alter other ingredients. These are not interchangeable levels of accuracy. State exactly what was updated, which orbitals and occupations were retained, and whether the calculation used a plasmon-pole, full-frequency, analytic-continuation, contour, or another declared frequency treatment.
+- empty-state count or an alternative completeness treatment;
+- dielectric-matrix cutoff or basis size;
+- k-point integration and treatment of `q → 0`;
+- frequency grid, contour, analytic continuation, or plasmon-pole model;
+- self-energy cutoff and solution convention;
+- Coulomb truncation or image treatment in reduced dimensions.
 
-Diagonal matrix-element evaluation assumes that the starting orbitals are an adequate basis for the relevant quasiparticle state. Off-diagonal effects, near-degeneracies, state mixing, metallic screening, satellites, and strong correlation can make that assumption inadequate. A numerical job ending normally cannot decide this physical suitability.
+A converged ground-state SCF calculation establishes none of these response-space limits. Converge the quasiparticle observable directly.
 
-## Interpreting and comparing a corrected spectrum
+For slabs, wires, molecules, and interfaces, periodic-image screening and the dielectric environment are part of the physical model. A bulk screening convention cannot be transferred silently to an isolated two-dimensional layer.
 
-A quasiparticle gap is the difference between declared electron-addition and electron-removal quasiparticle energies. It is distinct from a Kohn--Sham eigenvalue gap, an optical onset, an exciton energy, a photoemission peak with experimental broadening, a transport gap, and a defect transition level. Electron--hole attraction requires a two-particle response treatment such as the Bethe--Salpeter equation; phonons, temperature, disorder, surfaces, substrates, and finite carrier populations can also shift measured spectra.
+## Starting point and self-consistency define different approximations
 
-Converge the intended observable under justified changes to the starting-state basis, empty-state and dielectric-response representation, k mesh, frequency treatment, self-energy cutoff, and boundary model. Inspect selected band edges and relevant dispersion or state character, not only a final scalar gap. Retain the starting calculation lineage, code and version, pseudopotential/all-electron treatment, response settings, frequency method, raw self-energy data, solution/root convention, and post-processing. A conditional GW correction can support a conditional quasiparticle statement; it cannot alone establish an exciton, experimental agreement, a lifetime, carrier mobility, or device performance.
+`G₀W₀` evaluates `G` and `W` from a declared starting state. Its result can depend on the exchange--correlation functional, hybrid fraction, Hubbard treatment, spin and SOC state, and the starting gap.
 
-This topic changes one-particle addition and removal energies. **Independent-Particle Optical Properties** uses uncorrected transition energies; **Time-Dependent Response and Spectroscopy** treats induced response; **Excitons and the Bethe--Salpeter Equation** treats electron--hole interaction. It does not establish a universal “true band gap,” an optical spectrum, exciton binding, or a material conclusion.
+Eigenvalue-only updates change selected energies entering later evaluations of `G` or `W`. Partial and fully self-consistent routes update additional quantities. These methods are not interchangeable rungs of a guaranteed accuracy ladder. State exactly which objects were updated, which orbitals and occupations were retained, and which frequency model was used.
+
+The common diagonal approximation assumes that the starting orbitals adequately represent the quasiparticle states. Near-degeneracies, strong state mixing, off-diagonal self-energy terms, metallic screening, satellites, or strong correlation can challenge that assumption. Normal program termination cannot establish its physical adequacy.
+
+## Interpret the corrected spectrum as a one-particle result
+
+A quasiparticle gap is the difference between specified electron-addition and electron-removal quasiparticle energies. It is distinct from:
+
+- a Kohn--Sham eigenvalue gap;
+- an optical excitation or absorption onset;
+- an exciton energy;
+- a transport gap;
+- a defect transition level;
+- a broadened photoemission peak.
+
+Electron--hole attraction requires a two-particle treatment such as the Bethe--Salpeter equation. Temperature, phonons, disorder, surfaces, substrates, and carrier populations can also shift measured spectra.
+
+Compare like with like. A single corrected scalar gap is insufficient when the scientific claim concerns dispersion, valley ordering, band offsets, effective masses, or state character. Inspect the relevant bands and momenta and preserve how the quasiparticle root was selected.
+
+## Converge the intended observable
+
+Test the quasiparticle energy, gap, ordering, or dispersion against the starting-state representation, empty-state and dielectric-response completeness, k mesh, frequency treatment, self-energy cutoff, Coulomb boundary model, and numerical solution strategy.
+
+Retain the parent ground-state lineage, code and version, core treatment, response settings, raw or reconstructable self-energy data, frequency method, solution convention, and convergence series. A conditional GW result can support a conditional statement about one-particle addition and removal energies. It cannot alone establish an optical spectrum, exciton binding energy, lifetime, mobility, experimental agreement, or device performance.
+
+**Independent-Particle Optical Properties** uses transitions between one-particle states without an electron--hole kernel. **Time-Dependent Response and Spectroscopy** treats induced response. **Excitons and the Bethe--Salpeter Equation** constructs neutral electron--hole excitations from a compatible quasiparticle and screening description.
 
 ## Sources and methods
 
