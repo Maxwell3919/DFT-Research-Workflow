@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 root="$(cd "$(dirname "$0")" && pwd)"; fail=0
-for f in source/silicon-cod-9013102.cif output/POSCAR.primitive output/silicon-primitive-2x2x2.xyz derived/structure-report.json derived/seekpath-primitive.json derived/cif-analysis.json figures/silicon-conventional-xy.png manifest.json; do
+for f in source/silicon-cod-9013102.cif output/POSCAR.primitive output/silicon-primitive-2x2x2.xyz derived/structure-report.json derived/seekpath-primitive.json figures/silicon-conventional-xy.png manifest.json; do
  if test -s "$root/$f"; then echo "PASS G0 $f exists and is non-empty"; else echo "FAIL G0 $f missing"; fail=1; fi
 done
 if python3 - "$root/derived/structure-report.json" <<'PY'

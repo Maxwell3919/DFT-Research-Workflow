@@ -49,7 +49,7 @@
   },
   "commands": [
     {
-      "command": "PYTHON=<pinned-python> bash run.sh",
+      "command": "PYTHON=python3 bash run.sh",
       "exit_code": 0,
       "stage": "construct"
     },

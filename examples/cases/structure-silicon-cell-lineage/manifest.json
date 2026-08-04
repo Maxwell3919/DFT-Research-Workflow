@@ -61,14 +61,9 @@
   },
   "commands": [
     {
-      "command": "PYTHON=<pinned-python> bash run.sh",
+      "command": "PYTHON=python3 bash run.sh",
       "exit_code": 0,
       "stage": "materialize"
-    },
-    {
-      "command": "<cif-skill-python> analyze_cif.py --input source/silicon-cod-9013102.cif ...",
-      "exit_code": 0,
-      "stage": "cif-analysis"
     },
     {
       "command": "bash check.sh",
