@@ -122,10 +122,13 @@ None of those checks establishes global ground-state identity for a real calcula
 
 Two guides additionally use a public hash-bound QE 7.5 evidence package for the
 fixed two-site COD 9013102 Silicon cell. Nine SCF outputs and their inputs are
-reconstructed from SHA-256, electronic-convergence and `JOB DONE` markers. The
-package establishes file lineage and bounded SCF execution only: it contains no
-charge density or wavefunction, does not test a restart, compare candidate states,
-optimize the geometry, demonstrate observable convergence, or prove a ground state.
+reconstructed from SHA-256, electronic-convergence and `JOB DONE` markers. A
+separate fresh/restart pair uses the same declared structure, method, prefix and
+grid and prints the same final total energy (`-22.83943950 Ry`) after a compatible
+QE restart. The package establishes file lineage and bounded SCF/restart execution
+only: it contains no charge density or wavefunction, does not identify a complete
+electronic state, compare candidate states, demonstrate observable convergence, or
+prove a ground state.
 
 ## Media review
 
@@ -152,7 +155,8 @@ The pages remain readable without client-side JavaScript. Browser validation mus
 
 This batch does not include:
 
-- a real Quantum ESPRESSO, VASP, CP2K, ABINIT, or other DFT calculation;
+- a real VASP, CP2K, ABINIT, or other DFT calculation beyond the bounded public
+  Quantum ESPRESSO evidence packages described above;
 - a claim that one SCF solution is the global electronic ground state;
 - exhaustive magnetic, charge, occupation, or symmetry-state enumeration;
 - a universal SCF, energy, smearing, band-count, moment, or initialization threshold;

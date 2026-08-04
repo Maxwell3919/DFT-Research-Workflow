@@ -933,19 +933,19 @@
     {
       "guide_slug": "restart-and-verify-optimization",
       "parent_topic": "optimize-structure",
-      "evidence_class": "synthetic-only",
-      "material": "invented restart fixture",
-      "real_result": false,
+      "evidence_class": "real-execution",
+      "material": "COD 9013102 Silicon; QE 7.5 interrupted and restart BFGS outputs",
+      "real_result": true,
       "interface": false,
-      "traceable_data": false,
-      "upgrade": "Silicon relaxation output",
-      "blocker": null,
+      "traceable_data": true,
+      "upgrade": "completed bounded Silicon QE optimization-restart record",
+      "blocker": "one fixed-cell code/version-specific continuation; no portability, convergence or minimum proof",
       "priority": 2,
-      "execution_script": "examples/practical-guides/optimization_restart_verification.py",
+      "execution_script": "examples/practical-guides/silicon_qe_restarts.py",
       "media_ids": [
         "optimization-restart-verification-chain"
       ],
-      "upgrade_readiness": "candidate"
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "compare-multiple-starts-and-minima",
@@ -984,19 +984,19 @@
     {
       "guide_slug": "compare-fresh-and-restarted-electronic-states",
       "parent_topic": "calculate-reference-ground-state",
-      "evidence_class": "synthetic-only",
-      "material": "invented electronic states",
-      "real_result": false,
+      "evidence_class": "real-execution",
+      "material": "COD 9013102 Silicon; QE 7.5 fresh and restart SCF outputs",
+      "real_result": true,
       "interface": false,
-      "traceable_data": false,
-      "upgrade": "Silicon QE SCF/restart",
-      "blocker": null,
+      "traceable_data": true,
+      "upgrade": "completed bounded Silicon QE fresh/restart comparison",
+      "blocker": "matching printed energy does not establish state identity, restart portability or ground-state proof",
       "priority": 2,
-      "execution_script": "examples/practical-guides/reference_state_fresh_restart.py",
+      "execution_script": "examples/practical-guides/silicon_qe_restarts.py",
       "media_ids": [
         "fresh-restart-state-map"
       ],
-      "upgrade_readiness": "candidate"
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "compare-charge-spin-and-magnetic-candidates",

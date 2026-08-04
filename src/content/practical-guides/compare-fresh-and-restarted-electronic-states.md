@@ -5,17 +5,19 @@ title: Compare Fresh and Restarted Electronic States
 kind: implementation
 tools:
   - python
+  - quantum-espresso
 status: reviewed
 summary: Distinguish a continuation from a fresh electronic initialization and test whether compatible paths reproduce the same declared state.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/reference_state_fresh_restart.py
+execution_script: examples/practical-guides/silicon_qe_restarts.py
 source_ids:
   - qe-pw-75
   - vasp-istart
   - vasp-icharg
   - cp2k-scf
   - cp2k-dft
+  - cod-9013102
 media_ids:
   - fresh-restart-state-map
 review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
@@ -23,6 +25,15 @@ reviewed_at: "2026-08-03"
 ---
 
 A restart continues from stored electronic data. A fresh run begins from a newly generated initial state. Both are useful, but they provide different evidence.
+
+## Actual Silicon fresh/restart comparison
+
+The public companion uses the fixed two-site COD 9013102 Silicon cell and QE 7.5.
+It runs a fresh SCF followed by `restart_mode='restart'` with the same prefix,
+outdir, potential, cell, occupations and k mesh. Both hash-bound output snapshots
+have electronic-convergence and `JOB DONE` markers and print -22.83943950 Ry.
+This is a reproducible execution comparison, not proof that the electronic state
+is unique or physically lowest.
 
 ## Declare the initialization lineage
 
@@ -56,9 +67,10 @@ Changes to structure, atom order, functional, potentials, charge, spin treatment
 
 ## What this guide verifies
 
-The companion script checks three deterministic state records. It verifies that one fresh and one compatible restart record reach the same declared state and identifies another completed record as a separate branch.
-
-It does not run a DFT code, validate any restart format, prove SCF convergence, or establish that either fixture state is the lowest physical state.
+`silicon_qe_restarts.py` verifies the actual public-output hashes, matching printed
+energies, and completion markers. The retained fixture illustrates a separate
+state branch. Neither establishes restart portability, observable convergence,
+candidate completeness, or the lowest physical state.
 
 ## Common mistakes
 
@@ -77,3 +89,4 @@ It does not run a DFT code, validate any restart format, prove SCF convergence, 
 - [VASP `ICHARG`](https://vasp.at/wiki/ICHARG)
 - [CP2K SCF section](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html)
 - [CP2K DFT section](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT.html)
+- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)

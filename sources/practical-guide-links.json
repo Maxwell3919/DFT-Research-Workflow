@@ -193,7 +193,7 @@
     },
     {
       "guide_slug": "restart-and-verify-optimization",
-      "source_ids": ["ase-optimize", "qe-pw-75", "cp2k-geometry-cell-opt"]
+      "source_ids": ["ase-optimize", "qe-pw-75", "cp2k-geometry-cell-opt", "cod-9013102"]
     },
     {
       "guide_slug": "compare-multiple-starts-and-minima",
@@ -205,7 +205,7 @@
     },
     {
       "guide_slug": "compare-fresh-and-restarted-electronic-states",
-      "source_ids": ["qe-pw-75", "vasp-istart", "vasp-icharg", "cp2k-scf", "cp2k-dft"]
+      "source_ids": ["qe-pw-75", "vasp-istart", "vasp-icharg", "cp2k-scf", "cp2k-dft", "cod-9013102"]
     },
     {
       "guide_slug": "compare-charge-spin-and-magnetic-candidates",

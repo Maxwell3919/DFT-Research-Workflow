@@ -5,16 +5,18 @@ title: Restart and Verify a Structural Optimization
 kind: implementation
 tools:
   - ase
+  - quantum-espresso
 status: reviewed
 summary: Continue an interrupted relaxation without erasing its lineage, then perform a fresh final energy-and-gradient check on the exact accepted structure.
 tested_versions:
   - ASE 3.29.0
   - Python 3.12
-execution_script: examples/practical-guides/optimization_restart_verification.py
+execution_script: examples/practical-guides/silicon_qe_restarts.py
 source_ids:
   - ase-optimize
   - qe-pw-75
   - cp2k-geometry-cell-opt
+  - cod-9013102
 media_ids:
   - optimization-restart-verification-chain
 review: docs/reviews/2026-08-03-optimize-structure.md
@@ -22,6 +24,16 @@ reviewed_at: "2026-08-03"
 ---
 
 A restart is a continuation of a traceable optimization problem, not permission to overwrite an unfinished calculation. Geometry, optimizer state, constraints, electronic restart data, software identity, and the reason for continuation must remain connected.
+
+## Actual bounded QE continuation
+
+The real case starts from an intentionally displaced COD 9013102 Silicon cell.
+Its first QE 7.5 BFGS `relax` segment has `nstep=2` and explicitly reports that
+the maximum step count was reached; it is retained as incomplete. A second input
+uses the same prefix and outdir with `restart_mode='restart'`, then reaches
+`End of BFGS Geometry Optimization`. Both segments retain their inputs, output
+hashes and `JOB DONE` markers. This demonstrates one code/version-specific
+continuation, not a general restart guarantee.
 
 ## Distinguish restartable objects
 
@@ -125,9 +137,10 @@ Do not concatenate the energy histories as if they came from one potential-energ
 
 ## What this guide verifies
 
-The companion script deliberately interrupts a small ASE/EMT BFGS relaxation, confirms that trajectory and restart evidence exist, continues from the same compatible state, and performs a fresh final force evaluation.
-
-It does not run DFT, validate the teaching model, establish a universal stopping criterion, prove optimizer portability, or demonstrate that the final structure is the physical or global minimum.
+The real-output companion verifies that the first segment is explicitly incomplete
+and the matching QE restart segment has BFGS completion. The retained ASE fixture
+illustrates optimizer-specific mechanics. Neither establishes a universal stopping
+criterion, optimizer portability, observable convergence, or a physical/global minimum.
 
 ## Common mistakes
 
@@ -146,3 +159,4 @@ It does not run DFT, validate the teaching model, establish a universal stopping
 - [ASE structure optimization, trajectories, and restart files](https://docs.ase-lib.org/ase/optimize.html)
 - [Quantum ESPRESSO `pw.x` relaxation and restart controls](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
 - [CP2K geometry and cell optimization, outputs, and restarts](https://manual.cp2k.org/trunk/methods/optimization/geometry_and_cell_opt.html)
+- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)
