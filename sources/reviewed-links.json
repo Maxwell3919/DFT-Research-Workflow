@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 202,
+  "expected_unique_urls": 207,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -480,6 +480,19 @@
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/user_guide_PDF/neb_user_guide.pdf" },
         { "kind": "page", "url": "https://docs.ase-lib.org/ase/neb.html" },
         { "kind": "page", "url": "https://ase.gitlab.io/ase/examples_generated/03-tutorials/neb_selfdiffusion.html" }
+      ]
+    },
+    {
+      "topic_slug": "ab-initio-molecular-dynamics",
+      "article": "src/content/topics/ab-initio-molecular-dynamics.md",
+      "review": "docs/reviews/2026-08-04-ab-initio-molecular-dynamics.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.55.2471" },
+        { "kind": "doi", "url": "https://doi.org/10.1063/1.447334" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_CP.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/documentation/" },
+        { "kind": "page", "url": "https://ase.gitlab.io/ase/ase/md.html" }
       ]
     },
     {

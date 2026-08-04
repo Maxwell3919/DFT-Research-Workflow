@@ -36,6 +36,8 @@
     { "id": "qe-neb-input", "url": "https://www.quantum-espresso.org/Doc/INPUT_NEB.html", "kind": "page" },
     { "id": "ase-neb", "url": "https://docs.ase-lib.org/ase/neb.html", "kind": "page" },
     { "id": "vineyard-frequency-factor", "url": "https://doi.org/10.1016%2F0022-3697%2857%2990059-8", "kind": "doi" },
+    { "id": "ase-molecular-dynamics", "url": "https://ase.gitlab.io/ase/ase/md.html", "kind": "page" },
+    { "id": "car-parrinello", "url": "https://doi.org/10.1103/PhysRevLett.55.2471", "kind": "doi" },
     { "id": "ase-optimize", "url": "https://docs.ase-lib.org/ase/optimize.html", "kind": "page" },
     { "id": "ase-constraints", "url": "https://docs.ase-lib.org/ase/constraints.html", "kind": "page" },
     { "id": "ase-filters", "url": "https://docs.ase-lib.org/ase/filters.html", "kind": "page" },
@@ -281,5 +283,6 @@
     ,{ "guide_slug": "check-superconductivity-moment-ledger", "source_ids": ["qe-epc-coefficients", "giustino-epc-review"] }
     ,{ "guide_slug": "check-reaction-path-barrier-ledger", "source_ids": ["qe-neb-input", "ase-neb"] }
     ,{ "guide_slug": "check-diffusion-network-ledger", "source_ids": ["ase-neb", "vineyard-frequency-factor"] }
+    ,{ "guide_slug": "check-aimd-segment-ledger", "source_ids": ["ase-molecular-dynamics", "car-parrinello"] }
   ]
 }

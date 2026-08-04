@@ -252,6 +252,12 @@ const reviewRequirements = new Map([
     'Execution success is not an NEB calculation',
     'The media are an original diagram generated from invented values',
   ]],
+  ['docs/reviews/2026-08-04-ab-initio-molecular-dynamics.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented trajectory-segment labels',
+    'Execution success is not an AIMD calculation',
+    'The media are an original diagram generated from invented values',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
