@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "pseudopotentials": [
+    {
+      "filename": "Si.pbe-n-rrkjus_psl.1.0.0.UPF",
+      "sha256": "ae3aefd0811f9499dbc4a72f1f9ae02ef4fc7f3568bf6f559b68668719c69e2b",
+      "source": "SSSP PBE Precision bundle distributed with Quantum ESPRESSO 7.5",
+      "source_url": "https://www.materialscloud.org/discover/sssp/table/precision",
+      "xc_functional": "PBE",
+      "relativistic": "scalar"
+    }
+  ]
+}
