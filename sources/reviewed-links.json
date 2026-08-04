@@ -2,8 +2,20 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 218,
+  "expected_unique_urls": 223,
   "topics": [
+    {
+      "topic_slug": "time-dependent-response-and-spectroscopy",
+      "article": "src/content/topics/time-dependent-response-and-spectroscopy.md",
+      "review": "docs/reviews/2026-08-04-time-dependent-response-and-spectroscopy.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevLett.52.997" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevA.71.032514" },
+        { "kind": "page", "url": "https://octopus-code.org/documentation/main/tutorial/response/" },
+        { "kind": "page", "url": "https://www.octopus-code.org/documentation/15/manual/calculations/casida/" },
+        { "kind": "page", "url": "https://wiki.yambo-code.eu/wiki/index.php/Correlation_effects_in_the_non-linear_response" }
+      ]
+    },
     {
       "topic_slug": "independent-particle-optical-properties",
       "article": "src/content/topics/independent-particle-optical-properties.md",

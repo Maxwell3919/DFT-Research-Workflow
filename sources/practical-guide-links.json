@@ -3,6 +3,9 @@
   "authority": "official-source inventory for reviewed practical guides",
   "scope_note": "These URLs support version-specific implementation or analysis claims in reviewed practical pages. Reachability, semantic support, execution, numerical convergence, and scientific validity remain separate checks.",
   "sources": [
+    { "id": "runge-gross-tddft", "url": "https://doi.org/10.1103/PhysRevLett.52.997", "kind": "doi" },
+    { "id": "casida-linear-response", "url": "https://doi.org/10.1103/PhysRevA.71.032514", "kind": "doi" },
+    { "id": "octopus-response-tutorial", "url": "https://octopus-code.org/documentation/main/tutorial/response/", "kind": "page" },
     { "id": "adler-dielectric-response", "url": "https://doi.org/10.1103/PhysRev.126.413", "kind": "doi" },
     { "id": "wiser-dielectric-constant", "url": "https://doi.org/10.1103/PhysRev.129.62", "kind": "doi" },
     { "id": "vasp-loptics", "url": "https://vasp.at/wiki/index.php/LOPTICS", "kind": "page" },
@@ -291,5 +294,6 @@
     ,{ "guide_slug": "check-aimd-segment-ledger", "source_ids": ["ase-molecular-dynamics", "car-parrinello"] }
     ,{ "guide_slug": "check-structural-sampling-window-overlap", "source_ids": ["torrie-valleau-umbrella", "kumar-wham"] }
     ,{ "guide_slug": "check-optical-spectrum-comparison-ledger", "source_ids": ["adler-dielectric-response", "wiser-dielectric-constant", "vasp-loptics"] }
+    ,{ "guide_slug": "check-time-dependent-response-ledger", "source_ids": ["runge-gross-tddft", "casida-linear-response", "octopus-response-tutorial"] }
   ]
 }

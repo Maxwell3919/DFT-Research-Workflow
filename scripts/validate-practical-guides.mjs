@@ -270,6 +270,12 @@ const reviewRequirements = new Map([
     'Execution success is not an electronic-structure calculation',
     'The media are an original diagram generated from invented labels',
   ]],
+  ['docs/reviews/2026-08-04-time-dependent-response-and-spectroscopy.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented response metadata',
+    'Execution success is not a TDDFT calculation',
+    'The media are an original diagram generated from invented labels',
+  ]],
 ]);
 
 function parseFrontmatter(source) {
