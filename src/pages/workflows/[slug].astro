@@ -9,54 +9,67 @@ type Workflow = {
   slug: string;
   title: string;
   case_id: string;
+  excerpt_path: string;
   material: string;
   summary: string;
 };
 
 type CaseManifest = {
   evidence_class?: string;
-  claim_boundary?: string;
-  host?: string;
-  software?: string | { name?: string; version?: string };
+  public_host_label?: string;
+  software?: Array<{ name?: string; version?: string; interface?: string }>;
+  commands?: Array<{ stage?: string; command?: string; exit_code?: number }>;
+  artifacts?: Array<{ path?: string; role?: string; sha256?: string; bytes?: number }>;
+  gates?: Record<string, { status?: string; summary?: string }>;
+  claim_boundary?: { supports?: string[]; does_not_support?: string[] };
 };
 
-type Props = { workflow: Workflow; manifest: CaseManifest };
-const workflows = workflowsDocument.workflows as Workflow[];
+type Figure = { path: string; role: string; sha256: string; dataUrl: string };
+type Props = { workflow: Workflow; manifest: CaseManifest; excerpt: string; figures: Figure[] };
 
-async function readPublishedCase(workflow: Workflow): Promise<CaseManifest> {
-  const root = new URL(`../../../examples/cases/${workflow.case_id}/`, import.meta.url);
-  let manifestText: string;
-  try {
-    const [readme, manifest] = await Promise.all([
-      readFile(new URL('README.md', root), 'utf8'),
-      readFile(new URL('manifest.json', root), 'utf8'),
-    ]);
-    if (readme.trim().length === 0) throw new Error('README.md is empty');
-    manifestText = manifest;
-  } catch (error) {
-    throw new Error(
-      `Worked workflow ${workflow.slug} is blocked: its case README.md and manifest.json are required before publication (${String(error)}).`,
-    );
-  }
+export const getStaticPaths: GetStaticPaths = async () => {
+  const workflows = workflowsDocument.workflows as Workflow[];
+  return Promise.all(workflows.map(async (workflow) => {
+    const root = new URL(`../../../examples/cases/${workflow.case_id}/`, import.meta.url);
+    try {
+      const [readme, manifest, excerpt] = await Promise.all([
+        readFile(new URL('README.md', root), 'utf8'),
+        readFile(new URL('manifest.json', root), 'utf8'),
+        readFile(new URL(workflow.excerpt_path, root), 'utf8'),
+      ]);
+      if (readme.trim().length === 0) throw new Error('README.md is empty');
+      const parsed = JSON.parse(manifest) as CaseManifest;
+      const figures = await Promise.all((parsed.artifacts ?? [])
+        .filter((artifact) => artifact.path?.startsWith('figures/') && /\.(?:png|webp)$/i.test(artifact.path))
+        .map(async (artifact) => {
+          const path = artifact.path as string;
+          const mime = path.endsWith('.webp') ? 'image/webp' : 'image/png';
+          const data = await readFile(new URL(path, root));
+          return {
+            path,
+            role: artifact.role ?? 'Case-derived data figure',
+            sha256: artifact.sha256 ?? 'declared in manifest',
+            dataUrl: `data:${mime};base64,${data.toString('base64')}`,
+          };
+        }));
+      return {
+        params: { slug: workflow.slug },
+        props: { workflow, manifest: parsed, excerpt, figures } satisfies Props,
+      };
+    } catch (error) {
+      throw new Error(
+        `Worked workflow ${workflow.slug} is blocked: its case README, manifest, excerpt, and figures must be readable (${String(error)}).`,
+      );
+    }
+  }));
+};
 
-  try {
-    return JSON.parse(manifestText) as CaseManifest;
-  } catch {
-    throw new Error(`Worked workflow ${workflow.slug} is blocked: its case manifest.json is not valid JSON.`);
-  }
-}
-
-export const getStaticPaths: GetStaticPaths = async () => Promise.all(
-  workflows.map(async (workflow) => ({
-    params: { slug: workflow.slug },
-    props: { workflow, manifest: await readPublishedCase(workflow) } satisfies Props,
-  })),
-);
-
-const { workflow, manifest } = Astro.props as Props;
-const software = typeof manifest.software === 'string'
-  ? manifest.software
-  : [manifest.software?.name, manifest.software?.version].filter(Boolean).join(' ');
+const { workflow, manifest, excerpt, figures } = Astro.props as Props;
+const software = (manifest.software ?? [])
+  .map((item) => [item.name, item.version, item.interface ? `(${item.interface})` : ''].filter(Boolean).join(' '));
+const commands = manifest.commands ?? [];
+const artifacts = manifest.artifacts ?? [];
+const gates = Object.entries(manifest.gates ?? {}).sort(([a], [b]) => a.localeCompare(b));
 const caseRoot = `examples/cases/${workflow.case_id}/`;
 const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Research-Workflow/blob/main/${caseRoot}${file}`;
 ---
@@ -79,15 +92,55 @@ const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Resear
         <li><a href={caseFileUrl('run.sh')}>Executed command script</a></li>
         <li><a href={caseFileUrl('check.sh')}>Quick acceptance check</a></li>
         <li><a href={caseFileUrl('parse.py')}>Strict parser</a></li>
+        <li><a href={caseFileUrl(workflow.excerpt_path)}>Hash-bound output excerpt</a></li>
       </ul>
+    </section>
+
+    <section class="article-content" aria-labelledby="commands-heading">
+      <h2 id="commands-heading">Recorded commands and output</h2>
+      <p>The commands below are read from the execution manifest. Exit code records describe the captured run; they are not a convergence claim.</p>
+      {commands.map((entry) => (
+        <div>
+          <p><strong>{entry.stage ?? 'Recorded stage'} · exit {entry.exit_code ?? 'not recorded'}</strong></p>
+          <pre><code>{entry.command ?? 'See manifest'}</code></pre>
+        </div>
+      ))}
+      <p><strong>Source-bound excerpt: {workflow.excerpt_path}</strong></p>
+      <pre><code>{excerpt.trimEnd()}</code></pre>
+    </section>
+
+    <section class="article-content" aria-labelledby="artifacts-heading">
+      <h2 id="artifacts-heading">Inputs, outputs, tables, and figures</h2>
+      <ul>
+        {artifacts.map((artifact) => (
+          <li>
+            <a href={caseFileUrl(artifact.path ?? '')}>{artifact.path}</a>
+            {' — '}{artifact.role ?? 'declared artifact'}; SHA-256 <code>{artifact.sha256 ?? 'not declared'}</code>
+          </li>
+        ))}
+      </ul>
+      {figures.map((figure) => (
+        <figure>
+          <img src={figure.dataUrl} alt={`${workflow.material} ${figure.role}, generated from the case's hash-bound raw data`} loading="lazy" />
+          <figcaption>{figure.path} · {figure.role} · SHA-256 <code>{figure.sha256}</code></figcaption>
+        </figure>
+      ))}
     </section>
 
     <section class="article-content" aria-labelledby="evidence-heading">
       <h2 id="evidence-heading">Evidence boundary</h2>
       <p><strong>Evidence class:</strong> {manifest.evidence_class ?? 'declared in the case manifest'}.</p>
-      {software && <p><strong>Software:</strong> {software}.</p>}
-      {manifest.host && <p><strong>Execution host:</strong> {manifest.host}.</p>}
-      <p>{manifest.claim_boundary ?? 'Read the case manifest before making any claim beyond the recorded execution and checks.'}</p>
+      {software.length > 0 && <ul>{software.map((item) => <li>{item}</li>)}</ul>}
+      {manifest.public_host_label && <p><strong>Execution host:</strong> {manifest.public_host_label}.</p>}
+      <dl>
+        {gates.map(([gate, record]) => (
+          <><dt>{gate} {record.status ?? 'UNKNOWN'}</dt><dd>{record.summary ?? 'No summary declared.'}</dd></>
+        ))}
+      </dl>
+      <h3>What this case supports</h3>
+      <ul>{(manifest.claim_boundary?.supports ?? []).map((claim) => <li>{claim}</li>)}</ul>
+      <h3>What this case does not support</h3>
+      <ul>{(manifest.claim_boundary?.does_not_support ?? []).map((claim) => <li>{claim}</li>)}</ul>
       <p>
         Program completion, solver convergence, observable convergence, and physical interpretation are separate gates. The case check and parser report their tested scope; an absent gate is not implied by a passing earlier one.
       </p>

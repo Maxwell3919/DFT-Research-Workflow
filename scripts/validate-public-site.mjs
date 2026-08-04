@@ -18,8 +18,9 @@ const transitionalOperations = operationsDocument.operations;
 const legacyOperations = legacyDocument.entries;
 const transitionalSlugs = transitionalOperations.map((operation) => operation.slug);
 const legacySlugs = legacyOperations.map((operation) => operation.slug);
-const recipes = recipesDocument.recipes;
+const recipes = recipesDocument.legacy_recipe_redirects;
 const recipeSlugs = recipes.map((recipe) => recipe.slug);
+const workedWorkflows = recipesDocument.workflows;
 const frameworkSlugs = ['workflow-model', 'lifecycle-and-operation-map', 'relations-and-feedback-loops', 'tags-and-methods', 'evidence-provenance-and-reproducibility'];
 const prohibitedText = [
   'View contract',
@@ -90,7 +91,7 @@ function outputPath(href) {
 }
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
-const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.tools.length + 2;
+const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.tools.length + 2 + workedWorkflows.length + 1;
 if (htmlFiles.length !== expectedHtmlCount) errors.push(`generated HTML route set mismatch: expected ${expectedHtmlCount}, found ${htmlFiles.length}`);
 
 const htmlByPath = new Map();
@@ -138,7 +139,7 @@ const home = htmlByPath.get(join(distPath, 'index.html')) ?? '';
 const homeText = stripMarkup(home);
 const homeNav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
 const navLabels = [...homeNav.matchAll(/<a[^>]*>([^<]+)<\/a>/g)].map((match) => match[1].trim());
-if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework', 'Tools'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
+if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
 for (const section of workflowDocument.sections) if (!homeText.includes(`${section.id} · ${section.title}`)) errors.push(`Home is missing ${section.id} · ${section.title}`);
 if (/24 typed core operations|former 35 chapter URLs/.test(homeText)) errors.push('Home advertises a superseded numbered taxonomy');
 
@@ -210,19 +211,31 @@ const recipesDirectory = htmlByPath.get(join(distPath, 'recipes', 'index.html'))
 for (const recipe of recipes) {
   const path = join(distPath, 'recipes', recipe.slug, 'index.html');
   const html = htmlByPath.get(path) ?? '';
-  const text = stripMarkup(html);
   if (!html) errors.push(`missing generated recipe route: ${recipe.slug}`);
-  if (!recipesDirectory.includes(`${base}recipes/${recipe.slug}/`)) errors.push(`recipes directory is missing ${recipe.slug}`);
-  if (!text.includes(recipe.title)) errors.push(`${recipe.slug}: recipe title mismatch`);
-  if (!text.includes('not an atomic operation or a universal execution sequence')) errors.push(`${recipe.slug}: missing research-workflow boundary`);
-  if (/System tags|Target tags|Method tags|Operation coverage/.test(text)) errors.push(`${recipe.slug}: recipe restores a fixed metadata contract`);
+  if (!html.includes(`${base}workflows/`)) errors.push(`${recipe.slug}: legacy recipe does not point to Worked Workflows`);
+}
+if (!recipesDirectory.includes('Worked Workflows')) errors.push('recipes directory is not a migration surface to Worked Workflows');
+
+const workflowDirectory = htmlByPath.get(join(distPath, 'workflows', 'index.html')) ?? '';
+for (const workflow of workedWorkflows) {
+  const path = join(distPath, 'workflows', workflow.slug, 'index.html');
+  const html = htmlByPath.get(path) ?? '';
+  const text = stripMarkup(html);
+  if (!html) errors.push(`missing Worked Workflow route: ${workflow.slug}`);
+  if (!workflowDirectory.includes(`${base}workflows/${workflow.slug}/`)) errors.push(`Worked Workflows directory is missing ${workflow.slug}`);
+  if (!text.includes(workflow.title)) errors.push(`${workflow.slug}: workflow title mismatch`);
+  for (const phrase of ['Recorded commands and output', 'Inputs, outputs, tables, and figures', 'What this case supports', 'What this case does not support']) {
+    if (!text.includes(phrase)) errors.push(`${workflow.slug}: missing terminal-first section ${phrase}`);
+  }
+  if (!html.includes('data:image/png;base64,')) errors.push(`${workflow.slug}: no case-derived PNG is rendered`);
+  if (!text.includes('G4 NOT TESTED') || !text.includes('G5 NOT CLAIMED')) errors.push(`${workflow.slug}: claim ceiling gates are missing`);
 }
 
-const frameworkDirectory = htmlByPath.get(join(distPath, 'framework', 'index.html')) ?? '';
 for (const slug of frameworkSlugs) {
   const path = join(distPath, 'framework', slug, 'index.html');
   if (!htmlByPath.has(path)) errors.push(`missing generated framework route: ${slug}`);
-  if (!frameworkDirectory.includes(`${base}framework/${slug}/`)) errors.push(`framework directory is missing ${slug}`);
+  const text = stripMarkup(htmlByPath.get(path) ?? '');
+  if (!text.includes('Moved to')) errors.push(`${slug}: framework route is not a migration surface`);
 }
 
 const migrationNotice = 'This URL is retained while useful material is migrated into the A–E workflow.';
@@ -260,4 +273,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Generated site valid: registry-driven A–E directory, ${practicalGuides.length} practical subpages with parent cards, research workflows, framework pages, and migration-safe old URLs.`);
+console.log(`Generated site valid: registry-driven A–E directory, ${practicalGuides.length} practical subpages, two terminal-first Worked Workflows, and migration-safe Framework/recipe/numbered URLs.`);

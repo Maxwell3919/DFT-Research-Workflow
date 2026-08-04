@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import recipesDocument from '../../../recipes/index.json';
+import { withBase } from '../../lib/paths';
 
 type Props = { destination: string | null };
 
@@ -12,7 +13,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { destination } = Astro.props as Props;
-const target = destination ? `../../workflows/${destination}/` : '../../workflows/';
+const target = withBase(destination ? `workflows/${destination}/` : 'workflows/');
 ---
 
 <!doctype html>

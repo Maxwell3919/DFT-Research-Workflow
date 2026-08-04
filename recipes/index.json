@@ -7,6 +7,7 @@
       "slug": "silicon-ground-state-electronic-structure",
       "title": "Silicon Ground-State and Electronic-Structure Workflow",
       "case_id": "silicon-ground-state-electronic-structure",
+      "excerpt_path": "source/output-excerpt.txt",
       "material": "Silicon",
       "status": "published-when-case-complete",
       "summary": "A terminal-first chain from a sourced silicon structure through reference-state calculations to electronic-structure analysis."
@@ -15,6 +16,7 @@
       "slug": "aluminium-metallic-electronic-structure",
       "title": "Aluminium Metallic Electronic-Structure Workflow",
       "case_id": "aluminium-metallic-electronic-structure",
+      "excerpt_path": "output/compact-source-excerpt.txt",
       "material": "Aluminium",
       "status": "published-when-case-complete",
       "summary": "A terminal-first metallic workflow that makes occupations, smearing, Fermi-level analysis, and their evidence boundaries explicit."

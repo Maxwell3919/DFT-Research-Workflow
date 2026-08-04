@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../../lib/paths';
+const target = withBase('workflows/');
 ---
 
 <!doctype html>
@@ -6,11 +8,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta http-equiv="refresh" content="0; url=../workflows/" />
-    <link rel="canonical" href="../workflows/" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
     <title>Moved to Worked Workflows</title>
   </head>
   <body>
-    <p>This directory has moved to <a href="../workflows/">Worked Workflows</a>.</p>
+    <p>This directory has moved to <a href={target}>Worked Workflows</a>.</p>
   </body>
 </html>

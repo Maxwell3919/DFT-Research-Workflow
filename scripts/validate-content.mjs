@@ -32,6 +32,8 @@ const requiredFiles = [
   'src/pages/operations/[slug].astro',
   'src/pages/recipes/index.astro',
   'src/pages/recipes/[slug].astro',
+  'src/pages/workflows/index.astro',
+  'src/pages/workflows/[slug].astro',
   'src/pages/framework/index.astro',
   'src/pages/framework/[slug].astro',
   'src/styles/global.css',
@@ -114,7 +116,7 @@ for (const title of topicSlugs) if (directory.includes(`>${title}<`)) errors.pus
 const layout = await readFile(new URL('src/layouts/BaseLayout.astro', root), 'utf8');
 const navigationBlock = layout.match(/const navigation = \[([\s\S]*?)\] as const/)?.[1] ?? '';
 const navigationLabels = [...navigationBlock.matchAll(/label: '([^']+)'/g)].map((match) => match[1]);
-if (JSON.stringify(navigationLabels) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework', 'Tools'])) errors.push(`primary navigation mismatch: ${JSON.stringify(navigationLabels)}`);
+if (JSON.stringify(navigationLabels) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools'])) errors.push(`primary navigation mismatch: ${JSON.stringify(navigationLabels)}`);
 
 function frontmatter(source) {
   const match = source.match(/^---\s*\n([\s\S]*?)\n---/);
@@ -131,7 +133,7 @@ async function readNarratives(directory) {
 }
 
 const operations = JSON.parse(await readFile(new URL('ontology/operations.json', root), 'utf8')).operations;
-const recipes = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8')).recipes;
+const recipes = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8')).legacy_recipe_redirects;
 const coreNarratives = await readNarratives('src/content/core-operations/');
 const recipeNarratives = await readNarratives('src/content/recipes/');
 const frameworkNarratives = await readNarratives('src/content/framework/');
@@ -165,6 +167,7 @@ for (const entry of topicNarratives) {
 const operationPage = await readFile(new URL('src/pages/operations/[slug].astro', root), 'utf8');
 const recipePage = await readFile(new URL('src/pages/recipes/[slug].astro', root), 'utf8');
 const frameworkPage = await readFile(new URL('src/pages/framework/[slug].astro', root), 'utf8');
+const workflowPage = await readFile(new URL('src/pages/workflows/[slug].astro', root), 'utf8');
 const mechanicalPatterns = [
   /operation-contract/,
   /<dt>Inputs<\/dt>/,
@@ -176,7 +179,7 @@ const mechanicalPatterns = [
   /<dt>Exclusions<\/dt>/,
   /Detailed content/,
 ];
-for (const [name, source] of [['workflow topic page', operationPage], ['recipe page', recipePage], ['framework page', frameworkPage]]) {
+for (const [name, source] of [['workflow topic page', operationPage], ['recipe migration page', recipePage], ['framework migration page', frameworkPage], ['worked workflow page', workflowPage]]) {
   for (const pattern of mechanicalPatterns) if (pattern.test(source)) errors.push(`${name} restores fixed page contract ${pattern}`);
 }
 if (!operationPage.includes("getCollection('topics')")) errors.push('workflow topic route must support optional topic narratives');

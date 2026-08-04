@@ -6,7 +6,7 @@ import { withBase } from '../../lib/paths';
 type Migration = { destination: string; title: string; summary: string };
 type Props = { slug: string; migration: Migration };
 
-const migrations: Record<string, Migration> = {
+export const migrations: Record<string, Migration> = {
   'lifecycle-and-operation-map': {
     destination: 'operations/',
     title: 'Research Workflow',
