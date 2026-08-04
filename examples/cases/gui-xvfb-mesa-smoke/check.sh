@@ -7,7 +7,7 @@ pass() { printf 'PASS  %s\n' "$1"; }
 warn() { printf 'WARN  %s\n' "$1"; }
 fail() { printf 'FAIL  %s\n' "$1"; failed=1; }
 
-for file in Dockerfile source/x11-smoke.sh output/docker-build.stdout output/docker-build.stderr output/run-metadata.txt derived/capture.json output/SHA256SUMS; do
+for file in Dockerfile source/x11-smoke.sh output/docker-build.stdout output/docker-build.stderr output/run-metadata.txt output/sanitization.txt derived/capture.json output/SHA256SUMS; do
   if [ -s "$case_dir/$file" ]; then pass "G0 non-empty $file"; else fail "G0 missing or empty $file"; fi
 done
 if (cd "$case_dir" && sha256sum -c output/SHA256SUMS >/dev/null); then pass 'G0 SHA-256 records match'; else fail 'G0 SHA-256 mismatch'; fi

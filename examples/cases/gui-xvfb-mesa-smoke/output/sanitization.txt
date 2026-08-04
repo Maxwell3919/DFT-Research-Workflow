@@ -1,0 +1,3 @@
+rule=strip trailing whitespace from Docker build stderr lines
+raw_docker_build_stderr_sha256=a25d5d4e2152dfd1c6f3f3eeba4f1729b225c1905b459748b0caac6508ebedb8
+public_docker_build_stderr_sha256=daf1a3a61b4e89def6206f0ffa7fe4446b4ab83d2f7656f21bbecba57782239b

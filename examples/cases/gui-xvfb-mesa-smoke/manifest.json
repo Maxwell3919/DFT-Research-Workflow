@@ -20,10 +20,11 @@
   ],
   "artifacts": [
     {"role": "actual Docker build stdout", "path": "output/docker-build.stdout", "sha256": "cf205dbb8cea84897b488abcc281bf96698d5e94b1096b16657b4caba9082a22"},
-    {"role": "actual Docker build stderr", "path": "output/docker-build.stderr", "sha256": "f979fcaa924f58eb65809df98718db55f95d65dcd9256b4e4b2fb5220d9773ca"},
+    {"role": "deterministically sanitized Docker build stderr", "path": "output/docker-build.stderr", "sha256": "daf1a3a61b4e89def6206f0ffa7fe4446b4ab83d2f7656f21bbecba57782239b", "raw_sha256": "a25d5d4e2152dfd1c6f3f3eeba4f1729b225c1905b459748b0caac6508ebedb8", "sanitization": "Trailing whitespace is stripped from each raw Docker build stderr line; raw stderr is not committed."},
     {"role": "actual run status metadata", "path": "output/run-metadata.txt", "sha256": "0e31f14610efa6f95a920839b19f2f2daab14c9e5f133736d347047b41d151e0"},
-    {"role": "parser record for the hash-bound Docker blocker", "path": "derived/capture.json", "sha256": "4f434a1a053271b9c9ec23a3f5e8604d3d5a977e702e47caa01baaaef65e69ea"},
-    {"role": "committed checksum ledger", "path": "output/SHA256SUMS", "sha256": "c9c0adbce3316fd1e3c96740692fe8422caeb3968608dffdd23b89a2af60293c"}
+    {"role": "raw-to-public Docker build stderr sanitization record", "path": "output/sanitization.txt", "sha256": "28b77582bd4c678dffbd003dadee8008c8138ddf066fe757903ffde812235ec5"},
+    {"role": "parser record for the hash-bound Docker blocker", "path": "derived/capture.json", "sha256": "0b2cc61923de318b0c72d3af88ac0c4ed8a19c3558c4238d82e0f44f5e93d357"},
+    {"role": "committed checksum ledger", "path": "output/SHA256SUMS", "sha256": "33798b6e16242bcbff32c07e3078b8c771429c3c837b05a7eaae018bcf12bc70"}
   ],
   "gates": {
     "G0": {"status": "PASS", "summary": "The Dockerfile, X11 script, actual Docker build logs, parser record, and checksum ledger are committed and hash-bound."},
