@@ -114,7 +114,9 @@ jobs:
         env:
           PRACTICAL_EXECUTION_ARTIFACT_DIR: artifacts/practical-guide-execution
       - name: Execute terminal-first parsers and acceptance checks
-        run: node scripts/validate-cases.mjs --execute
+        run: |
+          python scripts/validate-case-schema.py
+          node scripts/validate-cases.mjs --execute
         env:
           CASE_PYTHON: python
       - name: Upload practical-guide execution evidence
