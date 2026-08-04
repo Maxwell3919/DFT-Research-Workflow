@@ -7,7 +7,7 @@ The Bethe--Salpeter equation (BSE) is used when a neutral excitation cannot be r
 
 A BSE spectrum therefore answers a different question from a Kohn--Sham band structure, a quasiparticle gap, or a measured spectrum affected by temperature, disorder, substrates, phonons, and carrier populations.
 
-## Build neutral excitations from electron--hole pairs
+## From electron--hole pairs to neutral excitations
 
 At transferred momentum `Q`, an excitonic state can be expanded as
 
@@ -30,7 +30,7 @@ The diagonal term contains compatible quasiparticle transition energies. `K^x` i
 
 The BSE does not apply one universal correction to a band gap. It diagonalizes a two-particle Hamiltonian whose eigenvalues and eigenvectors define neutral excitations.
 
-## Binding energy is a comparison between compatible quantities
+## What an exciton binding energy compares
 
 For an identified bound state, one often writes
 
@@ -44,7 +44,7 @@ The lowest BSE eigenvalue need not be optically bright. A bright peak need not b
 
 This consistency is especially important in reduced-dimensional systems, where dielectric environment and Coulomb truncation can strongly affect both the quasiparticle gap and the electron--hole interaction. A binding energy from one vacuum or substrate model is not automatically transferable to another.
 
-## The transition space controls the result
+## Numerical representation is physical evidence
 
 The numerical representation is defined by the valence and conduction band windows, k sampling, quasiparticle inputs, dielectric screening basis, local-field cutoff, and treatment of `q → 0`. Excitons that are extended in real space can require very dense reciprocal-space sampling; strongly localized states can require a broad transition basis.
 
