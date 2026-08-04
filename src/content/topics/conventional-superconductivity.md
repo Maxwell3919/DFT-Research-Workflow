@@ -7,7 +7,7 @@ Conventional superconductivity asks whether a declared phonon-mediated pairing m
 
 The calculation consumes mutually compatible electronic states, phonons, and electron--phonon coupling data. It then adds a treatment of retarded attraction, residual Coulomb repulsion, temperature, and the superconducting gap equation. Each step has its own numerical and physical boundary.
 
-## The Eliashberg spectrum is the bridge from EPC to pairing
+## From an Eliashberg spectrum to a pairing model
 
 For an isotropic phonon-mediated model, the Eliashberg spectral function `α²F(ω)` organizes the Fermi-surface-weighted interaction by phonon frequency. Two commonly reported moments are
 
@@ -27,7 +27,7 @@ The Coulomb pseudopotential `μ*` represents a retarded residual repulsion withi
 
 State how `μ*` was chosen or calculated, the cutoff convention to which it belongs, and how the predicted observable changes over a defensible range. A `T_c` value quoted without its `μ*` convention is incomplete even when the underlying EPC data are well converged.
 
-## Approximate formulas are conditional maps
+## Approximate transition-temperature formulas are conditional maps
 
 McMillan and Allen--Dynes-type formulas map a small set of spectral moments and `μ*` to an approximate isotropic transition temperature. A schematic Allen--Dynes form is
 
@@ -40,7 +40,7 @@ The factors `f₁` and `f₂` account for strong-coupling and spectral-shape eff
 
 Such a formula is useful for screening and sensitivity analysis within its intended regime. It cannot repair an unconverged Fermi surface, questionable metallic state, unresolved phonon instability, inconsistent carrier model, poor interpolation, or unexamined Coulomb treatment. Ranking unlike calculations by the resulting scalar `T_c` can therefore compare numerical and modelling choices rather than materials.
 
-## Eliashberg equations retain more of the pairing problem
+## Eliashberg solutions answer a more specific question
 
 The isotropic Eliashberg equations solve for temperature-dependent renormalization and gap functions using `α²F(ω)` and a declared Coulomb kernel. A linearized equation can locate the onset of an instability. A nonlinear solution below the transition can provide the model gap function. These are related but distinct calculations.
 
