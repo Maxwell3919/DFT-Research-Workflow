@@ -1,6 +1,6 @@
 # Scientific review — Fermi Surface and Full-Brillouin-Zone Analysis
 
-Reviewed: 2026-08-04
+Reviewed: 2026-08-05
 
 Scope:
 
@@ -21,10 +21,14 @@ The overview separates a full-zone equal-energy set from a path crossing or DOS,
 
 ## Numerical and execution boundary
 
-The companion script uses an invented two-dimensional reciprocal-space energy field. It executes no DFT code and ingests no material data. Execution success is not Fermi-surface convergence, a material pocket, carrier density, velocity, interpolation validation, transport result, instability, or scientific conclusion.
+The practical page now leads with a bounded real execution: Quantum ESPRESSO 7.5 `pw.x` SCF, `nscf`, and `bands` runs for an explicit one-atom fcc Al cell. The stored ledger has 512 full-zone points and 145 direct path points, with the emitted `7.8018 eV` Fermi reference and source-output hashes. The original two-dimensional fixture remains only as an auxiliary geometric warning. Execution success is not Fermi-surface convergence, a material pocket, carrier density, velocity, interpolation validation, transport result, instability, or scientific conclusion.
 
-The media are original conceptual diagrams of invented data. No external figure was copied.
+The companion script uses an invented two-dimensional reciprocal-space energy field. It is retained only for the auxiliary geometric warning; the primary Al ledger is parsed from actual QE output.
+
+The primary media are original plots reconstructed from the actual QE scalar outputs; the auxiliary media are original conceptual diagrams of invented data. No external figure was copied.
+
+The media are original conceptual diagrams of invented data. That statement applies only to the retained auxiliary fixture; the primary Al figure is a new plot from the stored QE-derived rows.
 
 ## Review conclusion
 
-The topic is complete for its present teaching scope. It provides the geometry, comparison conditions, and evidence boundary necessary to interpret a full-zone equal-energy rendering without confusing it with DOS, band-path, carrier-count, or transport evidence.
+The topic is complete for its present bounded teaching scope. It provides a real mesh/path comparison and the evidence boundary necessary to interpret a sampled equal-energy rendering without confusing it with DOS, band-path, carrier-count, transport, or converged material evidence.
