@@ -642,19 +642,19 @@
     {
       "guide_slug": "build-surface-energy-ledger",
       "parent_topic": "surface-energy-and-work-function",
-      "evidence_class": "synthetic-only",
-      "material": "invented surface energies",
+      "evidence_class": "derived-public-data",
+      "material": "published InterMat Si(111), Si(110), and Si(001) surface ledger",
       "real_result": false,
       "interface": false,
-      "traceable_data": false,
-      "upgrade": "published Si-surface source-bound data",
-      "blocker": null,
+      "traceable_data": true,
+      "upgrade": "completed hash-bound InterMat public-data ledger",
+      "blocker": "Three published orientations are not a slab-thickness series and do not establish a new converged surface-energy result.",
       "priority": 2,
-      "execution_script": "examples/practical-guides/surface_energy_ledger.py",
+      "execution_script": "examples/practical-guides/surface_ledger_intermat.py",
       "media_ids": [
         "surface-energy-ledger"
       ],
-      "upgrade_readiness": "candidate"
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "extract-work-function-potential",

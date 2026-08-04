@@ -6,21 +6,36 @@ kind: implementation
 tools:
   - python
 status: reviewed
-summary: Assemble a two-surface slab-energy ledger, fit its bulk-like slope, and expose thickness drift caused by a deliberately mismatched reference.
+summary: Use an attributed published Si-surface ledger alongside a synthetic bulk-drift diagnostic, without confusing three table values with a converged slab series.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/surface_energy_ledger.py
+execution_script: examples/practical-guides/surface_ledger_intermat.py
 source_ids:
   - fiorentini-methfessel-surfaces
   - boettger-surface-nonconvergence
   - gpaw-al-surface
+  - intermat-paper
+  - intermat-nist-pdf
+  - cc-by-3
 media_ids:
   - surface-energy-ledger
 review: docs/reviews/2026-08-04-surface-energy-and-work-function.md
 reviewed_at: "2026-08-04"
 ---
 
-A surface-energy table is reliable only when every large term in the subtraction remains inspectable. This guide uses four invented symmetric slabs to show how a small bulk-reference mismatch becomes a thickness-dependent surface excess.
+A surface-energy table is reliable only when every large term in the subtraction remains inspectable. The primary data view here is an attributed three-row public snapshot: unreconstructed Si(111), Si(110), and Si(001) values reported by InterMat. A retained four-slab synthetic diagram then isolates the separate failure pattern in which a mismatched bulk reference causes thickness drift.
+
+## Inspect a real published ledger before using the diagnostic
+
+The open-access [InterMat paper](https://doi.org/10.1039/D4DD00031E) reports
+OptB88vdW surface energies of `1.60`, `1.66`, and `2.22 J m⁻²` for the stored
+Si(111), Si(110), and Si(001) rows. The committed CC BY 3.0 snapshot identifies
+the source table, `JVASP-1002`, method label, units, and exact JSON hash. Its
+companion checks those values and source identity without rerunning a slab.
+
+Three orientations from one published table do not form a thickness series. They
+cannot diagnose bulk drift, prove a termination or reconstruction, establish
+convergence, or create a new ranking. The [NIST-hosted source PDF](https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957179) remains the authority for the reported computational and experimental context.
 
 ## Keep area, count, and energy units explicit
 
@@ -34,23 +49,30 @@ The script fits `E_slab(N) = N e_bulk^fit + E_excess`. Its intercept is divided 
 
 It then shifts the fitted bulk slope by an invented `0.003 eV/atom`. The derived direct-subtraction values drift with atom count, visibly demonstrating why an internally converged bulk energy can still be incompatible with a slab series.
 
-## Rebuild the diagram
+## Retain a bounded drift diagnostic
 
 ```text
 python3 examples/practical-guides/surface_energy_ledger.py \
   --svg public/media/practical-guides/surface-energy-and-work-function/build-surface-energy-ledger/surface-energy-ledger.svg
 ```
 
-The SVG is generated from the same in-file fixture used by `run()`. The red line is intentionally a failure pattern, while the horizontal fit intercept is the result of the bounded synthetic model.
+The SVG is generated from the same in-file fixture used by `run()`. The red line is intentionally a failure pattern, while the horizontal fit intercept is the result of the bounded synthetic model. It supports the ledger logic but is not the source of the Si values above.
 
 ## What this guide verifies
 
-The companion script verifies unit conversion, the factor of two, linear-regression arithmetic, and the direction of thickness drift under one deliberately perturbed bulk slope. It calculates no electronic energy and ingests no material data.
+The declared companion verifies the attributed InterMat snapshot, its SHA-256,
+orientation order, licence, method label, and three reported surface-energy
+values. The retained `surface_energy_ledger.py` separately verifies unit
+conversion, the factor of two, linear-regression arithmetic, and the direction
+of thickness drift under one deliberately perturbed bulk slope.
 
-Execution success is not slab convergence for a real calculation. It establishes no surface energy, reconstruction, termination ordering, bulk-reference accuracy, or material stability.
+Execution success is not slab convergence for a real calculation. It establishes no new surface energy, reconstruction, termination ordering, bulk-reference accuracy, or material stability.
 
 ## Official sources
 
 - [Fiorentini and Methfessel, convergent surface energies](https://doi.org/10.1088/0953-8984/8/36/005)
 - [Boettger, thin-film surface-energy nonconvergence](https://doi.org/10.1103/PhysRevB.49.16798)
 - [GPAW aluminium-surface tutorial](https://gpaw.readthedocs.io/tutorialsexercises/basics/surface/surface.html)
+- [Choudhary and Garrity, InterMat](https://doi.org/10.1039/D4DD00031E)
+- [NIST-hosted InterMat article PDF](https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957179)
+- [Creative Commons Attribution 3.0 Unported](https://creativecommons.org/licenses/by/3.0/)
