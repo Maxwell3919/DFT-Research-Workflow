@@ -198,7 +198,7 @@ const startedAt = new Date().toISOString();
 let results = await mapWithConcurrency(manifest.sources, 2, audit);
 const fallbackIndices = results
   .map((result, index) => ({ result, index }))
-  .filter(({ result }) => [401, 403].includes(result.status))
+  .filter(({ result }) => result.state !== 'reachable' && (result.status === null || [401, 403].includes(result.status)))
   .map(({ index }) => index);
 
 if (fallbackIndices.length > 0) {
