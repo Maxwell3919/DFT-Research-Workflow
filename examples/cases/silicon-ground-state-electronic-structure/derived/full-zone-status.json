@@ -1,5 +1,28 @@
 {
-  "boundary": "The source checksum ledger names these files, but they are absent from the public source tree. No full-zone numerical result is reconstructed or claimed.",
+  "boundary": "This parses the recorded 8x8x8 full-zone sample only. It does not establish a converged fundamental, quasiparticle, optical, or experimental gap.",
+  "parsed": {
+    "band_count": 8,
+    "cbm_coordinate": [
+      0.53033,
+      0.0,
+      0.0
+    ],
+    "cbm_eV": 6.822,
+    "kpoint_count": 260,
+    "sampled_separation_eV": 0.617,
+    "vbm_coordinate": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "vbm_eV": 6.205
+  },
+  "raw_outputs": {
+    "bands-pw.out": "3c25f43a5e4eaa78e35eff57a300ab3c51bd8bb974e34e30c2a20375aad2da5b",
+    "bandsx.out": "9d4deac9e49b3e33ff3e8bdcdcb4139122074217fd721de134ec1539039cb6e6",
+    "scf.out": "e7e5d0a752d0b5940c04eac630dc925e4a98c7537010d3d2899a62e84f9797ef",
+    "si-fullzone.bands.dat": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"
+  },
   "recorded_ledger": {
     "claim_boundary": "Hash-bound teaching samples from real QE execution. The line path and 8x8x8 mesh are different samplings; neither sampled separation is a converged fundamental, quasiparticle, optical, or experimental gap.",
     "execution_date": "2026-08-04",
@@ -53,11 +76,5 @@
     },
     "structure_source_url": "https://www.crystallography.net/cod/9013102.html"
   },
-  "required_missing_raw_files": [
-    "scf.out",
-    "bands-pw.out",
-    "bandsx.out",
-    "si-fullzone.bands.dat"
-  ],
-  "status": "RAW_OUTPUT_UNAVAILABLE"
+  "status": "PARSED_RAW_OUTPUT"
 }

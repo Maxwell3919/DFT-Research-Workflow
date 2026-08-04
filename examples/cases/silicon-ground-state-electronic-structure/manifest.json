@@ -14,6 +14,13 @@
       "sha256": "5d140d9e2cf5ca039cd1d13e5dfd157aeabc2e969ca89f61fcefbc4e745a6841"
     },
     {
+      "bytes": 21237,
+      "path": "derived/full-zone-bands.csv",
+      "raw_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
+      "role": "full_zone_table",
+      "sha256": "5f181b3b664353a5a46bdd71a0841975f623d7eaf26aa21260266f90d65b53b9"
+    },
+    {
       "bytes": 7955,
       "path": "derived/dos.csv",
       "raw_sha256": "dc3bd84a740a572d665b3e39bdfb642dd61746e4c3c095ec18ae24ff96123db3",
@@ -21,17 +28,41 @@
       "sha256": "b2bbe7e1f52bfb71a212a8ae3682d143a9faa00adfb1a68cf849f0cfdd94b941"
     },
     {
-      "bytes": 2123,
+      "bytes": 4957,
       "path": "derived/observables.json",
       "role": "observable_report",
-      "sha256": "4147587bb4c255a382983a6cdc6195b206593a389d5fd8d54c37f20c6a44bd6f"
+      "sha256": "eb88c3dd0d760294ab121b6d49bae58ac8f82e4031d403cdd256197f216d508d"
     },
     {
-      "bytes": 2027,
+      "bytes": 2543,
       "path": "derived/full-zone-status.json",
-      "raw_sha256": "2a30ebb89071af1b9aa5167547a5939ec3780be1c4722534704c165aaffd2ea3",
-      "role": "full_zone_boundary",
-      "sha256": "476d2b34675a3db0fb4dbae0e90a89fd8ccb1e9e4f07ce550160476dfbf0e186"
+      "raw_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
+      "role": "full_zone_result",
+      "sha256": "3ab5ba090e21801a575d3b17d0fd8b266969f57689b30eb7114afa37cce63fb7"
+    },
+    {
+      "bytes": 15667,
+      "path": "output/full-zone/scf.out",
+      "role": "full_zone_scf",
+      "sha256": "e7e5d0a752d0b5940c04eac630dc925e4a98c7537010d3d2899a62e84f9797ef"
+    },
+    {
+      "bytes": 6732,
+      "path": "output/full-zone/bands-pw.out",
+      "role": "full_zone_bands_pw",
+      "sha256": "3c25f43a5e4eaa78e35eff57a300ab3c51bd8bb974e34e30c2a20375aad2da5b"
+    },
+    {
+      "bytes": 204497,
+      "path": "output/full-zone/bandsx.out",
+      "role": "full_zone_bandsx",
+      "sha256": "9d4deac9e49b3e33ff3e8bdcdcb4139122074217fd721de134ec1539039cb6e6"
+    },
+    {
+      "bytes": 29671,
+      "path": "output/full-zone/si-fullzone.bands.dat",
+      "role": "full_zone_band_data",
+      "sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"
     },
     {
       "bytes": 66124,
@@ -44,6 +75,12 @@
       "path": "figures/band-path.png",
       "role": "figure",
       "sha256": "50108e1b6c391380d85f35bc8fae59fa747fee1f053ba4ffdfadbda62e1cdc0f"
+    },
+    {
+      "bytes": 62583,
+      "path": "figures/full-zone-bands.png",
+      "role": "figure",
+      "sha256": "b1fffd7acbe40d02c51b6ba3fe21489766aa1e9d130d1951995a7ceb955c29dd"
     },
     {
       "bytes": 63844,
@@ -64,14 +101,26 @@
     "does_not_support": [
       "A transferable cutoff or k-mesh recommendation.",
       "A converged band gap, DOS, phonon or dielectric observable.",
-      "Structural stability, physical validity, experimental agreement or a material conclusion."
+      "Structural stability, physical validity, experimental agreement or a material conclusion.",
+      "A converged full-zone fundamental, quasiparticle, optical, or experimental gap."
     ],
     "supports": [
       "Hash-bound reconstruction of the stored QE 7.5 teaching inputs, compact outputs and derived plots.",
-      "A documented missing-raw boundary for the full-zone ledger."
+      "A documented missing-raw boundary for the full-zone ledger.",
+      "Direct parsing of the recorded 260-point, 8-band full-zone sample with its SHA-256-bound QE outputs."
     ]
   },
   "commands": [
+    {
+      "command": "OMP_NUM_THREADS=4 QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash run.sh",
+      "exit_code": 0,
+      "stage": "recorded historical QE 7.5 cutoff, relaxation and restart stages"
+    },
+    {
+      "command": "OMP_NUM_THREADS=8 QE_LAUNCHER='mpirun -np 4' QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash run.sh",
+      "exit_code": 0,
+      "stage": "recorded historical QE 7.5 electronic, full-zone and Gamma-response stages"
+    },
     {
       "command": "bash replay-derived.sh",
       "exit_code": 0,
@@ -110,8 +159,8 @@
       "summary": "SCF/relax/restart and Gamma response markers are present, but line-path bands retain c_bands eigenvalue-not-converged warnings"
     },
     "G3": {
-      "status": "WARN",
-      "summary": "recorded downstream bands, DOS and Gamma artifacts parse; full-zone raw outputs named by the source ledger are unavailable"
+      "status": "PASS",
+      "summary": "the corrected 8x8x8 full-zone SCF, bands, bands.x and 260-point 8-band data are hash-bound and directly parsed"
     },
     "G4": {
       "status": "NOT TESTED",
@@ -164,7 +213,7 @@
     {
       "id": "silicon-full-zone-ledger",
       "path": "source/full-zone-extrema.json",
-      "role": "metadata boundary",
+      "role": "full-zone checksum ledger and independently parsed raw-output cross-check",
       "sha256": "2a30ebb89071af1b9aa5167547a5939ec3780be1c4722534704c165aaffd2ea3"
     }
   ],

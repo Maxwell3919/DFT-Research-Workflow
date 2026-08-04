@@ -19,7 +19,86 @@
         14.026301123
       ]
     ],
-    "full_zone": "RAW_OUTPUT_UNAVAILABLE",
+    "full_zone": {
+      "boundary": "This parses the recorded 8x8x8 full-zone sample only. It does not establish a converged fundamental, quasiparticle, optical, or experimental gap.",
+      "parsed": {
+        "band_count": 8,
+        "cbm_coordinate": [
+          0.53033,
+          0.0,
+          0.0
+        ],
+        "cbm_eV": 6.822,
+        "kpoint_count": 260,
+        "sampled_separation_eV": 0.617,
+        "vbm_coordinate": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "vbm_eV": 6.205
+      },
+      "raw_outputs": {
+        "bands-pw.out": "3c25f43a5e4eaa78e35eff57a300ab3c51bd8bb974e34e30c2a20375aad2da5b",
+        "bandsx.out": "9d4deac9e49b3e33ff3e8bdcdcb4139122074217fd721de134ec1539039cb6e6",
+        "scf.out": "e7e5d0a752d0b5940c04eac630dc925e4a98c7537010d3d2899a62e84f9797ef",
+        "si-fullzone.bands.dat": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"
+      },
+      "recorded_ledger": {
+        "claim_boundary": "Hash-bound teaching samples from real QE execution. The line path and 8x8x8 mesh are different samplings; neither sampled separation is a converged fundamental, quasiparticle, optical, or experimental gap.",
+        "execution_date": "2026-08-04",
+        "full_zone_sample": {
+          "band_count": 8,
+          "cbm_bandsx_coordinate": [
+            0.53033,
+            0.0,
+            0.0
+          ],
+          "cbm_eV": 6.822,
+          "k_grid": [
+            8,
+            8,
+            8
+          ],
+          "kpoint_count": 260,
+          "sampled_separation_eV": 0.617,
+          "source_output_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
+          "symmetry_policy": "nosym=.true.; QE 7.5 documents a uniform grid as expanded over the Brillouin zone while retaining time-reversal equivalence unless noinv=.true.",
+          "vbm_bandsx_coordinate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "vbm_eV": 6.205
+        },
+        "material": "COD 9013102 Silicon primitive cell",
+        "path_sample": {
+          "cbm_bandsx_coordinate": [
+            0.0,
+            0.601041,
+            0.0
+          ],
+          "cbm_eV": 6.779,
+          "kpoint_count": 141,
+          "sampled_separation_eV": 0.574,
+          "source_path": "examples/practical-guides/data/silicon-qe/output/si.bands.dat",
+          "source_sha256": "4903acde7e33eb79906fbcf72e3ea9f5d19593f65b3946818febf36678b6cc3f",
+          "vbm_bandsx_coordinate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "vbm_eV": 6.205
+        },
+        "schema_version": 1,
+        "software": {
+          "bands.x": "Quantum ESPRESSO 7.5",
+          "pw.x": "Quantum ESPRESSO 7.5"
+        },
+        "structure_source_url": "https://www.crystallography.net/cod/9013102.html"
+      },
+      "status": "PARSED_RAW_OUTPUT"
+    },
     "gamma_epsilon_phonon_cm-1": [
       1.216451,
       1.216451,
@@ -43,7 +122,7 @@
     "G0": "PASS",
     "G1": "PASS",
     "G2": "WARN",
-    "G3": "WARN",
+    "G3": "PASS",
     "G4": "NOT TESTED",
     "G5": "NOT CLAIMED"
   },

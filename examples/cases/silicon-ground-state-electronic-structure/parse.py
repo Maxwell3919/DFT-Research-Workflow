@@ -69,11 +69,15 @@ def require_hashes() -> None:
     fullzone_checksums = {line.split()[-1]: line.split()[0] for line in (SRC / "checksums.sha256").read_text(encoding="utf-8").splitlines() if line.strip()}
     for name in ("scf.in", "bands.in", "bands.x.in"):
         assert sha(INP / "full-zone" / name) == fullzone_checksums[name], f"full-zone input mismatch: {name}"
+    for name in ("scf.out", "bands-pw.out", "bandsx.out", "si-fullzone.bands.dat"):
+        assert sha(OUT / "full-zone" / name) == fullzone_checksums[name], f"full-zone output mismatch: {name}"
+    for name in ("scf.err", "bands-pw.err", "bandsx.err"):
+        assert (OUT / "full-zone" / name).read_bytes() == b"", f"full-zone stderr is non-empty: {name}"
     for path in INP.rglob("*.in"):
         text = path.read_text(encoding="utf-8")
         if "ATOMIC_SPECIES" in text:
             assert "Si.pbe-n-rrkjus_psl.1.0.0.UPF" in text, f"unexpected input identity: {path}"
-    for path in OUT.glob("*.out"):
+    for path in OUT.rglob("*.out"):
         text = path.read_text(encoding="utf-8")
         assert "v.7.5" in text and text.count("JOB DONE.") == 1, f"incomplete QE record: {path.name}"
 
@@ -95,9 +99,9 @@ def convergence_rows() -> list[dict[str, object]]:
         row["delta_to_50Ry_10cubed_mRy_per_cell"] = round((row["total_energy_Ry"] - ref["total_energy_Ry"]) * 1000, 8)
     return rows
 
-def parse_bands() -> list[dict[str, object]]:
-    lines = (OUT / "si.bands.dat").read_text(encoding="utf-8").splitlines()[1:]
-    assert len(lines) == 282
+def parse_bands(path: Path, expected_kpoints: int) -> list[dict[str, object]]:
+    lines = path.read_text(encoding="utf-8").splitlines()[1:]
+    assert len(lines) == expected_kpoints * 2
     rows = []
     distance = 0.0
     previous = None
@@ -109,7 +113,7 @@ def parse_bands() -> list[dict[str, object]]:
             distance += sum((a-b)**2 for a, b in zip(k, previous)) ** 0.5
         rows.append({"index": index // 2 + 1, "distance": distance, "kx": k[0], "ky": k[1], "kz": k[2], "energies_eV": e})
         previous = k
-    assert len(rows) == 141
+    assert len(rows) == expected_kpoints
     return rows
 
 def parse_dos() -> list[tuple[float, float, float]]:
@@ -139,7 +143,7 @@ def dielectric_tensor() -> list[list[float]]:
     assert len(tensor) == 3 and all(abs(tensor[i][i] - 14.026301123) < 1e-9 for i in range(3))
     return tensor
 
-def render(rows: list[dict[str, object]], bands: list[dict[str, object]], dos: list[tuple[float, float, float]], phonons: list[float], epsilon: list[list[float]]) -> None:
+def render(rows: list[dict[str, object]], bands: list[dict[str, object]], fullzone_bands: list[dict[str, object]], dos: list[tuple[float, float, float]], phonons: list[float], epsilon: list[list[float]]) -> None:
     plt.style.use("seaborn-v0_8-whitegrid")
     fig, ax = plt.subplots(figsize=(7, 4.5))
     for mesh in (6, 8, 10):
@@ -155,6 +159,12 @@ def render(rows: list[dict[str, object]], bands: list[dict[str, object]], dos: l
     fig, ax = plt.subplots(figsize=(7, 4.5)); ax.plot([r[0] for r in dos], [r[1] for r in dos], color="#8a3b18")
     ax.set(xlabel="energy relative to Fermi level (eV)", ylabel="DOS", title="Stored 12x12x12 tetrahedron DOS")
     fig.tight_layout(); fig.savefig(FIG / "dos.png", dpi=160); plt.close(fig)
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    indices = [row["index"] for row in fullzone_bands]
+    ax.scatter(indices, [row["energies_eV"][3] for row in fullzone_bands], s=7, label="band 4 (occupied)")
+    ax.scatter(indices, [row["energies_eV"][4] for row in fullzone_bands], s=7, label="band 5 (empty)")
+    ax.set(xlabel="8x8x8 full-zone enumeration index", ylabel="eigenvalue (eV)", title="Stored full-zone 260-point, 8-band output")
+    ax.legend(); fig.tight_layout(); fig.savefig(FIG / "full-zone-bands.png", dpi=160); plt.close(fig)
     fig, ax = plt.subplots(figsize=(7, 4.5)); ax.bar(range(1, 7), phonons, color="#4d7c0f", label="Gamma phonon")
     ax2 = ax.twinx(); ax2.plot([1, 2, 3], [epsilon[i][i] for i in range(3)], "o-", color="#7c3a97", label="epsilon diagonal")
     ax.set(xlabel="mode / Cartesian diagonal", ylabel="frequency (cm-1)", title="Stored Gamma-point phonon and electronic response")
@@ -169,7 +179,7 @@ def artifact(role: str, rel: str, raw: str | None = None) -> dict[str, object]:
 def materialize() -> dict[str, object]:
     require_hashes()
     shutil.rmtree(DER, ignore_errors=True); shutil.rmtree(FIG, ignore_errors=True); DER.mkdir(); FIG.mkdir()
-    rows, bands, dos = convergence_rows(), parse_bands(), parse_dos()
+    rows, bands, fullzone_bands, dos = convergence_rows(), parse_bands(OUT / "si.bands.dat", 141), parse_bands(OUT / "full-zone" / "si-fullzone.bands.dat", 260), parse_dos()
     gamma = parse_frequency(OUT / "si-gamma-ph.out")
     epsilon_freq = parse_frequency(OUT / "si-epsilon-ph.out")
     epsilon = dielectric_tensor()
@@ -178,25 +188,45 @@ def materialize() -> dict[str, object]:
     with (DER / "band-path.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle, lineterminator="\n"); writer.writerow(["index", "distance", "kx", "ky", "kz", *[f"band_{i}_eV" for i in range(1,9)]])
         for row in bands: writer.writerow([row["index"], f'{row["distance"]:.9f}', row["kx"], row["ky"], row["kz"], *row["energies_eV"]])
+    with (DER / "full-zone-bands.csv").open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle, lineterminator="\n"); writer.writerow(["index", "kx", "ky", "kz", *[f"band_{i}_eV" for i in range(1,9)]])
+        for row in fullzone_bands: writer.writerow([row["index"], row["kx"], row["ky"], row["kz"], *row["energies_eV"]])
     with (DER / "dos.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle, lineterminator="\n"); writer.writerow(["energy_eV", "dos", "integrated_dos"]); writer.writerows(dos)
     fullzone = json.loads((SRC / "full-zone-extrema.json").read_text(encoding="utf-8"))
-    fullzone_status = {"status": "RAW_OUTPUT_UNAVAILABLE", "recorded_ledger": fullzone, "required_missing_raw_files": ["scf.out", "bands-pw.out", "bandsx.out", "si-fullzone.bands.dat"], "boundary": "The source checksum ledger names these files, but they are absent from the public source tree. No full-zone numerical result is reconstructed or claimed."}
+    vbm = max(row["energies_eV"][3] for row in fullzone_bands)
+    cbm = min(row["energies_eV"][4] for row in fullzone_bands)
+    vbm_row = next(row for row in fullzone_bands if row["energies_eV"][3] == vbm)
+    cbm_row = next(row for row in fullzone_bands if row["energies_eV"][4] == cbm)
+    assert vbm == 6.205 and cbm == 6.822 and len(fullzone_bands) == 260
+    fullzone_status = {"status": "PARSED_RAW_OUTPUT", "recorded_ledger": fullzone, "raw_outputs": {"scf.out": "e7e5d0a752d0b5940c04eac630dc925e4a98c7537010d3d2899a62e84f9797ef", "bands-pw.out": "3c25f43a5e4eaa78e35eff57a300ab3c51bd8bb974e34e30c2a20375aad2da5b", "bandsx.out": "9d4deac9e49b3e33ff3e8bdcdcb4139122074217fd721de134ec1539039cb6e6", "si-fullzone.bands.dat": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"}, "parsed": {"kpoint_count": len(fullzone_bands), "band_count": 8, "vbm_eV": vbm, "vbm_coordinate": [vbm_row["kx"], vbm_row["ky"], vbm_row["kz"]], "cbm_eV": cbm, "cbm_coordinate": [cbm_row["kx"], cbm_row["ky"], cbm_row["kz"]], "sampled_separation_eV": round(cbm - vbm, 3)}, "boundary": "This parses the recorded 8x8x8 full-zone sample only. It does not establish a converged fundamental, quasiparticle, optical, or experimental gap."}
     write_json(DER / "full-zone-status.json", fullzone_status)
-    report = {"case_id": "silicon-ground-state-electronic-structure", "model": {"formula": "Si", "structure": "two-atom diamond primitive cell derived from COD 9013102", "xc": "PBE", "relativity": "scalar", "pseudopotential": json.loads((SRC / "pseudopotentials.json").read_text(encoding="utf-8"))["pseudopotentials"][0]}, "software": {"Quantum ESPRESSO": "7.5"}, "recorded_settings": {"main_scf": {"ecutwfc_Ry": 40, "ecutrho_Ry": 320, "k_mesh": [8,8,8]}, "dos_nscf": {"k_mesh": [12,12,12], "occupations": "tetrahedra"}}, "execution_observations": {"nine_scf_matrix": "all stored pw.x outputs have one JOB DONE and an electronic convergence marker", "line_path_bands": "pw.x reached JOB DONE but contains three c_bands eigenvalue-not-converged warnings", "full_zone": fullzone_status["status"], "gamma_phonon_cm-1": gamma, "gamma_epsilon_phonon_cm-1": epsilon_freq, "dielectric_tensor": epsilon}, "gates": {"G0": "PASS", "G1": "PASS", "G2": "WARN", "G3": "WARN", "G4": "NOT TESTED", "G5": "NOT CLAIMED"}, "claim_boundary": "Stored public outputs demonstrate bounded execution and parsing lineage only. They do not establish convergence of any electronic, vibrational, or response observable; a band gap; stability; or experimental agreement."}
+    report = {"case_id": "silicon-ground-state-electronic-structure", "model": {"formula": "Si", "structure": "two-atom diamond primitive cell derived from COD 9013102", "xc": "PBE", "relativity": "scalar", "pseudopotential": json.loads((SRC / "pseudopotentials.json").read_text(encoding="utf-8"))["pseudopotentials"][0]}, "software": {"Quantum ESPRESSO": "7.5"}, "recorded_settings": {"main_scf": {"ecutwfc_Ry": 40, "ecutrho_Ry": 320, "k_mesh": [8,8,8]}, "dos_nscf": {"k_mesh": [12,12,12], "occupations": "tetrahedra"}}, "execution_observations": {"nine_scf_matrix": "all stored pw.x outputs have one JOB DONE and an electronic convergence marker", "line_path_bands": "pw.x reached JOB DONE but contains three c_bands eigenvalue-not-converged warnings", "full_zone": fullzone_status, "gamma_phonon_cm-1": gamma, "gamma_epsilon_phonon_cm-1": epsilon_freq, "dielectric_tensor": epsilon}, "gates": {"G0": "PASS", "G1": "PASS", "G2": "WARN", "G3": "PASS", "G4": "NOT TESTED", "G5": "NOT CLAIMED"}, "claim_boundary": "Stored public outputs demonstrate bounded execution and parsing lineage only. They do not establish convergence of any electronic, vibrational, or response observable; a band gap; stability; or experimental agreement."}
     write_json(DER / "observables.json", report)
-    render(rows, bands, dos, gamma, epsilon)
-    artifacts = [artifact("convergence_table", "derived/convergence.csv"), artifact("band_path_table", "derived/band-path.csv", EXPECTED["output/si.bands.dat"]), artifact("dos_table", "derived/dos.csv", EXPECTED["output/si.dos.dat"]), artifact("observable_report", "derived/observables.json"), artifact("full_zone_boundary", "derived/full-zone-status.json", EXPECTED["source/full-zone-extrema.json"]), artifact("figure", "figures/convergence-matrix.png"), artifact("figure", "figures/band-path.png"), artifact("figure", "figures/dos.png"), artifact("figure", "figures/gamma-response.png")]
+    render(rows, bands, fullzone_bands, dos, gamma, epsilon)
+    artifacts = [artifact("convergence_table", "derived/convergence.csv"), artifact("band_path_table", "derived/band-path.csv", EXPECTED["output/si.bands.dat"]), artifact("full_zone_table", "derived/full-zone-bands.csv", "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"), artifact("dos_table", "derived/dos.csv", EXPECTED["output/si.dos.dat"]), artifact("observable_report", "derived/observables.json"), artifact("full_zone_result", "derived/full-zone-status.json", "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"), artifact("full_zone_scf", "output/full-zone/scf.out"), artifact("full_zone_bands_pw", "output/full-zone/bands-pw.out"), artifact("full_zone_bandsx", "output/full-zone/bandsx.out"), artifact("full_zone_band_data", "output/full-zone/si-fullzone.bands.dat"), artifact("figure", "figures/convergence-matrix.png"), artifact("figure", "figures/band-path.png"), artifact("figure", "figures/full-zone-bands.png"), artifact("figure", "figures/dos.png"), artifact("figure", "figures/gamma-response.png")]
     manifest = {"schema_version":"1.0", "case_id":"silicon-ground-state-electronic-structure", "title":"Silicon QE 7.5 ground-state and electronic-structure evidence chain", "case_kind":"worked-workflow", "evidence_class":"real-execution", "public_host_label":"Recorded public QE output; no host-private path retained", "started_at":None, "completed_at":"2026-08-05T00:06:24+08:00", "exit_code":0, "software":[{"name":"Quantum ESPRESSO","version":"7.5","interface":"pw.x, bands.x, dos.x, ph.x recorded output"},{"name":"Python","version":"3.12.11","interface":"stored-output parser"}], "sources":[{"id":"cod-9013102","role":"structure source","path":"source/silicon-cod-9013102.cif","sha256":EXPECTED["source/silicon-cod-9013102.cif"],"url":"https://www.crystallography.net/cod/9013102.html","accessed_at":"2026-08-04","licence_boundary":"COD source is retained as a public teaching copy."},{"id":"silicon-qe-pseudopotential-identity","role":"UPF identity only; no potential body","path":"source/pseudopotentials.json","sha256":EXPECTED["source/pseudopotentials.json"],"url":"https://www.materialscloud.org/discover/sssp/table/precision","accessed_at":"2026-08-04","licence_boundary":"Filename, declared source and SHA-256 are retained; the UPF body is absent."},{"id":"silicon-qe-plan","role":"recorded plan","path":"source/qe_plan.json","sha256":EXPECTED["source/qe_plan.json"]},{"id":"silicon-full-zone-ledger","role":"metadata boundary","path":"source/full-zone-extrema.json","sha256":EXPECTED["source/full-zone-extrema.json"]}], "commands":[{"stage":"replay stored evidence","command":"bash replay-derived.sh","exit_code":0},{"stage":"extract","command":"bash extract.sh","exit_code":0},{"stage":"acceptance","command":"bash check.sh","exit_code":0},{"stage":"native preflight without UPF","command":"bash run.sh","exit_code":2}], "artifacts":artifacts, "gates":{"G0":{"status":"PASS","summary":"copied public inputs/outputs and generated artifacts are SHA-256 checked against recorded source identities"},"G1":{"status":"PASS","summary":"stored QE 7.5 outputs each have one JOB DONE marker"},"G2":{"status":"WARN","summary":"SCF/relax/restart and Gamma response markers are present, but line-path bands retain c_bands eigenvalue-not-converged warnings"},"G3":{"status":"WARN","summary":"recorded downstream bands, DOS and Gamma artifacts parse; full-zone raw outputs named by the source ledger are unavailable"},"G4":{"status":"NOT TESTED","summary":"the 3 by 3 total-energy matrix has no accepted observable-specific stable-tail protocol; no DOS, phonon, dielectric, or band convergence evidence"},"G5":{"status":"NOT CLAIMED","summary":"no fundamental gap, physical stability, dielectric, phonon, or experimental-material conclusion is claimed"}}, "claim_boundary":{"supports":["Hash-bound reconstruction of the stored QE 7.5 teaching inputs, compact outputs and derived plots.","A documented missing-raw boundary for the full-zone ledger."],"does_not_support":["A transferable cutoff or k-mesh recommendation.","A converged band gap, DOS, phonon or dielectric observable.","Structural stability, physical validity, experimental agreement or a material conclusion."]}}
+    manifest["sources"][-1]["role"] = "full-zone checksum ledger and independently parsed raw-output cross-check"
+    manifest["commands"] = [
+        {"stage": "recorded historical QE 7.5 cutoff, relaxation and restart stages", "command": "OMP_NUM_THREADS=4 QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash run.sh", "exit_code": 0},
+        {"stage": "recorded historical QE 7.5 electronic, full-zone and Gamma-response stages", "command": "OMP_NUM_THREADS=8 QE_LAUNCHER='mpirun -np 4' QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash run.sh", "exit_code": 0},
+        {"stage": "replay stored evidence", "command": "bash replay-derived.sh", "exit_code": 0},
+        {"stage": "extract", "command": "bash extract.sh", "exit_code": 0},
+        {"stage": "acceptance", "command": "bash check.sh", "exit_code": 0},
+        {"stage": "native preflight without UPF", "command": "bash run.sh", "exit_code": 2},
+    ]
+    manifest["gates"]["G3"] = {"status": "PASS", "summary": "the corrected 8x8x8 full-zone SCF, bands, bands.x and 260-point 8-band data are hash-bound and directly parsed"}
+    manifest["claim_boundary"]["supports"].append("Direct parsing of the recorded 260-point, 8-band full-zone sample with its SHA-256-bound QE outputs.")
+    manifest["claim_boundary"]["does_not_support"].append("A converged full-zone fundamental, quasiparticle, optical, or experimental gap.")
     write_json(ROOT / "manifest.json", manifest)
     return report
 
 def validate_manifest() -> None:
     report = json.loads((DER / "observables.json").read_text(encoding="utf-8"))
     manifest = json.loads((ROOT / "manifest.json").read_text(encoding="utf-8"))
-    assert report["gates"]["G4"] == "NOT TESTED" and report["gates"]["G5"] == "NOT CLAIMED"
+    assert report["gates"]["G3"] == "PASS" and report["gates"]["G4"] == "NOT TESTED" and report["gates"]["G5"] == "NOT CLAIMED"
     assert manifest["gates"]["G2"]["status"] == "WARN"
-    assert json.loads((DER / "full-zone-status.json").read_text(encoding="utf-8"))["status"] == "RAW_OUTPUT_UNAVAILABLE"
+    assert json.loads((DER / "full-zone-status.json").read_text(encoding="utf-8"))["status"] == "PARSED_RAW_OUTPUT"
     for record in [*manifest["sources"], *manifest["artifacts"]]:
         path = ROOT / record["path"]; assert path.is_file() and sha(path) == record["sha256"], record["path"]
 
@@ -207,7 +237,7 @@ def main() -> None:
         print("PASS G0 SHA-256 lineage and required public artifacts")
         print("PASS G1 stored QE 7.5 terminal markers")
         print("WARN G2 band-path pw.x has retained c_bands eigenvalue warnings")
-        print("WARN G3 full-zone raw outputs are unavailable; metadata boundary retained")
+        print("PASS G3 corrected full-zone raw outputs and 260-point, 8-band table parse")
         print("NOT TESTED G4 no accepted observable-specific convergence protocol")
         print("NOT CLAIMED G5 no physical/material conclusion")
     else:

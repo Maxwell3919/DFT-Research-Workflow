@@ -23,13 +23,15 @@ bash extract.sh
 bash check.sh
 ```
 
-`run.sh` records the actual QE program order used for the public evidence.  It
-intentionally stops before execution unless a separately obtained UPF with the
+`run.sh` records the actual QE program order used for the public evidence,
+including the corrected full-zone SCF -> `bands` -> `bands.x` chain. It
+accepts `QE_PW`, `QE_BANDS`, `QE_DOS`, `QE_PH`, `QE_LAUNCHER`, and `PSEUDO_DIR`
+only where a separately supplied potential is staged; it intentionally stops
+before execution unless a separately obtained UPF with the
 declared hash is supplied at `pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF`; it never
-uses a redistributed potential.  Do not expect it to recreate the missing
-full-zone raw files.  The public source retained only its three inputs,
-checksum ledger and extrema metadata, so `derived/full-zone-status.json` marks
-that raw-output gap instead of promoting it to a full-zone result.
+uses a redistributed potential. `derived/full-zone-status.json` and its table
+are reconstructed directly from the corrected 260-point, eight-band raw data.
+They remain a bounded 8x8x8 sample, not a converged gap result.
 
 The six gates are deliberately independent.  Completed QE markers and parser
 success support stored-output provenance, not cutoff/k-mesh/DOS/phonon/
