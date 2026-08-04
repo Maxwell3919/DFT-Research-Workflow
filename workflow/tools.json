@@ -137,6 +137,7 @@
       "source_repository": "https://gitlab.com/QEF/q-e",
       "topics": [
         "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
         "calculate-reference-ground-state",
         "band-structure",
         "harmonic-phonons",

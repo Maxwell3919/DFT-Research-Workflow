@@ -4,20 +4,23 @@ guide_slug: diagnose-forces-stress-and-state
 title: Diagnose Forces, Stress, and Electronic-State Continuity
 kind: implementation
 tools:
+  - quantum-espresso
   - python
 status: reviewed
 summary: Read an optimization history as coupled evidence from force, stress, displacement, electronic convergence, and state identity instead of trusting one stop message.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/optimization_history_diagnostics.py
+execution_script: examples/practical-guides/silicon_qe_relax.py
 source_ids:
   - qe-pw-75
   - vasp-structure-optimization
   - cp2k-geometry-cell-opt
   - pulay-force-paper
   - nielsen-martin-stress
+  - cod-9013102
 media_ids:
   - optimization-history-diagnostics
+  - silicon-qe-relax-force
 review: docs/reviews/2026-08-03-optimize-structure.md
 reviewed_at: "2026-08-03"
 ---
@@ -48,7 +51,7 @@ Keep rejected line-search points or failed electronic steps distinguishable from
 
 An electronic threshold controls the state evaluator within one geometry. An ionic threshold controls the gradient or step across geometries. Reaching the first does not imply the second, and a noisy electronic solve can make the second unreliable.
 
-The executable teaching fixture applies three independent checks:
+The retained executable fixture applies three independent synthetic checks:
 
 ```python
 from optimization_history_diagnostics import analyse_history
@@ -58,7 +61,7 @@ print(report["accepted_branch"])
 print(report["state_switches"])
 ```
 
-It requires each accepted structural step to carry a successful electronic-state label, a maximum active force, the relevant stress diagnostic, and a consistent state identity.
+It requires each accepted structural step to carry a successful electronic-state label, a maximum active force, the relevant stress diagnostic, and a consistent state identity. The main case also reconstructs five real QE 7.5 ionic steps from a deliberately displaced Silicon cell; its total force falls from 0.058078 to 0.000036 Ry/bohr and the final output carries the BFGS completion marker.
 
 ## Examine force and stress in the active subspace
 
@@ -119,9 +122,10 @@ A plot may display the segments together, but it should not conceal their differ
 
 ## What this guide verifies
 
-The companion script analyses deterministic synthetic histories. It confirms one branch only when all declared force, stress, electronic, and state-continuity checks are satisfied, and it identifies a state switch in a second branch.
-
-It does not run an electronic-structure code, calculate forces or stress, validate a stopping threshold, or establish that any structure is a local or global minimum.
+The real-output reconstruction verifies hashes, five electronic completion markers,
+five total-force rows, and the BFGS completion marker. It contains no stress-path
+analysis or independent state comparison. It does not validate a stopping threshold
+or establish that the final structure is a local or global minimum.
 
 ## Common mistakes
 
@@ -142,3 +146,4 @@ It does not run an electronic-structure code, calculate forces or stress, valida
 - [CP2K geometry and cell optimization](https://manual.cp2k.org/trunk/methods/optimization/geometry_and_cell_opt.html)
 - [Pulay, force derivatives and equilibrium geometry](https://doi.org/10.1080/00268976900100941)
 - [Nielsen and Martin, stress and forces in solids](https://doi.org/10.1103/PhysRevB.32.3780)
+- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)
