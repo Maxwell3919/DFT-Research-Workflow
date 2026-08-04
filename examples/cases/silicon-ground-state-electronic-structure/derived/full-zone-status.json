@@ -1,0 +1,63 @@
+{
+  "boundary": "The source checksum ledger names these files, but they are absent from the public source tree. No full-zone numerical result is reconstructed or claimed.",
+  "recorded_ledger": {
+    "claim_boundary": "Hash-bound teaching samples from real QE execution. The line path and 8x8x8 mesh are different samplings; neither sampled separation is a converged fundamental, quasiparticle, optical, or experimental gap.",
+    "execution_date": "2026-08-04",
+    "full_zone_sample": {
+      "band_count": 8,
+      "cbm_bandsx_coordinate": [
+        0.53033,
+        0.0,
+        0.0
+      ],
+      "cbm_eV": 6.822,
+      "k_grid": [
+        8,
+        8,
+        8
+      ],
+      "kpoint_count": 260,
+      "sampled_separation_eV": 0.617,
+      "source_output_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
+      "symmetry_policy": "nosym=.true.; QE 7.5 documents a uniform grid as expanded over the Brillouin zone while retaining time-reversal equivalence unless noinv=.true.",
+      "vbm_bandsx_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "vbm_eV": 6.205
+    },
+    "material": "COD 9013102 Silicon primitive cell",
+    "path_sample": {
+      "cbm_bandsx_coordinate": [
+        0.0,
+        0.601041,
+        0.0
+      ],
+      "cbm_eV": 6.779,
+      "kpoint_count": 141,
+      "sampled_separation_eV": 0.574,
+      "source_path": "examples/practical-guides/data/silicon-qe/output/si.bands.dat",
+      "source_sha256": "4903acde7e33eb79906fbcf72e3ea9f5d19593f65b3946818febf36678b6cc3f",
+      "vbm_bandsx_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "vbm_eV": 6.205
+    },
+    "schema_version": 1,
+    "software": {
+      "bands.x": "Quantum ESPRESSO 7.5",
+      "pw.x": "Quantum ESPRESSO 7.5"
+    },
+    "structure_source_url": "https://www.crystallography.net/cod/9013102.html"
+  },
+  "required_missing_raw_files": [
+    "scf.out",
+    "bands-pw.out",
+    "bandsx.out",
+    "si-fullzone.bands.dat"
+  ],
+  "status": "RAW_OUTPUT_UNAVAILABLE"
+}

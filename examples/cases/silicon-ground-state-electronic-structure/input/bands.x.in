@@ -1,0 +1,5 @@
+&BANDS
+  prefix = 'si_cod9013102',
+  outdir = './out',
+  filband = 'si.bands.dat',
+/

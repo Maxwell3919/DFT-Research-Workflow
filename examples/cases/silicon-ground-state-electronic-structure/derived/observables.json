@@ -1,0 +1,86 @@
+{
+  "case_id": "silicon-ground-state-electronic-structure",
+  "claim_boundary": "Stored public outputs demonstrate bounded execution and parsing lineage only. They do not establish convergence of any electronic, vibrational, or response observable; a band gap; stability; or experimental agreement.",
+  "execution_observations": {
+    "dielectric_tensor": [
+      [
+        14.026301123,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        14.026301123,
+        0.0
+      ],
+      [
+        0.0,
+        -0.0,
+        14.026301123
+      ]
+    ],
+    "full_zone": "RAW_OUTPUT_UNAVAILABLE",
+    "gamma_epsilon_phonon_cm-1": [
+      1.216451,
+      1.216451,
+      1.216451,
+      514.442616,
+      514.442616,
+      514.442616
+    ],
+    "gamma_phonon_cm-1": [
+      1.216451,
+      1.216451,
+      1.216451,
+      514.442616,
+      514.442616,
+      514.442616
+    ],
+    "line_path_bands": "pw.x reached JOB DONE but contains three c_bands eigenvalue-not-converged warnings",
+    "nine_scf_matrix": "all stored pw.x outputs have one JOB DONE and an electronic convergence marker"
+  },
+  "gates": {
+    "G0": "PASS",
+    "G1": "PASS",
+    "G2": "WARN",
+    "G3": "WARN",
+    "G4": "NOT TESTED",
+    "G5": "NOT CLAIMED"
+  },
+  "model": {
+    "formula": "Si",
+    "pseudopotential": {
+      "filename": "Si.pbe-n-rrkjus_psl.1.0.0.UPF",
+      "relativistic": "scalar",
+      "sha256": "ae3aefd0811f9499dbc4a72f1f9ae02ef4fc7f3568bf6f559b68668719c69e2b",
+      "source": "SSSP PBE Precision bundle distributed with Quantum ESPRESSO 7.5",
+      "source_url": "https://www.materialscloud.org/discover/sssp/table/precision",
+      "xc_functional": "PBE"
+    },
+    "relativity": "scalar",
+    "structure": "two-atom diamond primitive cell derived from COD 9013102",
+    "xc": "PBE"
+  },
+  "recorded_settings": {
+    "dos_nscf": {
+      "k_mesh": [
+        12,
+        12,
+        12
+      ],
+      "occupations": "tetrahedra"
+    },
+    "main_scf": {
+      "ecutrho_Ry": 320,
+      "ecutwfc_Ry": 40,
+      "k_mesh": [
+        8,
+        8,
+        8
+      ]
+    }
+  },
+  "software": {
+    "Quantum ESPRESSO": "7.5"
+  }
+}

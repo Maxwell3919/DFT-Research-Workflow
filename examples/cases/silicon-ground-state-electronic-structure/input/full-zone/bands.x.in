@@ -1,0 +1,5 @@
+&BANDS
+  prefix = 'si_cod9013102_fullzone',
+  outdir = './out',
+  filband = 'si-fullzone.bands.dat',
+/

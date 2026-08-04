@@ -1,0 +1,4 @@
+# Preserve source-exact QE records whose trailing whitespace is part of the hash.
+*.out -whitespace
+*.dyn -whitespace
+*.dat -whitespace

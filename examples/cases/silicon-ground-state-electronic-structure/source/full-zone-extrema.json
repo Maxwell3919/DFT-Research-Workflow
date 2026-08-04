@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "material": "COD 9013102 Silicon primitive cell",
+  "structure_source_url": "https://www.crystallography.net/cod/9013102.html",
+  "software": {
+    "pw.x": "Quantum ESPRESSO 7.5",
+    "bands.x": "Quantum ESPRESSO 7.5"
+  },
+  "execution_date": "2026-08-04",
+  "path_sample": {
+    "source_path": "examples/practical-guides/data/silicon-qe/output/si.bands.dat",
+    "source_sha256": "4903acde7e33eb79906fbcf72e3ea9f5d19593f65b3946818febf36678b6cc3f",
+    "kpoint_count": 141,
+    "vbm_eV": 6.205,
+    "vbm_bandsx_coordinate": [0.0, 0.0, 0.0],
+    "cbm_eV": 6.779,
+    "cbm_bandsx_coordinate": [0.0, 0.601041, 0.0],
+    "sampled_separation_eV": 0.574
+  },
+  "full_zone_sample": {
+    "source_output_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
+    "kpoint_count": 260,
+    "band_count": 8,
+    "k_grid": [8, 8, 8],
+    "symmetry_policy": "nosym=.true.; QE 7.5 documents a uniform grid as expanded over the Brillouin zone while retaining time-reversal equivalence unless noinv=.true.",
+    "vbm_eV": 6.205,
+    "vbm_bandsx_coordinate": [0.0, 0.0, 0.0],
+    "cbm_eV": 6.822,
+    "cbm_bandsx_coordinate": [0.53033, 0.0, 0.0],
+    "sampled_separation_eV": 0.617
+  },
+  "claim_boundary": "Hash-bound teaching samples from real QE execution. The line path and 8x8x8 mesh are different samplings; neither sampled separation is a converged fundamental, quasiparticle, optical, or experimental gap."
+}
