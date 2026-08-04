@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 207,
+  "expected_unique_urls": 212,
   "topics": [
     {
       "topic_slug": "obtain-material-structure",
@@ -493,6 +493,19 @@
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_CP.html" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/documentation/" },
         { "kind": "page", "url": "https://ase.gitlab.io/ase/ase/md.html" }
+      ]
+    },
+    {
+      "topic_slug": "finite-temperature-structural-sampling",
+      "article": "src/content/topics/finite-temperature-structural-sampling.md",
+      "review": "docs/reviews/2026-08-04-finite-temperature-structural-sampling.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1016%2F0021-9991%2877%2990121-8" },
+        { "kind": "doi", "url": "https://doi.org/10.1002/jcc.540130812" },
+        { "kind": "doi", "url": "https://doi.org/10.1073/pnas.202427399" },
+        { "kind": "page", "url": "https://www.plumed.org/doc-v2.10/user-doc/html/_bias.html" },
+        { "kind": "page", "url": "https://www.plumed.org/doc-v2.10/user-doc/html/_a_v_e_r_a_g_e.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_CP.html" }
       ]
     },
     {
