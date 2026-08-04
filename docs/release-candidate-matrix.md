@@ -34,9 +34,9 @@ licensed potential payloads remain outside the public repository.
 | --- | --- | --- | --- |
 | Information architecture | Framework removed from primary navigation; useful Framework prose migrated; `/framework/*` remains a migration surface; `/workflows/` is primary and `/recipes/*` redirects | Silicon and Aluminium worked workflows | Route/build success is software evidence only |
 | Database retrieval | Per-service access matrix plus hash-bound tested downloads and explicit unsupported/unverified methods | Open COD, NOMAD or OPTIMADE routes first; Materials Project only with a safely configured key | Retrieval does not validate structure quality or a calculation |
-| Structure operations | Executed scripts, stdout, before/after structures and metrics | Read/inspect, conversion, symmetry/tolerance, standardization, supercell, 2D vacuum, slab/adsorbate and reciprocal path | Geometry transformation does not establish physical stability |
+| Structure operations | Executed scripts, stdout, before/after structures and metrics | Read/inspect, conversion, primitive/conventional cells, symmetry/tolerance, standardization/refinement, supercell, 2D vacuum, slab/adsorbate, vacancy-defect candidate, interface/heterostructure candidate and reciprocal path | Geometry transformation does not establish physical stability, defect energetics or interface feasibility |
 | Silicon | Continuous source → structure → QE input/output → checks → parsed data → figures chain | Ground-state/electronic path assembled from existing real evidence without fabricating missing raw data | G1/G2 do not imply all-observable G4 or G5 |
-| Aluminium | Metallic occupations, SCF/NSCF, DOS/full-zone and bounded convergence evidence | Continuous metallic electronic-structure workflow assembled from existing and newly bounded execution | One smearing or mesh does not establish metallic convergence |
+| Aluminium | Metallic occupations, SCF/NSCF, native `dos.x`/full-zone output, an executed k-mesh/smearing sensitivity series, and a bounded E(V)/elastic-introduction entry | Continuous metallic electronic-structure workflow assembled from existing and newly bounded execution | A sampled series without a user-accepted observable tolerance does not establish G4; a five-point E(V) curve is not a converged EOS, bulk modulus or elastic tensor |
 | Polar response | Real MgO or GaAs entry if low-cost open inputs and bounded execution are available | SCF plus response input/output or an explicit verified blocker | No LO–TO or dielectric conclusion without matching response and convergence evidence |
 | Graphene | Real 2D input and at least one bounded execution plus vacuum-series entry or blocker | Vacuum, `kz=1`, 2D sampling and band-path evidence | One vacuum or path does not establish convergence or a material conclusion |
 | Magnetism | Real bcc Fe spin-polarized entry and bounded candidate comparison or blocker | FM and NM candidates when resource-safe | One FM run does not prove a magnetic ground state |
@@ -56,3 +56,13 @@ licensed potential payloads remain outside the public repository.
 Every case reports all six gates. Untested gates remain `NOT TESTED`; unsupported
 scientific conclusions remain `NOT CLAIMED`. A failed required gate returns a
 nonzero exit status from `check.sh`.
+
+## Distribution boundary
+
+The repository currently has no root `LICENSE`, `COPYING`, or `NOTICE` file.
+Public availability therefore does not grant a project-wide reuse licence for
+the original prose, code, or figures. Selecting an outbound licence remains an
+owner decision. Third-party database responses and metadata retain their own
+upstream terms; in particular, the committed AFLOW transport probe must not be
+represented as permission for commercial redistribution beyond AFLOW's stated
+scientific, academic, and non-commercial terms.

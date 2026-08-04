@@ -9,14 +9,14 @@ presence and was absent.
 | Service | Tested route and result | Web download | Direct URL / curl | REST / client | OPTIMADE | Bulk | Boundary |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Materials Project | `api.materialsproject.org/materials/summary/?material_ids=mp-149` → 401, no key | unverified | pending credential | pending credential | unverified | unverified | API-key route intentionally not attempted without a configured secret. |
-| NOMAD | `prod/v1/optimade/v1/structures?...Si...` → 200, 31,638-byte JSON | unverified | tested through curl | unverified | tested | unverified | Query response is an access proof only; no NOMAD record is promoted to this case. |
-| COD | `cod/9013102.cif` → 200, 5,234-byte CIF | unverified | tested | unverified | unverified | unverified | This is the complete terminal-first case below. |
+| NOMAD | `prod/v1/optimade/v1/structures?...Si...` → 200, 31,638-byte JSON | unverified | tested through curl | unverified | tested | unverified | Query response is an access proof only; no NOMAD record is promoted to this case. NOMAD's [current terms](https://nomad-lab.eu/services/terms) state that published data are CC BY 4.0; metadata may be CC0 unless otherwise specified. |
+| COD | `cod/9013102.cif` → 200, 5,234-byte CIF | unverified | tested | unverified | unverified | unverified | This is the complete terminal-first case below. COD states that its database and data are [dedicated to the public domain under CC0](https://www.crystallography.net/cod/check_user.php?signup=); the underlying publication remains the appropriate scientific citation. |
 | Materials Cloud | `archive.materialscloud.org/api/v1/` → 404 | unverified | unverified | unverified | unverified | unverified | A guessed API root returning 404 does not prove the service lacks an API. |
 | JARVIS | `jarvis.nist.gov/api/jmaterials/?formula=Si` → 404 HTML | unverified | unverified | unverified | unverified | unverified | The tested guessed endpoint is not a verified API contract. |
 | C2DB | `cmrdb.fysik.dtu.dk/c2db/row/` → 404 HTML | unverified | unverified | unverified | unverified | unverified | No C2DB access mode is asserted from this failed root probe. |
-| OQMD | `oqmd.org/oqmdapi/formationenergy?composition=Si` → 200 JSON | unverified | tested | tested via this REST response | unverified | unverified | Response proves endpoint access, not field semantics, database completeness, or licence suitability. |
-| AFLOW | `aflow.org/API/aflux/?species(Si),$paging(1),$format(json)` → 200 JSON | unverified | tested | tested via AFLUX response | unverified | unverified | Filter returned a real JSON response; semantic selection remains unreviewed. |
-| OPTIMADE provider registry | `providers.optimade.org/providers.json` → 200 JSON | n/a | tested | n/a | tested | unverified | Registry discovery does not verify each provider's availability or data model. |
+| OQMD | `oqmd.org/oqmdapi/formationenergy?composition=Si` → 200 JSON | unverified | tested | tested via this REST response | unverified | unverified | Response proves endpoint access, not field semantics or database completeness. OQMD states that [its data are CC BY 4.0](https://oqmd.org/download/). |
+| AFLOW | `aflow.org/API/aflux/?species(Si),$paging(1),$format(json)` → 200 JSON | unverified | tested | tested via AFLUX response | unverified | unverified | Filter returned a real JSON response; semantic selection remains unreviewed. [AFLOW's Aflux terms](https://www.aflowlib.org/documentation/) allow scientific, academic and non-commercial use with citation and prohibit other use. |
+| OPTIMADE provider registry | `providers.optimade.org/providers.json` → 200 JSON | n/a | tested | n/a | tested | unverified | The [official provider index](https://www.optimade.org/providers/) supports registry provenance; discovery does not verify each provider's availability, data model or record-level reuse terms. |
 
 ## COD case lineage
 
@@ -26,7 +26,9 @@ and commits a deterministic public copy SHA-256
 `cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55`.
 Only COD's upstream absolute repository metadata line is replaced;
 the rule and both identities are stored beside the public copy.
-The retrieval captured its HTTP 200 response headers and raw CIF, then ran the
+COD's public-domain dedication covers the database payload; the case still
+retains the record's underlying publication attribution boundary. The retrieval
+captured its HTTP 200 response headers and raw CIF, then ran the
 installed `cif-structure-analysis` CLI and strict local parser on the public
 copy.
 The first proxy-mediated rerun ended at the TLS handshake; an isolated direct

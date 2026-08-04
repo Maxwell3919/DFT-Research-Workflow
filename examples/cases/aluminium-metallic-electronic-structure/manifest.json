@@ -91,6 +91,12 @@
       "sha256": "312a05a44bbb15ed5ee5c437ac52fd658a2e43e35b56a2b49cfb231d711b4a95"
     },
     {
+      "bytes": 747,
+      "path": "output/compact-source-excerpt.txt",
+      "role": "deterministic source-bound excerpt rendered by the Worked Workflow",
+      "sha256": "4ed9c851d62671a9c56ac3ddc65f488c63cac64d7ccc4ef20444bac6dadd01f6"
+    },
+    {
       "bytes": 44502,
       "path": "output/dos-route/scf.out",
       "role": "rerun SCF stdout",
@@ -187,19 +193,25 @@
       "sha256": "321a5d3854d3f0ed51dd846799812d6a11c4834f3851e1a1903b5896ee390ad2"
     },
     {
+      "alt": "Histogram of QE band 2 minus the printed Fermi energy for 512 full-zone Aluminium k points; one 8 by 8 by 8 sample, not convergence evidence.",
       "bytes": 42889,
+      "caption": "Raw-output-derived full-zone sampling histogram from the real Aluminium NSCF rerun.",
       "path": "figures/raw-nscf-band2-sampling.png",
       "role": "raw NSCF sampling histogram",
       "sha256": "a3ced8d2b7c55cf594c5838482237525e363ea92d65f00cd53b25261680c455c"
     },
     {
+      "alt": "Gaussian representation of the recorded Aluminium NSCF eigenvalues relative to the printed Fermi level; distinct from native dos.x and not convergence tested.",
       "bytes": 116010,
+      "caption": "Gaussian representation reconstructed from QE-printed eigenvalues and k weights.",
       "path": "figures/al-dos-gaussian.png",
       "role": "Gaussian DOS-like plot",
       "sha256": "1d96b062fc1ea6fb9fc2f158a1f48ee8c4f9279ba167574b208d0e247386fb1d"
     },
     {
+      "alt": "Total density of states parsed from the real QE dos.x Aluminium output and referenced to its printed Fermi energy; no DOS-convergence claim is made.",
       "bytes": 107926,
+      "caption": "Native QE dos.x table plotted from the hash-bound al.dos output.",
       "path": "figures/al-dos-x.png",
       "role": "real dos.x plot",
       "sha256": "7e9664006cca6277ddcbea3936125d5f5aa9c1791734dd0dd6c42aadf6215d14"
@@ -409,8 +421,9 @@
       "sha256": "c71fe7feafb73d39de8f7a515e826ffc8953f030b13b0708c25e01cca7406631"
     },
     {
-      "alt": "DOS curve parsed from the real QE dos.x output for the captured Aluminium 8 by 8 by 8 NSCF calculation, referenced to the Fermi value printed in al.dos; no DOS-convergence claim is made.",
+      "alt": "Five real Aluminium SCF energy points versus primitive-cell volume with a bounded quadratic interpolation; not a converged EOS, bulk modulus, or elastic tensor.",
       "bytes": 73076,
+      "caption": "Bounded five-point E(V) teaching fit after the volume-declaration parser correction.",
       "path": "figures/aluminium-eos-fit.png",
       "role": "real bounded E(V) fit plot",
       "sha256": "7a209ca0c4795ca77f5e838161c4b1cf39345dcc54cfdbe039b2f887579e8c3f"
@@ -450,26 +463,22 @@
     {
       "command": "bash input/run-convergence-matrix.sh",
       "exit_code": 0,
-      "result": "FAIL exploratory screen; retained as evidence",
-      "stage": "exploratory-convergence"
+      "stage": "exploratory-convergence-failed-screen-retained"
     },
     {
       "command": "pw.x -in al-eos-*.in > al-eos-*.out 2> al-eos-*.err",
       "exit_code": 0,
-      "result": "five SCF program exits",
-      "stage": "bounded-eos-pw-samples"
+      "stage": "bounded-eos-five-scf-program-exits"
     },
     {
       "command": "python3 input/parse_eos.py",
       "exit_code": 1,
-      "result": "FAIL declared-volume mismatch before interpretation",
-      "stage": "bounded-eos-initial-parser"
+      "stage": "bounded-eos-initial-parser-blocked-volume-mismatch"
     },
     {
       "command": "python3 input/parse_eos.py",
       "exit_code": 0,
-      "result": "PASS bounded mathematical fit only",
-      "stage": "bounded-eos-corrected-parser"
+      "stage": "bounded-eos-corrected-parser-mathematical-fit-only"
     },
     {
       "command": "python3 parse.py",
@@ -480,21 +489,6 @@
   "completed_at": "2026-08-05T04:22:02+08:00",
   "evidence_class": "real-execution",
   "exit_code": 0,
-  "exploratory_screen_execution": {
-    "bounded_eos": {
-      "assessment": "derived/aluminium-eos-fit.json",
-      "boundary": "Mathematical fit status is not EOS/elastic or G4 acceptance.",
-      "lineage_note": "The first parse attempt blocked a numerical volume declaration error before interpretation. Corrected a^3/4 declarations match the executed explicit-cell determinants; no QE rerun occurred.",
-      "output_dir": "output/eos-screen",
-      "status": "PASS"
-    },
-    "convergence": {
-      "assessment": "derived/aluminium-convergence-assessment.json",
-      "boundary": "FAIL is retained and is not a G4 result.",
-      "output_dir": "output/convergence-screen",
-      "status": "FAIL"
-    }
-  },
   "gates": {
     "G0": {
       "status": "PASS",

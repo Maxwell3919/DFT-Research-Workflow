@@ -982,6 +982,24 @@
       "upgrade_readiness": "blocked"
     },
     {
+      "guide_slug": "construct-defect-and-interface-candidates",
+      "parent_topic": "build-or-modify-computational-model",
+      "evidence_class": "real-execution",
+      "material": "ASE Silicon vacancy candidate and imposed-common-cell graphene/h-BN bilayer candidate",
+      "real_result": true,
+      "interface": false,
+      "traceable_data": true,
+      "upgrade": "completed bounded defect and interface structure construction",
+      "blocker": "No relaxation, finite-size, registry, strain, vacuum or energetic validation was performed.",
+      "priority": 2,
+      "execution_script": "examples/practical-guides/structure_defect_interface_candidates.py",
+      "media_ids": [
+        "structure-defect-interface-candidates"
+      ],
+      "upgrade_readiness": "completed",
+      "case_id": "structure-defect-interface-candidates"
+    },
+    {
       "guide_slug": "prepare-fixed-geometry-reference-calculation",
       "parent_topic": "calculate-reference-ground-state",
       "evidence_class": "real-execution",

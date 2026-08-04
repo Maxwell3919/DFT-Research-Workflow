@@ -60,6 +60,12 @@ const requiredParentMinimum = new Map([
   ['adsorption-energies', 3],
 ]);
 const reviewRequirements = new Map([
+  ['docs/reviews/2026-08-05-structure-candidate-construction.md', [
+    'reviewed within this construction-only boundary',
+    'No electronic-structure solver, geometry optimizer',
+    'Execution success is not defect convergence',
+    'It must not be cited for vacancy formation energy',
+  ]],
   ['docs/reviews/2026-08-03-practical-guides-model-building-pilot.md', [
     'reviewed within the declared educational and execution scope',
     'The scripts calculate no electronic energy',
