@@ -1,0 +1,6 @@
+Reproducible stage invocations (the original site launcher was not captured in the public artifact):
+pw.x -in scf.in > scf.out 2> scf.err
+pw.x -in nscf.in > nscf-full.out 2> nscf-full.err
+pw.x -in bands.in > bands.out 2> bands.err
+
+The stdout reports one MPI process on one node.  No scheduler record, private host path, save-tree payload, or pseudopotential body is published.

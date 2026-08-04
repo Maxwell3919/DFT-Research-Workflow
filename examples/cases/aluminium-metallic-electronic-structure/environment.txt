@@ -1,0 +1,3 @@
+Captured execution: Quantum ESPRESSO PWSCF v.7.5, MPI parallel mode, one process and one node (as printed in each stdout).
+Case inspection: Python 3.12 with matplotlib; no QE job is launched by run.sh.
+Pseudopotential boundary: filename and hash metadata are recorded, but no UPF payload is copied into this repository.

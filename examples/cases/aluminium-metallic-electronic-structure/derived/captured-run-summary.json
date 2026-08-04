@@ -1,0 +1,15 @@
+{
+  "captured_stages": [
+    "scf",
+    "nscf-full-zone",
+    "bands"
+  ],
+  "evidence_boundary": "Execution and selected parsed fixture checks only; no convergence or material conclusion.",
+  "fermi_energy_ev": 7.8018,
+  "mesh_points": 512,
+  "near_fermi_mesh_points_abs_delta_leq_0_25_ev": 48,
+  "path_points": 145,
+  "qe_version": "7.5",
+  "scf_iterations": 5,
+  "selected_band_crossing_intervals": 3
+}
