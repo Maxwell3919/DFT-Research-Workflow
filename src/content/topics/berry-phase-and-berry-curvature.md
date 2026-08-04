@@ -1,0 +1,58 @@
+---
+topic_slug: berry-phase-and-berry-curvature
+status: reviewed
+---
+
+Berry phase and Berry curvature describe the geometry of a chosen electronic-state bundle over a parameter space, most often the Brillouin zone. They connect compatible wave functions to polarization changes, orbital and Hall responses, and later topological tests. They do not follow from eigenvalues alone: a band plot can be smooth while the wave-function gauge, band subspace, or Brillouin-zone sampling needed for a geometric quantity is wrong.
+
+## A phase around a closed loop
+
+For an isolated cell-periodic Bloch state `|u_nk>`, the Berry connection is
+
+```text
+A_n(k) = i <u_nk | grad_k u_nk>,
+```
+
+and its line integral around a closed loop `C` gives `gamma_n(C) = integral_C A_n(k)·dk`, defined modulo `2 pi`. Here `k` is crystal momentum, `n` is a band label, and `grad_k` differentiates with respect to `k`. Changing the phase of every `|u_nk>` changes the local connection but changes a closed-loop phase only by an integer multiple of `2 pi`. A reported phase therefore needs the loop, reciprocal-cell convention, selected subspace, occupation, and branch convention; an isolated number without those objects cannot be compared.
+
+At a degeneracy, or whenever several states must be treated as one occupied or target subspace, individual band phases are generally not gauge-safe. The object is then an overlap or Wilson-loop matrix transported around the loop. Its eigenphases can be meaningful after the subspace and loop have been declared. Sorting bands by energy point-by-point through a crossing is not a replacement for parallel transport of the appropriate subspace.
+
+## Curvature is a local geometric field, not a map of band energies
+
+The Berry curvature is the curl of the connection,
+
+```text
+Omega_n(k) = grad_k x A_n(k).
+```
+
+It is a vector in three-dimensional `k` space (or an antisymmetric tensor in general coordinates). In a non-degenerate representation it can also be written with velocity matrix elements and energy denominators. This makes a practical warning explicit: small gaps, avoided crossings, spin--orbit splittings, and the selected Hamiltonian can create sharply structured curvature even when a plotted dispersion looks innocuous. Near exact degeneracy, the single-band expression is ill-conditioned and a multiband treatment is required.
+
+Curvature has units set by the reciprocal-coordinate convention, usually length squared for Cartesian `k`; it is not a density of states, magnetic field in real space, orbital moment, Chern number, or conductivity. A colour scale hides sign, coordinate, energy reference, spin channel, and clipping choices unless they are recorded. A high-curvature spot on a path or plane is evidence about that sampled representation only, not a full-zone integral or a material response.
+
+## From wave-function overlaps to a measurable difference
+
+In a periodic insulator, the modern theory of polarization uses occupied-band Berry phases. Absolute bulk polarization is multivalued: changing the real-space cell or phase branch shifts it by a polarization quantum. The physically comparable quantity is normally a polarization *difference* along a specified insulating adiabatic path, with the same charge convention, cell, occupied subspace, and branch unwrapping. A difference between unrelated endpoints, a metallic path, or inconsistent cells does not acquire a unique spontaneous polarization merely because a code prints two Berry phases.
+
+For a two-dimensional gapped subspace, a Brillouin-zone integral can form a Chern number,
+
+```text
+C = (1 / 2 pi) sum_n integral_BZ Omega_n(k) d^2k.
+```
+
+The sum runs over the declared occupied or target bands. `C` is dimensionless only after the full periodic zone, orientation, gauge-compatible subspace, and gap condition have been specified. The same curvature, weighted by occupations and other factors, can enter intrinsic anomalous or spin Hall calculations. Those observables additionally require a chemical potential, temperature, spin/operator definition, symmetry and magnetic state, and convergence of the full-zone integral. They are not determined by `C`, and an intrinsic clean-crystal term does not include every disorder or experimental contribution to a Hall measurement.
+
+## Numerical evidence follows the observable
+
+The calculation consumes a state-identical parent Hamiltonian or a separately validated reduced representation, wave-function overlaps or matrix elements, reciprocal lattice and neighbour connectivity, a declared subspace, and occupations. Gauge smoothing can improve numerical transport but must not silently swap the physical subspace. When Wannier interpolation is used, validate its parent-band agreement and operator matrix elements before trusting a dense curvature mesh; an interpolated grid cannot restore missing parent information.
+
+Converge the target phase, curvature integral, or response against the mesh and integration method relevant to its sharp features. Repeat with sensible changes in subspace/windows, SOC and magnetic conventions, symmetry treatment, and smearing or chemical potential where applicable. SCF convergence, a smooth plot, an integer-looking value on one mesh, or cancellation under an imposed symmetry is not sufficient evidence that the intended geometric observable is converged.
+
+Preserve the structure, parent-state and representation hashes; code versions; basis or potential identity; reciprocal basis; k mesh and links; selected bands and occupations; gauge or Wilson-loop construction; branch and orientation convention; operator definition; convergence series; and raw values before plotting. **Wannier Function Construction** can provide a representation but not the geometric result itself. **Topological Invariants and Boundary States** tests global topology and bulk--boundary correspondence, while **Electronic Transport** requires a distinct transport model. This topic does not establish a topological phase, protected boundary state, quantized transport, ferroelectric switching, or a material conclusion.
+
+## Sources and methods
+
+- [Berry, quantum phase factors accompanying adiabatic changes](https://doi.org/10.1098/rspa.1984.0023)
+- [King-Smith and Vanderbilt, Berry-phase polarization](https://doi.org/10.1103/PhysRevB.47.1651)
+- [Xiao, Chang, and Niu, Berry-phase effects on electronic properties](https://doi.org/10.1103/RevModPhys.82.1959)
+- [Wannier90 Berry module](https://wannier90.readthedocs.io/en/latest/user_guide/postw90/berry/)
+- [Wannier90 iron Berry-curvature tutorial](https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_18/)
