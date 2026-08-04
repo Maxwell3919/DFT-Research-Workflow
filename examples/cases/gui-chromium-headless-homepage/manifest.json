@@ -1,33 +1,124 @@
 {
+  "schema_version": "1.0",
   "case_id": "gui-chromium-headless-homepage",
   "title": "Talos Chromium headless local-document capture",
+  "case_kind": "gui-walkthrough",
   "evidence_class": "real-interface-walkthrough",
-  "execution_host": "Talos local host",
-  "software": {
-    "binary": "google-chrome",
-    "version": "captured in environment.txt"
-  },
-  "source": {
-    "path": "source/walkthrough.html",
-    "role": "local versioned browser walkthrough document"
-  },
-  "command": "google-chrome --headless=new --disable-gpu --hide-scrollbars --window-size=1280,720 --screenshot=figures/chromium-headless-walkthrough.png file://.../source/walkthrough.html",
-  "artifacts": {
-    "png": "figures/chromium-headless-walkthrough.png",
-    "public_copy": "public/media/gui/chromium-headless-homepage/chromium-headless-walkthrough.png",
-    "stdout": "output/chromium.stdout",
-    "stderr": "output/chromium.stderr",
-    "sanitization": "output/sanitization.txt (raw stderr is not committed; exact case-directory prefix is deterministically replaced with a dot)",
-    "hashes": "output/SHA256SUMS",
-    "parsed": "derived/capture.json"
-  },
+  "public_host_label": "Talos local host",
+  "exit_code": 0,
+  "software": [
+    {
+      "name": "Google Chrome",
+      "version": "149.0.7827.53",
+      "interface": "headless command line"
+    }
+  ],
+  "sources": [
+    {
+      "id": "local-walkthrough-html",
+      "role": "versioned local browser walkthrough document",
+      "path": "source/walkthrough.html",
+      "sha256": "83419b6c73f3da8089364694fe4aca8c5ce0402334a74d8ca50c17df3839b435",
+      "licence_boundary": "Original project source; no third-party GUI asset is redistributed."
+    }
+  ],
+  "commands": [
+    {
+      "stage": "headless-render",
+      "command": "google-chrome --headless=new --disable-gpu --hide-scrollbars --window-size=1280,720 --screenshot=figures/chromium-headless-walkthrough.png file://.../source/walkthrough.html",
+      "exit_code": 0
+    },
+    {
+      "stage": "case-validation",
+      "command": "bash check.sh",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    {
+      "role": "captured environment and capability probes",
+      "path": "environment.txt",
+      "sha256": "79cf28872b3d1d34e1417510d25869905445ce0aa41f73b5657b18da69cf1b8d"
+    },
+    {
+      "role": "headless Chromium PNG capture",
+      "path": "figures/chromium-headless-walkthrough.png",
+      "sha256": "39934e227c45ca38003278b28bb6ac0bddd057d414bd1f925111efd335f9d975",
+      "bytes": 53159
+    },
+    {
+      "role": "identical public PNG copy",
+      "path": "public/media/gui/chromium-headless-homepage/chromium-headless-walkthrough.png",
+      "sha256": "39934e227c45ca38003278b28bb6ac0bddd057d414bd1f925111efd335f9d975",
+      "bytes": 53159
+    },
+    {
+      "role": "actual Chromium stdout",
+      "path": "output/chromium.stdout",
+      "sha256": "19eaf43821a7660ec323a87c8457bf74823beb296c39f5e01aa8a683aa50f061"
+    },
+    {
+      "role": "deterministically sanitized Chromium stderr",
+      "path": "output/chromium.stderr",
+      "sha256": "3eda92763b716635b0d4643c68d825d4543938626e929813aa1060408ad9f9f6",
+      "raw_sha256": "98e4cb43a773b71c010ee9df683ab3a257bd3e7d11850f43dcc3bf1cd9ec4ea1",
+      "sanitization": "The exact case-directory prefix in raw stderr is replaced with a dot; raw stderr is not committed."
+    },
+    {
+      "role": "deterministic environment excerpt",
+      "path": "output/environment-excerpt.txt",
+      "sha256": "c9d33cd1f27b6615d073b41317c9e5d3136040e02d52cd8927ececa6137bb2c2"
+    },
+    {
+      "role": "raw-to-public stderr sanitization record",
+      "path": "output/sanitization.txt",
+      "sha256": "450beb7230523189c8c1125eeaa0e4d61b19712374aa43242e7c9f5cd89c00f3"
+    },
+    {
+      "role": "committed artifact checksum ledger",
+      "path": "output/SHA256SUMS",
+      "sha256": "cd226de8e4ec20a420825431a6c6cd616bb22ae1a35b8e9750b7249265400573"
+    },
+    {
+      "role": "strict PNG and exit-marker parse record",
+      "path": "derived/capture.json",
+      "sha256": "563325d0887ddd91830224026f241421b8c6bc8069ab67600960fc7db582f3e1"
+    }
+  ],
   "gates": {
-    "G0": "PASS after check.sh: source/output existence and SHA-256 records",
-    "G1": "PASS after check.sh: Chromium headless process exit marker",
-    "G2": "NOT APPLICABLE: no scientific solver or optimizer",
-    "G3": "PASS after check.sh: exact PNG dimensions and strict parser",
-    "G4": "NOT TESTED: no numerical observable",
-    "G5": "NOT CLAIMED: browser screenshot does not validate a structure or DFT result"
+    "G0": {
+      "status": "PASS",
+      "summary": "Required source and captured artifacts are non-empty and match the committed SHA-256 ledger."
+    },
+    "G1": {
+      "status": "PASS",
+      "summary": "The recorded Chromium headless command wrote the explicit exit=0 marker."
+    },
+    "G2": {
+      "status": "NOT CLAIMED",
+      "summary": "This GUI walkthrough has no scientific solver or optimizer threshold."
+    },
+    "G3": {
+      "status": "PASS",
+      "summary": "The strict parser accepts the PNG signature, exact 1280 x 720 dimensions, and Chromium completion marker."
+    },
+    "G4": {
+      "status": "NOT TESTED",
+      "summary": "No numerical observable or convergence series exists in this browser-rendering case."
+    },
+    "G5": {
+      "status": "NOT CLAIMED",
+      "summary": "A browser screenshot cannot establish structure correctness, DFT validity, or a scientific conclusion."
+    }
   },
-  "claim_boundary": "This case proves only that the recorded Chromium binary rendered the local source document to the captured PNG. X11/GLX/window detection and VESTA are explicitly not claimed."
+  "claim_boundary": {
+    "supports": [
+      "The recorded Chromium binary rendered the versioned local HTML source to the captured 1280 x 720 PNG."
+    ],
+    "does_not_support": [
+      "An X11 window, GLX renderer, xdotool window detection, or VESTA walkthrough occurred.",
+      "The rendered page establishes a correct computational structure or DFT input.",
+      "The browser capture establishes numerical convergence, physical validity, or a scientific conclusion."
+    ]
+  }
 }
