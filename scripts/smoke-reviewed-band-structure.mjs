@@ -5,7 +5,7 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const topicRoute = '/operations/band-structure/';
 const guides = [
   { route: `${topicRoute}guides/build-reciprocal-path-ledger/`, title: 'Build a Reciprocal-Path Ledger Before Plotting Bands', phrase: 'Execution verifies the stored-output hash' },
-  { route: `${topicRoute}guides/compare-band-path-and-full-zone-extrema/`, title: 'Compare a Band Path with a Full-Zone Extremum Search', phrase: 'Execution verifies a deterministic comparison' },
+  { route: `${topicRoute}guides/compare-band-path-and-full-zone-extrema/`, title: 'Compare a Band Path with a Full-Zone Extremum Search', phrase: 'Execution verifies reconstruction of two declared real-output samples' },
 ];
 const topicPhrases = [
   'A path is a visual cut, not a full-zone search',
