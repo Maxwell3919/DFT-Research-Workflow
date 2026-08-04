@@ -264,6 +264,12 @@ const reviewRequirements = new Map([
     'Execution success is not a molecular-dynamics calculation',
     'The media are an original diagram generated from invented values',
   ]],
+  ['docs/reviews/2026-08-04-independent-particle-optical-properties.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script checks invented spectral metadata only',
+    'Execution success is not an electronic-structure calculation',
+    'The media are an original diagram generated from invented labels',
+  ]],
 ]);
 
 function parseFrontmatter(source) {

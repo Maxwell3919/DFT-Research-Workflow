@@ -3,6 +3,9 @@
   "authority": "official-source inventory for reviewed practical guides",
   "scope_note": "These URLs support version-specific implementation or analysis claims in reviewed practical pages. Reachability, semantic support, execution, numerical convergence, and scientific validity remain separate checks.",
   "sources": [
+    { "id": "adler-dielectric-response", "url": "https://doi.org/10.1103/PhysRev.126.413", "kind": "doi" },
+    { "id": "wiser-dielectric-constant", "url": "https://doi.org/10.1103/PhysRev.129.62", "kind": "doi" },
+    { "id": "vasp-loptics", "url": "https://vasp.at/wiki/index.php/LOPTICS", "kind": "page" },
     { "id": "ase-docs-home", "url": "https://docs.ase-lib.org/", "kind": "page" },
     { "id": "torrie-valleau-umbrella", "url": "https://doi.org/10.1016%2F0021-9991%2877%2990121-8", "kind": "doi" },
     { "id": "kumar-wham", "url": "https://doi.org/10.1002/jcc.540130812", "kind": "doi" },
@@ -287,5 +290,6 @@
     ,{ "guide_slug": "check-diffusion-network-ledger", "source_ids": ["ase-neb", "vineyard-frequency-factor"] }
     ,{ "guide_slug": "check-aimd-segment-ledger", "source_ids": ["ase-molecular-dynamics", "car-parrinello"] }
     ,{ "guide_slug": "check-structural-sampling-window-overlap", "source_ids": ["torrie-valleau-umbrella", "kumar-wham"] }
+    ,{ "guide_slug": "check-optical-spectrum-comparison-ledger", "source_ids": ["adler-dielectric-response", "wiser-dielectric-constant", "vasp-loptics"] }
   ]
 }

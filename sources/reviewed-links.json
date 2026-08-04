@@ -2,8 +2,21 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 212,
+  "expected_unique_urls": 218,
   "topics": [
+    {
+      "topic_slug": "independent-particle-optical-properties",
+      "article": "src/content/topics/independent-particle-optical-properties.md",
+      "review": "docs/reviews/2026-08-04-independent-particle-optical-properties.md",
+      "links": [
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.126.413" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.129.62" },
+        { "kind": "doi", "url": "https://doi.org/10.1103/PhysRevB.73.045112" },
+        { "kind": "page", "url": "https://vasp.at/wiki/index.php/LOPTICS" },
+        { "kind": "page", "url": "https://wiki.yambo-code.eu/wiki/index.php?title=RPA%2FIP" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_pw2gw.html" }
+      ]
+    },
     {
       "topic_slug": "obtain-material-structure",
       "article": "src/content/topics/obtain-material-structure.md",
