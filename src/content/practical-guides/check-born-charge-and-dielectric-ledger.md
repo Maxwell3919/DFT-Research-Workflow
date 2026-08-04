@@ -5,38 +5,48 @@ title: Check a Born-Charge and Dielectric Ledger
 kind: implementation
 tools:
   - python
+  - quantum-espresso
 status: reviewed
-summary: Test invented Born-charge acoustic-sum closure and separate invented ion-clamped from static dielectric tensors.
+summary: Reconstruct a real Silicon Gamma-point dielectric tensor and Born-charge diagnostic from a bounded Quantum ESPRESSO DFPT run.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/born_charge_dielectric_ledger.py
+  - Quantum ESPRESSO 7.5
+execution_script: examples/practical-guides/silicon_qe_dielectric.py
 source_ids:
   - qe-ph-75
   - vasp-born-effective-charges
   - vasp-electric-field-dfpt
+  - cod-9013102
 media_ids:
-  - born-charge-dielectric-ledger
+  - silicon-qe-dielectric
 review: docs/reviews/2026-08-04-dielectric-response-and-born-effective-charges.md
 reviewed_at: "2026-08-04"
 ---
 
-This fixture uses invented tensor entries for a two-sublattice insulating teaching model. It verifies the stated index convention, componentwise acoustic-sum closure, and the arithmetic decomposition `ε₀ = ε∞ + ε_ion`. It neither applies an electric field nor solves a DFPT response equation.
+This is a bounded real-execution case for the same CC0 COD 9013102 Silicon structure used by the other Silicon pages. Quantum ESPRESSO 7.5 `pw.x` first converged an 8×8×8 fixed-geometry SCF state; `ph.x` then ran at Γ with `epsil = .true.` using the same `prefix`/`outdir` lineage. The committed output contains the electronic/ion-clamped dielectric tensor, raw and acoustic-sum-rule-adjusted Born effective-charge diagnostics, the response input, and the dynamical matrix.
 
-## Run the deterministic ledger
+![Silicon QE 7.5 Gamma-point dielectric tensor and Born-charge diagnostic.](/DFT-Research-Workflow/media/practical-guides/dielectric-response-and-born-effective-charges/check-born-charge-and-dielectric-ledger/silicon-qe-dielectric.svg)
+
+## Reconstruct the response ledger
 
 ```text
-python3 examples/practical-guides/born_charge_dielectric_ledger.py \
-  --svg public/media/practical-guides/dielectric-response-and-born-effective-charges/check-born-charge-and-dielectric-ledger/born-charge-dielectric-ledger.svg
+python3 examples/practical-guides/silicon_qe_dielectric.py \
+  --svg public/media/practical-guides/dielectric-response-and-born-effective-charges/check-born-charge-and-dielectric-ledger/silicon-qe-dielectric.svg
 ```
+
+The script reads only the committed `pw.x`/`ph.x` inputs and outputs. It checks the QE 7.5 markers, the Γ-point response section, the reported `14.026301123` diagonal tensor, the two raw `-0.08800 e` Silicon diagnostics, the post-processed acoustic-sum-rule values, the SSSP pseudopotential identity, and every public input/output hash.
 
 [Quantum ESPRESSO `ph.x`](https://www.quantum-espresso.org/Doc/INPUT_PH.html) documents the dielectric and effective-charge response flags. [VASP's Born-effective-charge documentation](https://vasp.at/wiki/Born_effective_charges) states the force/field convention and index-order caveat; [its electric-field DFPT page](https://vasp.at/wiki/Electric_field_response_from_density-functional-perturbation_theory) describes the linear-response scope.
 
 ## What this guide verifies
 
-Execution verifies invented tensor arithmetic, acoustic-sum closure, named ion-clamped and ionic terms, and original SVG rendering. It does not compute dielectric response, Born effective charges, polarization branches, phonons, LO--TO splitting, polar stability, or a scientific conclusion for any material.
+The companion verifies software completion, response-section identity, tensor transcription, Born-charge parsing, the reported acoustic-sum-rule post-processing, deterministic SVG regeneration, and file hashes. The SCF and DFPT iterations reached their printed completion markers, but no dielectric cutoff, k-mesh, q-mesh, or observable convergence series was run.
+
+This single Γ-point result reports an electronic/ion-clamped dielectric tensor; it is not a static dielectric constant including ionic lattice contributions, a phonon dispersion, LO--TO splitting study, converged material response, experimental comparison, or a scientific conclusion.
 
 ## Official sources
 
 - [Quantum ESPRESSO `ph.x` input description](https://www.quantum-espresso.org/Doc/INPUT_PH.html)
 - [VASP Born effective charges](https://vasp.at/wiki/Born_effective_charges)
 - [VASP electric-field DFPT response](https://vasp.at/wiki/Electric_field_response_from_density-functional-perturbation_theory)
+- [COD 9013102 Silicon structure](https://www.crystallography.net/cod/9013102.html)
