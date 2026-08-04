@@ -2,8 +2,9 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 233,
+  "expected_unique_urls": 236,
   "topics": [
+    {"topic_slug":"wannier-function-construction","article":"src/content/topics/wannier-function-construction.md","review":"docs/reviews/2026-08-04-wannier-function-construction.md","links":[{"kind":"doi","url":"https://doi.org/10.1103/PhysRevB.56.12847"},{"kind":"doi","url":"https://doi.org/10.1103/PhysRevB.65.035109"},{"kind":"page","url":"https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/methodology/"},{"kind":"page","url":"https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/notes_interpolations/"},{"kind":"page","url":"https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_3/"}]},
     {"topic_slug":"excitons-and-bethe-salpeter-equation","article":"src/content/topics/excitons-and-bethe-salpeter-equation.md","review":"docs/reviews/2026-08-04-excitons-and-bethe-salpeter-equation.md","links":[{"kind":"doi","url":"https://doi.org/10.1103/RevModPhys.74.601"},{"kind":"doi","url":"https://doi.org/10.1103/PhysRevB.62.4927"},{"kind":"page","url":"https://berkeleygw.org/documentation/tutorial/tutorial-bethe-salpeter-equation/"},{"kind":"page","url":"https://berkeleygw.org/documentation/tutorial/"},{"kind":"page","url":"https://wiki.yambo-code.eu/wiki/index.php/BSE_solvers_overview"}]},
     {"topic_slug":"quasiparticle-corrections","article":"src/content/topics/quasiparticle-corrections.md","review":"docs/reviews/2026-08-04-quasiparticle-corrections.md","links":[{"kind":"doi","url":"https://doi.org/10.1103/PhysRev.139.A796"},{"kind":"doi","url":"https://doi.org/10.1103/PhysRevB.34.5390"},{"kind":"doi","url":"https://doi.org/10.1103/PhysRevB.75.235102"},{"kind":"page","url":"https://docs.abinit.org/tutorial/gw1/"},{"kind":"page","url":"https://docs.abinit.org/tutorial/gw2/"},{"kind":"page","url":"https://wiki.yambo-code.eu/wiki/index.php?title=GW"},{"kind":"page","url":"https://berkeleygw.org/documentation/tutorial/"}]},
     {
