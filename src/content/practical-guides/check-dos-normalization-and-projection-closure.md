@@ -5,8 +5,9 @@ title: Check a DOS Integral and Projected-Weight Closure
 kind: implementation
 tools:
   - python
+  - quantum-espresso
 status: reviewed
-summary: Integrate an invented DOS and retain a visible residual when selected projected channels do not equal the total.
+summary: Reconstruct a bounded Silicon total-DOS plot from actual Quantum ESPRESSO 7.5 SCF, NSCF, and dos.x output.
 tested_versions:
   - Python 3.12
 execution_script: examples/practical-guides/dos_projection_closure.py
@@ -15,30 +16,31 @@ source_ids:
   - qe-projwfc-docs
   - vasp-doscar
   - vasp-lorbit
+  - cod-9013102
 media_ids:
-  - dos-projection-closure
+  - silicon-qe-dos
 review: docs/reviews/2026-08-04-density-of-states-and-projected-density-of-states.md
 reviewed_at: "2026-08-04"
 ---
 
-This deterministic fixture uses an invented total DOS and two intentionally incomplete local projections. It checks two quantities that a plot alone can hide: the integral on the declared energy grid and the residual between the total and the displayed projected channels.
+This is a bounded real-execution example. A CC0 Silicon CIF from COD entry 9013102 supplied the two-site primitive cell. Quantum ESPRESSO 7.5 completed SCF, a 12×12×12 NSCF calculation, and `dos.x`; the committed 481-row total-DOS output is used unchanged to regenerate the original SVG below.
 
-## Preserve a residual instead of silently renormalizing
+## Keep total DOS distinct from a projected decomposition
 
-The script integrates all curves with the same trapezoidal rule and reports the missing weight. A real projected DOS can omit interstitial density or use non-complete local projectors. The [VASP `LORBIT` documentation](https://vasp.at/wiki/LORBIT) explicitly describes a qualitative local decomposition, while [Quantum ESPRESSO `projwfc.x`](https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html) documents its own projection route. Neither makes an atom-orbital label basis independent.
+This page plots only the total `dos.x` output. It deliberately does not attach orbital or site labels. A real projected DOS can omit interstitial density or use non-complete local projectors; [Quantum ESPRESSO `projwfc.x`](https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html) documents a separate projection route, while [VASP `LORBIT`](https://vasp.at/wiki/LORBIT) describes a different qualitative local decomposition. Neither makes an atom-orbital label basis independent.
 
-## Run the deterministic fixture
+## Reconstruct the committed output
 
 ```text
 python3 examples/practical-guides/dos_projection_closure.py \
-  --svg public/media/practical-guides/density-of-states-and-projected-density-of-states/check-dos-normalization-and-projection-closure/dos-projection-closure.svg
+  --svg public/media/practical-guides/density-of-states-and-projected-density-of-states/check-dos-normalization-and-projection-closure/silicon-qe-dos.svg
 ```
 
-The fixture prints its invented energy grid, total integral, selected-projection integral, and residual. [Quantum ESPRESSO `dos.x`](https://www.quantum-espresso.org/Doc/INPUT_DOS.html) and [VASP `DOSCAR`](https://vasp.at/wiki/DOSCAR) support the implementation distinction between energy-resolved DOS and its integrated count; the fixture is not an input for either code.
+The companion checks the SHA-256 of `si.dos.dat`, reads its Fermi reference and 481 energy rows, and regenerates the SVG. The committed `dos-nscf.in`, `dos.x.in`, compact outputs, and pseudopotential identity preserve the run lineage. [Quantum ESPRESSO `dos.x`](https://www.quantum-espresso.org/Doc/INPUT_DOS.html) documents the output route; [VASP `DOSCAR`](https://vasp.at/wiki/DOSCAR) is a different file format and is not used here.
 
 ## What this guide verifies
 
-Execution verifies deterministic numerical integration, a declared normalization, residual reporting, and SVG rendering for invented arrays. It does not calculate a DOS, validate a projector, determine an electron count for a material, converge a k mesh, identify an orbital occupation, or establish bonding, charge transfer, magnetism, or a spectral result.
+Execution verifies the stored-output hash, parsing, Fermi reference, and SVG reconstruction. The SCF output reports convergence in ten iterations and both the NSCF and `dos.x` outputs report `JOB DONE.`. This teaching setup does not test cutoff or k-mesh convergence, validate an electron count or projector, establish an orbital occupation, or support bonding, charge-transfer, magnetism, experimental, or other Silicon material conclusions.
 
 ## Official sources
 
@@ -46,3 +48,4 @@ Execution verifies deterministic numerical integration, a declared normalization
 - [Quantum ESPRESSO `projwfc.x` documentation](https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html)
 - [VASP `DOSCAR` documentation](https://vasp.at/wiki/DOSCAR)
 - [VASP `LORBIT` documentation](https://vasp.at/wiki/LORBIT)
+- [COD entry 9013102](https://www.crystallography.net/cod/9013102.html)

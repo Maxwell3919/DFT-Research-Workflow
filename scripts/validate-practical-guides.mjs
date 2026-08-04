@@ -147,9 +147,9 @@ const reviewRequirements = new Map([
   ]],
   ['docs/reviews/2026-08-04-density-of-states-and-projected-density-of-states.md', [
     'reviewed within the declared educational and execution scope',
-    'The companion script uses invented DOS and projection arrays.',
+    'hash-bound total-DOS output from a bounded Silicon QE 7.5 SCF',
     'Execution success is not DOS convergence',
-    'The media are original conceptual diagrams of invented data.',
+    'original plots reconstructed from the project\'s actual `dos.x` output.',
   ]],
   ['docs/reviews/2026-08-04-fermi-surface-and-full-brillouin-zone-analysis.md', [
     'reviewed within the declared educational and execution scope',
