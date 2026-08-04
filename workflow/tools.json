@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "authority": "secondary tool identity and workflow cross-index",
+  "scope_note": "Tools implement, inspect, or preserve parts of the A-E workflow. They are not research operations, endorsements, compatibility guarantees, or substitutes for scientific method selection.",
+  "verified_at": "2026-08-04",
+  "tools": [
+    {
+      "slug": "python",
+      "name": "Python",
+      "aliases": [],
+      "category": "Scientific programming",
+      "interfaces": ["language", "command-line"],
+      "access": "open-source",
+      "role": "A general programming language used here for transparent parsing, transformation, validation, and plotting companions.",
+      "homepage": "https://www.python.org/",
+      "documentation": "https://docs.python.org/3/",
+      "source_repository": "https://github.com/python/cpython",
+      "topics": [
+        "build-or-modify-computational-model",
+        "test-numerical-convergence",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions",
+        "document-and-preserve-study"
+      ]
+    },
+    {
+      "slug": "ase",
+      "name": "Atomic Simulation Environment",
+      "aliases": ["ASE"],
+      "category": "Structure and workflow libraries",
+      "interfaces": ["python-api", "command-line"],
+      "access": "open-source",
+      "role": "Python components for representing atomistic structures, constructing models, connecting calculators, and analyzing bounded workflow steps.",
+      "homepage": "https://ase-lib.org/",
+      "documentation": "https://docs.ase-lib.org/index.html",
+      "source_repository": "https://gitlab.com/ase/ase",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "optimize-structure",
+        "reaction-paths-and-transition-states",
+        "ab-initio-molecular-dynamics"
+      ]
+    },
+    {
+      "slug": "pymatgen",
+      "name": "pymatgen",
+      "aliases": ["Python Materials Genomics"],
+      "category": "Structure and workflow libraries",
+      "interfaces": ["python-api"],
+      "access": "open-source",
+      "role": "Python data structures and analysis modules for materials representations, transformations, interfaces, phase diagrams, and related post-processing.",
+      "homepage": "https://pymatgen.org/",
+      "documentation": "https://pymatgen.org/pymatgen.html",
+      "source_repository": "https://github.com/materialsproject/pymatgen",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "compositional-phase-stability-and-convex-hulls",
+        "defect-formation-energies-and-charge-states",
+        "interface-and-heterostructure-energetics"
+      ]
+    },
+    {
+      "slug": "spglib",
+      "name": "spglib",
+      "aliases": [],
+      "category": "Symmetry and reciprocal space",
+      "interfaces": ["library", "python-api"],
+      "access": "open-source",
+      "role": "A crystallographic symmetry library used to identify symmetry operations and standardized representations under declared tolerances.",
+      "homepage": "https://spglib.github.io/spglib/",
+      "documentation": "https://spglib.readthedocs.io/en/stable/",
+      "source_repository": "https://github.com/spglib/spglib",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "band-structure",
+        "harmonic-phonons"
+      ]
+    },
+    {
+      "slug": "quantum-espresso",
+      "name": "Quantum ESPRESSO",
+      "aliases": ["QE"],
+      "category": "Electronic-structure engines",
+      "interfaces": ["command-line"],
+      "access": "open-source",
+      "role": "A plane-wave and pseudopotential electronic-structure suite with ground-state, response, phonon, molecular-dynamics, and post-processing executables.",
+      "homepage": "https://www.quantum-espresso.org/",
+      "documentation": "https://www.quantum-espresso.org/documentation/",
+      "source_repository": "https://gitlab.com/QEF/q-e",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "calculate-reference-ground-state",
+        "band-structure",
+        "harmonic-phonons",
+        "electron-phonon-coupling",
+        "reaction-paths-and-transition-states"
+      ]
+    },
+    {
+      "slug": "vasp",
+      "name": "VASP",
+      "aliases": ["Vienna Ab initio Simulation Package"],
+      "category": "Electronic-structure engines",
+      "interfaces": ["command-line"],
+      "access": "restricted-license",
+      "role": "A licensed electronic-structure package documented for periodic ground-state, response, dynamics, and post-processing calculations.",
+      "homepage": "https://vasp.at/",
+      "documentation": "https://vasp.at/wiki/",
+      "source_repository": null,
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "density-of-states-and-projected-density-of-states",
+        "elastic-constants-and-mechanical-properties",
+        "polarization-and-ferroelectricity"
+      ]
+    },
+    {
+      "slug": "cp2k",
+      "name": "CP2K",
+      "aliases": [],
+      "category": "Electronic-structure engines",
+      "interfaces": ["command-line", "library"],
+      "access": "open-source",
+      "role": "An atomistic simulation package spanning electronic-structure, molecular-dynamics, optimization, and mixed quantum/classical methods.",
+      "homepage": "https://www.cp2k.org/",
+      "documentation": "https://manual.cp2k.org/",
+      "source_repository": "https://github.com/cp2k/cp2k",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "ab-initio-molecular-dynamics"
+      ]
+    },
+    {
+      "slug": "abinit",
+      "name": "ABINIT",
+      "aliases": [],
+      "category": "Electronic-structure engines",
+      "interfaces": ["command-line"],
+      "access": "open-source",
+      "role": "An electronic-structure suite with ground-state, response, phonon, and many-body perturbation workflows documented as separate capabilities.",
+      "homepage": "https://www.abinit.org/",
+      "documentation": "https://docs.abinit.org/",
+      "source_repository": "https://github.com/abinit/abinit",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "harmonic-phonons",
+        "dielectric-response-and-born-effective-charges",
+        "quasiparticle-corrections",
+        "excitons-and-bethe-salpeter-equation"
+      ]
+    },
+    {
+      "slug": "siesta",
+      "name": "SIESTA",
+      "aliases": [],
+      "category": "Electronic-structure engines",
+      "interfaces": ["command-line"],
+      "access": "open-source",
+      "role": "A localized-orbital electronic-structure package used for periodic calculations and as a parent engine for selected transport workflows.",
+      "homepage": "https://siesta-project.org/",
+      "documentation": "https://docs.siesta-project.org/projects/siesta/en/latest/",
+      "source_repository": "https://gitlab.com/siesta-project/siesta",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "calculate-reference-ground-state",
+        "band-structure",
+        "density-of-states-and-projected-density-of-states",
+        "quantum-transport"
+      ]
+    },
+    {
+      "slug": "phonopy",
+      "name": "Phonopy",
+      "aliases": [],
+      "category": "Lattice dynamics",
+      "interfaces": ["command-line", "python-api"],
+      "access": "open-source",
+      "role": "A harmonic lattice-dynamics package that constructs and analyzes force-constant models from external force calculations.",
+      "homepage": "https://phonopy.github.io/phonopy/",
+      "documentation": "https://phonopy.github.io/phonopy/phonopy.html",
+      "source_repository": "https://github.com/phonopy/phonopy",
+      "topics": ["harmonic-phonons", "test-numerical-convergence"]
+    },
+    {
+      "slug": "phono3py",
+      "name": "Phono3py",
+      "aliases": [],
+      "category": "Lattice dynamics",
+      "interfaces": ["command-line", "python-api"],
+      "access": "open-source",
+      "role": "An anharmonic lattice-dynamics package for third-order force constants, phonon interactions, and lattice-thermal-transport analysis.",
+      "homepage": "https://phonopy.github.io/phono3py/",
+      "documentation": "https://phonopy.github.io/phono3py/workflow.html",
+      "source_repository": "https://github.com/phonopy/phono3py",
+      "topics": [
+        "anharmonic-phonons",
+        "lattice-thermal-transport",
+        "test-numerical-convergence"
+      ]
+    },
+    {
+      "slug": "wannier90",
+      "name": "Wannier90",
+      "aliases": [],
+      "category": "Interpolation and topology",
+      "interfaces": ["command-line", "library"],
+      "access": "open-source",
+      "role": "A code for constructing Wannier representations and using them for interpolation and selected Berry, topology, and transport analyses.",
+      "homepage": "https://wannier.org/",
+      "documentation": "https://wannier90.readthedocs.io/en/latest/",
+      "source_repository": "https://github.com/wannier-developers/wannier90",
+      "topics": [
+        "wannier-function-construction",
+        "fermi-surface-and-full-brillouin-zone-analysis",
+        "berry-phase-and-berry-curvature",
+        "topological-invariants-and-boundary-states",
+        "electronic-transport"
+      ]
+    },
+    {
+      "slug": "epw",
+      "name": "EPW",
+      "aliases": [],
+      "category": "Electron-phonon and transport",
+      "interfaces": ["command-line"],
+      "access": "open-source",
+      "role": "A Wannier-based code for electron-phonon coupling and related electronic, transport, and superconducting observables using compatible parent data.",
+      "homepage": "https://epw-code.org/",
+      "documentation": "https://docs.epw-code.org/",
+      "source_repository": "https://gitlab.com/QEF/q-e/-/tree/develop/EPW",
+      "topics": [
+        "electron-phonon-coupling",
+        "conventional-superconductivity",
+        "electronic-transport"
+      ]
+    },
+    {
+      "slug": "aiida",
+      "name": "AiiDA",
+      "aliases": [],
+      "category": "Workflow and provenance",
+      "interfaces": ["python-api", "command-line", "web-services"],
+      "access": "open-source",
+      "role": "A workflow and provenance infrastructure for automating calculations and retaining queryable data-process lineage.",
+      "homepage": "https://www.aiida.net/",
+      "documentation": "https://aiida.readthedocs.io/projects/aiida-core/en/stable/",
+      "source_repository": "https://github.com/aiidateam/aiida-core",
+      "topics": [
+        "calculate-reference-ground-state",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions",
+        "document-and-preserve-study"
+      ]
+    }
+  ]
+}
