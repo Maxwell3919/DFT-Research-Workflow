@@ -7,4 +7,8 @@ pseudopotential=Fe.pbe-spn-kjpaw_psl.0.2.1.UPF
 pseudopotential_sha256=2317a0d3b136c09b6263e1ba328b505fb1ebf33bb4b28dc3df9e39af3184ef19
 pseudopotential_body=excluded_from_public_repository
 runtime_requirements=QE_PW and QE_PSEUDO_DIR must be provided at execution time
-resource_request=one Slurm task, one CPU, no restart reuse
+resource_request=one exclusive Slurm task, one CPU, 00:15:00 allocation limit, no restart reuse
+attempt_02_launcher=srun --exclusive --mpi=pmix --ntasks=1 --cpus-per-task=1 --time=00:15:00
+attempt_02_overall_wall_seconds=60.64
+attempt_02_wrapper_exit_code=1
+attempt_02_wrapper_exit_boundary=initial parser required exactly one magnetization line; all four recorded QE stage exit codes are zero

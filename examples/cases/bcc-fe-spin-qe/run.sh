@@ -8,7 +8,7 @@ expected_sha="2317a0d3b136c09b6263e1ba328b505fb1ebf33bb4b28dc3df9e39af3184ef19"
 pseudo_name="Fe.pbe-spn-kjpaw_psl.0.2.1.UPF"
 : "${QE_PW:?Set QE_PW to the QE 7.5 pw.x executable.}"
 : "${QE_PSEUDO_DIR:?Set QE_PSEUDO_DIR to the directory containing the declared Fe UPF.}"
-: "${CASE_ATTEMPT_ID:?Set CASE_ATTEMPT_ID to a new attempt identifier, for example attempt-02-mpirun.}"
+: "${CASE_ATTEMPT_ID:?Set CASE_ATTEMPT_ID to a new attempt identifier, for example attempt-02-pmix.}"
 if [[ ! "$CASE_ATTEMPT_ID" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
   printf 'FAIL CASE_ATTEMPT_ID must be a lowercase hyphenated identifier\n' >&2
   exit 2
@@ -32,7 +32,7 @@ if [[ "$actual_sha" != "$expected_sha" ]]; then
   printf 'FAIL pseudopotential SHA-256 mismatch: %s\n' "$actual_sha" >&2
   exit 2
 fi
-launcher_text="${QE_LAUNCHER:-srun --ntasks=1 --cpus-per-task=1}"
+launcher_text="${QE_LAUNCHER:-srun --exclusive --mpi=pmix --ntasks=1 --cpus-per-task=1 --time=00:15:00}"
 read -r -a launcher <<<"$launcher_text"
 runtime="$(mktemp -d "${TMPDIR:-/tmp}/bcc-fe-spin-qe.XXXXXX")"
 cleanup() { rm -rf -- "$runtime"; }

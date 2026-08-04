@@ -34,7 +34,7 @@
   ],
   "commands": [
     {"stage": "attempt-01-launch", "command": "CASE_ATTEMPT_ID=attempt-01-slurm-launch-failure QE_LAUNCHER='srun --ntasks=1 --cpus-per-task=1' bash run.sh", "exit_code": 1},
-    {"stage": "attempt-02-launch", "command": "QE_LAUNCHER='mpirun -np 1' CASE_ATTEMPT_ID=attempt-02-pmix bash run.sh", "exit_code": 1},
+    {"stage": "attempt-02-launch", "command": "QE_LAUNCHER='srun --exclusive --mpi=pmix --ntasks=1 --cpus-per-task=1 --time=00:15:00' CASE_ATTEMPT_ID=attempt-02-pmix bash run.sh", "exit_code": 1},
     {"stage": "attempt-02-strict-parse", "command": "CASE_OUTPUT_ROOT=output/attempt-02-pmix python3 parse.py", "exit_code": 0},
     {"stage": "attempt-02-acceptance", "command": "CASE_OUTPUT_ROOT=output/attempt-02-pmix bash check.sh", "exit_code": 1}
   ],
@@ -46,7 +46,8 @@
     {"role": "FM 10 cubed mesh input", "path": "input/fm-k10.scf.in", "sha256": "2ad378358a86968907be88f2b98ba2788b4d2a1ed648a10ed894c11043114ae3", "bytes": 532},
     {"role": "FM 12 cubed mesh input", "path": "input/fm-k12.scf.in", "sha256": "3882e632520833e8754857517291ad3c0c005d1327cecdbadc5a243c719a5732", "bytes": 532},
     {"role": "NM 12 cubed mesh input", "path": "input/nm-k12.scf.in", "sha256": "57b779d99d537af0ad2df444e617f8af60464323831d2519a42ca3550390818a", "bytes": 497},
-    {"role": "runtime command", "path": "run.sh", "sha256": "d630a3cdcde68eef56836baf1bab6573511acb952db58c36df2f9072ce32a92d", "bytes": 3263},
+    {"role": "recorded execution environment and launcher", "path": "environment.txt", "sha256": "3fb3ba6a9ac92781bc73389fc01d5e60e5c4038bc4832055e7451ea8f8f578db", "bytes": 837},
+    {"role": "runtime command", "path": "run.sh", "sha256": "585253c60bd14b92b4b88c81d0a36c353a1e4434562fe381df08d1381a3b42f8", "bytes": 3300},
     {"role": "strict output parser", "path": "parse.py", "sha256": "f1833df909da42c966f838ed5680b9ddc990b181ddac11a0ff3faf609392eb7d", "bytes": 13941},
     {"role": "attempt-01 failure manifest", "path": "output/attempt-01-slurm-launch-failure/failure-manifest.json", "sha256": "697972a2182013742f4c236061318a0bdcc96dc5ea5734253a49702a5573467c", "bytes": 1282},
     {"role": "attempt-02 run status", "path": "output/attempt-02-pmix/run-status.json", "sha256": "7801f01272d3a6b791a606309f77ec33a6f258795dd25c0c96e6ad84d6ea9dac", "bytes": 332},

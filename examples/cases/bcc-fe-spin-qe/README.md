@@ -16,17 +16,23 @@ that contains a private absolute path before copying it into `output/`.
 ```bash
 QE_PW=/path/to/pw.x \
 QE_PSEUDO_DIR=/path/to/pseudopotentials \
-QE_LAUNCHER='mpirun -np 1' \
-CASE_ATTEMPT_ID='attempt-02-mpirun' \
+QE_LAUNCHER='srun --exclusive --mpi=pmix --ntasks=1 --cpus-per-task=1 --time=00:15:00' \
+CASE_ATTEMPT_ID='attempt-02-pmix' \
 bash run.sh
-CASE_OUTPUT_ROOT="$PWD/output/attempt-02-mpirun" bash check.sh
-CASE_OUTPUT_ROOT="$PWD/output/attempt-02-mpirun" bash extract.sh
+CASE_OUTPUT_ROOT="$PWD/output/attempt-02-pmix" bash check.sh
+CASE_OUTPUT_ROOT="$PWD/output/attempt-02-pmix" bash extract.sh
 ```
 
 `QE_PW` and `QE_PSEUDO_DIR` are intentionally runtime-only variables; do not
 record their absolute paths in committed evidence.  One allocated task is the
 declared low-cost request.  The four SCFs are independent and retain no restart
 lineage, so they can be run serially as this script does.
+
+The recorded successful Attempt 02 used exactly the displayed Slurm PMIx
+launcher and completed its four QE stages in 60.64 seconds overall. Its wrapper
+returned 1 only because the first-generation parser incorrectly demanded one
+magnetization line instead of selecting the final SCF iteration; the raw QE
+stage exit codes remain zero in `output/attempt-02-pmix/run-status.json`.
 
 Every execution needs a new `CASE_ATTEMPT_ID`.  The script rejects a preexisting
 attempt directory and writes valid `run-status.json` after every candidate,
