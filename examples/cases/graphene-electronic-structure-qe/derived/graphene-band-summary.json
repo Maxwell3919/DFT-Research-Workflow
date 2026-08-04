@@ -1,0 +1,41 @@
+{
+  "band_count": 8,
+  "band_kpoints": 121,
+  "bands_parent_scf_sha256": "ec67d10ac3669560046a9e505c4c8273264faf88b6b4947aad6753776fd5dc94",
+  "case_id": "graphene-electronic-structure-qe",
+  "claim_boundary": "The values are confined to this one input and Gamma-K-M-Gamma path. They do not establish vacuum, cutoff, k-mesh, smearing, path, or observable convergence; a path-local distance to the Fermi energy is not a full-zone band gap or a topology claim.",
+  "fermi_energy_ev": -2.3024,
+  "input_sha256": {
+    "graphene.bands.in": "556da106b068190fa1c093bbfc08f09d9869546cd3088bd712dc446a579caacf",
+    "graphene.bands.x.in": "4abb40724e56d82ebc66a6e4b5d2da80cb56c31df0b535c1573cb568d3d4f4e7",
+    "graphene.scf.in": "e15e0637ceb0ff4aff9cfd2cfecdffe0fe3d04992f6de5cce9337c1df99f0586"
+  },
+  "minimum_path_distance_to_fermi_ev": 0.018600000000000172,
+  "output_sha256": {
+    "bands-execution-environment.txt": "7dc8c3af92e36d7758914713b496302df30a349174fac552e15485afa65adaad",
+    "execution-environment.txt": "af846c1a6a9e4ebcac49465dd07b96ca1fd3ae178e0b8f2310046ca7e25dea28",
+    "graphene.bands.dat": "548bdc30f0f7447dbd275beb31ebc8bbfa89655d6ce0280720baea0d7f5d475f",
+    "graphene.bands.parent-scf.exit": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "graphene.bands.parent-scf.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "graphene.bands.parent-scf.stdout": "ec67d10ac3669560046a9e505c4c8273264faf88b6b4947aad6753776fd5dc94",
+    "graphene.bands.pw.exit": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "graphene.bands.pw.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "graphene.bands.pw.stdout": "178ea566cd31b69f35b95b3e221d5859d8344b1f93d96ab4884255d4cc7590c2",
+    "graphene.bands.x.exit": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "graphene.bands.x.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "graphene.bands.x.stdout": "b1a48c34b4d1e8a6c8f62cf30a621e2d3bf3d96321c9418fa55de46c44c9990b",
+    "graphene.scf-qeguard-audit.json": "396e6656c19471c5a36e49ab8549f356a93ae2b0c8ffe71585f1ecb0145dfae6",
+    "graphene.scf.exit": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "graphene.scf.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "graphene.scf.stdout": "aa24dc9ed6f8d61beb7e23259c74a51254b4acb9776aee160c80bc218441e17f",
+    "scf-parent-evidence.json": "e2d4aec174567f349bcdf084e27635c4ba979e2f6bda432c6a93e08049eab385"
+  },
+  "path_labels": [
+    "Gamma",
+    "K",
+    "M",
+    "Gamma"
+  ],
+  "pseudo_sha256": "9900d1efd50b9848e31849f39094b33348486b400ee51e0f3922f716137cf3d7",
+  "scf_total_energy_ry": -36.88699435
+}

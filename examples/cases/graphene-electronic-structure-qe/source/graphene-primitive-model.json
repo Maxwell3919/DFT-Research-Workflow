@@ -1,0 +1,18 @@
+{
+  "cell_parameters_angstrom": [
+    [2.46, 0.0, 0.0],
+    [-1.23, 2.130422493, 0.0],
+    [0.0, 0.0, 20.0]
+  ],
+  "coordinate_system": "crystal",
+  "model_boundary": "Original teaching geometry for a 2D periodic graphene primitive cell; it is not a relaxed structure or a database identity claim.",
+  "sites": [
+    {"element": "C", "fractional": [0.0, 0.0, 0.5]},
+    {"element": "C", "fractional": [0.333333333333, 0.666666666667, 0.5]}
+  ],
+  "vacuum_model": {
+    "cell_height_angstrom": 20.0,
+    "periodicity": [true, true, true],
+    "interpretation": "Periodic-image separation is controlled by the cell height; the calculation remains three-dimensionally periodic, so kz=1 is selected for this 2D slab model."
+  }
+}

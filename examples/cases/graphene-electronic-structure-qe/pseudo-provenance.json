@@ -1,0 +1,19 @@
+{
+  "accessed_at": "2026-08-05",
+  "element": "C",
+  "file": "C.pbe-n-kjpaw_psl.1.0.0.UPF",
+  "functional": "PBE",
+  "generation_metadata": "PSLibrary atomic code by A. Dal Corso v.5.1",
+  "kind": "PAW pseudopotential with scalar-relativistic PBE-family header metadata",
+  "licence_boundary": "This case records public provenance and a SHA-256 identity only. It does not redistribute the UPF payload; users must obtain it from the publisher and observe its stated terms.",
+  "projector_family": "kjpaw PSLibrary 1.0.0",
+  "qe_guard_manifest": "pseudo-manifest.json",
+  "qe_guard_xc_functional": "SLA  PW   PBX  PBC",
+  "sha256": "9900d1efd50b9848e31849f39094b33348486b400ee51e0f3922f716137cf3d7",
+  "source_url": "https://pseudopotentials.quantum-espresso.org/upf_files/C.pbe-n-kjpaw_psl.1.0.0.UPF",
+  "verified_header": {
+    "rho_cutoff_ry": 326.260572947506,
+    "wfc_cutoff_ry": 40.18675879987882,
+    "z_valence": 4.0
+  }
+}

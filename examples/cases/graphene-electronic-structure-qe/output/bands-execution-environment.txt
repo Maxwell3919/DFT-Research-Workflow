@@ -1,0 +1,5 @@
+pwscf_version= Program PWSCF v.7.5 starts on 5Aug2026 at 2:37:31 
+pseudo_file=C.pbe-n-kjpaw_psl.1.0.0.UPF
+pseudo_sha256=9900d1efd50b9848e31849f39094b33348486b400ee51e0f3922f716137cf3d7
+launcher=srun --exclusive --mpi=pmix --ntasks=1 --cpus-per-task=1 --time=00:10:00
+stage=bands

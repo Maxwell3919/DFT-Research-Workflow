@@ -1,0 +1,60 @@
+{
+  "case_id": "graphene-qe-2d-teaching",
+  "case_parameters": {
+    "input_sha256": {
+      "graphene.bands.in": "556da106b068190fa1c093bbfc08f09d9869546cd3088bd712dc446a579caacf",
+      "graphene.bands.x.in": "4abb40724e56d82ebc66a6e4b5d2da80cb56c31df0b535c1573cb568d3d4f4e7",
+      "graphene.scf.in": "e15e0637ceb0ff4aff9cfd2cfecdffe0fe3d04992f6de5cce9337c1df99f0586"
+    },
+    "model": {
+      "atoms": 2,
+      "cell_height_angstrom": 20.0,
+      "dimensionality": "2D periodic slab model represented in a 3D periodic supercell",
+      "lattice_parameter_angstrom": 2.46,
+      "z_sampling": 1
+    },
+    "numerical_starting_choices": {
+      "ecutrho_ry": 400.0,
+      "ecutwfc_ry": 50.0,
+      "scf_k_mesh": [18, 18, 1],
+      "smearing": "Marzari-Vanderbilt",
+      "smearing_width_ry": 0.01
+    },
+    "path": {
+      "labels": ["Gamma", "K", "M", "Gamma"],
+      "purpose": "A fixed reciprocal-space teaching path that includes K; it is not full-Brillouin-zone sampling.",
+      "reciprocal_coordinates": [[0.0, 0.0, 0.0], [0.3333333333, 0.3333333333, 0.0], [0.5, 0.0, 0.0], [0.0, 0.0, 0.0]]
+    },
+    "pseudopotential": {
+      "file": "C.pbe-n-kjpaw_psl.1.0.0.UPF",
+      "qe_guard_manifest": "pseudo-manifest.json",
+      "provenance_file": "pseudo-provenance.json",
+      "sha256": "9900d1efd50b9848e31849f39094b33348486b400ee51e0f3922f716137cf3d7"
+    }
+  },
+  "decision": "pass",
+  "limitations": [
+    "The minimum workflow is not a universal complete workflow.",
+    "Material-, model-, and observable-specific controls may add stages and convergence dimensions.",
+    "The stated 0.01 eV/atom tolerance is only a future cutoff-comparison contract; it does not turn this one run into a convergence result.",
+    "Vacuum, k mesh, smearing, path, and observable convergence remain untested."
+  ],
+  "minimum_workflow": ["pw.x:scf", "pw.x:bands", "bands.x"],
+  "objective": "Teaching-only 2D graphene SCF followed by a fixed Gamma-K-M-Gamma band path; no full-zone property or material claim.",
+  "observable": {
+    "absolute_tolerance": 0.01,
+    "name": "SCF total energy per atom cutoff comparison",
+    "relative_tolerance": null,
+    "unit": "eV/atom"
+  },
+  "provenance": {
+    "collector": "qe_guard",
+    "collector_version": "1.1.0",
+    "generated_utc": "2026-08-04T18:20:00+00:00"
+  },
+  "qe_version": "7.5",
+  "schema_version": "1.0",
+  "scientific_protocol_id": "graphene-qe-7.5-band-path-teaching-v1",
+  "state": "plan_ready",
+  "task_type": "bands"
+}
