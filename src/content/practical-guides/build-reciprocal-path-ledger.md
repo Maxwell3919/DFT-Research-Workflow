@@ -6,6 +6,7 @@ kind: implementation
 tools:
   - python
   - quantum-espresso
+  - seekpath
 status: reviewed
 summary: Reconstruct a Silicon reciprocal-path ledger and band plot from a COD structure, SeeK-path standardization, and actual Quantum ESPRESSO 7.5 output.
 tested_versions:

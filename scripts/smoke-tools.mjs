@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer-core';
 const base=(process.env.SITE_URL??'http://127.0.0.1:4322/DFT-Research-Workflow').replace(/\/+$/,'');
 const browser=await puppeteer.launch({executablePath:process.env.CHROME_BIN??'/usr/bin/google-chrome',headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
-const routes=[['/tools/','Tools','Scientific programming'],['/tools/ase/','Atomic Simulation Environment','Reviewed practical pages'],['/tools/vasp/','VASP','Restricted licence'],['/tools/aiida/','AiiDA','No reviewed practical page']];
+const routes=[['/tools/','Tools','Materials data services'],['/tools/ase/','Atomic Simulation Environment','Reviewed practical pages'],['/tools/materials-project/','Materials Project','Registration required'],['/tools/vesta/','VESTA','Free proprietary licence'],['/tools/seekpath/','SeeK-path','SeeK-path 2.2.1'],['/tools/vasp/','VASP','Restricted licence'],['/tools/aiida/','AiiDA','No reviewed practical page']];
 try {
   for(const width of [1440,390]){
     const page=await browser.newPage(); await page.setCacheEnabled(false); await page.setViewport({width,height:844});
