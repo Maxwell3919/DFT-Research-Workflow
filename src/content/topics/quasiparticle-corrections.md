@@ -7,7 +7,7 @@ Quasiparticle calculations address the energy required to add or remove an elect
 
 A GW result is not automatically an optical spectrum or an experimental band gap. It is a one-particle excitation result whose meaning depends on the starting state, screening model, self-energy approximation, numerical representation, boundary conditions, and comparison target.
 
-## The quasiparticle problem replaces a static potential with a self-energy
+## From Kohn--Sham levels to a quasiparticle equation
 
 In the GW approximation, the electronic self-energy is written schematically as
 
@@ -26,7 +26,7 @@ E_nk^QP = ε_nk^KS
 
 A scissor operator can be a useful reduced model when the relevant corrections have been shown to behave approximately rigidly over the bands and k region of interest. It must be labelled as that approximation rather than presented as a direct GW result for the entire spectrum.
 
-## Screening is a calculated object
+## Screening is a calculated object, not a label
 
 The screened interaction is commonly represented as `W = ε⁻¹v`. Constructing it requires a polarizability model, reciprocal-space basis, response space, frequency treatment, and boundary convention.
 
@@ -43,7 +43,7 @@ A converged ground-state SCF calculation establishes none of these response-spac
 
 For slabs, wires, molecules, and interfaces, periodic-image screening and the dielectric environment are part of the physical model. A bulk screening convention cannot be transferred silently to an isolated two-dimensional layer.
 
-## Starting point and self-consistency define different approximations
+## G₀W₀, eigenvalue updates, and self-consistency answer different questions
 
 `G₀W₀` evaluates `G` and `W` from a declared starting state. Its result can depend on the exchange--correlation functional, hybrid fraction, Hubbard treatment, spin and SOC state, and the starting gap.
 
@@ -72,7 +72,7 @@ Test the quasiparticle energy, gap, ordering, or dispersion against the starting
 
 Retain the parent ground-state lineage, code and version, core treatment, response settings, raw or reconstructable self-energy data, frequency method, solution convention, and convergence series. A conditional GW result can support a conditional statement about one-particle addition and removal energies. It cannot alone establish an optical spectrum, exciton binding energy, lifetime, mobility, experimental agreement, or device performance.
 
-**Independent-Particle Optical Properties** uses transitions between one-particle states without an electron--hole kernel. **Time-Dependent Response and Spectroscopy** treats induced response. **Excitons and the Bethe--Salpeter Equation** constructs neutral electron--hole excitations from a compatible quasiparticle and screening description.
+**Independent-Particle Optical Properties** uses transitions between one-particle states without an electron--hole kernel. **Time-Dependent Response and Spectroscopy** treats induced response. **Excitons and the Bethe--Salpeter Equation** constructs neutral electron--hole excitations from a compatible quasiparticle and screening description. It does not establish a universal “true band gap” for every observable and environment.
 
 ## Sources and methods
 
