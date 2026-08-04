@@ -265,7 +265,7 @@
     },
     {
       "guide_slug": "build-adsorption-energy-ledger",
-      "source_ids": ["cmr-adsorption-paper", "campbell-adsorbate-entropy", "campbell-entropy-correction", "norskov-che", "reuter-surface-thermodynamics"]
+      "source_ids": ["cmr-adsorption-paper", "campbell-adsorbate-entropy", "campbell-entropy-correction", "norskov-che", "reuter-surface-thermodynamics", "cmr-adsorption-page", "cmr-adsorption-db", "cmr-data-license"]
     },
     {
       "guide_slug": "compare-adsorption-sites-and-coverage",
