@@ -279,7 +279,7 @@
     { "guide_slug": "enumerate-lattice-matches-and-registry", "source_ids": ["zur-mcgill", "pymatgen-interface-docs"] },
     { "guide_slug": "replot-al-tin-interface-adhesion", "source_ids": ["feldbauer-al-tin", "feldbauer-al-tin-arxiv"] },
     { "guide_slug": "build-reciprocal-path-ledger", "source_ids": ["seekpath-paper", "seekpath-docs", "qe-bands-docs", "cod-9013102"] },
-    { "guide_slug": "compare-band-path-and-full-zone-extrema", "source_ids": ["bloch-paper", "kohn-sham", "setyawan-curtarolo"] },
+    { "guide_slug": "compare-band-path-and-full-zone-extrema", "source_ids": ["bloch-paper", "kohn-sham", "setyawan-curtarolo", "cod-9013102"] },
     { "guide_slug": "check-dos-normalization-and-projection-closure", "source_ids": ["qe-dos-docs", "qe-projwfc-docs", "vasp-doscar", "vasp-lorbit", "cod-9013102"] },
     { "guide_slug": "compare-full-zone-isovalue-and-band-path", "source_ids": ["wannier90-fermi-parameters", "wannier90-copper-tutorial", "qe-fermi-postprocessing"] },
     { "guide_slug": "check-charge-difference-closure", "source_ids": ["qe-pp-density", "vasp-chgcar-density"] },

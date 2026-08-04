@@ -199,19 +199,20 @@
     {
       "guide_slug": "compare-band-path-and-full-zone-extrema",
       "parent_topic": "band-structure",
-      "evidence_class": "synthetic-only",
-      "material": "invented band fixture",
-      "real_result": false,
+      "evidence_class": "real-execution",
+      "material": "COD 9013102 Silicon; QE 7.5 line path and symmetry-expanded 8x8x8 mesh",
+      "real_result": true,
       "interface": false,
-      "traceable_data": false,
-      "upgrade": "derive from Silicon QE band and mesh data",
-      "blocker": null,
+      "traceable_data": true,
+      "upgrade": "completed hash-bound Silicon QE path/mesh comparison",
+      "blocker": "One 8x8x8 teaching mesh and one line path do not establish a converged fundamental, indirect, quasiparticle, or optical gap.",
       "priority": 1,
-      "execution_script": "examples/practical-guides/band_extrema_fixture.py",
+      "execution_script": "examples/practical-guides/silicon_qe_full_zone.py",
       "media_ids": [
+        "silicon-qe-path-full-zone",
         "band-path-full-zone-extrema"
       ],
-      "upgrade_readiness": "candidate"
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "check-dos-normalization-and-projection-closure",

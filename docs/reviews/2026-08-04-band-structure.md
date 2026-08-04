@@ -22,9 +22,9 @@ The overview defines a band diagram as state-specific eigenvalues on a declared 
 
 ## Numerical and execution boundary
 
-The topic gives no universal path density, k mesh, empty-band count, smearing, cutoff, force threshold, gap tolerance, or interpolation setting. `build-reciprocal-path-ledger` is now a bounded real Silicon execution: COD 9013102 → spglib/SeeK-path → QE 7.5 SCF and band path → `bands.x` output → hash-bound local redraw. The paired full-zone comparison remains an invented teaching fixture and does not inherit the Silicon run.
+The topic gives no universal path density, k mesh, empty-band count, smearing, cutoff, force threshold, gap tolerance, or interpolation setting. `build-reciprocal-path-ledger` is a bounded real Silicon execution: COD 9013102 → spglib/SeeK-path → QE 7.5 SCF and band path → `bands.x` output → hash-bound local redraw. `compare-band-path-and-full-zone-extrema` now adds a separate real QE 7.5 SCF → `bands` → `bands.x` 8×8×8 teaching mesh with `nosym=.true.` and 260 time-reversal-equivalent k points. Its 0.617 eV sampled separation differs from the 0.574 eV path sample; that difference demonstrates that two limited samplings cannot be silently equated, rather than supplying a fundamental gap.
 
-The Silicon band SVG is an original redraw from committed real output; the remaining conceptual media are invented explanatory diagrams. The bounded Silicon execution is not numerical convergence, a direct or indirect material gap, a symmetry representation, a carrier valley, a quasiparticle spectrum, an optical gap, a transport result, or a scientific conclusion.
+The Silicon band and path/mesh SVGs are original redraws from committed real-output ledgers; the retained conceptual media are invented explanatory diagrams. The bounded Silicon execution is not numerical convergence, a direct or indirect material gap, a symmetry representation, a carrier valley, a quasiparticle spectrum, an optical gap, a transport result, or a scientific conclusion.
 
 ## Review conclusion
 

@@ -142,7 +142,8 @@ const reviewRequirements = new Map([
     'reviewed within the declared educational and execution scope',
     'bounded real Silicon execution',
     'COD 9013102 → spglib/SeeK-path → QE 7.5 SCF and band path → `bands.x` output',
-    'The paired full-zone comparison remains an invented teaching fixture',
+    'separate real QE 7.5 SCF → `bands` → `bands.x` 8×8×8 teaching mesh',
+    'two limited samplings cannot be silently equated',
     'not numerical convergence',
   ]],
   ['docs/reviews/2026-08-04-density-of-states-and-projected-density-of-states.md', [
