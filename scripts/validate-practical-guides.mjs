@@ -258,6 +258,12 @@ const reviewRequirements = new Map([
     'Execution success is not an AIMD calculation',
     'The media are an original diagram generated from invented values',
   ]],
+  ['docs/reviews/2026-08-04-finite-temperature-structural-sampling.md', [
+    'reviewed within the declared educational and execution scope',
+    'The companion script uses invented window supports',
+    'Execution success is not a molecular-dynamics calculation',
+    'The media are an original diagram generated from invented values',
+  ]],
 ]);
 
 function parseFrontmatter(source) {

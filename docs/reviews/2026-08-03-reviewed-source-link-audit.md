@@ -51,7 +51,7 @@ The machine-readable authority is `sources/reviewed-links.json`. The current inv
 - Diffusion Barriers.
 - Ab Initio Molecular Dynamics.
 
-The manifest declares 207 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
+The manifest declares 212 unique HTTPS destinations. Some sources legitimately support more than one topic. Each article/review pair must contain exactly its declared source set, while the network layer requests each unique URL once and records every topic that reuses it.
 
 Any undeclared URL, missing URL, duplicate URL inside one topic, inconsistent source kind, non-HTTPS URL, unexpected unique-URL count, or retired ASE host fails deterministic validation.
 
@@ -98,6 +98,7 @@ All thirty-three article/review pairs are required to use exact bounded source i
 - the Henkelman--Jónsson NEB and climbing-image methods plus official Quantum ESPRESSO and ASE documentation for the D4 reaction-paths-and-transition-states topic.
 - the Vineyard frequency-factor method plus NEB path and official Quantum ESPRESSO/ASE diffusion documentation for the D4 diffusion-barriers topic.
 - the Car--Parrinello and Nosé ensemble methods plus official Quantum ESPRESSO and ASE molecular-dynamics documentation for the D4 ab-initio-molecular-dynamics topic.
+- the Torrie--Valleau umbrella-sampling, Kumar WHAM, and Laio--Parrinello metadynamics methods plus official PLUMED and Quantum ESPRESSO documentation for the D4 finite-temperature-structural-sampling topic.
 
 A source reused by two topics is not duplicated into two network requests. Reuse does not broaden the source beyond the statements reviewed in each topic.
 

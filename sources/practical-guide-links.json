@@ -4,6 +4,8 @@
   "scope_note": "These URLs support version-specific implementation or analysis claims in reviewed practical pages. Reachability, semantic support, execution, numerical convergence, and scientific validity remain separate checks.",
   "sources": [
     { "id": "ase-docs-home", "url": "https://docs.ase-lib.org/", "kind": "page" },
+    { "id": "torrie-valleau-umbrella", "url": "https://doi.org/10.1016%2F0021-9991%2877%2990121-8", "kind": "doi" },
+    { "id": "kumar-wham", "url": "https://doi.org/10.1002/jcc.540130812", "kind": "doi" },
     { "id": "ase-atoms", "url": "https://docs.ase-lib.org/ase/atoms.html", "kind": "page" },
     { "id": "ase-build-tools", "url": "https://docs.ase-lib.org/ase/build/tools.html", "kind": "page" },
     { "id": "ase-surface", "url": "https://docs.ase-lib.org/ase/build/surface.html", "kind": "page" },
@@ -284,5 +286,6 @@
     ,{ "guide_slug": "check-reaction-path-barrier-ledger", "source_ids": ["qe-neb-input", "ase-neb"] }
     ,{ "guide_slug": "check-diffusion-network-ledger", "source_ids": ["ase-neb", "vineyard-frequency-factor"] }
     ,{ "guide_slug": "check-aimd-segment-ledger", "source_ids": ["ase-molecular-dynamics", "car-parrinello"] }
+    ,{ "guide_slug": "check-structural-sampling-window-overlap", "source_ids": ["torrie-valleau-umbrella", "kumar-wham"] }
   ]
 }

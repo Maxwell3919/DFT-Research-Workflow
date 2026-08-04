@@ -94,6 +94,7 @@ SUPERCONDUCTIVITY_ANALYSIS_SCRIPTS = ["superconductivity_moment_ledger.py"]
 REACTION_PATH_ANALYSIS_SCRIPTS = ["reaction_path_barrier_ledger.py"]
 DIFFUSION_ANALYSIS_SCRIPTS = ["diffusion_network_ledger.py"]
 AIMD_ANALYSIS_SCRIPTS = ["aimd_segment_ledger.py"]
+STRUCTURAL_SAMPLING_ANALYSIS_SCRIPTS = ["structural_sampling_overlap.py"]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
     *CONVERGENCE_ANALYSIS_SCRIPTS,
@@ -126,6 +127,7 @@ SCRIPTS = [
     *REACTION_PATH_ANALYSIS_SCRIPTS,
     *DIFFUSION_ANALYSIS_SCRIPTS,
     *AIMD_ANALYSIS_SCRIPTS,
+    *STRUCTURAL_SAMPLING_ANALYSIS_SCRIPTS,
 ]
 
 
@@ -155,7 +157,7 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 54
+    assert len(results) == 55
     report = {
         "schema_version": 10,
         "project_root": str(ROOT),
@@ -192,6 +194,7 @@ def main() -> None:
         "reaction_path_analysis_scripts": REACTION_PATH_ANALYSIS_SCRIPTS,
         "diffusion_analysis_scripts": DIFFUSION_ANALYSIS_SCRIPTS,
         "aimd_analysis_scripts": AIMD_ANALYSIS_SCRIPTS,
+        "structural_sampling_analysis_scripts": STRUCTURAL_SAMPLING_ANALYSIS_SCRIPTS,
         "executed_scripts": SCRIPTS,
         "results": results,
         "evidence_boundary": (
@@ -214,11 +217,11 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 54/54 examples; four structural transformations, "
+        "Practical guide execution passed: 55/55 examples; four structural transformations, "
         "four synthetic convergence analyses, four bounded optimization diagnostics, and "
         "four deterministic reference-state diagnostics, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
-        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, one invented polarization-branch fixture, one invented piezoelectric ledger fixture, one invented harmonic-mode ledger fixture, one invented anharmonic-linewidth ledger fixture, one invented lattice-transport tensor ledger fixture, one invented EPC channel ledger fixture, one invented superconductivity spectral-moment ledger fixture, one invented reaction-path barrier ledger fixture, one invented diffusion-network ledger fixture, and one invented AIMD segment ledger fixture under pinned versions."
+        "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, one invented polarization-branch fixture, one invented piezoelectric ledger fixture, one invented harmonic-mode ledger fixture, one invented anharmonic-linewidth ledger fixture, one invented lattice-transport tensor ledger fixture, one invented EPC channel ledger fixture, one invented superconductivity spectral-moment ledger fixture, one invented reaction-path barrier ledger fixture, one invented diffusion-network ledger fixture, one invented AIMD segment ledger fixture, and one invented structural-sampling overlap ledger fixture under pinned versions."
     )
 
 
