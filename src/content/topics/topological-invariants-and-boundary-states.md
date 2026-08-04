@@ -3,37 +3,63 @@ topic_slug: topological-invariants-and-boundary-states
 status: reviewed
 ---
 
-Topological analysis asks whether a declared gapped electronic subspace can be continuously deformed into a reference without closing the relevant gap or breaking the protecting symmetry. A topological invariant is therefore a property of a Hamiltonian, occupied/target subspace, symmetry class, filling, and Brillouin-zone domain. It is not a label inferred from orbital character, band inversion language, one band-path crossing, or a visually striking surface band.
+Topological analysis asks whether a declared electronic subspace can be continuously deformed into a reference without closing the relevant gap or breaking the protecting symmetry. A topological invariant is therefore a property of a Hamiltonian, subspace, filling, symmetry class, and Brillouin-zone domain.
 
-## First identify the space in which the invariant lives
+It is not a label inferred from orbital character, “band inversion” language, one high-symmetry-path crossing, or a visually striking surface band. Those features can motivate a calculation, but they do not replace it.
 
-A Chern number is an integer Brillouin-zone integral of Berry curvature for a gapped two-dimensional subspace. A time-reversal-symmetric insulator instead may carry a `Z2` index; crystalline, chiral, particle-hole, and other symmetries admit still different invariants. The calculation must state which symmetries are retained by the Hamiltonian, including spin--orbit coupling, magnetism, non-collinearity, and any external field or structural distortion. An invariant protected by a symmetry that the actual model breaks is not the invariant of that model.
+## Define the subspace, gap, and symmetry first
 
-The relevant gap is also part of the claim. A global direct gap separating the selected subspace throughout the Brillouin zone permits a band-subspace invariant. An indirect-gap metal, semimetallic node, entanglement ambiguity, or a Fermi level placed inside a band needs a different question and often a different invariant. A small gap may be physically decisive and numerically fragile: check it in the full zone, not only on a conventional band path.
+Different symmetry classes support different invariants. A two-dimensional gapped subspace may carry a Chern number. A time-reversal-symmetric insulating state may carry a `Z2` index. Crystalline, chiral, particle-hole, and other symmetries lead to other classifications.
 
-## Equivalent formulas are not interchangeable inputs
+State which symmetries are actually present in the Hamiltonian, including spin--orbit coupling, magnetism, non-collinearity, external fields, and structural distortions. An invariant protected by a symmetry that the model breaks is not an invariant of that model.
 
-For an appropriate two-dimensional gapped subspace,
+The relevant band separation must hold throughout the domain used for the invariant. A full-zone check is essential when the gap is small, the bands are entangled, the Fermi level intersects a band, or the system is semimetallic. A conventional band path can miss the gap closing that changes the classification.
+
+## Match the formula to its assumptions
+
+For an appropriate two-dimensional gapped subspace, the Chern number is
 
 ```text
-C = (1 / 2 pi) sum_n integral_BZ Omega_n(k) d^2k.
+C = (1 / 2π) Σ_n ∫_BZ Ω_n(k) d²k .
 ```
 
-`Omega_n(k)` is Berry curvature of band `n`, the sum is over the declared subspace, and the Brillouin-zone orientation fixes the sign. The integral is dimensionless only when the whole periodic zone, gauge-compatible subspace, and gap condition are respected. A local curvature map, a partial-zone integral, or an integer rounded from an unconverged mesh is not a Chern-number calculation.
+`Ω_n(k)` is the Berry curvature of band `n`, the sum covers the declared subspace, and the Brillouin-zone orientation fixes the sign. The result is an integer only after the whole periodic zone, subspace continuity, and numerical integration are treated consistently.
 
-Wilson loops transport the selected subspace around reciprocal-space loops. Their eigenphases (hybrid Wannier centres) can reveal a winding or partner switching pattern, but only after the loop family, orientation, mesh, occupied subspace, gauge transport, and symmetry convention are fixed. Parity eigenvalues at time-reversal invariant momenta can offer a shortcut to a `Z2` index only in the additional presence of inversion symmetry and with correctly identified occupied states. A parity table from a non-centrosymmetric structure cannot be promoted to that shortcut.
+A curvature map, partial-zone integral, or rounded value from an unconverged mesh is not a Chern-number result.
 
-## A boundary spectrum is a second calculation
+Wilson loops transport the selected subspace around reciprocal-space loops. Their eigenphases can reveal winding or partner switching, but only after the loop family, orientation, k mesh, subspace, gauge transport, and symmetry convention are fixed.
 
-Bulk--boundary correspondence connects suitable bulk topology to robust boundary phenomena under stated assumptions; it does not predict every visible slab band. A finite slab, ribbon, or surface Green-function calculation introduces an orientation, termination, thickness or embedding, surface potential, reconstruction/disorder model, chemical potential, and projection convention. Trivial dangling-bond bands, quantum-well states, and termination-dependent resonances can appear in the same energy range as a desired topological signal.
+Parity eigenvalues at time-reversal-invariant momenta provide a shortcut to a `Z2` index only when inversion symmetry is present and the occupied states are correctly identified. A parity table from a non-centrosymmetric or symmetry-broken structure cannot be used for that formula.
 
-Compare a boundary calculation with the bulk gap and projected bulk continuum for the same Hamiltonian. Check localization layer by layer, the connection of a candidate mode across the relevant gap, its response to symmetry-preserving perturbations, and thickness or embedding convergence. A crossing in one surface path is not by itself evidence of a protected state; conversely, a finite slab can hybridize opposite boundaries and obscure a state that survives in a semi-infinite limit.
+## A reduced Hamiltonian must reproduce the relevant physics
 
-## Convergence and provenance are part of the classification
+Wannier or other reduced Hamiltonians can make dense invariant and boundary calculations practical. They are not automatically faithful merely because their interpolated bands look smooth.
 
-Consume a state-identical parent calculation or a separately validated reduced representation; record structure, magnetic state, SOC convention, potentials/basis, k mesh, selected bands, energy reference, symmetry detection tolerance, invariant method, mesh/loop definitions, gauge choices, and the full convergence series. If a Wannier Hamiltonian is used, its band and symmetry agreement with the parent state must be established on the domain used for the invariant and boundary calculation. Interpolating more points cannot repair a wrong subspace or a broken symmetry.
+Validate the reduced representation against the parent calculation over the complete energy and momentum domain needed for the invariant. Check band order, degeneracies, symmetry eigenvalues, SOC and magnetic structure, and the gap. Interpolating more points cannot repair a wrong subspace or a broken protecting symmetry.
 
-Test changes that could close a small gap, alter the subspace, or violate a protecting symmetry. Keep numerical convergence separate from robustness to method choices, and keep both separate from experimental identification. **Berry Phase and Berry Curvature** supplies geometric quantities but does not classify a phase. **Wannier Function Construction** supplies a representation but does not validate topology. **Electronic Transport** and **Quantum Transport** require their own scattering, device, or response models. This topic does not establish synthesis, a protected boundary observation, quantized transport, a device property, or a material conclusion.
+The choice of disentanglement window can itself change the selected subspace. Preserve the projections, windows, symmetry constraints, and comparison with the parent Hamiltonian.
+
+## Boundary states require a second, geometry-specific calculation
+
+Bulk--boundary correspondence connects suitable bulk topology to robust boundary phenomena under stated assumptions. It does not imply that every slab or ribbon band is topological.
+
+A boundary calculation introduces orientation, termination, thickness or semi-infinite embedding, reconstruction, disorder, surface potential, chemical potential, and projection choices. Trivial dangling-bond bands, quantum-well states, and termination-dependent resonances can occur in the same energy range as a topological boundary mode.
+
+Compare the boundary spectrum with the projected bulk continuum for the same Hamiltonian. Test layer localization, connectivity across the relevant gap, response to symmetry-preserving perturbations, and thickness or embedding convergence. A crossing along one surface path is not sufficient evidence. Conversely, a thin slab can hybridize its two surfaces and obscure a state that survives in the semi-infinite limit.
+
+## Converge the classification, not only the plot
+
+Record the structure, magnetic and SOC state, basis or potentials, parent k mesh, selected bands, symmetry tolerance, invariant formula, integration mesh or loop family, gauge convention, and complete convergence series.
+
+Test every numerical or modelling change that could close the gap, alter the subspace, or break the protecting symmetry. Keep three questions distinct:
+
+1. Did the numerical method converge?
+2. Is the classification robust to defensible model choices?
+3. Has a corresponding experimental boundary phenomenon been observed?
+
+**Berry Phase and Berry Curvature** supplies geometric quantities but does not classify a phase. **Wannier Function Construction** supplies a representation but does not validate topology. **Electronic Transport** and **Quantum Transport** require additional response, scattering, and device models.
+
+This topic can establish a topological classification and a compatible boundary-state calculation for a declared Hamiltonian and domain. It does not establish synthesis, experimental observation, quantized transport, disorder robustness outside the tested model, or device performance.
 
 ## Sources and methods
 
