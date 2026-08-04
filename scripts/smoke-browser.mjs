@@ -102,8 +102,10 @@ async function captureFullPage(page, path) {
 }
 
 async function waitForRecipeRedirect(page) {
-  await page.waitForFunction(() => location.pathname.includes('/workflows/') && document.readyState === 'complete', { timeout: 5000 });
+  const deadline = Date.now() + 5000;
+  while (Date.now() < deadline && !new URL(page.url()).pathname.includes('/workflows/')) await delay(50);
   if (!new URL(page.url()).pathname.includes('/workflows/')) throw new Error(`recipe redirect did not reach Worked Workflows: ${page.url()}`);
+  await page.waitForSelector('body', { timeout: 5000 });
 }
 
 async function inspectPage(page, expectedStatus) {
