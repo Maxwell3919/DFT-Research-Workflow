@@ -7,7 +7,7 @@ Electron--phonon coupling (EPC) describes how a specified lattice vibration chan
 
 A phonon calculation supplies the normal modes and their perturbations. EPC adds the response of the electronic states to those perturbations. Superconductivity, transport, and spectral renormalization are later uses of that information, each with additional assumptions and convergence requirements.
 
-## Begin with one scattering channel
+## The matrix element is the primitive quantity
 
 For an initial state `|n k⟩`, a final state `|m, k+q⟩`, and phonon branch `ν`, the coupling is commonly written
 
@@ -21,7 +21,7 @@ That distinction matters. A matrix element is not yet a scattering rate, linewid
 
 The normalization convention must also be preserved. Mode eigenvectors, atomic masses, cell choice, phase, and electronic gauge can change intermediate representations. A physically meaningful comparison therefore uses either the same conventions or a final observable that is invariant under the allowed transformations.
 
-## Follow the hierarchy from channels to averages
+## From a matrix element to an observable
 
 Fermi's golden rule combines `|g_mnν(k,q)|²` with occupations and energy-conserving factors to produce a transition probability. A phonon linewidth describes the decay of a selected phonon into electronic excitations under a declared electronic-state and integration model. An electronic linewidth or self-energy instead describes the lifetime or energy renormalization of a selected electronic excitation. They share the same interaction but answer different questions.
 
@@ -33,7 +33,7 @@ For a metal, the interaction can be averaged over the Fermi surface. The Eliashb
 
 A large local `|g|` does not guarantee a large total `λ`: phase space, density of states, phonon frequency, band and momentum weights, and the chosen electronic window also enter. Conversely, a single reported `λ` does not reveal which modes, bands, or regions of the Fermi surface produced it. Preserve mode-, momentum-, or frequency-resolved information when the mechanism matters.
 
-## Reciprocal-space integration is usually the limiting step
+## Comparable inputs and dense reciprocal space
 
 DFPT can evaluate phonon perturbations and EPC matrix elements on a coarse, explicitly declared k--q representation. Many observables require much denser integration because the relevant states may occupy narrow regions near a Fermi surface or band edge. A smooth band or phonon interpolation is therefore only an intermediate requirement; the final observable must be converged on the dense integration grid.
 
@@ -69,7 +69,7 @@ No universal k mesh, q mesh, smearing width, empty-band count, or interpolation 
 
 Preserve the complete lineage: parent ground state, DFPT perturbations, k and q meshes and weights, phonon and electronic conventions, matrix-element normalization, interpolation inputs, carrier or Fermi-level definition, integration settings, code versions, and convergence series.
 
-A completed EPC workflow can support a conditional statement about the interaction or a derived observable within its declared model. It does not by itself establish electron--phonon-limited mobility, an experimental linewidth, a superconducting phase, or a material conclusion. **Conventional Superconductivity** must separately justify the pairing model, Coulomb treatment, stability of the normal state, and transition-temperature inference.
+A completed EPC workflow can support a conditional statement about the interaction or a derived observable within its declared model. It does not establish electron-phonon-limited mobility, an experimental linewidth, a superconducting phase, or a material conclusion. **Conventional Superconductivity** must separately justify the pairing model, Coulomb treatment, stability of the normal state, and transition-temperature inference.
 
 ## Sources and methods
 
