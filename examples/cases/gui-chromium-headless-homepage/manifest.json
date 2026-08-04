@@ -1,0 +1,33 @@
+{
+  "case_id": "gui-chromium-headless-homepage",
+  "title": "Talos Chromium headless local-document capture",
+  "evidence_class": "real-interface-walkthrough",
+  "execution_host": "Talos local host",
+  "software": {
+    "binary": "google-chrome",
+    "version": "captured in environment.txt"
+  },
+  "source": {
+    "path": "source/walkthrough.html",
+    "role": "local versioned browser walkthrough document"
+  },
+  "command": "google-chrome --headless=new --disable-gpu --hide-scrollbars --window-size=1280,720 --screenshot=figures/chromium-headless-walkthrough.png file://.../source/walkthrough.html",
+  "artifacts": {
+    "png": "figures/chromium-headless-walkthrough.png",
+    "public_copy": "public/media/gui/chromium-headless-homepage/chromium-headless-walkthrough.png",
+    "stdout": "output/chromium.stdout",
+    "stderr": "output/chromium.stderr",
+    "sanitization": "output/sanitization.txt (raw stderr is not committed; exact case-directory prefix is deterministically replaced with a dot)",
+    "hashes": "output/SHA256SUMS",
+    "parsed": "derived/capture.json"
+  },
+  "gates": {
+    "G0": "PASS after check.sh: source/output existence and SHA-256 records",
+    "G1": "PASS after check.sh: Chromium headless process exit marker",
+    "G2": "NOT APPLICABLE: no scientific solver or optimizer",
+    "G3": "PASS after check.sh: exact PNG dimensions and strict parser",
+    "G4": "NOT TESTED: no numerical observable",
+    "G5": "NOT CLAIMED: browser screenshot does not validate a structure or DFT result"
+  },
+  "claim_boundary": "This case proves only that the recorded Chromium binary rendered the local source document to the captured PNG. X11/GLX/window detection and VESTA are explicitly not claimed."
+}

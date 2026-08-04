@@ -1,0 +1,3 @@
+rule=replace the exact case directory prefix with a dot
+raw_stderr_sha256=98e4cb43a773b71c010ee9df683ab3a257bd3e7d11850f43dcc3bf1cd9ec4ea1
+public_stderr_sha256=3eda92763b716635b0d4643c68d825d4543938626e929813aa1060408ad9f9f6

@@ -1,0 +1,9 @@
+{
+  "case_id": "gui-chromium-headless-homepage",
+  "claim_boundary": "Browser headless rendering only; no X11 window, VESTA, structure, DFT, convergence, or scientific claim.",
+  "png_height": 720,
+  "png_sha256": "39934e227c45ca38003278b28bb6ac0bddd057d414bd1f925111efd335f9d975",
+  "png_width": 1280,
+  "source_sha256": "83419b6c73f3da8089364694fe4aca8c5ce0402334a74d8ca50c17df3839b435",
+  "stdout_sha256": "19eaf43821a7660ec323a87c8457bf74823beb296c39f5e01aa8a683aa50f061"
+}
