@@ -1,6 +1,8 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import {
   practicalGuidePath,
@@ -10,35 +12,53 @@ import {
 import { getWorkflowTopics, type WorkflowTopic } from '../../../../lib/workflow';
 import { withBase } from '../../../../lib/paths';
 import mediaDocument from '../../../../../workflow/practical-guide-media.json';
+import evidenceDocument from '../../../../../workflow/practical-evidence.json';
+import workflowsDocument from '../../../../../recipes/index.json';
+
+type GateRecord = Record<string, { status?: string; summary?: string }>;
+type EvidenceRecord = { guide_slug: string; evidence_class: string; case_id?: string };
 
 type GuideProps = {
   guide: CollectionEntry<'practicalGuides'>;
   topic: WorkflowTopic;
+  evidence: EvidenceRecord;
+  caseGates?: GateRecord;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const topics = new Map(getWorkflowTopics().map((topic) => [topic.slug, topic]));
   const guides = await getCollection('practicalGuides');
+  const evidenceByGuide = new Map((evidenceDocument.guides as EvidenceRecord[]).map((record) => [record.guide_slug, record]));
 
-  return guides.map((guide) => {
+  return Promise.all(guides.map(async (guide) => {
     const topic = topics.get(guide.data.topic_slug);
     if (!topic) throw new Error(`Unknown practical-guide parent topic: ${guide.data.topic_slug}`);
+    const evidence = evidenceByGuide.get(guide.data.guide_slug);
+    if (!evidence) throw new Error(`Missing practical evidence record: ${guide.data.guide_slug}`);
+    let caseGates: GateRecord | undefined;
+    if (evidence.case_id) {
+      const manifest = JSON.parse(await readFile(join(process.cwd(), 'examples', 'cases', evidence.case_id, 'manifest.json'), 'utf8'));
+      caseGates = manifest.gates as GateRecord;
+    }
     return {
       params: {
         topic: guide.data.topic_slug,
         category: practicalRouteSegment[guide.data.kind],
         slug: guide.data.guide_slug,
       },
-      props: { guide, topic } satisfies GuideProps,
+      props: { guide, topic, evidence, caseGates } satisfies GuideProps,
     };
-  });
+  }));
 };
 
-const { guide, topic } = Astro.props as GuideProps;
+const { guide, topic, evidence, caseGates } = Astro.props as GuideProps;
 const GuideContent = (await render(guide)).Content;
 const kindLabel = practicalKindLabel[guide.data.kind];
 const assets = mediaDocument.assets.filter((asset) => guide.data.media_ids.includes(asset.id));
 const canonicalPath = practicalGuidePath(guide);
+const publishedWorkflow = workflowsDocument.workflows.find((workflow) => workflow.case_id === evidence.case_id);
+const caseRoot = evidence.case_id ? `examples/cases/${evidence.case_id}/` : undefined;
+const caseUrl = caseRoot ? `https://github.com/Maxwell3919/DFT-Research-Workflow/tree/main/${caseRoot}` : undefined;
 ---
 
 <BaseLayout
@@ -81,6 +101,23 @@ const canonicalPath = practicalGuidePath(guide);
         Execution checks confirm only the bounded software or analysis assertions made by this page. They do not establish numerical convergence, energetic stability, or transferability to another system.
       </p>
     </div>
+
+    {evidence.case_id && caseGates && (
+      <section class="article-content" aria-labelledby="terminal-case-heading">
+        <h2 id="terminal-case-heading">Terminal-first execution case</h2>
+        <p>
+          This page's <strong>{evidence.evidence_class}</strong> classification is bound to
+          {' '}<a href={caseUrl}>{caseRoot}</a>. The case directory, rather than this prose page,
+          is the authority for exact inputs, commands, stdout/stderr, hashes, parser, derived data, and claim boundary.
+        </p>
+        {publishedWorkflow && <p><a href={withBase(`workflows/${publishedWorkflow.slug}/`)}>Read the continuous Worked Workflow</a>.</p>}
+        <dl>
+          {Object.entries(caseGates).sort(([a], [b]) => a.localeCompare(b)).map(([gate, record]) => (
+            <><dt>{gate} {record.status ?? 'UNKNOWN'}</dt><dd>{record.summary ?? 'No summary declared.'}</dd></>
+          ))}
+        </dl>
+      </section>
+    )}
 
     <div class="article-content"><GuideContent /></div>
 

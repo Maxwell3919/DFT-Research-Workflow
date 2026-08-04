@@ -1,0 +1,13 @@
+{
+  "pseudopotentials": [
+    {
+      "filename": "C.pbe-n-kjpaw_psl.1.0.0.UPF",
+      "relativistic": "scalar",
+      "sha256": "9900d1efd50b9848e31849f39094b33348486b400ee51e0f3922f716137cf3d7",
+      "source": "PSLibrary 1.0.0 public distribution via the Quantum ESPRESSO pseudopotential portal",
+      "source_url": "https://pseudopotentials.quantum-espresso.org/upf_files/C.pbe-n-kjpaw_psl.1.0.0.UPF",
+      "xc_functional": "SLA  PW   PBX  PBC"
+    }
+  ],
+  "schema_version": "1.0"
+}

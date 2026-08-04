@@ -1,0 +1,9 @@
+{
+  "filename": "Al.pbe-n-rrkjus_psl.1.0.0.UPF",
+  "sha256": "cc4f5dc6afe09c8f482dc7645e6e7cca546a55f8d907c71c825c62bf85a38d3e",
+  "source_declaration": "PSLibrary PBE scalar-relativistic USPP entry, as recorded by the teaching fixture.",
+  "xc_functional": "PBE",
+  "relativistic": "scalar",
+  "cutoff_metadata": {"ecutwfc_ry": 30.0, "ecutrho_ry": 240.0},
+  "boundary": "Identity metadata only: no UPF body is stored, read, or redistributed; the declaration does not establish transferability or scientific suitability."
+}

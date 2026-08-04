@@ -5,7 +5,7 @@ const errors = [];
 const workflow = JSON.parse(await readFile(new URL('workflow/topics.json', root), 'utf8'));
 const operations = JSON.parse(await readFile(new URL('ontology/operations.json', root), 'utf8')).operations;
 const legacy = JSON.parse(await readFile(new URL('ontology/legacy-operations.json', root), 'utf8')).entries;
-const recipes = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8')).recipes;
+const recipes = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8')).legacy_recipe_redirects;
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const expectedSections = ['A', 'B', 'C', 'D', 'E'];

@@ -1,0 +1,113 @@
+{
+  "artifacts": [
+    {
+      "bytes": 542,
+      "path": "output/graphene-2x2-vacuum.xyz",
+      "role": "vacuum_slab",
+      "sha256": "905db1e1a6f9e8d046a893e6758c4ab68257cd4ff9b19983bbfcdcdc5531d11e"
+    },
+    {
+      "bytes": 596,
+      "path": "output/graphene-2x2-H-ontop.xyz",
+      "role": "adsorbate_structure",
+      "sha256": "8e670ca2240115a01a74bd75a10ccaccc2b4897fd04e11dd63e3e8ad08d5d925"
+    },
+    {
+      "bytes": 745,
+      "path": "input/POSCAR.graphene-2x2-vacuum",
+      "role": "calculation_structure",
+      "sha256": "3d467b293dec81683a6e064fd4fb906a9eff5a4cc6a58c253f0bb479f288e6b5"
+    },
+    {
+      "bytes": 1532,
+      "path": "derived/graphene-model-report.json",
+      "role": "report",
+      "sha256": "cf682132546b2b462b13d97791ad5c8ff6874f18cf3229e4b0fa9dca5e848bf6"
+    },
+    {
+      "bytes": 168,
+      "path": "derived/geometry-summary.csv",
+      "role": "table",
+      "sha256": "7e8e7690b7b4151d669a5418e45a3bf55e4d0c84544ec50cade5482fb1807517"
+    },
+    {
+      "bytes": 27567,
+      "path": "figures/graphene-H-xz.png",
+      "role": "figure",
+      "sha256": "3a31370326dfad6288636f5d0fdf9ee5661fbead39e767449c5593563b385d59"
+    }
+  ],
+  "case_id": "structure-graphene-vacuum-adsorbate",
+  "case_kind": "structure-operation",
+  "claim_boundary": {
+    "does_not_support": [
+      "An adsorption site preference, relaxed geometry, adsorption energy, Dirac-band result, or universal vacuum/k-point recommendation."
+    ],
+    "supports": [
+      "The recorded ASE construction of a 2D periodic model with nonperiodic z and one H candidate."
+    ]
+  },
+  "commands": [
+    {
+      "command": "PYTHON=python3 bash run.sh",
+      "exit_code": 0,
+      "stage": "construct"
+    },
+    {
+      "command": "bash check.sh",
+      "exit_code": 0,
+      "stage": "acceptance"
+    }
+  ],
+  "completed_at": "2026-08-05T00:00:00+08:00",
+  "evidence_class": "real-execution",
+  "exit_code": 0,
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "summary": "required structures and derived artifacts are hash-bound"
+    },
+    "G1": {
+      "status": "PASS",
+      "summary": "ASE construction script exited zero"
+    },
+    "G2": {
+      "status": "WARN",
+      "summary": "no relaxation or solver was run"
+    },
+    "G3": {
+      "status": "PASS",
+      "summary": "2D vacuum, adsorbate, calculation-structure export, and PNG are present"
+    },
+    "G4": {
+      "status": "NOT TESTED",
+      "summary": "no vacuum, site, or energy convergence study"
+    },
+    "G5": {
+      "status": "NOT CLAIMED",
+      "summary": "no adsorption, stability, or electronic conclusion"
+    }
+  },
+  "public_host_label": "Talos local execution",
+  "schema_version": "1.0",
+  "software": [
+    {
+      "interface": "Python API",
+      "name": "ASE",
+      "version": "3.29.0"
+    }
+  ],
+  "sources": [
+    {
+      "accessed_at": "2026-08-05",
+      "id": "ase-graphene-builder",
+      "licence_boundary": "Generated locally using ASE; it is a tutorial geometry rather than a database identity.",
+      "path": "source/graphene-unit.xyz",
+      "role": "procedural structure source",
+      "sha256": "6f2a67ff1c879d1e171036fdd1528b09d4a6ccaa29eaad7fd894ec6e8dd3ee6d",
+      "url": "https://wiki.fysik.dtu.dk/ase/ase/build/build.html"
+    }
+  ],
+  "started_at": null,
+  "title": "Graphene 2D vacuum and H adsorbate candidate"
+}

@@ -1,0 +1,4 @@
+# QE fixed-width stdout and the generated CSV intentionally retain source bytes.
+output/*.stdout -whitespace
+output/*.txt -whitespace
+derived/*.csv -whitespace

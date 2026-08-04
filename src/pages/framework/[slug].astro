@@ -1,25 +1,55 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/paths';
 
-type Props = { page: CollectionEntry<'framework'> };
+type Migration = { destination: string; title: string; summary: string };
+type Props = { slug: string; migration: Migration };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const pages = await getCollection('framework');
-  return pages.map((page) => ({ params: { slug: page.data.slug }, props: { page } satisfies Props }));
+export const migrations: Record<string, Migration> = {
+  'lifecycle-and-operation-map': {
+    destination: 'operations/',
+    title: 'Research Workflow',
+    summary: 'The A–E research workflow now introduces the map, branching target calculations, and returns to earlier tasks.',
+  },
+  'relations-and-feedback-loops': {
+    destination: 'operations/',
+    title: 'Research Workflow',
+    summary: 'Feedback and revisiting earlier tasks are explained with the A–E workflow rather than in a separate framework.',
+  },
+  'workflow-model': {
+    destination: 'operations/',
+    title: 'Research Workflow',
+    summary: 'The workflow model is part of the reader-facing A–E directory and is not an additional scientific taxonomy.',
+  },
+  'tags-and-methods': {
+    destination: 'operations/choose-dft-method-and-computational-setup/',
+    title: 'Choose the DFT Method and Computational Setup',
+    summary: 'Method context and implementation constraints belong with calculation preparation.',
+  },
+  'evidence-provenance-and-reproducibility': {
+    destination: 'operations/document-and-preserve-study/',
+    title: 'Document and Preserve the Study',
+    summary: 'Provenance and reproducibility are now handled with preservation and reconstruction of the completed study.',
+  },
 };
 
-const { page } = Astro.props as Props;
-const Content = (await render(page)).Content;
+export const getStaticPaths: GetStaticPaths = async () => {
+  return Object.entries(migrations).map(([slug, migration]) => ({
+    params: { slug },
+    props: { slug, migration } satisfies Props,
+  }));
+};
+
+const { migration } = Astro.props as Props;
 ---
 
-<BaseLayout title={page.data.title} description={`Framework page: ${page.data.title}.`} current="framework">
+<BaseLayout title="Framework migration" description={`Moved to ${migration.title}.`}>
   <article class="chapter">
-    <p class="breadcrumb"><a href={withBase('framework/')}>Framework</a></p>
-    <h1>{page.data.title}</h1>
-    <div class="article-content"><Content /></div>
-    <p class="directory-link"><a href={withBase('framework/')}>Return to Framework</a></p>
+    <p class="breadcrumb"><a href={withBase('framework/')}>Framework migration</a></p>
+    <h1>Moved to {migration.title}</h1>
+    <p class="page-intro">{migration.summary}</p>
+    <p><a href={withBase(migration.destination)}>Continue to {migration.title}</a></p>
+    <p class="directory-link"><a href={withBase('operations/')}>Return to the Research Workflow</a></p>
   </article>
 </BaseLayout>

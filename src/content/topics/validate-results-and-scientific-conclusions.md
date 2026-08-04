@@ -5,6 +5,12 @@ status: reviewed
 
 Validation asks whether a result is credible for the scientific use assigned to it and whether the proposed conclusion is no stronger than the evidence. It is not a final checkbox after plotting. It is a structured attempt to make the result fail through numerical, physical, methodological, and external challenges.
 
+## Keep evidence boundaries visible throughout the workflow
+
+Evidence is accumulated across the workflow, not added as a label at the end. File existence and hashes establish artifact identity; normal program termination establishes only that a program reached its own end condition; solver or optimizer criteria establish the specific numerical condition the program reports. A target observable still requires its own convergence evidence, and a physical conclusion needs tests appropriate to its model and claim.
+
+Use these distinctions when a result returns to an earlier task. A failed identity check returns to input and provenance; an unconverged observable returns to numerical preparation; a competing physical state returns to model construction or reference calculations. This feedback is normal research practice, not evidence that one linear recipe has failed.
+
 Two questions must remain separate. Verification asks whether the equations, software, and analysis were executed as intended. Validation asks whether the chosen model represents the relevant physical system adequately for a stated purpose. The workflow must distinguish verification from validation. A reproducible calculation can reproduce the same omission, while agreement with one experiment can arise from compensating errors.
 
 ## Build a claim–evidence map

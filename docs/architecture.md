@@ -25,6 +25,14 @@ E · Research Completion
 These letters are navigation aids. They do not imply that every project follows
 one irreversible linear sequence.
 
+The top-level public navigation is **Home**, **Research Workflow**, **Worked
+Workflows**, and **Tools**. Framework is no longer a reader-facing directory:
+branching and feedback live in the Research Workflow introduction; method
+context, evidence boundaries, and provenance live in the corresponding B and E
+topics. Old `/framework/*` URLs remain short migration surfaces. Former recipe
+URLs receive the same treatment, while `/workflows/` is reserved for continuous
+worked cases backed by committed execution directories.
+
 ## Researcher-scale tasks
 
 A public topic should be a unit of work that a researcher can reasonably plan,
@@ -42,6 +50,21 @@ separate public topics merely because software can record them separately.
 Machine-readable provenance may remain more granular than the teaching site.
 The public information architecture does not need to match an execution engine
 or provenance graph.
+
+## Terminal-first execution cases
+
+A practical page marked `real-execution` binds to one directory under
+`examples/cases/<case-id>/`. That directory is the source for displayed input,
+commands, raw or deterministically excerpted output, parsed data, figures,
+hashes, and G0–G5 claims. The web page may select and explain those records, but
+it must not maintain a second handwritten result.
+
+The gates deliberately separate artifact identity (G0), program completion
+(G1), solver/optimizer thresholds (G2), downstream artifacts (G3),
+observable-specific numerical convergence (G4), and physical consistency or a
+scientific conclusion (G5). A case may be useful while declaring `FAIL`,
+`NOT TESTED`, or `NOT CLAIMED`; its `check.sh` must return nonzero whenever it
+prints a required `FAIL`.
 
 ## Topic registry and stable routes
 

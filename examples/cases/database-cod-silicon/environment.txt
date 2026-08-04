@@ -1,0 +1,9 @@
+host=Talos
+os=Linux
+shell=bash
+curl=curl 8.5.0 (x86_64-pc-linux-gnu)
+python=Python 3.12.3
+structure_analysis=case-local analyze_structure.py
+structure_analysis_dependencies=ASE and spglib
+ase=3.29.0
+spglib=2.7.0

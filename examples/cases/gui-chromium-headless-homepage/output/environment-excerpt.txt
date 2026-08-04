@@ -1,0 +1,8 @@
+display=<unset>
+xdpyinfo=FAIL (no usable DISPLAY)
+glxinfo=UNAVAILABLE
+xvfb=UNAVAILABLE; X11 launch and window detection are blocked
+window_detection=UNAVAILABLE (xdotool absent)
+chrome_version=149.0.7827.53
+Chrome stdout:
+exit=0

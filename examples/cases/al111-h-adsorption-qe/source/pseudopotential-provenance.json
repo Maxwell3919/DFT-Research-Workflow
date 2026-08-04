@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "collection": "PBE PAW PSL-family pseudopotentials from recorded public sources",
+  "collection_url": "https://pseudopotentials.quantum-espresso.org/",
+  "accessed_at": "2026-08-05",
+  "verification_method": "Read-only SHA-256 and header-metadata inspection of the QE 7.5 runtime copy; no pseudopotential body is included in this case.",
+  "files": [
+    {
+      "element": "Al",
+      "filename": "Al.pbe-n-kjpaw_psl.1.0.0.UPF",
+      "functional": "SLA  PW   PBX  PBC",
+      "pseudo_type": "PAW",
+      "sha256": "fd7b78921e6d0939095b681c328732668eaefd1dee6882fdbc03be463550cc97",
+      "z_valence": 3.0,
+      "header_wfc_cutoff_ry": 29.49430082156,
+      "header_rho_cutoff_ry": 143.4836740307,
+      "source": "SSSP 1.3.0 PBE Precision",
+      "source_url": "https://www.materialscloud.org/discover/sssp/table/precision"
+    },
+    {
+      "element": "H",
+      "filename": "H.pbe-kjpaw_psl.1.0.0.UPF",
+      "functional": "SLA  PW   PBX  PBC",
+      "pseudo_type": "PAW",
+      "sha256": "dd48be99c7a91c4163ed123cdac938af189a9f62f382c41e3f664d00a586839d",
+      "z_valence": 1.0,
+      "header_wfc_cutoff_ry": 45.6558,
+      "header_rho_cutoff_ry": 220.911,
+      "source": "Quantum ESPRESSO pseudopotential portal; PSL PAW PBE family",
+      "source_url": "https://pseudopotentials.quantum-espresso.org/upf_files/H.pbe-kjpaw_psl.1.0.0.UPF"
+    }
+  ],
+  "boundary": "The provenance identifies two scalar PBE PAW PSL-family files for one runtime entry. It neither redistributes their contents nor establishes that this file pair or its cutoff is numerically adequate for adsorption."
+}

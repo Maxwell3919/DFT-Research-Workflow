@@ -134,26 +134,20 @@ for (const [name, values] of Object.entries(tagSets)) {
   if (values.size !== (tagsDocument?.[name] ?? []).length) errors.push(`tag family ${name} contains duplicate values`);
 }
 
-const recipes = recipesDocument?.recipes ?? [];
-if (recipes.length !== 16) errors.push(`recipe registry must contain exactly 16 workflow recipes, found ${recipes.length}`);
+const recipes = recipesDocument?.legacy_recipe_redirects ?? [];
+if (recipes.length !== 16) errors.push(`migration registry must retain exactly 16 legacy recipe routes, found ${recipes.length}`);
 const recipeSlugs = recipes.map((recipe) => recipe.slug);
 if (new Set(recipeSlugs).size !== recipeSlugs.length) errors.push('duplicate recipe slug');
 for (const recipe of recipes) {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(recipe.slug ?? '')) errors.push(`invalid recipe slug ${recipe.slug}`);
-  if (recipe.status !== 'scaffold') errors.push(`${recipe.slug}: recipe status must be scaffold`);
-  if (!Array.isArray(recipe.operations) || recipe.operations.length === 0) errors.push(`${recipe.slug}: operations must be non-empty`);
-  for (const operationId of recipe.operations ?? []) {
-    if (!expectedIds.includes(operationId)) errors.push(`${recipe.slug}: unknown operation ${operationId}`);
-  }
-  for (const tag of recipe.system_types ?? []) {
-    if (!tagSets.system_types.has(tag)) errors.push(`${recipe.slug}: unknown system type ${tag}`);
-  }
-  for (const tag of recipe.scientific_targets ?? []) {
-    if (!tagSets.scientific_targets.has(tag)) errors.push(`${recipe.slug}: unknown scientific target ${tag}`);
-  }
-  for (const tag of recipe.methods ?? []) {
-    if (!tagSets.methods.has(tag)) errors.push(`${recipe.slug}: unknown method ${tag}`);
-  }
+  if (recipe.destination !== null && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(recipe.destination ?? '')) errors.push(`${recipe.slug}: invalid workflow redirect destination`);
+}
+
+const publishedWorkflows = recipesDocument?.workflows ?? [];
+if (publishedWorkflows.length !== 2) errors.push(`initial Worked Workflows release must contain exactly Silicon and Aluminium, found ${publishedWorkflows.length}`);
+const publishedCaseIds = publishedWorkflows.map((workflow) => workflow.case_id).sort();
+if (JSON.stringify(publishedCaseIds) !== JSON.stringify(['aluminium-metallic-electronic-structure', 'silicon-ground-state-electronic-structure'])) {
+  errors.push(`unexpected initial Worked Workflows cases: ${JSON.stringify(publishedCaseIds)}`);
 }
 
 const relationTypes = new Set(relationsDocument?.relation_types ?? []);
@@ -171,4 +165,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Operation ontology valid: 24 core operations with non-empty typed inputs/outputs, ${recipes.length} recipe scaffolds, 35 legacy route mappings, seven lifecycle projections, and resolvable typed tags/relations.`);
+console.log(`Migration ontology valid: historical 24-operation sources, ${recipes.length} legacy recipe redirects, two published Worked Workflows, 35 legacy route mappings, seven lifecycle projections, and resolvable typed tags/relations.`);

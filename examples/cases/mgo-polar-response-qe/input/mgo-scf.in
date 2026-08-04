@@ -1,0 +1,29 @@
+&CONTROL
+  calculation = 'scf',
+  prefix = 'mgo_polar',
+  outdir = './out',
+  pseudo_dir = './pseudo',
+/
+&SYSTEM
+  ibrav = 0,
+  nat = 2,
+  ntyp = 2,
+  ecutwfc = 75.0,
+  ecutrho = 600.0,
+  occupations = 'fixed',
+/
+&ELECTRONS
+  conv_thr = 1.0d-10,
+/
+ATOMIC_SPECIES
+Mg 24.3050 Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF
+O  15.9994 O.pbe-n-kjpaw_psl.0.1.UPF
+CELL_PARAMETERS angstrom
+0.0000000000 2.1060000000 2.1060000000
+2.1060000000 0.0000000000 2.1060000000
+2.1060000000 2.1060000000 0.0000000000
+ATOMIC_POSITIONS crystal
+Mg 0.0000000000 0.0000000000 0.0000000000
+O  0.5000000000 0.5000000000 0.5000000000
+K_POINTS automatic
+6 6 6 0 0 0

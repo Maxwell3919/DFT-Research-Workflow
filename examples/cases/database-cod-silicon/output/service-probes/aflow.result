@@ -1,0 +1,2 @@
+status=200
+url=https://aflow.org/API/aflux/?species(Si),$paging(1),$format(json)

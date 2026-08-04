@@ -1,19 +1,42 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/paths';
 
-const pages = await getCollection('framework');
+const destinations = [
+  {
+    title: 'Research Workflow map, branching, and feedback',
+    href: 'operations/',
+    detail: 'The A–E directory introduces the workflow as a branching, revisitable research map rather than a fixed sequence.',
+  },
+  {
+    title: 'Method context',
+    href: 'operations/choose-dft-method-and-computational-setup/',
+    detail: 'Method choice, implementation compatibility, and setup identity now belong with calculation preparation.',
+  },
+  {
+    title: 'Evidence boundaries',
+    href: 'operations/validate-results-and-scientific-conclusions/',
+    detail: 'Validation distinguishes artifact checks, numerical convergence, physical consistency, and claim support.',
+  },
+  {
+    title: 'Provenance and reproducibility',
+    href: 'operations/document-and-preserve-study/',
+    detail: 'Study identity, lineage, preservation, and reconstruction now belong with research completion.',
+  },
+];
 ---
 
-<BaseLayout title="Framework" description="Cross-cutting workflow relations, methods, evidence boundaries, provenance, and reproducibility." current="framework">
-  <h1>Framework</h1>
+<BaseLayout title="Framework migration" description="Migrated cross-cutting concepts in the A–E research workflow.">
+  <h1>Framework migration</h1>
   <p class="page-intro">
-    These pages explain concepts that connect the A–E research workflow, including branching, feedback, contextual methods, evidence boundaries, provenance, and reproducibility. They are not additional tasks or mandatory page templates.
+    Framework is no longer a primary section. Its useful cross-cutting material has been placed with the researcher-scale task where it is used. This temporary page preserves older links without creating another public taxonomy.
   </p>
   <ol class="directory-list">
-    {pages.sort((left, right) => left.data.slug.localeCompare(right.data.slug)).map((page) => (
-      <li><a href={withBase(`framework/${page.data.slug}/`)}>{page.data.title}</a></li>
+    {destinations.map((destination) => (
+      <li>
+        <a href={withBase(destination.href)}>{destination.title}</a>
+        <span>{destination.detail}</span>
+      </li>
     ))}
   </ol>
 </BaseLayout>

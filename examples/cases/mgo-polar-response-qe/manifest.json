@@ -1,0 +1,186 @@
+{
+  "artifacts": [
+    {
+      "bytes": 625,
+      "path": "input/mgo-scf.in",
+      "role": "QE SCF input",
+      "sha256": "2ce356d54e34c1b7563e0656f8c020ad5055f94a1876def2a818ccd565ff137d"
+    },
+    {
+      "bytes": 133,
+      "path": "input/mgo-ph.in",
+      "role": "QE DFPT input",
+      "sha256": "dbf78a8475c0baca79f8b6f762fa12a26a66f83b5c222a6869be7c3b47ca8185"
+    },
+    {
+      "bytes": 974,
+      "path": "input/qe_plan.json",
+      "role": "QE plan",
+      "sha256": "157acc9decf7ea17d020aa0a58ae140c9b34f8a15c6a4f8db7b6034ef9e6d970"
+    },
+    {
+      "bytes": 2052,
+      "path": "input/pseudopotentials.json",
+      "role": "pseudopotential declaration",
+      "sha256": "c3d1c7441d49e5d52e057b04efda948961448de9fa3275d37f0b990e97ffb6b5"
+    },
+    {
+      "bytes": 1754,
+      "path": "input/official-qe-7.5-parameters.json",
+      "role": "version-matched official parameter record",
+      "sha256": "0fbaeb374d0cde58e3140d272899561eeb0ac9d893a2aa3a6e98f2f921ffa7c6"
+    },
+    {
+      "bytes": 16194,
+      "path": "output/mgo-scf.out",
+      "role": "SCF stdout",
+      "sha256": "756b04461199e03b36dc8b95032e127ec0a535d8cc14fd33085f543743e5ed59"
+    },
+    {
+      "bytes": 0,
+      "path": "output/mgo-scf.err",
+      "role": "SCF stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2,
+      "path": "output/mgo-scf.exit",
+      "role": "SCF exit code",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "bytes": 18282,
+      "path": "output/mgo-ph.out",
+      "role": "DFPT stdout",
+      "sha256": "57837045f38918dd9848e305156f02214e1b97da572f65cc9e087352e0b900f3"
+    },
+    {
+      "bytes": 0,
+      "path": "output/mgo-ph.err",
+      "role": "DFPT stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2,
+      "path": "output/mgo-ph.exit",
+      "role": "DFPT exit code",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "bytes": 3901,
+      "path": "output/mgo_polar.dyn",
+      "role": "Gamma dynamical matrix",
+      "sha256": "911743ac3ea3d6d020aa8ed68a2d403c4aa2d7b3e27e605776ef6c2a65a036ee"
+    },
+    {
+      "bytes": 82,
+      "path": "output/run-status.txt",
+      "role": "run status",
+      "sha256": "d0e4700bbfbb83a51a17d354192027b4e0f2cd9fc885e043ca0f9939e561e3b7"
+    },
+    {
+      "bytes": 3580,
+      "path": "derived/response-report.json",
+      "role": "raw-output-derived response report",
+      "sha256": "6fc9a4f063d605ca3d7c64490256447e38cad725e8207b6a15f9bfb221a9d287"
+    },
+    {
+      "bytes": 58173,
+      "path": "figures/mgo-polar-response.png",
+      "role": "raw-output-derived PNG",
+      "sha256": "98c2976b7d37d1ffb7e00facf001c8060e3bb0aaa8b91539ff502fe812ed0159"
+    }
+  ],
+  "case_id": "mgo-polar-response-qe",
+  "case_kind": "calculation",
+  "claim_boundary": {
+    "does_not_support": [
+      "A converged dielectric response, static dielectric including ionic lattice contributions, LO--TO splitting, phonon dispersion, or experimental comparison.",
+      "A universal calculation-parameter recommendation or material-level scientific conclusion."
+    ],
+    "supports": [
+      "One captured QE 7.5 fixed-setup MgO SCF-to-Gamma-DFPT response with raw-output-derived electronic/ion-clamped dielectric and Born-charge records."
+    ]
+  },
+  "commands": [
+    {
+      "command": "srun --exclusive --mpi=pmix --ntasks=1 --cpus-per-task=1 --time=00:10:00 pw.x -in mgo-scf.in > mgo-scf.out 2> mgo-scf.err",
+      "exit_code": 0,
+      "stage": "scf"
+    },
+    {
+      "command": "srun --exclusive --mpi=pmix --ntasks=1 --cpus-per-task=1 --time=00:10:00 ph.x -in mgo-ph.in > mgo-ph.out 2> mgo-ph.err",
+      "exit_code": 0,
+      "stage": "gamma-dfpt"
+    },
+    {
+      "command": "bash extract.sh",
+      "exit_code": 0,
+      "stage": "strict-extraction"
+    },
+    {
+      "command": "bash check.sh",
+      "exit_code": 0,
+      "stage": "case-check"
+    }
+  ],
+  "completed_at": "2026-08-05T02:57:25+08:00",
+  "evidence_class": "real-execution",
+  "exit_code": 0,
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "summary": "Input plan, public pseudo provenance/hash declaration, official QE 7.5 parameter record, raw outputs, and derived artifacts are hash-bound."
+    },
+    "G1": {
+      "status": "PASS",
+      "summary": "Recorded pw.x and ph.x stage exit files are zero; each output has one QE 7.5 banner and one JOB DONE marker; captured stderr files are empty."
+    },
+    "G2": {
+      "status": "PASS",
+      "summary": "The recorded SCF printed electronic convergence in 15 iterations; this is not an observable-convergence study."
+    },
+    "G3": {
+      "status": "PASS",
+      "summary": "The strict parser binds the Gamma dynamical matrix and actual ph.x dielectric and Born-charge sections to the committed raw output."
+    },
+    "G4": {
+      "status": "NOT TESTED",
+      "summary": "No cutoff, k-mesh, q-mesh, or DFPT-threshold series was run for the reported response."
+    },
+    "G5": {
+      "status": "NOT CLAIMED",
+      "summary": "No converged dielectric constant, Born charge, LO--TO splitting, phonon dispersion, experimental agreement, or scientific conclusion is claimed."
+    }
+  },
+  "public_host_label": "Talos bounded QE execution",
+  "schema_version": "1.0",
+  "software": [
+    {
+      "interface": "MPI CLI; one recorded rank",
+      "name": "Quantum ESPRESSO PWSCF",
+      "version": "7.5"
+    },
+    {
+      "interface": "serial multi-threaded CLI",
+      "name": "Quantum ESPRESSO PHONON",
+      "version": "7.5"
+    },
+    {
+      "interface": "Python CLI",
+      "name": "case-local raw-output parser",
+      "version": "1.0"
+    }
+  ],
+  "sources": [
+    {
+      "id": "mgo-fixed-model",
+      "licence_boundary": "A declared teaching model, not an experimental structure or material-property reference.",
+      "path": "source/model.json",
+      "role": "fixed teaching-model source",
+      "sha256": "5054ce21c143f8fb38da0e71e649e2c1047d1387a2ead11e0c7ed76406db4366"
+    }
+  ],
+  "started_at": "2026-08-05T02:55:53+08:00",
+  "title": "MgO Gamma-point QE dielectric and Born-charge response"
+}

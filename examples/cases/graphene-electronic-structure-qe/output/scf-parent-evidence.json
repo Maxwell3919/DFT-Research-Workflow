@@ -1,0 +1,14 @@
+{
+  "artifacts": {
+    "input/graphene.scf.in": "e15e0637ceb0ff4aff9cfd2cfecdffe0fe3d04992f6de5cce9337c1df99f0586",
+    "output/execution-environment.txt": "af846c1a6a9e4ebcac49465dd07b96ca1fd3ae178e0b8f2310046ca7e25dea28",
+    "output/graphene.scf.exit": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "output/graphene.scf.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "output/graphene.scf.stdout": "aa24dc9ed6f8d61beb7e23259c74a51254b4acb9776aee160c80bc218441e17f"
+  },
+  "case_id": "graphene-qe-2d-teaching",
+  "scf_qeguard_audit_sha256": "396e6656c19471c5a36e49ab8549f356a93ae2b0c8ffe71585f1ecb0145dfae6",
+  "schema_version": "1.0",
+  "scientific_protocol_id": "graphene-qe-7.5-band-path-teaching-v1",
+  "stage": "scf"
+}

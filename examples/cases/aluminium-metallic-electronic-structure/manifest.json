@@ -1,0 +1,177 @@
+{
+  "artifacts": [
+    {
+      "bytes": 661,
+      "path": "output/compact-source-excerpt.txt",
+      "role": "deterministic public output excerpt rendered by the Worked Workflow",
+      "sha256": "3177b6ab03f645ff35656b115cae0c179a59221cc42aa48b3cbda6e6bf0633a9"
+    },
+    {
+      "bytes": 468,
+      "path": "input/scf.in",
+      "role": "SCF input",
+      "sha256": "660983565543f2bc154fe3d79a7bf480b2e02b9ae705d706457c661a64087ac0"
+    },
+    {
+      "bytes": 494,
+      "path": "input/nscf.in",
+      "role": "NSCF input",
+      "sha256": "1fdef0bc99e977e96b5d7cec1b750fe009170253a2953f197212c01103ff259d"
+    },
+    {
+      "bytes": 692,
+      "path": "input/bands.in",
+      "role": "bands input",
+      "sha256": "62a0406cd30f6b85c358e2f8efb76aab1ee79f8d4fbc494329e9d5c906c53141"
+    },
+    {
+      "bytes": 44502,
+      "path": "output/scf.out",
+      "role": "SCF stdout",
+      "sha256": "3a48a4fade8c52fd1b5e4d816be439de79911b3c9d7ea3d71f16257b6c9e0b39"
+    },
+    {
+      "bytes": 0,
+      "path": "output/scf.err",
+      "role": "SCF stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 220999,
+      "path": "output/nscf-full.out",
+      "role": "NSCF stdout",
+      "sha256": "fe4e1ecb29004cfadecff46d6b81748b085682c0abfc987be0be4e28205fed66"
+    },
+    {
+      "bytes": 0,
+      "path": "output/nscf-full.err",
+      "role": "NSCF stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 79993,
+      "path": "output/bands.out",
+      "role": "bands stdout",
+      "sha256": "312a05a44bbb15ed5ee5c437ac52fd658a2e43e35b56a2b49cfb231d711b4a95"
+    },
+    {
+      "bytes": 0,
+      "path": "output/bands.err",
+      "role": "bands stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 29659,
+      "path": "derived/al-mesh.csv",
+      "role": "raw-derived mesh table",
+      "sha256": "5bc4e7bd565ea99e3fd774de860b9aeb37b90874dfbe8fa484c4d0202758c9b4"
+    },
+    {
+      "bytes": 8563,
+      "path": "derived/al-path.csv",
+      "role": "raw-derived path table",
+      "sha256": "e6de08c86aa1d17fae2bb17fe8ee2b63a27e72379795cc611660c5ca20a17242"
+    },
+    {
+      "bytes": 541,
+      "path": "derived/captured-run-summary.json",
+      "role": "raw-derived summary",
+      "sha256": "c5396e8ba99b5f90da8f1b639c767f4cd98cb2a5c946886ffaf65785aded612b"
+    },
+    {
+      "alt": "Histogram of Aluminium band 2 eigenvalues minus the Fermi level over the captured 8 by 8 by 8 NSCF k-point sample, with the zero-energy Fermi reference marked in red.",
+      "bytes": 43935,
+      "path": "figures/raw-nscf-band2-sampling.png",
+      "role": "raw-output-derived NSCF band sampling histogram",
+      "sha256": "ae57110886c7b21e66a164ab6114b89dfa757c218f9b7df35112b404e98a698a"
+    }
+  ],
+  "case_id": "aluminium-metallic-electronic-structure",
+  "case_kind": "worked-workflow",
+  "claim_boundary": {
+    "does_not_support": [
+      "A converged DOS, Fermi surface, EOS, elastic property, carrier density, or transport result.",
+      "A universal smearing/k-mesh prescription.",
+      "A material-level physical or scientific conclusion."
+    ],
+    "supports": [
+      "A captured QE 7.5 metallic SCF, full-zone NSCF, and band-path execution record with raw-output-derived tables and figure."
+    ]
+  },
+  "commands": [
+    {
+      "command": "pw.x -in scf.in > scf.out 2> scf.err",
+      "exit_code": 0,
+      "stage": "scf"
+    },
+    {
+      "command": "pw.x -in nscf.in > nscf-full.out 2> nscf-full.err",
+      "exit_code": 0,
+      "stage": "full-zone-nscf"
+    },
+    {
+      "command": "pw.x -in bands.in > bands.out 2> bands.err",
+      "exit_code": 0,
+      "stage": "bands"
+    },
+    {
+      "command": "python3 parse.py",
+      "exit_code": 0,
+      "stage": "raw-output-parse"
+    }
+  ],
+  "completed_at": "2026-08-05T00:47:36+08:00",
+  "evidence_class": "real-execution",
+  "exit_code": 0,
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "summary": "Required tree and declared raw-input/output hashes pass strict parsing."
+    },
+    "G1": {
+      "status": "PASS",
+      "summary": "Captured QE 7.5 SCF, NSCF, and bands outputs each have one terminal marker and empty captured stderr."
+    },
+    "G2": {
+      "status": "PASS",
+      "summary": "Captured SCF reports electronic convergence in 5 iterations at its declared threshold; this is not a convergence study."
+    },
+    "G3": {
+      "status": "PASS",
+      "summary": "Three-stage stdout/stderr and raw-output-derived tables/PNG are present."
+    },
+    "G4": {
+      "status": "NOT TESTED",
+      "summary": "No observable-specific k-mesh, smearing, cutoff, empty-band, or DOS-broadening convergence series."
+    },
+    "G5": {
+      "status": "NOT CLAIMED",
+      "summary": "No physical or material-level scientific conclusion is claimed."
+    }
+  },
+  "public_host_label": "Talos-captured public case evidence",
+  "schema_version": "1.0",
+  "software": [
+    {
+      "interface": "MPI CLI (one recorded process)",
+      "name": "Quantum ESPRESSO PWSCF",
+      "version": "7.5"
+    },
+    {
+      "interface": "Python CLI",
+      "name": "case-local raw-output parser",
+      "version": "2.0"
+    }
+  ],
+  "sources": [
+    {
+      "id": "captured-qe-outputs",
+      "licence_boundary": "No private host path, pseudopotential body, restart tree, or wavefunction payload is published.",
+      "path": "output/scf.out",
+      "role": "hash-bound raw execution output",
+      "sha256": "3a48a4fade8c52fd1b5e4d816be439de79911b3c9d7ea3d71f16257b6c9e0b39"
+    }
+  ],
+  "started_at": "2026-08-05T00:45:36+08:00",
+  "title": "Aluminium metallic electronic structure captured QE workflow"
+}

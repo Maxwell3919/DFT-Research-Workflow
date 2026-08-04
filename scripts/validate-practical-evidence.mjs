@@ -42,6 +42,27 @@ for (const record of evidence.guides ?? []) {
   if (record.evidence_class === 'synthetic-only' && (record.real_result || record.interface || record.traceable_data)) errors.push(`${record.guide_slug}: synthetic record overclaims real evidence`);
   if (record.evidence_class === 'real-interface-walkthrough' && !record.interface) errors.push(`${record.guide_slug}: interface walkthrough requires interface=true`);
   if (record.evidence_class === 'derived-public-data' && !record.traceable_data) errors.push(`${record.guide_slug}: public-data record requires traceable_data=true`);
+  if (record.evidence_class !== 'real-execution' && 'case_id' in record) errors.push(`${record.guide_slug}: only real-execution records may bind a terminal-first case`);
+  if (record.evidence_class === 'real-execution') {
+    if (typeof record.case_id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(record.case_id)) {
+      errors.push(`${record.guide_slug}: real-execution evidence requires a valid case_id`);
+    } else {
+      const caseRoot = new URL(`examples/cases/${record.case_id}/`, root);
+      try {
+        const requiredCaseFiles = ['README.md', 'environment.txt', 'run.sh', 'check.sh', 'extract.sh', 'parse.py', 'manifest.json'];
+        await Promise.all(requiredCaseFiles.map((file) => readFile(new URL(file, caseRoot))));
+        const manifest = JSON.parse(await readFile(new URL('manifest.json', caseRoot), 'utf8'));
+        if (manifest.case_id !== record.case_id) errors.push(`${record.guide_slug}: bound case manifest identity mismatch`);
+        if (manifest.evidence_class !== 'real-execution') errors.push(`${record.guide_slug}: bound case is not real-execution`);
+        for (const gate of ['G0', 'G1', 'G2', 'G3', 'G4', 'G5']) if (!manifest.gates?.[gate]?.status) errors.push(`${record.guide_slug}: bound case is missing ${gate}`);
+        if (!Array.isArray(manifest.commands) || manifest.commands.length === 0) errors.push(`${record.guide_slug}: bound case has no recorded commands`);
+        if (!Array.isArray(manifest.artifacts) || manifest.artifacts.length === 0) errors.push(`${record.guide_slug}: bound case has no hash-bound artifacts`);
+        if (!manifest.claim_boundary?.supports || !manifest.claim_boundary?.does_not_support) errors.push(`${record.guide_slug}: bound case has no two-sided claim boundary`);
+      } catch (error) {
+        errors.push(`${record.guide_slug}: bound case is unreadable (${String(error)})`);
+      }
+    }
+  }
 }
 for (const slug of guides.keys()) if (!seen.has(slug)) errors.push(`${slug}: missing evidence record`);
 if (errors.length) { console.error(errors.join('\n')); process.exit(1); }

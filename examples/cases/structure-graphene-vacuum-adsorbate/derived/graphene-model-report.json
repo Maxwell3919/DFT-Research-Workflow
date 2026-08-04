@@ -1,0 +1,102 @@
+{
+  "adsorbate_model": {
+    "atoms": 9,
+    "cell_ang": [
+      [
+        4.92,
+        0.0,
+        0.0
+      ],
+      [
+        -2.46,
+        4.26084499,
+        0.0
+      ],
+      [
+        0.0,
+        -0.0,
+        25.5
+      ]
+    ],
+    "formula": "C8H",
+    "minimum_distance_ang": 1.42028166,
+    "pbc": [
+      true,
+      true,
+      false
+    ],
+    "volume_ang3": 534.56561202
+  },
+  "construction": {
+    "H_above_highest_C_ang": 1.5,
+    "empty_cell_length_ang": 24.0,
+    "initial_H_height_ang": 1.5,
+    "kz_guidance": "This structural case has pbc z=false; it does not select a k-mesh.",
+    "repeat": [
+      2,
+      2,
+      1
+    ],
+    "vacuum_target_ang": 12.0
+  },
+  "software": {
+    "ase": "3.29.0",
+    "python": "3.12.3"
+  },
+  "unit": {
+    "atoms": 2,
+    "cell_ang": [
+      [
+        2.46,
+        0.0,
+        0.0
+      ],
+      [
+        -1.23,
+        2.13042249,
+        0.0
+      ],
+      [
+        0.0,
+        -0.0,
+        24.0
+      ]
+    ],
+    "formula": "C2",
+    "minimum_distance_ang": 1.42028166,
+    "pbc": [
+      true,
+      true,
+      false
+    ],
+    "volume_ang3": 125.78014401
+  },
+  "vacuum_model": {
+    "atoms": 8,
+    "cell_ang": [
+      [
+        4.92,
+        0.0,
+        0.0
+      ],
+      [
+        -2.46,
+        4.26084499,
+        0.0
+      ],
+      [
+        0.0,
+        -0.0,
+        24.0
+      ]
+    ],
+    "formula": "C8",
+    "minimum_distance_ang": 1.42028166,
+    "pbc": [
+      true,
+      true,
+      false
+    ],
+    "volume_ang3": 503.12057602
+  }
+}

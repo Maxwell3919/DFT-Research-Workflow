@@ -1,0 +1,1 @@
+Recorded execution: Quantum ESPRESSO 7.5 (pw.x, bands.x, dos.x, ph.x); recorded MPI layouts: 4 MPI x 8 OpenMP threads for the main electronic/response stages, or 1 MPI x 4 threads for the relax/restart stages. Reconstruction environment: Python 3.12.11; matplotlib 3.11.0.

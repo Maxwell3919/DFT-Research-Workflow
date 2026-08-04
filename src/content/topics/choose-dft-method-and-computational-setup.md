@@ -186,6 +186,12 @@ The setup should be reconstructable without relying on a human-readable input fi
 
 This record distinguishes a deliberate method variation from an accidental setup drift. It also makes clear which comparisons are valid and which results belong to different approximations.
 
+## Use method context to guide later choices and feedback
+
+Method context is carried forward rather than isolated in a separate framework. The chosen functional, core treatment, occupations, boundary conditions, and implementation determine which structural models, reference states, target calculations, and validation tests are meaningful. Conversely, a convergence, state-identity, or validation failure can require a return to this setup and a newly identified method variant.
+
+Record that return explicitly: say which assumption changed, which calculations are no longer directly comparable, and which observable must be retested. This keeps a branching research workflow legible without treating a software option or a single material example as a universal prescription.
+
 ## The result of this task
 
 The task is complete when each model or comparison has a coherent, reconstructable method specification whose physical approximations, electronic degrees of freedom, core treatment, representation, occupations, boundaries, and implementation are explicit.

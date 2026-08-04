@@ -1,0 +1,12 @@
+{
+  "schema_version": "staged-qe-plan-1.0",
+  "case_id": "aluminium-metallic-electronic-structure",
+  "protocol_id": "al-fcc-metallic-full-zone-captured-v1",
+  "execution_status": "captured_completed_run; numerical-acceptance-plan-incomplete",
+  "objective": "Inspect one captured fcc-Al metallic SCF, full-zone NSCF, and explicit bands workflow.",
+  "observable": "Fermi-referenced sampled band energies",
+  "tolerance": null,
+  "fixed_settings": {"occupations": "smearing", "smearing": "Marzari-Vanderbilt", "degauss_ry": 0.02, "k_mesh": "8x8x8"},
+  "required_for_G4": ["A user-accepted observable tolerance.", "Distinct audited k-mesh and smearing series with fixed protocol.", "For DOS, a declared energy grid/broadening and suitable uniform NSCF ancestry."],
+  "boundary": "The captured run is evidence of execution, not numerical convergence or scientific acceptance."
+}

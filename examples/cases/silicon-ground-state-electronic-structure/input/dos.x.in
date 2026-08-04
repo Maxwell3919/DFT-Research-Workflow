@@ -1,0 +1,8 @@
+&DOS
+  prefix = 'si_cod9013102',
+  outdir = './out',
+  fildos = 'si.dos.dat',
+  Emin = -12.0,
+  Emax = 12.0,
+  DeltaE = 0.05,
+/

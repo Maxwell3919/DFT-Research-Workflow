@@ -1,0 +1,8 @@
+{
+  "service": "Crystallography Open Database",
+  "record_id": "9013102",
+  "retrieval_mode": "direct HTTPS download",
+  "url": "https://www.crystallography.net/cod/9013102.cif",
+  "query_boundary": "The stable record identifier is used directly; no database search ranking or API query is claimed.",
+  "expected_content_type": "chemical/x-cif"
+}

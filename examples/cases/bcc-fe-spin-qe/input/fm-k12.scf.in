@@ -1,0 +1,30 @@
+&CONTROL
+  calculation = 'scf',
+  prefix = 'fe_fm_k12',
+  outdir = './work/fe_fm_k12',
+  pseudo_dir = './pseudo',
+  tstress = .true.,
+  tprnfor = .true.
+/
+&SYSTEM
+  ibrav = 3,
+  celldm(1) = 5.4169,
+  nat = 1,
+  ntyp = 1,
+  ecutwfc = 70,
+  ecutrho = 840,
+  occupations = 'smearing',
+  smearing = 'mv',
+  degauss = 0.02,
+  nspin = 2,
+  starting_magnetization(1) = 0.2
+/
+&ELECTRONS
+  conv_thr = 1.0d-10
+/
+ATOMIC_SPECIES
+Fe 55.845 Fe.pbe-spn-kjpaw_psl.0.2.1.UPF
+ATOMIC_POSITIONS crystal
+Fe 0.0 0.0 0.0
+K_POINTS automatic
+12 12 12 0 0 0

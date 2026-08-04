@@ -1,0 +1,39 @@
+{
+  "boundary": "This is a format and geometry inspection of the downloaded representation. It does not validate database identity, experimental provenance, stability, or a calculation.",
+  "parser": {
+    "ase": "3.29.0",
+    "spglib": "2.7.0"
+  },
+  "source_file": "source/9013102.cif",
+  "source_sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55",
+  "structure": {
+    "atom_count": 8,
+    "cell_a_ang": 5.4304,
+    "cell_vectors_ang": [
+      [
+        5.4304,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        5.4304,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        5.4304
+      ]
+    ],
+    "formula": "Si8",
+    "minimum_distance_ang": 2.351432,
+    "neighbor_cutoff_ang": 3.0
+  },
+  "symmetry": {
+    "international": "Fd-3m",
+    "number": 227,
+    "status": "PASS",
+    "symprec": 0.001
+  }
+}

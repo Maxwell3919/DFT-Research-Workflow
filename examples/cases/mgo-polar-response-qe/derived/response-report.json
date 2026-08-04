@@ -1,0 +1,152 @@
+{
+  "claim_boundary": "Parsed values are only the printed result of one fixed-setup Gamma-point DFPT entry. They do not establish cutoff/k/q/threshold convergence, a static dielectric including ionic contributions, LO--TO splitting, phonon dispersion, experimental agreement, or scientific acceptance.",
+  "completed_at": "2026-08-05T02:57:25+08:00",
+  "completion": {
+    "dfpt_convergence_marker": true,
+    "ph_job_done_markers": 1,
+    "scf_convergence_marker": true,
+    "scf_job_done_markers": 1
+  },
+  "evidence_class": "real-execution",
+  "files_sha256": {
+    "mgo-ph.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mgo-ph.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "mgo-ph.out": "57837045f38918dd9848e305156f02214e1b97da572f65cc9e087352e0b900f3",
+    "mgo-scf.err": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mgo-scf.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "mgo-scf.out": "756b04461199e03b36dc8b95032e127ec0a535d8cc14fd33085f543743e5ed59",
+    "mgo_polar.dyn": "911743ac3ea3d6d020aa8ed68a2d403c4aa2d7b3e27e605776ef6c2a65a036ee"
+  },
+  "lo_to_splitting": "not assessed: one q=0 calculation without a non-analytic directional workflow is insufficient.",
+  "material": {
+    "formula": "MgO",
+    "model_sha256": "5054ce21c143f8fb38da0e71e649e2c1047d1387a2ead11e0c7ed76406db4366"
+  },
+  "q_point_fractional": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "response": {
+    "born_effective_charges_with_asr": [
+      {
+        "atom": 1,
+        "element": "Mg",
+        "mean": 1.98961,
+        "tensor": [
+          [
+            1.98961,
+            0.0,
+            -0.0
+          ],
+          [
+            0.0,
+            1.98961,
+            -0.0
+          ],
+          [
+            0.0,
+            -0.0,
+            1.98961
+          ]
+        ]
+      },
+      {
+        "atom": 2,
+        "element": "O",
+        "mean": -1.98961,
+        "tensor": [
+          [
+            -1.98961,
+            -0.0,
+            0.0
+          ],
+          [
+            -0.0,
+            -1.98961,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.98961
+          ]
+        ]
+      }
+    ],
+    "born_effective_charges_without_asr": [
+      {
+        "atom": 1,
+        "element": "Mg",
+        "mean": 1.99114,
+        "tensor": [
+          [
+            1.99114,
+            0.0,
+            -0.0
+          ],
+          [
+            0.0,
+            1.99114,
+            0.0
+          ],
+          [
+            0.0,
+            -0.0,
+            1.99114
+          ]
+        ]
+      },
+      {
+        "atom": 2,
+        "element": "O",
+        "mean": -1.98809,
+        "tensor": [
+          [
+            -1.98809,
+            -0.0,
+            0.0
+          ],
+          [
+            0.0,
+            -1.98809,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.98809
+          ]
+        ]
+      }
+    ],
+    "dielectric_tensor": [
+      [
+        3.214927291,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        3.214927291,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        3.214927291
+      ]
+    ],
+    "units": {
+      "born_effective_charge": "e",
+      "dielectric": "dimensionless"
+    }
+  },
+  "schema_version": "1.0",
+  "software": {
+    "ph.x": "7.5",
+    "pw.x": "7.5"
+  },
+  "started_at": "2026-08-05T02:55:53+08:00",
+  "workflow": "fixed-setup pw.x SCF followed by Gamma-point ph.x epsil=.true. using matching prefix/outdir"
+}

@@ -1,0 +1,9 @@
+case=graphene-electronic-structure-qe
+prepared_at_utc=2026-08-04T18:00:00Z
+qe_preflight=read-only remote executable check
+pwscf_version=7.5
+pseudopotential_file=C.pbe-n-kjpaw_psl.1.0.0.UPF
+pseudopotential_sha256=9900d1efd50b9848e31849f39094b33348486b400ee51e0f3922f716137cf3d7
+local_execution=not_run
+remote_scheduler_submission=not_performed
+boundary=No private host path, pseudo payload, charge density, wavefunction, restart file, or scheduler job is retained by this public case.

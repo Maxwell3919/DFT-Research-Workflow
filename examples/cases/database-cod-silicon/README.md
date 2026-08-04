@@ -1,0 +1,26 @@
+# COD Silicon record 9013102: direct HTTPS retrieval
+
+This terminal-first case records a real direct download from the Crystallography
+Open Database (COD), followed by deterministic CIF inspection. `source/` is the
+downloaded CIF; `output/` preserves the HTTP headers, retrieval time, and run
+summary; `derived/` holds analysis generated from that exact file by the
+case-local ASE/spglib script. The downloaded object's SHA-256 is retained in
+`source/9013102.sanitization.json`; the committed CIF is a deterministic public
+copy in which only COD's upstream absolute repository metadata line
+is replaced. The record binds both hashes and the exact rule.
+
+To rerun, first create an empty directory outside the repository, then run
+`CASE_RUN_ROOT=/absolute/empty/run-root bash run.sh`. The complete reconstructed
+case and any new artifacts remain under that run root; `run.sh` rejects a
+missing, non-empty, in-case, or child-of-case root. Run `bash check.sh` from
+the reconstructed root for the fast acceptance gates. The parser and check
+are intentionally hash-bound to the captured object, so a changed upstream
+record fails rather than silently becoming the documented result. Run
+`bash extract.sh` there for the small, traceable output excerpt.
+
+The case verifies a successful HTTP retrieval and a parseable conventional
+eight-atom Si representation. It does not validate the database's identity,
+experimental provenance, crystallographic quality, thermodynamic stability, or
+any DFT calculation or scientific conclusion. COD content is accessed under
+the database's stated open-data terms; users must check the record-level source
+and reuse context before using it beyond this bounded teaching example.

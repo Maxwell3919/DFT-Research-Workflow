@@ -1,0 +1,47 @@
+---
+import { readFile } from 'node:fs/promises';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/paths';
+import workflowsDocument from '../../../recipes/index.json';
+
+type Workflow = {
+  slug: string;
+  title: string;
+  case_id: string;
+  material: string;
+  summary: string;
+};
+
+const workflows = workflowsDocument.workflows as Workflow[];
+
+async function assertPublishedCase(workflow: Workflow) {
+  const root = new URL(`../../../examples/cases/${workflow.case_id}/`, import.meta.url);
+  try {
+    await Promise.all([
+      readFile(new URL('README.md', root), 'utf8'),
+      readFile(new URL('manifest.json', root), 'utf8'),
+    ]);
+  } catch {
+    throw new Error(
+      `Worked workflow ${workflow.slug} is blocked: examples/cases/${workflow.case_id}/README.md and manifest.json must both exist before it can be published.`,
+    );
+  }
+}
+
+await Promise.all(workflows.map(assertPublishedCase));
+---
+
+<BaseLayout title="Worked Workflows" description="Published terminal-first DFT workflows with an inspectable case bundle." current="workflows">
+  <h1>Worked Workflows</h1>
+  <p class="page-intro">
+    A worked workflow is published only when its case bundle contains the source, inputs, executed commands, outputs, checks, parser, derived data, and an explicit claim boundary. It is a continuous example, not a universal sequence or a replacement for the A–E research workflow.
+  </p>
+  <ol class="directory-list">
+    {workflows.map((workflow) => (
+      <li>
+        <a href={withBase(`workflows/${workflow.slug}/`)}>{workflow.title}</a>
+        <span>{workflow.summary}</span>
+      </li>
+    ))}
+  </ol>
+</BaseLayout>

@@ -7,6 +7,12 @@ A completed calculation tree is not yet a preserved study. Scratch directories c
 
 Preservation turns that working history into an identifiable research object. Another researcher should be able to discover what was studied, recover the evidence behind a result, reconstruct the transformation from inputs to claims, and understand what cannot be redistributed or rerun.
 
+## Treat provenance as a working connection, not a separate appendix
+
+Provenance connects the A–E workflow whenever a structure is transformed, an input is prepared, a calculation is restarted, an output is parsed, or a figure is derived. Capture the source identity and transformation at the point of work, then preserve the resulting lineage at study completion. This makes later diagnosis possible without pretending that a registry or archive validates the scientific result.
+
+Reproducibility has layers. A checksum can establish byte-level fixity, an executable reconstruction can establish a bounded rerun path, and an independently prepared comparison can test a result more strongly. None of these alone establishes numerical convergence, physical validity, or a broader scientific conclusion.
+
 The unit of preservation is the study and its lineage, not every byte ever written.
 
 ## Give every preserved state an identity

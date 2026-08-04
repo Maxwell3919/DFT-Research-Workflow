@@ -1,0 +1,8 @@
+HTTP/1.1 200 Connection established
+
+HTTP/2 200 
+date: Tue, 04 Aug 2026 17:43:49 GMT
+content-type: application/vnd.api+json
+content-length: 31638
+strict-transport-security: max-age=15724800; includeSubDomains
+

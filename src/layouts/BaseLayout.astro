@@ -6,16 +6,16 @@ import { withBase } from '../lib/paths';
 interface Props {
   title: string;
   description: string;
-  current?: 'home' | 'operations' | 'recipes' | 'framework' | 'tools';
+  current?: 'home' | 'operations' | 'workflows' | 'tools';
+  redirectTo?: string;
 }
 
-const { title, description, current } = Astro.props;
+const { title, description, current, redirectTo } = Astro.props;
 const pageTitle = title === 'DFT Research Workflow' ? title : `${title} · DFT Research Workflow`;
 const navigation = [
   { id: 'home', label: 'Home', href: withBase() },
-  { id: 'operations', label: 'Operations', href: withBase('operations/') },
-  { id: 'recipes', label: 'Workflow Recipes', href: withBase('recipes/') },
-  { id: 'framework', label: 'Framework', href: withBase('framework/') },
+  { id: 'operations', label: 'Research Workflow', href: withBase('operations/') },
+  { id: 'workflows', label: 'Worked Workflows', href: withBase('workflows/') },
   { id: 'tools', label: 'Tools', href: withBase('tools/') },
 ] as const;
 ---
@@ -27,6 +27,8 @@ const navigation = [
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    {redirectTo && <meta http-equiv="refresh" content={`0; url=${redirectTo}`} />}
+    {redirectTo && <link rel="canonical" href={redirectTo} />}
     <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
     <style is:inline>
       :root, html, body {

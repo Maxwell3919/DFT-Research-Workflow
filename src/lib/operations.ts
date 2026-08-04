@@ -84,17 +84,12 @@ export interface LegacyOperation {
 
 export interface Recipe {
   slug: string;
-  title: string;
-  operations: string[];
-  system_types: string[];
-  scientific_targets: string[];
-  methods: string[];
-  status: string;
+  destination: string | null;
 }
 
 const coreOperations = operationsDocument.operations as CoreOperation[];
 const legacyOperations = legacyDocument.entries as LegacyOperation[];
-const recipes = recipesDocument.recipes as Recipe[];
+const recipes = recipesDocument.legacy_recipe_redirects as Recipe[];
 
 export function getOperations(): CoreOperation[] {
   return [...coreOperations].sort((left, right) => left.order - right.order);

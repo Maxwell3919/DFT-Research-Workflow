@@ -57,9 +57,12 @@ const requiredRoutes = [
   { route: '/', status: 200, name: 'Home' },
   { route: '/operations/', status: 200, name: 'Research Workflow' },
   ...representativeTopicSlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
-  { route: '/recipes/', status: 200, name: 'Recipes directory' },
-  { route: '/recipes/bulk-structure-and-bands/', status: 200, name: 'Research workflow example' },
-  { route: '/framework/', status: 200, name: 'Framework directory' },
+  { route: '/workflows/', status: 200, name: 'Worked Workflows directory' },
+  { route: '/workflows/silicon-ground-state-electronic-structure/', status: 200, name: 'Silicon Worked Workflow' },
+  { route: '/workflows/aluminium-metallic-electronic-structure/', status: 200, name: 'Aluminium Worked Workflow' },
+  { route: '/recipes/', status: 200, name: 'Recipes migration surface' },
+  { route: '/recipes/bulk-structure-and-bands/', status: 200, name: 'Legacy recipe migration surface' },
+  { route: '/framework/', status: 200, name: 'Framework migration surface' },
   ...frameworkSlugs.map((slug) => ({ route: `/framework/${slug}/`, status: 200, name: slug })),
   ...representativeTransitionalSlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
   ...representativeLegacySlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
@@ -98,6 +101,11 @@ async function captureFullPage(page, path) {
   await page.screenshot({ path, captureBeyondViewport: true, clip: { x: 0, y: 0, ...dimensions } });
 }
 
+async function waitForRecipeRedirect(page) {
+  await page.waitForFunction(() => location.pathname.includes('/workflows/') && document.readyState === 'complete', { timeout: 5000 });
+  if (!new URL(page.url()).pathname.includes('/workflows/')) throw new Error(`recipe redirect did not reach Worked Workflows: ${page.url()}`);
+}
+
 async function inspectPage(page, expectedStatus) {
   const observation = await page.evaluate(() => ({
     language: document.documentElement.lang,
@@ -115,7 +123,7 @@ async function inspectPage(page, expectedStatus) {
   if (observation.overflow) throw new Error('page has horizontal overflow');
   if (observation.oldUi !== 0) throw new Error(`page exposes ${observation.oldUi} retired UI elements`);
   if (observation.fixedContracts !== 0) throw new Error('page exposes a fixed operation contract');
-  if (JSON.stringify(observation.nav) !== JSON.stringify(['Home', 'Operations', 'Workflow Recipes', 'Framework', 'Tools'])) throw new Error(`navigation mismatch: ${JSON.stringify(observation.nav)}`);
+  if (JSON.stringify(observation.nav) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools'])) throw new Error(`navigation mismatch: ${JSON.stringify(observation.nav)}`);
   if (observation.background !== 'rgb(255, 255, 255)') throw new Error(`background is not white: ${observation.background}`);
   if (!/Iowan Old Style|Palatino|Book Antiqua|Georgia|Times New Roman|serif/i.test(observation.fontFamily)) throw new Error(`serif reading stack missing: ${observation.fontFamily}`);
   if (expectedStatus === 404 && !observation.text.includes('Page Not Found')) throw new Error('custom 404 content missing');
@@ -133,7 +141,14 @@ try {
   for (const target of requiredRoutes) {
     const response = await page.goto(`${base}${target.route}`, { waitUntil: 'load' });
     if (response?.status() !== target.status) throw new Error(`${target.route}: expected HTTP ${target.status}, found ${response?.status() ?? 'no response'}`);
-    await inspectPage(page, target.status);
+    if (target.route.startsWith('/recipes/')) {
+      await waitForRecipeRedirect(page);
+    }
+    try {
+      await inspectPage(page, target.status);
+    } catch (error) {
+      throw new Error(`${target.route}: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }
 
   await page.goto(`${base}/operations/`, { waitUntil: 'load' });
@@ -190,12 +205,27 @@ try {
     if (!reviewedArticle.links.some((link) => link.includes(domain))) throw new Error(`Obtain a Material Structure is missing source domain ${domain}`);
   }
 
+  await page.goto(`${base}/workflows/`, { waitUntil: 'load' });
+  const workflowLinks = await page.$$eval('.directory-list a', (links) => links.length);
+  if (workflowLinks !== 2) throw new Error(`Worked Workflows directory exposes ${workflowLinks}/2 published cases`);
+  for (const slug of ['silicon-ground-state-electronic-structure', 'aluminium-metallic-electronic-structure']) {
+    await page.goto(`${base}/workflows/${slug}/`, { waitUntil: 'load' });
+    const state = await page.evaluate(() => ({
+      text: document.body.innerText,
+      figures: document.querySelectorAll('figure img[src^="data:image/png;base64,"]').length,
+      commands: document.querySelectorAll('pre code').length,
+    }));
+    if (state.figures < 1 || state.commands < 2 || !state.text.includes('G4 NOT TESTED') || !state.text.includes('G5 NOT CLAIMED')) {
+      throw new Error(`${slug}: incomplete terminal-first workflow rendering`);
+    }
+  }
   await page.goto(`${base}/recipes/`, { waitUntil: 'load' });
-  const recipeLinks = await page.$$eval('.directory-list a', (links) => links.length);
-  if (recipeLinks !== 16) throw new Error(`Workflow Recipes directory exposes ${recipeLinks}/16 transitional workflow sources`);
+  await waitForRecipeRedirect(page);
+  const recipeRedirectText = await page.evaluate(() => document.body.innerText);
+  if (!recipeRedirectText.includes('Worked Workflows')) throw new Error('Recipes root did not redirect to Worked Workflows');
   await page.goto(`${base}/framework/`, { waitUntil: 'load' });
   const frameworkLinks = await page.$$eval('.directory-list a', (links) => links.length);
-  if (frameworkLinks !== 5) throw new Error(`Framework directory exposes ${frameworkLinks}/5 pages`);
+  if (frameworkLinks !== 4) throw new Error(`Framework migration surface exposes ${frameworkLinks}/4 current destinations`);
 
   await page.goto(`${base}/`, { waitUntil: 'load' });
   await page.focus('.primary-nav a');
@@ -232,6 +262,7 @@ try {
   for (const target of requiredRoutes) {
     const response = await page.goto(`${base}${target.route}`, { waitUntil: 'load' });
     if (response?.status() !== target.status) throw new Error(`mobile ${target.route}: HTTP ${response?.status()}`);
+    if (target.route.startsWith('/recipes/')) await waitForRecipeRedirect(page);
     await inspectPage(page, target.status);
   }
 
@@ -259,8 +290,8 @@ try {
     topic_narratives: topicNarrativeStatuses.size,
     reviewed_topic_narratives: [...topicNarrativeStatuses.values()].filter((status) => status === 'reviewed').length,
     target_calculation_groups: 5,
-    workflow_sources: recipeLinks,
-    framework_pages: frameworkLinks,
+    published_workflows: workflowLinks,
+    framework_migration_destinations: frameworkLinks,
     migration_routes_sampled: representativeTransitionalSlugs.length + representativeLegacySlugs.length,
     fixed_contracts: 0,
     keyboard_navigation: true,
@@ -271,7 +302,7 @@ try {
     public_language: 'en',
   };
   if (artifactDirectory) await writeFile(join(artifactDirectory, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`);
-  console.log(`Browser smoke passed: registry-driven A–E workflow, reviewed and neutral topic routes, natural page layouts, migration-safe old routes, keyboard navigation, 390px no overflow, no-JavaScript reading, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
+  console.log(`Browser smoke passed: registry-driven A–E workflow, two terminal-first Worked Workflows, migration-safe old routes, keyboard navigation, true 390px no overflow, no-JavaScript reading, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
 } finally {
   await browser.close();
 }

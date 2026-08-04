@@ -1,0 +1,218 @@
+{
+  "primitive": {
+    "atoms": 2,
+    "cell_ang": [
+      [
+        0.0,
+        2.7152,
+        2.7152
+      ],
+      [
+        2.7152,
+        0.0,
+        2.7152
+      ],
+      [
+        2.7152,
+        2.7152,
+        0.0
+      ]
+    ],
+    "formula": "Si2",
+    "minimum_distance_ang": 2.35143218,
+    "pbc": [
+      true,
+      true,
+      true
+    ],
+    "volume_ang3": 40.03459787
+  },
+  "reciprocal_path": {
+    "bravais_lattice": "cF",
+    "path": [
+      [
+        "GAMMA",
+        "X"
+      ],
+      [
+        "X",
+        "U"
+      ],
+      [
+        "K",
+        "GAMMA"
+      ],
+      [
+        "GAMMA",
+        "L"
+      ],
+      [
+        "L",
+        "W"
+      ],
+      [
+        "W",
+        "X"
+      ]
+    ],
+    "point_coords": {
+      "GAMMA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "K": [
+        0.375,
+        0.375,
+        0.75
+      ],
+      "L": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "U": [
+        0.625,
+        0.25,
+        0.625
+      ],
+      "W": [
+        0.5,
+        0.25,
+        0.75
+      ],
+      "W_2": [
+        0.75,
+        0.25,
+        0.5
+      ],
+      "X": [
+        0.5,
+        0.0,
+        0.5
+      ]
+    },
+    "spacegroup_number": 227
+  },
+  "software": {
+    "ase": "3.29.0",
+    "pymatgen_core": "pymatgen",
+    "python": "3.12.3",
+    "seekpath": "2.2.1",
+    "spglib": "2.7.0"
+  },
+  "source": {
+    "atoms": 8,
+    "cell_ang": [
+      [
+        5.4304,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        5.4304,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        5.4304
+      ]
+    ],
+    "formula": "Si8",
+    "minimum_distance_ang": 2.35143218,
+    "pbc": [
+      true,
+      true,
+      true
+    ],
+    "volume_ang3": 160.13839149
+  },
+  "standardized_conventional": {
+    "atoms": 8,
+    "cell_ang": [
+      [
+        5.4304,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        5.4304,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        5.4304
+      ]
+    ],
+    "formula": "Si8",
+    "minimum_distance_ang": 2.35143218,
+    "pbc": [
+      true,
+      true,
+      true
+    ],
+    "volume_ang3": 160.13839149
+  },
+  "supercell": {
+    "atoms": 16,
+    "cell_ang": [
+      [
+        0.0,
+        5.4304,
+        5.4304
+      ],
+      [
+        5.4304,
+        0.0,
+        5.4304
+      ],
+      [
+        5.4304,
+        5.4304,
+        0.0
+      ]
+    ],
+    "formula": "Si16",
+    "minimum_distance_ang": 2.35143218,
+    "pbc": [
+      true,
+      true,
+      true
+    ],
+    "volume_ang3": 320.27678297
+  },
+  "symmetry_tolerance_sweep": [
+    {
+      "hall": "F 4d 2 3 -1d",
+      "international": "Fd-3m",
+      "n_operations": 192,
+      "number": 227,
+      "symprec_ang": 1e-06
+    },
+    {
+      "hall": "F 4d 2 3 -1d",
+      "international": "Fd-3m",
+      "n_operations": 192,
+      "number": 227,
+      "symprec_ang": 1e-05
+    },
+    {
+      "hall": "F 4d 2 3 -1d",
+      "international": "Fd-3m",
+      "n_operations": 192,
+      "number": 227,
+      "symprec_ang": 0.0001
+    },
+    {
+      "hall": "F 4d 2 3 -1d",
+      "international": "Fd-3m",
+      "n_operations": 192,
+      "number": 227,
+      "symprec_ang": 0.001
+    }
+  ]
+}

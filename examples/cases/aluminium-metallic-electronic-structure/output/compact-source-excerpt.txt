@@ -1,0 +1,6 @@
+SCF: Quantum ESPRESSO PWSCF v.7.5; 29 symmetry-reduced k points; Marzari-Vanderbilt smearing width 0.0200 Ry.
+SCF: convergence has been achieved in 5 iterations; the Fermi energy is 7.8018 eV; JOB DONE.
+full-zone nscf: 512 k points with nosym=.true. and noinv=.true.; the Fermi energy is 7.8018 eV; JOB DONE.
+band path: 145 points from the explicit Γ–X–W–K–Γ–L–U–W–L–K crystal_b path; End of band structure calculation; JOB DONE.
+Selected band ledger: QE band 2 spans 3.4705–20.4207 eV on the mesh and crosses the declared μ on 3 ordered path intervals.
+All captured stdout runs exited 0 and all three captured stderr streams were empty.

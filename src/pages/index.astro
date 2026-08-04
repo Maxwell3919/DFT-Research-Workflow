@@ -11,7 +11,7 @@ import { withBase } from '../lib/paths';
 >
   <h1>DFT Research Workflow</h1>
   <p class="home-intro">
-    DFT Research Workflow explains how researchers move from a material structure to interpretable, validated, and reproducible results. The site follows five broad parts: Structures, Calculation Preparation, Reference-State Calculations, Target Calculations, and Research Completion. These parts are a learning map rather than a claim that every study follows one fixed sequence. Target calculations form a branching library: band structures, density of states, phonons, defects, transport, optical response, electron–phonon coupling, superconductivity, and other calculations are explained as distinct scientific tasks when their methods and evidence differ. Each article is organized according to its subject instead of repeating a uniform contract. Start with the <a href={withBase('operations/')}>Research Workflow</a>, then use <a href={withBase('recipes/')}>Workflow Recipes</a> for complete examples and <a href={withBase('framework/')}>Framework</a> for cross-cutting concepts.
+    DFT Research Workflow explains how researchers move from a material structure to interpretable, validated, and reproducible results. The site follows five broad parts: Structures, Calculation Preparation, Reference-State Calculations, Target Calculations, and Research Completion. These parts are a branching and revisitable learning map, not a claim that every study follows one fixed sequence. A result can send the researcher back to the structure, method, reference state, or convergence design. Target calculations form a library: band structures, density of states, phonons, defects, transport, optical response, electron–phonon coupling, superconductivity, and other calculations are distinct scientific tasks when their methods and evidence differ. Start with the <a href={withBase('operations/')}>Research Workflow</a>, then inspect <a href={withBase('workflows/')}>Worked Workflows</a> whose commands, outputs, checks, parsers, tables, and figures come from published case directories.
   </p>
 
   <section class="parts-overview" aria-labelledby="workflow-heading">
@@ -29,8 +29,8 @@ import { withBase } from '../lib/paths';
   <section class="parts-overview" aria-labelledby="supporting-content-heading">
     <h2 id="supporting-content-heading">Supporting content</h2>
     <ol>
-      <li><a href={withBase('recipes/')}>Workflow Recipes</a><span>Examples of how tasks combine for specific research goals.</span></li>
-      <li><a href={withBase('framework/')}>Framework</a><span>Workflow relations, evidence boundaries, provenance, and reproducibility.</span></li>
+      <li><a href={withBase('workflows/')}>Worked Workflows</a><span>Terminal-first examples backed by real case directories and bounded evidence.</span></li>
+      <li><a href={withBase('tools/')}>Tools</a><span>Software and data services used by practical guides and case reconstruction.</span></li>
     </ol>
   </section>
 </BaseLayout>

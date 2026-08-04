@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "evidence_class": "real-execution",
+  "material": {
+    "formula": "Al",
+    "structure": "fcc primitive cell",
+    "celldm1_bohr": 7.653,
+    "nat": 1,
+    "source": "explicit teaching input; not a database identity"
+  },
+  "software": {
+    "name": "Quantum ESPRESSO",
+    "version": "7.5",
+    "executables": [
+      "pw.x"
+    ],
+    "pseudopotential": {
+      "filename": "Al.pbe-n-rrkjus_psl.1.0.0.UPF",
+      "source": "PSLibrary PBE scalar-relativistic USPP entry",
+      "sha256": "cc4f5dc6afe09c8f482dc7645e6e7cca546a55f8d907c71c825c62bf85a38d3e",
+      "cutoff_metadata": {
+        "ecutwfc_ry": 30.0,
+        "ecutrho_ry": 240.0
+      }
+    }
+  },
+  "execution": {
+    "scf": {
+      "calculation": "scf",
+      "k_mesh": "8x8x8",
+      "smearing": "Marzari-Vanderbilt",
+      "degauss_ry": 0.02
+    },
+    "full_zone": {
+      "calculation": "nscf",
+      "k_mesh": "8x8x8",
+      "nosym": true,
+      "noinv": true,
+      "kpoint_count": 512
+    },
+    "band_path": {
+      "calculation": "bands",
+      "point_count": 145,
+      "segment_intervals": 16
+    },
+    "command_exit_codes": {
+      "scf": 0,
+      "nscf": 0,
+      "bands": 0
+    }
+  },
+  "fermi_energy_ev": 7.8018,
+  "selected_band": {
+    "qe_index": 2,
+    "mesh_min_ev": 3.4705,
+    "mesh_max_ev": 20.4207,
+    "path_min_ev": 3.4705,
+    "path_max_ev": 20.4207
+  },
+  "mesh": {
+    "bands": 4,
+    "near_fermi_points_abs_delta_leq_ev": 0.25,
+    "near_fermi_point_count": 48,
+    "below_fermi_count": 237,
+    "above_or_equal_fermi_count": 275
+  },
+  "path": {
+    "labels": [
+      "Γ",
+      "X",
+      "W",
+      "K",
+      "Γ",
+      "L",
+      "U",
+      "W",
+      "L",
+      "K"
+    ],
+    "points": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.5,
+        0.0,
+        0.5
+      ],
+      [
+        0.5,
+        0.25,
+        0.75
+      ],
+      [
+        0.375,
+        0.375,
+        0.75
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.5,
+        0.5,
+        0.5
+      ],
+      [
+        0.625,
+        0.25,
+        0.625
+      ],
+      [
+        0.5,
+        0.25,
+        0.75
+      ],
+      [
+        0.5,
+        0.5,
+        0.5
+      ],
+      [
+        0.375,
+        0.375,
+        0.75
+      ]
+    ],
+    "crossing_intervals_selected_band": 3
+  },
+  "claim_boundary": [
+    "The mesh and path values are from actual QE 7.5 pw.x runs.",
+    "The 8x8x8 mesh is a teaching sampling and is not a k-mesh convergence study.",
+    "A sampled crossing set is not a converged Fermi surface, carrier density, or transport result.",
+    "The fcc input is an explicit reproducibility case, not an experimental material-identity claim."
+  ],
+  "source_outputs": {
+    "scf": {
+      "path": "scf.out",
+      "sha256": "3a48a4fade8c52fd1b5e4d816be439de79911b3c9d7ea3d71f16257b6c9e0b39"
+    },
+    "mesh": {
+      "path": "nscf-full.out",
+      "sha256": "fe4e1ecb29004cfadecff46d6b81748b085682c0abfc987be0be4e28205fed66"
+    },
+    "path": {
+      "path": "bands.out",
+      "sha256": "312a05a44bbb15ed5ee5c437ac52fd658a2e43e35b56a2b49cfb231d711b4a95"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "case_id": "bcc-fe-spin-qe",
+  "protocol_id": "bcc-fe-fm-nm-screen-v1",
+  "structure": {
+    "label": "one-atom bcc Fe primitive cell",
+    "ibrav": 3,
+    "celldm_1_bohr": 5.4169,
+    "fixed_geometry": true
+  },
+  "shared_model": {
+    "qe_version": "7.5",
+    "xc": "PBE",
+    "pseudopotential_manifest": "input/pseudopotential-manifest.json",
+    "ecutwfc_ry": 70,
+    "ecutrho_ry": 840,
+    "occupations": "smearing",
+    "smearing": "mv",
+    "degauss_ry": 0.02,
+    "conv_thr_ry": 1e-10
+  },
+  "candidates": [
+    {
+      "id": "fm-k8",
+      "input": "input/fm-k8.scf.in",
+      "candidate_family": "ferromagnetic seed",
+      "nspin": 2,
+      "starting_magnetization": 0.2,
+      "k_mesh": [8, 8, 8]
+    },
+    {
+      "id": "fm-k10",
+      "input": "input/fm-k10.scf.in",
+      "candidate_family": "ferromagnetic seed",
+      "nspin": 2,
+      "starting_magnetization": 0.2,
+      "k_mesh": [10, 10, 10]
+    },
+    {
+      "id": "fm-k12",
+      "input": "input/fm-k12.scf.in",
+      "candidate_family": "ferromagnetic seed",
+      "nspin": 2,
+      "starting_magnetization": 0.2,
+      "k_mesh": [12, 12, 12]
+    },
+    {
+      "id": "nm-k12",
+      "input": "input/nm-k12.scf.in",
+      "candidate_family": "non-spin-polarized candidate",
+      "nspin": 1,
+      "starting_magnetization": null,
+      "k_mesh": [12, 12, 12]
+    }
+  ],
+  "comparison": {
+    "primary_pair": ["fm-k12", "nm-k12"],
+    "energy_difference": "E_nm-k12 - E_fm-k12",
+    "normalization": "one Fe primitive cell",
+    "candidate_coverage": "FM and NM only; AFM, ferrimagnetic, noncollinear, SOC, structural, strain, defect, surface, finite-temperature, and other seed candidates are outside this case."
+  },
+  "k_mesh_screen": {
+    "candidate_ids": ["fm-k8", "fm-k10", "fm-k12"],
+    "observable": "total_energy",
+    "unit": "Ry",
+    "absolute_tolerance_ry": 0.0005,
+    "criterion": "Both adjacent absolute energy changes in the three-point FM mesh series are at or below the declared tolerance. This tests only this fixed-geometry FM total-energy screen."
+  }
+}

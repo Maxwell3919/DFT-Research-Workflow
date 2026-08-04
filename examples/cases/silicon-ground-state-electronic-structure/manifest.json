@@ -1,0 +1,241 @@
+{
+  "artifacts": [
+    {
+      "bytes": 361,
+      "path": "source/output-excerpt.txt",
+      "role": "deterministic public output excerpt rendered by the Worked Workflow",
+      "sha256": "c5a49549aeebaafca49944bbc72a4d1901c8812979151de9328d7bc2f573127a"
+    },
+    {
+      "bytes": 433,
+      "path": "derived/convergence.csv",
+      "role": "convergence_table",
+      "sha256": "b9ad834441ec6f96c0871cdc6477d6f7d011ec401f3813d47bc01bd269a84c86"
+    },
+    {
+      "bytes": 12756,
+      "path": "derived/band-path.csv",
+      "raw_sha256": "4903acde7e33eb79906fbcf72e3ea9f5d19593f65b3946818febf36678b6cc3f",
+      "role": "band_path_table",
+      "sha256": "5d140d9e2cf5ca039cd1d13e5dfd157aeabc2e969ca89f61fcefbc4e745a6841"
+    },
+    {
+      "bytes": 21237,
+      "path": "derived/full-zone-bands.csv",
+      "raw_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
+      "role": "full_zone_table",
+      "sha256": "5f181b3b664353a5a46bdd71a0841975f623d7eaf26aa21260266f90d65b53b9"
+    },
+    {
+      "bytes": 7955,
+      "path": "derived/dos.csv",
+      "raw_sha256": "dc3bd84a740a572d665b3e39bdfb642dd61746e4c3c095ec18ae24ff96123db3",
+      "role": "dos_table",
+      "sha256": "b2bbe7e1f52bfb71a212a8ae3682d143a9faa00adfb1a68cf849f0cfdd94b941"
+    },
+    {
+      "bytes": 4957,
+      "path": "derived/observables.json",
+      "role": "observable_report",
+      "sha256": "eb88c3dd0d760294ab121b6d49bae58ac8f82e4031d403cdd256197f216d508d"
+    },
+    {
+      "bytes": 2543,
+      "path": "derived/full-zone-status.json",
+      "raw_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
+      "role": "full_zone_result",
+      "sha256": "3ab5ba090e21801a575d3b17d0fd8b266969f57689b30eb7114afa37cce63fb7"
+    },
+    {
+      "bytes": 15667,
+      "path": "output/full-zone/scf.out",
+      "role": "full_zone_scf",
+      "sha256": "e7e5d0a752d0b5940c04eac630dc925e4a98c7537010d3d2899a62e84f9797ef"
+    },
+    {
+      "bytes": 6732,
+      "path": "output/full-zone/bands-pw.out",
+      "role": "full_zone_bands_pw",
+      "sha256": "3c25f43a5e4eaa78e35eff57a300ab3c51bd8bb974e34e30c2a20375aad2da5b"
+    },
+    {
+      "bytes": 204497,
+      "path": "output/full-zone/bandsx.out",
+      "role": "full_zone_bandsx",
+      "sha256": "9d4deac9e49b3e33ff3e8bdcdcb4139122074217fd721de134ec1539039cb6e6"
+    },
+    {
+      "bytes": 29671,
+      "path": "output/full-zone/si-fullzone.bands.dat",
+      "role": "full_zone_band_data",
+      "sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"
+    },
+    {
+      "alt": "Silicon total-energy differences relative to the 50 Ry, 10 by 10 by 10 reference across 30, 40, and 50 Ry cutoffs and three k meshes; all three curves decrease toward the reference.",
+      "bytes": 66124,
+      "path": "figures/convergence-matrix.png",
+      "role": "cutoff and k-mesh energy-difference plot",
+      "sha256": "1fd386c9b80a8bc76d37ff7e9abb073aae65079f99b2696e01745e4c1d86e984"
+    },
+    {
+      "alt": "Eight stored Silicon line-path bands plotted against cumulative path coordinate, with a dashed zero-energy reference and the solver-warning boundary stated in the title.",
+      "bytes": 126248,
+      "path": "figures/band-path.png",
+      "role": "line-path band plot with solver warning retained",
+      "sha256": "50108e1b6c391380d85f35bc8fae59fa747fee1f053ba4ffdfadbda62e1cdc0f"
+    },
+    {
+      "alt": "Scatter plot of Silicon band 4 occupied and band 5 empty eigenvalues over 260 points of the 8 by 8 by 8 full-zone enumeration; the sampled bands remain separated.",
+      "bytes": 62583,
+      "path": "figures/full-zone-bands.png",
+      "role": "full-zone occupied and empty band samples",
+      "sha256": "b1fffd7acbe40d02c51b6ba3fe21489766aa1e9d130d1951995a7ceb955c29dd"
+    },
+    {
+      "alt": "Stored Silicon 12 by 12 by 12 tetrahedron density of states versus energy relative to the Fermi level, showing a zero-DOS interval near the reference.",
+      "bytes": 63844,
+      "path": "figures/dos.png",
+      "role": "tetrahedron density-of-states plot",
+      "sha256": "33f2d775d055c51805eae489a0a1ff3f816e1059760ca42aeded51b1fb965494"
+    },
+    {
+      "alt": "Silicon Gamma-point response plot with three acoustic-mode frequencies near zero, three optical modes near 514 inverse centimetres, and three equal electronic dielectric diagonal components near 14.",
+      "bytes": 46963,
+      "path": "figures/gamma-response.png",
+      "role": "Gamma-point phonon and electronic-response plot",
+      "sha256": "10f3f85fb24856d21ed404bd648b4d3b95d32bb6b12292eecd55319e10bb5257"
+    }
+  ],
+  "case_id": "silicon-ground-state-electronic-structure",
+  "case_kind": "worked-workflow",
+  "claim_boundary": {
+    "does_not_support": [
+      "A transferable cutoff or k-mesh recommendation.",
+      "A converged band gap, DOS, phonon or dielectric observable.",
+      "Structural stability, physical validity, experimental agreement or a material conclusion.",
+      "A converged full-zone fundamental, quasiparticle, optical, or experimental gap."
+    ],
+    "supports": [
+      "Hash-bound reconstruction of the stored QE 7.5 teaching inputs, compact outputs and derived plots.",
+      "A documented missing-raw boundary for the full-zone ledger.",
+      "Direct parsing of the recorded 260-point, 8-band full-zone sample with its SHA-256-bound QE outputs."
+    ]
+  },
+  "commands": [
+    {
+      "command": "OMP_NUM_THREADS=4 QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash run.sh",
+      "exit_code": 0,
+      "stage": "recorded historical QE 7.5 cutoff, relaxation and restart stages"
+    },
+    {
+      "command": "OMP_NUM_THREADS=8 QE_LAUNCHER='mpirun -np 4' QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash run.sh",
+      "exit_code": 0,
+      "stage": "recorded historical QE 7.5 electronic, full-zone and Gamma-response stages"
+    },
+    {
+      "command": "bash replay-derived.sh",
+      "exit_code": 0,
+      "stage": "replay stored evidence"
+    },
+    {
+      "command": "bash extract.sh",
+      "exit_code": 0,
+      "stage": "extract"
+    },
+    {
+      "command": "bash check.sh",
+      "exit_code": 0,
+      "stage": "acceptance"
+    },
+    {
+      "command": "bash run.sh",
+      "exit_code": 2,
+      "stage": "native preflight without UPF"
+    }
+  ],
+  "completed_at": "2026-08-05T00:06:24+08:00",
+  "evidence_class": "real-execution",
+  "exit_code": 0,
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "summary": "copied public inputs/outputs and generated artifacts are SHA-256 checked against recorded source identities"
+    },
+    "G1": {
+      "status": "PASS",
+      "summary": "stored QE 7.5 outputs each have one JOB DONE marker"
+    },
+    "G2": {
+      "status": "WARN",
+      "summary": "SCF/relax/restart and Gamma response markers are present, but line-path bands retain c_bands eigenvalue-not-converged warnings"
+    },
+    "G3": {
+      "status": "PASS",
+      "summary": "the corrected 8x8x8 full-zone SCF, bands, bands.x and 260-point 8-band data are hash-bound and directly parsed"
+    },
+    "G4": {
+      "status": "NOT TESTED",
+      "summary": "the 3 by 3 total-energy matrix has no accepted observable-specific stable-tail protocol; no DOS, phonon, dielectric, or band convergence evidence"
+    },
+    "G5": {
+      "status": "NOT CLAIMED",
+      "summary": "no fundamental gap, physical stability, dielectric, phonon, or experimental-material conclusion is claimed"
+    }
+  },
+  "public_host_label": "Recorded public QE output; no host-private path retained",
+  "schema_version": "1.0",
+  "software": [
+    {
+      "interface": "pw.x, bands.x, dos.x, ph.x recorded output",
+      "name": "Quantum ESPRESSO",
+      "version": "7.5"
+    },
+    {
+      "interface": "stored-output parser",
+      "name": "Python",
+      "version": "3.12.11"
+    }
+  ],
+  "sources": [
+    {
+      "accessed_at": "2026-08-04",
+      "id": "cod-9013102",
+      "licence_boundary": "The CIF header requests attribution to the underlying journal source; COD access alone does not waive that record-level attribution.",
+      "path": "source/silicon-cod-9013102.cif",
+      "raw_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e",
+      "role": "deterministic public structure copy",
+      "sanitization": "Only the upstream absolute repository metadata line was replaced; the raw and public identities are bound by the adjacent rule record.",
+      "sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55",
+      "url": "https://www.crystallography.net/cod/9013102.html"
+    },
+    {
+      "id": "cod-9013102-sanitization",
+      "path": "source/silicon-cod-9013102.sanitization.json",
+      "role": "raw-to-public CIF sanitization record",
+      "sha256": "033b32c6c583ae213d7bb995a73e67ff9cc4a02ad16456118638eb7994f172b2"
+    },
+    {
+      "accessed_at": "2026-08-04",
+      "id": "silicon-qe-pseudopotential-identity",
+      "licence_boundary": "Filename, declared source and SHA-256 are retained; the UPF body is absent.",
+      "path": "source/pseudopotentials.json",
+      "role": "UPF identity only; no potential body",
+      "sha256": "cd01fa4af67f1998b16b30cd40c0beabe80be0a20eb2e43fb713b244a8fe7893",
+      "url": "https://www.materialscloud.org/discover/sssp/table/precision"
+    },
+    {
+      "id": "silicon-qe-plan",
+      "path": "source/qe_plan.json",
+      "role": "recorded plan",
+      "sha256": "75bd7ee6091b4ebf21d99f42ad81607977d6cc7a9e2366e42b89ce6f73ce6261"
+    },
+    {
+      "id": "silicon-full-zone-ledger",
+      "path": "source/full-zone-extrema.json",
+      "role": "full-zone checksum ledger and independently parsed raw-output cross-check",
+      "sha256": "2a30ebb89071af1b9aa5167547a5939ec3780be1c4722534704c165aaffd2ea3"
+    }
+  ],
+  "started_at": null,
+  "title": "Silicon QE 7.5 ground-state and electronic-structure evidence chain"
+}

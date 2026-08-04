@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "retrieval_boundary": "Obtain the named UPFs independently from their declared public sources. Verify the individual SHA-256 values before execution. The O release archive digest additionally binds its SSSP distribution. UPF contents are not stored here, and a declared source/hash does not establish pseudopotential suitability or observable convergence.",
+  "release": {
+    "name": "SSSP 1.3.0 PBE precision",
+    "source_url": "https://sssp.materialscloud.org/",
+    "release_metadata_sha256": "7b7b648915e54c8397cd8143a7385c17eeed3104ad1236cecd905126d338a4e3",
+    "release_archive_sha256": "d91db6b4b3788501d535a5b84ebabf3859ea3e3ac6ea154c4be3718da50f0c85"
+  },
+  "pseudopotentials": [
+    {
+      "element": "Mg",
+      "filename": "Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+      "sha256": "c6420b82107b1fe96a798a0232093dacb0e0917dbb49bccbff5f845525b2810a",
+      "source": "Quantum ESPRESSO official pseudopotential portal; actual HTTP download",
+      "source_url": "https://pseudopotentials.quantum-espresso.org/upf_files/Mg.pbe-spnl-kjpaw_psl.1.0.0.UPF",
+      "source_library": "PSLibrary 1.0.0",
+      "xc_functional": "SLA  PW   PBX  PBC",
+      "relativistic": "scalar",
+      "header_cutoffs_ry": {"ecutwfc": 58.1209, "ecutrho": 385.1152}
+    },
+    {
+      "element": "O",
+      "filename": "O.pbe-n-kjpaw_psl.0.1.UPF",
+      "sha256": "7c4b6ed541f83d0afdf5c1d3a8c611340f073f3e2b11e95b7963bb2ee26929aa",
+      "source": "SSSP 1.3.0 PBE precision, 031PAW member",
+      "source_url": "https://sssp.materialscloud.org/",
+      "source_library": "031PAW",
+      "source_md5": "0234752ac141de4415c5fc33072bef88",
+      "xc_functional": "SLA  PW   PBX  PBC",
+      "relativistic": "scalar",
+      "recommended_cutoffs_ry": {"ecutwfc": 75.0, "ecutrho": 600.0}
+    }
+  ],
+  "combined_input_boundary": "The input uses 75 Ry wavefunction and 600 Ry charge-density cutoffs, above the recorded Mg XML header values and equal to the O SSSP recommendations. These are a staged fixed setup, not an MgO convergence result."
+}

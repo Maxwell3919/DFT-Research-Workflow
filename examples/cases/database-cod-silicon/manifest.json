@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "case_id": "database-cod-silicon",
+  "title": "COD Silicon record 9013102 direct retrieval",
+  "case_kind": "database-retrieval",
+  "evidence_class": "real-execution",
+  "public_host_label": "Talos",
+  "started_at": "2026-08-05T01:43:34Z",
+  "completed_at": "2026-08-05T01:45:53Z",
+  "exit_code": 0,
+  "software": [
+    {"name": "curl", "version": "8.5.0", "interface": "HTTPS CLI"},
+    {"name": "case-local structure analysis", "version": "1.0", "interface": "Python CLI"},
+    {"name": "ASE", "version": "3.29.0"},
+    {"name": "spglib", "version": "2.7.0"}
+  ],
+  "sources": [
+    {"id": "cod-9013102", "role": "deterministic public copy of the downloaded CIF", "path": "source/9013102.cif", "sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55", "raw_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e", "sanitization": "Only the upstream absolute repository metadata line was replaced; the raw and public identities are bound by the adjacent rule record.", "url": "https://www.crystallography.net/cod/9013102.cif", "accessed_at": "2026-08-05", "licence_boundary": "The CIF header requests attribution to the underlying journal source; COD access alone does not waive that record-level attribution."},
+    {"id": "cod-9013102-sanitization", "role": "raw-to-public CIF sanitization record", "path": "source/9013102.sanitization.json", "sha256": "033b32c6c583ae213d7bb995a73e67ff9cc4a02ad16456118638eb7994f172b2"}
+  ],
+  "commands": [
+    {"stage": "retrieve", "command": "env -u https_proxy -u http_proxy -u all_proxy -u HTTPS_PROXY -u HTTP_PROXY -u ALL_PROXY curl --fail --location --silent --show-error --dump-header output/cod-response.headers --output source/9013102.cif https://www.crystallography.net/cod/9013102.cif", "exit_code": 0},
+    {"stage": "public-copy-sanitization", "command": "python3 ../../../scripts/sanitize-public-text.py --input \"$RAW_CIF\" --output source/9013102.cif --record source/9013102.sanitization.json --kind cod-upstream-path", "exit_code": 0},
+    {"stage": "inspect", "command": "python3 analyze_structure.py", "exit_code": 0},
+    {"stage": "parse", "command": "python3 parse.py", "exit_code": 0}
+  ],
+  "artifacts": [
+    {"role": "HTTP response headers", "path": "output/cod-response.headers", "sha256": "44152c25f40fa6accca68df0fc18efbdb8dc7fc9355eb1ad3656dc6c7aa1a61d", "bytes": 236},
+    {"role": "retrieval timestamp", "path": "output/downloaded-at.txt", "sha256": "4e4109e786d9c8a8a2876bd52c1183637befa354f53788dda5f3142716819704", "bytes": 39},
+    {"role": "run result", "path": "output/run.txt", "sha256": "b4bfb8c4e9cc300038332e5398593990894d91b96c429a627d6a3fae94796e6f", "bytes": 27},
+    {"role": "CIF analysis", "path": "derived/9013102.analysis.json", "sha256": "79dd66a1bb13d75fb2b098896581a2d7df4f9acfd797f4f7e12b03625e10eb68", "bytes": 856},
+    {"role": "strict parser summary", "path": "derived/parsed-summary.json", "sha256": "aea23503e3e007924d76328d0b123a752b629fa7208959e2afd92c21bc96d0ed", "bytes": 455}
+  ],
+  "gates": {
+    "G0": {"status": "PASS", "summary": "Required case files exist and the CIF SHA-256 binds source and parser output."},
+    "G1": {"status": "PASS", "summary": "The recorded direct HTTPS retrieval returned HTTP 200 and exit code 0."},
+    "G2": {"status": "NOT TESTED", "summary": "A database retrieval has no solver or optimizer threshold."},
+    "G3": {"status": "PASS", "summary": "The downloaded CIF, headers, parser output, and structure-analysis artifacts are present."},
+    "G4": {"status": "NOT TESTED", "summary": "No observable-convergence protocol was run."},
+    "G5": {"status": "NOT CLAIMED", "summary": "Retrieval and parsing do not support a physical or scientific conclusion."}
+  },
+  "claim_boundary": {
+    "supports": ["The specified COD URL returned the raw object whose SHA-256 is recorded, and the deterministic public copy is independently hash-bound.", "The public copy parsed as an eight-atom Si representation."],
+    "does_not_support": ["COD record identity or crystallographic quality.", "Material stability, DFT execution, numerical convergence, or a scientific conclusion."]
+  }
+}

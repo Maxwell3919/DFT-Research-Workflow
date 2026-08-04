@@ -1,0 +1,20 @@
+{
+  "boundary": "The SCF was scheduler-cancelled before a normal completion marker. Reported intermediate energy is not an accepted total energy or adsorption result.",
+  "energy_records_ry": 2,
+  "execution_record_origin": "historical-recovery/generated-from-sanitized-public-copy",
+  "job_done": false,
+  "last_reported_total_energy_ry": -629.78966844,
+  "model": {
+    "H_index": 16,
+    "atoms": 17,
+    "empty_cell_length_ang": 24.0,
+    "site_label": "fcc hollow candidate"
+  },
+  "parser": "qe-terminal-failure-extract-v1",
+  "qe_version_banner_present": true,
+  "scf_converged": false,
+  "slurm_cancellation": true,
+  "stderr_sha256": "25bdaa5ddab0202f91c1faa42897ce5af70935067927df01da26d19f59626d53",
+  "stdout_sha256": "a8e66b4b00ea0a29468dee05be3aeca83b70a6523aaa2aa87312e6ce37e5d995",
+  "terminal_state": "failed"
+}

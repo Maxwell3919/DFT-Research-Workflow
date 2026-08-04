@@ -1,0 +1,12 @@
+{
+  "boundary": "The raw file is not committed. This record binds its identity to the deterministic public copy; no scientific content beyond the matched private-path or host token is changed.",
+  "kind": "cod-upstream-path",
+  "public_bytes": 5199,
+  "public_sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55",
+  "raw_bytes": 5234,
+  "raw_sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e",
+  "replacement_count": 1,
+  "rule": "Replace the COD-exported absolute home-directory repository URL line with a fixed public-copy marker.",
+  "rule_version": "public-text-v1",
+  "schema_version": "1.0"
+}

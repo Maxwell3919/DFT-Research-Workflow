@@ -8,7 +8,7 @@ through calculation preparation and reference-state calculations, branches into
 specific target calculations, and ends with analysis, validation, documentation,
 and preservation.
 
-## Current framework
+## Current research workflow
 
 The reader-facing structure is:
 
@@ -37,13 +37,23 @@ Every scientific page is organized naturally according to its subject. The site
 does not require a repeated Inputs/Outputs/Requirement-style contract or a
 uniform visible heading sequence.
 
+The public navigation is **Home**, **Research Workflow**, **Worked Workflows**,
+and **Tools**. Cross-cutting Framework material now lives in the A–E topics it
+supports; the old `/framework/*` routes are migration surfaces. Likewise,
+`/recipes/*` preserves old links while `/workflows/` publishes only workflows
+with a continuous, file-backed execution chain.
+
 Public site: <https://maxwell3919.github.io/DFT-Research-Workflow/>
 
 ## Current repository structure
 
 ```text
 workflow/
-└── topics.json                   # current A–E topic and route authority
+├── topics.json                   # current A–E topic and route authority
+└── practical-evidence.json       # guide evidence class and case binding
+
+examples/cases/
+└── <case-id>/                    # terminal-first inputs, outputs and gates
 
 docs/
 ├── architecture.md
@@ -53,7 +63,7 @@ docs/
 src/content/
 ├── topics/                      # optional natural topic narratives
 ├── recipes/                     # transitional workflow bindings
-├── framework/                   # framework narrative pages
+├── framework/                   # sources for framework migration surfaces
 ├── core-operations/             # transitional O01–O24 bindings
 └── operations/                  # former 00–34 route metadata
 
@@ -85,8 +95,14 @@ npm run check
 ```
 
 `npm run check` validates the current topic registry, transitional migration
-sources, project-base-safe links, content policy, Astro types, the static build,
-and generated routes.
+sources, project-base-safe links, content policy, terminal-case schemas and
+hashes, Astro types, the static build, and generated routes. To re-run every
+committed case extractor, parser, and gate checker (including verifying that a
+declared `FAIL` returns nonzero), use:
+
+```bash
+CASE_PYTHON="$(pwd)/.venv/bin/python" node scripts/validate-cases.mjs --execute
+```
 
 For browser validation:
 

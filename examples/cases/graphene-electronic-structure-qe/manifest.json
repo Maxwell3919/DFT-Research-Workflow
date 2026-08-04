@@ -1,0 +1,263 @@
+{
+  "artifacts": [
+    {
+      "bytes": 726,
+      "path": "source/graphene-primitive-model.json",
+      "role": "graphene source model",
+      "sha256": "1722c057775d219d638c716515377ef57371604c2f6d217c00a98f49dd96916f"
+    },
+    {
+      "bytes": 685,
+      "path": "input/graphene.scf.in",
+      "role": "SCF input",
+      "sha256": "e15e0637ceb0ff4aff9cfd2cfecdffe0fe3d04992f6de5cce9337c1df99f0586"
+    },
+    {
+      "bytes": 870,
+      "path": "input/graphene.bands.in",
+      "role": "bands pw.x input",
+      "sha256": "556da106b068190fa1c093bbfc08f09d9869546cd3088bd712dc446a579caacf"
+    },
+    {
+      "bytes": 85,
+      "path": "input/graphene.bands.x.in",
+      "role": "bands.x input",
+      "sha256": "4abb40724e56d82ebc66a6e4b5d2da80cb56c31df0b535c1573cb568d3d4f4e7"
+    },
+    {
+      "bytes": 2484,
+      "path": "qe_plan.json",
+      "role": "QE execution plan",
+      "sha256": "0c2f779a1a30d8bb54ba97f5783bf8e8622f0d2ccae2d5a95d883f7bec987bc6"
+    },
+    {
+      "bytes": 930,
+      "path": "pseudo-provenance.json",
+      "role": "public pseudopotential provenance",
+      "sha256": "5be613ca5e49fbb6b034253ed2dc35995e94cc509e5cfd959f66fb508c2f60f0"
+    },
+    {
+      "bytes": 490,
+      "path": "pseudo-manifest.json",
+      "role": "qe_guard-compatible pseudopotential manifest",
+      "sha256": "22cc1ac0395f433fcafe3d4bef796bcdf793da5f6a74decb6769be74153c9cd7"
+    },
+    {
+      "bytes": 484,
+      "path": "environment.txt",
+      "role": "prepared environment record",
+      "sha256": "7abdd17504d7ce69f9e681290aafef2bee2c3a4f438e667e22b8d8c67e713dc8"
+    },
+    {
+      "bytes": 18219,
+      "path": "output/graphene.scf.stdout",
+      "role": "independent SCF stdout",
+      "sha256": "aa24dc9ed6f8d61beb7e23259c74a51254b4acb9776aee160c80bc218441e17f"
+    },
+    {
+      "bytes": 0,
+      "path": "output/graphene.scf.stderr",
+      "role": "independent SCF stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 12,
+      "path": "output/graphene.scf.exit",
+      "role": "independent SCF exit status",
+      "sha256": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120"
+    },
+    {
+      "bytes": 277,
+      "path": "output/execution-environment.txt",
+      "role": "independent SCF execution environment",
+      "sha256": "af846c1a6a9e4ebcac49465dd07b96ca1fd3ae178e0b8f2310046ca7e25dea28"
+    },
+    {
+      "bytes": 3895,
+      "path": "output/graphene.scf-qeguard-audit.json",
+      "role": "independent SCF QE guard audit",
+      "sha256": "396e6656c19471c5a36e49ab8549f356a93ae2b0c8ffe71585f1ecb0145dfae6"
+    },
+    {
+      "bytes": 785,
+      "path": "output/scf-parent-evidence.json",
+      "role": "independent SCF parent evidence",
+      "sha256": "e2d4aec174567f349bcdf084e27635c4ba979e2f6bda432c6a93e08049eab385"
+    },
+    {
+      "bytes": 18219,
+      "path": "output/graphene.bands.parent-scf.stdout",
+      "role": "bands-parent SCF stdout",
+      "sha256": "ec67d10ac3669560046a9e505c4c8273264faf88b6b4947aad6753776fd5dc94"
+    },
+    {
+      "bytes": 0,
+      "path": "output/graphene.bands.parent-scf.stderr",
+      "role": "bands-parent SCF stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 12,
+      "path": "output/graphene.bands.parent-scf.exit",
+      "role": "bands-parent SCF exit status",
+      "sha256": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120"
+    },
+    {
+      "bytes": 7198,
+      "path": "output/graphene.bands.pw.stdout",
+      "role": "bands pw.x stdout",
+      "sha256": "178ea566cd31b69f35b95b3e221d5859d8344b1f93d96ab4884255d4cc7590c2"
+    },
+    {
+      "bytes": 0,
+      "path": "output/graphene.bands.pw.stderr",
+      "role": "bands pw.x stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 12,
+      "path": "output/graphene.bands.pw.exit",
+      "role": "bands pw.x exit status",
+      "sha256": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120"
+    },
+    {
+      "bytes": 82288,
+      "path": "output/graphene.bands.x.stdout",
+      "role": "bands.x stdout",
+      "sha256": "b1a48c34b4d1e8a6c8f62cf30a621e2d3bf3d96321c9418fa55de46c44c9990b"
+    },
+    {
+      "bytes": 0,
+      "path": "output/graphene.bands.x.stderr",
+      "role": "bands.x stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 12,
+      "path": "output/graphene.bands.x.exit",
+      "role": "bands.x exit status",
+      "sha256": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120"
+    },
+    {
+      "bytes": 13825,
+      "path": "output/graphene.bands.dat",
+      "role": "bands.x data",
+      "sha256": "548bdc30f0f7447dbd275beb31ebc8bbfa89655d6ce0280720baea0d7f5d475f"
+    },
+    {
+      "bytes": 279,
+      "path": "output/bands-execution-environment.txt",
+      "role": "bands execution environment",
+      "sha256": "7dc8c3af92e36d7758914713b496302df30a349174fac552e15485afa65adaad"
+    },
+    {
+      "bytes": 2781,
+      "path": "derived/graphene-band-summary.json",
+      "role": "strict band summary",
+      "sha256": "c856ef0e3235680435c77939199f43c2a3ceb3bafac4c808d2996ba101982487"
+    },
+    {
+      "bytes": 23229,
+      "path": "derived/graphene-band-path.csv",
+      "role": "band-path table",
+      "sha256": "c3dafcfb60261cc370d028ab8b68767aa9c084a26c4ee99982c11a0e3777ac09"
+    },
+    {
+      "bytes": 109199,
+      "path": "figures/graphene-band-path.png",
+      "role": "band-path figure",
+      "sha256": "efdaccf722b19c6ce0417d7bc11ce0f3d88b29b32359470d7fd5accea5f107a2"
+    }
+  ],
+  "case_id": "graphene-electronic-structure-qe",
+  "case_kind": "calculation",
+  "claim_boundary": {
+    "does_not_support": [
+      "Vacuum, cutoff, k-mesh, smearing, path, or observable convergence.",
+      "A full-zone band property, Dirac topology, stability assessment, or any broader material conclusion."
+    ],
+    "supports": [
+      "The fixed, hash-bound QE 7.5 input contract for a two-atom 2D graphene model with 20.0 Angstrom cell height, kz=1, and a Gamma-K-M-Gamma teaching path."
+    ]
+  },
+  "commands": [
+    {
+      "command": "Historical RUN_STAGE=scf wrapper returned 1 after a successful QE stage because of a final false conditional; retained graphene.scf.exit and QE guard audit both record the QE result independently.",
+      "exit_code": 1,
+      "stage": "independent-SCF"
+    },
+    {
+      "command": "RUN_STAGE=bands QE_LAUNCHER=<allocation launcher> PW_COMMAND=pw.x BANDS_COMMAND=bands.x bash run.sh",
+      "exit_code": 0,
+      "stage": "bands-parent-SCF-and-bands"
+    },
+    {
+      "command": "python3 parse.py --write-derived --write-manifest",
+      "exit_code": 0,
+      "stage": "strict-parse"
+    }
+  ],
+  "completed_at": null,
+  "evidence_class": "real-execution",
+  "exit_code": 0,
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "summary": "Inputs and all declared retained artifacts are SHA-256 bound."
+    },
+    "G1": {
+      "status": "PASS",
+      "summary": "Independent SCF, actual bands-parent SCF, bands pw.x, and bands.x each retain separate stdout, stderr, explicit exit_code=0, and required completion markers."
+    },
+    "G2": {
+      "status": "PASS",
+      "summary": "Both retained SCF stages explicitly report electronic convergence; no ionic optimization was requested."
+    },
+    "G3": {
+      "status": "PASS",
+      "summary": "Independent SCF evidence, bands-parent SCF, bands pw.x, bands.x, parseable band data, summary, CSV, and PNG are present."
+    },
+    "G4": {
+      "status": "NOT TESTED",
+      "summary": "One run does not test vacuum, cutoff, k mesh, smearing, path, or observable convergence."
+    },
+    "G5": {
+      "status": "NOT CLAIMED",
+      "summary": "The single fixed teaching path does not establish a full-zone property, topology, stability, or material conclusion."
+    }
+  },
+  "public_host_label": "QE 7.5 execution environment; host identity withheld",
+  "schema_version": "1.0",
+  "software": [
+    {
+      "interface": "pw.x command-line entry",
+      "name": "Quantum ESPRESSO PWscf",
+      "version": "7.5"
+    },
+    {
+      "interface": "bands.x command-line entry",
+      "name": "Quantum ESPRESSO bands",
+      "version": "7.5"
+    }
+  ],
+  "sources": [
+    {
+      "id": "original-graphene-teaching-model",
+      "licence_boundary": "Original teaching model; it does not assert a database identity or relaxed geometry.",
+      "path": "source/graphene-primitive-model.json",
+      "role": "two-atom 2D periodic teaching geometry",
+      "sha256": "1722c057775d219d638c716515377ef57371604c2f6d217c00a98f49dd96916f"
+    },
+    {
+      "accessed_at": "2026-08-05",
+      "id": "pslibrary-carbon-kjpaw",
+      "licence_boundary": "Only provenance and SHA-256 are retained; the UPF payload is not redistributed.",
+      "path": "pseudo-provenance.json",
+      "role": "public pseudopotential provenance and identity",
+      "sha256": "5be613ca5e49fbb6b034253ed2dc35995e94cc509e5cfd959f66fb508c2f60f0",
+      "url": "https://pseudopotentials.quantum-espresso.org/upf_files/C.pbe-n-kjpaw_psl.1.0.0.UPF"
+    }
+  ],
+  "started_at": null,
+  "title": "Graphene QE 7.5 SCF and Gamma-K-M-Gamma electronic-structure entry"
+}
