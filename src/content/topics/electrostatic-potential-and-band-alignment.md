@@ -7,7 +7,7 @@ Electrostatic-potential analysis creates a reference for comparing energies whos
 
 A plotted potential profile is therefore not automatically a vacuum level, built-in field, band offset, Schottky barrier, or device band diagram. The scientific result is the reference construction and its tested domain, not the plot alone.
 
-## Separate the arbitrary zero from a measurable difference
+## A periodic potential needs a reference before it can align energies
 
 Adding a constant to a periodic potential changes neither the charge density nor the forces, but it shifts the displayed energy reference. Absolute potential values from separate periodic calculations cannot therefore be compared directly.
 
@@ -42,7 +42,7 @@ A residual slope can indicate a physical dipole, an external field, periodic-ima
 
 The work function remains conditional on termination, reconstruction, adsorption, charge, field, dipole, geometry, and electronic state. It is not a universal property of a composition.
 
-## An explicit interface lineup includes interface physics
+## Vacuum alignment and an interface lineup answer different questions
 
 A bonded heterojunction cannot generally be reconstructed by aligning two independent vacuum slabs. The interface can introduce charge redistribution, chemical bonding, polarization, strain, and a potential step that does not exist in either isolated constituent.
 
@@ -58,7 +58,7 @@ A common lineup separates bulk band-edge-to-reference terms from the reference s
 
 A vacuum-aligned electron affinity can be useful for an isolated constituent, but it does not include the interface lineup term and should not be reported as the bonded-interface offset without additional evidence.
 
-## Band edges require a separate electronic analysis
+## Band edges and offsets require their own electronic evidence
 
 Potential alignment sets the reference; it does not determine whether the band edges are accurate. Define how the valence and conduction extrema were found over the full Brillouin zone, the Hamiltonian and structural state used, spin and SOC treatment, occupations, and any quasiparticle correction.
 
@@ -76,7 +76,7 @@ A potential step does not by itself prove a Schottky barrier, carrier injection 
 
 Keep the structures, surfaces or interface terminations, orientation and registry, cell and strain, charge/spin/SOC state, occupations, potential-output definition, pseudopotential or PAW convention, grid, raw and averaged arrays, reference-region selection, band-edge search, lineup equation, corrections, and sensitivity tests.
 
-This topic can establish a tested electrostatic reference for a specified surface, bulk comparison, or explicit interface. It does not establish an absolute universal potential, experimental band offset, Schottky barrier, carrier concentration, transport coefficient, interface stability, or device behaviour from one profile alone.
+This topic can establish a tested electrostatic reference for a specified surface, bulk comparison, or explicit interface. It does not establish an absolute potential, experimental band offset, Schottky barrier, carrier concentration, transport coefficient, interface stability, or device behaviour from one profile alone.
 
 ## Sources and methods
 
