@@ -1,0 +1,14 @@
+HTTP/1.1 200 Connection established
+
+HTTP/2 404 
+date: Tue, 04 Aug 2026 17:46:39 GMT
+content-type: application/json
+content-length: 148
+permissions-policy: interest-cohort=()
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+content-security-policy: default-src 'self' data: 'unsafe-inline' 'unsafe-eval' blob: https://plausible.io/js/plausible.js https://plausible.io/api/event https://rgw.cscs.ch/; script-src 'self' https://plausible.io/js/plausible.js https://plausible.io/api/event 'unsafe-inline'; connect-src 'self' https://plausible.io/api/event
+strict-transport-security: max-age=31536000; includeSubDomains
+referrer-policy: strict-origin-when-cross-origin
+

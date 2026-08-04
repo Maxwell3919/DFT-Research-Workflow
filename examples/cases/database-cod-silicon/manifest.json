@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "case_id": "database-cod-silicon",
+  "title": "COD Silicon record 9013102 direct retrieval",
+  "case_kind": "database-retrieval",
+  "evidence_class": "real-execution",
+  "public_host_label": "Talos",
+  "started_at": "2026-08-05T01:43:34Z",
+  "completed_at": "2026-08-05T01:45:53Z",
+  "exit_code": 0,
+  "software": [
+    {"name": "curl", "version": "8.5.0", "interface": "HTTPS CLI"},
+    {"name": "cif-structure-analysis", "version": "installed skill", "interface": "Python CLI"},
+    {"name": "ASE", "version": "3.29.0"},
+    {"name": "spglib", "version": "2.7.0"}
+  ],
+  "sources": [
+    {"id": "cod-9013102", "role": "downloaded CIF", "path": "source/9013102.cif", "sha256": "99fb6c6c297f8407aa779de46bf7eaa663ac079f7f12b582c042313f9c82f77e", "url": "https://www.crystallography.net/cod/9013102.cif", "accessed_at": "2026-08-05", "licence_boundary": "COD open-data access was used for this bounded record; record-level provenance and reuse remain the user's responsibility."}
+  ],
+  "commands": [
+    {"stage": "retrieve", "command": "env -u https_proxy -u http_proxy -u all_proxy -u HTTPS_PROXY -u HTTP_PROXY -u ALL_PROXY curl --fail --location --silent --show-error --dump-header output/cod-response.headers --output source/9013102.cif https://www.crystallography.net/cod/9013102.cif", "exit_code": 0},
+    {"stage": "inspect", "command": "python3 /home/talos/.codex/Vibe-DFT-Skills/skills/cif-structure-analysis/scripts/analyze_cif.py --input source/9013102.cif --json derived/9013102.analysis.json --markdown derived/9013102.analysis.md", "exit_code": 0},
+    {"stage": "parse", "command": "python3 parse.py", "exit_code": 0}
+  ],
+  "artifacts": [
+    {"role": "HTTP response headers", "path": "output/cod-response.headers", "sha256": "44152c25f40fa6accca68df0fc18efbdb8dc7fc9355eb1ad3656dc6c7aa1a61d", "bytes": 237},
+    {"role": "retrieval timestamp", "path": "output/downloaded-at.txt", "sha256": "4e4109e786d9c8a8a2876bd52c1183637befa354f53788dda5f3142716819704", "bytes": 21},
+    {"role": "run result", "path": "output/run.log", "sha256": "b4bfb8c4e9cc300038332e5398593990894d91b96c429a627d6a3fae94796e6f", "bytes": 29},
+    {"role": "CIF analysis", "path": "derived/9013102.analysis.json", "sha256": "daa90f3785be81fba6f9dac991d18b2995841e0918afe90b9dd7434d9dc971f0", "bytes": 68374},
+    {"role": "strict parser summary", "path": "derived/parsed-summary.json", "sha256": "b7ad6cdf743fe976dfea0b77d3a8dbea9d82c0c64a748fd8e2aeb17122a0bbc2", "bytes": 466}
+  ],
+  "gates": {
+    "G0": {"status": "PASS", "summary": "Required case files exist and the CIF SHA-256 binds source and parser output."},
+    "G1": {"status": "PASS", "summary": "The recorded direct HTTPS retrieval returned HTTP 200 and exit code 0."},
+    "G2": {"status": "NOT TESTED", "summary": "A database retrieval has no solver or optimizer threshold."},
+    "G3": {"status": "PASS", "summary": "The downloaded CIF, headers, parser output, and structure-analysis artifacts are present."},
+    "G4": {"status": "NOT TESTED", "summary": "No observable-convergence protocol was run."},
+    "G5": {"status": "NOT CLAIMED", "summary": "Retrieval and parsing do not support a physical or scientific conclusion."}
+  },
+  "claim_boundary": {
+    "supports": ["The specified COD URL returned the hash-bound CIF through a real Talos HTTPS command.", "The captured CIF parsed as an eight-atom Si representation."],
+    "does_not_support": ["COD record identity or crystallographic quality.", "Material stability, DFT execution, numerical convergence, or a scientific conclusion."]
+  }
+}

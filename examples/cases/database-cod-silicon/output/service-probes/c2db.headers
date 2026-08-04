@@ -1,0 +1,21 @@
+HTTP/1.1 200 Connection established
+
+HTTP/1.1 303 See Other
+Date: Tue, 04 Aug 2026 17:47:03 GMT
+Server: Apache/2.4.62 (AlmaLinux) OpenSSL/3.5.5
+Strict-Transport-Security: max-age=15768000
+X-Frame-Options: SAMEORIGIN
+Location: https://c2db.fysik.dtu.dk/row/
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+
+HTTP/1.1 200 Connection established
+
+HTTP/1.1 404 Not Found
+Date: Tue, 04 Aug 2026 17:47:05 GMT
+Server: Apache/2.4.62 (AlmaLinux) OpenSSL/3.5.5
+Strict-Transport-Security: max-age=15768000
+X-Frame-Options: SAMEORIGIN
+Content-Length: 731
+Content-Type: text/html; charset=UTF-8
+

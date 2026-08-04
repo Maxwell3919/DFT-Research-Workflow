@@ -1,0 +1,9 @@
+host=Talos
+os=Linux
+shell=bash
+curl=curl 8.5.0 (x86_64-pc-linux-gnu)
+python=Python 3.12.3
+cif_analysis_skill=cif-structure-analysis
+cif_analysis_script=/home/talos/.codex/Vibe-DFT-Skills/skills/cif-structure-analysis/scripts/analyze_cif.py
+ase=3.29.0
+spglib=2.7.0

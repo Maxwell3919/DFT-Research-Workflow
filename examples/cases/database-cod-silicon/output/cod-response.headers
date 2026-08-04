@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Date: Tue, 04 Aug 2026 17:46:06 GMT
+Server: Apache/2.4.67 (Debian)
+Last-Modified: Thu, 05 Feb 2026 19:10:01 GMT
+ETag: "1472-64a186b61d215"
+Accept-Ranges: bytes
+Content-Length: 5234
+Content-Type: chemical/x-cif
+

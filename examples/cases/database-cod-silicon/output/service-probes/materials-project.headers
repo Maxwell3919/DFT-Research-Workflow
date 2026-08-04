@@ -1,0 +1,17 @@
+HTTP/1.1 200 Connection established
+
+HTTP/2 401 
+date: Tue, 04 Aug 2026 17:46:38 GMT
+content-type: application/json; charset=utf-8
+content-length: 45
+www-authenticate: Key realm="kong"
+vary: Origin
+access-control-expose-headers: X-Api-Key
+x-kong-response-latency: 1
+server: cloudflare
+cf-cache-status: DYNAMIC
+set-cookie: _csrf_token=anonymous; Domain=.materialsproject.org; Path=/; SameSite=Strict
+set-cookie: __cf_bm=h.qNUCvETsuJsaOdC39IcLnhvibOnninEd9AymvMT3c-1785865597.3702502-1.0.1.1-WDYfsXmXEh6KSuEbxsp6CnChfkAfAyIc6nvCtzLqIttljijMCU8Yfd4_TWuq1Son0ypNU4MEsaxHtqDEFs_dq_Vgb2D9CLreEEytjWcqbmUOqPawzMtTp1sokO0vArLR; HttpOnly; SameSite=None; Secure; Path=/; Domain=materialsproject.org; Expires=Tue, 04 Aug 2026 18:16:38 GMT
+cf-ray: a25f61ef8f8fce23-SIN
+alt-svc: h3=":443"; ma=86400
+
