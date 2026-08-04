@@ -19,10 +19,10 @@
       "sha256": "3d467b293dec81683a6e064fd4fb906a9eff5a4cc6a58c253f0bb479f288e6b5"
     },
     {
-      "bytes": 1532,
+      "bytes": 1530,
       "path": "derived/graphene-model-report.json",
       "role": "report",
-      "sha256": "cf682132546b2b462b13d97791ad5c8ff6874f18cf3229e4b0fa9dca5e848bf6"
+      "sha256": "9fb31220af346c9fa7bbca358bf904e0238d57d53a6f646ca01003141d657c6f"
     },
     {
       "bytes": 168,
@@ -34,7 +34,7 @@
       "bytes": 27567,
       "path": "figures/graphene-H-xz.png",
       "role": "figure",
-      "sha256": "3a31370326dfad6288636f5d0fdf9ee5661fbead39e767449c5593563b385d59"
+      "sha256": "52356199ba8568e01f439795fc52030a1880e1c0d115051b363748b38246e1fb"
     }
   ],
   "case_id": "structure-graphene-vacuum-adsorbate",

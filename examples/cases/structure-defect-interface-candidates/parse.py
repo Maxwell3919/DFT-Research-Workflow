@@ -179,7 +179,7 @@ def main() -> None:
         "vacancy_candidate": {"parent_atoms": len(si_supercell), "candidate_atoms": len(vacancy), "removed_site_index": 0, "vacancy_site_fractional_coordinate": removed_scaled, "parent": metrics(si_supercell), "candidate": metrics(vacancy)},
         "interface_candidate": {"graphene_atoms": len(graphene_layer), "hbn_atoms": len(hbn_layer), "candidate_atoms": len(interface), "formula": interface.get_chemical_formula(mode="hill"), "pbc": interface.pbc.tolist(), "interlayer_separation_ang": gap, "imposed_inplane_mismatch_percent": 0.0, "common_lattice_parameter_ang": 2.46, "candidate": metrics(interface), "boundary": "The 0.0 percent mismatch is a construction constraint from assigning h-BN the graphene in-plane coordinates, not a relaxed mismatch or epitaxial feasibility result."},
         "pymatgen_crosscheck": {"vacancy_atoms": vacancy_pm["atoms"], "interface_atoms": interface_pm["atoms"], "vacancy_formula": vacancy_pm["formula"], "interface_formula": interface_pm["formula"]},
-        "software": {"python": sys.version.split()[0], "ase": __import__("ase").__version__, "pymatgen_core": getattr(__import__("pymatgen.core", fromlist=["x"]), "__version__", "import-verified")},
+        "software": {"python": f"{sys.version_info.major}.{sys.version_info.minor}", "ase": __import__("ase").__version__, "pymatgen_core": getattr(__import__("pymatgen.core", fromlist=["x"]), "__version__", "import-verified")},
     }
     (DER / "structure-candidates-report.json").write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     with (DER / "structure-candidates-metrics.csv").open("w", newline="", encoding="utf-8") as handle:

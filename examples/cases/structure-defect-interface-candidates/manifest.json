@@ -25,10 +25,10 @@
       "sha256": "1d07e0221e1004ba9923c2cfe246e8ff3c7ec3be74ba411a23eca4dac42bc3af"
     },
     {
-      "bytes": 2290,
+      "bytes": 2288,
       "path": "derived/structure-candidates-report.json",
       "role": "metrics_report",
-      "sha256": "cb45366e5bd161264692370656f653befcb54ee752df37ab1e8af6eab7a2f173"
+      "sha256": "f79e73ed468ee76c8c1260e3b893448ac22687a08503accfaa5efeeb1f8082e6"
     },
     {
       "bytes": 257,

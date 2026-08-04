@@ -37,10 +37,10 @@
       "sha256": "1554442fbd73f0b51ca5546909cfed05e1c4ef8b0bd2706ede99ebf452fc4db0"
     },
     {
-      "bytes": 5757,
+      "bytes": 5900,
       "path": "input/parse_convergence.py",
       "role": "convergence assessor",
-      "sha256": "69136b69fa4ab578ab065e86f05b555dd632388af81349388ad9a0f2a26c1034"
+      "sha256": "029fbbc97bd34ee920a814b270b8616a4b4c3965d2cd94f29a6a6680f0e280f6"
     },
     {
       "bytes": 1958,

@@ -97,7 +97,7 @@
   "software": {
     "ase": "3.29.0",
     "pymatgen_core": "pymatgen",
-    "python": "3.12.3",
+    "python": "3.12",
     "seekpath": "2.2.1",
     "spglib": "2.7.0"
   },

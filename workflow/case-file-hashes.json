@@ -130,8 +130,8 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/check.sh",
-      "sha256": "4f1f9311e459e6f41d10fb6f2a3def43bdf66193793350bc86196a3c7c77615e",
-      "bytes": 6056
+      "sha256": "77a7389c39ce775a03493e7b3b65ebab3cfba651b0dfbad98b6b55a9a8d32e72",
+      "bytes": 6284
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/derived/al-dos-gaussian-metadata.json",
@@ -190,8 +190,8 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/environment.txt",
-      "sha256": "fb1b221ecf7f61d9779c2fc819ea22998f374cf3ff88a730661ac675ceaa41b8",
-      "bytes": 320
+      "sha256": "edfb2389a383bdfd393316a28b1db854309578190d5d0722d70232f6a2eeedf9",
+      "bytes": 376
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/extract.sh",
@@ -255,8 +255,8 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/input/parse_convergence.py",
-      "sha256": "69136b69fa4ab578ab065e86f05b555dd632388af81349388ad9a0f2a26c1034",
-      "bytes": 5757
+      "sha256": "029fbbc97bd34ee920a814b270b8616a4b4c3965d2cd94f29a6a6680f0e280f6",
+      "bytes": 5900
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/input/parse_eos.py",
@@ -280,7 +280,7 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/manifest.json",
-      "sha256": "76acf00535b72c20143d02c38e9770f54dafaa54a4e15bbef3fe824191a2116e",
+      "sha256": "d085ec8ecffe320553a4ebdd5dbac525c3edb5573392feccb0a22f4454c66f7d",
       "bytes": 19788
     },
     {
@@ -1910,13 +1910,13 @@
     },
     {
       "path": "examples/cases/structure-defect-interface-candidates/derived/structure-candidates-report.json",
-      "sha256": "cb45366e5bd161264692370656f653befcb54ee752df37ab1e8af6eab7a2f173",
-      "bytes": 2290
+      "sha256": "f79e73ed468ee76c8c1260e3b893448ac22687a08503accfaa5efeeb1f8082e6",
+      "bytes": 2288
     },
     {
       "path": "examples/cases/structure-defect-interface-candidates/environment.txt",
-      "sha256": "5460ed7b592a9b1167c7f135e0796799e70c5b32ad27fac7279e05d10d7e2acc",
-      "bytes": 84
+      "sha256": "f27ea22d00bf8e7495af9c273599514f3b54c24b0af35b602c0dfbe92e544375",
+      "bytes": 96
     },
     {
       "path": "examples/cases/structure-defect-interface-candidates/extract.sh",
@@ -1940,7 +1940,7 @@
     },
     {
       "path": "examples/cases/structure-defect-interface-candidates/manifest.json",
-      "sha256": "2deae0978f7cd11d786e2e80a5d709e20207fb18922ef41140229086503b8fc7",
+      "sha256": "7336b60e3816fea50cca88e520bd5641b2bf60f9c9ebe23a3a108f4f9484714d",
       "bytes": 5158
     },
     {
@@ -1960,8 +1960,8 @@
     },
     {
       "path": "examples/cases/structure-defect-interface-candidates/parse.py",
-      "sha256": "d0e84a120ca7c2b24070b67de538e689480269e464bb5c82b4797fa5d84f1ca3",
-      "bytes": 11758
+      "sha256": "40ff91878c8c187fcc2bf80edd633a07ffb0fd8b0911d10ab9048531d3c2f32e",
+      "bytes": 11788
     },
     {
       "path": "examples/cases/structure-defect-interface-candidates/run.sh",
@@ -1995,13 +1995,13 @@
     },
     {
       "path": "examples/cases/structure-graphene-vacuum-adsorbate/derived/graphene-model-report.json",
-      "sha256": "cf682132546b2b462b13d97791ad5c8ff6874f18cf3229e4b0fa9dca5e848bf6",
-      "bytes": 1532
+      "sha256": "9fb31220af346c9fa7bbca358bf904e0238d57d53a6f646ca01003141d657c6f",
+      "bytes": 1530
     },
     {
       "path": "examples/cases/structure-graphene-vacuum-adsorbate/environment.txt",
-      "sha256": "9656f163fac0929512fc3202848e31a3e2c57f799223f0b27c7bf5052436d649",
-      "bytes": 46
+      "sha256": "531a7d10d4c71ae0de222f8e6a3d2d74e3120887d56fa4e28d5eab25b0a4bb70",
+      "bytes": 71
     },
     {
       "path": "examples/cases/structure-graphene-vacuum-adsorbate/extract.sh",
@@ -2010,7 +2010,7 @@
     },
     {
       "path": "examples/cases/structure-graphene-vacuum-adsorbate/figures/graphene-H-xz.png",
-      "sha256": "3a31370326dfad6288636f5d0fdf9ee5661fbead39e767449c5593563b385d59",
+      "sha256": "52356199ba8568e01f439795fc52030a1880e1c0d115051b363748b38246e1fb",
       "bytes": 27567
     },
     {
@@ -2020,7 +2020,7 @@
     },
     {
       "path": "examples/cases/structure-graphene-vacuum-adsorbate/manifest.json",
-      "sha256": "a354ec038ad187ba1de22043a955a5ef0dc2f089c60d3211b7e49d2262a32bd8",
+      "sha256": "c6218e553db293674648cf026e78d5c1480eeb688511d2b090fe592d83cd7bb2",
       "bytes": 3351
     },
     {
@@ -2045,8 +2045,8 @@
     },
     {
       "path": "examples/cases/structure-graphene-vacuum-adsorbate/parse.py",
-      "sha256": "2fb4ce5d60082fdc99207f385870182fb0b086cbebd61f347a343a2d74231b91",
-      "bytes": 5636
+      "sha256": "4cbff9c70ba99d1562a214361dd3c3151c0b15c0e0b3098ecf772c0659321ffb",
+      "bytes": 5666
     },
     {
       "path": "examples/cases/structure-graphene-vacuum-adsorbate/run.sh",
@@ -2075,8 +2075,8 @@
     },
     {
       "path": "examples/cases/structure-silicon-cell-lineage/derived/structure-report.json",
-      "sha256": "a8de2b6e843082439eb4e5edac938a772fdd53cd1e2b79d6859a122a9cb30646",
-      "bytes": 3196
+      "sha256": "cae88bb6771af246bc5c86dcbf5e1cccef1c2e847f579644cf102982f7f6b870",
+      "bytes": 3194
     },
     {
       "path": "examples/cases/structure-silicon-cell-lineage/derived/structure-summary.csv",
@@ -2090,8 +2090,8 @@
     },
     {
       "path": "examples/cases/structure-silicon-cell-lineage/environment.txt",
-      "sha256": "d153d2a24a40954e78852b24e2b7502fa1d7de37775d3b8d1a24bddb4f124b6d",
-      "bytes": 101
+      "sha256": "1cb7353460f83330671d2048725fc3b782e9a728ad7db91e3b3e7eb513f5fe94",
+      "bytes": 126
     },
     {
       "path": "examples/cases/structure-silicon-cell-lineage/extract.sh",
@@ -2100,7 +2100,7 @@
     },
     {
       "path": "examples/cases/structure-silicon-cell-lineage/figures/silicon-conventional-xy.png",
-      "sha256": "6ea6f0b037db7dd0b35c38501b2445cb884bfc01875d68c329e3874e0f6af681",
+      "sha256": "90c3d0ccdbb09baba2e4e51c92f1cd2d5b765f4bfc9ca2994cd76e7ccc5c9109",
       "bytes": 33554
     },
     {
@@ -2110,7 +2110,7 @@
     },
     {
       "path": "examples/cases/structure-silicon-cell-lineage/manifest.json",
-      "sha256": "e47df80f16dff4542d8967c4ba8313ad4a3823e679408d826648ba7999fefc3c",
+      "sha256": "cbcf81b9eae3a6e16aaad4fa5762734e47fb28e186c222a16825de0ff1164fe1",
       "bytes": 4550
     },
     {
@@ -2150,8 +2150,8 @@
     },
     {
       "path": "examples/cases/structure-silicon-cell-lineage/parse.py",
-      "sha256": "9179e60e5fc596edee7aee9a8e8f6f873f817a3ea866ab81de5a707d4d7d74b7",
-      "bytes": 6983
+      "sha256": "730602f6d51e75d269f193c38ba9828221211e1e15b88e9b35dfd0c13114801a",
+      "bytes": 7013
     },
     {
       "path": "examples/cases/structure-silicon-cell-lineage/run.sh",

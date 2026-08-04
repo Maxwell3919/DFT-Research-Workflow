@@ -51,7 +51,7 @@
   "software": {
     "ase": "3.29.0",
     "pymatgen_core": "2026.7.31",
-    "python": "3.12.3"
+    "python": "3.12"
   },
   "vacancy_candidate": {
     "candidate": {

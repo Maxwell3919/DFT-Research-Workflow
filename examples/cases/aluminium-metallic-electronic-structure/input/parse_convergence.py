@@ -91,7 +91,10 @@ def main() -> None:
         for row in rows:
             writer.writerow({**row, "k_mesh": "x".join(str(value) for value in row["k_mesh"])})
     (args.out_dir / "aluminium-convergence-assessment.json").write_text(json.dumps(assessment, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(f"{assessment['exploratory_screen_status']} exploratory SCF energy/Fermi screen; G4 remains NOT TESTED")
+    if assessment["exploratory_screen_status"] == "PASS":
+        print("PASS exploratory SCF energy/Fermi screen; G4 remains NOT TESTED")
+    else:
+        print("WARN exploratory SCF energy/Fermi screen result=FAIL; retained evidence does not satisfy G4")
 
 
 if __name__ == "__main__":

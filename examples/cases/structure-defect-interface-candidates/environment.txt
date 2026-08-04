@@ -1,1 +1,1 @@
-Python 3.12.11; ASE 3.29.0; pymatgen-core 2026.7.31; matplotlib 3.11.0; NumPy 2.4.0
+Python 3.12; ASE 3.29.0; pymatgen-core 2026.7.31; matplotlib 3.11.0; NumPy 2.5.1; Pillow 12.3.0

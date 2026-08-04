@@ -3,13 +3,20 @@ import { access, cp, mkdtemp, readFile, readdir, rm, stat } from 'node:fs/promis
 import { constants } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
-import { join, relative, resolve, sep } from 'node:path';
+import { delimiter, dirname, join, relative, resolve, sep } from 'node:path';
 
 const root = resolve(new URL('../', import.meta.url).pathname);
 const casesRoot = join(root, 'examples', 'cases');
 const fileLedgerPath = join(root, 'workflow', 'case-file-hashes.json');
 const execute = process.argv.includes('--execute');
 const casePython = process.env.CASE_PYTHON ?? 'python3';
+const casePythonCommand = casePython.includes(sep) ? resolve(casePython) : casePython;
+const casePythonDirectory = casePython.includes(sep) ? dirname(casePythonCommand) : null;
+const executionEnvironment = {
+  CASE_REUSE_DERIVED: '1',
+  PYTHON: casePythonCommand,
+  ...(casePythonDirectory ? { PATH: `${casePythonDirectory}${delimiter}${process.env.PATH ?? ''}` } : {}),
+};
 const errors = [];
 const requiredFiles = ['README.md', 'environment.txt', 'run.sh', 'check.sh', 'extract.sh', 'parse.py', 'manifest.json'];
 const requiredDirectories = ['source', 'input', 'output', 'derived', 'figures'];
@@ -23,12 +30,12 @@ const privateHostPattern = /\b[A-Za-z0-9]+-MS-[A-Za-z0-9]+\b/;
 function run(caseId, cwd, command, args, extraEnv = {}) {
   const result = spawnSync(command, args, { cwd, encoding: 'utf8', env: { ...process.env, ...extraEnv, LC_ALL: 'C.UTF-8' } });
   if (result.status !== 0) {
-    errors.push(`${caseId}: ${command} ${args.join(' ')} exited ${result.status}\n${result.stdout}${result.stderr}`);
+    errors.push(`${caseId}: ${command} ${args.join(' ')} exited ${result.status}${result.error ? ` (${result.error.message})` : ''}\n${result.stdout ?? ''}${result.stderr ?? ''}`);
   }
 }
 
-function runResult(cwd, command, args) {
-  return spawnSync(command, args, { cwd, encoding: 'utf8', env: { ...process.env, LC_ALL: 'C.UTF-8' } });
+function runResult(cwd, command, args, extraEnv = {}) {
+  return spawnSync(command, args, { cwd, encoding: 'utf8', env: { ...process.env, ...extraEnv, LC_ALL: 'C.UTF-8' } });
 }
 
 async function sha256(path) {
@@ -43,6 +50,30 @@ async function listFiles(directory) {
     else if (entry.isFile()) files.push(path);
   }
   return files;
+}
+
+async function compareReplay(caseId, originalDirectory, replayDirectory) {
+  const originalFiles = (await listFiles(originalDirectory)).sort();
+  const replayFiles = (await listFiles(replayDirectory)).sort();
+  const originalPaths = originalFiles.map((path) => relative(originalDirectory, path));
+  const replayPaths = replayFiles.map((path) => relative(replayDirectory, path));
+  if (JSON.stringify(originalPaths) !== JSON.stringify(replayPaths)) {
+    errors.push(`${caseId}: replay changed the case file set`);
+    return;
+  }
+  for (let index = 0; index < originalFiles.length; index += 1) {
+    if (await sha256(originalFiles[index]) !== await sha256(replayFiles[index])) {
+      errors.push(`${caseId}: replay changed ${originalPaths[index]}`);
+    }
+  }
+}
+
+if (execute) {
+  const interpreter = runResult(root, casePythonCommand, ['--version'], executionEnvironment);
+  if (interpreter.status !== 0) {
+    console.error(`Terminal-first case validation failed: CASE_PYTHON ${casePythonCommand} is unavailable${interpreter.error ? ` (${interpreter.error.message})` : ''}.`);
+    process.exit(1);
+  }
 }
 
 function safeCasePath(caseDirectory, declaredPath) {
@@ -145,14 +176,14 @@ for (const entry of caseEntries) {
     const executionDirectory = join(temporaryRoot, caseId);
     try {
       await cp(caseDirectory, executionDirectory, { recursive: true });
-      run(caseId, executionDirectory, 'bash', ['extract.sh']);
+      run(caseId, executionDirectory, 'bash', ['extract.sh'], executionEnvironment);
       const parserArgs = manifest.validation?.parser_args ?? [];
       if (!Array.isArray(parserArgs) || parserArgs.some((arg) => typeof arg !== 'string')) {
         errors.push(`${caseId}: validation.parser_args must be an array of strings`);
       } else {
-        run(caseId, executionDirectory, casePython, ['parse.py', ...parserArgs], { CASE_REUSE_DERIVED: '1' });
+        run(caseId, executionDirectory, casePythonCommand, ['parse.py', ...parserArgs], executionEnvironment);
       }
-      const check = runResult(executionDirectory, 'bash', ['check.sh']);
+      const check = runResult(executionDirectory, 'bash', ['check.sh'], executionEnvironment);
       const declaredFailure = gateNames.some((gate) => manifest.gates?.[gate]?.status === 'FAIL');
       if (declaredFailure) {
         if (check.status === 0) {
@@ -164,6 +195,7 @@ for (const entry of caseEntries) {
       } else if (check.status !== 0) {
         errors.push(`${caseId}: check.sh exited ${check.status} without a manifest FAIL gate\n${check.stdout}${check.stderr}`);
       }
+      await compareReplay(caseId, caseDirectory, executionDirectory);
     } finally {
       await rm(temporaryRoot, { recursive: true, force: true });
     }

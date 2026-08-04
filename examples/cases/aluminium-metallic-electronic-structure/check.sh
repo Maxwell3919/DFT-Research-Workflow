@@ -2,14 +2,18 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 failed=0
+python_cmd="${PYTHON:-python3}"
 required=(README.md environment.txt qe_plan.json source/fixture-metadata.json source/fixture-mesh.csv source/fixture-band-path.csv source/pseudopotential-metadata.json input/scf.in input/nscf.in input/bands.in input/dos.in input/convergence-matrix-plan.json input/generate_convergence_inputs.py input/parse_convergence.py input/run-convergence-matrix.sh input/eos-plan.json input/generate_eos_inputs.py input/parse_eos.py input/run-eos.sh output/scf.out output/scf.err output/nscf-full.out output/nscf-full.err output/bands.out output/bands.err output/compact-source-excerpt.txt output/recorded-commands.txt output/dos-route/scf.out output/dos-route/scf.err output/dos-route/nscf-full.out output/dos-route/nscf-full.err output/dos-route/dos.out output/dos-route/dos.err output/dos-route/al.dos output/dos-route/bands.out output/dos-route/bands.err derived/captured-run-summary.json derived/al-mesh.csv derived/al-path.csv derived/al-dos-gaussian.csv derived/al-dos-gaussian-metadata.json derived/al-dos-x.csv derived/al-dos-x-metadata.json derived/aluminium-convergence-matrix.csv derived/aluminium-convergence-assessment.json derived/aluminium-eos-samples.csv derived/aluminium-eos-fit.json figures/raw-nscf-band2-sampling.png figures/al-dos-gaussian.png figures/al-dos-x.png figures/aluminium-eos-fit.png manifest.json run.sh check.sh extract.sh parse.py)
 for id in al-k08-d002 al-k10-d002 al-k12-d002 al-k12-d001 al-k12-d004; do required+=("output/convergence-screen/$id.in" "output/convergence-screen/$id.out" "output/convergence-screen/$id.err"); done
 for id in al-eos-a7450 al-eos-a7550 al-eos-a7653 al-eos-a7750 al-eos-a7850; do required+=("output/eos-screen/$id.in" "output/eos-screen/$id.out" "output/eos-screen/$id.err"); done
 for path in "${required[@]}"; do
   if [[ -f "$path" ]]; then printf 'PASS G0 artifact exists: %s\n' "$path"; else printf 'FAIL G0 missing: %s\n' "$path"; failed=1; fi
 done
-if bash -n run.sh extract.sh input/run-convergence-matrix.sh input/run-eos.sh && python3 parse.py; then printf '%s\n' 'PASS G0 hashes, pseudopotential identity boundary, and strict parser relationships hold'; else printf '%s\n' 'FAIL G0 parser or shell syntax rejected case evidence'; failed=1; fi
-if python3 - <<'PY'
+parser_tmp=$(mktemp -d /tmp/aluminium-parser-check.XXXXXX)
+trap 'rm -rf "$parser_tmp"' EXIT
+cp -a . "$parser_tmp/case"
+if bash -n run.sh extract.sh input/run-convergence-matrix.sh input/run-eos.sh && (cd "$parser_tmp/case" && "$python_cmd" parse.py); then printf '%s\n' 'PASS G0 hashes, pseudopotential identity boundary, and strict parser relationships hold in an isolated copy'; else printf '%s\n' 'FAIL G0 parser or shell syntax rejected case evidence'; failed=1; fi
+if "$python_cmd" - <<'PY'
 import csv, json
 from pathlib import Path
 gaussian=json.loads(Path('derived/al-dos-gaussian-metadata.json').read_text())
@@ -26,7 +30,7 @@ print(f"INFO real dos.x rows=2801 Fermi={dos['fermi_energy_ev_as_printed_by_dos_
 PY
 then printf '%s\n' 'PASS G3 real dos.x and Gaussian representation tables/metadata/PNGs retain source hashes and warning counts'; else printf '%s\n' 'FAIL G3 DOS lineage check failed'; failed=1; fi
 screen_tmp=$(mktemp -d /tmp/aluminium-case-check.XXXXXX)
-if python3 input/parse_convergence.py --run-dir output/convergence-screen --out-dir "$screen_tmp/convergence" && python3 input/parse_eos.py --run-dir output/eos-screen --out-dir "$screen_tmp/eos" && python3 - "$screen_tmp" <<'PY'
+if "$python_cmd" input/parse_convergence.py --run-dir output/convergence-screen --out-dir "$screen_tmp/convergence" && "$python_cmd" input/parse_eos.py --run-dir output/eos-screen --out-dir "$screen_tmp/eos" && "$python_cmd" - "$screen_tmp" <<'PY'
 import csv
 import json
 import sys
