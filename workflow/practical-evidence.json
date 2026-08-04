@@ -506,19 +506,20 @@
     {
       "guide_slug": "compare-full-zone-isovalue-and-band-path",
       "parent_topic": "fermi-surface-and-full-brillouin-zone-analysis",
-      "evidence_class": "synthetic-only",
-      "material": "invented isovalue fixture",
-      "real_result": false,
+      "evidence_class": "real-execution",
+      "material": "explicit fcc Al primitive-cell input; Quantum ESPRESSO 7.5 mesh and band-path outputs",
+      "real_result": true,
       "interface": false,
-      "traceable_data": false,
-      "upgrade": "open metallic full-zone dataset",
-      "blocker": "source selection pending",
+      "traceable_data": true,
+      "upgrade": "completed bounded Al QE full-zone/path reconstruction",
+      "blocker": "The 8x8x8 teaching mesh and one direct path do not establish a converged Fermi-surface topology, carrier density, or transport result.",
       "priority": 3,
-      "execution_script": "examples/practical-guides/fermi_surface_isovalue_fixture.py",
+      "execution_script": "examples/practical-guides/al_qe_full_zone.py",
       "media_ids": [
+        "al-qe-full-zone",
         "fermi-surface-isovalue-fixture"
       ],
-      "upgrade_readiness": "blocked"
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "check-charge-difference-closure",
