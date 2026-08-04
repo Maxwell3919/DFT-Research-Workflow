@@ -1,0 +1,20 @@
+{
+  "claim_boundary": "A Gaussian-broadened representation of one printed 8x8x8 NSCF eigenvalue sample only; it is distinct from the separate dos.x table and establishes no numerical convergence.",
+  "dos_at_fermi_states_per_ev_per_cell": 0.3308330862980007,
+  "energy_grid_points": 2801,
+  "energy_grid_start_relative_fermi_ev": -12.0,
+  "energy_grid_step_ev": 0.01,
+  "energy_grid_stop_relative_fermi_ev": 16.0,
+  "energy_reference": "epsilon_nk minus Fermi energy printed by rerun nscf-full.out",
+  "fermi_energy_ev": 7.8018,
+  "formula": "D(E)=sum_{n,k} w_k*[sigma*sqrt(2*pi)]^-1*exp(-0.5*((E-(epsilon_nk-E_F))/sigma)^2)",
+  "gaussian_sigma_ev": 0.15,
+  "source_band_count_per_k_point": 4,
+  "source_k_point_count": 512,
+  "source_output": "output/dos-route/nscf-full.out",
+  "source_output_sha256": "fd648c510ee3ff4e1e92be2d71fd5e53743ee0b6295f14d8acbbcd60ed94ded1",
+  "source_printed_k_weight_sum": 1.9999744,
+  "source_printed_weighted_state_sum": 7.999897599999998,
+  "trapezoidal_integral_states_per_cell": 7.99989759999958,
+  "weight_convention": "QE-printed weights are used without renormalization; their 512-point sum is approximately 2 because the non-spin-polarized output carries spin-degenerate weighting."
+}

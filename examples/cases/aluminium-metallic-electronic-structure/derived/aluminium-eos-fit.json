@@ -1,0 +1,51 @@
+{
+  "analysis_contract": {
+    "boundary": "This five-point fixed-protocol curve is a teaching entry for bounded curvature/fit handling only. It is not a converged EOS, equilibrium lattice constant, bulk modulus, pressure fit, elastic tensor, or material-level result.",
+    "fit": "ordinary least-squares quadratic E(V)=c2*(V-Vmean)^2+c1*(V-Vmean)+c0",
+    "mathematical_pass": "five successful distinct-volume SCF outputs and c2>0",
+    "volume_formula": "V_primitive=det(CELL_PARAMETERS)=a_cubic^3/4 for the explicit fcc primitive cell"
+  },
+  "case_id": "aluminium-metallic-electronic-structure",
+  "claim_boundary": "This five-point fixed-protocol curve is a teaching entry for bounded curvature/fit handling only. It is not a converged EOS, equilibrium lattice constant, bulk modulus, pressure fit, elastic tensor, or material-level result.",
+  "quadratic_fit": {
+    "c0_ry": -5.040134727280367,
+    "c1_ry_per_bohr3": 9.761227032048187e-06,
+    "c2_ry_per_bohr6": 2.3302788526587085e-05,
+    "curvature_d2e_dv2_ry_per_bohr6": 4.660557705317417e-05,
+    "mathematical_status": "PASS",
+    "residual_rms_ry": 5.341119878061937e-05,
+    "volume_center_bohr3": 112.06537670385
+  },
+  "rows": [
+    {
+      "cubic_lattice_parameter_bohr": 7.45,
+      "id": "al-eos-a7450",
+      "total_energy_ry_per_cell": -5.03841916,
+      "volume_bohr3": 103.37340625
+    },
+    {
+      "cubic_lattice_parameter_bohr": 7.55,
+      "id": "al-eos-a7550",
+      "total_energy_ry_per_cell": -5.0397901,
+      "volume_bohr3": 107.59221875
+    },
+    {
+      "cubic_lattice_parameter_bohr": 7.653,
+      "id": "al-eos-a7653",
+      "total_energy_ry_per_cell": -5.040134,
+      "volume_bohr3": 112.05600851925
+    },
+    {
+      "cubic_lattice_parameter_bohr": 7.75,
+      "id": "al-eos-a7750",
+      "total_energy_ry_per_cell": -5.03958774,
+      "volume_bohr3": 116.37109375
+    },
+    {
+      "cubic_lattice_parameter_bohr": 7.85,
+      "id": "al-eos-a7850",
+      "total_energy_ry_per_cell": -5.03825093,
+      "volume_bohr3": 120.93415625
+    }
+  ]
+}

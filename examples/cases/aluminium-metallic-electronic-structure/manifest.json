@@ -1,12 +1,6 @@
 {
   "artifacts": [
     {
-      "bytes": 661,
-      "path": "output/compact-source-excerpt.txt",
-      "role": "deterministic public output excerpt rendered by the Worked Workflow",
-      "sha256": "3177b6ab03f645ff35656b115cae0c179a59221cc42aa48b3cbda6e6bf0633a9"
-    },
-    {
       "bytes": 468,
       "path": "input/scf.in",
       "role": "SCF input",
@@ -25,46 +19,136 @@
       "sha256": "62a0406cd30f6b85c358e2f8efb76aab1ee79f8d4fbc494329e9d5c906c53141"
     },
     {
-      "bytes": 44502,
-      "path": "output/scf.out",
-      "role": "SCF stdout",
-      "sha256": "3a48a4fade8c52fd1b5e4d816be439de79911b3c9d7ea3d71f16257b6c9e0b39"
+      "bytes": 142,
+      "path": "input/dos.in",
+      "role": "real dos.x input",
+      "sha256": "879806b9ba78e52d0d5fe17d29312bd0a29d592faa527fee8a900f3ec4c50a8f"
     },
     {
-      "bytes": 0,
-      "path": "output/scf.err",
-      "role": "SCF stderr",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "bytes": 1826,
+      "path": "input/convergence-matrix-plan.json",
+      "role": "exploratory convergence plan",
+      "sha256": "2b90d4c5b4827d27e9fb766aa4ba033543ed75dbb3822814e8b13f1116846f6a"
+    },
+    {
+      "bytes": 2153,
+      "path": "input/generate_convergence_inputs.py",
+      "role": "convergence input generator",
+      "sha256": "1554442fbd73f0b51ca5546909cfed05e1c4ef8b0bd2706ede99ebf452fc4db0"
+    },
+    {
+      "bytes": 5757,
+      "path": "input/parse_convergence.py",
+      "role": "convergence assessor",
+      "sha256": "69136b69fa4ab578ab065e86f05b555dd632388af81349388ad9a0f2a26c1034"
+    },
+    {
+      "bytes": 1958,
+      "path": "input/run-convergence-matrix.sh",
+      "role": "direct external convergence runner",
+      "sha256": "8bd771d6daa9708692b0319346a8e7b6fd9500871ad6e45f156c4ecf393b1273"
+    },
+    {
+      "bytes": 1625,
+      "path": "input/eos-plan.json",
+      "role": "bounded E(V) plan",
+      "sha256": "f13b9f275c32860a624af89250f00fd43c0ec36b757d30049c348491ad7eaa7f"
+    },
+    {
+      "bytes": 1794,
+      "path": "input/generate_eos_inputs.py",
+      "role": "E(V) input generator",
+      "sha256": "a2e2c006f8a99bfdeb79e40ef72df2264bae3c3394db970652002e1b4cecf8d1"
+    },
+    {
+      "bytes": 5633,
+      "path": "input/parse_eos.py",
+      "role": "E(V) assessor",
+      "sha256": "66cd770f62a6c18c2e5bd827b23b467ad8f68115f42c88e0a06ec90eb676c467"
+    },
+    {
+      "bytes": 1938,
+      "path": "input/run-eos.sh",
+      "role": "direct external E(V) runner",
+      "sha256": "7efd7a8ffa6352d013c9fbd16170758ecdac299b1e44ee39b6fb8b7aad349f73"
+    },
+    {
+      "bytes": 44502,
+      "path": "output/scf.out",
+      "role": "initial captured SCF stdout",
+      "sha256": "3a48a4fade8c52fd1b5e4d816be439de79911b3c9d7ea3d71f16257b6c9e0b39"
     },
     {
       "bytes": 220999,
       "path": "output/nscf-full.out",
-      "role": "NSCF stdout",
+      "role": "initial captured NSCF stdout",
       "sha256": "fe4e1ecb29004cfadecff46d6b81748b085682c0abfc987be0be4e28205fed66"
-    },
-    {
-      "bytes": 0,
-      "path": "output/nscf-full.err",
-      "role": "NSCF stderr",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "bytes": 79993,
       "path": "output/bands.out",
-      "role": "bands stdout",
+      "role": "initial captured bands stdout",
       "sha256": "312a05a44bbb15ed5ee5c437ac52fd658a2e43e35b56a2b49cfb231d711b4a95"
     },
     {
+      "bytes": 44502,
+      "path": "output/dos-route/scf.out",
+      "role": "rerun SCF stdout",
+      "sha256": "c3e3e16a1fc50fd1d93103b5cebb84da380e462579ad59154388d3a6fe73a741"
+    },
+    {
       "bytes": 0,
-      "path": "output/bands.err",
-      "role": "bands stderr",
+      "path": "output/dos-route/scf.err",
+      "role": "rerun SCF stderr",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "bytes": 29659,
+      "bytes": 220999,
+      "path": "output/dos-route/nscf-full.out",
+      "role": "rerun NSCF stdout",
+      "sha256": "fd648c510ee3ff4e1e92be2d71fd5e53743ee0b6295f14d8acbbcd60ed94ded1"
+    },
+    {
+      "bytes": 0,
+      "path": "output/dos-route/nscf-full.err",
+      "role": "rerun NSCF stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1628,
+      "path": "output/dos-route/dos.out",
+      "role": "rerun dos.x stdout",
+      "sha256": "c930a07ec54184fe102d308668a5895b629087fdd977ce36b9a602e705616f6e"
+    },
+    {
+      "bytes": 0,
+      "path": "output/dos-route/dos.err",
+      "role": "rerun dos.x stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 92488,
+      "path": "output/dos-route/al.dos",
+      "role": "real QE dos.x table",
+      "sha256": "95c3342cb9229b0ff2fbc8cb17d48aa13ebd6f3ddea7a5a1c4797de9e64be5f8"
+    },
+    {
+      "bytes": 79993,
+      "path": "output/dos-route/bands.out",
+      "role": "rerun bands stdout",
+      "sha256": "8affb038e5e4fbf4a2250933fd8a6689c2f4d26c26f87dd8cad84bec163670ba"
+    },
+    {
+      "bytes": 0,
+      "path": "output/dos-route/bands.err",
+      "role": "rerun bands stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 43661,
       "path": "derived/al-mesh.csv",
       "role": "raw-derived mesh table",
-      "sha256": "5bc4e7bd565ea99e3fd774de860b9aeb37b90874dfbe8fa484c4d0202758c9b4"
+      "sha256": "9ed042b56be449f0cebd3436b858dae58db85011d061f803c318fa0ae06af6ee"
     },
     {
       "bytes": 8563,
@@ -73,29 +157,273 @@
       "sha256": "e6de08c86aa1d17fae2bb17fe8ee2b63a27e72379795cc611660c5ca20a17242"
     },
     {
-      "bytes": 541,
-      "path": "derived/captured-run-summary.json",
-      "role": "raw-derived summary",
-      "sha256": "c5396e8ba99b5f90da8f1b639c767f4cd98cb2a5c946886ffaf65785aded612b"
+      "bytes": 160718,
+      "path": "derived/al-dos-gaussian.csv",
+      "role": "Gaussian raw-NSCF representation",
+      "sha256": "9cff2ec93554d6c12c654746f69d1c48224f44acc63e57b35a0ad1329a735b2a"
     },
     {
-      "alt": "Histogram of Aluminium band 2 eigenvalues minus the Fermi level over the captured 8 by 8 by 8 NSCF k-point sample, with the zero-energy Fermi reference marked in red.",
-      "bytes": 43935,
+      "bytes": 1226,
+      "path": "derived/al-dos-gaussian-metadata.json",
+      "role": "Gaussian representation metadata",
+      "sha256": "c60a72583472e8c64b45f8c101e06c1c05eb2e41ca1cdcaf9826662c8dce4a0d"
+    },
+    {
+      "bytes": 95397,
+      "path": "derived/al-dos-x.csv",
+      "role": "real dos.x parsed table",
+      "sha256": "0b52929e545395687b05ab12e79920cf0cd9f6b125533afd00d886396a1a1a9a"
+    },
+    {
+      "bytes": 980,
+      "path": "derived/al-dos-x-metadata.json",
+      "role": "real dos.x metadata",
+      "sha256": "db44e2f32f8512ff4ae3cd3281af3c06515fbfd947a112cf5851adab05f206a0"
+    },
+    {
+      "bytes": 7978,
+      "path": "derived/captured-run-summary.json",
+      "role": "case summary",
+      "sha256": "321a5d3854d3f0ed51dd846799812d6a11c4834f3851e1a1903b5896ee390ad2"
+    },
+    {
+      "bytes": 42889,
       "path": "figures/raw-nscf-band2-sampling.png",
-      "role": "raw-output-derived NSCF band sampling histogram",
-      "sha256": "ae57110886c7b21e66a164ab6114b89dfa757c218f9b7df35112b404e98a698a"
+      "role": "raw NSCF sampling histogram",
+      "sha256": "a3ced8d2b7c55cf594c5838482237525e363ea92d65f00cd53b25261680c455c"
+    },
+    {
+      "bytes": 116010,
+      "path": "figures/al-dos-gaussian.png",
+      "role": "Gaussian DOS-like plot",
+      "sha256": "1d96b062fc1ea6fb9fc2f158a1f48ee8c4f9279ba167574b208d0e247386fb1d"
+    },
+    {
+      "bytes": 107926,
+      "path": "figures/al-dos-x.png",
+      "role": "real dos.x plot",
+      "sha256": "7e9664006cca6277ddcbea3936125d5f5aa9c1791734dd0dd6c42aadf6215d14"
+    },
+    {
+      "bytes": 554,
+      "path": "output/convergence-screen/al-k08-d002.in",
+      "role": "real convergence-screen input al-k08-d002",
+      "sha256": "9e3b046a72e351e87859f319e428356523a46f63aba7bc1cbe6f995cfb485e8c"
+    },
+    {
+      "bytes": 42727,
+      "path": "output/convergence-screen/al-k08-d002.out",
+      "role": "real convergence-screen stdout al-k08-d002",
+      "sha256": "52c6d6270068670d563b0814c0d84f030b8de81755a7769183186e43e20e6285"
+    },
+    {
+      "bytes": 0,
+      "path": "output/convergence-screen/al-k08-d002.err",
+      "role": "real convergence-screen stderr al-k08-d002",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 557,
+      "path": "output/convergence-screen/al-k10-d002.in",
+      "role": "real convergence-screen input al-k10-d002",
+      "sha256": "f88c13260bb3cc1bc297eaf76566404141cd69493fc29f168fbf12b0658ca78b"
+    },
+    {
+      "bytes": 49178,
+      "path": "output/convergence-screen/al-k10-d002.out",
+      "role": "real convergence-screen stdout al-k10-d002",
+      "sha256": "17aa8c1eabc8bc9a5443a0fb4afbee4d0db6a8719ad43d162f502ab859c8e5c3"
+    },
+    {
+      "bytes": 0,
+      "path": "output/convergence-screen/al-k10-d002.err",
+      "role": "real convergence-screen stderr al-k10-d002",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 557,
+      "path": "output/convergence-screen/al-k12-d002.in",
+      "role": "real convergence-screen input al-k12-d002",
+      "sha256": "645fc69f7a7f23cc1a64cd4b31dc24ff8f067ef270005740f35f140fcf4c733a"
+    },
+    {
+      "bytes": 58035,
+      "path": "output/convergence-screen/al-k12-d002.out",
+      "role": "real convergence-screen stdout al-k12-d002",
+      "sha256": "75fb8340e969cb9d06be24edecf89042f9afd0cf58c1efcaaf4a54ef75ca4bde"
+    },
+    {
+      "bytes": 0,
+      "path": "output/convergence-screen/al-k12-d002.err",
+      "role": "real convergence-screen stderr al-k12-d002",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 557,
+      "path": "output/convergence-screen/al-k12-d001.in",
+      "role": "real convergence-screen input al-k12-d001",
+      "sha256": "f5ae1155da76440efe0c56faa7e5bd06b67594816552cfbef8defed6090ca41e"
+    },
+    {
+      "bytes": 58035,
+      "path": "output/convergence-screen/al-k12-d001.out",
+      "role": "real convergence-screen stdout al-k12-d001",
+      "sha256": "775a12838828628add4998e41691a4e7f6cfcca03454621d840d3c7833209dd6"
+    },
+    {
+      "bytes": 0,
+      "path": "output/convergence-screen/al-k12-d001.err",
+      "role": "real convergence-screen stderr al-k12-d001",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 557,
+      "path": "output/convergence-screen/al-k12-d004.in",
+      "role": "real convergence-screen input al-k12-d004",
+      "sha256": "1501ac46625912e28448f0a3128d7a651e59f825691d9a8b3a028f8aff1978b0"
+    },
+    {
+      "bytes": 58035,
+      "path": "output/convergence-screen/al-k12-d004.out",
+      "role": "real convergence-screen stdout al-k12-d004",
+      "sha256": "1c8bc0c71dced8cd18a4054071c9e40ab92d62cbd3a2a47e1853d7faee76ae40"
+    },
+    {
+      "bytes": 0,
+      "path": "output/convergence-screen/al-k12-d004.err",
+      "role": "real convergence-screen stderr al-k12-d004",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 558,
+      "path": "output/eos-screen/al-eos-a7450.in",
+      "role": "real eos-screen input al-eos-a7450",
+      "sha256": "08d20b034f9da61b52900f9699c2605d697c9262997ce23d250b32c674215045"
+    },
+    {
+      "bytes": 58037,
+      "path": "output/eos-screen/al-eos-a7450.out",
+      "role": "real eos-screen stdout al-eos-a7450",
+      "sha256": "ce922e3f6e94f66a3c8dd2372bed1568c5193dab82d59514845a7295ddbbdc7b"
+    },
+    {
+      "bytes": 0,
+      "path": "output/eos-screen/al-eos-a7450.err",
+      "role": "real eos-screen stderr al-eos-a7450",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 558,
+      "path": "output/eos-screen/al-eos-a7550.in",
+      "role": "real eos-screen input al-eos-a7550",
+      "sha256": "f61e5981b1efb0228fc7d22abfc0f0d350a3412b333e339e9baeda43af9ce77c"
+    },
+    {
+      "bytes": 58037,
+      "path": "output/eos-screen/al-eos-a7550.out",
+      "role": "real eos-screen stdout al-eos-a7550",
+      "sha256": "6ec363a0367aabd5c1b2000391d0ce4cf333a3844cb64235541007c649293ea4"
+    },
+    {
+      "bytes": 0,
+      "path": "output/eos-screen/al-eos-a7550.err",
+      "role": "real eos-screen stderr al-eos-a7550",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 558,
+      "path": "output/eos-screen/al-eos-a7653.in",
+      "role": "real eos-screen input al-eos-a7653",
+      "sha256": "4df8dd5be3f2e4d2b556919751b9d15066d8bd13fa5976f458683f3885188529"
+    },
+    {
+      "bytes": 58037,
+      "path": "output/eos-screen/al-eos-a7653.out",
+      "role": "real eos-screen stdout al-eos-a7653",
+      "sha256": "e48f3bf6a19422867d3947b2faaa985145e2799f509a8978e7557136efdc6330"
+    },
+    {
+      "bytes": 0,
+      "path": "output/eos-screen/al-eos-a7653.err",
+      "role": "real eos-screen stderr al-eos-a7653",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 558,
+      "path": "output/eos-screen/al-eos-a7750.in",
+      "role": "real eos-screen input al-eos-a7750",
+      "sha256": "d361124d3436e8ec2dfe292d0dd91f3c17c3153ce338c62067c3352bf9ff0992"
+    },
+    {
+      "bytes": 58037,
+      "path": "output/eos-screen/al-eos-a7750.out",
+      "role": "real eos-screen stdout al-eos-a7750",
+      "sha256": "bf1c7cb3fdd92d895d540bed378198f276eabf587ba68cc347f20a84a8894079"
+    },
+    {
+      "bytes": 0,
+      "path": "output/eos-screen/al-eos-a7750.err",
+      "role": "real eos-screen stderr al-eos-a7750",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 558,
+      "path": "output/eos-screen/al-eos-a7850.in",
+      "role": "real eos-screen input al-eos-a7850",
+      "sha256": "a7ab42cb425614b2eed21aef2bbf84e4cfb5cd6262b13a53884b748837aa24f7"
+    },
+    {
+      "bytes": 58037,
+      "path": "output/eos-screen/al-eos-a7850.out",
+      "role": "real eos-screen stdout al-eos-a7850",
+      "sha256": "338632b3657e69127472d3f5f734e5cb214343cd1a5aa04fced90626c18e9bff"
+    },
+    {
+      "bytes": 0,
+      "path": "output/eos-screen/al-eos-a7850.err",
+      "role": "real eos-screen stderr al-eos-a7850",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 282,
+      "path": "derived/aluminium-convergence-matrix.csv",
+      "role": "real convergence screen CSV",
+      "sha256": "9f36bf0ee21d96982353d02b2c0a841a1861776ebee9ccf492b336a5c9f5acf2"
+    },
+    {
+      "bytes": 2450,
+      "path": "derived/aluminium-convergence-assessment.json",
+      "role": "real convergence screen assessment",
+      "sha256": "914907fde0cdc9d0edfeac26a36dd2f97cb8486d147768039558255f56ec9b58"
+    },
+    {
+      "bytes": 286,
+      "path": "derived/aluminium-eos-samples.csv",
+      "role": "real bounded E(V) CSV",
+      "sha256": "fe94b3a05bb5776a7ccda547e472a47907d7b1c4573a8e458a74d896e795188b"
+    },
+    {
+      "bytes": 2039,
+      "path": "derived/aluminium-eos-fit.json",
+      "role": "real bounded E(V) fit metadata",
+      "sha256": "c71fe7feafb73d39de8f7a515e826ffc8953f030b13b0708c25e01cca7406631"
+    },
+    {
+      "alt": "DOS curve parsed from the real QE dos.x output for the captured Aluminium 8 by 8 by 8 NSCF calculation, referenced to the Fermi value printed in al.dos; no DOS-convergence claim is made.",
+      "bytes": 73076,
+      "path": "figures/aluminium-eos-fit.png",
+      "role": "real bounded E(V) fit plot",
+      "sha256": "7a209ca0c4795ca77f5e838161c4b1cf39345dcc54cfdbe039b2f887579e8c3f"
     }
   ],
   "case_id": "aluminium-metallic-electronic-structure",
   "case_kind": "worked-workflow",
   "claim_boundary": {
     "does_not_support": [
-      "A converged DOS, Fermi surface, EOS, elastic property, carrier density, or transport result.",
-      "A universal smearing/k-mesh prescription.",
-      "A material-level physical or scientific conclusion."
+      "A converged DOS, Fermi surface, EOS, elastic property, carrier density, transport result, universal parameter prescription, or material-level conclusion."
     ],
     "supports": [
-      "A captured QE 7.5 metallic SCF, full-zone NSCF, and band-path execution record with raw-output-derived tables and figure."
+      "A real isolated QE 7.5 SCF, full-zone NSCF, dos.x, bands, exploratory k/smearing screen, and bounded E(V) execution record with raw-output-derived tables/figures."
     ]
   },
   "commands": [
@@ -110,9 +438,38 @@
       "stage": "full-zone-nscf"
     },
     {
+      "command": "dos.x -in dos.in > dos.out 2> dos.err",
+      "exit_code": 0,
+      "stage": "dos"
+    },
+    {
       "command": "pw.x -in bands.in > bands.out 2> bands.err",
       "exit_code": 0,
       "stage": "bands"
+    },
+    {
+      "command": "bash input/run-convergence-matrix.sh",
+      "exit_code": 0,
+      "result": "FAIL exploratory screen; retained as evidence",
+      "stage": "exploratory-convergence"
+    },
+    {
+      "command": "pw.x -in al-eos-*.in > al-eos-*.out 2> al-eos-*.err",
+      "exit_code": 0,
+      "result": "five SCF program exits",
+      "stage": "bounded-eos-pw-samples"
+    },
+    {
+      "command": "python3 input/parse_eos.py",
+      "exit_code": 1,
+      "result": "FAIL declared-volume mismatch before interpretation",
+      "stage": "bounded-eos-initial-parser"
+    },
+    {
+      "command": "python3 input/parse_eos.py",
+      "exit_code": 0,
+      "result": "PASS bounded mathematical fit only",
+      "stage": "bounded-eos-corrected-parser"
     },
     {
       "command": "python3 parse.py",
@@ -120,58 +477,73 @@
       "stage": "raw-output-parse"
     }
   ],
-  "completed_at": "2026-08-05T00:47:36+08:00",
+  "completed_at": "2026-08-05T04:22:02+08:00",
   "evidence_class": "real-execution",
   "exit_code": 0,
+  "exploratory_screen_execution": {
+    "bounded_eos": {
+      "assessment": "derived/aluminium-eos-fit.json",
+      "boundary": "Mathematical fit status is not EOS/elastic or G4 acceptance.",
+      "lineage_note": "The first parse attempt blocked a numerical volume declaration error before interpretation. Corrected a^3/4 declarations match the executed explicit-cell determinants; no QE rerun occurred.",
+      "output_dir": "output/eos-screen",
+      "status": "PASS"
+    },
+    "convergence": {
+      "assessment": "derived/aluminium-convergence-assessment.json",
+      "boundary": "FAIL is retained and is not a G4 result.",
+      "output_dir": "output/convergence-screen",
+      "status": "FAIL"
+    }
+  },
   "gates": {
     "G0": {
       "status": "PASS",
-      "summary": "Required tree and declared raw-input/output hashes pass strict parsing."
+      "summary": "Declared inputs, captured outputs, rerun outputs, screen artifacts, and derived files pass strict hashes and parsing."
     },
     "G1": {
       "status": "PASS",
-      "summary": "Captured QE 7.5 SCF, NSCF, and bands outputs each have one terminal marker and empty captured stderr."
+      "summary": "The isolated Talos reruns have terminal markers and empty captured stderr; the exploratory screen FAIL is a numerical screen result, not a program-exit failure."
     },
     "G2": {
       "status": "PASS",
-      "summary": "Captured SCF reports electronic convergence in 5 iterations at its declared threshold; this is not a convergence study."
+      "summary": "The rerun SCF reports electronic convergence in five iterations. NSCF/bands c_bands warning counts are retained and are not upgraded to a general eigenvalue-convergence claim."
     },
     "G3": {
       "status": "PASS",
-      "summary": "Three-stage stdout/stderr and raw-output-derived tables/PNG are present."
+      "summary": "Real al.dos, real screen outputs, hash-bound stdout/stderr, parser tables, and figures are present."
     },
     "G4": {
       "status": "NOT TESTED",
-      "summary": "No observable-specific k-mesh, smearing, cutoff, empty-band, or DOS-broadening convergence series."
+      "summary": "One 8x8x8 dos.x sample plus exploratory k/smearing and E(V) screens do not establish observable-specific convergence; the convergence screen is explicitly FAIL."
     },
     "G5": {
       "status": "NOT CLAIMED",
       "summary": "No physical or material-level scientific conclusion is claimed."
     }
   },
-  "public_host_label": "Talos-captured public case evidence",
+  "public_host_label": "Talos",
   "schema_version": "1.0",
   "software": [
     {
-      "interface": "MPI CLI (one recorded process)",
-      "name": "Quantum ESPRESSO PWSCF",
+      "interface": "single-process CLI",
+      "name": "Quantum ESPRESSO PWSCF and DOS",
       "version": "7.5"
     },
     {
       "interface": "Python CLI",
       "name": "case-local raw-output parser",
-      "version": "2.0"
+      "version": "2.3"
     }
   ],
   "sources": [
     {
-      "id": "captured-qe-outputs",
-      "licence_boundary": "No private host path, pseudopotential body, restart tree, or wavefunction payload is published.",
-      "path": "output/scf.out",
-      "role": "hash-bound raw execution output",
-      "sha256": "3a48a4fade8c52fd1b5e4d816be439de79911b3c9d7ea3d71f16257b6c9e0b39"
+      "id": "rerun-qe-dos-route",
+      "licence_boundary": "No private runtime path, pseudopotential body, restart tree, or wavefunction payload is published.",
+      "path": "output/dos-route/dos.out",
+      "role": "hash-bound isolated real execution output",
+      "sha256": "c930a07ec54184fe102d308668a5895b629087fdd977ce36b9a602e705616f6e"
     }
   ],
-  "started_at": "2026-08-05T00:45:36+08:00",
+  "started_at": "2026-08-05T04:21:54+08:00",
   "title": "Aluminium metallic electronic structure captured QE workflow"
 }

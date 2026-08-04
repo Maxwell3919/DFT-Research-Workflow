@@ -1,0 +1,10 @@
+&DOS
+  prefix = 'al'
+  outdir = './tmp'
+  fildos = 'al.dos'
+  Emin = -12.0
+  Emax = 16.0
+  DeltaE = 0.01
+  ngauss = 0
+  degauss = 0.0110248
+/

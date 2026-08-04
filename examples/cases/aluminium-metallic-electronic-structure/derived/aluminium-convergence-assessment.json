@@ -1,0 +1,82 @@
+{
+  "case_id": "aluminium-metallic-electronic-structure",
+  "claim_boundary": "Only the named SCF energy/Fermi samples are assessed as an exploratory screen. This cannot establish G4, DOS, EOS, elastic, Fermi-surface, transport, or material-level convergence.",
+  "exploratory_screen_status": "FAIL",
+  "metrics": {
+    "k_mesh_tail_fermi_delta_ev": 0.24490000000000034,
+    "k_mesh_tail_total_energy_delta_ry_per_cell": 0.0016452500000001535,
+    "smearing_probe_max_fermi_delta_ev": 0.03799999999999937,
+    "smearing_probe_max_total_energy_delta_ry_per_cell": 0.00015737000000015655
+  },
+  "predeclared_assessment": {
+    "boundary": "These are predeclared exploratory teaching thresholds for the named SCF samples, not universal settings, G4 evidence, scientific acceptance, or a DOS, EOS, elastic, Fermi-surface, or material-science criterion.",
+    "k_mesh_tail": {
+      "comparison": "al-k10-d002 to al-k12-d002",
+      "max_abs_fermi_delta_ev": 0.02,
+      "max_abs_total_energy_delta_ry_per_cell": 0.0002
+    },
+    "scope": "Exploratory teaching screen for reported SCF total energy per one-atom primitive cell and printed Fermi level only; it is not a G4 acceptance gate.",
+    "smearing_probe": {
+      "comparison": "maximum deviation of al-k12-d001 and al-k12-d004 from al-k12-d002",
+      "max_abs_fermi_delta_ev": 0.05,
+      "max_abs_total_energy_delta_ry_per_cell": 0.0005
+    }
+  },
+  "rows": [
+    {
+      "degauss_ry": 0.02,
+      "fermi_energy_ev": 7.8018,
+      "id": "al-k08-d002",
+      "k_mesh": [
+        8,
+        8,
+        8
+      ],
+      "total_energy_ry_per_cell": -5.03936839
+    },
+    {
+      "degauss_ry": 0.02,
+      "fermi_energy_ev": 7.9767,
+      "id": "al-k10-d002",
+      "k_mesh": [
+        10,
+        10,
+        10
+      ],
+      "total_energy_ry_per_cell": -5.03848875
+    },
+    {
+      "degauss_ry": 0.02,
+      "fermi_energy_ev": 7.7318,
+      "id": "al-k12-d002",
+      "k_mesh": [
+        12,
+        12,
+        12
+      ],
+      "total_energy_ry_per_cell": -5.040134
+    },
+    {
+      "degauss_ry": 0.01,
+      "fermi_energy_ev": 7.6938,
+      "id": "al-k12-d001",
+      "k_mesh": [
+        12,
+        12,
+        12
+      ],
+      "total_energy_ry_per_cell": -5.04017067
+    },
+    {
+      "degauss_ry": 0.04,
+      "fermi_energy_ev": 7.7608,
+      "id": "al-k12-d004",
+      "k_mesh": [
+        12,
+        12,
+        12
+      ],
+      "total_energy_ry_per_cell": -5.03997663
+    }
+  ]
+}

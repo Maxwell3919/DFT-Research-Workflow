@@ -1,17 +1,198 @@
 {
+  "bounded_eos_screen": {
+    "analysis_contract": {
+      "boundary": "This five-point fixed-protocol curve is a teaching entry for bounded curvature/fit handling only. It is not a converged EOS, equilibrium lattice constant, bulk modulus, pressure fit, elastic tensor, or material-level result.",
+      "fit": "ordinary least-squares quadratic E(V)=c2*(V-Vmean)^2+c1*(V-Vmean)+c0",
+      "mathematical_pass": "five successful distinct-volume SCF outputs and c2>0",
+      "volume_formula": "V_primitive=det(CELL_PARAMETERS)=a_cubic^3/4 for the explicit fcc primitive cell"
+    },
+    "case_id": "aluminium-metallic-electronic-structure",
+    "claim_boundary": "This five-point fixed-protocol curve is a teaching entry for bounded curvature/fit handling only. It is not a converged EOS, equilibrium lattice constant, bulk modulus, pressure fit, elastic tensor, or material-level result.",
+    "quadratic_fit": {
+      "c0_ry": -5.040134727280367,
+      "c1_ry_per_bohr3": 9.761227032048187e-06,
+      "c2_ry_per_bohr6": 2.3302788526587085e-05,
+      "curvature_d2e_dv2_ry_per_bohr6": 4.660557705317417e-05,
+      "mathematical_status": "PASS",
+      "residual_rms_ry": 5.341119878061937e-05,
+      "volume_center_bohr3": 112.06537670385
+    },
+    "rows": [
+      {
+        "cubic_lattice_parameter_bohr": 7.45,
+        "id": "al-eos-a7450",
+        "total_energy_ry_per_cell": -5.03841916,
+        "volume_bohr3": 103.37340625
+      },
+      {
+        "cubic_lattice_parameter_bohr": 7.55,
+        "id": "al-eos-a7550",
+        "total_energy_ry_per_cell": -5.0397901,
+        "volume_bohr3": 107.59221875
+      },
+      {
+        "cubic_lattice_parameter_bohr": 7.653,
+        "id": "al-eos-a7653",
+        "total_energy_ry_per_cell": -5.040134,
+        "volume_bohr3": 112.05600851925
+      },
+      {
+        "cubic_lattice_parameter_bohr": 7.75,
+        "id": "al-eos-a7750",
+        "total_energy_ry_per_cell": -5.03958774,
+        "volume_bohr3": 116.37109375
+      },
+      {
+        "cubic_lattice_parameter_bohr": 7.85,
+        "id": "al-eos-a7850",
+        "total_energy_ry_per_cell": -5.03825093,
+        "volume_bohr3": 120.93415625
+      }
+    ]
+  },
   "captured_stages": [
     "scf",
     "nscf-full-zone",
     "bands"
   ],
-  "completed_at": "2026-08-05T00:47:36+08:00",
-  "evidence_boundary": "Tables and figure are directly parsed from captured raw output. This proves neither numerical convergence nor a material conclusion.",
+  "completed_at": "2026-08-05T04:22:02+08:00",
+  "dos_x": {
+    "claim_boundary": "This is a real dos.x output from the hash-bound rerun. Its -12 to 16 eV absolute window does not include all four printed NSCF bands, so the final integral is not a total-state count; neither the output nor its plot establishes DOS convergence.",
+    "dos_at_nearest_fermi_grid_point_states_per_ev_per_cell": 0.1998,
+    "energy_grid_absolute_ev": [
+      -12.0,
+      16.0
+    ],
+    "energy_grid_points": 2801,
+    "energy_grid_step_ev": 0.01,
+    "fermi_energy_ev_as_printed_by_dos_x": 7.802,
+    "input": "input/dos.in",
+    "input_sha256": "879806b9ba78e52d0d5fe17d29312bd0a29d592faa527fee8a900f3ec4c50a8f",
+    "integrated_states_at_grid_end_per_cell": 6.828,
+    "qe_version": "7.5",
+    "source_dos_stdout": "output/dos-route/dos.out",
+    "source_dos_stdout_sha256": "c930a07ec54184fe102d308668a5895b629087fdd977ce36b9a602e705616f6e",
+    "source_output": "output/dos-route/al.dos",
+    "source_output_sha256": "95c3342cb9229b0ff2fbc8cb17d48aa13ebd6f3ddea7a5a1c4797de9e64be5f8"
+  },
+  "evidence_boundary": "The separate rerun establishes real dos.x execution and a real al.dos file. The committed k/smearing screen remains FAIL and the E(V) quadratic result remains a bounded mathematical fit; neither is promoted to G4 or material acceptance.",
+  "exploratory_convergence_screen": {
+    "case_id": "aluminium-metallic-electronic-structure",
+    "claim_boundary": "Only the named SCF energy/Fermi samples are assessed as an exploratory screen. This cannot establish G4, DOS, EOS, elastic, Fermi-surface, transport, or material-level convergence.",
+    "exploratory_screen_status": "FAIL",
+    "metrics": {
+      "k_mesh_tail_fermi_delta_ev": 0.24490000000000034,
+      "k_mesh_tail_total_energy_delta_ry_per_cell": 0.0016452500000001535,
+      "smearing_probe_max_fermi_delta_ev": 0.03799999999999937,
+      "smearing_probe_max_total_energy_delta_ry_per_cell": 0.00015737000000015655
+    },
+    "predeclared_assessment": {
+      "boundary": "These are predeclared exploratory teaching thresholds for the named SCF samples, not universal settings, G4 evidence, scientific acceptance, or a DOS, EOS, elastic, Fermi-surface, or material-science criterion.",
+      "k_mesh_tail": {
+        "comparison": "al-k10-d002 to al-k12-d002",
+        "max_abs_fermi_delta_ev": 0.02,
+        "max_abs_total_energy_delta_ry_per_cell": 0.0002
+      },
+      "scope": "Exploratory teaching screen for reported SCF total energy per one-atom primitive cell and printed Fermi level only; it is not a G4 acceptance gate.",
+      "smearing_probe": {
+        "comparison": "maximum deviation of al-k12-d001 and al-k12-d004 from al-k12-d002",
+        "max_abs_fermi_delta_ev": 0.05,
+        "max_abs_total_energy_delta_ry_per_cell": 0.0005
+      }
+    },
+    "rows": [
+      {
+        "degauss_ry": 0.02,
+        "fermi_energy_ev": 7.8018,
+        "id": "al-k08-d002",
+        "k_mesh": [
+          8,
+          8,
+          8
+        ],
+        "total_energy_ry_per_cell": -5.03936839
+      },
+      {
+        "degauss_ry": 0.02,
+        "fermi_energy_ev": 7.9767,
+        "id": "al-k10-d002",
+        "k_mesh": [
+          10,
+          10,
+          10
+        ],
+        "total_energy_ry_per_cell": -5.03848875
+      },
+      {
+        "degauss_ry": 0.02,
+        "fermi_energy_ev": 7.7318,
+        "id": "al-k12-d002",
+        "k_mesh": [
+          12,
+          12,
+          12
+        ],
+        "total_energy_ry_per_cell": -5.040134
+      },
+      {
+        "degauss_ry": 0.01,
+        "fermi_energy_ev": 7.6938,
+        "id": "al-k12-d001",
+        "k_mesh": [
+          12,
+          12,
+          12
+        ],
+        "total_energy_ry_per_cell": -5.04017067
+      },
+      {
+        "degauss_ry": 0.04,
+        "fermi_energy_ev": 7.7608,
+        "id": "al-k12-d004",
+        "k_mesh": [
+          12,
+          12,
+          12
+        ],
+        "total_energy_ry_per_cell": -5.03997663
+      }
+    ]
+  },
   "fermi_energy_ev": 7.8018,
+  "gaussian_dos_like": {
+    "claim_boundary": "A Gaussian-broadened representation of one printed 8x8x8 NSCF eigenvalue sample only; it is distinct from the separate dos.x table and establishes no numerical convergence.",
+    "dos_at_fermi_states_per_ev_per_cell": 0.3308330862980007,
+    "energy_grid_points": 2801,
+    "energy_grid_start_relative_fermi_ev": -12.0,
+    "energy_grid_step_ev": 0.01,
+    "energy_grid_stop_relative_fermi_ev": 16.0,
+    "energy_reference": "epsilon_nk minus Fermi energy printed by rerun nscf-full.out",
+    "fermi_energy_ev": 7.8018,
+    "formula": "D(E)=sum_{n,k} w_k*[sigma*sqrt(2*pi)]^-1*exp(-0.5*((E-(epsilon_nk-E_F))/sigma)^2)",
+    "gaussian_sigma_ev": 0.15,
+    "source_band_count_per_k_point": 4,
+    "source_k_point_count": 512,
+    "source_output": "output/dos-route/nscf-full.out",
+    "source_output_sha256": "fd648c510ee3ff4e1e92be2d71fd5e53743ee0b6295f14d8acbbcd60ed94ded1",
+    "source_printed_k_weight_sum": 1.9999744,
+    "source_printed_weighted_state_sum": 7.999897599999998,
+    "trapezoidal_integral_states_per_cell": 7.99989759999958,
+    "weight_convention": "QE-printed weights are used without renormalization; their 512-point sum is approximately 2 because the non-spin-polarized output carries spin-degenerate weighting."
+  },
   "mesh_points": 512,
   "near_fermi_mesh_points_abs_delta_leq_0_25_ev": 48,
   "path_points": 145,
+  "public_host": "Talos",
   "qe_version": "7.5",
+  "rerun_bands_c_bands_unconverged_markers": 5,
+  "rerun_nscf_c_bands_unconverged_markers": 5,
+  "rerun_stages": [
+    "scf",
+    "nscf-full-zone",
+    "dos.x",
+    "bands"
+  ],
   "scf_iterations": 5,
   "selected_band_crossing_intervals": 3,
-  "started_at": "2026-08-05T00:45:36+08:00"
+  "started_at": "2026-08-05T04:21:54+08:00"
 }

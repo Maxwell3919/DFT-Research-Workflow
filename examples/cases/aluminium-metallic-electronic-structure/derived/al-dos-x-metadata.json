@@ -1,0 +1,19 @@
+{
+  "claim_boundary": "This is a real dos.x output from the hash-bound rerun. Its -12 to 16 eV absolute window does not include all four printed NSCF bands, so the final integral is not a total-state count; neither the output nor its plot establishes DOS convergence.",
+  "dos_at_nearest_fermi_grid_point_states_per_ev_per_cell": 0.1998,
+  "energy_grid_absolute_ev": [
+    -12.0,
+    16.0
+  ],
+  "energy_grid_points": 2801,
+  "energy_grid_step_ev": 0.01,
+  "fermi_energy_ev_as_printed_by_dos_x": 7.802,
+  "input": "input/dos.in",
+  "input_sha256": "879806b9ba78e52d0d5fe17d29312bd0a29d592faa527fee8a900f3ec4c50a8f",
+  "integrated_states_at_grid_end_per_cell": 6.828,
+  "qe_version": "7.5",
+  "source_dos_stdout": "output/dos-route/dos.out",
+  "source_dos_stdout_sha256": "c930a07ec54184fe102d308668a5895b629087fdd977ce36b9a602e705616f6e",
+  "source_output": "output/dos-route/al.dos",
+  "source_output_sha256": "95c3342cb9229b0ff2fbc8cb17d48aa13ebd6f3ddea7a5a1c4797de9e64be5f8"
+}
