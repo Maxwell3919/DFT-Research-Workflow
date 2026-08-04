@@ -109,13 +109,15 @@ None of those checks establishes a local or global minimum for a real calculatio
 
 ### Silicon execution addendum (2026-08-04)
 
-Two guides additionally bind one real, hash-checked QE 7.5 fixed-cell BFGS
-relaxation of an intentionally displaced two-site CC0 COD 9013102 Silicon cell.
-The reconstruction verifies its input/output identity, five electronic completion
-markers, five total-force rows and `End of BFGS Geometry Optimization`. It does
-not validate a constrained or variable-cell implementation, compare independent
-initial structures or electronic states, establish force/stress convergence, or
-prove a local or global physical minimum.
+Two guides additionally bind a real, hash-checked QE 7.5 fixed-cell BFGS
+continuation for an intentionally displaced two-site CC0 COD 9013102 Silicon cell.
+The first segment deliberately reaches its two-step limit; the compatible
+`restart_mode='restart'` continuation reports `End of BFGS Geometry Optimization`.
+The reconstruction verifies input/output identity, electronic completion markers,
+the segment boundary and final force rows. It does not validate a constrained or
+variable-cell implementation, compare independent initial structures or electronic
+states, establish force/stress convergence, or prove a local or global physical
+minimum.
 
 ## Media review
 
@@ -143,7 +145,8 @@ The pages remain readable without client-side JavaScript. Browser validation mus
 This batch does not include:
 
 - Calculate the Reference Ground State;
-- real Quantum ESPRESSO, VASP, CP2K, or other DFT inputs and outputs;
+- real VASP, CP2K, or other DFT inputs and outputs beyond the bounded public
+  Quantum ESPRESSO continuation described above;
 - a universal force, stress, pressure, displacement, or step threshold;
 - a validated cell-relaxation example;
 - phonon or vibrational proof of a local minimum;

@@ -39,6 +39,7 @@ REFERENCE_STATE_DIAGNOSTIC_SCRIPTS = [
     "reference_state_fresh_restart.py",
     "reference_state_candidate_comparison.py",
     "reference_state_lineage_manifest.py",
+    "silicon_qe_restarts.py",
 ]
 ENERGY_LEDGER_SCRIPTS = [
     "formation_energy_ledger.py",
@@ -167,9 +168,9 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 61
+    assert len(results) == 62
     report = {
-        "schema_version": 13,
+        "schema_version": 14,
         "project_root": str(ROOT),
         "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "versions": observed_versions,
@@ -231,9 +232,9 @@ def main() -> None:
 
     print(json.dumps(report, indent=2))
     print(
-        "Practical guide execution passed: 61/61 examples; four structural transformations, "
+        "Practical guide execution passed: 62/62 examples; four structural transformations, "
         "four synthetic convergence analyses plus one hash-bound Silicon QE SCF reconstruction, four bounded optimization diagnostics plus one hash-bound Silicon QE BFGS reconstruction, and "
-        "four deterministic reference-state diagnostics, two energy-ledger fixtures, three synthetic EOS analyses, "
+        "four deterministic reference-state diagnostics plus one hash-bound Silicon QE restart reconstruction, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
             "one frozen public-data Si-surface redraw, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one frozen public-output CoSb3 transport redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented Born-charge/dielectric ledger fixture, one invented polarization-branch fixture, one invented piezoelectric ledger fixture, one invented harmonic-mode ledger fixture, one invented anharmonic-linewidth ledger fixture, one invented lattice-transport tensor ledger fixture, one invented EPC channel ledger fixture, one invented superconductivity spectral-moment ledger fixture, one invented reaction-path barrier ledger fixture, one invented diffusion-network ledger fixture, one invented AIMD segment ledger fixture, one invented structural-sampling overlap ledger fixture, one invented optical-spectrum comparison ledger fixture, one invented time-dependent-response ledger fixture, and one invented quasiparticle-comparison ledger fixture under pinned versions; the real-output companions perform no additional DFT, dielectric-response, GW, transport rerun, or material-property calculation."
     )
