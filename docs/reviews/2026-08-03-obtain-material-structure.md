@@ -34,9 +34,10 @@ The article uses the following source classes.
 ### Crystallographic Information Framework
 
 IUCr documentation, the original CIF paper, and the core CIF dictionary support
-the discussion of CIF as a structured crystallographic exchange format and the
-meaning of atom-site data, including occupancy. They support the distinction
-between the crystallographic record and a simplified coordinate export.
+the introductory explanation of CIF as a structured crystallographic exchange
+format and the later discussion of atom-site data, including occupancy. They
+support the distinction between lattice parameters, fractional atom-site data,
+symmetry-generated sites, and a simplified coordinate export.
 
 - https://doi.org/10.1107/S010876739101067X
 
@@ -52,20 +53,28 @@ checkCIF is not presented as a DFT-readiness certificate.
 ### Computational-database provenance and representation
 
 Materials Project documentation supports the discussion of material identifiers,
-database versions, task origins, calculation methods, and non-unique unit-cell
-representations. It also supports the warning that automatic symmetry reduction
-can occasionally produce an inappropriate representation.
+database versions, task origins, calculation methods, non-unique unit-cell
+representations, and data retrieval. The page now exposes these existing source
+links near the beginning so that a new reader can reach an actual structure-data
+source before the provenance discussion becomes detailed.
 
 - https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project
 - https://docs.materialsproject.org/downloading-data/using-the-api/querying-data
 - https://docs.materialsproject.org/frequently-asked-questions
 
-### Open crystallographic data and reuse boundaries
+### Open crystallographic data and the silicon teaching example
 
 The Crystallography Open Database supports the example of an openly accessible
 crystallographic collection whose data are provided under CC0 while original
-structure authors should still be acknowledged. The article does not generalize
-this licence to other databases.
+structure authors should still be acknowledged. The revised article also uses
+COD ID `9013102` as a bounded record-reading example. The current COD record
+identifies silicon, reports a cubic cell with `a = b = c = 5.4304 Å`, space group
+227 (`F d -3 m`), an ambient diffraction temperature of 298.15 K, coordinates
+present, and no reported disorder.
+
+The article does not reproduce the complete downloaded CIF or claim to validate
+that record as a DFT input. It asks the reader to locate the stable COD ID through
+the COD interface and inspect the downloaded artifact directly.
 
 - https://www.crystallography.net/cod/
 
@@ -81,6 +90,16 @@ information. The article does not prescribe one universal tolerance.
 
 The article correctly keeps the following distinctions visible:
 
+- CIF is introduced as a crystallographic data representation, not as a synonym
+  for a DFT-ready geometry;
+- lattice parameters, atom-site fractional coordinates, symmetry, occupancy, and
+  provenance are introduced as related but distinct parts of the record;
+- fractional coordinates are interpreted through the lattice vectors rather
+  than as Cartesian ångström coordinates;
+- a visualizer may expand asymmetric-unit sites using symmetry, so the visible
+  atom count need not equal the number of atom-site rows stored in the CIF;
+- the silicon example is explicitly a database-record reading exercise, not an
+  accepted computational model or validation benchmark;
 - experimental, computed, inherited, and hypothetical structures carry different
   evidence and provenance;
 - the original artifact is preserved separately from parsed, normalized, or
@@ -104,10 +123,16 @@ The article correctly keeps the following distinctions visible:
 
 ## Editorial review
 
-The article uses a topic-specific explanatory sequence rather than the former
-Inputs/Outputs-style contract. Its organization follows the scientific problem:
-source meaning, preservation, crystallographic semantics, identity, conversion,
-symmetry, geometry inspection, comparison, and handoff.
+The revised article now starts from the lowest-cost conceptual questions a new
+reader actually encounters: what a CIF is, what its basic fields mean, where a
+structure can be obtained, and how to inspect one real database record. It then
+moves into the existing source-quality and provenance discussion rather than
+asking the reader to audit a file format that has not yet been introduced.
+
+The later scientific sequence remains topic-specific rather than returning to an
+Inputs/Outputs-style contract: source meaning, preservation, crystallographic
+semantics, identity, conversion, symmetry, geometry inspection, comparison, and
+handoff.
 
 The source list is separated from the explanatory text, and code-specific details
 are examples rather than definitions of the task. The page contains no universal
@@ -115,29 +140,32 @@ cutoff, symmetry tolerance, bond-distance threshold, or database ranking.
 
 ## Deliberate limitations
 
-This batch does not include:
+The silicon section is a **record-reading example**, not a worked DFT calculation.
+This batch still does not include:
 
-- a worked material example;
 - an executable parser comparison;
-- a complete catalogue of crystallographic databases;
+- a complete catalogue or ranking of crystallographic and computational databases;
+- a byte-for-byte reproduction of an external CIF;
 - detailed magnetic-CIF, modulated-structure, twinning, or powder-refinement
   tutorials;
 - quantitative geometry thresholds that could be misused as universal rules;
 - construction of ordered disorder models, slabs, monolayers, defects, surfaces,
   or heterostructures;
-- validation of a specific external structure.
+- validation of a specific external structure for a particular DFT study.
 
-Those omissions keep the article at the intended source-acquisition boundary.
-The next content topic is **Build or Modify a Computational Model**.
+Those limits keep the article at the intended source-acquisition boundary. The
+next content topic is **Build or Modify a Computational Model**.
 
 ## External-link verification
 
-The original review confirmed source relevance and rendered-link presence but did
-not request the external destinations. All external sources in this article and
-review are now declared in `sources/reviewed-links.json`. Deterministic
-validation requires exact agreement between the article, this review, and that
-manifest. A separate network CI job requests every declared destination under
-the rules documented in
+The revised article reuses the same declared external URL set as the previous
+review. No new URL was added: the COD silicon example is referenced by its stable
+COD ID and reached through the already-declared COD database interface. Therefore
+`sources/reviewed-links.json` does not require a URL-set change for this revision.
+
+Deterministic validation still requires exact agreement between the article,
+this review, and that manifest. A separate network CI job requests every declared
+destination under the rules documented in
 `docs/reviews/2026-08-03-reviewed-source-link-audit.md`.
 
 ## Evidence boundary
@@ -146,5 +174,7 @@ The semantic source review establishes that the article represents the cited
 sources within its declared scope. The dedicated external-link audit establishes
 HTTP reachability only at its recorded run time. Browser smoke establishes that
 links are rendered in the public page; it does not establish destination
-availability. None of these checks establishes that an arbitrary structure file
-is correct, complete, stable, or suitable for a particular DFT calculation.
+availability. The COD metadata check supports only the fields explicitly used in
+the teaching example. None of these checks establishes that an arbitrary
+structure file is correct, complete, stable, or suitable for a particular DFT
+calculation.
