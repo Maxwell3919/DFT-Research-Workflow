@@ -3,7 +3,87 @@ topic_slug: obtain-material-structure
 status: reviewed
 ---
 
-A structure file is not yet a computational model. It is a record of what a source claims about a material, expressed through a particular representation and often under particular experimental or computational conditions. The first task is therefore not to make the file convenient for a code. It is to establish what the structure is, where it came from, what information it actually contains, and which ambiguities must remain visible before any modelling decision is made.
+Most crystalline-material workflows begin with a structure file. Before deciding whether a structure is suitable for DFT, it helps to understand what that file is actually describing. For crystals, the most common exchange format you will encounter is the **CIF**.
+
+## First: what is a CIF?
+
+**CIF** originally stands for **Crystallographic Information File** and is part of the broader Crystallographic Information Framework maintained by the crystallographic community. It is a structured text format for storing crystallographic information rather than simply a list of Cartesian atom positions.
+
+The central idea is the same one used to describe a periodic crystal in solid-state physics:
+
+\[
+\text{crystal structure} = \text{lattice} + \text{atomic basis}.
+\]
+
+A CIF can encode both parts. Cell lengths and angles define the periodic lattice; atom-site records define which atoms occupy positions inside that lattice. A typical CIF can also contain space-group information, symmetry operations, occupancies, displacement parameters, experimental conditions, refinement information, and bibliographic provenance.
+
+Three pieces of CIF syntax are enough to start reading most ordinary files:
+
+```text
+data_<block_name>
+
+_cell_length_a     ...
+_cell_length_b     ...
+_cell_length_c     ...
+_cell_angle_alpha  ...
+_cell_angle_beta   ...
+_cell_angle_gamma  ...
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+...
+```
+
+A line such as `_cell_length_a 5.43` is a named data item. `loop_` introduces a table in which every following row supplies values for the listed fields. When the coordinates are fractional, a site at \((x,y,z)\) represents
+
+\[
+\mathbf r=x\mathbf a+y\mathbf b+z\mathbf c,
+\]
+
+not the Cartesian point \((x,y,z)\) in ångströms. Periodicity also means that fractional coordinates differing by an integer lattice translation describe equivalent positions. A visualizer may therefore show a perfectly ordinary atom even when one of the stored fractional coordinates is slightly below zero or above one.
+
+A second important point is that the sites written in the file are not always the complete list of atoms displayed by a viewer. A crystallographic record may store only the asymmetric-unit sites and use symmetry operations to generate the rest of the unit cell. Reading the CIF therefore means reading the lattice, atom-site table, occupancies, and symmetry together.
+
+## Where can a structure be obtained?
+
+There is no single best structure database for every problem. The important distinction is whether the record is experimental, computational, or generated, and whether its provenance is sufficient for the study.
+
+Two useful starting points are:
+
+- **Crystallography Open Database (COD)** — an open crystallographic database with downloadable CIF records and links to the original structure literature. Start from the [COD database interface](https://www.crystallography.net/cod/).
+- **Materials Project** — a computational materials database whose structures are connected to calculation tasks and methods. The official [Querying Data](https://docs.materialsproject.org/downloading-data/using-the-api/querying-data) documentation explains how to retrieve records, while [Understanding Structures and Properties](https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project) explains important representation and provenance details.
+
+These are entry points, not interchangeable sources. An experimental CIF from COD and a relaxed structure from Materials Project may describe the same nominal compound while representing different temperatures, methods, cells, or physical idealizations. Record the database identifier and source before comparing or transforming them.
+
+## Read one real database record first
+
+A simple example is **silicon, COD ID 9013102**. The current COD information card identifies it as an experimental silicon structure from an X-ray study at 25 °C and reports:
+
+- formula: `Si`;
+- \(a=b=c=5.4304\ \text{Å}\);
+- \(\alpha=\beta=\gamma=90^\circ\);
+- space-group number 227, `F d -3 m`;
+- ambient diffraction temperature 298.15 K;
+- atomic coordinates present;
+- no reported disorder.
+
+To inspect it yourself, open the COD database interface above, search for `9013102`, open the information card, and download the coordinate CIF. The first useful exercise is not to convert it to another format. Instead, identify in the downloaded file:
+
+1. the data block and database identifier;
+2. the six cell parameters;
+3. the reported space group or symmetry operations;
+4. the atom-site loop and its coordinate convention;
+5. occupancy and any uncertainty or experimental-condition fields;
+6. the publication or provenance fields that explain where the structure came from.
+
+This example is deliberately modest. The values above describe what the COD record reports; they do not by themselves establish that this particular representation is the correct starting model for every silicon calculation.
+
+A structure file is not yet a computational model. It is a record of what a source claims about a material, expressed through a particular representation and often under particular experimental or computational conditions. The first research task is not to make the file convenient for a code. It is to establish what the structure is, where it came from, what information it actually contains, and which ambiguities must remain visible before any modelling decision is made.
 
 ## Start with the origin of the structure
 
@@ -134,5 +214,5 @@ The handoff to **Build or Modify a Computational Model** should preserve the ori
 - International Union of Crystallography, “[checkCIF](https://checkcif.iucr.org/).”
 - Materials Project, “[Understanding Structures and Properties in the Materials Project](https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project).”
 - Materials Project, “[Querying Data](https://docs.materialsproject.org/downloading-data/using-the-api/querying-data)” and “[Frequently Asked Questions](https://docs.materialsproject.org/frequently-asked-questions).”
-- Crystallography Open Database, “[database information and access](https://www.crystallography.net/cod/).”
+- Crystallography Open Database, “[database information and access](https://www.crystallography.net/cod/).” The silicon example uses COD ID `9013102`.
 - spglib, “[Python API documentation](https://spglib.readthedocs.io/en/v2.7.0/api/autodoc/spglib.html).”
