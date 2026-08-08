@@ -83,7 +83,7 @@ To inspect it yourself, open the COD database interface above, search for `90131
 
 This example is deliberately modest. The values above describe what the COD record reports; they do not by themselves establish that this particular representation is the correct starting model for every silicon calculation.
 
-A structure file is therefore not yet a computational model. It is a record of what a source claims about a material, expressed through a particular representation and often under particular experimental or computational conditions. The first research task is not to make the file convenient for a code. It is to establish what the structure is, where it came from, what information it actually contains, and which ambiguities must remain visible before any modelling decision is made.
+A structure file is not yet a computational model. It is a record of what a source claims about a material, expressed through a particular representation and often under particular experimental or computational conditions. The first research task is not to make the file convenient for a code. It is to establish what the structure is, where it came from, what information it actually contains, and which ambiguities must remain visible before any modelling decision is made.
 
 ## Start with the origin of the structure
 
