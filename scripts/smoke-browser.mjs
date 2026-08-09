@@ -210,7 +210,7 @@ try {
     if (!reviewedArticle.text.includes(phrase)) throw new Error(`Obtain a Material Structure is missing ${phrase}`);
   }
   if (reviewedArticle.headingCount < 10) throw new Error('Obtain a Material Structure lost its natural topic sections');
-  for (const domain of ['iucr.org', 'docs.materialsproject.org', 'crystallography.net', 'spglib.readthedocs.io']) {
+  for (const domain of ['iucr.org', 'docs.materialsproject.org', 'crystallography.net', 'molstar.org', 'spglib.readthedocs.io']) {
     if (!reviewedArticle.links.some((link) => link.includes(domain))) throw new Error(`Obtain a Material Structure is missing source domain ${domain}`);
   }
 
@@ -223,12 +223,9 @@ try {
 
   const viewerElement = await page.waitForSelector('.cif-viewer > iframe', { timeout: 5000 });
   await viewerElement.evaluate((element) => element.scrollIntoView({ block: 'center' }));
-  const wrapperFrame = await viewerElement.contentFrame();
-  if (!wrapperFrame) throw new Error('local CIF viewer wrapper frame did not load');
-  const molstarElement = await wrapperFrame.waitForSelector('#molstar-frame', { timeout: 10000 });
   let molstarFrame = null;
   for (let attempt = 0; attempt < 100; attempt += 1) {
-    molstarFrame = await molstarElement.contentFrame();
+    molstarFrame = await viewerElement.contentFrame();
     if (molstarFrame?.url().startsWith('https://molstar.org/viewer/')) break;
     await delay(250);
   }
