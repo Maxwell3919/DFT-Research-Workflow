@@ -54,7 +54,7 @@ Reviewed source records:
 - https://pymatgen.org/pymatgen.analysis.html#module-pymatgen.analysis.phase_diagram
 - https://doi.org/10.1007/s11837-013-0755-4
 
-The practical pages additionally use the official OQMD REST documentation and API-access/licensing page. Every URL was visited before writing. Reachability, semantic support, database provenance, local execution, and scientific validity remain separate evidence classes.
+The practical pages additionally use the official OQMD REST and download/licensing pages. Every URL was visited before writing. Reachability, semantic support, database provenance, local execution, and scientific validity remain separate evidence classes.
 
 ## Real-data and execution review
 
