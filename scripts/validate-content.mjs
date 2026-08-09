@@ -196,7 +196,10 @@ const css = await readFile(new URL('src/styles/global.css', root), 'utf8');
 const astroSources = (await walk(sourcePath)).filter((path) => path.endsWith('.astro'));
 const astroBody = (await Promise.all(astroSources.map((path) => readFile(path, 'utf8')))).join('\n');
 const cssClasses = [...new Set([...css.matchAll(/\.([a-z][a-z0-9-]*)/g)].map((match) => match[1]))];
-for (const className of cssClasses) if (!new RegExp(`\\b${className}\\b`).test(astroBody)) errors.push(`unused CSS class: ${className}`);
+const buildGeneratedCssClasses = new Set(['katex', 'katex-display']);
+for (const className of cssClasses) {
+  if (!buildGeneratedCssClasses.has(className) && !new RegExp(`\\b${className}\\b`).test(astroBody)) errors.push(`unused CSS class: ${className}`);
+}
 
 const architecture = await readFile(new URL('docs/architecture.md', root), 'utf8');
 for (const statement of ['researcher-scale tasks', 'D · Target Calculations', 'Natural topic organization', 'Migration compatibility', 'Talos handoff']) {

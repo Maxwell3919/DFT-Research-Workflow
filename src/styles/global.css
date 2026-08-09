@@ -139,6 +139,29 @@ main pre code * {
   word-break: normal;
 }
 
+/* Static mathematics */
+.katex {
+  background: transparent;
+  color: inherit;
+  font-size: 1em;
+  white-space: nowrap;
+}
+
+.katex-display {
+  background: transparent;
+  margin: 1.25rem 0;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.25rem;
+}
+
+.katex-display > .katex {
+  display: inline-block;
+  min-inline-size: max-content;
+}
+/* End static mathematics */
+
 .home-intro,
 .page-intro {
   max-width: 44rem;
