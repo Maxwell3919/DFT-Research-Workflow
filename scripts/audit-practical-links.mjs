@@ -6,6 +6,8 @@ const manifest = JSON.parse(await readFile(new URL('sources/practical-guide-link
 const artifactDirectory = process.env.PRACTICAL_LINK_AUDIT_ARTIFACT_DIR;
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 const userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36';
+const retryableHttpStatuses = new Set([429, 500, 502, 503, 504]);
+const browserFallbackStatuses = new Set([401, 403, ...retryableHttpStatuses]);
 
 function marker(title, heading, pattern) {
   return pattern.test(`${title} ${heading}`.toLowerCase()) ? { title, heading } : null;
@@ -103,7 +105,7 @@ async function audit(source) {
     try {
       result = await request(source, attempt);
       if (result.state === 'reachable') return result;
-      if (![429, 500, 502, 503, 504].includes(result.status)) return result;
+      if (!retryableHttpStatuses.has(result.status)) return result;
     } catch (error) {
       lastError = error;
     }
@@ -198,7 +200,7 @@ const startedAt = new Date().toISOString();
 let results = await mapWithConcurrency(manifest.sources, 2, audit);
 const fallbackIndices = results
   .map((result, index) => ({ result, index }))
-  .filter(({ result }) => result.state !== 'reachable' && (result.status === null || [401, 403].includes(result.status)))
+  .filter(({ result }) => result.state !== 'reachable' && (result.status === null || browserFallbackStatuses.has(result.status)))
   .map(({ index }) => index);
 
 if (fallbackIndices.length > 0) {
@@ -232,8 +234,8 @@ const report = {
   started_at: startedAt,
   completed_at: completedAt,
   semantics: {
-    page: 'A practical-guide page must return HTTP 2xx after redirects and must not expose a 404/not-found or access-block title or h1. HTTP 401/403 may use a controlled browser fallback.',
-    doi: 'A DOI is reachable when doi.org returns HTTP 2xx or a valid publisher redirect. HTTP 401/403 may use a controlled browser fallback whose final destination must return HTTP 2xx without a 404 or access-block marker.',
+    page: 'A practical-guide page must return HTTP 2xx after redirects and must not expose a 404/not-found or access-block title or h1. HTTP 401/403, or a retry-exhausted 429/5xx response, may use a controlled browser fallback that must independently satisfy the same 2xx/non-404/non-blocked criteria.',
+    doi: 'A DOI is reachable when doi.org returns HTTP 2xx or a valid publisher redirect. HTTP 401/403, or a retry-exhausted 429/5xx response, may use a controlled browser fallback whose final destination must return HTTP 2xx without a 404 or access-block marker.',
     boundary: 'Reachability is time-bound and does not establish semantic accuracy, software execution, numerical convergence, physical validity, publisher reuse rights, or unrestricted regional access.',
   },
   source_count: results.length,
