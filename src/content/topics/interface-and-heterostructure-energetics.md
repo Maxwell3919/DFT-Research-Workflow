@@ -61,7 +61,9 @@ For semiconducting or insulating interfaces, band edges also need a common poten
 
 ## Converge the observable, not only the SCF loop
 
-SCF completion establishes an inner electronic solution for one finite model. Converge the requested difference—`γ_int`, `W_sep`, registry ordering, potential step, or another stated observable—against the quantities that alter its cancellation: basis or cutoff, Brillouin-zone sampling, slab thickness, lateral cell, vacuum when present, number of constrained layers, reference states, electrostatic treatment, and relaxation policy. No common thickness, vacuum, mesh, or force threshold is transferable across material classes.
+A normal program exit establishes only that the executable reached an exit path. Satisfaction of the declared SCF residual criterion supports one internally self-consistent solution for the finite model; state identity and the requested observable require separate checks. Converge the requested difference—`γ_int`, `W_sep`, registry ordering, potential step, or another stated observable—against the quantities that alter its cancellation: basis or cutoff, Brillouin-zone sampling, slab thickness, lateral cell, vacuum when present, number of constrained layers, reference states, electrostatic treatment, and relaxation policy. No common thickness, vacuum, mesh, or force threshold is transferable across material classes.
+
+Numerical convergence of the requested energy difference should be assessed only after the interface state, reference-energy cycle, electrostatic boundary treatment, and relaxation constraints are fixed. Changes to those choices test reference, state, or model robustness; basis, reciprocal sampling, and finite-area or finite-thickness refinements within that fixed problem constrain numerical uncertainty.
 
 When two registries differ by less than numerical drift or method sensitivity, the ordering is unresolved. A smooth total-energy series can still conceal a change of termination, magnetic state, reconstruction, or final registry. Inspect the final structures and the actual cleavage surfaces as carefully as the reported scalar.
 

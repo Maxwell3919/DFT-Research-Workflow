@@ -91,10 +91,10 @@
       "sha256": "312a05a44bbb15ed5ee5c437ac52fd658a2e43e35b56a2b49cfb231d711b4a95"
     },
     {
-      "bytes": 747,
+      "bytes": 796,
       "path": "output/compact-source-excerpt.txt",
       "role": "deterministic source-bound excerpt rendered by the Worked Workflow",
-      "sha256": "4ed9c851d62671a9c56ac3ddc65f488c63cac64d7ccc4ef20444bac6dadd01f6"
+      "sha256": "7535de34523ac74287437773555e1a29eb430634d7c9e07ba8d3ba5d48a08d2d"
     },
     {
       "bytes": 44502,
@@ -187,10 +187,10 @@
       "sha256": "db44e2f32f8512ff4ae3cd3281af3c06515fbfd947a112cf5851adab05f206a0"
     },
     {
-      "bytes": 7978,
+      "bytes": 11473,
       "path": "derived/captured-run-summary.json",
       "role": "case summary",
-      "sha256": "321a5d3854d3f0ed51dd846799812d6a11c4834f3851e1a1903b5896ee390ad2"
+      "sha256": "9936b6e61fdc0e201d65c4db00ea0a4fe7e5a7f5fed2996f9f6b110dba5673e8"
     },
     {
       "alt": "Histogram of QE band 2 minus the printed Fermi energy for 512 full-zone Aluminium k points; one 8 by 8 by 8 sample, not convergence evidence.",
@@ -427,84 +427,207 @@
       "path": "figures/aluminium-eos-fit.png",
       "role": "real bounded E(V) fit plot",
       "sha256": "7a209ca0c4795ca77f5e838161c4b1cf39345dcc54cfdbe039b2f887579e8c3f"
+    },
+    {
+      "bytes": 1532,
+      "path": "output/recorded-commands.txt",
+      "role": "route command and provenance boundary",
+      "sha256": "d0093f79bff0dfd78b82af05c44bea72b4431675c1bd3371cb895df97ea43fc1"
     }
   ],
   "case_id": "aluminium-metallic-electronic-structure",
   "case_kind": "worked-workflow",
   "claim_boundary": {
     "does_not_support": [
+      "One continuous historical launcher, case-wide execution interval, or unpublished save-tree ancestry.",
       "A converged DOS, Fermi surface, EOS, elastic property, carrier density, transport result, universal parameter prescription, or material-level conclusion."
     ],
     "supports": [
-      "A real isolated QE 7.5 SCF, full-zone NSCF, dos.x, bands, exploratory k/smearing screen, and bounded E(V) execution record with raw-output-derived tables/figures."
+      "Route-scoped real QE 7.5 outputs: an initial captured SCF/NSCF/bands set, an isolated SCF/NSCF/dos.x/bands rerun, and later exploratory screens with raw-output-derived tables and figures."
     ]
   },
   "commands": [
     {
       "command": "pw.x -in scf.in > scf.out 2> scf.err",
+      "evidence_scope": "output/dos-route/scf.out prints JOB DONE; stderr is hash-bound and empty.",
       "exit_code": 0,
-      "stage": "scf"
+      "exit_code_scope": "Route-scoped existing record; no standalone shell transcript is published.",
+      "input_artifacts": [
+        "input/scf.in"
+      ],
+      "output_artifacts": [
+        "output/dos-route/scf.out",
+        "output/dos-route/scf.err"
+      ],
+      "record_kind": "existing-route-execution-record",
+      "route_id": "isolated-dos-route",
+      "stage": "isolated DOS-route SCF"
     },
     {
       "command": "pw.x -in nscf.in > nscf-full.out 2> nscf-full.err",
+      "evidence_scope": "The NSCF stdout prints JOB DONE and retains five c_bands warnings.",
       "exit_code": 0,
-      "stage": "full-zone-nscf"
+      "exit_code_scope": "Route-scoped existing record; no standalone shell transcript is published.",
+      "input_artifacts": [
+        "input/nscf.in"
+      ],
+      "output_artifacts": [
+        "output/dos-route/nscf-full.out",
+        "output/dos-route/nscf-full.err"
+      ],
+      "parent_artifacts": [
+        "output/dos-route/scf.out",
+        "same runtime prefix/outdir; save tree not published"
+      ],
+      "record_kind": "existing-route-execution-record",
+      "route_id": "isolated-dos-route",
+      "stage": "isolated DOS-route full-zone NSCF"
     },
     {
       "command": "dos.x -in dos.in > dos.out 2> dos.err",
+      "evidence_scope": "dos.out prints JOB DONE and al.dos is a hash-bound 2,801-row native QE table.",
       "exit_code": 0,
-      "stage": "dos"
+      "exit_code_scope": "Route-scoped existing record; no standalone shell transcript is published.",
+      "input_artifacts": [
+        "input/dos.in"
+      ],
+      "output_artifacts": [
+        "output/dos-route/dos.out",
+        "output/dos-route/dos.err",
+        "output/dos-route/al.dos"
+      ],
+      "parent_artifacts": [
+        "output/dos-route/nscf-full.out",
+        "same runtime NSCF save state; payload not published"
+      ],
+      "record_kind": "existing-route-execution-record",
+      "route_id": "isolated-dos-route",
+      "stage": "isolated DOS-route dos.x"
     },
     {
       "command": "pw.x -in bands.in > bands.out 2> bands.err",
+      "evidence_scope": "bands.out prints JOB DONE and retains five c_bands warnings.",
       "exit_code": 0,
-      "stage": "bands"
+      "exit_code_scope": "Route-scoped existing record; no standalone shell transcript is published.",
+      "input_artifacts": [
+        "input/bands.in"
+      ],
+      "output_artifacts": [
+        "output/dos-route/bands.out",
+        "output/dos-route/bands.err"
+      ],
+      "parent_artifacts": [
+        "output/dos-route/scf.out",
+        "same runtime prefix/outdir; save tree not published"
+      ],
+      "record_kind": "existing-route-execution-record",
+      "route_id": "isolated-dos-route",
+      "stage": "isolated DOS-route bands"
     },
     {
       "command": "bash input/run-convergence-matrix.sh",
+      "evidence_scope": "Five SCF programs completed; the predeclared numerical screen result is FAIL.",
       "exit_code": 0,
-      "stage": "exploratory-convergence-failed-screen-retained"
+      "exit_code_scope": "Runner exit and numerical screen status are distinct.",
+      "output_artifacts": [
+        "output/convergence-screen/",
+        "derived/aluminium-convergence-matrix.csv",
+        "derived/aluminium-convergence-assessment.json"
+      ],
+      "record_kind": "existing-route-execution-record",
+      "route_id": "later-exploratory-screens",
+      "stage": "later exploratory k/smearing screen"
     },
     {
-      "command": "pw.x -in al-eos-*.in > al-eos-*.out 2> al-eos-*.err",
+      "command": "bash input/run-eos.sh",
+      "evidence_scope": "Five SCF programs completed; the quadratic fit status is mathematical PASS only.",
       "exit_code": 0,
-      "stage": "bounded-eos-five-scf-program-exits"
-    },
-    {
-      "command": "python3 input/parse_eos.py",
-      "exit_code": 1,
-      "stage": "bounded-eos-initial-parser-blocked-volume-mismatch"
-    },
-    {
-      "command": "python3 input/parse_eos.py",
-      "exit_code": 0,
-      "stage": "bounded-eos-corrected-parser-mathematical-fit-only"
-    },
-    {
-      "command": "python3 parse.py",
-      "exit_code": 0,
-      "stage": "raw-output-parse"
+      "exit_code_scope": "Runner exit does not establish EOS or elastic acceptance.",
+      "output_artifacts": [
+        "output/eos-screen/",
+        "derived/aluminium-eos-samples.csv",
+        "derived/aluminium-eos-fit.json"
+      ],
+      "record_kind": "existing-route-execution-record",
+      "route_id": "later-exploratory-screens",
+      "stage": "later bounded E(V) screen"
     }
   ],
-  "completed_at": "2026-08-05T04:22:02+08:00",
+  "completed_at": null,
+  "completion_boundary": "No case-wide start, completion, or exit is claimed. The 04:21:54-04:22:02 timestamps belong only to the isolated DOS route.",
   "evidence_class": "real-execution",
-  "exit_code": 0,
+  "execution_routes": [
+    {
+      "ancestry": [
+        "input/scf.in -> output/scf.out",
+        "input/nscf.in -> output/nscf-full.out",
+        "input/bands.in -> output/bands.out",
+        "No public launcher, scheduler record, or save-tree payload binds these three outputs into one continuous historical invocation."
+      ],
+      "boundary": "This initial set is real output evidence but its exact historical command/exit/continuity is unknown.",
+      "exact_command_status": "Not captured. output/recorded-commands.txt labels the listed shell lines as replay-equivalent only.",
+      "exact_exit_code_status": "Not captured; each stdout retains a JOB DONE marker, which is not a shell exit transcript.",
+      "label": "Initial captured SCF/NSCF/bands outputs",
+      "route_id": "initial-captured-electronic-output-set",
+      "timing": {
+        "completed_at": "2026-08-05T00:47:36+08:00",
+        "scope": "Earliest and latest QE-printed timestamps across three captured stdout files; gaps and continuous save-tree ancestry are not established.",
+        "started_at": "2026-08-05T00:45:36+08:00"
+      }
+    },
+    {
+      "ancestry": [
+        "input/scf.in -> output/dos-route/scf.out",
+        "input/nscf.in with the same runtime prefix/outdir -> output/dos-route/nscf-full.out",
+        "input/dos.in consumes the NSCF save state -> output/dos-route/dos.out -> output/dos-route/al.dos",
+        "input/bands.in runs after dos.x -> output/dos-route/bands.out; retained c_bands warnings remain visible."
+      ],
+      "boundary": "The runtime save tree is not published; route ordering is declared by run.sh and does not establish observable convergence.",
+      "exact_command_status": "The four stage invocations and ordering are preserved in run.sh and output/recorded-commands.txt.",
+      "exact_exit_code_status": "The existing route record reports exit 0 for each stage; JOB DONE and empty stderr are independently inspectable, but no separate shell transcript is published.",
+      "label": "Isolated SCF/NSCF/dos.x/bands rerun",
+      "route_id": "isolated-dos-route",
+      "timing": {
+        "completed_at": "2026-08-05T04:22:02+08:00",
+        "scope": "QE-printed timestamps for output/dos-route only; not a case-wide completion window.",
+        "started_at": "2026-08-05T04:21:54+08:00"
+      }
+    },
+    {
+      "ancestry": [
+        "Generated committed screen inputs -> one SCF stdout/stderr pair per input",
+        "input/parse_convergence.py -> derived/aluminium-convergence-matrix.csv and aluminium-convergence-assessment.json",
+        "input/parse_eos.py -> derived/aluminium-eos-samples.csv and aluminium-eos-fit.json"
+      ],
+      "boundary": "A reported earlier blocked parser attempt has no standalone shell transcript; the corrected fit is mathematical evidence only.",
+      "exact_command_status": "Current committed runners are input/run-convergence-matrix.sh and input/run-eos.sh.",
+      "exact_exit_code_status": "The existing route record reports runner exit 0; the convergence assessment itself is FAIL and remains distinct from program exit.",
+      "label": "Later k/smearing and E(V) screens",
+      "route_id": "later-exploratory-screens",
+      "timing": {
+        "completed_at": null,
+        "scope": "Not folded into the isolated DOS-route window; per-output QE timestamps remain in the committed raw stdout.",
+        "started_at": null
+      }
+    }
+  ],
+  "exit_code": null,
   "gates": {
     "G0": {
       "status": "PASS",
-      "summary": "Declared inputs, captured outputs, rerun outputs, screen artifacts, and derived files pass strict hashes and parsing."
+      "summary": "Declared inputs, route-scoped outputs, screen artifacts, and derived files retain strict hashes and parsing relationships; this edit records no fresh replay."
     },
     "G1": {
       "status": "PASS",
-      "summary": "The isolated Talos reruns have terminal markers and empty captured stderr; the exploratory screen FAIL is a numerical screen result, not a program-exit failure."
+      "summary": "The isolated Talos rerun outputs have terminal markers and empty captured stderr; initial historical shell exits remain unrecorded."
     },
     "G2": {
       "status": "PASS",
-      "summary": "The rerun SCF reports electronic convergence in five iterations. NSCF/bands c_bands warning counts are retained and are not upgraded to a general eigenvalue-convergence claim."
+      "summary": "The isolated rerun SCF reports electronic convergence in five iterations. NSCF/bands c_bands warnings remain retained."
     },
     "G3": {
       "status": "PASS",
-      "summary": "Real al.dos, real screen outputs, hash-bound stdout/stderr, parser tables, and figures are present."
+      "summary": "Real al.dos, real screen outputs, hash-bound stdout/stderr, parser tables, figures, and route ancestry records are present."
     },
     "G4": {
       "status": "NOT TESTED",
@@ -531,6 +654,36 @@
   ],
   "sources": [
     {
+      "exact_url_status": "Exact public Quantum ESPRESSO UPF URL retrieved and verified by byte count and SHA-256 on 2026-08-09.",
+      "header_generator": "atomic v6.3",
+      "id": "al-pseudopotential-identity",
+      "licence_boundary": "No UPF body is published; replay supplies the exact-hash file outside the repository.",
+      "path": "source/pseudopotential-metadata.json",
+      "role": "exact public QE UPF source identity; potential body not stored",
+      "sha256": "e2b3e824ce47e73eb95b330b8add4ffd01939b33996dd952f3d080097f74e444",
+      "url": "https://pseudopotentials.quantum-espresso.org/upf_files/Al.pbe-n-rrkjus_psl.1.0.0.UPF",
+      "verified_at": "2026-08-09",
+      "verified_bytes": 1500731
+    },
+    {
+      "id": "al-qe-plan",
+      "path": "qe_plan.json",
+      "role": "fail-closed assembled-route plan",
+      "sha256": "57cb2b21f9dc022c80839a7427c53df6f5fdd907c43a7d6ac6cb4116ab7541f9"
+    },
+    {
+      "id": "al-execution-provenance",
+      "path": "source/execution-provenance.json",
+      "role": "route timing, command, exit-status, ancestry, and claim boundary",
+      "sha256": "7fe9d3c0a9888b0d64f658cb2f5fd1051524718b8e3d4e3491f0b0dc8d31e0c9"
+    },
+    {
+      "id": "initial-command-boundary",
+      "path": "output/recorded-commands.txt",
+      "role": "historical command/exit/continuity boundary and replay-equivalent commands",
+      "sha256": "d0093f79bff0dfd78b82af05c44bea72b4431675c1bd3371cb895df97ea43fc1"
+    },
+    {
       "id": "rerun-qe-dos-route",
       "licence_boundary": "No private runtime path, pseudopotential body, restart tree, or wavefunction payload is published.",
       "path": "output/dos-route/dos.out",
@@ -538,6 +691,6 @@
       "sha256": "c930a07ec54184fe102d308668a5895b629087fdd977ce36b9a602e705616f6e"
     }
   ],
-  "started_at": "2026-08-05T04:21:54+08:00",
-  "title": "Aluminium metallic electronic structure captured QE workflow"
+  "started_at": null,
+  "title": "Aluminium QE 7.5 assembled metallic electronic-structure evidence"
 }

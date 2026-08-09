@@ -63,6 +63,7 @@ The overview addresses:
 - constraints and symmetry as model assumptions;
 - physically credible starting structures;
 - numerical quality of forces and stress, including Pulay effects;
+- feedback from geometry or state changes to the B-stage numerical baseline;
 - continuity of electronic, magnetic, charge, occupation, and symmetry state;
 - optimizer choice, trust, damping, and line-search behaviour;
 - coupled energy, force, stress, displacement, and electronic diagnostics;
@@ -80,44 +81,42 @@ The organization is natural to the subject and does not restore a visible Inputs
 
 ## Executable evidence
 
-The four companion scripts are:
+Current declared companion bindings are:
 
-- `examples/practical-guides/optimization_degrees_constraints.py`;
-- `examples/practical-guides/optimization_history_diagnostics.py`;
-- `examples/practical-guides/optimization_restart_verification.py`;
-- `examples/practical-guides/optimization_multiple_starts.py`.
+- `examples/practical-guides/silicon_qe_relax.py` for the degrees/constraints and
+  force-history guides;
+- `examples/practical-guides/silicon_qe_restarts.py` for the restart guide;
+- `examples/practical-guides/optimization_multiple_starts.py` for multiple starts.
 
-They are executed by the existing pinned practical-guide runner under Python 3.12, ASE 3.29.0, and `pymatgen-core` 2026.7.31.
+The earlier ASE degrees/constraints, synthetic-history, and ASE restart scripts
+are conceptual teaching fixtures, not declared companions for the first three
+pages. The scripts calculate no electronic energy with a DFT code and call no
+first-principles electronic-structure engine; that statement applies to those
+fixtures and the retained multiple-start companion, not to provenance claimed
+for stored QE outputs.
 
-The scripts check only bounded implementation and analysis claims:
+The two QE reconstruction scripts check only exact hashes, literal markers, and
+parsed quantities. `silicon_qe_relax.py` checks one input/output pair, five energy
+and total-force rows, and a lower final force. `silicon_qe_restarts.py` checks four
+output hashes, completion markers, two relaxation-segment messages, and equal
+printed energy for a separate fresh/restart pair. Neither executes QE or validates
+state continuity, stress, constraints, input compatibility, or restart objects.
 
-- one fixed atom and one fixed cell remain unchanged during a small ASE/EMT positions-only optimization;
-- free atoms respond and the fixture force diagnostic decreases;
-- a deterministic history is accepted only when force, stress, displacement, electronic completion, and state continuity checks agree;
-- a second synthetic history is rejected as one continuous branch after a state-label switch;
-- an interrupted ASE/EMT BFGS run writes restart and trajectory evidence, continues compatibly, and receives a fresh final force evaluation;
-- a deterministic tilted double-well sends four starts into two retained local basins.
-
-The original fixture scripts calculate no electronic energy with a DFT code and call no first-principles electronic-structure engine.
-For those retained fixture scripts, the prior boundary remains literal: The scripts calculate no electronic energy with a DFT code and call no first-principles electronic-structure engine.
-
-The Cu/EMT structures, force criteria, synthetic histories, and double-well potential are test fixtures. They are not benchmark data, parameter recommendations, or evidence for a material.
-
-Execution success is not structural convergence for a real calculation.
-
-None of those checks establishes a local or global minimum for a real calculation, force or stress accuracy, DFT convergence, physical stability, or support for a scientific conclusion.
+Execution success is not structural convergence for a real calculation. None of
+those checks establishes a local or global minimum for a real calculation, force
+or stress accuracy, DFT convergence, physical stability, or scientific support.
 
 ### Silicon execution addendum (2026-08-04)
 
-Two guides additionally bind a real, hash-checked QE 7.5 fixed-cell BFGS
-continuation for an intentionally displaced two-site CC0 COD 9013102 Silicon cell.
+Three guides bind stored QE 7.5 fixed-cell Silicon outputs, including a BFGS
+continuation for an intentionally displaced two-site CC0 COD 9013102 cell.
 The first segment deliberately reaches its two-step limit; the compatible
 `restart_mode='restart'` continuation reports `End of BFGS Geometry Optimization`.
-The reconstruction verifies input/output identity, electronic completion markers,
-the segment boundary and final force rows. It does not validate a constrained or
-variable-cell implementation, compare independent initial structures or electronic
-states, establish force/stress convergence, or prove a local or global physical
-minimum.
+The relaxation reconstruction verifies one input/output identity and five reported
+force rows; the restart reconstruction verifies output hashes, marker strings, and
+the segment boundary. It does not validate a constrained or variable-cell
+implementation, compare independent structures or electronic states, establish
+force/stress convergence, or prove a physical minimum.
 
 ## Media review
 
@@ -142,22 +141,14 @@ The pages remain readable without client-side JavaScript. Browser validation mus
 
 ## Deliberate exclusions
 
-This batch does not include:
-
-- Calculate the Reference Ground State;
-- real VASP, CP2K, or other DFT inputs and outputs beyond the bounded public
-  Quantum ESPRESSO continuation described above;
-- a universal force, stress, pressure, displacement, or step threshold;
-- a validated cell-relaxation example;
-- phonon or vibrational proof of a local minimum;
-- global structure-search completeness;
-- phase, defect, surface, adsorption, or interface energy ranking;
-- finite-temperature, zero-point, or entropic lattice effects;
-- a public `/tools/` directory;
-- licensed potentials or private calculation data.
+This optimization review does not validate the separate reference-state task,
+real VASP or CP2K runs, a cell-relaxation implementation, any transferable force
+or stress threshold, vibrational proof of a minimum, global-search completeness,
+phase or target-property ranking, finite-temperature lattice effects, licensed
+potentials, or private calculation data.
 
 ## Evidence boundary
 
-Semantic source review establishes that the educational article and guides accurately describe the cited concepts and implementations within their stated scope. Link auditing establishes only time-bounded source reachability. Browser smoke establishes public rendering and layout. Python execution establishes the declared ASE/EMT mechanics and deterministic fixture analysis under the pinned versions.
+Semantic source review establishes that the educational article and guides accurately describe the cited concepts and implementations within their stated scope. Link auditing establishes only time-bounded source reachability. Browser smoke establishes public rendering and layout. Python execution establishes only the declared stored-output hash/marker/parsing checks and the multiple-start fixture logic; conceptual ASE/history snippets are not execution evidence.
 
 None of those checks establishes structural convergence, a local or global minimum, reference-ground-state identity, physical stability, method accuracy, transferability, or scientific support for any real DFT study.

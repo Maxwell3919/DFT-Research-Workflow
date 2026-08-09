@@ -45,10 +45,9 @@ primary output
 parent and supersession links
 ```
 
-The retained companion fixture creates deterministic payload hashes. Alongside it,
-the public Silicon evidence package binds nine actual QE inputs and outputs using
-`checksums.sha256`; its reconstruction refuses altered output bytes before reading
-the electronic-completion markers or energies.
+The following manifest fixture is conceptual on this page. It illustrates payload
+hashes and a compatibility decision, but it is not executed by the declared
+companion:
 
 ```python
 from reference_state_lineage_manifest import run
@@ -58,7 +57,10 @@ print(report["manifest_digest"])
 print(report["compatible_downstream_request"])
 ```
 
-The fixture contains no real charge density, wavefunction, potential, credential, or private calculation data.
+The declared companion does not create or validate that manifest. It checks the
+expected SHA-256 values of nine stored QE outputs, requires literal completion
+markers, and parses total energies. It does not verify input hashes, a potential,
+charge density, wavefunctions, or downstream compatibility.
 
 ## Declare downstream compatibility
 
@@ -80,11 +82,11 @@ An immutable parent reference makes later provenance auditable. Silent replaceme
 
 ## What this guide verifies
 
-The deterministic fixture checks manifest logic. The real Silicon companion
-checks input/output identity and completion for a public fixed-geometry evidence
-set. It does not publish charge density or wavefunction files, validate a restart,
-or establish scientific compatibility beyond the explicit structure, method and
-file identities.
+The declared companion checks stored-output identity, marker presence, and parsed
+energies for a bounded fixed-geometry set. The manifest and compatibility logic
+remain conceptual and are not execution evidence for this page. Nothing here
+verifies inputs, publishes charge density or wavefunctions, validates a restart,
+or establishes scientific compatibility.
 
 ## Common mistakes
 

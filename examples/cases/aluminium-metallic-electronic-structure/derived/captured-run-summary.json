@@ -50,12 +50,6 @@
       }
     ]
   },
-  "captured_stages": [
-    "scf",
-    "nscf-full-zone",
-    "bands"
-  ],
-  "completed_at": "2026-08-05T04:22:02+08:00",
   "dos_x": {
     "claim_boundary": "This is a real dos.x output from the hash-bound rerun. Its -12 to 16 eV absolute window does not include all four printed NSCF bands, so the final integral is not a total-state count; neither the output nor its plot establishes DOS convergence.",
     "dos_at_nearest_fermi_grid_point_states_per_ev_per_cell": 0.1998,
@@ -75,7 +69,62 @@
     "source_output": "output/dos-route/al.dos",
     "source_output_sha256": "95c3342cb9229b0ff2fbc8cb17d48aa13ebd6f3ddea7a5a1c4797de9e64be5f8"
   },
-  "evidence_boundary": "The separate rerun establishes real dos.x execution and a real al.dos file. The committed k/smearing screen remains FAIL and the E(V) quadratic result remains a bounded mathematical fit; neither is promoted to G4 or material acceptance.",
+  "evidence_boundary": "The initial captured output set, isolated DOS rerun, and later screens are separate evidence routes. The DOS route establishes real dos.x execution and al.dos; observable convergence is not established and no scientific conclusion is claimed.",
+  "execution_routes": [
+    {
+      "ancestry": [
+        "input/scf.in -> output/scf.out",
+        "input/nscf.in -> output/nscf-full.out",
+        "input/bands.in -> output/bands.out",
+        "No public launcher, scheduler record, or save-tree payload binds these three outputs into one continuous historical invocation."
+      ],
+      "boundary": "This initial set is real output evidence but its exact historical command/exit/continuity is unknown.",
+      "exact_command_status": "Not captured. output/recorded-commands.txt labels the listed shell lines as replay-equivalent only.",
+      "exact_exit_code_status": "Not captured; each stdout retains a JOB DONE marker, which is not a shell exit transcript.",
+      "label": "Initial captured SCF/NSCF/bands outputs",
+      "route_id": "initial-captured-electronic-output-set",
+      "timing": {
+        "completed_at": "2026-08-05T00:47:36+08:00",
+        "scope": "Earliest and latest QE-printed timestamps across three captured stdout files; gaps and continuous save-tree ancestry are not established.",
+        "started_at": "2026-08-05T00:45:36+08:00"
+      }
+    },
+    {
+      "ancestry": [
+        "input/scf.in -> output/dos-route/scf.out",
+        "input/nscf.in with the same runtime prefix/outdir -> output/dos-route/nscf-full.out",
+        "input/dos.in consumes the NSCF save state -> output/dos-route/dos.out -> output/dos-route/al.dos",
+        "input/bands.in runs after dos.x -> output/dos-route/bands.out; retained c_bands warnings remain visible."
+      ],
+      "boundary": "The runtime save tree is not published; route ordering is declared by run.sh and does not establish observable convergence.",
+      "exact_command_status": "The four stage invocations and ordering are preserved in run.sh and output/recorded-commands.txt.",
+      "exact_exit_code_status": "The existing route record reports exit 0 for each stage; JOB DONE and empty stderr are independently inspectable, but no separate shell transcript is published.",
+      "label": "Isolated SCF/NSCF/dos.x/bands rerun",
+      "route_id": "isolated-dos-route",
+      "timing": {
+        "completed_at": "2026-08-05T04:22:02+08:00",
+        "scope": "QE-printed timestamps for output/dos-route only; not a case-wide completion window.",
+        "started_at": "2026-08-05T04:21:54+08:00"
+      }
+    },
+    {
+      "ancestry": [
+        "Generated committed screen inputs -> one SCF stdout/stderr pair per input",
+        "input/parse_convergence.py -> derived/aluminium-convergence-matrix.csv and aluminium-convergence-assessment.json",
+        "input/parse_eos.py -> derived/aluminium-eos-samples.csv and aluminium-eos-fit.json"
+      ],
+      "boundary": "A reported earlier blocked parser attempt has no standalone shell transcript; the corrected fit is mathematical evidence only.",
+      "exact_command_status": "Current committed runners are input/run-convergence-matrix.sh and input/run-eos.sh.",
+      "exact_exit_code_status": "The existing route record reports runner exit 0; the convergence assessment itself is FAIL and remains distinct from program exit.",
+      "label": "Later k/smearing and E(V) screens",
+      "route_id": "later-exploratory-screens",
+      "timing": {
+        "completed_at": null,
+        "scope": "Not folded into the isolated DOS-route window; per-output QE timestamps remain in the committed raw stdout.",
+        "started_at": null
+      }
+    }
+  ],
   "exploratory_convergence_screen": {
     "case_id": "aluminium-metallic-electronic-structure",
     "claim_boundary": "Only the named SCF energy/Fermi samples are assessed as an exploratory screen. This cannot establish G4, DOS, EOS, elastic, Fermi-surface, transport, or material-level convergence.",
@@ -179,6 +228,17 @@
     "trapezoidal_integral_states_per_cell": 7.99989759999958,
     "weight_convention": "QE-printed weights are used without renormalization; their 512-point sum is approximately 2 because the non-spin-polarized output carries spin-degenerate weighting."
   },
+  "initial_captured_stages": [
+    "scf",
+    "nscf-full-zone",
+    "bands"
+  ],
+  "isolated_dos_route_stages": [
+    "scf",
+    "nscf-full-zone",
+    "dos.x",
+    "bands"
+  ],
   "mesh_points": 512,
   "near_fermi_mesh_points_abs_delta_leq_0_25_ev": 48,
   "path_points": 145,
@@ -186,13 +246,7 @@
   "qe_version": "7.5",
   "rerun_bands_c_bands_unconverged_markers": 5,
   "rerun_nscf_c_bands_unconverged_markers": 5,
-  "rerun_stages": [
-    "scf",
-    "nscf-full-zone",
-    "dos.x",
-    "bands"
-  ],
   "scf_iterations": 5,
   "selected_band_crossing_intervals": 3,
-  "started_at": "2026-08-05T04:21:54+08:00"
+  "timing_boundary": "No case-wide start/completion window is claimed; the named timestamps in execution_routes are route-scoped."
 }

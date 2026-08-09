@@ -16,7 +16,8 @@ const headings = article.match(/^## /gm) ?? [];
 if (headings.length !== 22) errors.push(`${articlePath}: expected 22 natural sections, found ${headings.length}`);
 
 for (const statement of [
-  'Its primary result is therefore a formation free energy as a function of atomic chemical potentials and electron chemical potential, not a single intrinsic “defect energy.”',
+  'Its primary result is therefore a formation energy as a function of atomic and electron chemical potentials, not a single intrinsic “defect energy.”',
+  'Call it a formation free energy only when the declared thermal and statistical-mechanical contributions are included.',
   'The result is energy per defect supercell, normally reported per defect rather than per atom.',
   'These allowed domains come from phase stability, not from selecting arbitrary “rich” and “poor” numbers.',
   'An equilibrium Fermi level must instead satisfy charge neutrality together with all included charged defects, dopants, electrons, and holes.',

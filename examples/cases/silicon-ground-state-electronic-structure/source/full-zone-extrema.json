@@ -22,12 +22,12 @@
     "kpoint_count": 260,
     "band_count": 8,
     "k_grid": [8, 8, 8],
-    "symmetry_policy": "nosym=.true.; QE 7.5 documents a uniform grid as expanded over the Brillouin zone while retaining time-reversal equivalence unless noinv=.true.",
+    "symmetry_policy": "Nominal 8x8x8 automatic grid with nosym=.true.; noinv=.true. was not set, so time-reversal equivalence remained and QE printed 260 points rather than a 512-point enumeration.",
     "vbm_eV": 6.205,
     "vbm_bandsx_coordinate": [0.0, 0.0, 0.0],
     "cbm_eV": 6.822,
     "cbm_bandsx_coordinate": [0.53033, 0.0, 0.0],
     "sampled_separation_eV": 0.617
   },
-  "claim_boundary": "Hash-bound teaching samples from real QE execution. The line path and 8x8x8 mesh are different samplings; neither sampled separation is a converged fundamental, quasiparticle, optical, or experimental gap."
+  "claim_boundary": "Hash-bound teaching samples from separately recorded real QE stages. The line path and 260-point time-reversal-reduced 8x8x8 sample are different samplings; neither sampled separation is a converged fundamental, quasiparticle, optical, or experimental gap, and no continuous historical launcher is claimed."
 }

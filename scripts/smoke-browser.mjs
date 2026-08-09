@@ -137,6 +137,11 @@ const browser = await puppeteer.launch({ executablePath, headless: true, args: [
 
 try {
   const page = await browser.newPage();
+  await page.evaluateOnNewDocument(() => {
+    window.addEventListener('molstarViewerCreated', (event) => {
+      window.__smokeMolstarViewer = event.detail?.viewer;
+    });
+  });
   await page.setCacheEnabled(false);
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
 
@@ -187,9 +192,13 @@ try {
   }
 
   const cifAssetUrl = `${base}/examples/cif/silicon-cod-9013102-expanded.cif`;
+  // The hosted Mol* iframe cannot fetch a localhost preview asset. Keep its
+  // structure source on the public Pages origin while testing the same local
+  // bytes separately below.
+  const canonicalViewerCifUrl = 'https://maxwell3919.github.io/DFT-Research-Workflow/examples/cif/silicon-cod-9013102-expanded.cif';
   let viewerCifStatus = null;
   const observeViewerCif = (response) => {
-    if (response.url().split('?')[0] === cifAssetUrl) viewerCifStatus = response.status();
+    if (response.url().split('?')[0] === canonicalViewerCifUrl) viewerCifStatus = response.status();
   };
   page.on('response', observeViewerCif);
 
@@ -231,12 +240,35 @@ try {
   }
   if (!molstarFrame?.url().startsWith('https://molstar.org/viewer/')) throw new Error(`Mol* frame did not load: ${molstarFrame?.url() ?? 'no frame'}`);
   const molstarUrl = new URL(molstarFrame.url());
-  if (molstarUrl.searchParams.get('structure-url-format') !== 'cif') throw new Error('Mol* viewer was not configured for CIF');
-  if (molstarUrl.searchParams.get('structure-url') !== cifAssetUrl) throw new Error(`Mol* structure URL mismatch: ${molstarUrl.searchParams.get('structure-url')}`);
+  if (molstarUrl.searchParams.get('url-format') !== 'cifCore') throw new Error(`Mol* viewer format mismatch: ${molstarUrl.searchParams.get('url-format')}`);
+  if (molstarUrl.searchParams.get('url') !== canonicalViewerCifUrl) throw new Error(`Mol* structure URL mismatch: ${molstarUrl.searchParams.get('url')}`);
   await molstarFrame.waitForSelector('canvas', { timeout: 45000 });
+  await molstarFrame.waitForFunction(() => {
+    const structures = window.__smokeMolstarViewer?.plugin?.managers?.structure?.hierarchy?.current?.structures ?? [];
+    return structures.some((structure) => {
+      const elements = structure.cell?.obj?.data?.elementCount ?? 0;
+      const representations = structure.components?.reduce((sum, component) => sum + (component.representations?.length ?? 0), 0) ?? 0;
+      return elements >= 8 && representations >= 1;
+    });
+  }, { timeout: 45000 });
+  const molstarStructureState = await molstarFrame.evaluate(() => {
+    const structures = window.__smokeMolstarViewer?.plugin?.managers?.structure?.hierarchy?.current?.structures ?? [];
+    return structures.reduce((best, structure) => {
+      const elementCount = structure.cell?.obj?.data?.elementCount ?? 0;
+      const representationCount = structure.components?.reduce((sum, component) => sum + (component.representations?.length ?? 0), 0) ?? 0;
+      if (elementCount > best.elementCount) return { structureCount: structures.length, elementCount, representationCount };
+      return best;
+    }, { structureCount: structures.length, elementCount: 0, representationCount: 0 });
+  });
+  if (molstarStructureState.elementCount < 8) throw new Error(`Mol* parsed only ${molstarStructureState.elementCount}/8 expected Si sites`);
+  if (molstarStructureState.representationCount < 1) throw new Error('Mol* parsed the CIF but created no visible structure representation');
   for (let attempt = 0; attempt < 180 && viewerCifStatus === null; attempt += 1) await delay(250);
   page.off('response', observeViewerCif);
   if (viewerCifStatus !== 200) throw new Error(`Mol* did not fetch the deployed CIF successfully: ${viewerCifStatus ?? 'no request observed'}`);
+  if (artifactDirectory) {
+    await mkdir(artifactDirectory, { recursive: true });
+    await viewerElement.screenshot({ path: join(artifactDirectory, 'molstar-silicon-viewer.png') });
+  }
 
   await page.goto(`${base}/workflows/`, { waitUntil: 'load' });
   const workflowLinks = await page.$$eval('.directory-list a', (links) => links.length);
@@ -248,7 +280,14 @@ try {
       figures: document.querySelectorAll('figure img[src^="data:image/png;base64,"]').length,
       commands: document.querySelectorAll('pre code').length,
     }));
-    if (state.figures < 1 || state.commands < 2 || !state.text.includes('G4 NOT TESTED') || !state.text.includes('G5 NOT CLAIMED')) {
+    if (
+      state.figures < 1
+      || state.commands < 2
+      || !state.text.includes('Observable convergence')
+      || !state.text.includes('Not established by this case')
+      || !state.text.includes('Claim boundary')
+      || !state.text.includes('No material-level claim is made')
+    ) {
       throw new Error(`${slug}: incomplete terminal-first workflow rendering`);
     }
   }
@@ -335,10 +374,13 @@ try {
     cif_teaching_snapshot: true,
     cif_viewer_loaded: true,
     cif_viewer_source_fetch_status: viewerCifStatus,
+    cif_viewer_structure_count: molstarStructureState.structureCount,
+    cif_viewer_element_count: molstarStructureState.elementCount,
+    cif_viewer_representation_count: molstarStructureState.representationCount,
     public_language: 'en',
   };
   if (artifactDirectory) await writeFile(join(artifactDirectory, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`);
-  console.log(`Browser smoke passed: registry-driven A–E workflow, two terminal-first Worked Workflows, migration-safe old routes, keyboard navigation, true 390px no overflow, no-JavaScript reading, deployed CIF teaching snapshot and Mol* viewer fetch, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
+  console.log(`Browser smoke passed: registry-driven A–E workflow, two terminal-first Worked Workflows, migration-safe old routes, keyboard navigation, true 390px no overflow, no-JavaScript reading, deployed CIF teaching snapshot, Mol* parsed ${molstarStructureState.elementCount} structure elements with ${molstarStructureState.representationCount} representation(s), and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
 } finally {
   await browser.close();
 }

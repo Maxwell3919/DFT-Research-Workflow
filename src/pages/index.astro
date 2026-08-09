@@ -6,31 +6,378 @@ import { withBase } from '../lib/paths';
 
 <BaseLayout
   title="DFT Research Workflow"
-  description="A software-neutral guide to researcher-scale DFT tasks, target calculations, validation, and reproducibility."
+  description="A software-neutral, terminal-first manual for turning scientific questions into supported DFT conclusions."
   current="home"
 >
-  <h1>DFT Research Workflow</h1>
-  <p class="home-intro">
-    DFT Research Workflow explains how researchers move from a material structure to interpretable, validated, and reproducible results. The site follows five broad parts: Structures, Calculation Preparation, Reference-State Calculations, Target Calculations, and Research Completion. These parts are a branching and revisitable learning map, not a claim that every study follows one fixed sequence. A result can send the researcher back to the structure, method, reference state, or convergence design. Target calculations form a library: band structures, density of states, phonons, defects, transport, optical response, electron–phonon coupling, superconductivity, and other calculations are distinct scientific tasks when their methods and evidence differ. Start with the <a href={withBase('operations/')}>Research Workflow</a>, then inspect <a href={withBase('workflows/')}>Worked Workflows</a> whose commands, outputs, checks, parsers, tables, and figures come from published case directories.
-  </p>
+  <article class="manual-home">
+    <header class="home-lede">
+      <p class="kicker">Software-neutral · terminal-first · evidence-bounded</p>
+      <h1>DFT Research Workflow</h1>
+      <p class="home-intro">
+        DRW is a manual for deciding what to calculate, running it from inspectable terminal inputs, and judging what the evidence can support. It begins with a scientific question rather than a software menu. It ends with a bounded conclusion rather than a finished job message. Use the A–E map to connect a required observable to a physical model, theoretical and numerical choices, a defensible reference state, the necessary calculation branch, and explicit validation. The practical pages show how to prepare files, run real software, inspect outputs, diagnose failure, and preserve enough provenance for another researcher to repeat the work without an AI assistant.
+      </p>
+    </header>
 
-  <section class="parts-overview" aria-labelledby="workflow-heading">
-    <h2 id="workflow-heading">Research workflow</h2>
-    <ol>
-      {workflowSections.map((section) => (
-        <li>
-          <a href={withBase(`operations/#part-${section.id.toLowerCase()}`)}>{section.id} · {section.title}</a>
-          <span>{section.summary}</span>
-        </li>
-      ))}
-    </ol>
-  </section>
+    <section class="question-chain" aria-labelledby="question-chain-heading">
+      <h2 id="question-chain-heading">From question to conclusion</h2>
+      <ol aria-label="Scientific question to supported scientific conclusion">
+        <li class="chain-bookend"><span>Scientific<br />Question</span></li>
+        <li class="chain-bookend"><span>Required<br />Observable</span></li>
+        {workflowSections.map((section) => (
+          <li class="chain-part">
+            <a href={withBase(`operations/#part-${section.id.toLowerCase()}`)} aria-label={`${section.id}, ${section.title}`}>
+              <strong>{section.id}</strong>
+              <small>{section.title}</small>
+            </a>
+          </li>
+        ))}
+        <li class="chain-bookend chain-conclusion"><span>Supported Scientific<br />Conclusion</span></li>
+      </ol>
+      <p class="return-note">
+        This is a dependency map, not a one-way pipeline. Evidence in E can return the study to <a href={withBase('operations/#part-a')}>A</a>, <a href={withBase('operations/#part-b')}>B</a>, <a href={withBase('operations/#part-c')}>C</a>, or a different branch of <a href={withBase('operations/#part-d')}>D</a>.
+      </p>
+    </section>
 
-  <section class="parts-overview" aria-labelledby="supporting-content-heading">
-    <h2 id="supporting-content-heading">Supporting content</h2>
-    <ol>
-      <li><a href={withBase('workflows/')}>Worked Workflows</a><span>Terminal-first examples backed by real case directories and bounded evidence.</span></li>
-      <li><a href={withBase('tools/')}>Tools</a><span>Software and data services used by practical guides and case reconstruction.</span></li>
-    </ol>
-  </section>
+    <section class="nested-loops" aria-labelledby="loops-heading">
+      <header>
+        <p class="section-number">Three loops, with an inner solver</p>
+        <h2 id="loops-heading">SCF is the innermost solver, not the workflow</h2>
+        <p>An SCF-converged output is not automatically a converged structure, a converged target observable, or a supported scientific conclusion.</p>
+      </header>
+
+      <div class="loop loop-outer">
+        <h3><span>03</span> Research loop</h3>
+        <p>Define the question and observable, select a D branch, test convergence and physical consistency, then revise A, B, C, or D until E can support a bounded claim.</p>
+        <div class="loop loop-middle">
+          <h3><span>02</span> Numerical convergence loop</h3>
+          <p>For each named target observable, vary the relevant numerical control at fixed model, method, and state; compare with a declared tolerance; then refine or narrow the claim. A B-stage baseline is not a certificate for every D branch.</p>
+          <div class="loop loop-ionic">
+            <h3><span>01</span> Ionic optimization loop, when applicable</h3>
+            <p>When geometry is an active variable, forces and stress update atoms or the cell. Every new geometry invokes an electronic solve; ionic criteria decide when this loop stops. Fixed, constrained, and scanned geometries do not require this loop.</p>
+            <div class="loop loop-inner">
+              <h3><span>SCF</span> Electronic self-consistency</h3>
+              <p>For one fixed geometry, model, and method, update the density or potential, solve the electronic problem, mix, and repeat to the declared electronic threshold.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="manual-entries" aria-labelledby="entry-heading">
+      <h2 id="entry-heading">Enter the manual</h2>
+      <a href={withBase('operations/')}>
+        <strong>Research Workflow</strong>
+        <span>A–E tasks, the branching D library, and feedback to earlier decisions.</span>
+      </a>
+      <a href={withBase('workflows/')}>
+        <strong>Worked Workflows</strong>
+        <span>Terminal-first cases whose displayed inputs, outputs, parsers, and gates are file-backed.</span>
+      </a>
+      <a href={withBase('tools/')}>
+        <strong>Tools</strong>
+        <span>A secondary index of software and data services, not a ranking or a scientific method.</span>
+      </a>
+    </nav>
+  </article>
 </BaseLayout>
+
+<style>
+  .manual-home {
+    --ink: #181714;
+    --muted: #666158;
+    --rule: #d9d4ca;
+    --accent: #8a3f28;
+    color: var(--ink);
+    max-width: 76rem;
+  }
+
+  .home-lede {
+    max-width: 58rem;
+    padding: clamp(1rem, 3vw, 2.5rem) 0 clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .kicker,
+  .section-number {
+    color: var(--accent);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    margin: 0 0 0.9rem;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(3.1rem, 8vw, 7.7rem);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    line-height: 0.88;
+    margin: 0;
+    max-width: 10ch;
+  }
+
+  .home-intro {
+    color: var(--muted);
+    font-size: clamp(1.12rem, 2vw, 1.42rem);
+    line-height: 1.55;
+    margin: 2rem 0 0;
+    max-width: 43em;
+  }
+
+  .question-chain,
+  .nested-loops,
+  .manual-entries {
+    border-top: 1px solid var(--ink);
+    padding: 1.25rem 0 clamp(3rem, 7vw, 6rem);
+  }
+
+  .question-chain h2,
+  .manual-entries h2 {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    margin: 0 0 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .question-chain ol {
+    align-items: stretch;
+    display: flex;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .question-chain li {
+    align-items: center;
+    display: flex;
+    min-width: 0;
+  }
+
+  .question-chain li:not(:last-child)::after {
+    color: var(--accent);
+    content: "→";
+    flex: 0 0 auto;
+    font-size: 1.15rem;
+    margin: 0 clamp(0.25rem, 0.8vw, 0.75rem);
+  }
+
+  .chain-bookend {
+    flex: 1.35 1 9rem;
+    font-size: clamp(0.85rem, 1.4vw, 1.04rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .chain-part {
+    flex: 0 1 5.5rem;
+  }
+
+  .chain-part a {
+    color: inherit;
+    display: block;
+    text-decoration: none;
+  }
+
+  .chain-part strong {
+    display: block;
+    font-size: clamp(1.6rem, 3vw, 2.7rem);
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .chain-part small {
+    color: var(--muted);
+    display: block;
+    font-size: 0.66rem;
+    line-height: 1.15;
+    margin-top: 0.35rem;
+  }
+
+  .chain-part a:hover strong,
+  .chain-part a:focus-visible strong,
+  .return-note a:hover,
+  .return-note a:focus-visible {
+    color: var(--accent);
+  }
+
+  .chain-conclusion {
+    flex-basis: 11rem;
+  }
+
+  .return-note {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin: 1.75rem 0 0;
+    max-width: 64rem;
+  }
+
+  .return-note a {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .nested-loops > header {
+    display: grid;
+    gap: 0 2rem;
+    grid-template-columns: minmax(12rem, 0.8fr) minmax(20rem, 2fr);
+    margin-bottom: 2.5rem;
+  }
+
+  .nested-loops > header .section-number {
+    grid-row: 1 / 3;
+  }
+
+  .nested-loops > header h2 {
+    font-size: clamp(2rem, 4vw, 3.8rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    margin: 0;
+    max-width: 18ch;
+  }
+
+  .nested-loops > header > p:last-child {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.55;
+    margin: 1.2rem 0 0;
+    max-width: 45rem;
+  }
+
+  .loop {
+    border-left: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
+    padding: 1.2rem 0 0 1.4rem;
+  }
+
+  .loop h3 {
+    font-size: 1.03rem;
+    margin: 0;
+  }
+
+  .loop h3 span {
+    color: var(--accent);
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    margin-right: 0.7rem;
+    vertical-align: 0.12em;
+  }
+
+  .loop p {
+    color: var(--muted);
+    line-height: 1.55;
+    margin: 0.55rem 0 0;
+    max-width: 55rem;
+  }
+
+  .loop-middle,
+  .loop-ionic,
+  .loop-inner {
+    margin: 1.4rem 0 0 clamp(1rem, 5vw, 4.5rem);
+  }
+
+  .manual-entries {
+    padding-bottom: 1rem;
+  }
+
+  .manual-entries > a {
+    align-items: baseline;
+    border-top: 1px solid var(--rule);
+    color: inherit;
+    display: grid;
+    gap: 1rem 2rem;
+    grid-template-columns: minmax(11rem, 0.7fr) minmax(18rem, 1.5fr) auto;
+    padding: 1.2rem 0;
+    text-decoration: none;
+  }
+
+  .manual-entries > a::after {
+    color: var(--accent);
+    content: "→";
+  }
+
+  .manual-entries strong {
+    font-size: 1.16rem;
+  }
+
+  .manual-entries span {
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  .manual-entries > a:hover strong,
+  .manual-entries > a:focus-visible strong {
+    color: var(--accent);
+  }
+
+  @media (max-width: 760px) {
+    .home-lede {
+      padding-top: 0.5rem;
+    }
+
+    h1 {
+      font-size: clamp(3.25rem, 18vw, 5.5rem);
+    }
+
+    .question-chain ol {
+      display: grid;
+    }
+
+    .question-chain li {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .question-chain li:not(:last-child)::after {
+      content: "↓";
+      margin: 0.3rem 0 0.3rem 0.55rem;
+    }
+
+    .chain-bookend,
+    .chain-part {
+      min-height: auto;
+    }
+
+    .chain-part a {
+      align-items: baseline;
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .chain-part small {
+      font-size: 0.78rem;
+      margin: 0;
+    }
+
+    .nested-loops > header {
+      display: block;
+    }
+
+    .nested-loops > header h2 {
+      font-size: 2.35rem;
+    }
+
+    .loop-middle,
+    .loop-ionic,
+    .loop-inner {
+      margin-left: 0.8rem;
+    }
+
+    .manual-entries > a {
+      gap: 0.4rem 1rem;
+      grid-template-columns: 1fr auto;
+    }
+
+    .manual-entries > a span {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .manual-entries > a::after {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+</style>

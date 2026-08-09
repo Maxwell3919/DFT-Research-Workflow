@@ -1,5 +1,5 @@
 {
-  "boundary": "This parses the recorded 8x8x8 full-zone sample only. It does not establish a converged fundamental, quasiparticle, optical, or experimental gap.",
+  "boundary": "This parses a 260-point time-reversal-reduced sample from the nominal 8x8x8 grid. It does not establish a converged fundamental, quasiparticle, optical, or experimental gap.",
   "parsed": {
     "band_count": 8,
     "cbm_coordinate": [
@@ -24,7 +24,7 @@
     "si-fullzone.bands.dat": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"
   },
   "recorded_ledger": {
-    "claim_boundary": "Hash-bound teaching samples from real QE execution. The line path and 8x8x8 mesh are different samplings; neither sampled separation is a converged fundamental, quasiparticle, optical, or experimental gap.",
+    "claim_boundary": "Hash-bound teaching samples from separately recorded real QE stages. The line path and 260-point time-reversal-reduced 8x8x8 sample are different samplings; neither sampled separation is a converged fundamental, quasiparticle, optical, or experimental gap, and no continuous historical launcher is claimed.",
     "execution_date": "2026-08-04",
     "full_zone_sample": {
       "band_count": 8,
@@ -42,7 +42,7 @@
       "kpoint_count": 260,
       "sampled_separation_eV": 0.617,
       "source_output_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
-      "symmetry_policy": "nosym=.true.; QE 7.5 documents a uniform grid as expanded over the Brillouin zone while retaining time-reversal equivalence unless noinv=.true.",
+      "symmetry_policy": "Nominal 8x8x8 automatic grid with nosym=.true.; noinv=.true. was not set, so time-reversal equivalence remained and QE printed 260 points rather than a 512-point enumeration.",
       "vbm_bandsx_coordinate": [
         0.0,
         0.0,
@@ -76,5 +76,6 @@
     },
     "structure_source_url": "https://www.crystallography.net/cod/9013102.html"
   },
+  "sampling_policy": "Nominal 8x8x8 automatic grid with nosym=.true.; noinv=.true. absent, so time-reversal equivalence remained and QE printed 260 points.",
   "status": "PARSED_RAW_OUTPUT"
 }

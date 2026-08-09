@@ -29,12 +29,12 @@ A relaxation protocol begins with a declaration of active variables. “Relax th
 
 ## Actual fixed-cell Silicon case
 
-The accompanying QE 7.5 run starts from an intentionally displaced two-site
-COD 9013102 Silicon primitive cell. Its `calculation='relax'` input uses BFGS,
-keeps all cell vectors fixed, and leaves both atomic sites active. The committed
-output and input have SHA-256 checks, so this is an actual executed degree-of-
-freedom declaration rather than an invented trajectory. It does not test a
-constraint, variable cell, or alternative starting basin.
+The published QE 7.5 input declares an intentionally displaced two-site COD
+9013102 Silicon cell, `calculation='relax'`, fixed cell vectors, and two active
+sites. The companion verifies the exact input and output hashes, five energy and
+total-force rows, and the `JOB DONE` and BFGS completion markers. It does not test
+a constraint, variable cell, alternative basin, or the physical adequacy of the
+declared active subspace.
 
 ## Map the active subspace before execution
 
@@ -71,7 +71,9 @@ Likewise, a coherent film or interface may intentionally inherit in-plane strain
 
 ## Express atomic constraints with stable identities
 
-The executable example uses ASE `FixAtoms` on one atom of a deliberately distorted periodic Cu teaching model:
+The following ASE `FixAtoms` snippet is a conceptual implementation example for
+a deliberately distorted Cu teaching model. It is not executed by the declared
+companion and supplies no evidence about the stored QE case:
 
 ```python
 from ase.build import bulk
@@ -119,11 +121,11 @@ If a supposedly fixed atom moved, or a vacuum vector changed, the optimization e
 
 ## What this guide verifies
 
-`silicon_qe_relax.py` reconstructs the actual QE output, verifies the input/output
-hashes, five electronic completions and the BFGS completion marker. The retained
-ASE fixture illustrates an explicit fixed-atom constraint. Neither example sets
-a universal force threshold, validates variable-cell behavior, or proves a
-physical minimum.
+`silicon_qe_relax.py` verifies the input/output hashes, `JOB DONE` and BFGS
+markers, five parsed energy/total-force pairs, and that the last reported total
+force is lower than the first. It does not verify five separate SCF completions
+or execute the conceptual ASE constraint. Neither item validates variable-cell
+behavior, a force threshold, or a physical minimum.
 
 ## Common mistakes
 

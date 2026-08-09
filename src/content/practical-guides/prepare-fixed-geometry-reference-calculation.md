@@ -27,12 +27,12 @@ A reference-state calculation begins from one exact accepted structure and one d
 
 ## A real fixed-cell Silicon record
 
-The companion case freezes the two-site COD 9013102 Silicon primitive cell and
-runs QE 7.5 SCF calculations with fixed occupations. Each committed input gives
-the cell, ordered sites, SSSP Si potential filename, 8× density-cutoff ratio,
-and k mesh; each output is hash-checked before its final energy is read. This
-is an actual electronic-state calculation, but it is not a geometry optimization
-and does not establish a ground state.
+The published inputs describe fixed-geometry QE 7.5 SCF calculations for a
+two-site COD 9013102 Silicon cell with fixed occupations. The declared companion
+does not execute QE, parse or hash those inputs, or verify the structure or
+potential. It hashes nine expected outputs, requires literal completion markers,
+and parses their final reported total energies. This is not geometry optimization,
+observable convergence, or ground-state evidence.
 
 ## Bind the exact final structure
 
@@ -46,7 +46,9 @@ Method-defining fields include the exchange–correlation treatment, potentials 
 
 Numerical controls such as basis size, k-point density, grids, and internal solver thresholds may be tightened for the final calculation. Record old and new values, why the refinement was made, and which observables established its adequacy.
 
-The retained deterministic fixture uses an explicit immutable-key set and a refinement ledger:
+The following continuity fixture illustrates an immutable-key set and refinement
+ledger. It is conceptual on this page and is not executed by the declared
+companion:
 
 ```python
 from reference_state_protocol_continuity import run
@@ -93,10 +95,11 @@ This edge prevents the later reference calculation from becoming an untraceable 
 
 ## What this guide verifies
 
-`silicon_qe_convergence.py` checks the real-output hashes and completion markers
-for the frozen-geometry inputs. The separate continuity fixture still checks
-metadata rules. Neither establishes candidate completeness, numerical convergence
-of the intended observable, a physical minimum, or global ground-state identity.
+`silicon_qe_convergence.py` checks expected output hashes and literal completion
+markers and parses total energies. It does not inspect the inputs or execute the
+continuity fixture. Neither the reconstruction nor the conceptual fixture
+establishes geometry identity, candidate completeness, observable convergence, a
+physical minimum, or global ground-state identity.
 
 ## Common mistakes
 

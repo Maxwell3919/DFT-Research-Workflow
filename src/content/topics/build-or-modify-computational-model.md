@@ -47,7 +47,9 @@ A supercell is a modelling choice, not merely a larger file. Its integer transfo
 
 The model record should retain the parent cell, transformation matrix, site mapping, resulting composition, and shortest relevant image separations. A supercell chosen to host a defect implicitly defines a defect concentration. A supercell chosen for an antiferromagnetic pattern defines which ordering wavevectors are allowed. A cell chosen for an interface distributes mismatch and strain in a particular way.
 
-There is no universal minimum supercell size. The appropriate size depends on the physical interaction being suppressed or represented: elastic relaxation, electrostatic image interactions, defect-state overlap, magnetic coupling, compositional correlations, structural modulation, or the wavelength of a perturbation. Numerical convergence of that choice belongs to the later convergence task, but the model must expose the relevant length scales rather than conceal them behind a cell dimension.
+There is no universal minimum supercell size. The appropriate size depends on the physical interaction being suppressed or represented: elastic relaxation, electrostatic image interactions, defect-state overlap, magnetic coupling, compositional correlations, structural modulation, or the wavelength of a perturbation. Finite-size convergence toward a declared asymptotic model belongs to the later convergence task, but the model must expose the relevant length scales rather than conceal them behind a cell dimension.
+
+Such a series constrains numerical finite-size error only when it approaches a declared asymptotic problem under a fixed scaling protocol. Deliberate changes in concentration, ordering wavevector, physical periodicity, or accessible long-wavelength modes define separate state or model branches and should be reported as robustness tests.
 
 ## Construct surfaces and adsorption models deliberately
 

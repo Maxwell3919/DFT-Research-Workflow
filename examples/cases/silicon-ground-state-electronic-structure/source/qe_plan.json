@@ -1,28 +1,43 @@
 {
-  "case_id": "silicon-cod9013102-teaching",
-  "decision": "pass",
-  "limitations": [
-    "The minimum workflow is not a universal complete workflow.",
-    "Material-, model-, and observable-specific controls may add stages and convergence dimensions."
+  "schema_version": "staged-qe-plan-1.0",
+  "case_id": "silicon-ground-state-electronic-structure",
+  "protocol_id": "silicon-qe-7.5-assembled-stages-v2",
+  "qe_version": "7.5",
+  "state": "evidence-record-only",
+  "decision": "blocked-for-numerical-acceptance",
+  "execution_status": "assembled-stored-real-qe-stages; historical-continuity-not-recorded",
+  "objective": "Inspect execution and artifact ancestry for separately recorded Silicon QE 7.5 stages without promoting a material-property claim.",
+  "observable": "No observable is accepted by this record.",
+  "tolerance": null,
+  "required_for_G4": [
+    "A named observable and user-accepted tolerance.",
+    "A fixed-protocol stable-tail study for every decisive numerical dimension.",
+    "Audited stage ancestry for the observable-specific route."
   ],
-  "minimum_workflow": [
-    "pw.x:scf"
-  ],
-  "objective": "Teaching-only Silicon SCF and band-path execution provenance; no material property claim.",
-  "observable": {
-    "absolute_tolerance": 0.01,
-    "name": "SCF total energy per atom cutoff comparison",
-    "relative_tolerance": null,
-    "unit": "eV/atom"
+  "pseudopotential_source_boundary": "Replay preparation pins the official Materials Cloud SSSP v1.3.0 PBE precision archive URL, 62963841-byte size, and SHA-256 d91db6b4b3788501d535a5b84ebabf3859ea3e3ac6ea154c4be3718da50f0c85; the publisher-listed MD5 is a cross-check. It then requires the exact ./Si.pbe-n-rrkjus_psl.1.0.0.UPF member, 1299382-byte size, and SHA-256. The body remains outside the repository, and those identity checks do not establish transferability or scientific suitability.",
+  "manual_preparation": {
+    "script": "prepare-replay.py",
+    "source_cif_sha256": "cd12420b831cd62227a36865179d12c5eece74e4a40e8d135abc981ced42ca55",
+    "symmetry_check": "spglib 2.7.0, symprec=1e-5, Fd-3m number 227",
+    "model": "two-site symmetry-idealized primitive QE geometry",
+    "selection_status": "NOT_RANKED",
+    "boundary": "The bridge checks a bounded crystallographic representation transform. It does not relax, rank, or establish stability of the model and does not derive method or numerical settings from the CIF."
   },
-  "provenance": {
+  "claim_contract": {
+    "supports": [
+      "Hash-bound, separately recorded real QE 7.5 stage outputs and derived-artifact ancestry.",
+      "A 260-point, eight-band time-reversal-reduced sample from the nominal 8x8x8 grid."
+    ],
+    "does_not_support": [
+      "One continuous historical run, launcher, shell-exit transcript, or cross-route save tree.",
+      "The former 0.01 eV/atom tolerance as an accepted convergence criterion.",
+      "G4 numerical convergence or G5 physical/scientific acceptance."
+    ]
+  },
+  "prior_record_provenance": {
     "collector": "qe_guard",
     "collector_version": "1.1.0",
-    "generated_utc": "2026-08-04T12:43:03+00:00"
-  },
-  "qe_version": "7.5",
-  "schema_version": "1.0",
-  "scientific_protocol_id": "silicon-qe-7.5-teaching-v1",
-  "state": "plan_ready",
-  "task_type": "scf"
+    "generated_utc": "2026-08-04T12:43:03+00:00",
+    "boundary": "Retained only to identify the superseded plan record; its former pass/0.01 eV-per-atom claim contract is not current."
+  }
 }

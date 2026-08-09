@@ -160,7 +160,18 @@ def main() -> None:
     need(pseudo.get("schema_version") == "1.0" and isinstance(pseudo.get("pseudopotentials"), list) and len(pseudo["pseudopotentials"]) == 1, "pseudopotential metadata lacks schema_version 1.0/single entry")
     pseudo_entry = pseudo["pseudopotentials"][0]
     need(pseudo_entry.get("filename") == "Al.pbe-n-rrkjus_psl.1.0.0.UPF" and pseudo_entry.get("sha256") == "cc4f5dc6afe09c8f482dc7645e6e7cca546a55f8d907c71c825c62bf85a38d3e", "pseudopotential metadata identity mismatch")
-    need(pseudo_entry.get("source_url") is None and pseudo_entry.get("source_url_status"), "pseudopotential source URL boundary is not explicit")
+    need(
+        pseudo_entry.get("source_url") == "https://pseudopotentials.quantum-espresso.org/upf_files/Al.pbe-n-rrkjus_psl.1.0.0.UPF"
+        and pseudo_entry.get("source_url_status")
+        and pseudo_entry.get("source_bytes") == 1500731
+        and pseudo_entry.get("source_verified_at") == "2026-08-09"
+        and pseudo_entry.get("header_generator") == "atomic v6.3",
+        "pseudopotential exact source metadata mismatch",
+    )
+    plan = json.loads((ROOT / "qe_plan.json").read_text(encoding="utf-8"))
+    need(plan.get("case_id") == "aluminium-metallic-electronic-structure" and plan.get("tolerance") is None, "qe_plan case identity or fail-closed tolerance mismatch")
+    provenance = json.loads((ROOT / "source/execution-provenance.json").read_text(encoding="utf-8"))
+    need(provenance.get("case_id") == "aluminium-metallic-electronic-structure", "execution provenance case identity mismatch")
     for relative in ("output/scf.err", "output/nscf-full.err", "output/bands.err", "output/dos-route/scf.err", "output/dos-route/nscf-full.err", "output/dos-route/bands.err", "output/dos-route/dos.err"):
         need(sha(relative) == EMPTY, f"{relative} is not empty")
     captured_scf = output_text("output/scf.out", "Program PWSCF v.7.5", ["convergence has been achieved in   5 iterations"])
@@ -203,7 +214,14 @@ def main() -> None:
         for identifier in ids:
             for suffix in ("in", "out", "err"):
                 need((ROOT / "output" / route / f"{identifier}.{suffix}").is_file(), f"missing committed {route} artifact {identifier}.{suffix}")
-    summary = {"qe_version": "7.5", "started_at": started, "completed_at": completed, "captured_stages": ["scf", "nscf-full-zone", "bands"], "rerun_stages": ["scf", "nscf-full-zone", "dos.x", "bands"], "public_host": "Talos", "scf_iterations": 5, "fermi_energy_ev": fermi, "mesh_points": len(mesh), "path_points": len(path), "selected_band_crossing_intervals": crossings, "near_fermi_mesh_points_abs_delta_leq_0_25_ev": near, "rerun_nscf_c_bands_unconverged_markers": rerun_nscf.count("c_bands:  1 eigenvalues not converged"), "rerun_bands_c_bands_unconverged_markers": rerun_bands.count("c_bands:  1 eigenvalues not converged"), "gaussian_dos_like": gaussian_meta, "dos_x": dos_meta, "exploratory_convergence_screen": convergence, "bounded_eos_screen": eos, "evidence_boundary": "The separate rerun establishes real dos.x execution and a real al.dos file. The committed k/smearing screen remains FAIL and the E(V) quadratic result remains a bounded mathematical fit; neither is promoted to G4 or material acceptance."}
+    summary = {"qe_version": "7.5", "started_at": started, "completed_at": completed, "captured_stages": ["scf", "nscf-full-zone", "bands"], "rerun_stages": ["scf", "nscf-full-zone", "dos.x", "bands"], "public_host": "Talos", "scf_iterations": 5, "fermi_energy_ev": fermi, "mesh_points": len(mesh), "path_points": len(path), "selected_band_crossing_intervals": crossings, "near_fermi_mesh_points_abs_delta_leq_0_25_ev": near, "rerun_nscf_c_bands_unconverged_markers": rerun_nscf.count("c_bands:  1 eigenvalues not converged"), "rerun_bands_c_bands_unconverged_markers": rerun_bands.count("c_bands:  1 eigenvalues not converged"), "gaussian_dos_like": gaussian_meta, "dos_x": dos_meta, "exploratory_convergence_screen": convergence, "bounded_eos_screen": eos, "evidence_boundary": "The separate rerun establishes real dos.x execution and a real al.dos file. The committed k/smearing screen remains FAIL and the E(V) quadratic result remains a bounded mathematical fit; observable convergence and material acceptance are not established."}
+    summary.pop("started_at")
+    summary.pop("completed_at")
+    summary["timing_boundary"] = "No case-wide start/completion window is claimed; the named timestamps in execution_routes are route-scoped."
+    summary["execution_routes"] = provenance["execution_routes"]
+    summary["initial_captured_stages"] = summary.pop("captured_stages")
+    summary["isolated_dos_route_stages"] = summary.pop("rerun_stages")
+    summary["evidence_boundary"] = "The initial captured output set, isolated DOS rerun, and later screens are separate evidence routes. The DOS route establishes real dos.x execution and al.dos; observable convergence is not established and no scientific conclusion is claimed."
     (ROOT / "derived/captured-run-summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     metrics = convergence["metrics"]
     fit = eos["quadratic_fit"]
@@ -213,7 +231,7 @@ def main() -> None:
         f"Native DOS lineage: dos.out SHA-256 {sha('output/dos-route/dos.out')}; al.dos SHA-256 {sha('output/dos-route/al.dos')}.",
         f"Exploratory k/smearing screen: {convergence['exploratory_screen_status']}; k10-to-k12 delta E={metrics['k_mesh_tail_total_energy_delta_ry_per_cell']:.8f} Ry/cell and delta E_F={metrics['k_mesh_tail_fermi_delta_ev']:.4f} eV.",
         f"Five-point E(V) entry: mathematical fit {fit['mathematical_status']}; c2={fit['c2_ry_per_bohr6']:.12g} Ry/bohr^6; residual RMS={fit['residual_rms_ry']:.12g} Ry.",
-        "The k/smearing screen FAIL is retained; the E(V) fit is not a converged EOS, bulk modulus, or elastic tensor. G4 NOT TESTED; G5 NOT CLAIMED.",
+        "The k/smearing screen FAIL is retained; the E(V) fit is not a converged EOS, bulk modulus, or elastic tensor. Observable convergence is not established; no scientific conclusion is claimed.",
     ]) + "\n"
     (ROOT / "output/compact-source-excerpt.txt").write_text(excerpt, encoding="utf-8")
     for relative, rows, label in (("figures/al-dos-gaussian.png", gaussian_rows, "Printed NSCF eigenvalues; Gaussian sigma = 0.15 eV"), ("figures/al-dos-x.png", dos_rows, "Real QE dos.x output")):
@@ -249,7 +267,61 @@ def main() -> None:
     for record in artifacts:
         if record["path"] in figure_metadata:
             record["alt"], record["caption"] = figure_metadata[record["path"]]
+    artifacts.append(artifact("route command and provenance boundary", "output/recorded-commands.txt"))
     manifest = {"schema_version": "1.0", "case_id": "aluminium-metallic-electronic-structure", "title": "Aluminium metallic electronic structure captured QE workflow", "case_kind": "worked-workflow", "evidence_class": "real-execution", "public_host_label": "Talos", "started_at": started, "completed_at": completed, "exit_code": 0, "software": [{"name": "Quantum ESPRESSO PWSCF and DOS", "version": "7.5", "interface": "single-process CLI"}, {"name": "case-local raw-output parser", "version": "2.3", "interface": "Python CLI"}], "sources": [{"id": "rerun-qe-dos-route", "role": "hash-bound isolated real execution output", "path": "output/dos-route/dos.out", "sha256": sha("output/dos-route/dos.out"), "licence_boundary": "No private runtime path, pseudopotential body, restart tree, or wavefunction payload is published."}], "commands": [{"stage": "scf", "command": "pw.x -in scf.in > scf.out 2> scf.err", "exit_code": 0}, {"stage": "full-zone-nscf", "command": "pw.x -in nscf.in > nscf-full.out 2> nscf-full.err", "exit_code": 0}, {"stage": "dos", "command": "dos.x -in dos.in > dos.out 2> dos.err", "exit_code": 0}, {"stage": "bands", "command": "pw.x -in bands.in > bands.out 2> bands.err", "exit_code": 0}, {"stage": "exploratory-convergence-failed-screen-retained", "command": "bash input/run-convergence-matrix.sh", "exit_code": 0}, {"stage": "bounded-eos-five-scf-program-exits", "command": "pw.x -in al-eos-*.in > al-eos-*.out 2> al-eos-*.err", "exit_code": 0}, {"stage": "bounded-eos-initial-parser-blocked-volume-mismatch", "command": "python3 input/parse_eos.py", "exit_code": 1}, {"stage": "bounded-eos-corrected-parser-mathematical-fit-only", "command": "python3 input/parse_eos.py", "exit_code": 0}, {"stage": "raw-output-parse", "command": "python3 parse.py", "exit_code": 0}], "artifacts": artifacts, "gates": {"G0": {"status": "PASS", "summary": "Declared inputs, captured outputs, rerun outputs, screen artifacts, and derived files pass strict hashes and parsing."}, "G1": {"status": "PASS", "summary": "The isolated Talos reruns have terminal markers and empty captured stderr; the exploratory screen FAIL is a numerical screen result, not a program-exit failure."}, "G2": {"status": "PASS", "summary": "The rerun SCF reports electronic convergence in five iterations. NSCF/bands c_bands warning counts are retained and are not upgraded to a general eigenvalue-convergence claim."}, "G3": {"status": "PASS", "summary": "Real al.dos, real screen outputs, hash-bound stdout/stderr, parser tables, and figures are present."}, "G4": {"status": "NOT TESTED", "summary": "One 8x8x8 dos.x sample plus exploratory k/smearing and E(V) screens do not establish observable-specific convergence; the convergence screen is explicitly FAIL."}, "G5": {"status": "NOT CLAIMED", "summary": "No physical or material-level scientific conclusion is claimed."}}, "claim_boundary": {"supports": ["A real isolated QE 7.5 SCF, full-zone NSCF, dos.x, bands, exploratory k/smearing screen, and bounded E(V) execution record with raw-output-derived tables/figures."], "does_not_support": ["A converged DOS, Fermi surface, EOS, elastic property, carrier density, transport result, universal parameter prescription, or material-level conclusion."]}}
+    manifest.update({
+        "title": "Aluminium QE 7.5 assembled metallic electronic-structure evidence",
+        "started_at": None,
+        "completed_at": None,
+        "exit_code": None,
+        "completion_boundary": provenance["completion_boundary"],
+        "execution_routes": provenance["execution_routes"],
+        "commands": provenance["commands"],
+        "claim_boundary": provenance["claim_boundary"],
+        "sources": [
+            {
+                "id": "al-pseudopotential-identity",
+                "role": "exact public QE UPF source identity; potential body not stored",
+                "path": "source/pseudopotential-metadata.json",
+                "sha256": sha("source/pseudopotential-metadata.json"),
+                "url": pseudo_entry["source_url"],
+                "exact_url_status": pseudo_entry["source_url_status"],
+                "verified_bytes": pseudo_entry["source_bytes"],
+                "verified_at": pseudo_entry["source_verified_at"],
+                "header_generator": pseudo_entry["header_generator"],
+                "licence_boundary": "No UPF body is published; replay supplies the exact-hash file outside the repository.",
+            },
+            {
+                "id": "al-qe-plan",
+                "role": "fail-closed assembled-route plan",
+                "path": "qe_plan.json",
+                "sha256": sha("qe_plan.json"),
+            },
+            {
+                "id": "al-execution-provenance",
+                "role": "route timing, command, exit-status, ancestry, and claim boundary",
+                "path": "source/execution-provenance.json",
+                "sha256": sha("source/execution-provenance.json"),
+            },
+            {
+                "id": "initial-command-boundary",
+                "role": "historical command/exit/continuity boundary and replay-equivalent commands",
+                "path": "output/recorded-commands.txt",
+                "sha256": sha("output/recorded-commands.txt"),
+            },
+            {
+                "id": "rerun-qe-dos-route",
+                "role": "hash-bound isolated real execution output",
+                "path": "output/dos-route/dos.out",
+                "sha256": sha("output/dos-route/dos.out"),
+                "licence_boundary": "No private runtime path, pseudopotential body, restart tree, or wavefunction payload is published.",
+            },
+        ],
+    })
+    manifest["gates"]["G0"]["summary"] = "Declared inputs, route-scoped outputs, screen artifacts, and derived files retain strict hashes and parsing relationships; this edit records no fresh replay."
+    manifest["gates"]["G1"]["summary"] = "The isolated Talos rerun outputs have terminal markers and empty captured stderr; initial historical shell exits remain unrecorded."
+    manifest["gates"]["G2"]["summary"] = "The isolated rerun SCF reports electronic convergence in five iterations. NSCF/bands c_bands warnings remain retained."
+    manifest["gates"]["G3"]["summary"] = "Real al.dos, real screen outputs, hash-bound stdout/stderr, parser tables, figures, and route ancestry records are present."
     (ROOT / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print("PASS captured/rerun QE Al outputs parsed; real dos.x lineage present; G4/G5 remain explicitly unclaimed")
 

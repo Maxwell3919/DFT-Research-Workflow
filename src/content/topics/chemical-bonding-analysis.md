@@ -33,7 +33,7 @@ Density topology follows stationary points and gradient paths of the chosen dens
 
 Ask which state changes: geometry, composition, strain, magnetic order, charge, coverage, defect state, pressure, or occupation. Then calculate the comparison with compatible cells, Hamiltonian, pseudopotential/PAW convention, k sampling, basis/projection definition, and energy reference. A pair integral over one spin channel cannot be compared directly with a spin-summed result. A curve aligned to the Fermi level is not automatically aligned to a common chemical reference between two calculations.
 
-For a structural trend, combine the bonding indicator with the relevant energetic comparison from D1 and with the structural and electronic evidence that defines the state. A more negative value under one `-ICOHP` convention may indicate a stronger contribution for that declared pair; it cannot by itself rank thermodynamic stability, prove a causal mechanism, or replace a converged energy difference.
+For a structural trend, combine the bonding indicator with the relevant energetic comparison from D1 and with the structural and electronic evidence that defines the state. Under the stated COHP sign convention, a more negative `ICOHP` (equivalently, a larger positive `-ICOHP`) may indicate a stronger bonding contribution for that declared pair and integration window; it cannot by itself rank thermodynamic stability, prove a causal mechanism, or replace a converged energy difference.
 
 ## Numerical convergence includes the projection and the observable
 

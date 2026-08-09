@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "case_id": "aluminium-metallic-electronic-structure",
+  "completion_boundary": "No case-wide start, completion, or exit is claimed. The 04:21:54-04:22:02 timestamps belong only to the isolated DOS route.",
+  "execution_routes": [
+    {
+      "route_id": "initial-captured-electronic-output-set",
+      "label": "Initial captured SCF/NSCF/bands outputs",
+      "timing": {
+        "started_at": "2026-08-05T00:45:36+08:00",
+        "completed_at": "2026-08-05T00:47:36+08:00",
+        "scope": "Earliest and latest QE-printed timestamps across three captured stdout files; gaps and continuous save-tree ancestry are not established."
+      },
+      "exact_command_status": "Not captured. output/recorded-commands.txt labels the listed shell lines as replay-equivalent only.",
+      "exact_exit_code_status": "Not captured; each stdout retains a JOB DONE marker, which is not a shell exit transcript.",
+      "ancestry": [
+        "input/scf.in -> output/scf.out",
+        "input/nscf.in -> output/nscf-full.out",
+        "input/bands.in -> output/bands.out",
+        "No public launcher, scheduler record, or save-tree payload binds these three outputs into one continuous historical invocation."
+      ],
+      "boundary": "This initial set is real output evidence but its exact historical command/exit/continuity is unknown."
+    },
+    {
+      "route_id": "isolated-dos-route",
+      "label": "Isolated SCF/NSCF/dos.x/bands rerun",
+      "timing": {
+        "started_at": "2026-08-05T04:21:54+08:00",
+        "completed_at": "2026-08-05T04:22:02+08:00",
+        "scope": "QE-printed timestamps for output/dos-route only; not a case-wide completion window."
+      },
+      "exact_command_status": "The four stage invocations and ordering are preserved in run.sh and output/recorded-commands.txt.",
+      "exact_exit_code_status": "The existing route record reports exit 0 for each stage; JOB DONE and empty stderr are independently inspectable, but no separate shell transcript is published.",
+      "ancestry": [
+        "input/scf.in -> output/dos-route/scf.out",
+        "input/nscf.in with the same runtime prefix/outdir -> output/dos-route/nscf-full.out",
+        "input/dos.in consumes the NSCF save state -> output/dos-route/dos.out -> output/dos-route/al.dos",
+        "input/bands.in runs after dos.x -> output/dos-route/bands.out; retained c_bands warnings remain visible."
+      ],
+      "boundary": "The runtime save tree is not published; route ordering is declared by run.sh and does not establish observable convergence."
+    },
+    {
+      "route_id": "later-exploratory-screens",
+      "label": "Later k/smearing and E(V) screens",
+      "timing": {
+        "started_at": null,
+        "completed_at": null,
+        "scope": "Not folded into the isolated DOS-route window; per-output QE timestamps remain in the committed raw stdout."
+      },
+      "exact_command_status": "Current committed runners are input/run-convergence-matrix.sh and input/run-eos.sh.",
+      "exact_exit_code_status": "The existing route record reports runner exit 0; the convergence assessment itself is FAIL and remains distinct from program exit.",
+      "ancestry": [
+        "Generated committed screen inputs -> one SCF stdout/stderr pair per input",
+        "input/parse_convergence.py -> derived/aluminium-convergence-matrix.csv and aluminium-convergence-assessment.json",
+        "input/parse_eos.py -> derived/aluminium-eos-samples.csv and aluminium-eos-fit.json"
+      ],
+      "boundary": "A reported earlier blocked parser attempt has no standalone shell transcript; the corrected fit is mathematical evidence only."
+    }
+  ],
+  "commands": [
+    {
+      "stage": "isolated DOS-route SCF",
+      "command": "pw.x -in scf.in > scf.out 2> scf.err",
+      "exit_code": 0,
+      "route_id": "isolated-dos-route",
+      "record_kind": "existing-route-execution-record",
+      "evidence_scope": "output/dos-route/scf.out prints JOB DONE; stderr is hash-bound and empty.",
+      "exit_code_scope": "Route-scoped existing record; no standalone shell transcript is published.",
+      "input_artifacts": ["input/scf.in"],
+      "output_artifacts": ["output/dos-route/scf.out", "output/dos-route/scf.err"]
+    },
+    {
+      "stage": "isolated DOS-route full-zone NSCF",
+      "command": "pw.x -in nscf.in > nscf-full.out 2> nscf-full.err",
+      "exit_code": 0,
+      "route_id": "isolated-dos-route",
+      "record_kind": "existing-route-execution-record",
+      "evidence_scope": "The NSCF stdout prints JOB DONE and retains five c_bands warnings.",
+      "exit_code_scope": "Route-scoped existing record; no standalone shell transcript is published.",
+      "input_artifacts": ["input/nscf.in"],
+      "parent_artifacts": ["output/dos-route/scf.out", "same runtime prefix/outdir; save tree not published"],
+      "output_artifacts": ["output/dos-route/nscf-full.out", "output/dos-route/nscf-full.err"]
+    },
+    {
+      "stage": "isolated DOS-route dos.x",
+      "command": "dos.x -in dos.in > dos.out 2> dos.err",
+      "exit_code": 0,
+      "route_id": "isolated-dos-route",
+      "record_kind": "existing-route-execution-record",
+      "evidence_scope": "dos.out prints JOB DONE and al.dos is a hash-bound 2,801-row native QE table.",
+      "exit_code_scope": "Route-scoped existing record; no standalone shell transcript is published.",
+      "input_artifacts": ["input/dos.in"],
+      "parent_artifacts": ["output/dos-route/nscf-full.out", "same runtime NSCF save state; payload not published"],
+      "output_artifacts": ["output/dos-route/dos.out", "output/dos-route/dos.err", "output/dos-route/al.dos"]
+    },
+    {
+      "stage": "isolated DOS-route bands",
+      "command": "pw.x -in bands.in > bands.out 2> bands.err",
+      "exit_code": 0,
+      "route_id": "isolated-dos-route",
+      "record_kind": "existing-route-execution-record",
+      "evidence_scope": "bands.out prints JOB DONE and retains five c_bands warnings.",
+      "exit_code_scope": "Route-scoped existing record; no standalone shell transcript is published.",
+      "input_artifacts": ["input/bands.in"],
+      "parent_artifacts": ["output/dos-route/scf.out", "same runtime prefix/outdir; save tree not published"],
+      "output_artifacts": ["output/dos-route/bands.out", "output/dos-route/bands.err"]
+    },
+    {
+      "stage": "later exploratory k/smearing screen",
+      "command": "bash input/run-convergence-matrix.sh",
+      "exit_code": 0,
+      "route_id": "later-exploratory-screens",
+      "record_kind": "existing-route-execution-record",
+      "evidence_scope": "Five SCF programs completed; the predeclared numerical screen result is FAIL.",
+      "exit_code_scope": "Runner exit and numerical screen status are distinct.",
+      "output_artifacts": ["output/convergence-screen/", "derived/aluminium-convergence-matrix.csv", "derived/aluminium-convergence-assessment.json"]
+    },
+    {
+      "stage": "later bounded E(V) screen",
+      "command": "bash input/run-eos.sh",
+      "exit_code": 0,
+      "route_id": "later-exploratory-screens",
+      "record_kind": "existing-route-execution-record",
+      "evidence_scope": "Five SCF programs completed; the quadratic fit status is mathematical PASS only.",
+      "exit_code_scope": "Runner exit does not establish EOS or elastic acceptance.",
+      "output_artifacts": ["output/eos-screen/", "derived/aluminium-eos-samples.csv", "derived/aluminium-eos-fit.json"]
+    }
+  ],
+  "claim_boundary": {
+    "supports": [
+      "Route-scoped real QE 7.5 outputs: an initial captured SCF/NSCF/bands set, an isolated SCF/NSCF/dos.x/bands rerun, and later exploratory screens with raw-output-derived tables and figures."
+    ],
+    "does_not_support": [
+      "One continuous historical launcher, case-wide execution interval, or unpublished save-tree ancestry.",
+      "A converged DOS, Fermi surface, EOS, elastic property, carrier density, transport result, universal parameter prescription, or material-level conclusion."
+    ]
+  }
+}

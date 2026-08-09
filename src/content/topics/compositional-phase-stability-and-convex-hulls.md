@@ -87,7 +87,9 @@ Mixed GGA/GGA+U compatibility corrections, for example, are fitted bookkeeping r
 
 SCF convergence of each record is necessary but does not establish convergence of `E_above_hull` or decomposition identity. Basis quality, k sampling, smearing, relaxation, magnetic initialization, cell choice, and method corrections can shift competitors unequally.
 
-Rebuild the hull under defensible numerical refinements and alternative physical initial states. Near the envelope, test whether plausible energy changes alter vertices, facets, or decomposition products. If the classification changes under the relevant uncertainty, report the phase as unresolved or near-degenerate rather than converting a small nominal distance into a categorical conclusion.
+Rebuild the hull under defensible numerical refinements and, separately, alternative physical initial states. Near the envelope, test whether plausible energy changes alter vertices, facets, or decomposition products. If the classification changes under the relevant uncertainty, report the phase as unresolved or near-degenerate rather than converting a small nominal distance into a categorical conclusion.
+
+The numerical series estimates fixed-state precision. Alternative initial states test candidate search and basin robustness; report their effects on hull vertices, facets, and decomposition products as a separate evidence class.
 
 Stored database precision is also not calculation precision. An independent reconstruction may agree only to the rounding exposed by the source.
 

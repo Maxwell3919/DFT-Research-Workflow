@@ -13,6 +13,8 @@ The tolerance therefore belongs to the intended use. A phase ranking requires th
 
 “Converged to a standard setting” is not an observable-specific statement. Record the target quantity, its units, the comparison being made, and the maximum residual numerical uncertainty that the claim can tolerate.
 
+At B, the purpose is to establish a documented baseline for shared structural and reference-state calculations. It is not a certificate for every D-stage observable. A band edge, phonon, response, defect energy, or electron–phonon integral inherits only the controls that were actually tested and needs its own observable-specific convergence evidence.
+
 ## Separate completion, solver convergence, and observable convergence
 
 A normal program exit establishes that the executable reached an exit path. An SCF threshold establishes that an internal residual or estimated error fell below a configured criterion. Neither result alone establishes that the target observable is stable with respect to basis size, real-space grids, k points, occupations, supercell size, vacuum, q points, interpolation, or another external control.
@@ -30,6 +32,8 @@ scientific claim supported
 ```
 
 Only the third line is numerical convergence. The fourth belongs to method and model validation, and the fifth requires the complete evidence chain.
+
+Changing the physical theory, ensemble, Hamiltonian, or boundary model tests physical or theoretical robustness. It must not be folded into a numerical sweep or reported as discretization uncertainty.
 
 ## Define tolerances in the units of the decision
 
@@ -77,7 +81,9 @@ Metals add a coupled occupation problem. Smearing can stabilize integration, but
 
 Test k-point density and smearing width together for metallic systems. Inspect the target observable over a matrix of meshes and widths, not only along one diagonal. A narrow smearing on an insufficient mesh and a broad smearing on a dense mesh can produce similar energies for different reasons. A smearing width used as an integration device is not automatically a physical electronic temperature.
 
-## Converge cell size, vacuum, and boundary treatment
+## Test finite-size behaviour within a declared boundary model
+
+Cell-size and vacuum refinements constrain numerical finite-size error only when composition, coverage, ordering, relaxation constraints, and electrostatic formulation are fixed or follow a declared asymptotic scaling protocol. Alternative Coulomb-truncation, dipole-correction, effective-screening, or constraint models are robustness branches, not discretization points.
 
 Supercell and slab calculations introduce interactions between periodic images, finite defect concentrations, constrained wavelengths, limited relaxation volumes, and boundary-dependent electrostatics. Increasing one cell length may reduce one error while leaving another unchanged.
 
@@ -142,6 +148,8 @@ The answer may be that no affordable setting reaches the desired tolerance. That
 Convergence evidence can often be reused within a well-defined family, but the boundary must be explicit. Changes in composition, volume, dimensionality, vacuum, supercell, magnetic state, charge state, pseudopotential, basis, exchange–correlation method, relativistic treatment, code version, response formalism, or target observable can alter convergence.
 
 A protocol derived for a primitive semiconductor total energy may not cover a metallic defect supercell, a hybrid-functional band edge, a polar slab, a soft phonon, or an electron–phonon integral. Reuse should be justified by representative worst cases and periodically rechecked as the study expands.
+
+Geometry is not passive. If relaxation changes volume, symmetry, dimensional scale, metallicity, or electronic state beyond the tested family, recheck the B baseline on the accepted geometry. If stricter force or stress settings materially change that geometry, re-optimize and repeat the affected convergence tests. This feedback is evidence-driven, not a prescribed single pass.
 
 ## Preserve a convergence evidence package
 

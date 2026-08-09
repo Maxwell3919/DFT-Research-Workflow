@@ -3,8 +3,7 @@ import puppeteer from 'puppeteer-core';
 const base = (process.env.SITE_URL ?? 'http://127.0.0.1:4322/DFT-Research-Workflow').replace(/\/+$/, '');
 const browser = await puppeteer.launch({ executablePath: process.env.CHROME_BIN ?? '/usr/bin/google-chrome', headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
 const routes = [
-  ['/operations/magnetic-configuration-and-ground-state-comparison/', 'Magnetic Configuration and Ground-State Comparison', 'Magnetic order belongs to the calculation object'],
-  ['/operations/magnetic-configuration-and-ground-state-comparison/guides/compare-enumerated-magnetic-candidates/', 'Compare an Enumerated Magnetic Candidate Ledger', 'Execution verifies deterministic invented-candidate comparison'],
+  ['/operations/magnetic-configuration-and-ground-state-comparison/', 'Magnetic Configuration and Ground-State Comparison', 'Magnetic order belongs to the calculation object']
 ];
 try {
   for (const width of [1440, 390]) {
@@ -18,5 +17,5 @@ try {
   }
   const noJs = await browser.newPage(); await noJs.setCacheEnabled(false); await noJs.setJavaScriptEnabled(false);
   for (const [route, title, phrase] of routes) { const response = await noJs.goto(base + route, { waitUntil: 'load' }); const text = await noJs.$eval('body', (body) => body.innerText); if (response?.status() !== 200 || !text.includes(title) || !text.includes(phrase)) throw Error(`${route} no-JavaScript failure`); }
-  console.log('Reviewed magnetic-ground-state smoke passed: topic and guide, original media, 1440px/390px no-overflow, and no-JavaScript reading.');
+  console.log('Reviewed magnetic-ground-state smoke passed: parent topic, 1440px/390px no-overflow, and no-JavaScript reading.');
 } finally { await browser.close(); }

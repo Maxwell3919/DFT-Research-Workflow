@@ -6,6 +6,7 @@ const reviewPath = 'docs/reviews/2026-08-03-optimize-structure.md';
 const errors = [];
 const article = await readFile(new URL(articlePath, root), 'utf8');
 const review = await readFile(new URL(reviewPath, root), 'utf8');
+const normalizedReview = review.replace(/\s+/g, ' ').toLowerCase();
 
 for (const statement of [
   'topic_slug: optimize-structure',
@@ -50,6 +51,8 @@ for (const statement of [
   'A stopping message means that the implemented criteria were satisfied in the active subspace, or that another termination condition was reached.',
   'Different final basins are not failed calculations.',
   'After the optimizer stops, run a fresh energy-and-gradient evaluation on the exact final structure using the declared verification settings.',
+  'The B-stage convergence study is an initial baseline rather than a permanent certificate.',
+  'Optimization is not a universal prerequisite for every reference-state calculation.',
   'A final structure alone is not a reproducible optimization result.',
   'It also does not replace **Calculate the Reference Ground State**.',
 ]) {
@@ -78,9 +81,12 @@ for (const statement of [
   'The scripts calculate no electronic energy with a DFT code',
   'Execution success is not structural convergence for a real calculation',
   'None of those checks establishes a local or global minimum for a real calculation',
+  'examples/practical-guides/silicon_qe_relax.py',
+  'examples/practical-guides/silicon_qe_restarts.py',
+  'conceptual teaching fixtures, not declared companions',
   'None of those checks establishes structural convergence, a local or global minimum, reference-ground-state identity, physical stability, method accuracy, transferability, or scientific support for any real DFT study.',
 ]) {
-  if (!review.toLowerCase().includes(statement.toLowerCase())) errors.push(`${reviewPath}: missing review boundary ${JSON.stringify(statement)}`);
+  if (!normalizedReview.includes(statement.toLowerCase())) errors.push(`${reviewPath}: missing review boundary ${JSON.stringify(statement)}`);
 }
 
 for (const heading of [

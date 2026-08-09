@@ -113,7 +113,9 @@ Compare physically motivated methods on representative states when the conclusio
 
 ## Converge the adsorption observable and its ordering
 
-SCF completion is only an inner numerical condition. Converge adsorption energies and the energy differences between relevant sites against basis or cutoff, k sampling, occupations, slab thickness, vacuum, lateral size, electrostatic treatment, relaxation policy, and molecular reference cell. Inspect whether the same electronic and structural state survives the sequence.
+A normal program exit establishes only that the executable reached an exit path. Satisfaction of the declared SCF residual criterion is only an inner numerical condition. Converge adsorption energies and the energy differences between relevant sites against basis or cutoff, k sampling, occupations, slab thickness, vacuum, lateral size, electrostatic treatment, relaxation policy, and molecular reference cell. Inspect whether the same electronic and structural state survives the sequence.
+
+Numerical convergence of an adsorption energy should be assessed only after coverage and adsorbate order, charge ensemble, electrostatic boundary treatment, and relaxation constraints are fixed. Changes to those choices test state or model robustness; basis, reciprocal sampling, and finite-size refinements within that fixed problem constrain numerical uncertainty.
 
 When the conclusion is an ordering, converge the ordering and its uncertainty, not merely each large total energy. A small energy gap between sites is not resolved when numerical drift, reference uncertainty, or method spread is comparable to that gap.
 

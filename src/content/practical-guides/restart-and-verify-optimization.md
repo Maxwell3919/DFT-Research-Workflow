@@ -27,13 +27,12 @@ A restart is a continuation of a traceable optimization problem, not permission 
 
 ## Actual bounded QE continuation
 
-The real case starts from an intentionally displaced COD 9013102 Silicon cell.
-Its first QE 7.5 BFGS `relax` segment has `nstep=2` and explicitly reports that
-the maximum step count was reached; it is retained as incomplete. A second input
-uses the same prefix and outdir with `restart_mode='restart'`, then reaches
-`End of BFGS Geometry Optimization`. Both segments retain their inputs, output
-hashes and `JOB DONE` markers. This demonstrates one code/version-specific
-continuation, not a general restart guarantee.
+The published inputs describe an intentionally displaced COD 9013102 Silicon
+cell, a two-step QE 7.5 `relax` segment, and a second input with the same prefix
+and outdir plus `restart_mode='restart'`. The companion does not read or hash
+those inputs or any restart object. It verifies the two output hashes, completion
+markers, the first segment's maximum-step message, and the second segment's BFGS
+marker. This is bounded stored-output reconstruction, not a restart guarantee.
 
 ## Distinguish restartable objects
 
@@ -89,7 +88,9 @@ continued = BFGS(
 continued.run(fmax=0.05, steps=80)
 ```
 
-The executable example uses a distorted periodic Cu model with ASE's EMT calculator. It tests restart mechanics only. The force criterion and model are fixtures, not DFT recommendations.
+This ASE/EMT snippet is a conceptual restart example. It is not executed by the
+declared companion and provides no evidence about the QE continuation. Its force
+criterion and model are not DFT recommendations.
 
 Optimizer restart files are not necessarily portable between optimizer classes or versions. A trajectory may permit replay or reconstruction of useful history, but only when positions, forces, cell variables, and coordinate conventions are compatible.
 
@@ -137,10 +138,12 @@ Do not concatenate the energy histories as if they came from one potential-energ
 
 ## What this guide verifies
 
-The real-output companion verifies that the first segment is explicitly incomplete
-and the matching QE restart segment has BFGS completion. The retained ASE fixture
-illustrates optimizer-specific mechanics. Neither establishes a universal stopping
-criterion, optimizer portability, observable convergence, or a physical/global minimum.
+The declared companion verifies hashes and literal completion markers for four
+stored outputs, the first relaxation segment's maximum-step message, the second
+segment's BFGS marker, and equality of a separate fresh/restart SCF pair at printed
+energy precision. It does not validate input compatibility, restart files, ASE
+mechanics, a fresh final gradient evaluation, observable convergence, or a
+physical/global minimum.
 
 ## Common mistakes
 

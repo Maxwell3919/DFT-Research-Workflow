@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
-# Execute only into a new, caller-selected runtime directory.  Committed
-# evidence is immutable; this route never writes output/, derived/, or figures/.
+# Opt-in native replay template, not the uncaptured launcher for the initial
+# output set. Execute only into a new caller-selected runtime directory.
+# Committed evidence is immutable; this route never writes output/, derived/,
+# or figures/. The verified public URL and download/identity checks are in
+# README.md; the caller still supplies an external exact-hash file.
 set -euo pipefail
 
 case_dir="$(cd "$(dirname "$0")" && pwd)"

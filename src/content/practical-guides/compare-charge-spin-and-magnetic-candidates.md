@@ -51,6 +51,11 @@ Only records with the common charge, evaluator, normalization, completion eviden
 
 The selected fixture is the lowest verified candidate among the accepted enumerated set. The statement does not cover untested magnetic supercells, charge-localized patterns, noncollinear states, spin directions, constrained states, or another Hamiltonian.
 
+The script does not encode or verify geometry. In a real calculation, ranking
+electronic basins at one fixed geometry is a vertical comparison. Ranking
+magnetostructural states requires a separate, traceable relaxation for each state
+followed by comparable evaluations at the state-specific accepted geometries.
+
 Where energy differences are comparable to numerical or method uncertainty, retain a near-degenerate set rather than forcing a unique state label.
 
 ## Keep different charges and Hamiltonians separate
@@ -59,9 +64,13 @@ Raw total energies for different electron numbers, electrostatic backgrounds, fu
 
 A candidate can remain scientifically relevant without being eligible for the current fixed-charge reference comparison.
 
+The fixture's different-charge exclusion is only a guard. It does not construct
+a chemical-potential, reservoir, alignment, or correction framework and therefore
+cannot decide stability across electron numbers.
+
 ## What this guide verifies
 
-The companion script applies deterministic eligibility rules and ranks the remaining fixture candidates by one declared energy quantity. It retains exclusion reasons and reports the selection as bounded by the tested candidate set.
+The companion script applies deterministic eligibility rules and ranks the remaining fixture candidates by one declared energy quantity. It retains exclusion reasons and reports the selection as bounded by the tested candidate set. It does not encode geometry or a charged-state thermodynamic potential.
 
 It does not run a DFT code, establish candidate completeness, validate an energy tolerance, or prove the global electronic ground state of a real system.
 

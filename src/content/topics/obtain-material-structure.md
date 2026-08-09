@@ -63,7 +63,7 @@ For a simple reference, search COD for **silicon, COD ID `9013102`**. The record
 After downloading the CIF, locate the cell parameters, symmetry information, atom-site loop, occupancy, and bibliographic fields. These values describe the database record; they do not establish that this representation is the correct starting model for every silicon calculation.
 
 <figure class="cif-viewer" style="margin: 1.5rem 0 2.2rem;">
-  <iframe src="https://molstar.org/viewer/?hide-controls=1&structure-url=https%3A%2F%2Fmaxwell3919.github.io%2FDFT-Research-Workflow%2Fexamples%2Fcif%2Fsilicon-cod-9013102-expanded.cif&structure-url-format=cif" title="Interactive silicon crystal structure derived from COD 9013102" loading="lazy" allow="fullscreen" style="display: block; width: 100%; height: clamp(22rem, 60vw, 30rem); border: 1px solid #dcdcdc; background: #fafafa;"></iframe>
+  <iframe src="https://molstar.org/viewer/?hide-controls=1&url=https%3A%2F%2Fmaxwell3919.github.io%2FDFT-Research-Workflow%2Fexamples%2Fcif%2Fsilicon-cod-9013102-expanded.cif&url-format=cifCore" title="Interactive silicon crystal structure derived from COD 9013102" loading="lazy" allow="fullscreen" style="display: block; width: 100%; height: clamp(22rem, 60vw, 30rem); border: 1px solid #dcdcdc; background: #fafafa;"></iframe>
   <figcaption style="margin-top: 0.65rem; color: #666666; font-size: 0.9rem; line-height: 1.5;">
     Interactive Mol* view of a <a href="/DFT-Research-Workflow/examples/cif/silicon-cod-9013102-expanded.cif">fixed teaching CIF</a> stored with this site. The snapshot uses the COD 9013102 cell and silicon diamond geometry but is symmetry-expanded to <code>P 1</code> for stable display; it is not the byte-for-byte COD download.
   </figcaption>
@@ -172,5 +172,5 @@ It should not silently replace partial occupancy, choose a magnetic order, add v
 - Materials Project, “[Understanding Structures and Properties in the Materials Project](https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project).”
 - Materials Project, “[Querying Data](https://docs.materialsproject.org/downloading-data/using-the-api/querying-data)” and “[Frequently Asked Questions](https://docs.materialsproject.org/frequently-asked-questions).”
 - Crystallography Open Database, “[database information and access](https://www.crystallography.net/cod/).” The silicon example uses COD ID `9013102`.
-- Mol*, “[hosted viewer used for the interactive CIF example](https://molstar.org/viewer/?hide-controls=1&structure-url=https%3A%2F%2Fmaxwell3919.github.io%2FDFT-Research-Workflow%2Fexamples%2Fcif%2Fsilicon-cod-9013102-expanded.cif&structure-url-format=cif).”
+- Mol*, “[hosted viewer used for the interactive CIF example](https://molstar.org/viewer/?hide-controls=1&url=https%3A%2F%2Fmaxwell3919.github.io%2FDFT-Research-Workflow%2Fexamples%2Fcif%2Fsilicon-cod-9013102-expanded.cif&url-format=cifCore).”
 - spglib, “[Python API documentation](https://spglib.readthedocs.io/en/v2.7.0/api/autodoc/spglib.html).”

@@ -125,8 +125,8 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/README.md",
-      "sha256": "fd7efbcec58f947395712900d8dc3f6e627ea1e1b7a820571353351b0569084b",
-      "bytes": 5784
+      "sha256": "75637bd5bd56eb797532989773c81cd69bfdb8c21f02bb483fb1b82e87b52496",
+      "bytes": 7537
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/check.sh",
@@ -185,13 +185,13 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/derived/captured-run-summary.json",
-      "sha256": "321a5d3854d3f0ed51dd846799812d6a11c4834f3851e1a1903b5896ee390ad2",
-      "bytes": 7978
+      "sha256": "9936b6e61fdc0e201d65c4db00ea0a4fe7e5a7f5fed2996f9f6b110dba5673e8",
+      "bytes": 11473
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/environment.txt",
-      "sha256": "edfb2389a383bdfd393316a28b1db854309578190d5d0722d70232f6a2eeedf9",
-      "bytes": 376
+      "sha256": "f489e8b4690066e4bb8e09983e900541d6eb2aecdb34b98a8298d59ab8677937",
+      "bytes": 611
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/extract.sh",
@@ -280,8 +280,8 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/manifest.json",
-      "sha256": "d085ec8ecffe320553a4ebdd5dbac525c3edb5573392feccb0a22f4454c66f7d",
-      "bytes": 19788
+      "sha256": "e90f6b5aa9f1caaadac171baf3b371fd726f6c4219c53e51894962f5fcc1b28d",
+      "bytes": 27997
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/output/bands.err",
@@ -295,8 +295,8 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/output/compact-source-excerpt.txt",
-      "sha256": "4ed9c851d62671a9c56ac3ddc65f488c63cac64d7ccc4ef20444bac6dadd01f6",
-      "bytes": 747
+      "sha256": "7535de34523ac74287437773555e1a29eb430634d7c9e07ba8d3ba5d48a08d2d",
+      "bytes": 796
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/output/convergence-screen/al-k08-d002.err",
@@ -505,8 +505,8 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/output/recorded-commands.txt",
-      "sha256": "600d5ef310ab87171ae03d5a9951c08f922bd236a959500aae8cb2e08cd54014",
-      "bytes": 378
+      "sha256": "d0093f79bff0dfd78b82af05c44bea72b4431675c1bd3371cb895df97ea43fc1",
+      "bytes": 1532
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/output/scf.err",
@@ -520,18 +520,23 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/parse.py",
-      "sha256": "0073f3b04cdd6ad35c073d9f2d57557118854e4b8f1626b8cf3e5d6ce36002c5",
-      "bytes": 28242
+      "sha256": "bd1b465b622d05aa1d1d258752f00c09a6bd3727df184f27f0cf63fed8156cb2",
+      "bytes": 32994
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/qe_plan.json",
-      "sha256": "b99423bc0b715e5056c2f19b4a8072c955935a627cd48a8445865b019b134710",
-      "bytes": 877
+      "sha256": "57cb2b21f9dc022c80839a7427c53df6f5fdd907c43a7d6ac6cb4116ab7541f9",
+      "bytes": 1509
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/run.sh",
-      "sha256": "4401847020c4cc668c870698ec24a8610469677a6b328884665f57d12baf72d6",
-      "bytes": 2418
+      "sha256": "b7c3ffcd226eaf2f1fa80e7c8b0383dadc28034ee174c891d1c32b60419756be",
+      "bytes": 2635
+    },
+    {
+      "path": "examples/cases/aluminium-metallic-electronic-structure/source/execution-provenance.json",
+      "sha256": "7fe9d3c0a9888b0d64f658cb2f5fd1051524718b8e3d4e3491f0b0dc8d31e0c9",
+      "bytes": 7998
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/source/fixture-band-path.csv",
@@ -550,8 +555,8 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/source/pseudopotential-metadata.json",
-      "sha256": "ea287b29e356c2dc8c601ac81617814b08d72491ce266bfce4afc77d571d5aa2",
-      "bytes": 775
+      "sha256": "e2b3e824ce47e73eb95b330b8add4ffd01939b33996dd952f3d080097f74e444",
+      "bytes": 1008
     },
     {
       "path": "examples/cases/bcc-fe-spin-qe/README.md",
@@ -1455,13 +1460,13 @@
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/README.md",
-      "sha256": "8683fedea3ea5daba7e2cbad2ce172cce2c1a115dc3a168531794ed443fd692f",
-      "bytes": 1958
+      "sha256": "c399f489d229684ba3d9e2c3fa9371bdb1033acb02beb5a730ca94f35304ba79",
+      "bytes": 3803
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/check.sh",
-      "sha256": "d7eb401fad6ef520e0437ca19347b6552482a705f94c804035accb2d277241c6",
-      "bytes": 122
+      "sha256": "ade30f1d6acc0c5012f84a0f957c8195a6decd4ff996088ef9506b80bccee8e5",
+      "bytes": 269
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/derived/band-path.csv",
@@ -1485,18 +1490,18 @@
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/derived/full-zone-status.json",
-      "sha256": "3ab5ba090e21801a575d3b17d0fd8b266969f57689b30eb7114afa37cce63fb7",
-      "bytes": 2543
+      "sha256": "4bafa7f633726f42f333d723e483e0d025c389c8cfece082f9f9fcd70fe5ca1a",
+      "bytes": 2861
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/derived/observables.json",
-      "sha256": "eb88c3dd0d760294ab121b6d49bae58ac8f82e4031d403cdd256197f216d508d",
-      "bytes": 4957
+      "sha256": "8f27a4cd306332ca21e9f16d89dc58b186665f759008c1de15e2e94cdcc6a5c6",
+      "bytes": 6146
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/environment.txt",
-      "sha256": "11fd90c6a54d49e0057a92e295e38944521ba5b46f49c250af4697b834240533",
-      "bytes": 273
+      "sha256": "bbd6e2f491524b5595d35e3b29dbafde97c246b1e921041b90e281385009fd3d",
+      "bytes": 568
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/extract.sh",
@@ -1660,8 +1665,8 @@
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/manifest.json",
-      "sha256": "6741dfaed48772113c273241309cbdcdb6409e3b1cfece6dfa0ead819d982cef",
-      "bytes": 9877
+      "sha256": "0c6568c2bc5c7a4bf774bf8bc10d0388716c8e3f1ebe0c5913e871fd1428a6d1",
+      "bytes": 17246
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/output/bands-pw.out",
@@ -1835,8 +1840,13 @@
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/parse.py",
-      "sha256": "36d7bb487733acc4eae1de87a538ac96024114abea7d35b44a9c01da0429b9fd",
-      "bytes": 25027
+      "sha256": "9703750b7555f7632c82e41f6d4fbb1b11ebf938844d4949126c355cd57781b2",
+      "bytes": 29230
+    },
+    {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/prepare-replay.py",
+      "sha256": "54f8f13198d5d75003661c96c3412d04aa96733a13127e83774bc8e92c8a9439",
+      "bytes": 20250
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/replay-derived.sh",
@@ -1845,8 +1855,8 @@
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/run.sh",
-      "sha256": "3b601859fd16bf6d4f5caf4b0a0d1058ada61c961b417c6ba8a01c5e97f5e6c9",
-      "bytes": 3470
+      "sha256": "71322ebca09765780eb6f49381dd3a6a85c97123cabb607c2dab2fa0234eafa1",
+      "bytes": 3705
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/source/checksums.sha256",
@@ -1859,24 +1869,29 @@
       "bytes": 2304
     },
     {
+      "path": "examples/cases/silicon-ground-state-electronic-structure/source/execution-provenance.json",
+      "sha256": "a388edaaf4a43046ffcbdeb344d6f2090b903823a55fdf9f557528829f7d696e",
+      "bytes": 7334
+    },
+    {
       "path": "examples/cases/silicon-ground-state-electronic-structure/source/full-zone-extrema.json",
-      "sha256": "2a30ebb89071af1b9aa5167547a5939ec3780be1c4722534704c165aaffd2ea3",
-      "bytes": 1449
+      "sha256": "e72bfde85c36e07aab2cb6ccce75cf70ffda56c97a5cd2a84d2028d28f5411be",
+      "bytes": 1581
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/source/output-excerpt.txt",
-      "sha256": "c5a49549aeebaafca49944bbc72a4d1901c8812979151de9328d7bc2f573127a",
-      "bytes": 361
+      "sha256": "26e8498be220c2c64e6c7996a47628f3f60a1cd9f3733e14c9da6331cbc3c1e6",
+      "bytes": 409
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/source/pseudopotentials.json",
-      "sha256": "cd01fa4af67f1998b16b30cd40c0beabe80be0a20eb2e43fb713b244a8fe7893",
-      "bytes": 434
+      "sha256": "3595017fe2e2fc386d1433b8cf437f78179abca15187c002f64f998996110b10",
+      "bytes": 1611
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/source/qe_plan.json",
-      "sha256": "75bd7ee6091b4ebf21d99f42ad81607977d6cc7a9e2366e42b89ce6f73ce6261",
-      "bytes": 870
+      "sha256": "2f128610e180b48b48bc558cade31d3d2c6e6e8f0a79daa88dff5f96935dae9e",
+      "bytes": 2672
     },
     {
       "path": "examples/cases/silicon-ground-state-electronic-structure/source/seekpath.json",

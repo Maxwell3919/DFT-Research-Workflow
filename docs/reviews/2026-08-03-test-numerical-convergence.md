@@ -32,6 +32,10 @@ Only the third item is numerical convergence. The article does not use program e
 The reviewed article also preserves these boundaries:
 
 - convergence is defined for a named observable and intended comparison;
+- the B-stage result is a shared baseline, not convergence evidence for every
+  D-stage observable;
+- material geometry and numerical controls form a feedback loop when relaxation
+  moves outside the tested family;
 - tolerances are stated in the units and scale of the decision;
 - state identity must remain comparable across a sweep;
 - basis and real-space grids can be coupled;
@@ -84,30 +88,27 @@ The reviewed overview and this review use the same bounded source set:
 
 ## Executable evidence
 
-The four new companion scripts use only the Python 3.12 standard library:
+Current declared companion bindings are:
 
-- `examples/practical-guides/convergence_basis_grids.py`;
-- `examples/practical-guides/convergence_kpoints_smearing.py`;
-- `examples/practical-guides/convergence_finite_size.py`;
-- `examples/practical-guides/convergence_response_grids.py`.
+- `examples/practical-guides/silicon_qe_convergence.py` for the basis/grid and
+  k-point/smearing guides;
+- `examples/practical-guides/convergence_finite_size.py` for finite size;
+- `examples/practical-guides/convergence_response_grids.py` for response grids.
 
-They analyse small synthetic tables created solely for deterministic testing. They check:
+The earlier basis/grid and k-point/smearing synthetic claim-checkers remain
+conceptual teaching support; they are not the declared execution scripts for
+those two pages. The retained synthetic companions check bounded table logic.
+The scripts calculate no electronic energy and call no electronic-structure
+engine.
 
-- complete multidimensional sampling of the declared control axes;
-- state-label consistency in the accepted region;
-- observable-specific tolerances;
-- a stable region rather than one isolated point;
-- at least one stricter confirmation setting;
-- cancellation or false-plateau diagnostics;
-- independent refinement of coupled axes;
-- direct-versus-interpolated error in the response-grid example.
+`silicon_qe_convergence.py` does not execute QE or inspect inputs. It verifies
+nine expected output hashes, requires literal electronic-convergence and
+`JOB DONE` markers, parses final total energies, derives cutoff/mesh labels from
+filenames, and reports differences to one stored row.
 
-The original synthetic scripts calculate no electronic energy and call no electronic-structure engine.
-For those retained synthetic scripts, the prior boundary remains literal: The scripts calculate no electronic energy and call no electronic-structure engine.
-
-Execution success is not numerical convergence. It establishes only that the documented analysis logic executes under the tested Python version and returns the declared synthetic diagnostics.
-
-None of those checks establishes numerical convergence for a real calculation, a transferable parameter set, a valid residual-error law, or a scientific conclusion.
+Execution success is not numerical convergence. None of those checks establishes
+numerical convergence for a real calculation, a transferable parameter set, a
+valid residual-error law, or a scientific conclusion.
 
 ## Media review
 
@@ -122,7 +123,7 @@ They are conceptual diagrams, not plots of calculated data. Every asset is decla
 
 ### Silicon execution addendum (2026-08-04)
 
-Two guides now additionally bind the actual QE 7.5 outputs in
+Two guides bind stored outputs recorded as QE 7.5 data in
 `examples/practical-guides/data/silicon-qe/convergence/`: nine fixed-cell SCF
 runs of CC0 COD 9013102 Silicon over 30/40/50 Ry and 6³/8³/10³ meshes. The
 standard-library reconstruction verifies all output SHA-256 values plus the
@@ -139,16 +140,11 @@ All code and illustrative output remain selectable text. The pages require no cl
 
 ## Deliberate exclusions
 
-This batch does not include:
-
-- a public tool directory;
-- Quantum ESPRESSO, VASP, ABINIT, CP2K, SIESTA, or another production input set;
-- a real material convergence dataset;
-- pseudopotential files or licensed assets;
-- scheduler or HPC instructions;
-- energies, forces, stresses, bands, phonons, EPC, or transport results from an electronic-structure engine;
-- a universal convergence protocol;
-- validation of a physical model or scientific claim.
+This review does not treat the bounded Silicon output matrix as a production
+convergence dataset. It includes no force, stress, band, phonon, EPC, or transport
+result; no pseudopotential payload or licensed asset; no scheduler protocol; no
+transferable convergence prescription; and no validation of a physical model or
+scientific claim.
 
 ## Evidence boundary
 

@@ -34,19 +34,19 @@ For comparisons across cells, record a reciprocal-space spacing or density measu
 
 ## Build a mesh-by-smearing matrix
 
-For a metal, test several meshes at several smearing widths. Silicon is not a
-metallic-smearing example, so the real teaching case holds `occupations='fixed'`
-and samples 6³, 8³, and 10³ meshes at three QE cutoffs. It establishes the
-provenance and mesh dimension of a real calculation without pretending to test
-smearing or a Fermi surface.
+For a metal, test several meshes at several smearing widths. The published
+Silicon inputs instead declare `occupations='fixed'` and 6³, 8³, and 10³ meshes
+at three cutoffs. The companion does not parse those inputs or test smearing; it
+only reconstructs the committed output matrix.
 
 ```bash
 python3 examples/practical-guides/silicon_qe_convergence.py
 ```
 
-The reconstruction validates all nine committed QE outputs and displays their
-energies relative to the 50 Ry, 10³ row. The neighbouring conceptual matrix
-remains useful for the separate metallic mesh-by-smearing question.
+The reconstruction checks each expected output hash, requires the literal
+electronic-convergence and `JOB DONE` markers, parses the last total energy, and
+displays differences to the 50 Ry, 10³ row. The neighbouring mesh-by-smearing
+matrix is conceptual and is not executed by the declared companion.
 
 ## Keep the observable and integration purpose explicit
 
@@ -73,10 +73,11 @@ Do not declare convergence by averaging points that represent different states.
 
 ## What this guide verifies
 
-The stored QE outputs establish electronic completion and a bounded mesh comparison
-for one fixed Silicon cell, potential, and code version. They do not test a
-smearing width, establish a universal k-point density, converge the DOS/bands,
-resolve a Fermi surface, or establish any physical material property.
+The declared companion verifies stored-output hashes, marker presence, parsed
+total energies, and filename-encoded mesh coverage. It does not verify the input
+cell, potential, occupation mode, or execution provenance. It does not test a
+smearing width, establish a transferable k-point density, converge DOS or bands,
+resolve a Fermi surface, or establish a physical material property.
 
 ## Common mistakes
 

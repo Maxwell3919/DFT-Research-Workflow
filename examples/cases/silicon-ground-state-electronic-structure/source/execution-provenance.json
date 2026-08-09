@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "case_id": "silicon-ground-state-electronic-structure",
+  "completion_boundary": "No case-wide start, completion, or exit is claimed. 2026-08-05T00:06:24+08:00 is only the latest QE-printed termination among separately recorded artifacts.",
+  "execution_routes": [
+    {
+      "route_id": "assembled-stored-output-set",
+      "label": "Assembled stored real QE 7.5 stages",
+      "timing": {
+        "started_at": "2026-08-04T20:44:32+08:00",
+        "completed_at": "2026-08-05T00:06:24+08:00",
+        "scope": "Earliest and latest QE-printed timestamps across the assembled artifact set only; this is not a continuous case run or publication-completion window."
+      },
+      "exact_command_status": "Not captured for the historical stages. run.sh contains a present-day replay template, not the original launcher.",
+      "exact_exit_code_status": "Shell exit codes were not retained. Each declared stdout has one QE JOB DONE marker; that marker is reported separately.",
+      "ancestry": [
+        "The cutoff, relax/restart, electronic, DOS, Gamma-response, and nominal-grid outputs were recorded as separate stage groups.",
+        "Inputs and outputs are hash-bound; cross-route scheduler records and save-tree payloads are absent.",
+        "No single run.sh invocation is claimed for the historical artifact set."
+      ],
+      "boundary": "Assembled real stages do not establish one continuous historical execution, observable convergence, or a material-level scientific claim."
+    },
+    {
+      "route_id": "stored-260-point-time-reversal-reduced-bands",
+      "label": "Stored nominal-8x8x8 bands route",
+      "timing": {
+        "started_at": "2026-08-04T22:26:20+08:00",
+        "completed_at": "2026-08-04T22:27:05+08:00",
+        "scope": "QE-printed timestamps for output/full-zone/scf.out, bands-pw.out, and bandsx.out only."
+      },
+      "exact_command_status": "Historical shell launcher not captured; replay commands and ordering are declared in run.sh.",
+      "exact_exit_code_status": "Shell exit codes not captured; all three stdout files print JOB DONE and the three committed stderr files are empty.",
+      "ancestry": [
+        "input/full-zone/scf.in -> output/full-zone/scf.out",
+        "input/full-zone/bands.in declares the same prefix/outdir -> output/full-zone/bands-pw.out",
+        "input/full-zone/bands.x.in -> output/full-zone/bandsx.out -> output/full-zone/si-fullzone.bands.dat",
+        "nosym=.true. with no noinv=.true. retained time-reversal equivalence, producing 260 printed k points from the nominal 8x8x8 grid."
+      ],
+      "boundary": "The save-tree payload is not published; the hash-bound input/output declarations support stage ancestry, not a converged fundamental gap."
+    },
+    {
+      "route_id": "native-replay-template",
+      "label": "Optional native replay template",
+      "timing": {
+        "started_at": null,
+        "completed_at": null,
+        "scope": "Not executed by this provenance edit; no Maxwell replay result is recorded."
+      },
+      "exact_command_status": "The caller-facing invocation and program order are in run.sh.",
+      "exact_exit_code_status": "Not recorded for the updated template.",
+      "ancestry": [
+        "prepare-replay.py binds the exact public CIF to the declared two-site primitive geometry and obtains only the pinned SSSP archive member after archive/member checks.",
+        "A caller-supplied UPF must match the declared SHA-256 before any QE executable starts.",
+        "run.sh creates a new caller-selected runtime directory and never supplies the missing historical save trees."
+      ],
+      "boundary": "The pinned archive/member route establishes exact replay-byte identity only. It does not establish pseudopotential transferability, numerical convergence, physical validity, or a material-level claim."
+    }
+  ],
+  "commands": [
+    {
+      "stage": "stored real QE stage set",
+      "command": "Exact historical shell commands and launcher were not captured; inspect the hash-bound inputs and stdout records.",
+      "exit_code": null,
+      "route_id": "assembled-stored-output-set",
+      "record_kind": "recorded-output-only",
+      "evidence_scope": "Real QE 7.5 stdout is present for the declared stages; one historical continuous run is not claimed.",
+      "exit_code_scope": "Shell exits not recorded; QE JOB DONE markers remain program-output evidence only.",
+      "input_artifacts": ["input/*.in", "input/full-zone/*.in"],
+      "output_artifacts": ["output/*.out", "output/full-zone/*.out", "output/full-zone/si-fullzone.bands.dat"]
+    },
+    {
+      "stage": "native replay template",
+      "command": "PSEUDO_DIR=/absolute/path/to/pseudo QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x QE_LAUNCHER='mpirun -np 4' bash run.sh",
+      "exit_code": null,
+      "route_id": "native-replay-template",
+      "record_kind": "replay-command-not-executed-by-this-edit",
+      "evidence_scope": "Exact current replay invocation; not an assertion about the historical launcher.",
+      "exit_code_scope": "No fresh replay exit is recorded.",
+      "input_artifacts": ["prepare-replay.py", "run.sh", "input/*.in", "input/full-zone/*.in", "source/pseudopotentials.json"],
+      "output_artifacts": ["caller-selected external preparation and runtime directories (not committed)"]
+    },
+    {
+      "stage": "rebuild derived artifacts from stored outputs",
+      "command": "bash replay-derived.sh",
+      "exit_code": null,
+      "route_id": "stored-output-postprocess",
+      "record_kind": "available-command-not-rerun-by-this-edit",
+      "evidence_scope": "Operates on stored outputs only; it does not launch QE.",
+      "exit_code_scope": "No fresh exit is recorded pending the later replay follow-up.",
+      "parent_artifacts": ["source/", "input/", "output/"],
+      "output_artifacts": ["derived/", "figures/", "manifest.json"]
+    },
+    {
+      "stage": "isolated case check",
+      "command": "bash check.sh",
+      "exit_code": null,
+      "route_id": "stored-output-postprocess",
+      "record_kind": "isolated-copy-check-command-not-rerun-by-this-edit",
+      "evidence_scope": "check.sh copies the case to a temporary directory before parse.py materializes files.",
+      "exit_code_scope": "No fresh exit is recorded pending the later replay follow-up.",
+      "input_artifacts": ["check.sh", "parse.py", "source/", "input/", "output/"]
+    }
+  ],
+  "claim_boundary": {
+    "supports": [
+      "An assembled set of hash-bound, separately recorded real QE 7.5 stage inputs, outputs, and derived plots.",
+      "Direct parsing of the recorded 260-point, eight-band time-reversal-reduced sample from the nominal 8x8x8 grid.",
+      "A fail-closed manual bridge from the exact public COD CIF to the declared two-site QE geometry and exact-hash SSSP archive member."
+    ],
+    "does_not_support": [
+      "One continuous historical launcher, shell-exit transcript, case-wide execution interval, or cross-route save-tree ancestry.",
+      "Pseudopotential transferability or scientific suitability beyond the exact archive/member identity checks.",
+      "A transferable cutoff or k-mesh recommendation.",
+      "A converged band gap, DOS, phonon, dielectric, structural-stability, physical-validity, or experimental-material conclusion."
+    ]
+  }
+}

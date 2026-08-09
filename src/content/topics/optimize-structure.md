@@ -45,6 +45,8 @@ Pulay terms arise when the numerical representation changes with geometry or is 
 
 At every ionic step, verify that the electronic state reached the required internal criterion and that warnings, occupation changes, or failed response calculations did not contaminate the gradient. Tightening the ionic threshold without improving force quality does not create more accurate geometry.
 
+The B-stage convergence study is an initial baseline rather than a permanent certificate. As geometry, cell, or electronic character changes, recheck the force and stress accuracy that drives motion. If stricter settings move the stationary candidate materially, repeat the affected optimization and carry the revised geometry back into convergence and reference-state checks.
+
 ## Preserve electronic and magnetic state continuity
 
 Each geometry step contains an electronic-state calculation. As atoms or the cell move, the self-consistent solution may switch magnetic order, charge localization, occupation pattern, symmetry, spin direction, or another metastable electronic basin. The optimizer then sees a discontinuous or piecewise potential-energy surface.
@@ -124,6 +126,8 @@ After the optimizer stops, run a fresh energy-and-gradient evaluation on the exa
 Where the production protocol is stricter than a preliminary relaxation, perform a bounded final refinement or restart and document the relationship between stages. Recheck the quantities that matter for downstream calculations; a structure intended for phonons, elastic response, small energy differences, or electron–phonon coupling may require more reliable gradients than a coarse screening geometry.
 
 Final verification does not convert the optimized candidate into the reference ground state. That next task must establish a consistent high-quality electronic reference and compare competing states where required.
+
+Optimization is not a universal prerequisite for every reference-state calculation. A fixed experimental, constrained, or deliberately scanned geometry may be the intended object. Conversely, if the claim concerns magnetostructural ordering, competing electronic or magnetic states may each require their own traceable relaxation rather than one shared geometry.
 
 ## Preserve an optimization evidence package
 

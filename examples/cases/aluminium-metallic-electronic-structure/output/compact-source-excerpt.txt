@@ -3,4 +3,4 @@ Native DOS: dos.x 7.5 reached JOB DONE; al.dos has 2801 rows and prints E_F=7.80
 Native DOS lineage: dos.out SHA-256 c930a07ec54184fe102d308668a5895b629087fdd977ce36b9a602e705616f6e; al.dos SHA-256 95c3342cb9229b0ff2fbc8cb17d48aa13ebd6f3ddea7a5a1c4797de9e64be5f8.
 Exploratory k/smearing screen: FAIL; k10-to-k12 delta E=0.00164525 Ry/cell and delta E_F=0.2449 eV.
 Five-point E(V) entry: mathematical fit PASS; c2=2.33027885266e-05 Ry/bohr^6; residual RMS=5.34111987806e-05 Ry.
-The k/smearing screen FAIL is retained; the E(V) fit is not a converged EOS, bulk modulus, or elastic tensor. G4 NOT TESTED; G5 NOT CLAIMED.
+The k/smearing screen FAIL is retained; the E(V) fit is not a converged EOS, bulk modulus, or elastic tensor. Observable convergence is not established; no scientific conclusion is claimed.

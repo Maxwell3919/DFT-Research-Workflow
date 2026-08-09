@@ -6,6 +6,7 @@ const reviewPath = 'docs/reviews/2026-08-03-test-numerical-convergence.md';
 const errors = [];
 const article = await readFile(new URL(articlePath, root), 'utf8');
 const review = await readFile(new URL(reviewPath, root), 'utf8');
+const normalizedReview = review.replace(/\s+/g, ' ').toLowerCase();
 
 for (const statement of [
   'topic_slug: test-numerical-convergence',
@@ -22,7 +23,7 @@ for (const heading of [
   '## Converge coupled numerical controls together',
   '## Test differences and derivatives directly',
   '## Treat k-point sampling and occupations as one problem',
-  '## Converge cell size, vacuum, and boundary treatment',
+  '## Test finite-size behaviour within a declared boundary model',
   '## Converge response grids and interpolation separately',
   '## Expect non-monotonic and anisotropic behaviour',
   '## Estimate residual numerical uncertainty',
@@ -42,6 +43,8 @@ for (const statement of [
   'A fixed decimal count is not a scientific tolerance.',
   'Do not average over state switches and call the result converged.',
   'A recommended library cutoff is useful prior evidence, not a substitute for the present model and observable.',
+  'At B, the purpose is to establish a documented baseline',
+  'Geometry is not passive.',
   'A smearing width used as an integration device is not automatically a physical electronic temperature.',
   'An apparently smooth interpolated curve is not evidence that the underlying coarse grid is sufficient.',
   'A single small difference between the final two settings is therefore weak evidence.',
@@ -77,9 +80,11 @@ for (const statement of [
   'The scripts calculate no electronic energy',
   'Execution success is not numerical convergence',
   'None of those checks establishes numerical convergence for a real calculation',
+  'Current declared companion bindings are:',
+  'does not execute QE or inspect inputs',
   'None of those checks establishes numerical convergence, physical robustness, method accuracy, transferability, or scientific support for any real DFT study.',
 ]) {
-  if (!review.toLowerCase().includes(statement.toLowerCase())) errors.push(`${reviewPath}: missing review boundary ${JSON.stringify(statement)}`);
+  if (!normalizedReview.includes(statement.toLowerCase())) errors.push(`${reviewPath}: missing review boundary ${JSON.stringify(statement)}`);
 }
 
 for (const heading of [

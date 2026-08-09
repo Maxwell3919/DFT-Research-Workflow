@@ -37,6 +37,8 @@ Choosing a plane-wave cutoff, real-space grid spacing, number of local orbitals,
 
 The two categories interact. A hybrid functional introduces exact-exchange sampling and cutoffs that a semilocal calculation does not have. A harder pseudopotential requires a different basis resolution. Spin–orbit coupling changes wavefunction character and symmetry. The setup must expose these dependencies while leaving the quantitative convergence proof to **Test Numerical Convergence**.
 
+Changing the theory, Hamiltonian, ensemble, or boundary model is a physical or theoretical robustness test, not numerical convergence. Both can move a result, but only refinement at fixed method identity estimates discretization and solver error.
+
 ## Choose exchange–correlation treatment by the physics and error
 
 The exchange–correlation approximation is part of the scientific model. Labels such as LDA, GGA, meta-GGA, hybrid, or nonlocal functional identify broad families, not a universal accuracy ranking.

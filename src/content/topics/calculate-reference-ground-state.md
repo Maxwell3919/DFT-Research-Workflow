@@ -23,6 +23,8 @@ A successful SCF solution is not automatically the global electronic ground stat
 
 Begin from the exact accepted geometry produced by **Optimize the Structure** or another declared source. Preserve its checksum, cell, atom order, constraints that remain physically relevant, and the optimization lineage. The reference calculation is fixed-geometry: it may report forces and stress, but it does not silently continue moving atoms or changing the cell.
 
+`optimization → fixed-geometry reference` is a common lineage edge, not a universal workflow law. An experimental, constrained, high-symmetry, or deliberately scanned geometry may enter this task directly when the question is explicitly fixed-geometry. Conversely, geometry–state coupling cannot be hidden inside one electronic ranking.
+
 Carry forward the scientific method identity. Functional, dispersion treatment, Hubbard parameters, pseudopotential or all-electron setup, relativistic treatment, charge state, electrostatic boundary, and other Hamiltonian-defining choices should not drift between optimization and reference preparation without a new, explicit method branch.
 
 Numerical settings may be refined for the final calculation. Record each refinement and verify that it does not change the intended electronic branch or invalidate comparisons with other candidates.
@@ -70,6 +72,8 @@ Record electron count and charge convention explicitly. Verify that the final el
 
 Energy values from different charges or electrostatic references are not directly ranked without the appropriate thermodynamic and alignment framework. Those comparisons belong to later target calculations such as defect formation energies.
 
+At fixed electron number, candidate ranking is restricted to one charge branch. Across charges, stability depends on a declared reservoir or chemical potential, electrostatic corrections, and reference alignment; no raw total-energy minimum defines one absolute charged ground state.
+
 ## Control spin, magnetization, and relativistic branches
 
 Initial moments guide the solver toward candidate magnetic states; they do not define the final state by themselves. After convergence, inspect total and local moments, spin density, symmetry, occupation pattern, and—where relevant—spin direction and orbital moment.
@@ -106,6 +110,10 @@ Rank candidate electronic states only after they are evaluated at the same fixed
 Exclude incomplete, internally unconverged, or state-ambiguous candidates from a definitive ranking. Retain them in the evidence package with their failure reason.
 
 The lowest accepted candidate among the tested inventory is the current reference. This statement remains bounded by the candidate set, method, geometry, and numerical accuracy. It is not proof that no untested electronic state lies lower.
+
+This same-geometry ranking answers a fixed-nuclei, or vertical, electronic question. It does not rank magnetostructural states after each state changes the geometry.
+
+For magnetostructural ordering, give each electronic or magnetic candidate its own traceable relaxation with compatible method identity and force/stress convergence, then compare fixed-geometry evaluations at the state-specific accepted geometries. Preserve any state switch as workflow feedback. A common-geometry ranking may seed that search; it cannot replace it.
 
 ## Re-evaluate forces and stress on the fixed structure
 
