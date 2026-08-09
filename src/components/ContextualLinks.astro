@@ -1,0 +1,85 @@
+---
+import type { ResolvedContextualNavigation } from '../lib/contextual-navigation';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  navigation: ResolvedContextualNavigation;
+}
+
+const { navigation } = Astro.props;
+const headingId = `continue-${navigation.sourceKey.replace(/[^a-z0-9]+/g, '-')}`;
+---
+
+<nav
+  class="contextual-navigation"
+  data-contextual-navigation
+  data-contextual-source={navigation.sourceKey}
+  aria-labelledby={headingId}
+>
+  <p class="contextual-heading" id={headingId}>Continue from here</p>
+  <ul>
+    {navigation.links.map((link) => (
+      <li data-contextual-link data-contextual-relation={link.relation}>
+        <strong>{link.relation}</strong>
+        <span>
+          <a href={withBase(link.path)}>{link.title}</a>
+          <span class="contextual-note"> {link.note}</span>
+        </span>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .contextual-navigation {
+    border-top: 1px solid var(--line, #d9d4ca);
+    margin-top: clamp(2.2rem, 5vw, 4rem);
+    padding-top: 1.15rem;
+  }
+
+  .contextual-heading {
+    font-size: clamp(1.18rem, 2vw, 1.45rem);
+    font-weight: 650;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+  }
+
+  li {
+    border-top: 1px solid var(--line, #d9d4ca);
+    display: grid;
+    gap: 0.35rem 1.2rem;
+    grid-template-columns: minmax(7.8rem, 0.3fr) minmax(0, 1fr);
+    line-height: 1.55;
+    padding: 0.8rem 0;
+  }
+
+  li strong {
+    font-size: 0.9rem;
+  }
+
+  li > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  a {
+    font-weight: 700;
+    text-underline-offset: 0.15em;
+  }
+
+  .contextual-note {
+    color: var(--muted, #666158);
+  }
+
+  @media (max-width: 44rem) {
+    li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

@@ -188,8 +188,11 @@ if (/data-previous|data-next/.test(operationPage)) errors.push('transitional num
 
 const componentDirectory = new URL('src/components/', root);
 if (await exists(componentDirectory)) {
-  const componentFiles = await readdir(componentDirectory);
-  if (componentFiles.length > 0) errors.push(`unreferenced component files remain: ${componentFiles.join(', ')}`);
+  const componentFiles = (await readdir(componentDirectory)).filter((file) => file.endsWith('.astro'));
+  const componentConsumers = (await walk(sourcePath)).filter((path) => path.endsWith('.astro') && !path.includes('/components/'));
+  const consumerBody = (await Promise.all(componentConsumers.map((path) => readFile(path, 'utf8')))).join('\n');
+  const unreferencedComponents = componentFiles.filter((file) => !consumerBody.includes(file));
+  if (unreferencedComponents.length > 0) errors.push(`unreferenced component files remain: ${unreferencedComponents.join(', ')}`);
 }
 
 const css = await readFile(new URL('src/styles/global.css', root), 'utf8');

@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "role": "build-time-contextual-cross-index",
+  "boundary": "These links are reader cues, not a new taxonomy, required order, or substitute for the scientific decision on each page.",
+  "pages": [
+    {
+      "source": { "kind": "topic", "slug": "obtain-material-structure" },
+      "links": [
+        {
+          "relation": "Next",
+          "title": "Build or modify the computational model",
+          "target": { "kind": "topic", "slug": "build-or-modify-computational-model" },
+          "note": "Turn the identified source structure into the cell, composition, boundary model, and constraints you will actually calculate."
+        }
+      ]
+    },
+    {
+      "source": { "kind": "topic", "slug": "calculate-reference-ground-state" },
+      "links": [
+        {
+          "relation": "Next",
+          "title": "Inspect the full Brillouin zone",
+          "target": { "kind": "topic", "slug": "fermi-surface-and-full-brillouin-zone-analysis" },
+          "note": "Use the trusted reference state as the parent of dense full-zone sampling when the claim depends on states at the Fermi level or extrema away from a chosen path."
+        },
+        {
+          "relation": "Next",
+          "title": "Calculate the density of states",
+          "target": { "kind": "topic", "slug": "density-of-states-and-projected-density-of-states" },
+          "note": "Reuse the same reference state for energy-resolved or projected-state analysis, then converge the sampling and broadening for that observable."
+        }
+      ]
+    },
+    {
+      "source": { "kind": "topic", "slug": "fermi-surface-and-full-brillouin-zone-analysis" },
+      "links": [
+        {
+          "relation": "Related check",
+          "title": "Compare with the density of states",
+          "target": { "kind": "topic", "slug": "density-of-states-and-projected-density-of-states" },
+          "note": "DOS can test whether states occur near the Fermi level, but a high-symmetry band path alone does not establish their full-zone location or absence."
+        }
+      ]
+    },
+    {
+      "source": { "kind": "topic", "slug": "density-of-states-and-projected-density-of-states" },
+      "links": [
+        {
+          "relation": "Related check",
+          "title": "Inspect the full Brillouin zone",
+          "target": { "kind": "topic", "slug": "fermi-surface-and-full-brillouin-zone-analysis" },
+          "note": "DOS near the Fermi level does not locate pockets or extrema; use dense full-zone evidence rather than inferring them from a selected band path."
+        }
+      ]
+    },
+    {
+      "source": { "kind": "topic", "slug": "harmonic-phonons" },
+      "links": [
+        {
+          "relation": "If this fails",
+          "title": "Diagnose imaginary phonon frequencies",
+          "target": { "kind": "support", "route": "troubleshooting", "anchor": "imaginary-phonon-frequencies" },
+          "note": "Before retrying, preserve the exact structure, electronic thresholds, q mesh or supercell, raw frequencies and eigenvectors, and code version. An imaginary mode can be physical or numerical."
+        }
+      ]
+    },
+    {
+      "source": { "kind": "practical", "guide_slug": "audit-a-qe-calculation" },
+      "links": [
+        {
+          "relation": "If this fails",
+          "title": "SCF does not converge",
+          "target": { "kind": "support", "route": "troubleshooting", "anchor": "scf-does-not-converge" },
+          "note": "Preserve the input, output, last complete iteration, code version, parent state, and restart ancestry before changing one cause class at a time."
+        },
+        {
+          "relation": "If this fails",
+          "title": "The job stops before completion",
+          "target": { "kind": "support", "route": "troubleshooting", "anchor": "job-stops-before-completion" },
+          "note": "Preserve stdout, stderr, scheduler record, exit code, last complete calculation block, and hashes. A stopped job is not itself a numerical or scientific result."
+        }
+      ]
+    },
+    {
+      "source": { "kind": "practical", "guide_slug": "inspect-qe-hpc-calculations-from-the-terminal" },
+      "links": [
+        {
+          "relation": "If this fails",
+          "title": "SCF does not converge",
+          "target": { "kind": "support", "route": "troubleshooting", "anchor": "scf-does-not-converge" },
+          "note": "Preserve the input, output, last complete iteration, code version, parent state, and restart ancestry before changing one cause class at a time."
+        },
+        {
+          "relation": "If this fails",
+          "title": "The job stops before completion",
+          "target": { "kind": "support", "route": "troubleshooting", "anchor": "job-stops-before-completion" },
+          "note": "Preserve stdout, stderr, scheduler record, exit code, last complete calculation block, and hashes. A stopped job is not itself a numerical or scientific result."
+        }
+      ]
+    },
+    {
+      "source": { "kind": "tool", "slug": "quantum-espresso" },
+      "links": [
+        {
+          "relation": "Use another code",
+          "title": "Open the Software Bridge",
+          "target": { "kind": "support", "route": "software-bridge" },
+          "note": "Map the same scientific task and artifacts to official implementation entry points; matching task names do not make results interchangeable."
+        }
+      ]
+    },
+    {
+      "source": { "kind": "tool", "slug": "vasp" },
+      "links": [
+        {
+          "relation": "Use another code",
+          "title": "Open the Software Bridge",
+          "target": { "kind": "support", "route": "software-bridge" },
+          "note": "Map the same scientific task and artifacts to official implementation entry points; matching task names do not make results interchangeable."
+        }
+      ]
+    },
+    {
+      "source": { "kind": "tool", "slug": "abinit" },
+      "links": [
+        {
+          "relation": "Use another code",
+          "title": "Open the Software Bridge",
+          "target": { "kind": "support", "route": "software-bridge" },
+          "note": "Map the same scientific task and artifacts to official implementation entry points; matching task names do not make results interchangeable."
+        }
+      ]
+    },
+    {
+      "source": { "kind": "tool", "slug": "cp2k" },
+      "links": [
+        {
+          "relation": "Use another code",
+          "title": "Open the Software Bridge",
+          "target": { "kind": "support", "route": "software-bridge" },
+          "note": "Map the same scientific task and artifacts to official implementation entry points; matching task names do not make results interchangeable."
+        }
+      ]
+    }
+  ]
+}

@@ -119,7 +119,8 @@ function outputPath(href) {
 }
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
-const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.tools.length + 2 + workedWorkflows.length + 1 + retiredPracticalRedirects.length;
+const supportingOperationRoutes = ['troubleshooting', 'software-bridge'];
+const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.tools.length + 2 + workedWorkflows.length + 1 + retiredPracticalRedirects.length + supportingOperationRoutes.length;
 if (htmlFiles.length !== expectedHtmlCount) errors.push(`generated HTML route set mismatch: expected ${expectedHtmlCount}, found ${htmlFiles.length}`);
 
 const htmlByPath = new Map();
@@ -154,6 +155,12 @@ for (const path of htmlFiles) {
     if (target) {
       try { await access(target); } catch { errors.push(`${path}: broken media path ${src}`); }
     }
+  }
+}
+
+for (const slug of supportingOperationRoutes) {
+  if (!htmlByPath.has(join(distPath, 'operations', slug, 'index.html'))) {
+    errors.push(`missing supporting operation route: ${slug}`);
   }
 }
 

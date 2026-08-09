@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AuthoritativeReferences from '../../components/AuthoritativeReferences.astro';
+import ContextualLinks from '../../components/ContextualLinks.astro';
 import authorityDocument from '../../../sources/topic-authority.json';
 import {
   getLegacyOperations,
@@ -16,6 +17,7 @@ import {
   type PracticalGuideKind,
 } from '../../lib/practical-guides';
 import { getWorkflowTopics, type WorkflowTopic } from '../../lib/workflow';
+import { getContextualNavigation } from '../../lib/contextual-navigation';
 import { withBase } from '../../lib/paths';
 
 type TopicProps = {
@@ -99,6 +101,9 @@ const authorityEntry = page.kind === 'topic'
 const authorityTextbook = authorityEntry && authorityEntry.textbook_key !== 'none'
   ? authorityDocument.textbooks[authorityEntry.textbook_key as keyof typeof authorityDocument.textbooks]
   : undefined;
+const contextualNavigation = page.kind === 'topic'
+  ? getContextualNavigation({ kind: 'topic', slug: page.topic.slug })
+  : undefined;
 ---
 
 <BaseLayout title={title} description={description} current="operations">
@@ -160,6 +165,8 @@ const authorityTextbook = authorityEntry && authorityEntry.textbook_key !== 'non
             })}
           </section>
         )}
+
+        {contextualNavigation && <ContextualLinks navigation={contextualNavigation} />}
 
         {authorityEntry && (
           <AuthoritativeReferences entry={authorityEntry} textbook={authorityTextbook} />

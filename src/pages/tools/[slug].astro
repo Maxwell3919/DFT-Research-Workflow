@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContextualLinks from '../../components/ContextualLinks.astro';
+import { getContextualNavigation } from '../../lib/contextual-navigation';
 import { getTool, getTools, getToolTopics, toolRegistryMetadata } from '../../lib/tools';
 import { withBase } from '../../lib/paths';
 
@@ -27,6 +29,7 @@ const verifiedAtLabel = new Intl.DateTimeFormat('en-GB', {
   year: 'numeric',
   timeZone: 'UTC',
 }).format(new Date(`${toolRegistryMetadata.verifiedAt}T00:00:00Z`));
+const contextualNavigation = getContextualNavigation({ kind: 'tool', slug: tool.slug });
 ---
 <BaseLayout title={tool.name} description={`${tool.name}: verified identity, access, workflow topics, and reviewed practical pages.`} current="tools">
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href={withBase('tools/')}>Tools</a> / {tool.name}</nav>
@@ -81,6 +84,8 @@ const verifiedAtLabel = new Intl.DateTimeFormat('en-GB', {
   ) : (
     <p>No reviewed practical page currently makes an executable claim for this tool. Consult the connected scientific topics before choosing an implementation.</p>
   )}
+
+  {contextualNavigation && <ContextualLinks navigation={contextualNavigation} />}
 
   <h2>Start here</h2>
   <p>After choosing a bounded task, open the curated official entry point: <a data-tool-start href={tool.getting_started.url}>{tool.getting_started.label}</a>.</p>
