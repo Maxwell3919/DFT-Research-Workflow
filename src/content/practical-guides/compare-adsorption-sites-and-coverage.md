@@ -21,38 +21,30 @@ review: docs/reviews/2026-08-04-adsorption-energies.md
 reviewed_at: "2026-08-04"
 ---
 
-Site searches and coverage studies fail when unlike states share one table. This guide uses a synthetic grid to demonstrate the grouping logic needed before any energy ranking is scientifically meaningful.
+Run the bounded synthetic grouping fixture:
 
-## Generate starts without promoting them to results
-
-The [ASE surface builder](https://docs.ase-lib.org/ase/build/surface.html) can place adsorbates at named sites, and the [pymatgen adsorption API](https://pymatgen.org/pymatgen.core.html#pymatgen.core.adsorption.AdsorbateSiteFinder) can enumerate surface-site candidates. These tools create structures. They do not establish the lowest-energy final site, the correct coverage, or a converged slab.
-
-For a molecular adsorbate, vary the anchoring atom, orientation, conformer, dissociation state, and initial height when those choices can lead to distinct basins. Deduplicate after relaxation and preserve the mapping from each start to its final geometry.
-
-## Relabel the final state
-
-One synthetic row begins at a top site and relaxes to a bridge site. The script reports the transition explicitly instead of retaining the starting label. A production workflow should determine final site identity from saved geometry and a declared geometric analysis, with manual inspection when reconstruction makes simple labels ambiguous.
-
-Ranking several starting labels that all collapse into one final structure counts the same minimum repeatedly. Conversely, discarding a higher-energy final state erases evidence about metastability and candidate completeness.
-
-## Separate coverage from cell sensitivity
-
-The plotted curves compare top, bridge, and hollow starts only within the same invented cell family and coverage definition. A second bridge entry uses a different commensurate cell at the same declared coverage, producing a `0.04 eV` fixture difference. That is a finite-cell diagnostic, not a universal acceptance threshold.
-
-[Neugebauer and Scheffler](https://doi.org/10.1103/PhysRevB.46.16067) analyse adsorbate–substrate and adsorbate–adsorbate interactions in alkali adlayers. The [CMR benchmark paper](https://doi.org/10.1021/acs.jpcc.7b12258) likewise shows that high-coverage periodic states can differ from lower-coverage adsorption. A larger cell with one adsorbate simultaneously changes image separation and coverage; design matched comparisons to isolate the effect of interest.
-
-## Run the synthetic analysis
-
-```text
+```bash
 python3 examples/practical-guides/adsorption_state_grid.py \
   --svg public/media/practical-guides/adsorption-energies/compare-adsorption-sites-and-coverage/adsorption-state-grid.svg
 ```
 
-The output retains all invented rows, reports minima only inside matched groups, identifies the changed final-site label, and measures the fixed-coverage cell difference. For real calculations, extend each row with structure and output hashes, surface identity, area, site-density definition, constraints, charge and spin, method identity, and convergence metadata.
+The command retains every invented row, ranks states only inside matched groups, records a start-to-final site change, compares two cells at one declared coverage, and writes the SVG. It does not read DFT outputs or perform an adsorption search.
 
-## What this guide verifies
+## Purpose
 
-Execution verifies deterministic grouping, matched-state ranking, final-site relabelling, fixed-coverage cell comparison, and SVG rendering for invented values. Execution success is not a real adsorption-site search, coverage convergence, slab convergence, physical lateral interaction, or proof of a global minimum.
+Generate starting structures with the [ASE surface builder](https://docs.ase-lib.org/ase/build/surface.html), the [pymatgen adsorption API](https://pymatgen.org/pymatgen.core.html#pymatgen.core.adsorption.AdsorbateSiteFinder), or another documented builder. For molecules, vary anchoring atom, orientation, conformer, dissociation state, and initial height when they can reach different basins. These tools create candidates; they do not identify the final minimum.
+
+After relaxation, inspect the saved geometry and assign a final-state label. One fixture row starts at a top site and ends at a bridge site; keeping the starting label would corrupt the ranking. Deduplicate equivalent final structures but retain distinct metastable states and the path from each start.
+
+For each real row, record structure and output hashes, surface identity, final site, cell transformation, one-face area, coverage definition, constraints, charge and spin, method identity, energy ledger, and convergence decision. Compare energies only when reaction, normalization, surface state, coverage, and numerical protocol match.
+
+## Separate coverage from periodic-cell sensitivity
+
+The fixture's top, bridge, and hollow curves share one invented cell family and coverage definition. A second bridge row changes the commensurate cell at the same declared coverage and produces a `0.04 eV` fixture difference. That value is a deterministic diagnostic, not a universal tolerance.
+
+One adsorbate in a larger cell changes both coverage and image separation. To test finite-cell sensitivity at fixed coverage, preserve adsorbate density and ordering in commensurate cells. To test physical coverage dependence, vary the occupied-site pattern while keeping the surface and reaction ledger controlled. [Neugebauer and Scheffler](https://doi.org/10.1103/PhysRevB.46.16067) and the [CMR benchmark](https://doi.org/10.1021/acs.jpcc.7b12258) show why these are different comparisons.
+
+Successful execution verifies invented grouping, relabelling, arithmetic, and rendering only. It does not establish a real site search, coverage convergence, slab convergence, lateral interaction, or global adsorption minimum.
 
 ## Official sources
 

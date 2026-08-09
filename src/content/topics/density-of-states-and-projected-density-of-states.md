@@ -3,69 +3,91 @@ topic_slug: density-of-states-and-projected-density-of-states
 status: reviewed
 ---
 
-The electronic density of states (DOS) asks a different question from a band plot. Instead of displaying selected eigenvalues along a line, it counts states per energy over a declared Brillouin-zone integration domain. A DOS can reveal gaps, peaks, spin asymmetry, and energy ranges that merit further analysis, but it does not by itself locate a state in reciprocal space, prove an orbital bond, measure a lifetime, or establish an experimental spectrum.
+Calculate a density of states (DOS) when the question concerns how many electronic states occur in an energy interval across the Brillouin zone. A DOS needs an accepted structure and reference electronic state followed by a sufficiently dense, compatible uniform-zone calculation; a high-symmetry band path is not a DOS parent. [Reconstruct a Stored Total DOS and Define Closure Tests](/DFT-Research-Workflow/operations/density-of-states-and-projected-density-of-states/guides/check-dos-normalization-and-projection-closure/) reconstructs a real QE 7.5 total-DOS result and states explicitly which diagnostics were not validated.
 
-## What a density of states counts
+## Run a total DOS from a uniform-zone state
 
-For a specified one-electron model and Brillouin-zone sampling, the DOS is commonly written
+Prepare `scf.in`, a denser compatible `dos-nscf.in`, and `dos.x.in`. Keep the structure, pseudopotentials, basis settings, charge, spin/SOC treatment, Hubbard definition, `prefix`, and accessible `outdir` consistent. The NSCF mesh, occupations, number of bands, and energy coverage must be chosen for the DOS question rather than copied from a path calculation.
 
-```text
-g(E) = Σ_n ∫_BZ δ(E − ε_n(k)) d k / Ω_BZ,
+```bash
+pw.x -in scf.in > scf.out
+grep -F "convergence has been achieved" scf.out
+grep -F "JOB DONE." scf.out
 ```
 
-where `ε_n(k)` is eigenvalue `n` at wavevector `k`, `δ` is the Dirac delta, and `Ω_BZ` is the volume of the represented Brillouin zone. The result has units of states per energy for the declared cell, formula unit, atom, spin channel, or other normalization. Those denominators are not interchangeable: a plot labelled states/eV/cell cannot be compared directly with one labelled states/eV/atom without a documented conversion.
+This creates the parent density. The first check asks whether QE reported electronic SCF convergence; the second checks program termination only.
 
-The integrated DOS, `N(E) = ∫_-∞^E g(E') dE'`, counts the states below an energy. Under the declared occupations it is a useful electron-count check. It does not make a discretely sampled DOS exact: a wrong electron count can expose an error, while a correct integral can still conceal poor k-point integration, too few unoccupied states, an unsuitable energy window, or a changed electronic state.
+```bash
+pw.x -in dos-nscf.in > dos-nscf.out
+grep -F "JOB DONE." dos-nscf.out
+dos.x -in dos.x.in > dosx.out
+grep -F "JOB DONE." dosx.out
+```
+
+The uniform NSCF run supplies full-zone eigenvalues and weights. `dos.x` integrates them and writes the total-DOS file named by `fildos`. The markers show that the programs terminated; they do not establish mesh, broadening, energy-grid, empty-band, or DOS convergence.
+
+If the question requires site- or orbital-projected weight, run the separate projector route against the same compatible state:
+
+```bash
+projwfc.x -in projwfc.in > projwfc.out
+grep -F "JOB DONE." projwfc.out
+```
+
+`projwfc.x` produces projection-resolved files under its declared projector convention. This command is not evidence that the total-DOS example ran a PDOS calculation or that projected components close to the total.
 
 ## A DOS is a full-zone integration, not a band path
 
-A symmetry path samples a small set of reciprocal-space lines. A DOS integrates the bands over a mesh or interpolation defined across the Brillouin zone. A sharp feature can arise from a saddle point or a nearly flat region far from the plotted path; conversely, an apparent feature on a path can carry little full-zone weight. Record the mesh, weights, symmetry reduction, cell and reciprocal convention used for the DOS, and keep it separate from the path data used for a band diagram.
+For the declared one-electron model,
 
-The DOS does not locate a band edge. A gap inferred from a low-DOS interval needs its own full-zone extremum search, occupations, energy reference, numerical resolution, and method boundary. The neighbouring Band Structure topic explains that search; Fermi Surface and Full-Brillouin-Zone Analysis addresses the geometry of states at a selected energy.
+$$
+g(E) = \sum_n \int_{\mathrm{BZ}} \delta\!\left(E-\varepsilon_n(\mathbf{k})\right)\,\frac{d\mathbf{k}}{\Omega_{\mathrm{BZ}}}.
+$$
+
+Record the mesh and weights, symmetry reduction, integration or smearing rule, broadening, energy grid, number of bands, occupations, spin/SOC state, energy reference, and normalization. States/eV/cell, states/eV/formula unit, states/eV/atom, and per-spin values are not interchangeable.
 
 ## Discrete eigenvalues need a stated integration method
 
-Finite meshes replace the delta functions by an integration construction. Tetrahedron methods interpolate eigenvalues within reciprocal-space simplices; smearing replaces `δ(E − ε)` with a chosen kernel of finite width. Gaussian, Methfessel--Paxton, cold, and Fermi--Dirac functions do not make the same approximation, and a smooth curve may be a consequence of the chosen kernel rather than a physical feature.
+Finite meshes replace delta functions with a declared tetrahedron or smearing construction. Increasing it merges nearby peaks when the broadening width is enlarged, while a smaller width can expose an insufficient mesh. Changing the kernel can make a smooth curve; a smooth curve may be a consequence of the chosen kernel rather than a physical feature.
 
-The broadening width has energy units. Increasing it merges nearby peaks and fills a narrow gap visually; decreasing it exposes the discreteness and noise of an insufficient mesh. Neither visual smoothness nor agreement after changing only the plotted energy grid demonstrates convergence. Test the decision-relevant quantity—such as an integrated charge, a near-edge DOS, a peak separation, or a spin asymmetry—against the full-zone mesh, integration method, broadening, available bands, structural state, and electronic treatment. There is no transferable mesh, broadening, energy grid, or empty-band count.
+The integrated DOS,
 
-## Set the energy reference before comparing curves
+$$
+N(E)=\int_{-\infty}^{E} g(E')\,dE',
+$$
 
-It is common to display `E − E_F`, but `E_F` belongs to one calculation and can change with charge, smearing, temperature model, spin state, defects, surfaces, or metallic occupations. In an insulator it can be a code convention inside the gap. Shifting two separate curves to their reported Fermi energies is useful for viewing each one; it is not a band alignment or a chemical-potential comparison.
-
-For a comparison across compositions, charge states, surfaces, interfaces, or different Hamiltonians, retain the absolute calculation reference and declare an alignment construction appropriate to the physical question. An electrostatic lineup, common core reference, interface calculation, or another controlled procedure may be needed. A shared horizontal zero in a figure is not evidence that these operations were performed.
+can be compared with the expected occupation under a declared normalization and integration convention. Treat that comparison as a diagnostic that must be carried out, not as an automatic PASS: agreement does not prove adequate k sampling or spectral accuracy, and disagreement can arise from the energy window, band count, grid, normalization, or parser.
 
 ## Projected DOS is a partition chosen by a projector
 
-A projected DOS can be expressed schematically as
+A projected DOS uses weights from a specified subspace,
 
-```text
-g_A(E) = Σ_n ∫_BZ w_A,n(k) δ(E − ε_n(k)) d k / Ω_BZ,
-```
+$$
+g_A(E)=\sum_n \int_{\mathrm{BZ}} w_{A,n}(\mathbf{k})\,\delta\!\left(E-\varepsilon_n(\mathbf{k})\right)\,\frac{d\mathbf{k}}{\Omega_{\mathrm{BZ}}}.
+$$
 
-where `w_A,n(k)` is the weight of state `n,k` in a declared subspace `A`: an atom, angular-momentum channel, projector, atomic sphere, Wannier function, or another basis. The projection definition, radius or projector set, treatment of overlap, spin representation, and normalization are part of the result. A label such as “O p” therefore describes a chosen local decomposition, not a basis-independent observable.
-
-Projected components often fail to sum exactly to the total DOS because interstitial weight, incomplete projectors, nonorthogonality, numerical truncation, or different normalization conventions remain outside the displayed set. Check the sum against the total on the same energy grid, then report any residual and the definition used. Do not renormalize curves silently until they add up: doing so can turn a diagnostic into an apparent chemical conclusion.
+Compare the sum of displayed projections with the total DOS on the same grid and report the residual. Incomplete or nonorthogonal projectors, interstitial weight, truncation, and normalization choices can prevent exact closure. Do not silently renormalize components until they add up, and do not infer a basis-independent bond or oxidation state from a projector label.
 
 ## Spin, spinors, and orbital labels need their own meaning
 
-For collinear magnetism, separate spin-channel DOS curves can represent the chosen quantization axis. In a noncollinear calculation with spin--orbit coupling, an “up” or “down” curve may instead be a projection of a spinor density onto a declared axis, while vector magnetization components can be the relevant output. The same orbital label can also rotate with the local coordinate convention. State the magnetic configuration, collinear or spinor treatment, SOC setting, projector convention, and sign convention before interpreting a spin-polarized or orbital-resolved plot.
+Collinear spin channels use a declared quantization axis. With noncollinear SOC, an up/down curve can instead be a spinor projection onto a chosen axis. Preserve that axis, the magnetic state, SOC setting, local orbital convention, and projector definition before interpreting spin or orbital weight.
 
-An energy coincidence between two projected peaks is not, by itself, a chemical bond, charge transfer, hybridization strength, oxidation state, or magnetic mechanism. Such claims require a defined comparison and additional evidence such as real-space density, wavefunction character, population analysis under its own basis convention, symmetry analysis, or a controlled perturbation.
+## Set the energy reference before comparing curves
+
+Displaying $E-E_F$ is a convention for one calculation. Separate compositions, charge states, surfaces, interfaces, or Hamiltonians need a physically justified common alignment before their curves support an energy comparison.
+
+## Decide whether the DOS is usable
+
+Inspect the produced file header, energy range, grid spacing, Fermi or chosen alignment reference, spin channels, finite values, and expected number of rows. Then repeat the calculation while changing the full-zone mesh, integration method or broadening, energy grid, number of bands, and any state variable relevant to the intended conclusion. Compare the actual target: near-edge DOS, a peak separation, integrated weight, spin asymmetry, or another stated observable. A smooth curve alone is not convergence.
+
+A DOS integrates full-zone weight but does not locate a band edge or pocket. A low-DOS interval needs a full-zone extremum search before it supports a gap claim, and a band path cannot establish that search. Plot broadening is not a quasiparticle lifetime; aligning separate curves at their reported $E_F$ values is not a band offset.
 
 ## DOS is not a measured spectral function
 
-The Kohn--Sham DOS is a count of eigenvalues in the stated effective model. Photoemission, tunnelling, inverse photoemission, and optical measurements involve matrix elements, surface sensitivity, temperatures, instrumental resolution, many-body self-energy, excitations, or selection rules. A numerical broadening added to a DOS plot is not a calculated quasiparticle lifetime, and matching a broad feature by eye is not validation of a spectral theory.
-
-Hybrid or GW calculations can change eigenvalues and gaps; they do not become comparable merely by plotting them over a semilocal DOS. Keep the Hamiltonian, geometry, charge, spin/SOC, basis, k integration, projection definition, and energy alignment visible whenever comparing methods or experiment.
-
-## Preserve the evidence behind the curve
-
-Keep the parent structure and reference calculation; cell and reciprocal vectors; full k mesh and weights; eigenvalues, occupations, bands and energy window; integration or smearing rule; energy grid and reference; spin/SOC and magnetic metadata; projector definitions and radii where applicable; total and projected arrays in machine-readable form; integration checks; convergence series; plotting transforms; and hashes of source outputs. A raster image alone cannot support a later electron-count, normalization, or peak-assignment check.
+Photoemission, tunnelling, and optical spectra include matrix elements, resolution, temperature, surface sensitivity, excitations, and possibly many-body self-energy. Numerical DOS broadening is not a calculated lifetime, and visual agreement with an experimental peak is not observable-level validation.
 
 ## What this topic establishes
 
-This topic establishes how to compute, normalize, inspect, and compare a state-specific total or projected DOS without confusing an energy histogram with reciprocal-space location, a chosen projection with a unique atomic observable, plot broadening with a lifetime, or a calculated curve with an experimental spectrum. It does not establish a band-edge location, fundamental or experimental gap, chemical bond, charge transfer, oxidation state, magnetic mechanism, quasiparticle spectrum, transport coefficient, material stability, or device performance from a DOS plot alone.
+A converged and normalized DOS can support energy-resolved state counts for the declared model and integration procedure. A declared projection can support a basis-dependent decomposition with a reported closure diagnostic. It does not establish a band-edge location, reciprocal-space pocket, fundamental or experimental gap, chemical bond, charge transfer, oxidation state, magnetic mechanism, quasiparticle spectrum, transport coefficient, material stability, or device performance. Preserve total and projected arrays, inputs, parent-state identity, integration settings, diagnostics, convergence series, plotting transforms, and source hashes.
 
 ## Sources and methods
 

@@ -15,7 +15,9 @@ for (const statement of ['topic_slug: compositional-phase-stability-and-convex-h
   if (!article.includes(statement)) errors.push(`${articlePath}: missing frontmatter ${JSON.stringify(statement)}`);
 }
 const headings = article.match(/^## /gm) ?? [];
-if (headings.length !== 21) errors.push(`${articlePath}: expected 21 natural sections, found ${headings.length}`);
+if (headings.length < 8 || headings.length > 12) {
+  errors.push(`${articlePath}: expected 8-12 continuous manual sections, found ${headings.length}`);
+}
 
 for (const statement of [
   'A negative `ΔE_f` means that this particular elemental decomposition is energetically uphill within the model.',
@@ -86,4 +88,4 @@ if (errors.length > 0) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Reviewed convex hull valid: 21 natural sections, exact 10-source coverage, closed/open-system and formation/hull boundaries, a 46-row attributed OQMD snapshot, and no universal numerical prescription.');
+console.log('Reviewed convex hull valid: 8-12 continuous manual sections, exact 10-source coverage, closed/open-system and formation/hull boundaries, a 46-row attributed OQMD snapshot, and no universal numerical prescription.');

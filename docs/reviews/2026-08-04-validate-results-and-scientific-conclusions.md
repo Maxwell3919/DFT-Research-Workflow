@@ -20,4 +20,8 @@ The rendered page must contain the same five URLs. Manifest validation checks se
 
 ## Practical-page decision and claim boundary
 
-No subordinate page is added. Validation criteria are observable- and claim-specific, and the existing practical companions already distinguish deterministic execution from DFT convergence and scientific acceptance. A generic pass/fail checklist would erase that dependence. This page does not validate a project result, reproduce a calculation, compare with an experiment, resolve a method conflict, or endorse a scientific conclusion.
+Two bounded subordinate pages are linked: terminal inspection supplies command-level checks, and Calculation Audit assembles them into a fail-closed case readback. Validation criteria are observable- and claim-specific, and the existing practical companions already distinguish deterministic execution from DFT convergence and scientific acceptance. A generic pass/fail checklist would erase that dependence. This page does not validate a project result, reproduce a calculation, compare with an experiment, resolve a method conflict, or endorse a scientific conclusion.
+
+## Batch 5A operational closure
+
+The public topic now opens with eight natural-language questions from executable start through the exact scientific claim. Ionic or cell convergence is explicitly not applicable for fixed-geometry runs, target-observable convergence remains separate from SCF convergence, and every failed decision returns to A, B, C, or D.

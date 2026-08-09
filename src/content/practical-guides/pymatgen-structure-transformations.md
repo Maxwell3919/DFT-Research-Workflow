@@ -21,11 +21,21 @@ review: docs/reviews/2026-08-03-practical-guides-model-building-pilot.md
 reviewed_at: "2026-08-03"
 ---
 
-pymatgen transformations are useful because they make a structural operation explicit and return a new structure object. The transformation class does not decide whether the operation preserves the same physical model. That interpretation must be recorded by the researcher.
+Use a transformation object when the parent, operation, parameters, and child must remain reconstructable. The class executes a structural change; it does not decide whether that change preserves the physical model.
 
-## Create a small parent structure
+## Run the checked transformations
 
-The executable example creates a two-site cubic structure solely for software testing:
+From the repository root, run:
+
+```bash
+python3 examples/practical-guides/pymatgen_structure_transformations.py
+```
+
+The companion uses pymatgen-core 2026.7.31 to create one illustrative parent, generate an integer supercell, apply a deformation, replace one species, and serialize a transformation-lineage summary. It verifies imports, site-count and volume multipliers, lattice changes, resulting species and composition, and immutability of the parent object.
+
+The two-site Li/O parent is a software fixture. It is not a claimed experimental phase, stable compound, or DFT reference structure.
+
+## Create an explicit parent
 
 ```python
 from pymatgen.core import Lattice, Structure
@@ -37,9 +47,11 @@ parent = Structure(
 )
 ```
 
-This is an illustrative object, not a claimed experimental phase, stable compound, or DFT reference structure.
+For research use, replace this fixture with the parsed, checked working structure and retain its source checksum, data block, atom mapping, and parser version.
 
-## Generate an integer supercell
+## Apply one operation and inspect its meaning
+
+An integer supercell is generated with:
 
 ```python
 from pymatgen.transformations.standard_transformations import SupercellTransformation
@@ -52,9 +64,9 @@ make_supercell = SupercellTransformation([
 supercell = make_supercell.apply_transformation(parent)
 ```
 
-The transformation doubles the volume and site count. When no species, coordinates, strain, or ordering is changed, this can represent the same ideal infinite crystal in a larger periodic cell. The transformation matrix and parent identity still belong in the record.
+With no species, coordinate, strain, or ordering change, this can remain an equivalent representation of the same ideal infinite crystal. Record the matrix and parent identity.
 
-## Apply a deformation as a new physical model
+A deformation creates a new physical model:
 
 ```python
 from pymatgen.transformations.standard_transformations import DeformStructureTransformation
@@ -67,13 +79,9 @@ strain_x = DeformStructureTransformation([
 strained = strain_x.apply_transformation(parent)
 ```
 
-A deformation changes lattice lengths, angles, volume, or all three. It is not an equivalent formatting operation. Record the deformation tensor, whether fractional or Cartesian positions were intended to follow the lattice, and the physical reason for imposing strain.
+The value `1.02` is a demonstration input, not a recommended strain or an elastic-regime guarantee. Record the deformation tensor, coordinate convention, and reason for imposing strain.
 
-The value `1.02` is a demonstration value. It is not a recommended strain magnitude or an elastic-regime guarantee.
-
-## Replace a species as a compositional change
-
-Site-specific replacement belongs to pymatgen's site-transformation module:
+A species replacement changes composition:
 
 ```python
 from pymatgen.transformations.site_transformations import ReplaceSiteSpeciesTransformation
@@ -82,52 +90,31 @@ substitute = ReplaceSiteSpeciesTransformation({0: "Na"})
 substituted = substitute.apply_transformation(parent)
 ```
 
-Replacing a site changes composition and chemical identity. The record should preserve the parent site index, local environment, replacement rule, resulting composition, and any alternatives that remain to be tested.
+Record the parent site identity and environment, replacement rule, resulting composition, and untested alternatives. Substitution alone does not define a dilute dopant calculation; supercell size, concentration, charge, reconstruction, and reservoirs remain separate decisions.
 
-A species substitution does not by itself define a dilute dopant calculation. Supercell size, concentration, charge state, local reconstruction, and reference reservoirs remain separate modelling and energetic questions.
+## Preserve and check the lineage
 
-## Preserve a transformation ledger
+For each operation retain the parent checksum, module and class, parameters, software version, parent and child compositions, cell matrices, site counts, atom mapping, output checksum, and scientific interpretation.
 
-A useful lineage record contains entries such as:
-
-```text
-parent structure checksum
-transformation module and class
-transformation parameters
-software version
-parent and child compositions
-parent and child cell matrices
-parent and child site counts
-scientific interpretation of the change
-```
-
-The class name is not the interpretation. `SupercellTransformation` can preserve an ideal bulk representation, but the resulting cell may later host a physical perturbation. `DeformStructureTransformation` and site-specific species replacement explicitly change the model.
+Accept a child only when the produced metrics match the intended operation and the parent remains unchanged. A class name is not provenance, and a generated child is not a ground state. Relaxation, energy comparison, finite-size convergence, and physical relevance remain later operations.
 
 ## What this guide verifies
 
-The companion script checks:
+The companion verifies the pinned distribution, transformation imports, declared supercell multiplier, deformation-induced lattice changes, substituted composition, parent immutability, and structured lineage output.
 
-- the pinned `pymatgen-core` distribution version;
-- import of standard and site-specific transformation modules;
-- supercell site-count and volume multipliers;
-- deformation-induced changes in lattice and volume;
-- the expected substituted species and composition;
-- immutability of the original parent object;
-- serialization of a transformation-lineage summary.
-
-It does not calculate energies, relax any child structure, establish phase stability, validate the illustrative parent, or decide which descendant is physically relevant.
+It does not run DFT, validate the parent, relax any child, establish phase stability, or select a physically relevant descendant.
 
 ## Common mistakes
 
-**Importing a class from the wrong transformation module.** Check the current API rather than assuming every transformation belongs to `standard_transformations`.
+**Importing a class from the wrong module.** Check the current API rather than assuming every transformation is in `standard_transformations`.
 
-**Overwriting the parent structure.** Preserve source and descendants as separate objects with stable identities.
+**Overwriting the parent.** Preserve source and descendants as separate identities.
 
 **Treating every transformation as normalization.** Deformation and substitution change the physical model.
 
-**Using a class name as provenance.** Module, parameters, version, parent checksum, and output identity are also required.
+**Using a class name as provenance.** Module, version, parameters, parent checksum, and child identity are also required.
 
-**Accepting a generated child as a ground state.** A transformation produces a candidate, not energetic evidence.
+**Accepting a generated child as a ground state.** A transformation creates a candidate, not energetic evidence.
 
 ## Official sources
 

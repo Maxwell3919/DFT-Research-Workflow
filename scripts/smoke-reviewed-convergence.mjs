@@ -6,8 +6,21 @@ const base = (process.env.SITE_URL ?? 'http://127.0.0.1:4322/DFT-Research-Workfl
 const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/test-numerical-convergence/';
+const requiredHeadings = [
+  'Begin with the claim and the observable',
+  'Separate completion, solver convergence, and observable convergence',
+  'Converge coupled numerical controls together',
+  'Choose a stopping point, not a universal maximum',
+  'Preserve a convergence evidence package',
+  'What this task does not establish',
+  'Sources and methods',
+];
 const requiredPhrases = [
-  'Numerical convergence asks whether a reported quantity is stable enough',
+  'Numerical convergence is an operation: declare a target, run a controlled series, extract the same quantity from every run, and decide against a tolerance written before inspecting the result.',
+  'Energy convergence does not establish force convergence.',
+  'Force convergence does not establish DOS convergence.',
+  'DOS convergence does not establish phonon convergence.',
+  'Phonon convergence does not establish EPC convergence.',
   'Separate completion, solver convergence, and observable convergence',
   'Only the third line is numerical convergence.',
   'Do not average over state switches and call the result converged.',
@@ -38,6 +51,7 @@ async function inspect(page, expectedWidth) {
     hasPlaceholder: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     hasContract: Boolean(document.querySelector('.operation-contract')),
     hasScript: Boolean(document.querySelector('script')),
+    mathDisplays: document.querySelectorAll('.article-content .katex-display').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
 
@@ -47,8 +61,11 @@ async function inspect(page, expectedWidth) {
   if (result.hasContract) throw new Error('convergence overview exposes a fixed contract');
   if (result.hasScript) throw new Error('convergence overview contains client-side script');
   if (result.overflow) throw new Error(`convergence overview overflows at ${expectedWidth}px`);
-  if (result.headings.length !== 16) throw new Error(`convergence overview has ${result.headings.length} sections instead of 16`);
+  for (const heading of requiredHeadings) {
+    if (!result.headings.includes(heading)) throw new Error(`convergence overview is missing semantic section ${heading}`);
+  }
   if (result.cards !== 4) throw new Error(`convergence overview exposes ${result.cards} practical cards instead of 4`);
+  if (result.mathDisplays < 1) throw new Error('convergence overview did not render its convergence equation');
   for (const phrase of requiredPhrases) {
     if (!result.text.includes(phrase)) throw new Error(`convergence overview is missing ${phrase}`);
   }
@@ -98,7 +115,11 @@ try {
   if (response?.status() !== 200) throw new Error(`convergence overview no-JavaScript route returned ${response?.status()}`);
   const noJsText = await noJsPage.$eval('body', (body) => body.innerText);
   for (const phrase of [
-    'Numerical convergence asks whether a reported quantity is stable enough',
+    'Numerical convergence is an operation: declare a target, run a controlled series, extract the same quantity from every run, and decide against a tolerance written before inspecting the result.',
+    'Energy convergence does not establish force convergence.',
+    'Force convergence does not establish DOS convergence.',
+    'DOS convergence does not establish phonon convergence.',
+    'Phonon convergence does not establish EPC convergence.',
     'Only the third line is numerical convergence.',
     'Sources and methods',
   ]) {
@@ -123,7 +144,7 @@ try {
     }, null, 2)}\n`);
   }
 
-  console.log(`Reviewed convergence smoke passed: ${desktop.headings.length} natural sections, 4 practical cards, rendered sources, 1440px/390px no-overflow, and no-JavaScript reading.`);
+  console.log(`Reviewed convergence smoke passed: operation-first convergence equation and four observable inequalities, ${desktop.headings.length} natural sections, 4 practical cards, rendered sources, 1440px/390px no-overflow, and no-JavaScript reading.`);
 } finally {
   await browser.close();
 }

@@ -3,160 +3,136 @@ topic_slug: relative-and-formation-energies
 status: reviewed
 ---
 
-Energy differences connect an electronic-structure calculation to questions such as which candidate structure is lower, whether a reaction is exothermic within a stated model, and how costly it is to form a compound from chosen reservoirs. The subtraction is simple only after the compared calculations have been made commensurate. A raw total energy is an internal value for one calculation; a relative, reaction, or formation energy is a derived quantity whose meaning comes from the comparison that defines it.
+Use relative or formation energies when the scientific question is a comparison: which named candidate is lower, what is the energy change for a balanced reaction, or how a target compares with declared reservoirs. The required output is not one total energy. It is a ledger plus a reproducible subtraction, its normalization, exclusions, convergence evidence, and claim boundary.
 
-## Begin with the scientific comparison
-
-Write the comparison before collecting energies. Identify the candidates or reaction, the composition and charge of every object, the physical state of each reference, the thermodynamic conditions, the energy convention, and the normalization in which the answer will be reported.
-
-Three questions that sound similar require different constructions:
-
-- **Relative energy:** which of several explicitly enumerated states with the same conserved composition and charge is lower under one evaluator?
-- **Reaction energy:** what is the energy change for one balanced transformation between declared reactants and products?
-- **Formation energy:** what is the reaction energy for forming a target from a specified set of elemental or other reference reservoirs?
-
-The sign of any one of these quantities has meaning only with its written reaction and convention. It is not a portable label attached to a material.
+Start with the attached **Build a Comparable Energy Ledger** guide when several calculations must be filtered and normalized. Use **Balance Reference Reactions and Normalization** when the result is defined by a reaction.
 
 ## A raw total energy is not yet a comparable result
 
-The DFT total energy depends on the Hamiltonian and numerical representation used to evaluate it. Functional, potentials or all-electron treatment, Hubbard parameters, relativistic terms, charge, boundary conditions, basis or grids, occupations, and implementation conventions all contribute to the reported number. Its absolute zero is not generally shared across codes, potential families, or different compositions.
+A raw total energy is an internal value for one calculation; comparison requires a declared subtraction and compatible parents.
 
-Useful cancellation occurs when the subtracted calculations share the same method identity and closely related numerical errors. Cancellation must be demonstrated by construction; it does not follow merely because every output is measured in electronvolts.
+Do not subtract until the geometries and electronic states are accepted, every term has the intended composition and charge, and the target energy difference is numerically converged. Program completion or SCF convergence of one parent does not make a comparison trustworthy.
 
-Preserve the raw value, but never place heterogeneous outputs in one ranking table without an explicit compatibility model.
+## Begin with the scientific comparison
+
+Write the candidate set or balanced reaction before collecting numbers. State the physical states, conserved quantities, thermodynamic conditions, energy convention, reference states, and reporting denominator. Relative energy, reaction energy, and formation energy are distinct objects even when they use some of the same calculations.
 
 ## Build a ledger before subtracting
 
-An energy ledger gives every term a scientific identity. For each calculation record:
+For every row preserve structure and electronic-state identifiers; composition, charge, cell contents, and formula-unit count; raw energy and units; method and potential identity; correction terms; numerical settings; completion, relaxation, state, and target-convergence evidence; and input/output lineage.
 
-- structure and electronic-state identifiers;
-- composition, atom count, formula-unit count, and total charge;
-- energy field and units, including any entropy or extrapolation convention;
-- method, potential or basis identity, corrections, and software version;
-- geometry state, boundary model, k-point or other integration setup;
-- completion, convergence, and state-verification status;
-- parent calculation, input and output hashes, and provenance.
-
-The ledger separates three decisions: whether a calculation completed, whether its target energy is numerically usable, and whether it belongs in a particular comparison. A failed or incompatible term remains evidence, but it cannot silently enter the arithmetic.
+Exclude incompatible rows without deleting them. A lower number from a different evaluator, charge, state, or correction model answers a different question.
 
 ## Relative energies compare a bounded candidate set
 
-For candidates `i` and reference candidate `r` with the same composition and charge, define
+The statement “candidate A is lower than candidate B” is bounded by the enumerated states and the tested evaluator.
 
-```text
-ΔE_rel(i | r) = [E_i - E_r] / N
-```
+For candidates $i$ and $r$ with the same composition and charge,
 
-Here `E_i` and `E_r` are the same reported energy quantity from a common evaluator, and `N` is the declared normalization: for example, the number of atoms, formula units, magnetic sites, or another physically motivated count. If `E_i`, `E_r`, and `N` refer to one computational cell, the unnormalized difference is in energy per cell; dividing by the number of formula units gives energy per formula unit.
+$$
+\Delta E_{\mathrm{rel}}(i\mid r)=\frac{E_i-E_r}{N},
+$$
 
-The zero is conventional: choosing another accepted candidate as `r` shifts every table entry by a constant but does not change pairwise ordering. The statement “candidate A is lower than candidate B” is bounded by the enumerated states, shared method, accepted convergence, and uncertainty. It does not prove that an untested structure or electronic state is absent below them.
+<!-- ΔE_rel(i | r) = [E_i - E_r] / N -->
+
+where $N$ is the declared number of atoms, formula units, magnetic sites, or another relevant count. Changing $r$ shifts the zero but not pairwise ordering. The claim remains bounded by the enumerated candidates and common evaluator.
 
 ## Balance a reaction before evaluating its energy
 
-Write a reaction as a stoichiometric vector `ν_j`, negative for reactants and positive for products:
+For negative reactant coefficients and positive product coefficients,
 
-```text
-Σ_j ν_j Species_j = 0
-ΔE_rxn = Σ_j ν_j E_j
-```
+$$
+\sum_j\nu_j\,\mathrm{Species}_j=0,
+\qquad
+\Delta E_{\mathrm{rxn}}=\sum_j\nu_jE_j.
+$$
 
-Each element must balance, and charge, electron count, adsorbates, molecular species, or other conserved quantities must be handled consistently with the chosen ensemble. `E_j` is the energy for the exact calculation object represented by its coefficient. Multiplying every `ν_j` by the same factor multiplies `ΔE_rxn`; therefore the reaction extent and reporting basis must accompany the value.
+<!-- ΔE_rxn = Σ_j ν_j E_j -->
 
-A reaction between compounds may cancel systematic errors differently from formation out of elemental phases. Two balanced reactions that produce the same target can answer different thermodynamic questions because their reservoirs differ.
+Check elemental balance, charge, electron count, adsorbates, and any open reservoirs before evaluating the sum. State the reaction extent because multiplying every coefficient multiplies the reported energy.
 
 ## Formation energy is a special reference reaction
 
-For a compound containing `n_i` atoms of element `i`, a common zero-temperature electronic formation energy is
+Experimental standard enthalpy of formation is a thermodynamic quantity for specified standard states and temperature.
 
-```text
-ΔE_f = E_compound - Σ_i n_i μ_i^ref
-```
+A common static formation energy for a compound is
 
-`E_compound` is the calculated electronic energy of the target in the same formula-unit convention as `n_i`. `μ_i^ref` is the energy per atom of the declared elemental reference phase, or the corresponding fraction of a molecular reference calculation. The result is an energy per chosen formula unit until another normalization is applied.
+$$
+\Delta E_{\mathrm f}
+=
+E_{\mathrm{compound}}-\sum_i n_i\mu_i^{\mathrm{ref}}.
+$$
 
-This expression solves one question: the energy change for forming the target from those references within the stated electronic-energy model. Experimental standard enthalpy of formation is a thermodynamic quantity for specified standard states and temperature. It is not identical by definition to a raw 0 K DFT electronic-energy difference.
+<!-- ΔE_f = E_compound - Σ_i n_i μ_i^ref -->
 
-## Reference states are part of the result
-
-An elemental symbol does not uniquely specify a reservoir. The reference must include allotrope or molecular form, magnetic and electronic state, crystal structure, pressure convention, and any finite-temperature state. A wrong oxygen molecule, metal phase, magnetic order, or charge convention changes the reaction, not merely a metadata field.
-
-Compound reservoirs may be more appropriate when the scientific process is synthesis from precursors, exchange with an environment, or decomposition among nearby phases. Chemical potentials describe open-system reservoirs only within explicitly stated bounds and thermodynamic conditions. They must not be treated as freely adjustable numbers detached from the phases that constrain them.
-
-Whenever a fitted elemental reference, gas correction, or database compatibility scheme is used, retain both the unadjusted calculated term and the named correction with its version and calibration scope.
+Every reference requires a phase or molecular form, magnetic and electronic state, pressure convention, method identity, and normalization. Keep fitted references and database corrections as named ledger terms and preserve raw and corrected values separately.
 
 ## Normalize only after the stoichiometry is clear
 
-The same reaction energy can be reported per computational cell, formula unit, atom, mole of reaction, exchanged particle, or another basis. These values are numerically different but physically equivalent only when the conversion is exact and declared.
-
-Let one computed cell contain `Z` formula units and `N_atoms` atoms. Then
-
-```text
-ΔE per formula unit = ΔE per cell / Z
-ΔE per atom = ΔE per cell / N_atoms
-```
-
-For molar reporting, convert the energy for the declared reaction extent using the appropriate physical constant and state the resulting unit. Never compare “eV” columns until their denominator, cell contents, and stoichiometric extent agree. A per-atom normalization is convenient for composition-wide plots, while per-formula-unit or per-reaction values may communicate chemistry more directly.
+Convert cell totals only after the stoichiometry is explicit. Store both the original cell energy and the derived per-atom, per-formula-unit, or per-reaction value. Never compare columns labelled only “eV” when their denominators or cell contents differ.
 
 ## Keep electronic energy, enthalpy, and free energy distinct
 
-A typical static DFT result approximates an electronic internal-energy contribution for fixed nuclei under a selected approximation. Depending on the scientific question, a thermodynamic potential may require additional terms:
+When temperature or pressure matters, add only justified terms under one normalization:
 
-```text
-F(T,V) = E_DFT(V) + F_vib(T,V) + F_el(T,V) + F_other(T,V)
-G(T,p) = min_V [F(T,V) + pV]
-```
+$$
+F(T,V)=E_{\mathrm{DFT}}(V)+F_{\mathrm{vib}}(T,V)
++F_{\mathrm{el}}(T,V)+F_{\mathrm{other}}(T,V),
+$$
 
-`F` is Helmholtz free energy at temperature `T` and volume `V`; `G` is Gibbs energy at temperature `T` and pressure `p`. `F_vib` may contain zero-point and thermal vibrational contributions, `F_el` an electronic thermal contribution, and `F_other` any explicitly modeled configurational, magnetic, rotational, translational, or additional free-energy term appropriate to the phase. The `pV` term converts the fixed-volume potential to the constant-pressure potential through a volume minimization.
+<!-- F(T,V) = E_DFT(V) + F_vib(T,V) + F_el(T,V) + F_other(T,V) -->
 
-Every term must use the same normalization and compatible reference reaction. Omitting a term is an approximation whose importance depends on temperature, pressure, phase, composition, and the size of the energy difference. Numerical smearing used for Brillouin-zone integration is not automatically `F_el` at a physical temperature.
+$$
+G(T,p)=\min_V\left[F(T,V)+pV\right].
+$$
 
-## Method consistency controls error cancellation
+<!-- G(T,p) = min_V [F(T,V) + pV] -->
 
-Energy differences are most defensible when all terms use one method family and compatible settings. Mixing functionals, potential libraries, Hubbard treatments, relativistic levels, or basis conventions introduces offsets that do not cancel automatically. A database may define a calibrated mixing or correction scheme, but the scheme itself then becomes part of the energy model.
-
-Elemental and molecular references can carry different systematic errors from the target compound. Primary studies of GGA/GGA+U mixing and fitted elemental-phase reference energies show why reference corrections may improve formation enthalpies for a particular calibrated domain. Such corrections are not universal properties of the elements and cannot be transferred silently to another functional, potential set, or dataset release.
-
-Report corrected and uncorrected quantities separately. A correction may improve agreement with a benchmark while reducing the independence of a later comparison to that benchmark.
+Numerical smearing used for Brillouin-zone integration is not automatically $F_{\mathrm{el}}$ at a physical temperature. Every thermal term must refer to the same reaction, state, and denominator.
 
 ## Converge the difference and its least-cancelling terms
 
-Converging each total energy in isolation is not enough. Test the derived energy difference against the numerical variables that can change unequally across terms: basis and grids, Brillouin-zone sampling, occupations, cell size, vacuum and image interactions, molecular boxes, spin states, geometry optimization, and any correction-specific inputs.
+Test the derived difference against variables that cancel least well: basis or cutoff, Brillouin-zone sampling, occupations, molecular box or vacuum, geometry, magnetic initialization, and correction-specific inputs. Retain individual terms and the assembled difference across the series.
 
-Use a common evaluator when possible, then tighten the variables most likely to cancel poorly. A molecule in a box and a periodic solid, or two phases with different metallicity, may require different raw settings to reach comparable error in the final reaction energy. The acceptance criterion belongs to the target difference and intended conclusion, not to a universal cutoff or mesh.
-
-Retain convergence tables for both the individual terms and the assembled difference. Apparent stability caused by cancellation at one setting can disappear when the terms are independently refined.
+The acceptance criterion belongs to the target difference and intended conclusion, not to a universal cutoff or mesh.
 
 ## State identity and geometry remain part of every term
 
-The compared structures must correspond to the intended minima or constrained states, and their final electronic identities must be verified. A lower energy caused by an unintended magnetic collapse, changed charge, different symmetry constraint, or unconverged geometry does not answer the planned comparison.
-
-Same-composition polymorphs may be compared directly only after they share the evaluator and have appropriate geometry treatment. Formation energies need independently verified reference phases. If zero-point or thermal contributions are added, their structures, volumes, force constants, and electronic parents require their own lineage.
+Confirm that every accepted calculation ended in the intended geometry, charge, spin, symmetry, and occupation state. A lower energy caused by magnetic collapse, an unintended distortion, or a different charge distribution does not answer the planned comparison.
 
 ## Treat small differences as estimates with uncertainty
 
-An energy difference should be accompanied by evidence about numerical uncertainty and sensitivity to plausible method choices. Useful tests include stricter numerical settings, independent structural or electronic starts, alternative but defensible reference states, and comparison with experimental or higher-level data when available.
+Compare the separation with numerical variation, reference uncertainty, and defensible method sensitivity. If those scales overlap, report the ordering as unresolved within the tested model rather than selecting a winner from extra digits.
 
-Do not convert a near-degeneracy into an exact ordering. If the separation is comparable to the observed numerical variation, reference uncertainty, or method sensitivity, report the candidates as unresolved within the tested model. Agreement of several calculations that share the same approximation is reproducibility within that approximation, not independent physical validation.
+## Method consistency controls error cancellation
+
+Keep functional, potential or basis family, relativistic and Hubbard treatment, correction model, and energy convention compatible across all terms.
+
+A negative reaction energy places the written products below the written reactants in the stated model. It does not calculate a barrier, rate, finite-temperature equilibrium, or experimental outcome.
 
 ## A negative formation energy is not a phase-stability proof
 
-`ΔE_f < 0` means that the target is below its chosen elemental references for that formation reaction. Thermodynamic stability against decomposition requires comparison with every relevant competing combination of elements and compounds under the chosen conditions. That is a convex-hull or equivalent phase-equilibrium problem.
+$\Delta E_{\mathrm f}<0$ means that the target is below its chosen elemental references for that formation reaction.
 
-A compound can have a negative formation energy and still decompose exothermically into other compounds. Conversely, a phase above the equilibrium hull may be experimentally accessible because of kinetics, finite temperature, pressure, defects, surfaces, or synthesis history. Formation energy alone establishes neither equilibrium stability nor experimental synthesizability.
+A compound can have a negative formation energy and still decompose exothermically into other compounds. Formation energy alone establishes neither equilibrium stability nor experimental synthesizability.
 
-Equation-of-state fitting, structural phase transitions, compositional convex hulls, defect formation, surface and adsorption energies, and interface energetics therefore remain separate D1 topics with their own references and convergence problems.
+Stability against decomposition requires a compatible competing-phase set and a convex-hull or equivalent equilibrium calculation.
 
 ## Preserve the complete comparison object
 
-A reusable result package should contain the balanced reaction or candidate set, raw ledger, excluded terms and reasons, exact normalization, uncorrected and corrected energies, correction versions, convergence evidence, uncertainty assessment, and links to every parent calculation. Derived tables should be reproducible from machine-readable records without scraping rounded values from a figure.
+Store the balanced reaction or candidate set, raw ledger, exclusions, normalization, raw and corrected terms, convergence tables, uncertainty assessment, and links to every parent artifact. Downstream work should consume this object rather than scrape a rounded figure.
 
-Downstream work should cite the comparison object, not just one number. Convex-hull analysis needs composition-normalized formation energies and compatibility metadata; kinetic modeling needs a specific reaction landscape; experimental comparison needs matched thermodynamic states; scientific claims need the uncertainty and model boundary.
+## Reference states are part of the result
+
+Before continuing, verify every elemental phase, molecular form, magnetic state, and reservoir condition in the ledger.
+
+Send compatible composition-normalized formation energies to a convex hull. Send state-labelled energy-volume points to EOS work. Defect, surface, adsorption, and interface calculations require their own reservoir or excess-quantity construction.
 
 ## What this topic establishes
 
-This topic establishes how to construct traceable relative, reaction, and formation energies from compatible calculations and declared references. It can support bounded statements about an enumerated candidate ordering or a written reaction within a stated energy model.
+It does not establish the global structural or electronic ground state, stability against all competing phases, a finite-temperature equilibrium, a reaction barrier or rate, experimental synthesizability, or the accuracy of the underlying method.
 
-It does not establish the global structural or electronic ground state, stability against all competing phases, a finite-temperature equilibrium, a reaction barrier or rate, experimental synthesizability, or the accuracy of the underlying method. Those conclusions require additional calculations and evidence.
+This topic can support a bounded candidate ordering or written reaction within a stated evaluator, normalization, and uncertainty. It does not establish the global ground state, an exhaustive phase set, a reaction pathway, finite-temperature equilibrium without the required terms, synthesizability, or agreement with experiment.
 
 ## Sources and methods
 

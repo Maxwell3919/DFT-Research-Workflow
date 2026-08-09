@@ -5,17 +5,25 @@ status: reviewed
 
 Lattice thermal transport asks how vibrational degrees of freedom carry heat in one declared material model and environment. In a crystalline phonon picture, the result is a thermal-conductivity tensor, not a single material label: it depends on temperature, structure, dimensionality, isotopes, defects, boundaries, scattering model, and the transport equation. A harmonic dispersion or an anharmonic linewidth is an input to this question, not its answer.
 
+## Solve for the transport tensor, then challenge it
+
+Start with mutually compatible harmonic and anharmonic force constants and a stable or explicitly temperature-renormalized phonon parent. Choose RTA, direct LBTE, or an inter-band/Wigner treatment according to the target. Compute the tensor over the required temperature range, then inspect symmetry, dimensional normalization, mesh trends, mode contributions, solver convergence, and sensitivity to isotope, boundary, defect, electron, and omitted higher-order scattering. Converge the reported tensor component or cumulative quantity, not a visually smooth curve. This overview does not claim an executed transport calculation.
+
 ## From modes to a heat-current response
 
 In a particle-like phonon treatment, a common schematic form is
 
-```text
-κ_αβ = (1/V) Σ_qν C_qν v_qν,α F_qν,β .
-```
+$$
+\kappa_{\alpha\beta}
+= \frac{1}{V}\sum_{\mathbf q\nu}
+C_{\mathbf q\nu}
+v_{\mathbf q\nu,\alpha}
+F_{\mathbf q\nu,\beta}.
+$$
 
-`κ_αβ` is the lattice thermal-conductivity tensor, `V` is the chosen bulk normalization volume, `C_qν` is the mode heat-capacity contribution, `v_qν,α` is the group-velocity component, and `F_qν,β` is the nonequilibrium response to a temperature gradient along `β`. In a two-dimensional material the reported normalization convention needs special care: an arbitrary vacuum height changes a volume-normalized number without changing the isolated layer. State the convention and do not compare it directly with a bulk value whose geometry and normalization differ.
+$\kappa_{\alpha\beta}$ is the lattice thermal-conductivity tensor, $V$ is the chosen bulk normalization volume, $C_{\mathbf q\nu}$ is the mode heat-capacity contribution, $v_{\mathbf q\nu,\alpha}$ is the group-velocity component, and $F_{\mathbf q\nu,\beta}$ is the nonequilibrium response to a temperature gradient along $\beta$. In a two-dimensional material the reported normalization convention needs special care: an arbitrary vacuum height changes a volume-normalized number without changing the isolated layer. State the convention and do not compare it directly with a bulk value whose geometry and normalization differ.
 
-The relaxation-time approximation (RTA) sets `F` from a mode lifetime and treats selected scattering as an independent decay. The direct solution of the linearized phonon Boltzmann transport equation (LBTE) retains coupling between modes through a collision operator. RTA and direct-LBTE numbers may be useful comparisons, but neither is automatically the definitive answer: their difference diagnoses the role of collective normal processes within the declared model, while omitted four-phonon, isotope, defect, boundary, electron, and temperature-renormalization effects remain separate assumptions.
+The relaxation-time approximation (RTA) sets $F$ from a mode lifetime and treats selected scattering as an independent decay. The direct solution of the linearized phonon Boltzmann transport equation (LBTE) retains coupling between modes through a collision operator. RTA and direct-LBTE numbers may be useful comparisons, but neither is automatically the definitive answer: their difference diagnoses the role of collective normal processes within the declared model, while omitted four-phonon, isotope, defect, boundary, electron, and temperature-renormalization effects remain separate assumptions.
 
 ## What a transport calculation consumes
 
@@ -33,7 +41,7 @@ The standard particle-like formulation also retains only diagonal, intra-band he
 
 Converge the tensor component, temperature dependence, cumulative mean-free-path quantity, or modal decomposition that supports the intended claim. Relevant variables include force-constant range and order, electronic and force accuracy, harmonic and scattering meshes, integration treatment, isotope model, collision solver, iterative tolerance, temperature grid, and any boundary or coherence assumptions. No universal supercell, q mesh, broadening, temperature grid, mean-free-path cutoff, or memory allocation can certify lattice thermal conductivity across materials.
 
-Inspect tensor symmetry, volume or dimensional normalization, mode and branch resolution, mesh trends, RTA-to-LBTE sensitivity, scattering-channel contributions, and sensitivity to the omitted processes most plausible for the system. Preserve force/displacement data or force constants, the primitive and supercell mappings, polar information, all meshes, solver records, temperature points, normalizations, and post-processing scripts. A smooth `κ(T)` curve is not evidence that each of those objects is converged.
+Inspect tensor symmetry, volume or dimensional normalization, mode and branch resolution, mesh trends, RTA-to-LBTE sensitivity, scattering-channel contributions, and sensitivity to the omitted processes most plausible for the system. Preserve force/displacement data or force constants, the primitive and supercell mappings, polar information, all meshes, solver records, temperature points, normalizations, and post-processing scripts. A smooth $\kappa(T)$ curve is not evidence that each of those objects is converged.
 
 An adequately converged result supports a conditional lattice-transport prediction for the declared scattering and transport model. It does not establish experimental thermal conductivity, a device thermal resistance, thermodynamic stability, electron thermal transport, interfacial conductance, or the accuracy of an omitted scattering channel. This topic consumes validated harmonic and anharmonic inputs; it does not validate them retroactively.
 

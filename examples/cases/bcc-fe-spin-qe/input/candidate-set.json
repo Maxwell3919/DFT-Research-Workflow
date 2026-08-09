@@ -64,6 +64,6 @@
     "observable": "total_energy",
     "unit": "Ry",
     "absolute_tolerance_ry": 0.0005,
-    "criterion": "Both adjacent absolute energy changes in the three-point FM mesh series are at or below the declared tolerance. This tests only this fixed-geometry FM total-energy screen."
+    "criterion": "Pass only if both adjacent absolute energy changes in the three-point FM mesh series are at or below the declared tolerance. This tests only this fixed-geometry FM total-energy screen."
   }
 }

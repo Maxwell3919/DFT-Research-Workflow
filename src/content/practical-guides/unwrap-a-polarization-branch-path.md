@@ -19,7 +19,7 @@ review: docs/reviews/2026-08-04-polarization-and-ferroelectricity.md
 reviewed_at: "2026-08-04"
 ---
 
-This deterministic fixture takes five invented polarization representatives and an invented polarization quantum. It chooses, at every path point, the branch nearest to the preceding point. The exercise makes a continuous reported difference; it does not calculate a Berry phase, a gap, an energy barrier, or a material polarization.
+**Evidence class: synthetic-only.** This deterministic fixture takes five invented polarization representatives and an invented polarization quantum. It chooses, at every path point, the branch nearest to the preceding point. The exercise makes a continuous reported difference; it does not calculate a Berry phase, a gap, an energy barrier, or a material polarization.
 
 ## Run the fixture
 

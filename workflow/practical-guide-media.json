@@ -492,7 +492,7 @@
       "source_url": "https://www.crystallography.net/cod/9013102.html",
       "accessed_at": "2026-08-04",
       "reuse_basis": "Original SVG reconstructed from the project's actual Quantum ESPRESSO 7.5 line-path and 8x8x8 mesh output for CC0 COD 9013102 Silicon; no external figure was copied.",
-      "caption": "A real 141-point QE path and 260-point symmetry-expanded mesh give different sampled fourth-to-fifth-band separations; neither is a converged gap.",
+      "caption": "A real 141-point QE path and 260-point time-reversal-reduced sample from the nominal 8x8x8 mesh give different sampled fourth-to-fifth-band separations; neither is a converged gap.",
       "alt": "Bar comparison of real Silicon QE path and mesh sampled separations, labelled as unconverged teaching samples."
     },
     {

@@ -132,8 +132,8 @@ def run() -> dict[str, object]:
     )
     assert not computed_mesh_pass
     assert mesh["status"] == manifest["gates"]["G4"]["status"] == "FAIL"
-    boundary_claims_both_pass = "both adjacent" in mesh["boundary"].lower() and "at or below" in mesh["boundary"].lower()
-    assert boundary_claims_both_pass
+    boundary_is_conditional = mesh["boundary"].startswith("Pass only if both adjacent absolute energy changes")
+    assert boundary_is_conditional
 
     phonon_artifacts = [
         artifact["path"]
@@ -168,7 +168,7 @@ def run() -> dict[str, object]:
             "tolerance_ry": mesh["tolerance_ry"],
             "computed_pass": computed_mesh_pass,
             "recorded_status": mesh["status"],
-            "internal_record_inconsistency": "The boundary sentence says both changes pass, but the first change exceeds tolerance and the status is FAIL.",
+            "criterion": mesh["boundary"],
         },
         "fm_nm_comparison": summary["primary_comparison"],
         "phonons": {
@@ -176,13 +176,13 @@ def run() -> dict[str, object]:
             "status": "NOT ASSESSED",
             "meaning": "No ph.x, dynamical-matrix, q2r.x, or matdyn.x artifact belongs to this case.",
         },
-        "case_acceptance": {
-            "G0": manifest["gates"]["G0"]["status"],
-            "G1": manifest["gates"]["G1"]["status"],
-            "G2": manifest["gates"]["G2"]["status"],
-            "G3": manifest["gates"]["G3"]["status"],
-            "G4": manifest["gates"]["G4"]["status"],
-            "G5": manifest["gates"]["G5"]["status"],
+        "audit_ladder": {
+            "artifact_identity": manifest["gates"]["G0"]["status"],
+            "program_execution": manifest["gates"]["G1"]["status"],
+            "electronic_solver": manifest["gates"]["G2"]["status"],
+            "derived_artifacts": manifest["gates"]["G3"]["status"],
+            "target_numerical_convergence": manifest["gates"]["G4"]["status"],
+            "scientific_claim": manifest["gates"]["G5"]["status"],
         },
         "supports": manifest["claim_boundary"]["supports"],
         "does_not_support": manifest["claim_boundary"]["does_not_support"],

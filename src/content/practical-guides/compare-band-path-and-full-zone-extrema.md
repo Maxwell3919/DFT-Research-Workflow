@@ -7,7 +7,7 @@ tools:
   - python
   - quantum-espresso
 status: reviewed
-summary: Compare one actual Silicon QE band path with one symmetry-expanded mesh, then keep both sampled separations distinct from a converged fundamental gap.
+summary: Compare one actual Silicon QE band path with one 260-point time-reversal-reduced sample from the nominal 8 x 8 x 8 mesh, then keep both sampled separations distinct from a converged fundamental gap.
 tested_versions:
   - Python 3.12
   - Quantum ESPRESSO 7.5
@@ -24,58 +24,52 @@ review: docs/reviews/2026-08-04-band-structure.md
 reviewed_at: "2026-08-04"
 ---
 
-This page uses one actual, hash-bound Silicon calculation rather than an invented
-eigenvalue field. The structure is the two-site CC0 [COD 9013102
-Silicon record](https://www.crystallography.net/cod/9013102.html). Its 141-point
-SeeK-path-derived line calculation is compared with a separate QE 7.5
-`nosym=.true.` 8×8×8 `bands` calculation that emits 260 time-reversal-equivalent
-k points and eight Kohn--Sham bands. The selected mesh is deliberately modest:
-the comparison teaches what must be checked, not Silicon's band gap.
+Use this real, hash-bound Silicon comparison when a band-path extremum appears to support a gap or valley statement. It shows the next required operation: calculate a separate full-zone sample from the same accepted state and keep the two datasets distinct. Neither dataset in this teaching example is an observable-convergence study.
 
-## Read a path as a cut through reciprocal space
+## Purpose
 
-Bloch labels states over the Brillouin zone, not only at labelled points. The
-[standardized path work of Setyawan and Curtarolo](https://doi.org/10.1016/j.commatsci.2010.05.010)
-makes path figures comparable, but it does not demonstrate that all extrema lie
-on selected lines. QE 7.5 records a `0.574 eV` separation between the sampled
-fourth and fifth bands on the line path, and `0.617 eV` for the separate mesh
-sample. Their difference is the lesson: neither a path nor one mesh is a
-full-zone convergence study, and unlike a synthetic construction this real case
-does not force the mesh result to be lower.
+First establish the compatible SCF parent:
+
+```bash
+pw.x -in scf.in > scf.out
+grep -F "convergence has been achieved" scf.out
+grep -F "JOB DONE." scf.out
+```
+
+The first check asks whether QE reported electronic convergence; the second checks program termination only.
+
+Run the SeeK-path line input and its `bands.x` post-processing as described in the reciprocal-path guide. Then run the separate declared mesh input from the compatible parent state:
+
+```bash
+pw.x -in bands.in > full-zone.out
+grep -F "JOB DONE." full-zone.out
+bands.x -in bands.x.in > full-zone-bandsx.out
+grep -F "JOB DONE." full-zone-bandsx.out
+```
+
+In the stored full-zone case, `bands.in` uses `nosym=.true.` on an 8 x 8 x 8 grid and writes 260 time-reversal-reduced k points with eight bands. `bands.x` exposes those eigenvalues for parsing. The completion markers confirm the recorded programs ended normally; they do not make this grid dense enough for a fundamental-gap claim.
+
+## Inspect the sampled extrema
+
+The two-site structure comes from the CC0 [COD 9013102 Silicon record](https://www.crystallography.net/cod/9013102.html). The 141-point SeeK-path line sample has a `0.574 eV` separation between its sampled fourth- and fifth-band extrema. The separate mesh sample gives `0.617 eV`. The mesh value need not be lower because both are finite, different samples; neither result is a converged full-zone gap.
 
 ![A real Silicon QE comparison of a 141-point path and a 260-point mesh, explicitly marked as unconverged samples.](/DFT-Research-Workflow/media/practical-guides/band-structure/compare-band-path-and-full-zone-extrema/silicon-qe-path-full-zone.svg)
 
-The committed `full-zone-extrema.json` preserves structure identity, program
-versions, input/output SHA-256 values, coordinates as written by `bands.x`, and
-the two derived extrema. The output excerpt preserves the decisive completion
-markers; large save directories, wavefunctions, and temporary host directories
-are not public artifacts.
-
-The retained conceptual drawing below is deliberately secondary. It isolates the
-logical possibility of an off-path extremum; it is not data from Silicon or any
-other material.
+The stored `full-zone-extrema.json` binds structure identity, program versions, input/output SHA-256 values, coordinates written by `bands.x`, and the two derived extrema. The conceptual drawing below demonstrates only the possibility of an off-path extremum; it is not Silicon data.
 
 ![Conceptual reciprocal grid showing an invented off-path conduction minimum.](/DFT-Research-Workflow/media/practical-guides/band-structure/compare-band-path-and-full-zone-extrema/band-path-full-zone-extrema.svg)
 
 ## Reconstruct the actual-output comparison
 
-```text
+```bash
 python3 examples/practical-guides/silicon_qe_full_zone.py
 ```
 
-The companion verifies the existing path-output SHA-256, the frozen real-output
-ledger, k-point and band counts, derived extrema, and redraws the SVG. It does
-not launch QE locally. The recorded SCF → `pw.x bands` → `bands.x` chain had
-completion markers and empty captured stderr, but execution completion remains
-separate from numerical support.
+The companion does not launch QE. Execution verifies reconstruction of two declared real-output samples: it checks the path-output hash and frozen real-output ledger, k-point and band counts, derived extrema, and SVG. This is not a continuous rerun from a fresh public scratch directory.
 
-## What this guide verifies
+## Decide what remains untested
 
-Execution verifies reconstruction of two declared real-output samples. It does
-not converge the Brillouin-zone mesh, establish a full-zone or indirect gap,
-determine a carrier valley, or validate a quasiparticle, optical, experimental,
-or material conclusion. The former invented field is retained only as a
-conceptual test asset; it is not the case presented here.
+Before assigning a fundamental gap, refine a compatible full-zone search and test cutoffs, parent sampling, number of bands, occupations, structural and magnetic state, SOC treatment, and extremum-search resolution. A high-symmetry path cannot prove full-zone metallicity, gap directness, or the absence of an off-path pocket. This example does not establish a converged gap, carrier valley, quasiparticle or optical gap, experimental agreement, or Silicon material conclusion.
 
 ## Official sources
 

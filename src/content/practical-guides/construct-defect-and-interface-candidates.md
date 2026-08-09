@@ -83,7 +83,7 @@ The page companion independently re-hashes every manifest artifact and rechecks 
 python3 examples/practical-guides/structure_defect_interface_candidates.py
 ```
 
-The recorded gate ceiling is `G0 PASS`, `G1 PASS`, `G2 WARN`, `G3 PASS`, `G4 NOT TESTED`, and `G5 NOT CLAIMED`. No solver or optimizer was run. The PNG is only a projection of the exported structures.
+The construction and checking scripts complete and the expected manifest-bound artifacts and recorded metrics are present. This establishes bounded program-level script completion and artifact identity for the exported candidates. It does not assess DFT numerical convergence because no electronic solver or structural optimizer was run. It does not establish physical stability, and it supports no material-level claim. The PNG is only a projection of the exported structures.
 
 ## What this example does not establish
 

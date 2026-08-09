@@ -5,23 +5,27 @@ status: reviewed
 
 Finite-temperature structural sampling asks which configurations of a declared finite model contribute to an equilibrium observable, and with what statistical weight. It begins after a trajectory or configuration generator exists. It does not turn a finite set of frames into an equilibrium phase, a free-energy landscape, or a material property merely by plotting a histogram.
 
+## Turn configurations into a qualified distribution
+
+Start with an identified ensemble and trajectory or window set. Define the collective variable, retained interval, bias and reweighting data, binning or estimator, correlation treatment, and uncertainty target before plotting. Inspect stationarity, independent support, window overlap or bias evolution, effective sample size, finite-size sensitivity, and stability to analysis choices. Converge the population or free-energy difference that supports the claim. This overview does not claim that a finite-temperature sampling calculation was run.
+
 ## A structural distribution has a measure, an ensemble, and a coordinate
 
-For a configuration `R`, a canonical configurational distribution is proportional to `exp[-β U(R)]`, where `β = 1/(k_B T)`, `T` is the declared temperature, `k_B` is Boltzmann's constant, and `U` is the potential-energy surface supplied by the chosen electronic-structure model. In NPT sampling the cell also fluctuates, and the relevant measure contains the volume and pressure terms appropriate to the chosen barostat formulation. The structure, composition, charge, spin, exchange--correlation approximation, finite cell, k-point treatment, constraints, and ensemble therefore remain part of every probability statement.
+For a configuration $\mathbf R$, a canonical configurational distribution is proportional to $\exp[-\beta U(\mathbf R)]$, where $\beta=1/(k_{\mathrm B}T)$, $T$ is the declared temperature, $k_{\mathrm B}$ is Boltzmann's constant, and $U$ is the potential-energy surface supplied by the chosen electronic-structure model. In NPT sampling the cell also fluctuates, and the relevant measure contains the volume and pressure terms appropriate to the chosen barostat formulation. The structure, composition, charge, spin, exchange--correlation approximation, finite cell, k-point treatment, constraints, and ensemble therefore remain part of every probability statement.
 
-Most questions use a reduced collective variable `s(R)`: a coordination number, displacement, lattice metric, order parameter, or another stated mapping of the atomic configuration. A probability density `P(s)` depends on that mapping and its binning or kernel estimator. When the sampling measure is canonical and the normalization is defined, the potential of mean force is
+Most questions use a reduced collective variable $s(\mathbf R)$: a coordination number, displacement, lattice metric, order parameter, or another stated mapping of the atomic configuration. A probability density $P(s)$ depends on that mapping and its binning or kernel estimator. When the sampling measure is canonical and the normalization is defined, the potential of mean force is
 
-```text
-F(s) = -k_B T ln P(s) + C.
-```
+$$
+F(s) = -k_{\mathrm B}T\ln P(s)+C.
+$$
 
-`C` is an arbitrary additive constant. `F(s)` is a free-energy projection along the declared `s`, not the full free-energy surface, a transition-state free energy, or a kinetic rate. Two studies cannot compare it directly unless their temperature, composition, boundary conditions, reference convention, collective variable, and sampling/reweighting treatment are compatible.
+$C$ is an arbitrary additive constant. $F(s)$ is a free-energy projection along the declared $s$, not the full free-energy surface, a transition-state free energy, or a kinetic rate. Two studies cannot compare it directly unless their temperature, composition, boundary conditions, reference convention, collective variable, and sampling/reweighting treatment are compatible.
 
 ## Ordinary sampling and enhanced sampling answer different coverage problems
 
 An unbiased trajectory may estimate an equilibrium average if it repeatedly samples the important regions with sufficient independent weight. Slow barrier crossing can leave the observed distribution dominated by the initial basin even though local temperature looks stable. Extending a trajectory is one response; independent starts, replica exchange, umbrella windows, adaptive biasing, or metadynamics are others. Each changes either how configurations are proposed or the probability with which they are visited.
 
-In umbrella sampling a window adds a declared bias, often `W_i(s) = 1/2 k_i(s-s_i)^2`. Its raw histogram samples the biased potential `U(R)+W_i[s(R)]`, not the target distribution. Overlap between neighbouring windows is evidence needed to combine them; a row of windows with no shared support does not become a continuous free-energy curve by interpolation. WHAM and related estimators combine counts only after the window biases, temperatures, normalization convention, and correlation treatment are specified.
+In umbrella sampling a window adds a declared bias, often $W_i(s)=\tfrac{1}{2}k_i(s-s_i)^2$. Its raw histogram samples the biased potential $U(\mathbf R)+W_i[s(\mathbf R)]$, not the target distribution. Overlap between neighbouring windows is evidence needed to combine them; a row of windows with no shared support does not become a continuous free-energy curve by interpolation. WHAM and related estimators combine counts only after the window biases, temperatures, normalization convention, and correlation treatment are specified.
 
 Metadynamics deposits a history-dependent bias in selected collective variables. It can improve exploration, but it also makes a raw time histogram non-canonical. A reconstructed free energy requires the method-specific bias, time convention, collective-variable choice, and reweighting or convergence evidence. A visually filled basin is not proof that omitted slow variables are equilibrated.
 

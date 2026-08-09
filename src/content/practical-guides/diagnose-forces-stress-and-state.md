@@ -27,6 +27,19 @@ reviewed_at: "2026-08-03"
 
 An optimization trajectory is a sequence of coupled electronic and structural calculations. A final “converged” line is interpretable only when the forces or stress are trustworthy, the active stopping conditions are satisfied, and the calculations remain on the intended electronic and magnetic branch.
 
+## Run the stored-output diagnosis first
+
+```bash
+python3 examples/practical-guides/silicon_qe_relax.py
+grep -F "!    total energy" examples/practical-guides/data/silicon-qe/relax/si-relax.out
+grep -F "Total force =" examples/practical-guides/data/silicon-qe/relax/si-relax.out
+grep -cF "convergence has been achieved" examples/practical-guides/data/silicon-qe/relax/si-relax.out
+```
+
+The Python report reconstructs five stored energy/total-force rows and regenerates the declared force figure. The energy and force lines show what the parser consumes. The electronic marker count is `5`, but it is only a literal count; it is not evidence that each marker maps to one accepted ionic step.
+
+Next inspect `JOB DONE`, the BFGS termination marker, warnings, the final coordinates, and every state diagnostic required by the model. Accept the geometry only when the intended active force/stress conditions and state identity are satisfied under a fresh final evaluation. A decreasing total-force trace alone is not a stopping test.
+
 ## Record one row for every accepted structural step
 
 A useful optimization table contains more than energy:
@@ -55,8 +68,10 @@ A conceptual history rule can require every accepted step to carry an electronic
 label, active-force value, stress diagnostic, and consistent state identity. That
 claim-check is not executed by the declared companion. The companion instead
 parses five energy and total-force rows from one stored QE 7.5 Silicon output,
-checks its input/output hashes and completion markers, and confirms only that the
-last reported total force is lower than the first.
+checks its input/output hashes, counts five literal electronic-convergence markers,
+checks the program and BFGS markers, and confirms only that the last reported total
+force is lower than the first. It does not map the five electronic markers to the
+five ionic rows.
 
 ## Examine force and stress in the active subspace
 
@@ -118,9 +133,10 @@ A plot may display the segments together, but it should not conceal their differ
 ## What this guide verifies
 
 The declared companion verifies one input hash, one output hash, `JOB DONE` and
-BFGS markers, five parsed energies and total-force rows, and a lower final than
-initial total force. It does not verify per-step SCF markers, stress, displacement,
-constraints, state continuity, a stopping threshold, or a local/global minimum.
+BFGS markers, five literal electronic-convergence markers, five parsed energies and
+total-force rows, and a lower final than initial total force. It does not establish
+a per-step marker mapping, stress, displacement, constraints, state continuity, a
+stopping threshold, or a local/global minimum.
 
 ## Common mistakes
 

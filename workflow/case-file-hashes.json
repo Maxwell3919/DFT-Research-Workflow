@@ -580,8 +580,8 @@
     },
     {
       "path": "examples/cases/bcc-fe-spin-qe/derived/attempt-02-pmix/fm-kmesh-screen.json",
-      "sha256": "b9630c65c5c6237e4cab3e2ef3931875a44937d7552c0115b51a37ccf96369c1",
-      "bytes": 396
+      "sha256": "953eacff9225f26c40e8f415e8f21bd5a9fc79969686622d8315368584657840",
+      "bytes": 409
     },
     {
       "path": "examples/cases/bcc-fe-spin-qe/environment.txt",
@@ -605,8 +605,8 @@
     },
     {
       "path": "examples/cases/bcc-fe-spin-qe/input/candidate-set.json",
-      "sha256": "3581e629e873c8679b0465a7e61dbad3e9832c82e63219228bab23bca3fe479d",
-      "bytes": 2084
+      "sha256": "5d2a047ad05d85902c2f42bb279c22b14834287dd2e49f5a34a56c8334f55654",
+      "bytes": 2097
     },
     {
       "path": "examples/cases/bcc-fe-spin-qe/input/fm-k10.scf.in",
@@ -640,7 +640,7 @@
     },
     {
       "path": "examples/cases/bcc-fe-spin-qe/manifest.json",
-      "sha256": "3eba8ee3fd96a4f978d7f918092d56a83b3819bdf9d5a737b77b73be312462c5",
+      "sha256": "98650ec5022a40cafce756156e4e0b100e584400caabc56310c8887c974e8996",
       "bytes": 8567
     },
     {

@@ -22,7 +22,7 @@ for (const file of (await readdir(new URL('src/content/practical-guides/', root)
   for (const match of block.matchAll(/^\s+-\s+([a-z0-9-]+)$/gm)) guideTools.add(match[1]);
 }
 
-if (registry.schema_version !== 1 || !String(registry.authority).includes('secondary tool')) errors.push('registry authority');
+if (registry.schema_version !== 2 || !String(registry.authority).includes('secondary tool')) errors.push('registry authority');
 if (!String(registry.scope_note).includes('not research operations')) errors.push('scope boundary');
 if (!/^\d{4}-\d{2}-\d{2}$/.test(registry.verified_at ?? '')) errors.push('registry verified_at');
 
@@ -30,6 +30,10 @@ const slugs = new Set();
 const names = new Set();
 const urls = new Set();
 const accessKinds = new Set(['open-source', 'restricted-license', 'registration-required', 'free-proprietary']);
+const expectedSlugs = [
+  'abinit', 'aiida', 'ase', 'cp2k', 'epw', 'materials-project', 'phono3py', 'phonopy', 'pymatgen',
+  'python', 'quantum-espresso', 'seekpath', 'siesta', 'spglib', 'vasp', 'vesta', 'wannier90',
+];
 for (const tool of registry.tools ?? []) {
   if (!slug.test(tool.slug) || slugs.has(tool.slug)) errors.push(`${tool.slug}: slug`);
   slugs.add(tool.slug);
@@ -37,10 +41,19 @@ for (const tool of registry.tools ?? []) {
   names.add(tool.name);
   if (!accessKinds.has(tool.access)) errors.push(`${tool.slug}: access`);
   if (typeof tool.role !== 'string' || !tool.role.trim()) errors.push(`${tool.slug}: role`);
+  for (const key of ['use_when', 'first_action']) {
+    if (typeof tool[key] !== 'string' || !tool[key].trim()) errors.push(`${tool.slug}: ${key}`);
+  }
+  for (const key of ['input_objects', 'output_objects']) {
+    if (!Array.isArray(tool[key]) || !tool[key].length || tool[key].some((item) => typeof item !== 'string' || !item.trim())) {
+      errors.push(`${tool.slug}: ${key}`);
+    }
+  }
 
   const toolTopics = Array.isArray(tool.topics) ? tool.topics : [];
   if (!toolTopics.length) errors.push(`${tool.slug}: topics`);
   for (const topic of toolTopics) if (!topics.has(topic)) errors.push(`${tool.slug}: unknown topic ${topic}`);
+  if (!topics.has(tool.primary_topic) || !toolTopics.includes(tool.primary_topic)) errors.push(`${tool.slug}: primary_topic`);
 
   const start = tool.getting_started ?? {};
   if (typeof start.label !== 'string' || !start.label.trim()) errors.push(`${tool.slug}: getting_started.label`);
@@ -58,9 +71,10 @@ for (const tool of registry.tools ?? []) {
   }
 }
 for (const tool of guideTools) if (!slugs.has(tool)) errors.push(`practical tool missing: ${tool}`);
+if (JSON.stringify([...slugs].sort()) !== JSON.stringify(expectedSlugs)) errors.push('tool slug inventory changed');
 if (registry.tools.length !== 17 || urls.size !== 49) errors.push(`expected 17/49, found ${registry.tools.length}/${urls.size}`);
 if (errors.length) {
   console.error(errors.join('\n'));
   process.exit(1);
 }
-console.log('Tool registry valid: 17 identity-reviewed tools, 17 curated start links, 49 deduplicated HTTPS resource URLs, resolved A-E topics, and complete practical-tool coverage.');
+console.log('Tool registry valid: 17 identity-reviewed tools with actual-use orientation, primary A-E entries, 17 curated start links, 49 deduplicated HTTPS resource URLs, and complete practical-tool coverage.');

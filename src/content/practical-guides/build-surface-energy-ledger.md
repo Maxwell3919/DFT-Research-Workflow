@@ -23,50 +23,50 @@ review: docs/reviews/2026-08-04-surface-energy-and-work-function.md
 reviewed_at: "2026-08-04"
 ---
 
-A surface-energy table is reliable only when every large term in the subtraction remains inspectable. The primary data view here is an attributed three-row public snapshot: unreconstructed Si(111), Si(110), and Si(001) values reported by InterMat. A retained four-slab synthetic diagram then isolates the separate failure pattern in which a mismatched bulk reference causes thickness drift.
+Start by auditing the attributed InterMat ledger:
 
-## Inspect a real published ledger before using the diagnostic
+```bash
+python3 examples/practical-guides/surface_ledger_intermat.py
+```
 
-The open-access [InterMat paper](https://doi.org/10.1039/D4DD00031E) reports
-OptB88vdW surface energies of `1.60`, `1.66`, and `2.22 J m⁻²` for the stored
-Si(111), Si(110), and Si(001) rows. The committed CC BY 3.0 snapshot identifies
-the source table, `JVASP-1002`, method label, units, and exact JSON hash. Its
-companion checks those values and source identity without rerunning a slab.
+This declared companion checks the frozen snapshot identity, SHA-256, licence, method label, orientation order, and the three reported Si surface-energy values. It reads and audits an existing public-data ledger. It does not launch a DFT executable, build a slab, or test slab convergence.
 
-Three orientations from one published table do not form a thickness series. They
-cannot diagnose bulk drift, prove a termination or reconstruction, establish
-convergence, or create a new ranking. The [NIST-hosted source PDF](https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957179) remains the authority for the reported computational and experimental context.
+## Inspect the parent objects
 
-## Keep area, count, and energy units explicit
+The snapshot records unreconstructed Si(111), Si(110), and Si(001) rows for `JVASP-1002` from the open-access [InterMat paper](https://doi.org/10.1039/D4DD00031E). It reports OptB88vdW surface energies of `1.60`, `1.66`, and `2.22 J m^-2`. The [NIST-hosted PDF](https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957179) remains the authority for the calculation and experimental context.
 
-Each fixture row stores layer count, atom count, one-face area in Å², and slab energy in eV. The script uses two equivalent surfaces and converts eV Å⁻² to J m⁻² only after subtraction. For an asymmetric or nonstoichiometric slab, the same divisor would not assign a unique face energy.
+Check the source ID, facet, method, units, and state definition before comparing the three values. They are different orientations from one table, not a thickness series, and cannot diagnose bulk-reference drift or establish a reconstruction ranking.
 
-The [GPAW aluminium-surface tutorial](https://gpaw.readthedocs.io/tutorialsexercises/basics/surface/surface.html) illustrates the two-face expression. Fiorentini and Methfessel's [linear slab-series construction](https://doi.org/10.1088/0953-8984/8/36/005) and Boettger's [nonconvergence analysis](https://doi.org/10.1103/PhysRevB.49.16798) motivate the fitted slope and drift diagnostic.
+For a real symmetric stoichiometric slab ledger, record $N$, one-face area $A$, slab energy, compatible bulk energy per counted unit, surface count, units, final structure, and output hashes. Then evaluate
 
-## Fit only one continuous slab family
+$$
+\gamma=\frac{E_{\mathrm{slab}}(N)-N e_{\mathrm{bulk}}}{2A}.
+$$
 
-The script fits `E_slab(N) = N e_bulk^fit + E_excess`. Its intercept is divided by `2A`; its slope is not promoted to a new bulk property. The fit is meaningful here because all rows deliberately share an invented surface identity and area. A real series must first exclude reconstruction, magnetism, stoichiometry, strain, or numerical-protocol switches.
+Use the divisor $2A$ only for two equivalent faces. An asymmetric slab yields a sum of two surface excesses; a nonstoichiometric slab needs explicit chemical potentials.
 
-It then shifts the fitted bulk slope by an invented `0.003 eV/atom`. The derived direct-subtraction values drift with atom count, visibly demonstrating why an internally converged bulk energy can still be incompatible with a slab series.
+## Run the separate drift diagnostic
 
-## Retain a bounded drift diagnostic
+The repository also retains an invented four-slab fixture for the specific failure pattern caused by an incompatible bulk slope:
 
-```text
+```bash
 python3 examples/practical-guides/surface_energy_ledger.py \
   --svg public/media/practical-guides/surface-energy-and-work-function/build-surface-energy-ledger/surface-energy-ledger.svg
 ```
 
-The SVG is generated from the same in-file fixture used by `run()`. The red line is intentionally a failure pattern, while the horizontal fit intercept is the result of the bounded synthetic model. It supports the ledger logic but is not the source of the Si values above.
+It fits
+
+$$
+E_{\mathrm{slab}}(N)=N e_{\mathrm{bulk}}^{\mathrm{fit}}+E_{\mathrm{excess}}
+$$
+
+for one invented slab family, then perturbs the slope by `0.003 eV/atom` to expose thickness drift. The script checks regression arithmetic, unit conversion, the two-face factor, and deterministic rendering. Its red line is a deliberately synthetic failure pattern, not Si data or a recommended tolerance.
 
 ## What this guide verifies
 
-The declared companion verifies the attributed InterMat snapshot, its SHA-256,
-orientation order, licence, method label, and three reported surface-energy
-values. The retained `surface_energy_ledger.py` separately verifies unit
-conversion, the factor of two, linear-regression arithmetic, and the direction
-of thickness drift under one deliberately perturbed bulk slope.
+For a real series, first confirm that orientation, termination, reconstruction, stoichiometry, area, strain, constraints, magnetic state, and numerical protocol remain unchanged. Inspect the final structures and central layers. Accept a plateau or fitted intercept only after slab thickness, bulk cancellation, and the target surface energy meet the study's declared tolerance without a state switch.
 
-Execution success is not slab convergence for a real calculation. It establishes no new surface energy, reconstruction, termination ordering, bulk-reference accuracy, or material stability.
+The two commands verify a public snapshot and a synthetic diagnostic, respectively. Neither establishes a new surface energy, executes DFT, proves termination completeness, validates the bulk reference, or supports a material-stability claim.
 
 ## Official sources
 

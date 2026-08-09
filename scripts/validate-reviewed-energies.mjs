@@ -25,7 +25,7 @@ for (const statement of [
   'ΔE_f = E_compound - Σ_i n_i μ_i^ref',
   'F(T,V) = E_DFT(V) + F_vib(T,V) + F_el(T,V) + F_other(T,V)',
   'G(T,p) = min_V [F(T,V) + pV]',
-  'Numerical smearing used for Brillouin-zone integration is not automatically `F_el` at a physical temperature.',
+  'Numerical smearing used for Brillouin-zone integration is not automatically $F_{\\mathrm{el}}$ at a physical temperature.',
   'The acceptance criterion belongs to the target difference and intended conclusion, not to a universal cutoff or mesh.',
   'A compound can have a negative formation energy and still decompose exothermically into other compounds.',
   'Formation energy alone establishes neither equilibrium stability nor experimental synthesizability.',

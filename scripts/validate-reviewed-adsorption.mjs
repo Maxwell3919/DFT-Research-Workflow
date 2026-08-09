@@ -13,21 +13,23 @@ for (const statement of ['topic_slug: adsorption-energies', 'status: reviewed'])
   if (!article.includes(statement)) errors.push(`${articlePath}: missing frontmatter ${JSON.stringify(statement)}`);
 }
 const headings = article.match(/^## /gm) ?? [];
-if (headings.length !== 25) errors.push(`${articlePath}: expected 25 natural sections, found ${headings.length}`);
+if (headings.length < 8 || headings.length > 12) {
+  errors.push(`${articlePath}: expected 8-12 continuous manual sections, found ${headings.length}`);
+}
 
 for (const statement of [
   'The final relaxed structure is the state being measured',
   'Some literature defines a positive binding energy as the negative of this expression.',
-  'Average and differential adsorption energies answer different questions',
-  'Adsorption, interaction, and deformation energies are not synonyms',
-  'Coverage changes the physical problem',
-  'Supercell size and coverage should not be conflated',
+  'Do not compare an average at one coverage with a differential value at another.',
+  'Adsorption energy compares relaxed reactants and product under a written reaction.',
+  'State whether coverage means site fraction, adsorbates per surface atom, molecules per area, or surface-cell stoichiometry.',
+  'One adsorbate in a larger cell changes both coverage and image separation.',
   'The molecule may be a poor numerical or chemical reference',
-  'Finite localized bases can borrow functions',
+  'In atom-centred bases, the combined system can use basis functions on the other fragment',
   'A normal program exit establishes only that the executable reached an exit path.',
   'Satisfaction of the declared SCF residual criterion is only an inner numerical condition.',
   'Numerical convergence of an adsorption energy should be assessed only after coverage and adsorbate order, charge ensemble, electrostatic boundary treatment, and relaxation constraints are fixed.',
-  'Static energy is not adsorption free energy',
+  'A schematic thermodynamic ledger is',
   'It does not make a neutral vacuum slab a constant-potential electrochemical interface.',
   'this repository did not rerun the calculations',
   'A migration, dissociation, desorption, or reaction barrier requires a path',
@@ -84,4 +86,4 @@ if (errors.length > 0) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Reviewed adsorption topic valid: 25 natural sections, exact 14-source coverage, reaction/sign/site/coverage/reference/free-energy/kinetics boundaries, and no universal numerical prescription.');
+console.log('Reviewed adsorption topic valid: 8-12 continuous manual sections, exact 14-source coverage, reaction/sign/site/coverage/reference/free-energy/kinetics boundaries, and no universal numerical prescription.');

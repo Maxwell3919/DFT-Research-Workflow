@@ -23,6 +23,18 @@ reviewed_at: "2026-08-04"
 
 This is a bounded real-execution case: a COD 9013102 Silicon structure was used for an 8×8×8 QE 7.5 SCF calculation, followed by `ph.x` at Γ using the same `prefix`/`outdir` lineage. The committed output contains three 1.216451 cm⁻¹ acoustic diagnostics and a threefold 514.442616 cm⁻¹ optical result. The structure, SCF and DFPT inputs, standard output, stderr files, dynamical matrix, parsed CSV, and hashes are all committed as small public artifacts.
 
+## Inspect the stored run before plotting it
+
+```bash
+grep -F "JOB DONE" examples/cases/silicon-ground-state-electronic-structure/output/si-gamma-scf.out
+grep -F "convergence has been achieved" examples/cases/silicon-ground-state-electronic-structure/output/si-gamma-scf.out
+grep -F "JOB DONE" examples/cases/silicon-ground-state-electronic-structure/output/si-gamma-ph.out
+grep -F "Calculation of q =" examples/cases/silicon-ground-state-electronic-structure/output/si-gamma-ph.out
+grep -F "freq (" examples/cases/silicon-ground-state-electronic-structure/output/si-gamma-ph.out
+```
+
+The `JOB DONE` lines check normal program termination only. The SCF marker checks the stored electronic solve. The q line identifies Gamma, and the frequency lines expose the six modes parsed below. They do not establish a q mesh, interpolation, acoustic-sum correction, dispersion, or dynamical stability.
+
 ![Six Silicon Gamma-point modes, with three small acoustic diagnostics and three optical modes at 514.442616 inverse centimetres.](/DFT-Research-Workflow/media/practical-guides/harmonic-phonons/check-harmonic-mode-ledger/silicon-gamma-phonon.svg)
 
 ## Reconstruct the published ledger

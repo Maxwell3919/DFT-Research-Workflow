@@ -7,9 +7,13 @@ Topological analysis asks whether a declared electronic subspace can be continuo
 
 It is not a label inferred from orbital character, “band inversion” language, one high-symmetry-path crossing, or a visually striking surface band. Those features can motivate a calculation, but they do not replace it.
 
+## Establish the full-zone gap, then calculate the invariant
+
+Start by identifying the Hamiltonian, filling, SOC/magnetic state, protecting symmetries, and target subspace. Verify the relevant separation throughout the full Brillouin zone; a high-symmetry line path cannot supply that proof. Choose an invariant compatible with the actual symmetry class, converge its mesh or loop family, and challenge the result against subspace, symmetry tolerance, and model choices that could close the gap. A boundary spectrum is a second calculation with its own termination, thickness/embedding, projected-bulk, localization, and convergence checks. This overview does not claim an executed topology workflow.
+
 ## First identify the space in which the invariant lives
 
-Different symmetry classes support different invariants. A two-dimensional gapped subspace may carry a Chern number. A time-reversal-symmetric insulating state may carry a `Z2` index. Crystalline, chiral, particle-hole, and other symmetries lead to other classifications.
+Different symmetry classes support different invariants. A two-dimensional gapped subspace may carry a Chern number. A time-reversal-symmetric insulating state may carry a $\mathbb Z_2$ index. Crystalline, chiral, particle-hole, and other symmetries lead to other classifications.
 
 State which symmetries are actually present in the Hamiltonian, including spin--orbit coupling, magnetism, non-collinearity, external fields, and structural distortions. An invariant protected by a symmetry that the model breaks is not an invariant of that model.
 
@@ -19,17 +23,20 @@ The relevant band separation must hold throughout the domain used for the invari
 
 For an appropriate two-dimensional gapped subspace, the Chern number is
 
-```text
-C = (1 / 2π) Σ_n ∫_BZ Ω_n(k) d²k .
-```
+$$
+C
+= \frac{1}{2\pi}\sum_n
+\int_{\mathrm{BZ}}
+\Omega_n(\mathbf k)\,d^2k .
+$$
 
-`Ω_n(k)` is the Berry curvature of band `n`, the sum covers the declared subspace, and the Brillouin-zone orientation fixes the sign. The result is an integer only after the whole periodic zone, subspace continuity, and numerical integration are treated consistently.
+$\Omega_n(\mathbf k)$ is the Berry curvature of band $n$, the sum covers the declared subspace, and the Brillouin-zone orientation fixes the sign. The result is an integer only after the whole periodic zone, subspace continuity, and numerical integration are treated consistently.
 
 A curvature map, partial-zone integral, or rounded value from an unconverged mesh is not a Chern-number result.
 
 Wilson loops transport the selected subspace around reciprocal-space loops. Their eigenphases can reveal winding or partner switching, but only after the loop family, orientation, k mesh, subspace, gauge transport, and symmetry convention are fixed.
 
-Parity eigenvalues at time-reversal-invariant momenta provide a shortcut to a `Z2` index only when inversion symmetry is present and the occupied states are correctly identified. A parity table from a non-centrosymmetric or symmetry-broken structure cannot be used for that formula.
+Parity eigenvalues at time-reversal-invariant momenta provide a shortcut to a $\mathbb Z_2$ index only when inversion symmetry is present and the occupied states are correctly identified. A parity table from a non-centrosymmetric or symmetry-broken structure cannot be used for that formula.
 
 ## A reduced Hamiltonian must reproduce the relevant physics
 

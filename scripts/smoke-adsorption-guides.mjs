@@ -7,9 +7,9 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const parentRoute = '/operations/adsorption-energies/';
 const guides = [
-  { route: `${parentRoute}guides/build-adsorption-energy-ledger/`, title: 'Build an Adsorption-Energy and Free-Energy Ledger', phrase: 'An adsorption calculation becomes interpretable only after', boundary: 'Execution success is not adsorption-energy convergence' },
-  { route: `${parentRoute}guides/compare-adsorption-sites-and-coverage/`, title: 'Compare Adsorption Sites, Coverage, and Periodic Cells', phrase: 'Site searches and coverage studies fail when unlike states', boundary: 'Execution success is not a real adsorption-site search' },
-  { route: `${parentRoute}examples/replot-cmr-co-adsorption/`, title: 'Replot the CMR CO-on-fcc(111) Adsorption Benchmark', phrase: 'This example adds a real surface-chemistry figure', boundary: 'This repository did not rerun the CMR' },
+  { route: `${parentRoute}guides/build-adsorption-energy-ledger/`, title: 'Build an Adsorption-Energy and Free-Energy Ledger', phrase: 'Audit the attributed public reaction ledger first', boundary: 'It does not establish adsorption convergence, thermodynamic accuracy, a real site or coverage series, entropy, solvent, pressure, electrode conditions, catalytic ranking, or a material conclusion.' },
+  { route: `${parentRoute}guides/compare-adsorption-sites-and-coverage/`, title: 'Compare Adsorption Sites, Coverage, and Periodic Cells', phrase: 'Run the bounded synthetic grouping fixture', boundary: 'It does not establish a real site search, coverage convergence, slab convergence, lateral interaction, or global adsorption minimum.' },
+  { route: `${parentRoute}examples/replot-cmr-co-adsorption/`, title: 'Replot the CMR CO-on-fcc(111) Adsorption Benchmark', phrase: 'Rebuild the attributed plot from the frozen snapshot', boundary: 'Neither command independently establishes source convergence, method accuracy, low-coverage adsorption, an experimental site, catalytic activity, or a new material conclusion.' },
 ];
 
 async function loadMedia(page) {

@@ -40,7 +40,7 @@
   ],
   "artifacts": [
     {"role": "QE objective plan", "path": "input/qe_plan.json", "sha256": "54b9188a1710fed6126fe7cd2ad9e34ec7bf73ad8d6ac2f0177f12f940f40ed5", "bytes": 822},
-    {"role": "candidate and convergence declaration", "path": "input/candidate-set.json", "sha256": "3581e629e873c8679b0465a7e61dbad3e9832c82e63219228bab23bca3fe479d", "bytes": 2084},
+    {"role": "candidate and convergence declaration", "path": "input/candidate-set.json", "sha256": "5d2a047ad05d85902c2f42bb279c22b14834287dd2e49f5a34a56c8334f55654", "bytes": 2097},
     {"role": "pseudopotential manifest", "path": "input/pseudopotential-manifest.json", "sha256": "ba3cc147e10a507bef55203181299c208e249c79b2c478901d09348fa329cbf6", "bytes": 767},
     {"role": "FM 8 cubed mesh input", "path": "input/fm-k8.scf.in", "sha256": "2d6d3764dc014e75a59df7782d9be0565938f582449cb0a2d1553e497c52439f", "bytes": 527},
     {"role": "FM 10 cubed mesh input", "path": "input/fm-k10.scf.in", "sha256": "2ad378358a86968907be88f2b98ba2788b4d2a1ed648a10ed894c11043114ae3", "bytes": 532},
@@ -62,7 +62,7 @@
     {"role": "attempt-02 NM 12 cubed stdout", "path": "output/attempt-02-pmix/nm-k12.out", "sha256": "5825efdcd1c1b84bdc0a27b840aad91d82a5195e964e23642e2d1bb1f3706447", "bytes": 29461},
     {"role": "attempt-02 NM 12 cubed stderr", "path": "output/attempt-02-pmix/nm-k12.err", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "bytes": 0},
     {"role": "attempt-02 parsed candidate summary", "path": "derived/attempt-02-pmix/bcc-fe-spin-summary.json", "sha256": "00db76f93de63a65fba005de7869a67ed56dc8ccf33996688abd866d0ac5a3e7", "bytes": 4917},
-    {"role": "attempt-02 FM mesh screen", "path": "derived/attempt-02-pmix/fm-kmesh-screen.json", "sha256": "b9630c65c5c6237e4cab3e2ef3931875a44937d7552c0115b51a37ccf96369c1", "bytes": 396},
+    {"role": "attempt-02 FM mesh screen", "path": "derived/attempt-02-pmix/fm-kmesh-screen.json", "sha256": "953eacff9225f26c40e8f415e8f21bd5a9fc79969686622d8315368584657840", "bytes": 409},
     {"role": "attempt-02 FM NM energy PNG", "path": "figures/attempt-02-pmix/fm-nm-energy-comparison.png", "sha256": "df02f0c8a6ec6f763ac2d37a8013b5667a91d8af3afe251562d537ec72b887b9", "bytes": 2593}
   ],
   "gates": {

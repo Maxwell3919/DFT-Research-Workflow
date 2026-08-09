@@ -7,26 +7,41 @@ The Bethe--Salpeter equation (BSE) is used when a neutral excitation cannot be r
 
 A BSE spectrum therefore answers a different question from a Kohn--Sham band structure, a quasiparticle gap, or a measured spectrum affected by temperature, disorder, substrates, phonons, and carrier populations.
 
+## Assemble and converge the two-particle problem
+
+Start from compatible quasiparticle energies and screening. Select valence/conduction windows, k sampling, momentum transfer, spin/SOC sector, Coulomb boundary, kernel, polarization, and solver approximation. Calculate the neutral excitations, then inspect continuum placement, oscillator strengths, electron--hole amplitudes, bright/dark character, broadening, and convergence of the specific excitation or spectrum. Solver residual alone is not target convergence, and one peak does not establish an exciton mechanism. This overview does not claim an executed BSE calculation.
+
 ## From electron--hole pairs to neutral excitations
 
-At transferred momentum `Q`, an excitonic state can be expanded as
+At transferred momentum $\mathbf Q$, an excitonic state can be expanded as
 
-```text
-|S_Q⟩ = Σ_vck A^S_vckQ |v k⟩ |c, k+Q⟩ .
-```
+$$
+|S_{\mathbf Q}\rangle
+= \sum_{vc\mathbf k}
+A^S_{vc\mathbf k\mathbf Q}
+|v\mathbf k\rangle
+|c,\mathbf k+\mathbf Q\rangle .
+$$
 
-`v` and `c` label occupied and empty states, `k` is a Brillouin-zone point, and the coefficients `A^S` describe the electron--hole composition of excitation `S`.
+$v$ and $c$ label occupied and empty states, $\mathbf k$ is a Brillouin-zone point, and the coefficients $A^S$ describe the electron--hole composition of excitation $S$.
 
 In a common static formulation,
 
-```text
-Σ_v'c'k' H^BSE_vck,v'c'k' A^S_v'c'k'
-= Ω_S A^S_vck,
+$$
+\sum_{v'c'\mathbf k'}
+H^{\mathrm{BSE}}_{vc\mathbf k,v'c'\mathbf k'}
+A^S_{v'c'\mathbf k'}
+= \Omega_S A^S_{vc\mathbf k},
+$$
 
-H^BSE = (E^QP_ck - E^QP_vk) δ + K^x + K^d .
-```
+$$
+H^{\mathrm{BSE}}
+= \left(E^{\mathrm{QP}}_{c\mathbf k}
+-E^{\mathrm{QP}}_{v\mathbf k}\right)\delta
++K^x+K^d .
+$$
 
-The diagonal term contains compatible quasiparticle transition energies. `K^x` is the exchange or local-field contribution, and `K^d` is the screened direct electron--hole interaction. Their signs, screening model, spin and SOC convention, Coulomb boundary treatment, and transition basis are part of the result.
+The diagonal term contains compatible quasiparticle transition energies. $K^{\mathrm x}$ is the exchange or local-field contribution, and $K^{\mathrm d}$ is the screened direct electron--hole interaction. Their signs, screening model, spin and SOC convention, Coulomb boundary treatment, and transition basis are part of the result.
 
 The BSE does not apply one universal correction to a band gap. It diagonalizes a two-particle Hamiltonian whose eigenvalues and eigenvectors define neutral excitations.
 
@@ -34,11 +49,11 @@ The BSE does not apply one universal correction to a band gap. It diagonalizes a
 
 For an identified bound state, one often writes
 
-```text
-E_b = E_g^QP - Ω_S .
-```
+$$
+E_b = E_g^{\mathrm{QP}}-\Omega_S .
+$$
 
-`E_g^QP` must be the compatible quasiparticle continuum edge, and `Ω_S` must refer to the same geometry, Hamiltonian, spin/SOC state, k mesh, and boundary model.
+$E_g^{\mathrm{QP}}$ must be the compatible quasiparticle continuum edge, and $\Omega_S$ must refer to the same geometry, Hamiltonian, spin/SOC state, k mesh, and boundary model.
 
 The lowest BSE eigenvalue need not be optically bright. A bright peak need not be bound. Determine the continuum threshold, oscillator strength, momentum, and polarization before assigning an exciton binding energy.
 
@@ -46,7 +61,7 @@ This consistency is especially important in reduced-dimensional systems, where d
 
 ## Numerical representation is physical evidence
 
-The numerical representation is defined by the valence and conduction band windows, k sampling, quasiparticle inputs, dielectric screening basis, local-field cutoff, and treatment of `q → 0`. Excitons that are extended in real space can require very dense reciprocal-space sampling; strongly localized states can require a broad transition basis.
+The numerical representation is defined by the valence and conduction band windows, k sampling, quasiparticle inputs, dielectric screening basis, local-field cutoff, and treatment of $\mathbf q\to0$. Excitons that are extended in real space can require very dense reciprocal-space sampling; strongly localized states can require a broad transition basis.
 
 A smooth broadened spectrum can therefore be misleading. Converge the quantity that will be interpreted: a specified excitation energy, continuum onset, oscillator strength, polarization dependence, or exciton character. Solver residual alone is not enough.
 

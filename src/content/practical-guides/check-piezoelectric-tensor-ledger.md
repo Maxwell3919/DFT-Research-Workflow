@@ -20,7 +20,7 @@ review: docs/reviews/2026-08-04-piezoelectric-response.md
 reviewed_at: "2026-08-04"
 ---
 
-This deterministic ledger uses invented piezoelectric entries in a declared local Voigt convention. It verifies the arithmetic `e = e^clamped + e^internal` and then applies an explicitly invented compliance factor to show why a converted `d` coefficient requires a separately declared elastic input. No number is a material property.
+**Evidence class: synthetic-only.** This deterministic ledger uses invented piezoelectric entries in a declared local Voigt convention. It verifies the arithmetic $e=e^{\mathrm{clamped}}+e^{\mathrm{internal}}$ and then applies an explicitly invented compliance factor to show why a converted $d$ coefficient requires a separately declared elastic input. No number is a material property.
 
 ## Run the deterministic ledger
 

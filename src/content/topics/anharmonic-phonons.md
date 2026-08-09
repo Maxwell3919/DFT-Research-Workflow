@@ -5,21 +5,29 @@ status: reviewed
 
 Anharmonic phonon calculations ask how the harmonic normal modes of one declared reference state interact, shift, and acquire finite lifetimes. They are needed when a harmonic spectrum alone cannot represent temperature-dependent frequencies, linewidths, thermal expansion, or a strongly unstable parent structure. They do not turn a finite-temperature calculation into proof that a phase is synthesizable, nor do they by themselves calculate lattice thermal conductivity; transport is the neighbouring topic.
 
+## Choose the anharmonic observable and construct its force model
+
+Begin with a qualified harmonic parent and name the target: a renormalized frequency, linewidth, spectral function, free-energy difference, or transport input. Choose perturbative or self-consistent treatment, generate the required displaced configurations or response data, calculate forces with one compatible method, fit the declared force-constant order and range, and validate the fit against data not used to determine it. Then converge the target against supercell or q coverage, displacement amplitude, force accuracy, integration treatment, temperature sampling, and included interaction order. This remains an overview; it does not claim that an anharmonic run was executed.
+
 ## The quantity beyond the harmonic model
 
-Expanding the Born--Oppenheimer energy in displacements `u` gives a harmonic term with second-order force constants `Φ^(2)`, then cubic and quartic terms `Φ^(3)` and `Φ^(4)`:
+Expanding the Born--Oppenheimer energy in displacements $u$ gives a harmonic term with second-order force constants $\Phi^{(2)}$, then cubic and quartic terms $\Phi^{(3)}$ and $\Phi^{(4)}$:
 
-```text
-E = E₀ + 1/2 Σ Φ^(2)u² + 1/3! Σ Φ^(3)u³ + 1/4! Σ Φ^(4)u⁴ + … .
-```
+$$
+E = E_0
++ \frac{1}{2}\sum \Phi^{(2)}u^2
++ \frac{1}{3!}\sum \Phi^{(3)}u^3
++ \frac{1}{4!}\sum \Phi^{(4)}u^4
++ \cdots .
+$$
 
-Every sum is over atom, Cartesian, and lattice indices. `E₀` is the energy of the declared reference structure. `Φ^(3)` couples three displacement coordinates and permits three-phonon processes; `Φ^(4)` contributes to frequency renormalization and four-phonon processes. These tensors are derivatives at a specified structural, electronic, magnetic, charge, boundary, and numerical state. They are not transferable labels attached to a chemical formula.
+Every sum is over atom, Cartesian, and lattice indices. $E_0$ is the energy of the declared reference structure. $\Phi^{(3)}$ couples three displacement coordinates and permits three-phonon processes; $\Phi^{(4)}$ contributes to frequency renormalization and four-phonon processes. These tensors are derivatives at a specified structural, electronic, magnetic, charge, boundary, and numerical state. They are not transferable labels attached to a chemical formula.
 
 The harmonic frequencies and eigenvectors provide the basis in which an anharmonic self-energy is expressed. Its real part shifts a mode frequency and its imaginary part gives a model-dependent linewidth or lifetime. A linewidth is not a band width, numerical smearing, or an experimental resolution. A calculated lifetime also does not become a thermal conductivity until group velocities, occupations, scattering channels, reciprocal-space sampling, and a transport equation are declared and converged.
 
 ## Constructing higher-order force constants
 
-Finite-displacement routes evaluate forces for a symmetry-reduced set of singly and multiply displaced supercells, then fit `Φ^(2)`, `Φ^(3)`, and sometimes `Φ^(4)`. The displacement set, supercell, force accuracy, fitting model, interaction range, symmetry treatment, and any cutoff together define the result. Regression residuals alone do not demonstrate that a truncation is physically adequate: omitted long-range or higher-order interactions can change the target linewidth or renormalized spectrum without producing an obvious local fitting failure.
+Finite-displacement routes evaluate forces for a symmetry-reduced set of singly and multiply displaced supercells, then fit $\Phi^{(2)}$, $\Phi^{(3)}$, and sometimes $\Phi^{(4)}$. The displacement set, supercell, force accuracy, fitting model, interaction range, symmetry treatment, and any cutoff together define the result. Regression residuals alone do not demonstrate that a truncation is physically adequate: omitted long-range or higher-order interactions can change the target linewidth or renormalized spectrum without producing an obvious local fitting failure.
 
 Perturbative DFPT routes can obtain selected higher derivatives without enumerating the same supercells, but retain their own response, q-grid, electronic-state, and implementation conditions. Never combine a harmonic model from one cell or Hamiltonian with cubic terms from another merely because their formulas look compatible. Long-range electrostatics, Born charges, dielectric data, sum-rule treatment, occupations, and reference geometry must remain coherent with the harmonic parent.
 
@@ -31,7 +39,7 @@ Thus a positive renormalized frequency at one temperature is not the same propos
 
 ## Conservation, phase space, and linewidth interpretation
 
-For a three-phonon event, reciprocal momentum is conserved up to a reciprocal lattice vector `G`, schematically `q ± q' = q'' + G`; energy conservation is imposed with frequencies from the chosen model. A finite reciprocal mesh replaces exact conservation with an integration procedure. Its broadening or tetrahedron-like treatment is a numerical approximation to a delta function, not an observed lifetime. Refining that treatment, the q mesh, force-constant range, and electronic calculations can alter both phase space and matrix elements.
+For a three-phonon event, reciprocal momentum is conserved up to a reciprocal lattice vector $\mathbf G$, schematically $\mathbf q\pm\mathbf q'=\mathbf q''+\mathbf G$; energy conservation is imposed with frequencies from the chosen model. A finite reciprocal mesh replaces exact conservation with an integration procedure. Its broadening or tetrahedron-like treatment is a numerical approximation to a delta function, not an observed lifetime. Refining that treatment, the q mesh, force-constant range, and electronic calculations can alter both phase space and matrix elements.
 
 Selection rules, branch character, avoided crossings, polar corrections, isotope or boundary scattering assumptions, and temperature all alter what a reported linewidth means. A smooth temperature curve can still be wrong if it was produced with an inadequate force-constant model or reciprocal sampling. Retain the fitted force constants or input force/displacement data, symmetry operations, cell definitions, mesh and integration settings, frequency convention, temperature grid, and the exact transformation from self-energy to any plotted quantity.
 

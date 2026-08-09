@@ -10,14 +10,14 @@ const guides = [
   {
     route: '/operations/relative-and-formation-energies/guides/build-comparable-energy-ledger/',
     title: 'Build a Comparable Energy Ledger',
-    phrase: 'An energy table becomes scientifically useful only after every row has passed the comparison rules',
-    boundary: 'It does not run a DFT code',
+    phrase: 'Use this guide before subtracting total energies from different calculation records.',
+    boundary: 'This guide does not test DFT execution, numerical convergence, method accuracy, global structural search, formation energy, or phase stability.',
   },
   {
     route: '/operations/relative-and-formation-energies/examples/balance-reference-reactions-and-normalization/',
     title: 'Balance Reference Reactions and Normalization',
-    phrase: 'This worked example uses invented energies for abstract species',
-    boundary: 'The example does not run a DFT code',
+    phrase: 'Use this fixture when you need to check reaction balance, coefficient signs, and reporting normalization before inserting calculated energies.',
+    boundary: 'It does not establish an omitted competitor, a barrier, finite-temperature equilibrium, calculation accuracy, or synthesizability.',
   },
 ];
 

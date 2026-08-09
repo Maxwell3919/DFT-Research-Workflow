@@ -7,9 +7,9 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const parentRoute = '/operations/surface-energy-and-work-function/';
 const guides = [
-  { route: `${parentRoute}guides/build-surface-energy-ledger/`, title: 'Build a Surface-Energy Ledger and Diagnose Bulk Drift', phrase: 'A surface-energy table is reliable only when every large term', boundary: 'Execution success is not slab convergence for a real calculation' },
-  { route: `${parentRoute}guides/extract-work-function-potential/`, title: 'Extract Side-Specific Work Functions from a Potential Profile', phrase: 'This guide isolates the post-processing logic', boundary: 'Execution success is not electrostatic or work-function convergence for a real slab' },
-  { route: `${parentRoute}examples/compare-intermat-si-surfaces/`, title: 'Compare Published Si Surface Energies and Work Functions', phrase: 'This example adds a real-material illustration', boundary: 'This repository did not rerun the InterMat electronic-structure calculations' },
+  { route: `${parentRoute}guides/build-surface-energy-ledger/`, title: 'Build a Surface-Energy Ledger and Diagnose Bulk Drift', phrase: 'Start by auditing the attributed InterMat ledger', boundary: 'Neither establishes a new surface energy, executes DFT, proves termination completeness, validates the bulk reference, or supports a material-stability claim.' },
+  { route: `${parentRoute}guides/extract-work-function-potential/`, title: 'Extract Side-Specific Work Functions from a Potential Profile', phrase: 'Run the analytic plateau fixture', boundary: 'It establishes no real work function, surface state, electrostatic convergence, electron chemical potential, or emission property.' },
+  { route: `${parentRoute}examples/compare-intermat-si-surfaces/`, title: 'Compare Published Si Surface Energies and Work Functions', phrase: 'Rebuild the attributed comparison directly', boundary: 'It does not establish DFT convergence, experimental comparability, surface reconstruction, termination stability, method accuracy, or a new conclusion about silicon.' },
 ];
 
 async function loadMedia(page) {

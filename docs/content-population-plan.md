@@ -45,11 +45,11 @@ The registry is an address book, not a claim about how many operations exist.
 ## Reader-facing architecture
 
 ```text
-A · Structures
-B · Calculation Preparation
-C · Reference-State Calculations
+A · Structure & Model
+B · Method & Numerical Setup
+C · Reference State
 D · Target Calculations
-E · Research Completion
+E · Validation, Interpretation & Reproducibility
 ```
 
 A, B, C, and E provide the common backbone. D is a branching library selected
@@ -58,17 +58,17 @@ according to the scientific question. The complete topic inventory is stored in
 
 ## Content families
 
-### A · Structures
+### A · Structure & Model
 
 - Obtain a Material Structure
 - Build or Modify a Computational Model
 
-### B · Calculation Preparation
+### B · Method & Numerical Setup
 
 - Choose the DFT Method and Computational Setup
 - Test Numerical Convergence
 
-### C · Reference-State Calculations
+### C · Reference State
 
 - Optimize the Structure
 - Calculate the Reference Ground State
@@ -89,7 +89,7 @@ anharmonic phonons, lattice thermal transport, electron–phonon coupling,
 superconductivity, topology, and transport as separate topics where their
 setup, output, convergence, or interpretation differs.
 
-### E · Research Completion
+### E · Validation, Interpretation & Reproducibility
 
 - Analyze and Compare Results
 - Validate Results and Scientific Conclusions

@@ -5,6 +5,22 @@ status: reviewed
 
 Validation asks whether a result is credible for the scientific use assigned to it and whether the proposed conclusion is no stronger than the evidence. It is not a final checkbox after plotting. It is a structured attempt to make the result fail through numerical, physical, methodological, and external challenges.
 
+
+## Audit from program start to scientific claim
+
+For each calculation branch, answer these questions in order with **yes**, **no**, or **not assessed**:
+
+1. Did the intended executable start with the intended input, working directory, and parent state?
+2. Did the program reach its documented normal-termination marker without an earlier fatal error?
+3. Did the electronic solver satisfy the declared SCF criterion for the state actually used?
+4. If ions or the cell moved, did the optimization satisfy every declared force, stress, displacement, and constraint condition? For a fixed-geometry calculation this question is **not applicable**, not a pass.
+5. Are the downstream artifacts required by the next executable present, non-empty, and bound to the same prefix, outdir, model, and execution ancestry?
+6. Is the target observable converged along its own numerical axes rather than inferred from energy or SCF convergence?
+7. Is the result physically consistent and robust to reasonable changes in the model or theoretical method?
+8. What exact claim is supported, and which stronger claims remain untested?
+
+The [terminal inspection guide](/DFT-Research-Workflow/operations/validate-results-and-scientific-conclusions/guides/inspect-qe-hpc-calculations-from-the-terminal/) supplies bounded shell checks. The [calculation audit](/DFT-Research-Workflow/operations/validate-results-and-scientific-conclusions/examples/audit-a-qe-calculation/) shows how to assemble them into one fail-closed case readback. A failed answer sends the study back to **A** for the physical model, **B** for the method or numerical setup, **C** for the reference state, or **D** for the target branch. Validation is therefore part of the research loop, not paperwork after a run.
+
 ## Keep evidence boundaries visible throughout the workflow
 
 Evidence is accumulated across the workflow, not added as a label at the end. File existence and hashes establish artifact identity; normal program termination establishes only that a program reached its own end condition; solver or optimizer criteria establish the specific numerical condition the program reports. A target observable still requires its own convergence evidence, and a physical conclusion needs tests appropriate to its model and claim.
@@ -40,11 +56,11 @@ These checks establish artifact integrity and software behaviour within their sc
 
 Vary the numerical representation while holding the physical problem fixed. Relevant axes may include basis size, real-space grid, k and q sampling, supercell and vacuum, smearing or integration, band count, interpolation, time step, trajectory length, and solver thresholds.
 
-For a sequence controlled by resolution `h`, one may inspect
+For a sequence controlled by resolution $h$, one may inspect
 
-```text
+$$
 Δ_h = y(h_finer) - y(h_coarser) .
-```
+$$
 
 This is a measured sensitivity over the tested interval. It is not automatically the remaining numerical error. Extrapolation requires a justified convergence model and evidence that the sequence has reached its asymptotic regime.
 

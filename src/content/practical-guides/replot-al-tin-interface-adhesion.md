@@ -19,31 +19,27 @@ review: docs/reviews/2026-08-04-interface-and-heterostructure-energetics.md
 reviewed_at: "2026-08-04"
 ---
 
-Feldbauer and co-workers reported DFT contact-separation simulations for atomically flat Al/TiN interfaces. This guide freezes the seven PBE rows of their Table 2 and creates an original scatter plot; it does not rerun their calculations or copy their figure.
+Rebuild the traceable redraw:
 
-## Read the paper's quantities literally
-
-The horizontal coordinate is the magnitude of the paper's negative adhesion or interaction energy, in eV per interface cell. The vertical coordinate is its Al-layer removal energy, also in eV per interface cell. The colour records the authors' reported number of transferred Al layers after their simulated separation. These are not area-normalized works of separation, fracture energies, or universal thresholds.
-
-The [published article](https://doi.org/10.1103/PhysRevB.91.165413) and its [open preprint](https://arxiv.org/abs/1504.06192) are the authoritative source for the geometry, method, table definitions, and the authors' interpretation. The plot only checks that the committed table snapshot is transcribed and rendered deterministically.
-
-## Run the reproducible redraw
-
-```text
+```bash
 python3 examples/practical-guides/al_tin_interface_adhesion.py \
   --input examples/practical-guides/data/al-tin-interface-adhesion-2015.json \
   --svg public/media/practical-guides/interface-and-heterostructure-energetics/replot-al-tin-interface-adhesion/al-tin-interface-adhesion.svg
 ```
 
-The JSON snapshot preserves source identity, access date, table units, row labels, values, and the no-rerun boundary. It should not be extended with values inferred from a plot or used as a generic material-transfer classifier.
+The command checks the snapshot schema, exact selected Table 2 values, published sign convention, reported transfer labels, and deterministic rendering. It does not rerun the source calculations or copy the source figure.
 
-## What execution means
+## Inspect the axes and references
 
-Execution verifies snapshot schema, exact selected table values, the published sign convention, reported transfer labels, and deterministic rendering. It does not establish the accuracy of PBE, interface convergence, a cleavage barrier, transfer kinetics, an experimental contact morphology, or a prediction for a new Al/TiN interface.
+The horizontal coordinate is the magnitude of the paper's negative adhesion or interaction energy in eV per interface cell. The vertical coordinate is its Al-layer removal energy, also in eV per interface cell. Colour records the authors' reported number of transferred Al layers after their simulated separation.
 
-## What this example does not establish
+The [published article](https://doi.org/10.1103/PhysRevB.91.165413) and [open preprint](https://arxiv.org/abs/1504.06192) remain authoritative for geometry, orientation, termination, registry, calculation method, table definitions, and interpretation. The JSON preserves the selected row labels, units, values, access date, and no-rerun boundary.
 
-The seven published rows do not establish a universal material-transfer threshold, a fracture energy, a kinetic mechanism, or a result for a different orientation, termination, registry, temperature, or material. The plot is a traceable redraw, not a replacement for the article's structural and methodological evidence.
+Do not reinterpret either axis as an area-normalized work of separation, interface excess, fracture energy, or universal threshold. Such a conversion would require the exact interface area and a compatible definition of reservoirs or separated fragments. The reported transfer label is an outcome of the source's contact-separation construction, not a kinetic barrier or general classifier.
+
+## Claim boundary
+
+A successful command establishes transcription and rendering for seven bounded public rows. It does not establish PBE accuracy, interface convergence, cleavage kinetics, fracture toughness, an experimental contact morphology, a universal material-transfer threshold, or a prediction for another orientation, termination, registry, temperature, or material.
 
 ## Sources
 

@@ -24,10 +24,10 @@ for (const statement of [
   'G_i(T,p) = min_V [E_i(V) + F_vib,i(T,V) + F_el,i(T,V) + F_other,i(T,V) + pV]',
   'A clamped-ion curvature and a relaxed-ion curvature are different response quantities.',
   'There is no universal number of points or percentage volume range.',
-  'An intersection of two `E(V)` curves at one common volume is not generally the transition condition.',
+  'An intersection of two $E(V)$ curves at one common volume is not generally the transition condition.',
   'An EOS analysis does not calculate a transformation pathway or rate.',
   'A positive fitted bulk modulus shows positive curvature along the sampled hydrostatic direction near the fitted minimum.',
-  'Numerical occupation smearing is not automatically `F_el`.',
+  'Numerical occupation smearing is not automatically $F_{\\mathrm{el}}$.',
 ]) {
   if (!article.includes(statement)) errors.push(`${articlePath}: missing scientific distinction ${JSON.stringify(statement)}`);
 }

@@ -22,48 +22,54 @@ review: docs/reviews/2026-08-04-defect-formation-energies-and-charge-states.md
 reviewed_at: "2026-08-04"
 ---
 
-This worked example starts from four invented formation-energy intercepts in an abstract `3 eV` band gap. It separates three operations that are often conflated: drawing all charge-state lines, finding the thermodynamic lower envelope, and solving a charge-neutrality equation for one declared statistical model.
+Use this example only after charge-state intercepts and slopes have been assembled and checked. It separates three operations: draw every line, select the thermodynamic lower envelope, and solve one declared charge-neutrality model. All inputs describe an invented defect in an abstract 3 eV gap.
 
-## Intersect the lower envelope, not every pair
+From the repository root, run:
 
-The four lines have slopes `+2`, `+1`, `0`, and `−1`. The `+2` and neutral states cross at the fixture level `0.6 eV` above the VBM; the neutral and `−1` states cross at `1.7 eV`. The `+1` line intersects other lines but never reaches the lower envelope.
+```bash
+python3 examples/practical-guides/defect_charge_state_envelope.py \
+  --svg public/media/practical-guides/defect-formation-energies-and-charge-states/trace-charge-state-envelope/defect-charge-state-envelope.svg
+```
 
-```python
+Inspect the report for transition levels, lower-envelope membership, and neutrality-root bracketing. The SVG is a view of those stored results.
+
+## Select only lower-envelope crossings
+
+The four fixture lines have slopes $+2$, $+1$, $0$, and $-1$. The $+2$ and neutral states cross at $0.6\ \mathrm{eV}$ above the VBM; the neutral and $-1$ states cross at $1.7\ \mathrm{eV}$. The `+1` line intersects other lines but never reaches the lower envelope.
+
+Confirm this directly:
+
+```bash
+cd examples/practical-guides
+python3 - <<'PY'
 from defect_charge_state_envelope import run
 
 report = run()
 print(report["thermodynamic_transition_levels_eV_above_vbm"])
 print(report["charge_state_plus1_on_lower_envelope"])
+PY
 ```
 
-The skipped `+1` state illustrates negative-`U` envelope geometry. It does not establish a physical negative-`U` centre because the fixture has no calculated structures, charge densities, or relaxation energies. [Van de Walle and Neugebauer](https://doi.org/10.1063/1.1682673) define thermodynamic transition levels through relaxed charge-state total energies, while the broader [point-defect review](https://doi.org/10.1103/RevModPhys.86.253) details the numerical and physical requirements.
+A pairwise intersection above a lower third state is not a thermodynamic transition. The skipped `+1` state demonstrates negative-$U$ envelope geometry in the fixture; it is not evidence for a physical negative-$U$ centre without calculated structures, localization, relaxations, and converged corrections.
 
-## Solve neutrality with all assumptions exposed
+## Solve neutrality as a separate operation
 
-The fixture then assigns an invented temperature, eligible-site density, band effective densities of states, and fixed ionized-donor concentration. For every trial `E_F`, it evaluates dilute Boltzmann populations for all four charge states plus nondegenerate electron and hole concentrations. Bisection solves
+For each trial $E_F$, the fixture evaluates dilute defect populations, nondegenerate carriers, and a fixed ionized-donor population, then solves
 
-```text
-Σ_q q c_q(E_F) + p(E_F) + N_D^+ - n(E_F) = 0
-```
+$$
+\sum_q q\,c_q(E_F)
++p(E_F)+N_{\mathrm D}^{+}-n(E_F)=0.
+$$
 
-The resulting fixture root is approximately `2.455 eV` above the VBM. It is not obtained by selecting the lowest formation-energy line, and it is not a universal pinning level. Changing any defect intercept, missing defect, degeneracy, site density, band density of states, dopant population, temperature, or chemical-potential condition changes the root.
+Bisection returns a fixture root near $2.455\ \mathrm{eV}$ above the VBM. Check that the root is bracketed and the residual meets the script criterion. Do not obtain a Fermi level by selecting the lowest line at one convenient coordinate.
 
-The finite-temperature review [Imperfections are not 0 K](https://doi.org/10.1039/D3CS00432E) explains the free-energy contributions hidden by a static-energy approximation. The [py-sc-fermi paper](https://doi.org/10.21105/joss.04962) documents a production tool for self-consistent defect, carrier, and Fermi-level calculations; [doped](https://doped.readthedocs.io/en/stable/doped.thermodynamics.html) exposes corresponding defect-thermodynamics objects and terms.
+For a real model, record temperature, eligible-site densities, degeneracies, band densities of states, all defect and dopant species, chemical-potential conditions, and any frozen-in populations. Missing defects or a different thermal history can move the solution.
 
-## Rebuild the visual
+## Claim boundary
 
-Run:
+The thick envelope, dashed excluded `q = +1` line, and neutrality marker represent different derived objects. A transition level is not an equilibrium Fermi level.
 
-```text
-python3 examples/practical-guides/defect_charge_state_envelope.py \
-  --svg public/media/practical-guides/defect-formation-energies-and-charge-states/trace-charge-state-envelope/defect-charge-state-envelope.svg
-```
-
-The thick black segments are the thermodynamic envelope. The dashed `q = +1` line remains visible as an excluded equilibrium state, and the orange vertical line marks the separate toy neutrality solution. The image therefore does not equate a transition level with an equilibrium Fermi level.
-
-## What this example does not establish
-
-The example does not execute DFT, validate a band gap or VBM, identify a real defect, demonstrate negative-`U` physics, calculate a finite-temperature free energy, establish a dilute limit, or predict a carrier or defect concentration. Its energies, densities, degeneracies, donor population, and temperature are invented regression fixtures. It verifies line slopes, lower-envelope selection, transition arithmetic, and one bracketed neutrality solve only.
+This fixture verifies line slopes, lower-envelope selection, transition arithmetic, and one bracketed neutrality solve. It does not execute DFT, validate the band gap or VBM, identify a real defect, prove negative-$U$ physics, establish a dilute limit, calculate finite-temperature free energies, or predict concentrations.
 
 ## Official sources
 

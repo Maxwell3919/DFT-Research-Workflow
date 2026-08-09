@@ -26,27 +26,46 @@ review: docs/reviews/2026-08-04-band-structure.md
 reviewed_at: "2026-08-04"
 ---
 
-This is a bounded real-execution example. A CC0 Silicon CIF from COD entry 9013102 is standardized with spglib and sent to SeeK-path 2.2.1; the resulting `cF` path is used unchanged in the committed Quantum ESPRESSO 7.5 `bands` input. QE `pw.x` completed an SCF and band-path run, and `bands.x` produced the committed 141-k-point, eight-band text output. The original SVG below is regenerated from that output, not from invented eigenvalues.
+This bounded real-execution example starts from the two-site primitive cell derived from CC0 COD entry 9013102. SeeK-path 2.2.1 supplies the ordered `cF` line path, Quantum ESPRESSO 7.5 runs the SCF and compatible path calculation, and `bands.x` writes the stored 141-k-point, eight-band dataset. Use it when you need to see exactly which structure, path coordinates, commands, output, and checks sit behind a band plot.
 
-<img src="/DFT-Research-Workflow/media/practical-guides/band-structure/build-reciprocal-path-ledger/silicon-qe-bands.svg" alt="Eight blue Silicon band branches across a cumulative high-symmetry path coordinate, with a dashed zero-energy reference line." />
+## Purpose
 
-The figure is a teaching artifact: it establishes a traceable software/data lineage, not a converged band gap, an experimental comparison, or a Silicon material conclusion.
+The recorded run used the following program sequence in a prepared QE work directory. The identified pseudopotential must be present at the input's `pseudo_dir`, and the SCF and path steps must share the declared `prefix` and accessible `outdir`.
 
-## Keep coordinates separate from labels and cells
+```bash
+pw.x -in scf.in > scf.out
+grep -F "convergence has been achieved" scf.out
+grep -F "JOB DONE." scf.out
+```
 
-COD 9013102 supplies a conventional eight-site diamond-Si cell at 298.15 K. `spglib.standardize_cell(..., to_primitive=True)` creates the two-site primitive cell used by both SeeK-path and QE. The ledger in `examples/practical-guides/data/silicon-qe/seekpath.json` records the conventional input hash, `symprec=1e-5`, primitive and reciprocal bases, labels, and segments: `Γ–X`, `X–U`, `K–Γ`, `Γ–L`, `L–W`, `W–X`. The QE input uses the same labeled fractional coordinates under `K_POINTS crystal_b`.
+`pw.x` creates the parent charge density. The first `grep` checks the electronic solver condition reported by this SCF run; the second checks termination only.
 
-## Reconstruct the committed output
+```bash
+pw.x -in bands.in > bands.out
+grep -F "JOB DONE." bands.out
+bands.x -in bands.x.in > bandsx.out
+grep -F "JOB DONE." bandsx.out
+```
 
-```text
+The first command diagonalizes the accepted state at the ordered points under `K_POINTS crystal_b`. `bands.x` then writes the file named by `filband`. These markers do not show that the 40 Ry cutoff, 8 x 8 x 8 parent mesh, path density, band count, structure, or target observable is converged.
+
+The committed ledger in `examples/practical-guides/data/silicon-qe/seekpath.json` binds the conventional CIF hash, `symprec=1e-5`, primitive and reciprocal bases, labels, and segments `Gamma-X`, `X-U`, `K-Gamma`, `Gamma-L`, `L-W`, and `W-X`. The QE path uses those same labelled fractional coordinates; the labels are not inferred later from the plotted image.
+
+## Reconstruct and inspect the public evidence
+
+```bash
 python3 examples/practical-guides/silicon_qe_bands.py
 ```
 
-The companion checks the SHA-256 of the stored `bands.x` output, parses all 141 k points and eight eigenvalues, writes a CSV, and regenerates the SVG. The selectable QE inputs, output excerpts, pseudopotential identity, input/output audits, and source structure remain alongside it. The SSSP PBE Precision pseudopotential is identified by file name and SHA-256; its body is not redistributed.
+This command does not rerun QE. Execution verifies the stored-output hash, parses all 141 k points and eight eigenvalues, writes the CSV, and regenerates the SVG. That checks artifact identity, parsing, cumulative path coordinate, and rendering against the committed output.
 
-## What this guide verifies
+<img src="/DFT-Research-Workflow/media/practical-guides/band-structure/build-reciprocal-path-ledger/silicon-qe-bands.svg" alt="Eight blue Silicon band branches across a cumulative high-symmetry path coordinate, with a dashed zero-energy reference line." />
 
-Execution verifies the stored-output hash, parsing, cumulative plot coordinate, and SVG reconstruction. The SCF run passed the input and execution-completion gates; the output reports electronic convergence in nine iterations and `JOB DONE.`. A teaching-only 40 Ry / 8×8×8 setup was used. No cutoff series, k-mesh series, structural relaxation, spin-orbit test, quasiparticle correction, or experimental validation is claimed, so numerical convergence and scientific validity remain unassessed.
+Inspect the path coordinate order, special-point labels, number of k points and bands, units, energy reference, warnings, and raw versus reordered eigenvalues before interpreting a crossing or extremum. Preserve the input and output hashes, CIF identity, pseudopotential filename and SHA-256, QE version, and ledger with the figure. The pseudopotential body is not redistributed.
+
+## Decide what the example supports
+
+The stored SCF reports electronic convergence in nine iterations and `JOB DONE.`; the path and `bands.x` stages also completed. This establishes the recorded software route and reconstruction checks. No cutoff series, k-mesh series, structural relaxation, spin-orbit test, full-zone extremum convergence, quasiparticle correction, or experimental validation is part of this example. The figure therefore supports a traceable path dataset, not a converged Silicon band gap, full-zone metallicity claim, or material conclusion.
 
 ## Official sources
 

@@ -24,15 +24,34 @@ review: docs/reviews/2026-08-04-fermi-surface-and-full-brillouin-zone-analysis.m
 reviewed_at: "2026-08-05"
 ---
 
-This page now leads with a small, real aluminium calculation. The fcc primitive-cell input is intentionally explicit rather than a Materials Project identity: one Al atom, `celldm(1) = 7.653` bohr, PBE ultrasoft pseudopotential, `30 Ry` wavefunction cutoff, `240 Ry` charge cutoff, Marzari–Vanderbilt smearing of `0.02 Ry`, and a declared `8 × 8 × 8` mesh. The calculation was run with Quantum ESPRESSO `pw.x` 7.5; the open pseudopotential is identified by filename and SHA-256 in `examples/practical-guides/data/al-qe/full-zone/al-full-zone.json`, while the restricted potential body is not redistributed here.
+Use this real aluminium example when a band-path crossing suggests metallicity or a Fermi-surface feature. It compares an explicit uniform full-zone eigenvalue sample with a separate path from the same accepted state. The stored point counts and crossings are execution evidence, not a converged isosurface or pocket count.
 
-## Run a mesh and a path from the same state
+## Purpose
 
-The SCF run reports a Fermi energy of `7.8018 eV` and exits with `JOB DONE`. A subsequent `nscf` calculation uses the same density and disables symmetry reduction (`nosym = .true.`, `noinv = .true.`) so the stored ledger contains all `512` mesh points. A separate `bands` run samples `145` points on the explicit `Γ–X–W–K–Γ–L–U–W–L–K` path with sixteen intervals per segment. The compact derived files are `al-mesh.csv`, `al-path.csv`, `al-full-zone.json`, and `output-excerpt.txt` under `examples/practical-guides/data/al-qe/full-zone/`.
+The recorded QE 7.5 sequence used the explicit fcc primitive-cell state and these program stages in a prepared work directory:
 
-The reconstruction command is:
+```bash
+pw.x -in scf.in > scf.out
+grep -F "convergence has been achieved" scf.out
+grep -F "JOB DONE." scf.out
+```
 
-```text
+This creates the parent density. The two `grep` commands check the reported SCF solver condition and normal termination separately.
+
+```bash
+pw.x -in nscf.in > nscf.out
+grep -F "JOB DONE." nscf.out
+pw.x -in bands.in > bands.out
+grep -F "JOB DONE." bands.out
+```
+
+The compatible `nscf` input samples the uniform full-zone state. In this case `nosym=.true.` and `noinv=.true.` retain all 512 points for the downstream ledger; that choice is case-specific, not a universal convergence rule. The separate `bands` input samples 145 points on `Gamma-X-W-K-Gamma-L-U-W-L-K`. Its crossings describe only those line segments.
+
+The explicit teaching setup uses one Al atom, `celldm(1)=7.653` bohr, a PBE ultrasoft pseudopotential, 30 Ry wavefunction cutoff, 240 Ry charge cutoff, Marzari-Vanderbilt smearing of 0.02 Ry, and an 8 x 8 x 8 mesh. These are recorded case values, not transferable recommendations. The pseudopotential filename and SHA-256 are preserved in `examples/practical-guides/data/al-qe/full-zone/al-full-zone.json`; the potential body is not redistributed.
+
+## Inspect and reconstruct the stored field
+
+```bash
 python3 examples/practical-guides/al_qe_full_zone.py \
   --scf-output /path/to/scf.out \
   --mesh-output /path/to/nscf.out \
@@ -43,17 +62,19 @@ python3 examples/practical-guides/al_qe_full_zone.py \
   --svg public/media/practical-guides/fermi-surface-and-full-brillouin-zone-analysis/compare-full-zone-isovalue-and-band-path/al-qe-full-zone.svg
 ```
 
-The parser checks the expected `512` mesh rows, `145` path rows, four eigenvalues per row, the Fermi marker, and the source-output hashes before writing the JSON, CSV, and original SVG. The selected QE band 2 has `237` mesh values below `μ`, `275` at or above it, and `48` points within the declared `±0.25 eV` teaching window. Along the ordered path it crosses the same `μ` on three sampled intervals. These are observations from this run, not a pocket count or a converged isosurface.
+The parser verifies source-output hashes, the Fermi marker, 512 mesh rows, 145 path rows, and four eigenvalues per row before writing the compact JSON, CSV, and SVG. These checks establish dataset identity and shape; they do not establish mesh or isovalue convergence.
+
+The SCF reports a Fermi energy of `7.8018 eV`. For selected QE band 2, this run has 237 mesh values below that chemical potential, 275 at or above it, and 48 within the declared +/-0.25 eV teaching window. The ordered path crosses the same value on three sampled intervals. These are observations from this run, not an isosurface, carrier count, or pocket topology.
 
 ## Keep the scalar field and isovalue together
 
-An isovalue rendering needs the reciprocal mesh, eigenvalues, band/state identifier, and `μ` from the same calculation. [Wannier90 documents Fermi-surface output on a regular interpolated grid](https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/parameters/), and its [copper tutorial](https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_6/) demonstrates the distinction between interpolation and direct bands. [Quantum ESPRESSO's post-processing guide](https://quantum-espresso.org/Doc/pp_user_guide/node8.html) describes the software boundary between band/Fermi-surface post-processing and the underlying electronic state. The present Al plot uses direct `pw.x` eigenvalues, not a Wannier interpolation.
+An equal-energy rendering needs reciprocal coordinates, eigenvalues, band/state identity, and the isovalue from one compatible calculation. [Wannier90 documents Fermi-surface output on a regular interpolated grid](https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/parameters/), and its [copper tutorial](https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_6/) distinguishes interpolation from direct bands. The present result uses direct `pw.x` eigenvalues, not Wannier interpolation.
 
-The former invented SVG remains in the media manifest as an auxiliary explanation of why a line can miss an equal-energy contour. It is not the Al result and is not the main evidence for this page.
+Refine the mesh and perturb the isovalue before naming a pocket, neck, touching, or topology. If interpolation is introduced, compare it with direct eigenvalues near every feature used in the claim. The auxiliary invented SVG only explains how a line can miss an equal-energy contour; it is not aluminium evidence.
 
-## What this guide verifies
+## Decide what the example supports
 
-Execution verifies that Quantum ESPRESSO 7.5 completed the declared SCF, full-zone `nscf`, and band-path commands; that the expected point counts and Fermi marker are present; that the stored CSV/JSON rows are reconstructed from those outputs; and that the original SVG renders from the stored data. It does not establish mesh convergence, a converged Fermi-surface topology, carrier density, velocity, transport coefficient, interpolation validity, an electronic instability, agreement with experiment, or a material conclusion.
+Execution verifies that Quantum ESPRESSO 7.5 completed the recorded SCF, full-zone NSCF, and path commands, and that the compact artifacts reconstruct from their source hashes. This supports the declared sampled mesh/path comparison. It does not establish full-zone convergence, a Fermi-surface topology, carrier density, velocity, transport coefficient, interpolation validity, instability, experiment, or an aluminium material conclusion. A high-symmetry path cannot prove full-zone metallicity or the absence of off-path features.
 
 ## Official sources
 

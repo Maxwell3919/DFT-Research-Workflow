@@ -20,6 +20,24 @@ review: docs/reviews/2026-08-09-qe-terminal-inspection-and-audit.md
 reviewed_at: "2026-08-09"
 ---
 
+
+## Audit the current case in scientific language
+
+Read the case from execution to claim without learning an internal evidence code:
+
+| Question | Current case evidence | Decision |
+|---|---|---|
+| Are the source, input, raw output, parser, and derived files the declared bytes? | The case manifest and repository hash ledger bind the reviewed files. | Yes for byte identity; authenticity and scientific validity are separate. |
+| Did the intended QE executable start and finish normally? | Each declared raw `pw.x` output contains its program banner and normal-termination marker. | Yes for those executions only. |
+| Did the electronic solver converge? | The declared outputs contain the recorded SCF-convergence markers. | Yes for those fixed-geometry runs; this is not ionic convergence. |
+| Did an ionic or cell optimization converge? | No ionic or cell optimization is part of this fixed-geometry screen. | Not applicable, not a pass. |
+| Are the expected parsed artifacts present and tied to the raw outputs? | The parser rebuilds the summary and FM mesh screen from the hash-bound outputs. | Yes for the declared extraction. |
+| Is the target observable numerically converged? | The adjacent FM total-energy changes are compared with the declared tolerance. | No: the declared FM k-mesh total-energy screen failed. |
+| Is the result robust to model and method choices? | No independent structure, functional, pseudopotential, or broader magnetic-state sensitivity test is declared. | Not assessed. |
+| What scientific claim is supported? | The evidence documents a failed fixed-geometry teaching screen. | No converged Fe ground-state or materials claim is supported. |
+
+A failure in model adequacy returns to A, method or numerical setup to B, reference-state choice to C, and observable-specific sampling to D. Do not promote a later row when an earlier required row is unresolved.
+
 ## Purpose
 
 This worked example audits a real adverse record rather than turning a successful marker into a success story. The committed `bcc-fe-spin-qe` case contains two attempts:
@@ -48,7 +66,7 @@ Read the case-level outcome before selecting attractive output lines:
 
 ```bash
 head -n 80 -- "$case_root/manifest.json"
-rg -n '"exit_code"|"status"|"claim_boundary"' \
+grep -En '"exit_code"|"status"|"claim_boundary"' \
   "$case_root/manifest.json" \
   "$case_root/derived/attempt-02-pmix/bcc-fe-spin-summary.json" \
   "$case_root/derived/attempt-02-pmix/fm-kmesh-screen.json"
@@ -65,8 +83,6 @@ python3 examples/practical-guides/qe_calculation_audit.py
 ```
 
 The script reads the manifest, input files, both attempt records, four Attempt 02 stdout/stderr pairs, the derived candidate summary, and the FM mesh screen. It does not write a report file, regenerate a figure, invoke QE, contact Slurm, or alter the case.
-
-The audit exits normally only when it finds the expected adverse record: exact artifact hashes, an Attempt 01 pre-PWSCF launch failure, four Attempt 02 zero exits with termination and SCF markers, a failed observable-specific numerical screen, no phonon evidence, and the known internal inconsistency in the mesh record's boundary sentence.
 
 ## Check
 
@@ -99,10 +115,11 @@ The script checks these values against the hash-bound parsed summary. Their pres
 
 At the 12 x 12 x 12 mesh, the stored comparison is
 
-```text
-E(nm-k12) - E(fm-k12) = 0.04183196000002454 Ry
-                              = 569.1528104936939 meV per Fe primitive cell
-```
+$$
+E(\text{nm-k12})-E(\text{fm-k12})
+=0.04183196000002454\,\mathrm{Ry}
+=569.1528104936939\,\mathrm{meV\ per\ Fe\ primitive\ cell}.
+$$
 
 This arithmetic supports a bounded difference between two declared candidates under one stored setup. Because the FM mesh gate fails and the candidate set excludes AFM, ferrimagnetic, noncollinear, SOC, structural, strain, defect, surface, and finite-temperature alternatives, it cannot identify the magnetic ground state or justify a general Fe conclusion.
 
@@ -136,13 +153,14 @@ tolerance:                            0.0005 Ry
 
 The first change exceeds the tolerance, so the declared k-mesh total-energy convergence test fails. Artifact-identity, recorded-exit, SCF-marker, and expected-record checks pass within their stated scope; they do not override the failed numerical test. No broader material conclusion is claimed.
 
-The committed `fm-kmesh-screen.json` also contains an internal textual defect: its `boundary` sentence says both adjacent changes are at or below tolerance even though the values and `status: FAIL` say otherwise. The companion asserts that this contradiction is present and reports it. It does not silently repair source evidence.
-
 ## Read
 
 The strongest supported statement is narrow: four declared QE 7.5 SCF stages completed and provide hash-bound energies, Fermi levels, forces, stresses, and FM moments for a fixed bcc Fe model; the stored FM/NM difference is reproducible from those records.
 
 The strongest acceptance statement is adverse: the declared FM k-mesh total-energy screen failed, the case manifest remains incomplete, and no magnetic-ground-state or phonon conclusion is claimed. This is a useful audit result. Scientific validation does not require converting every case into a pass.
+
+The conditional pass criterion is consistent with the recorded FAIL status: one adjacent energy change exceeds the tolerance. The raw values, tolerance, and failure decision are unchanged.
+
 
 ## If it fails
 
@@ -154,7 +172,7 @@ If an observable-specific gate fails, preserve the adverse series and decide whe
 
 ## Next
 
-Resolve the source-record wording defect in a separately reviewed evidence update while preserving the original bytes and audit finding. Any new numerical work should declare the observable, comparison set, tolerance, and stopping rule before execution. Only a new traceable series can address numerical convergence; only a deliberately expanded candidate search can address the magnetic-state boundary; and only a complete phonon lineage can support a phonon claim.
+Return to B and predeclare a controlled extension of the same fixed-geometry FM k-mesh series, holding the method, cutoff, smearing, and SCF settings fixed; then apply the same adjacent-change criterion to the extended series. Until that test passes, retain the completed executions as evidence of a failed numerical screen and make no magnetic-ground-state claim.
 
 ## Official sources
 

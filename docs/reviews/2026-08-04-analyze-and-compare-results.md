@@ -21,3 +21,7 @@ The rendered topic page must contain the same five URLs. Manifest validation che
 ## Practical-page decision and claim boundary
 
 No subordinate page is required for this overview. Existing topic companions already expose machine-readable ledgers, convergence series, public-data redraws, and explicit claim boundaries for concrete observables. A generic comparison script would impose a false common schema across unlike quantities. The page does not analyze a project dataset, estimate a calibrated uncertainty, validate a method, establish agreement with experiment, or support a scientific conclusion.
+
+## Batch 5A operational closure
+
+The public topic now starts from an inspectable comparison ledger. A row is acceptable only when its value, unit, normalization, reference, geometry/state, method, numerical evidence, source-output SHA-256, extraction command, and bounded claim use are recorded. The ledger is common provenance, not a claim that one extractor fits every observable.

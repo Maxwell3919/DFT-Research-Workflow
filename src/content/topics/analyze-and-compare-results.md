@@ -5,6 +5,24 @@ status: reviewed
 
 Analysis begins when raw program outputs are transformed into quantities that answer the scientific question. That transformation is part of the method: selecting a reference energy, integrating a spectrum, fitting an equation of state, identifying an extremum, or averaging a trajectory can change the object being compared. A plot is therefore not the result by itself. The result is a value or distribution with a defined physical meaning, lineage, normalization, and uncertainty boundary.
 
+
+## Build a comparison ledger from exact files
+
+Before ranking values, create one row per compared result with these fields:
+
+`case_id, observable, value, unit, normalization, reference, geometry_and_state, method, numerical_evidence, source_output_sha256, extraction_command, claim_use`
+
+Record the exact output file and hash it before extraction:
+
+```bash
+output=${output:?Set output to the exact source output}
+sha256sum -- "$output"
+```
+
+The hash fixes the bytes used for the row; it does not prove that the program, model, or result is valid. Store the literal command or versioned parser that produced `value`, preserve its stdout and stderr, and retain rejected or excluded rows with the reason for exclusion. A comparison cannot be reconstructed from a plotted value alone.
+
+Use `claim_use` to state the bounded role of each row, such as ranking two structures at one declared method or checking a numerical tolerance. Do not pool rows whose observable, unit, normalization, reference, geometry/state, or method differs without an explicit transformation model.
+
 ## Define the comparison before ranking values
 
 A valid comparison specifies the object, observable, thermodynamic and boundary conditions, reference state, normalization, method, and numerical quality required to place results on the same scale. Two numbers with the same label may still answer different questions. Formation energies built from different elemental references, band gaps sampled on different k domains, surface energies for different terminations, and conductivities under different scattering models cannot be ranked without reconciling those differences.
@@ -15,21 +33,21 @@ Create a comparison table whose rows are physical cases and whose columns carry 
 
 Let the reported quantity be
 
-```text
-y = g(x_1, x_2, ..., x_n; c),
-```
+$$
+y=g(x_1,x_2,\ldots,x_n;c).
+$$
 
-where the `x_i` are extracted values, `c` denotes conventions and fixed assumptions, and `g` is the analysis transformation. Examples include a difference of total energies, a tensor rotation, a fitted derivative, an integral over energy, or a time average. Record the versioned code and parameters implementing `g`, the input artifact hashes, and intermediate values needed to reproduce the result.
+where the $x_i$ are extracted values, $c$ denotes conventions and fixed assumptions, and $g$ is the analysis transformation. Examples include a difference of total energies, a tensor rotation, a fitted derivative, an integral over energy, or a time average. Record the versioned code and parameters implementing $g$, the input artifact hashes, and intermediate values needed to reproduce the result.
 
 Unit conversion and normalization should occur once in a traceable layer. Extensive quantities must be divided by a declared atom count, formula unit, cell, area, length, or volume only when that denominator represents the scientific comparison. A two-dimensional sheet value, a slab supercell value, and a three-dimensional bulk density do not become comparable merely by attaching the same unit string.
 
 For a difference
 
-```text
-Delta y = y_A - y_B,
-```
+$$
+\Delta y=y_A-y_B.
+$$
 
-the sign convention and the identities of `A` and `B` must travel with the value. If both results share reference calculations or fitted parameters, their errors are correlated. Treating them as independent can overestimate or underestimate the uncertainty of `Delta y`.
+the sign convention and the identities of $A$ and $B$ must travel with the value. If both results share reference calculations or fitted parameters, their errors are correlated. Treating them as independent can overestimate or underestimate the uncertainty of $\Delta y$.
 
 ## Separate numerical variation from changes in the physical model
 
@@ -44,13 +62,15 @@ Cross-code agreement is strongest when structures, physical approximations, core
 An uncertainty statement should say what varies, how it was estimated, and what coverage it represents. Replicate calculations can measure stochastic or sampling variability; convergence tests constrain selected numerical approximations; fit covariance describes uncertainty under a fitted model; an ensemble of functionals samples chosen model variation; and comparison with experiment mixes computational and experimental uncertainty with possible model discrepancy. These are not interchangeable.
 
 When a measurement model is differentiable, a first-order propagation can be written
+$$
+u_y^2 \approx
+\sum_i\sum_j
+\frac{\partial g}{\partial x_i}
+\frac{\partial g}{\partial x_j}
+\operatorname{Cov}(x_i,x_j).
+$$
 
-```text
-u_y^2 approximately equals sum_i sum_j
-  (partial g / partial x_i)(partial g / partial x_j) Cov(x_i, x_j),
-```
-
-where `u_y` is the standard uncertainty and `Cov` is the covariance of the inputs. The approximation assumes local linearity and an adequate covariance model. Monte Carlo propagation can handle nonlinear transformations, but it remains only as defensible as its input distributions and correlations. A spread across arbitrary methods is not automatically a calibrated probability distribution.
+where $u_y$ is the standard uncertainty and $\operatorname{Cov}$ is the covariance of the inputs. The approximation assumes local linearity and an adequate covariance model. Monte Carlo propagation can handle nonlinear transformations, but it remains only as defensible as its input distributions and correlations. A spread across arbitrary methods is not automatically a calibrated probability distribution.
 
 Report resolution and uncertainty at compatible precision. If two values differ by less than the demonstrated numerical sensitivity, ranking them as distinct is unsupported. Conversely, overlapping uncertainty intervals do not by themselves prove equality; the scientific decision depends on the comparison model, correlations, and required effect size.
 
@@ -67,6 +87,9 @@ Correlations can guide mechanisms, but a shared trend does not establish causati
 For each proposed finding, link the derived value to source artifacts, transformation code, convergence evidence, reference and normalization, uncertainty components, controlled comparisons, and known alternatives. Record results that contradict the preferred interpretation as well as those that support it. Preserve machine-readable tables behind figures so that the reported comparison can be regenerated without digitizing an image.
 
 This topic organizes and quantifies results. **Validate Results and Scientific Conclusions** asks whether those results survive numerical, physical, methodological, and external challenges and what claim they support. **Document and Preserve the Study** packages the lineage for independent reuse. Analysis cannot promote a calculated observable into a scientific conclusion without those later steps.
+
+
+The evidence table is the reader-facing projection of the comparison ledger: every displayed value must remain traceable to its source hash and extraction command, and every conclusion must stay within the recorded `claim_use`.
 
 ## Sources and methods
 

@@ -24,3 +24,7 @@ The rendered topic must contain the same six URLs. Manifest validation checks ex
 No new subordinate page or image is required. Existing practical companions already demonstrate lineage, hashes, deterministic fixtures, public-data derivation, and evidence boundaries for concrete observables. A universal archive generator would impose a false file layout and retention policy across unlike studies. A material-result screenshot would add visual realism but would not explain study preservation; provenance-bearing real-material images remain on the practical pages where their observable and execution context can be interpreted.
 
 The page does not claim that a package has been deposited, that a DOI persists forever, that a checksum authenticates an author, that a backup is restorable without a restore test, or that reconstructed output establishes convergence, accuracy, physical validity, or a scientific conclusion.
+
+## Batch 5A operational closure
+
+The public topic now begins with the minimum recovery roles: README, source, inputs, commands, stdout/stderr and retained artifacts, parsed tables, figures plus plotted data, environment, manifest, and SHA-256 identities. Acceptance requires restoration into a new directory and regeneration of parsers and figures; a downloadable archive or passing checksum alone is insufficient.

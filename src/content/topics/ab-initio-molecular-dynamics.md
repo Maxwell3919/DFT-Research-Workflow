@@ -5,6 +5,10 @@ status: reviewed
 
 Ab initio molecular dynamics (AIMD) propagates nuclei through time while electronic forces are evaluated from a declared electronic-structure model. It asks how a specified finite model samples a specified statistical ensemble over a finite observation window. A successful run is a trajectory, not an equilibrium distribution, a free-energy surface, a diffusion coefficient, or a finite-temperature material property by itself.
 
+## Prepare and diagnose the trajectory as data
+
+Choose the ensemble, integrator, time step, thermostat or barostat, initial velocities, constraints, equilibration rule, production interval, and observables before execution. During the run inspect electronic convergence, force quality, temperature and controlled quantities, conserved-quantity drift where applicable, structural events, and restart continuity. Afterward separate equilibration from production, estimate correlation and uncertainty, and converge the claimed observable against time step, cell, k sampling, trajectory length, and independent starts. This overview does not claim an executed AIMD trajectory.
+
 ## The trajectory has a physical model and a numerical model
 
 In Born--Oppenheimer dynamics, an electronic state is solved at each nuclear step and the resulting forces advance the nuclei. Car--Parrinello dynamics instead introduces a coupled fictitious electronic dynamics and therefore has different adiabatic-separation checks. Both routes retain the exchange--correlation model, pseudopotentials, cell, composition, charge, spin, and boundary conditions of their force evaluation. A thermostat or barostat changes the sampled ensemble and the interpretation of energy, temperature, volume, and pressure fluctuations.
@@ -19,13 +23,14 @@ The time step resolves the fastest relevant nuclear motion and couples to force 
 
 ## Averages require an estimator and an uncertainty model
 
-For a time series `A(t)`, the trajectory average is an estimator such as
+For a time series $A(t)$, the trajectory average is an estimator such as
 
-```text
-<A>_T = (1/T) ∫₀ᵀ A(t) dt.
-```
+$$
+\langle A\rangle_T
+= \frac{1}{T}\int_0^T A(t)\,dt.
+$$
 
-`T` is the retained production time after a declared equilibration treatment. Correlated frames do not supply one independent sample each; block analysis, autocorrelation times, independent replicas, or another appropriate uncertainty method are needed. A radial distribution function, mean-square displacement, residence time, reaction count, or free-energy estimate each consumes different coordinates, time origins, finite-size assumptions, and statistical evidence.
+$T$ is the retained production time after a declared equilibration treatment. Correlated frames do not supply one independent sample each; block analysis, autocorrelation times, independent replicas, or another appropriate uncertainty method are needed. A radial distribution function, mean-square displacement, residence time, reaction count, or free-energy estimate each consumes different coordinates, time origins, finite-size assumptions, and statistical evidence.
 
 For example, a linear mean-square displacement regime can be mapped to a diffusion coefficient only under declared dimensionality, long-time and finite-size conditions. A single crossing event does not establish a rate. A histogram is not automatically a free energy unless the sampling measure, bias, normalization, and reweighting model support that conversion.
 

@@ -7,17 +7,20 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/surface-energy-and-work-function/';
 const phrases = [
-  'A surface calculation replaces bulk translational symmetry',
-  'Surface energy is an excess per area',
-  'An asymmetric slab supplies a sum, not two separate energies',
-  'Open stoichiometry requires chemical potentials',
-  'The bulk reference can create thickness drift',
-  'Polar surfaces may not possess the naive slab limit',
-  'Work function is referenced to field-free vacuum',
-  'Asymmetric slabs can have two work functions',
-  'Semiconductor surfaces require an electronic reference choice',
-  'Real Si data illustrate comparison without proving agreement',
-  'What this topic establishes',
+  'Use a surface-energy calculation to compare the cost of creating declared facets',
+  'A Miller index identifies an orientation, not a unique surface.',
+  'The factor two counts the two equivalent surfaces.',
+  'One equation determines only the sum of the two surface excesses.',
+  'the surface free energy becomes a grand-potential excess',
+  'A fitted slope or intercept does not repair a reconstruction, strain, stoichiometry, magnetic-state, or protocol switch.',
+  'A dipole correction removes a chosen periodic-image field but does not provide missing reconstruction',
+  'Here numerical convergence means thickness, vacuum, sampling, and finite lateral-size refinement within a fixed termination',
+  'The expression is meaningful only when the vacuum reference is flat and charge-free.',
+  'Do not average physically different surfaces.',
+  'State whether the question uses work function, ionization potential',
+  'It is not a rerun of InterMat, a thickness series, or independent validation',
+  'Program termination, SCF convergence, geometry convergence, target convergence, physical plausibility, and claim support remain separate.',
+  'It does not establish an exhaustive reconstruction search, experimental surface composition',
   'Sources and methods',
 ];
 const domains = ['doi.org', 'vasp.at', 'gpaw.readthedocs.io'];
@@ -39,7 +42,7 @@ async function inspect(page, width) {
   if (result.language !== 'en' || result.title !== 'Surface Energy and Work Function') throw new Error(`surface identity mismatch: ${result.title}`);
   if (!result.hasArticle || result.hasPlaceholder || result.hasContract) throw new Error('reviewed surface narrative was not rendered naturally');
   if (result.scripts !== 0 || result.overflow) throw new Error(`surface page is not static or overflows at ${width}px`);
-  if (result.headings !== 24 || result.cards !== 3) throw new Error(`surface counts mismatch: ${result.headings} sections, ${result.cards} cards`);
+  if (result.headings < 8 || result.headings > 12 || result.cards !== 3) throw new Error(`surface counts mismatch: ${result.headings} sections outside 8..12, ${result.cards} cards`);
   for (const phrase of phrases) if (!result.text.includes(phrase)) throw new Error(`surface page is missing ${phrase}`);
   for (const domain of domains) if (!result.links.some((link) => link.includes(domain))) throw new Error(`surface page is missing ${domain}`);
   return result;
@@ -70,16 +73,16 @@ try {
   response = await noJs.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`surface no-JavaScript returned ${response?.status()}`);
   const text = await noJs.$eval('body', (body) => body.innerText);
-  for (const phrase of ['Surface energy is an excess per area', 'Work function is referenced to field-free vacuum', 'Sources and methods']) if (!text.includes(phrase)) throw new Error(`surface no-JavaScript missing ${phrase}`);
+  for (const phrase of ['The factor two counts the two equivalent surfaces.', 'The expression is meaningful only when the vacuum reference is flat and charge-free.', 'Sources and methods']) if (!text.includes(phrase)) throw new Error(`surface no-JavaScript missing ${phrase}`);
 
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
     await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
     await page.goto(`${base}${route}`, { waitUntil: 'load' });
     await capture(page, join(artifactDirectory, 'topic-surface-energy-work-function-desktop.png'));
-    await writeFile(join(artifactDirectory, 'reviewed-surfaces-summary.json'), `${JSON.stringify({ site_url: base, route, natural_sections: desktop.headings, practical_cards: desktop.cards, source_links: desktop.links.length, desktop_width: 1440, mobile_width: 390, no_javascript: true, fixed_contract: false, surface_reference_boundary: true, plateau_boundary: true, semiconductor_boundary: true }, null, 2)}\n`);
+    await writeFile(join(artifactDirectory, 'reviewed-surfaces-summary.json'), `${JSON.stringify({ site_url: base, route, natural_sections: desktop.headings, practical_cards: desktop.cards, source_links: desktop.links.length, desktop_width: 1440, mobile_width: 390, no_javascript: true, fixed_contract: false, surface_reference_boundary: desktop.text.includes('The factor two counts the two equivalent surfaces.'), plateau_boundary: desktop.text.includes('The expression is meaningful only when the vacuum reference is flat and charge-free.'), semiconductor_boundary: desktop.text.includes('State whether the question uses work function, ionization potential'), target_convergence_boundary: desktop.text.includes('Here numerical convergence means thickness, vacuum, sampling, and finite lateral-size refinement within a fixed termination') }, null, 2)}\n`);
   }
-  console.log('Reviewed surface smoke passed: 24 natural sections, 3 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and surface-reference/plateau/semiconductor boundaries.');
+  console.log(`Reviewed surface smoke passed: ${desktop.headings} natural sections, 3 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and surface-reference/plateau/semiconductor/target-convergence boundaries.`);
 } finally {
   await browser.close();
 }

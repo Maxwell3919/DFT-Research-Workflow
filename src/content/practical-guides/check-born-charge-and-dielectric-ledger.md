@@ -25,6 +25,18 @@ reviewed_at: "2026-08-04"
 
 This is a bounded real-execution case for the same CC0 COD 9013102 Silicon structure used by the other Silicon pages. Quantum ESPRESSO 7.5 `pw.x` first converged an 8×8×8 fixed-geometry SCF state; `ph.x` then ran at Γ with `epsil = .true.` using the same `prefix`/`outdir` lineage. The committed output contains the electronic/ion-clamped dielectric tensor, raw and acoustic-sum-rule-adjusted Born effective-charge diagnostics, the response input, and the dynamical matrix.
 
+## Inspect the stored outputs first
+
+```bash
+grep -F "JOB DONE" examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-scf.out
+grep -F "convergence has been achieved" examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-scf.out
+grep -F "JOB DONE" examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-ph.out
+grep -A 4 -F "Dielectric constant in cartesian axis" examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-ph.out
+grep -A 16 -F "Effective charges (d Force / dE)" examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-ph.out
+```
+
+The first and third commands check normal program termination only. The SCF marker checks the electronic solver condition reported by that stored `pw.x` run. The tensor and effective-charge blocks identify the one-Gamma response that the parser reconstructs. None of them establishes k-mesh, cutoff, response, q-mesh, LO--TO, or observable convergence.
+
 ![Silicon QE 7.5 Gamma-point dielectric tensor and Born-charge diagnostic.](/DFT-Research-Workflow/media/practical-guides/dielectric-response-and-born-effective-charges/check-born-charge-and-dielectric-ledger/silicon-qe-dielectric.svg)
 
 ## Reconstruct the response ledger

@@ -1,10 +1,100 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/paths';
 import workflowsDocument from '../../../recipes/index.json';
+import topicRegistryDocument from '../../../workflow/topics.json';
+
+const topicTitleBySlug = new Map<string, string>();
+const indexTopicTitles = (value: unknown): void => {
+  if (Array.isArray(value)) {
+    value.forEach(indexTopicTitles);
+    return;
+  }
+  if (!value || typeof value !== 'object') return;
+  const record = value as Record<string, unknown>;
+  if (typeof record.slug === 'string' && typeof record.title === 'string') {
+    topicTitleBySlug.set(record.slug, record.title);
+  }
+  Object.values(record).forEach(indexTopicTitles);
+};
+indexTopicTitles(topicRegistryDocument);
+
+type ActionRecord = {
+  label: string;
+  cwd: string;
+  commands: string[];
+  boundary: string;
+};
+
+type StartHere = {
+  repository_url: string;
+  source_revision_token: string;
+  working_directory: string;
+  case_root: string;
+  acquisition_commands: string[];
+  first_action: ActionRecord;
+};
+
+type ExecutionContext = {
+  id: string;
+  label: string;
+  allowed_when: string;
+  boundary: string;
+};
+
+type EvidenceTrack = {
+  id: string;
+  label: string;
+  launches_dft: boolean;
+  commands: string[];
+  output_policy: string;
+  audit: string[];
+  parse_plot_boundary: string;
+  boundary: string;
+};
+
+type SourceRecord = {
+  id: string;
+  label: string;
+  role: string;
+  url?: string;
+  case_files: string[];
+  identity?: string[];
+  boundary: string;
+};
+
+type RecordConflict = {
+  id: string;
+  case_files: string[];
+  preferred_record: string;
+  status: string;
+  boundary: string;
+};
+
+type ReaderRouteStage = {
+  id: string;
+  label: string;
+  purpose: string;
+  topic_slugs: string[];
+  coverage: string;
+  case_files: string[];
+  execution_route_ids: string[];
+  command_stages: string[];
+  artifact_paths: string[];
+  action?: ActionRecord;
+  assessment?: string;
+  observable_convergence?: string;
+  boundary: string;
+};
+
+type ReaderRoute = {
+  schema_version: number;
+  stages: ReaderRouteStage[];
+};
 
 type Workflow = {
   slug: string;
@@ -13,6 +103,17 @@ type Workflow = {
   excerpt_path: string;
   material: string;
   summary: string;
+  history_kind: string;
+  evidence_boundary: string;
+  continuity_boundary: string;
+  continuous_execution_route_ids: string[];
+  claim_boundary: string;
+  start_here: StartHere;
+  execution_contexts: ExecutionContext[];
+  evidence_tracks: EvidenceTrack[];
+  source_records: SourceRecord[];
+  record_conflicts?: RecordConflict[];
+  reader_route: ReaderRoute;
 };
 
 type CommandRecord = {
@@ -51,7 +152,6 @@ type CaseManifest = {
 };
 
 type Figure = { path: string; role: string; sha256: string; alt: string; caption?: string; dataUrl: string };
-type ManualStage = { label: string; href: string; detail: string };
 type Props = { workflow: Workflow; manifest: CaseManifest; excerpt: string; figures: Figure[] };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -71,6 +171,43 @@ export const getStaticPaths: GetStaticPaths = async () => {
       if (!excerptArtifact || excerptArtifact.sha256 !== excerptSha256 || excerptArtifact.bytes !== Buffer.byteLength(excerpt)) {
         throw new Error(`excerpt ${workflow.excerpt_path} is not bound by the case manifest hash and byte count`);
       }
+
+      const countReferences = (values: Array<string | undefined>) => {
+        const counts = new Map<string, number>();
+        for (const value of values) {
+          if (value) counts.set(value, (counts.get(value) ?? 0) + 1);
+        }
+        return counts;
+      };
+      const routeCounts = countReferences((parsed.execution_routes ?? []).map((route) => route.route_id));
+      const commandCounts = countReferences((parsed.commands ?? []).map((command) => command.stage));
+      const artifactCounts = countReferences((parsed.artifacts ?? []).map((artifact) => artifact.path));
+      const assertSingleReference = (
+        kind: string,
+        reference: string,
+        counts: Map<string, number>,
+        owner: string,
+      ) => {
+        if (counts.get(reference) !== 1) {
+          throw new Error(`${owner} references unresolved or ambiguous ${kind} ${reference}`);
+        }
+      };
+
+      for (const routeId of workflow.continuous_execution_route_ids) {
+        assertSingleReference('execution route', routeId, routeCounts, `workflow ${workflow.slug}`);
+      }
+      for (const stage of workflow.reader_route.stages) {
+        for (const routeId of stage.execution_route_ids) {
+          assertSingleReference('execution route', routeId, routeCounts, `reader stage ${stage.id}`);
+        }
+        for (const commandStage of stage.command_stages) {
+          assertSingleReference('command stage', commandStage, commandCounts, `reader stage ${stage.id}`);
+        }
+        for (const artifactPath of stage.artifact_paths) {
+          assertSingleReference('artifact', artifactPath, artifactCounts, `reader stage ${stage.id}`);
+        }
+      }
+
       const figures = await Promise.all((parsed.artifacts ?? [])
         .filter((artifact) => artifact.path?.startsWith('figures/') && /\.(?:png|webp)$/i.test(artifact.path))
         .map(async (artifact) => {
@@ -104,6 +241,37 @@ const software = (manifest.software ?? [])
 const commands = manifest.commands ?? [];
 const executionRoutes = manifest.execution_routes ?? [];
 const artifacts = manifest.artifacts ?? [];
+const readerStages = workflow.reader_route.stages;
+const recordConflicts = workflow.record_conflicts ?? [];
+const storedEvidenceTracks = workflow.evidence_tracks.filter((track) => !track.launches_dft);
+const freshExecutionTracks = workflow.evidence_tracks.filter((track) => track.launches_dft);
+const evidenceTrackGroups = [
+  {
+    id: 'stored',
+    label: 'Inspect stored evidence',
+    intro: 'This track reads the published, hash-bound case records and does not launch a new DFT calculation.',
+    tracks: storedEvidenceTracks,
+  },
+  {
+    id: 'fresh',
+    label: 'Run a fresh calculation',
+    intro: 'This track launches software in a caller-controlled runtime directory. Its new outputs do not rewrite the historical records published in the case bundle.',
+    tracks: freshExecutionTracks,
+  },
+];
+
+const executionRouteById = new Map<string, ExecutionRoute>();
+for (const route of executionRoutes) {
+  if (route.route_id) executionRouteById.set(route.route_id, route);
+}
+const commandIndexByStage = new Map<string, number>();
+commands.forEach((command, index) => {
+  if (command.stage) commandIndexByStage.set(command.stage, index);
+});
+const artifactByPath = new Map<string, NonNullable<CaseManifest['artifacts']>[number]>();
+for (const artifact of artifacts) {
+  if (artifact.path) artifactByPath.set(artifact.path, artifact);
+}
 const gates = Object.entries(manifest.gates ?? {}).sort(([a], [b]) => a.localeCompare(b));
 const gateLabels: Record<string, string> = {
   G0: 'Inputs and identity',
@@ -121,62 +289,285 @@ const gateStatusText = (status?: string) => ({
   'NOT CLAIMED': 'No material-level claim is made',
 }[status ?? ''] ?? 'No public status is declared');
 const caseRoot = `examples/cases/${workflow.case_id}/`;
-const sourceRevision = process.env.GITHUB_SHA ?? 'main';
+const sourceRevision = (() => {
+  const declared = process.env.GITHUB_SHA ?? process.env.SOURCE_REVISION;
+  if (/^[a-f0-9]{40}$/i.test(declared ?? '')) return declared as string;
+  try {
+    const local = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+    if (/^[a-f0-9]{40}$/i.test(local)) return local;
+  } catch {
+    // The explicit error below keeps exact-checkout instructions fail closed.
+  }
+  throw new Error('Worked workflow rendering requires an exact 40-character source revision.');
+})();
 const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Research-Workflow/blob/${sourceRevision}/${caseRoot}${file}`;
-const pseudopotentialArchiveUrl = 'https://archive.materialscloud.org/records/rcyfm-68h65/files/SSSP_1.3.0_PBE_precision.tar.gz?download=1';
-const manualStages: ManualStage[] = workflow.case_id === 'silicon-ground-state-electronic-structure' ? [
-  { label: 'Obtain and inspect the source CIF', href: withBase('operations/obtain-material-structure/'), detail: 'Download COD 9013102, preserve its identity, read the crystallographic fields, and inspect the structure.' },
-  { label: 'Build the computational model', href: withBase('operations/build-or-modify-computational-model/'), detail: 'Run the case preparation script to check the conventional Si8 record and emit the declared NOT_RANKED two-site primitive QE geometry.' },
-  { label: 'Choose the method and numerical setup', href: withBase('operations/choose-dft-method-and-computational-setup/'), detail: 'Keep PBE, the exact-hash UPF, spin, occupations, cutoffs, grids, and solver controls as explicit choices.' },
-  { label: 'Test cutoff and k-point convergence', href: withBase('operations/test-numerical-convergence/'), detail: 'Run and inspect the 3 by 3 matrix, then set an observable-specific tolerance instead of copying its largest setting.' },
-  { label: 'Optimize the structure', href: withBase('operations/optimize-structure/'), detail: 'Run the displaced fixed-cell relaxation and distinguish electronic iterations from ionic convergence and minimum identification.' },
-  { label: 'Calculate the reference state', href: withBase('operations/calculate-reference-ground-state/'), detail: 'Run the fixed-geometry SCF and retain its structure, method, state, output, and restart lineage.' },
-  { label: 'Calculate and read bands', href: withBase('operations/band-structure/'), detail: 'Keep the line path, full-zone sample, retained solver warning, and fundamental-gap boundary separate.' },
-  { label: 'Calculate and read DOS', href: withBase('operations/density-of-states-and-projected-density-of-states/'), detail: 'Use a full-zone NSCF parent and dos.x, then inspect integration, reference energy, and mesh sensitivity.' },
-  { label: 'Audit termination, solvers, artifacts, and convergence', href: withBase('operations/validate-results-and-scientific-conclusions/guides/inspect-qe-hpc-calculations-from-the-terminal/'), detail: 'Check scheduler and program exits, SCF and ionic markers, warnings, expected files, and the target observable independently.' },
-  { label: 'Interpret only the supported result', href: withBase('operations/analyze-and-compare-results/'), detail: 'Compare like with like and stop below any claim whose numerical, physical, or model challenge is unresolved.' },
-  { label: 'Preserve the study', href: withBase('operations/document-and-preserve-study/'), detail: 'Retain source, model, method, inputs, outputs, parsed data, figures, hashes, failures, and claim boundaries.' },
-] : [];
-const manualStartCommand = `python3 -m venv .venv
-.venv/bin/pip install -r requirements-practical.txt
-prepared=/absolute/path/outside/the/repository/silicon-prepared
-.venv/bin/python examples/cases/silicon-ground-state-electronic-structure/prepare-replay.py \\
-  --download-pseudopotential \\
-  --output-dir "$prepared"
-
-PSEUDO_DIR="$prepared/pseudo" \\
-RUNTIME_DIR=/absolute/path/outside/the/repository/silicon-runtime \\
-QE_LAUNCHER='mpirun -np 4' \\
-bash examples/cases/silicon-ground-state-electronic-structure/run.sh`;
+const substituteSourceRevision = (value: string) =>
+  value.split(workflow.start_here.source_revision_token).join(sourceRevision);
+const commandBlock = (values: string[]) => values.map(substituteSourceRevision).join('\n');
+const commandAnchor = (stage: string) => {
+  const index = commandIndexByStage.get(stage);
+  return index === undefined ? 'commands-heading' : `recorded-command-${index + 1}`;
+};
 ---
 
 <BaseLayout title={workflow.title} description={workflow.summary} current="workflows">
-  <article class="chapter">
+  <article
+    class="chapter"
+    data-workflow-slug={workflow.slug}
+    data-case-id={workflow.case_id}
+    data-history-kind={workflow.history_kind}
+    data-evidence-boundary={workflow.evidence_boundary}
+    data-continuity-boundary={workflow.continuity_boundary}
+    data-claim-boundary={workflow.claim_boundary}
+  >
     <p class="breadcrumb"><a href={withBase('workflows/')}>Worked Workflows</a></p>
     <p class="operation-label">Published terminal-first case</p>
     <h1>{workflow.title}</h1>
     <p class="operation-summary">{workflow.summary}</p>
 
-    {manualStages.length > 0 && (
-      <section class="article-content" aria-labelledby="manual-route-heading">
-        <h2 id="manual-route-heading">Run the workflow manually</h2>
-        <p>
-          Follow these links in order for a first run, but return to an earlier stage whenever a model, method, reference state, target calculation, or validation check fails. This is not a one-way pipeline.
-        </p>
-        <ol>
-          {manualStages.map((stage) => (
-            <li><a href={stage.href}>{stage.label}</a>{' — '}{stage.detail}</li>
+
+
+    <section class="article-content" aria-labelledby="start-here-heading" data-start-here>
+      <h2 id="start-here-heading">Start here</h2>
+      <p>
+        <strong>Repository:</strong>{' '}
+        <a href={substituteSourceRevision(workflow.start_here.repository_url)}>
+          {substituteSourceRevision(workflow.start_here.repository_url)}
+        </a>
+      </p>
+      <p><strong>Source revision:</strong> <code>{sourceRevision}</code></p>
+      <p><strong>Working directory:</strong> <code>{workflow.start_here.working_directory}</code></p>
+      <p><strong>Case root:</strong> <code>{workflow.start_here.case_root}</code></p>
+      <pre><code>{commandBlock(workflow.start_here.acquisition_commands)}</code></pre>
+      <h3>{workflow.start_here.first_action.label}</h3>
+      <p><strong>Run from:</strong> <code>{substituteSourceRevision(workflow.start_here.first_action.cwd)}</code></p>
+      <pre><code>{commandBlock(workflow.start_here.first_action.commands)}</code></pre>
+      <p><strong>Boundary:</strong> {substituteSourceRevision(workflow.start_here.first_action.boundary)}</p>
+    </section>
+
+<section
+      class="article-content"
+      aria-labelledby="reader-route-heading"
+      data-reader-route={workflow.slug}
+      data-reader-route-schema-version={workflow.reader_route.schema_version}
+    >
+      <h2 id="reader-route-heading">Follow the calculation</h2>
+      <p>
+        Follow this case-specific order for reading or replay, and return to an earlier stage whenever a model, method, reference state, target calculation, or validation check fails. The stage order is not a universal DFT sequence and does not establish historical continuity beyond the routes declared above.
+      </p>
+      <ol>
+        {readerStages.map((stage, index) => (
+          <li
+            data-reader-stage={stage.id}
+            data-reader-stage-index={index + 1}
+            data-topic-slugs={stage.topic_slugs.join(',')}
+            data-case-files={stage.case_files.join(',')}
+            data-execution-route-ids={stage.execution_route_ids.join(',')}
+            data-command-stages={stage.command_stages.join(',')}
+            data-artifact-paths={stage.artifact_paths.join(',')}
+          >
+            <h3 id={`reader-stage-${stage.id}`}>{stage.label}</h3>
+            <p>{stage.purpose}</p>
+
+            {stage.topic_slugs.length > 0 && (
+              <>
+                <p><strong>Research Workflow topics</strong></p>
+                <ul>
+                  {stage.topic_slugs.map((topicSlug) => (
+                    <li data-topic-reference={topicSlug}>
+                      <a href={withBase(`operations/${topicSlug}/`)}>{topicTitleBySlug.get(topicSlug) ?? "Research Workflow topic"}</a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {stage.case_files.length > 0 && (
+              <>
+                <p><strong>Case files</strong></p>
+                <ul>
+                  {stage.case_files.map((path) => (
+                    <li data-case-file-reference={path}>
+                      <a href={caseFileUrl(path)}><code>{path}</code></a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {stage.action && (
+              <div data-reader-stage-action>
+                <h4>{stage.action.label}</h4>
+                <p><strong>Run from:</strong> <code>{substituteSourceRevision(stage.action.cwd)}</code></p>
+                <pre><code>{commandBlock(stage.action.commands)}</code></pre>
+                <p><strong>Boundary:</strong> {substituteSourceRevision(stage.action.boundary)}</p>
+              </div>
+            )}
+
+            {stage.execution_route_ids.length > 0 && (
+              <>
+                <p><strong>Recorded execution routes</strong></p>
+                <ul>
+                  {stage.execution_route_ids.map((routeId) => (
+                    <li data-execution-route-reference={routeId}>
+                      <a href={`#execution-route-${routeId}`}>
+                        {executionRouteById.get(routeId)?.label ?? "Recorded execution route"}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {stage.command_stages.length > 0 && (
+              <>
+                <p><strong>Recorded commands</strong></p>
+                <ul>
+                  {stage.command_stages.map((commandStage) => (
+                    <li data-command-stage-reference={commandStage}>
+                      <a href={`#${commandAnchor(commandStage)}`}><code>{commandStage}</code></a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {stage.artifact_paths.length > 0 && (
+              <>
+                <p><strong>Critical artifacts for this stage</strong></p>
+                <ul>
+                  {stage.artifact_paths.map((path) => (
+                    <li data-artifact-reference={path}>
+                      <a href={caseFileUrl(path)}><code>{path}</code></a>
+                      {' — '}{artifactByPath.get(path)?.role ?? 'manifest artifact'}; SHA-256{' '}
+                      <code>{artifactByPath.get(path)?.sha256 ?? 'not declared'}</code>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {stage.assessment && <p data-stage-assessment><strong>Assessment:</strong> {stage.assessment}</p>}
+            {stage.observable_convergence && <p data-observable-convergence><strong>Observable convergence:</strong> {stage.observable_convergence}</p>}
+            <p><strong>Boundary:</strong> {stage.boundary}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+<section class="article-content" aria-labelledby="case-scope-heading" data-case-evidence-scope>
+      <h2 id="case-scope-heading">How to use this workflow</h2>
+      <dl>
+        <dt>Evidence boundary</dt>
+        <dd>{workflow.evidence_boundary}</dd>
+        <dt>Continuity boundary</dt>
+        <dd>{workflow.continuity_boundary}</dd>
+        <dt>Claim boundary</dt>
+        <dd>{workflow.claim_boundary}</dd>
+      </dl>
+      {workflow.continuous_execution_route_ids.length > 0 && (
+        <>
+          <h3>Declared continuous execution routes</h3>
+          <ul>
+            {workflow.continuous_execution_route_ids.map((routeId) => (
+              <li data-continuous-execution-route-reference={routeId}>
+                <a href={`#execution-route-${routeId}`}>
+                  {executionRouteById.get(routeId)?.label ?? routeId}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </section>
+
+    <section class="article-content" aria-labelledby="execution-contexts-heading" data-execution-contexts>
+      <h2 id="execution-contexts-heading">Execution contexts</h2>
+      <dl>
+        {workflow.execution_contexts.map((context) => (
+          <>
+            <dt data-execution-context={context.id}>{context.label}</dt>
+            <dd>
+              <strong>Use when:</strong> {context.allowed_when}.{' '}
+              <strong>Boundary:</strong> {context.boundary}
+            </dd>
+          </>
+        ))}
+      </dl>
+    </section>
+
+    <section class="article-content" aria-labelledby="evidence-tracks-heading" data-evidence-tracks>
+      <h2 id="evidence-tracks-heading">Stored evidence and fresh execution</h2>
+      {evidenceTrackGroups.map((group) => group.tracks.length > 0 && (
+        <section aria-labelledby={`evidence-track-group-${group.id}`} data-evidence-track-group={group.id}>
+          <h3 id={`evidence-track-group-${group.id}`}>{group.label}</h3>
+          <p>{group.intro}</p>
+          {group.tracks.map((track) => (
+            <div data-evidence-track={track.id} data-launches-dft={String(track.launches_dft)}>
+              <h4>{track.label}</h4>
+              {track.commands.length > 0 && <pre><code>{commandBlock(track.commands)}</code></pre>}
+              <p><strong>Output policy:</strong> {track.output_policy}</p>
+              {track.audit.length > 0 && (
+                <>
+                  <p><strong>Audit</strong></p>
+                  <ul>{track.audit.map((item) => <li>{item}</li>)}</ul>
+                </>
+              )}
+              <p><strong>Parse and plot boundary:</strong> {track.parse_plot_boundary}</p>
+              <p><strong>Boundary:</strong> {track.boundary}</p>
+            </div>
           ))}
-        </ol>
-        <p>
-          The <a href={caseFileUrl('prepare-replay.py')}>manual preparation script</a> binds the exact public CIF to the declared two-site geometry and obtains the exact-hash member from the <a href={pseudopotentialArchiveUrl}>official SSSP v1.3.0 PBE precision archive</a>. It writes the UPF only to a caller-selected directory outside the repository.
-        </p>
-        <pre><code>{manualStartCommand}</code></pre>
-        <p>
-          The generated model is <strong>NOT_RANKED</strong>. Matching source, symmetry, geometry, archive, member, size, and hashes makes this route reproducible; it does not establish model stability, pseudopotential suitability, observable convergence, or a scientific conclusion.
-        </p>
+        </section>
+      ))}
+    </section>
+
+    <section class="article-content" aria-labelledby="source-records-heading" data-source-records>
+      <h2 id="source-records-heading">Declared sources and identities</h2>
+      {workflow.source_records.map((source) => (
+        <div id={`source-record-${source.id}`} data-source-record={source.id}>
+          <h3>{source.url ? <a href={source.url}>{source.label}</a> : source.label}</h3>
+          <p>{source.role}</p>
+          {source.case_files.length > 0 && (
+            <ul>
+              {source.case_files.map((path) => (
+                <li data-source-case-file-reference={path}>
+                  <a href={caseFileUrl(path)}><code>{path}</code></a>
+                </li>
+              ))}
+            </ul>
+          )}
+          {source.identity && source.identity.length > 0 && (
+            <ul>{source.identity.map((item) => <li>{item}</li>)}</ul>
+          )}
+          <p><strong>Boundary:</strong> {source.boundary}</p>
+        </div>
+      ))}
+    </section>
+
+    {recordConflicts.length > 0 && (
+      <section class="article-content" aria-labelledby="record-conflicts-heading" data-record-conflicts>
+        <h2 id="record-conflicts-heading">Retained record conflicts</h2>
+        {recordConflicts.map((conflict) => (
+          <div data-record-conflict={conflict.id}>
+            <p><strong>Record note</strong></p>
+            <ul>
+              {conflict.case_files.map((path) => (
+                <li data-conflicting-case-file-reference={path}>
+                  <a href={caseFileUrl(path)}><code>{path}</code></a>
+                </li>
+              ))}
+            </ul>
+            <p>
+              <strong>Preferred record:</strong>{' '}
+              <a href={caseFileUrl(conflict.preferred_record)}><code>{conflict.preferred_record}</code></a>
+            </p>
+            <p><strong>Boundary:</strong> {conflict.boundary}</p>
+          </div>
+        ))}
       </section>
     )}
+
+
 
     <section class="article-content" aria-labelledby="case-bundle-heading">
       <h2 id="case-bundle-heading">Case bundle</h2>
@@ -187,7 +578,6 @@ bash examples/cases/silicon-ground-state-electronic-structure/run.sh`;
         <li><a href={caseFileUrl('README.md')}>Case README</a></li>
         <li><a href={caseFileUrl('manifest.json')}>Execution manifest</a></li>
         <li><a href={caseFileUrl('run.sh')}>Native replay template</a></li>
-        {manualStages.length > 0 && <li><a href={caseFileUrl('prepare-replay.py')}>Manual CIF, model, and pseudopotential preparation</a></li>}
         <li><a href={caseFileUrl('check.sh')}>Case-local isolated check</a></li>
         <li><a href={caseFileUrl('parse.py')}>Strict parser</a></li>
         <li><a href={caseFileUrl(workflow.excerpt_path)}>Hash-bound output excerpt</a></li>
@@ -195,13 +585,16 @@ bash examples/cases/silicon-ground-state-electronic-structure/run.sh`;
     </section>
 
     <section class="article-content" aria-labelledby="commands-heading">
-      <h2 id="commands-heading">Recorded commands and output</h2>
+      <h2 id="commands-heading">Recorded execution evidence</h2>
       <p>
-        These records distinguish captured output, replay instructions, and unavailable historical shell details. An exit is shown only when the manifest scopes where that value came from; a QE terminal marker is not silently converted into a shell exit code.
+        These records distinguish captured output, replay instructions, and unavailable historical shell details. Records may belong to different declared routes; adjacency on this page does not establish one continuous run. An exit is shown only when the manifest scopes where that value came from, and a QE terminal marker is not silently converted into a shell exit code.
       </p>
       {manifest.completion_boundary && <p><strong>Case-wide timing boundary:</strong> {manifest.completion_boundary}</p>}
       {executionRoutes.map((route) => (
-        <div>
+        <div
+          id={route.route_id ? `execution-route-${route.route_id}` : undefined}
+          data-execution-route-id={route.route_id}
+        >
           <p><strong>{route.label ?? route.route_id ?? 'Execution route'}</strong></p>
           {route.route_id && <p><strong>Route ID:</strong> <code>{route.route_id}</code></p>}
           {route.timing && <p><strong>Route timing:</strong> {route.timing.started_at ?? 'start not recorded'} to {route.timing.completed_at ?? 'completion not recorded'}. {route.timing.scope}</p>}
@@ -211,8 +604,8 @@ bash examples/cases/silicon-ground-state-electronic-structure/run.sh`;
           {route.boundary && <p><strong>Boundary:</strong> {route.boundary}</p>}
         </div>
       ))}
-      {commands.map((entry) => (
-        <div>
+      {commands.map((entry, index) => (
+        <div id={`recorded-command-${index + 1}`} data-command-stage={entry.stage}>
           <p><strong>{entry.stage ?? 'Recorded stage'} · {typeof entry.exit_code === 'number' ? `exit ${entry.exit_code}` : 'exit not recorded'}</strong></p>
           {entry.route_id && <p><strong>Route:</strong> <code>{entry.route_id}</code></p>}
           {entry.record_kind && <p><strong>Record kind:</strong> {entry.record_kind}</p>}
@@ -228,11 +621,14 @@ bash examples/cases/silicon-ground-state-electronic-structure/run.sh`;
       <pre><code>{excerpt.trimEnd()}</code></pre>
     </section>
 
-    <section class="article-content" aria-labelledby="artifacts-heading">
-      <h2 id="artifacts-heading">Inputs, outputs, tables, and figures</h2>
+    <section class="article-content" aria-labelledby="artifacts-heading" data-artifact-appendix>
+      <h2 id="artifacts-heading">Complete artifact appendix</h2>
+      <p>
+        Stage-scoped lists above identify only the artifacts critical for reading each stage. This appendix retains every artifact declared by the case manifest, including supporting inputs, outputs, checks, tables, and figures.
+      </p>
       <ul>
         {artifacts.map((artifact) => (
-          <li>
+          <li data-artifact-path={artifact.path}>
             <a href={caseFileUrl(artifact.path ?? '')}>{artifact.path}</a>
             {' — '}{artifact.role ?? 'declared artifact'}; SHA-256 <code>{artifact.sha256 ?? 'not declared'}</code>
           </li>

@@ -20,72 +20,71 @@ review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
 
-Finite periodic models replace an isolated, dilute, semi-infinite, or macroscopic limit with a repeated cell. The resulting error can include electrostatic image interactions, elastic fields, wavefunction overlap, finite concentration, restricted wavelengths, incomplete relaxation volume, slab-thickness effects, and artificial coupling across vacuum.
+Run the companion and inspect its JSON report:
 
-## Identify the physical limit
+~~~bash
+python3 examples/practical-guides/convergence_finite_size.py > finite-size-analysis.json
+less finite-size-analysis.json
+~~~
 
-State which limit the calculation is meant to approach:
+This command analyses a hard-coded synthetic table with three lateral sizes and three vacuum lengths. It checks state labels, applies declared tolerances to an illustrative observable and dipole probe, rejects a false plateau, and requires independent stricter checks in both directions. It does not run DFT or recommend a cell.
 
-```text
-isolated molecule or cluster
-dilute point defect
-isolated adsorbate at a declared coverage limit
-semi-infinite surface
-single two-dimensional layer
-isolated interface or heterostructure
-long-wavelength lattice response
-```
+Finite periodic models replace an isolated, dilute, semi-infinite, or macroscopic limit with a repeated cell. Begin a real study by naming which limit is intended and which residual interaction prevents the current model from reaching it.
 
-The varied dimensions should correspond to the residual interactions that prevent that limit from being represented.
+## Prepare the size matrix
 
-## Vary independent cell directions deliberately
+Write the operation before generating structures:
 
-For a slab, lateral area, slab thickness, vacuum, and relaxation depth are separate axes. For a charged defect, supercell shape, dielectric screening, charge correction, and defect separation can matter together. For a two-dimensional material, in-plane sampling and out-of-plane image treatment remain distinct.
+~~~text
+physical limit:
+target observable and units:
+predeclared tolerance:
+independent size axes:
+fixed composition, coverage, ordering, boundary treatment, constraints, and method:
+state and geometry checks:
+extraction rule:
+required stricter neighbours:
+~~~
 
-The illustrative script analyses synthetic results over several lateral sizes and vacuum lengths:
+For a slab, lateral area, slab thickness, vacuum, and relaxation depth are separate axes. For a charged defect, shape, separation, dielectric treatment, correction, and relaxation volume can interact. Increasing vacuum alone does not test lateral concentration or electrostatic image error.
 
-```python
-from convergence_finite_size import analyse_finite_size_table
+Name each input from its physical controls and run the prepared series with the actual code. A QE example is:
 
-report = analyse_finite_size_table()
-print(report["accepted_region"])
-```
+~~~bash
+mkdir -p finite-size/outputs
+for input in finite-size/inputs/*.in; do
+  name=$(basename "$input" .in)
+  pw.x -in "$input" > "finite-size/outputs/$name.out"
+done
+~~~
 
-The data are not DFT results and do not encode a recommended cell size.
+This loop is a protocol for the reader's calculations, not execution evidence supplied by the synthetic companion.
 
-## Inspect the actual residual interaction
+## Check and extract
 
-A large empty region in a visualizer does not establish that long-range interactions are negligible. Ismail-Beigi's Coulomb-truncation work shows that periodic image effects can be removed by changing the interaction itself rather than only enlarging the cell.
+For QE outputs, begin by separating termination and electronic solver evidence:
 
-Record the electrostatic boundary treatment, dipole or monopole correction, Coulomb cutoff, dielectric model, and neutralizing-background convention. These settings are part of the method identity and can change the asymptotic behaviour of the convergence series.
+~~~bash
+grep -H "JOB DONE" finite-size/outputs/*.out
+grep -H "convergence has been achieved" finite-size/outputs/*.out
+tail -n 40 finite-size/outputs/*.out
+~~~
 
-## Avoid blind polynomial extrapolation
+<code>JOB DONE</code> checks normal termination only. The convergence marker checks the reported electronic solver condition. <code>tail</code> exposes the final part of each file for manual inspection; none of these commands extracts or converges the target observable.
 
-An extrapolation is defensible only when the residual-error form is physically motivated and the sampled cells are inside its asymptotic regime. Defect wavefunction overlap, electrostatics, elastic interactions, and commensurability can produce non-smooth or anisotropic behaviour.
+Use one parser for the reported energy difference, force, potential, work function, correction term, dipole probe, or other target. Preserve cell vectors, concentration, coverage, separation, relaxed geometry, charge state, and boundary method in the same table.
 
-Test several shapes or refinement paths where possible. A good fit over three points is not evidence that the assumed infinite-size law is correct.
+## Decide against independent refinements
 
-## Preserve concentration and geometry meaning
+Accept a size only when the target lies inside its predeclared tolerance and remains there under a stricter change along every unresolved axis. A visually large vacuum is not evidence. A smooth three-point fit is not evidence that the assumed asymptotic law applies.
 
-Increasing a supercell changes more than numerical size when the model contains a defect, adsorbate, alloy pattern, magnetic ordering vector, or constrained distortion. Record the resulting concentration, coverage, separation, and allowed relaxation pattern.
-
-If different cell sizes relax into different structures or charge-localization states, compare them as different physical candidates before attempting an extrapolation.
+If different sizes relax to different structures, charge-localization states, magnetic states, or ordering patterns, stop treating them as one numerical series. Numerical convergence does not repair a changing physical model.
 
 ## What this guide verifies
 
-The companion script verifies a deterministic analysis of an illustrative lateral-size/vacuum table. It requires independent refinement in both directions, checks state labels, rejects a false plateau that lacks a stricter neighbour, and reports whether one axis remains unresolved.
+The companion verifies deterministic arithmetic on an illustrative lateral-size/vacuum matrix. It identifies one accepted synthetic region, independent lateral and vacuum confirmations, consistent state labels, and a false plateau.
 
-It does not validate a vacuum thickness, defect correction, slab model, dilute limit, or extrapolation law for a real material.
-
-## Common mistakes
-
-**Increasing vacuum while leaving the electrostatic treatment unchanged.** Long-range image interactions may persist.
-
-**Changing supercell size without recording concentration.** The physical model has changed.
-
-**Using one isotropic size measure for an anisotropic cell.** Test directions and shapes that match the residual interaction.
-
-**Fitting before reaching the asymptotic regime.** A smooth curve can conceal the wrong finite-size model.
+It does not validate a real slab, defect, correction, vacuum thickness, dilute limit, extrapolation law, or DFT observable. Its selected synthetic point is not a parameter recommendation.
 
 ## Official sources
 

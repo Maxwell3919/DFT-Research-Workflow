@@ -8,6 +8,9 @@ export const getStaticPaths = () => getTools().map((tool) => ({ params: { slug: 
 
 const tool = getTool(Astro.params.slug!);
 const topics = getToolTopics(tool);
+const primaryTopic = topics.find((topic) => topic.slug === tool.primary_topic);
+if (!primaryTopic) throw new Error(`${tool.slug}: primary topic is not connected to this tool`);
+const relatedTopics = topics.filter((topic) => topic.slug !== tool.primary_topic);
 const guides = (await getCollection('practicalGuides'))
   .filter((guide) => guide.data.status === 'reviewed' && guide.data.tools.includes(tool.slug))
   .sort((a, b) => a.data.title.localeCompare(b.data.title));
@@ -42,12 +45,28 @@ const verifiedAtLabel = new Intl.DateTimeFormat('en-GB', {
   {tool.access_note && <p>{tool.access_note}</p>}
   {tool.verified_version && <p><strong>Version or environment checked:</strong> {tool.verified_version}</p>}
 
+  <h2>Use it when</h2>
+  <p>{tool.use_when}</p>
+
+  <h2>First useful action</h2>
+  <p>{tool.first_action}</p>
+
+  <h2>Inputs and outputs</h2>
+  <h3>Input objects</h3>
+  <ul data-tool-inputs>{tool.input_objects.map((item) => <li>{item}</li>)}</ul>
+  <h3>Output objects</h3>
+  <ul data-tool-outputs>{tool.output_objects.map((item) => <li>{item}</li>)}</ul>
+
   <h2>Where in DRW</h2>
-  <p>These links identify scientific tasks where the tool may have a role. They do not claim complete feature coverage or compatibility with every method described there.</p>
-  <h3>Connected workflow topics</h3>
-  <ul class="directory-list">
-    {topics.map((topic) => <li><a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a></li>)}
-  </ul>
+  <p><a data-tool-primary href={withBase(`operations/${primaryTopic.slug}/`)}>{primaryTopic.title}</a> is the primary scientific entry for this record.</p>
+  {relatedTopics.length > 0 && (
+    <>
+      <h3>Related workflow topics</h3>
+      <ul class="directory-list">
+        {relatedTopics.map((topic) => <li><a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a></li>)}
+      </ul>
+    </>
+  )}
   <h3>Reviewed practical pages</h3>
   {guides.length > 0 ? (
     <ul class="directory-list">
@@ -61,7 +80,7 @@ const verifiedAtLabel = new Intl.DateTimeFormat('en-GB', {
   )}
 
   <h2>Start here</h2>
-  <p><a data-tool-start href={tool.getting_started.url}>{tool.getting_started.label}</a> is the curated official entry point for this record. Read its access and version notes before applying it to a specific workflow.</p>
+  <p>After choosing a bounded task, open the curated official entry point: <a data-tool-start href={tool.getting_started.url}>{tool.getting_started.label}</a>.</p>
 
   <h2>Official documentation</h2>
   <ul>

@@ -10,7 +10,13 @@ const guides = [
   {
     route: '/operations/test-numerical-convergence/guides/converge-basis-cutoffs-and-grids/',
     title: 'Converge Basis Cutoffs and Real-Space Grids',
-    phrase: 'Basis completeness is not represented by one number across all electronic-structure methods.',
+    phrase: 'Numerical convergence is a comparison, not a single successful run.',
+    requiredPhrases: [
+      'for ecut in 30 40 50',
+      'extract-runtime',
+      'Declare the acceptance tolerance',
+      'not transferable cutoffs or k meshes',
+    ],
   },
   {
     route: '/operations/test-numerical-convergence/guides/converge-k-points-and-smearing/',
@@ -47,6 +53,11 @@ async function inspectGuide(page, guide, width) {
   if (result.language !== 'en') throw new Error(`${guide.route}: language is not English`);
   if (result.title !== guide.title) throw new Error(`${guide.route}: title mismatch ${result.title}`);
   if (!result.text.includes(guide.phrase)) throw new Error(`${guide.route}: missing scientific boundary phrase`);
+  for (const phrase of guide.requiredPhrases ?? []) {
+    if (!result.text.includes(phrase)) {
+      throw new Error(guide.route + ': missing operational contract phrase ' + phrase);
+    }
+  }
   if (!result.text.includes('Python 3.12')) throw new Error(`${guide.route}: missing tested Python version`);
   if (!result.toolTags.includes('python')) throw new Error(`${guide.route}: missing python tool tag`);
   if (!result.hasMeta || !result.hasEvidence) throw new Error(`${guide.route}: missing metadata or evidence boundary`);

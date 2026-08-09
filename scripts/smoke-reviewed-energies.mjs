@@ -7,7 +7,7 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/relative-and-formation-energies/';
 const requiredPhrases = [
-  'Energy differences connect an electronic-structure calculation',
+  'Use relative or formation energies when the scientific question is a comparison',
   'A raw total energy is not yet a comparable result',
   'Relative energies compare a bounded candidate set',
   'Balance a reaction before evaluating its energy',

@@ -1,3 +1,4 @@
+import { existsSync as existsForManualAcceptance, readFileSync as readFileForManualAcceptance } from 'node:fs';
 import { access, readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -94,9 +95,19 @@ function stripMarkup(html) {
     .replace(/&middot;/g, '·')
     .replace(/&ndash;/g, '–')
     .replace(/&mdash;/g, '—')
+    .replace(/&amp;/g, '&')
     .replace(/&[a-z]+;/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function dataList(tag, attribute) {
+  const value = tag.match(new RegExp(`\\b${attribute}="([^"]*)"`, 'i'))?.[1] ?? '';
+  return value === '' ? [] : value.split(',').map((entry) => entry.trim()).filter(Boolean);
+}
+
+function normalizedText(value) {
+  return value.replace(/\s+/g, ' ').trim();
 }
 
 function outputPath(href) {
@@ -146,6 +157,38 @@ for (const path of htmlFiles) {
   }
 }
 
+const expectedWorkedWorkflowSlugs = ['silicon-ground-state-electronic-structure', 'aluminium-metallic-electronic-structure'];
+if (JSON.stringify(workedWorkflows.map((entry) => entry.slug)) !== JSON.stringify(expectedWorkedWorkflowSlugs)) errors.push(`Worked Workflow routes do not match the frozen Silicon/Aluminium order: ${JSON.stringify(workedWorkflows.map((entry) => entry.slug))}`);
+const workflowsDirectoryHtml = htmlByPath.get(join(distPath, 'workflows', 'index.html')) ?? '';
+for (const entry of workedWorkflows) {
+  const html = htmlByPath.get(join(distPath, 'workflows', entry.slug, 'index.html')) ?? '';
+  const text = stripMarkup(html);
+  const routeHref = `${base}workflows/${entry.slug}/`;
+  if (!html) errors.push(`${entry.slug}: built Worked Workflow route is missing`);
+  if (!workflowsDirectoryHtml.includes(`href="${routeHref}"`)) errors.push(`${entry.slug}: Worked Workflows directory link is missing`);
+  const routeMarkers = [...html.matchAll(/\bdata-reader-route="([^"]+)"/g)].map((match) => match[1]);
+  if (JSON.stringify(routeMarkers) !== JSON.stringify([entry.slug])) errors.push(`${entry.slug}: expected exactly one matching data-reader-route marker`);
+  const tags = [...html.matchAll(/<(?:li|section|article)\b[^>]*\bdata-reader-stage="[^"]+"[^>]*>/gi)].map((match) => match[0]);
+  const renderedIds = tags.map((tag) => tag.match(/\bdata-reader-stage="([^"]+)"/i)?.[1]);
+  const expectedStages = entry.reader_route?.stages ?? [];
+  if (JSON.stringify(renderedIds) !== JSON.stringify(expectedStages.map((stage) => stage.id))) errors.push(`${entry.slug}: rendered reader_route stage order mismatch: ${JSON.stringify(renderedIds)}`);
+  for (let index = 0; index < expectedStages.length; index += 1) {
+    const stage = expectedStages[index];
+    const tag = tags[index] ?? '';
+    for (const [attribute, field] of [['data-topic-slugs', 'topic_slugs'], ['data-case-files', 'case_files'], ['data-execution-route-ids', 'execution_route_ids'], ['data-command-stages', 'command_stages'], ['data-artifact-paths', 'artifact_paths']]) {
+      if (JSON.stringify(dataList(tag, attribute)) !== JSON.stringify(stage[field])) errors.push(`${entry.slug}/${stage.id}: rendered ${attribute} does not match recipes/index.json`);
+    }
+    for (const slug of stage.topic_slugs ?? []) if (!html.includes(`href="${base}operations/${slug}/"`)) errors.push(`${entry.slug}/${stage.id}: topic route link is missing for ${slug}`);
+    for (const path of [...(stage.case_files ?? []), ...(stage.artifact_paths ?? [])]) {
+      const normalizedPath = path.startsWith('examples/cases/') ? path : `${entry.start_here.case_root}/${path}`;
+      const blobPattern = new RegExp(`href="https:\\/\\/github\\.com\\/Maxwell3919\\/DFT-Research-Workflow\\/blob\\/[a-f0-9]{40}\\/${normalizedPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'i');
+      if (!blobPattern.test(html)) errors.push(`${entry.slug}/${stage.id}: exact-revision GitHub blob link is missing for ${normalizedPath}`);
+    }
+  }
+  for (const boundary of [entry.evidence_boundary, entry.continuity_boundary, entry.claim_boundary]) if (!text.includes(normalizedText(boundary))) errors.push(`${entry.slug}: reviewed evidence/continuity/claim boundary is missing`);
+  if (!html.includes(`data-history-kind="${entry.history_kind}"`)) errors.push(`${entry.slug}: rendered history_kind mismatch`);
+}
+
 for (const retired of retiredPaths) {
   try {
     await access(join(distPath, retired));
@@ -158,10 +201,23 @@ const homeText = stripMarkup(home);
 const homeNav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
 const navLabels = [...homeNav.matchAll(/<a[^>]*>([^<]+)<\/a>/g)].map((match) => match[1].trim());
 if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
-for (const phrase of ['Scientific Question', 'Required Observable', 'Supported Scientific Conclusion', 'This is a dependency map, not a one-way pipeline.', 'Numerical convergence loop', 'Electronic self-consistency']) {
+for (const phrase of [
+  'Scientific Question',
+  'Required Observable',
+  'Supported Scientific Conclusion',
+  'Move from a question to a defensible claim',
+  'Where execution evidence exists, practical guides and worked workflows identify the file to prepare',
+  'SCF convergence is one inner numerical condition.',
+  'Start the Research Workflow',
+  'Follow a Worked Workflow',
+  'Find a Tool',
+]) {
   if (!homeText.includes(phrase)) errors.push(`Home is missing ${phrase}`);
 }
-for (const section of workflowDocument.sections) if (!home.includes(`aria-label="${section.id}, ${section.title}"`)) errors.push(`Home is missing ${section.id}, ${section.title}`);
+for (const section of workflowDocument.sections) {
+  const escapedTitle = section.title.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
+  if (!home.includes(`aria-label="${section.id}, ${escapedTitle}"`)) errors.push(`Home is missing ${section.id}, ${section.title}`);
+}
 if (/24 typed core operations|former 35 chapter URLs/.test(homeText)) errors.push('Home advertises a superseded numbered taxonomy');
 
 const operationsDirectory = htmlByPath.get(join(distPath, 'operations', 'index.html')) ?? '';
@@ -175,8 +231,25 @@ for (const section of workflowDocument.sections) {
 if (/Core Operations|O01|O24|Operation 00/.test(operationsText)) errors.push('Research Workflow directory exposes a superseded numbered framework');
 if (/\/operations\/o\d{2}-/.test(operationsDirectory)) errors.push('Research Workflow directory links transitional O routes as the current sequence');
 
-const directoryTopicLinks = [...operationsDirectory.matchAll(new RegExp(`href="${base.replaceAll('/', '\\/')}operations\/([a-z0-9-]+)\/"`, 'g'))].map((match) => match[1]);
+const topicListMarkup = [...operationsDirectory.matchAll(/<ul[^>]*class="[^"]*\btopic-list\b[^"]*"[^>]*>([\s\S]*?)<\/ul>/g)]
+  .map((match) => match[1])
+  .join('');
+const directoryTopicLinks = [...topicListMarkup.matchAll(new RegExp(`href="${base.replaceAll('/', '\\/')}operations\/([a-z0-9-]+)\/"`, 'g'))].map((match) => match[1]);
 if (JSON.stringify(directoryTopicLinks) !== JSON.stringify(topicSlugs)) errors.push('Research Workflow directory topic links do not match workflow/topics.json order');
+
+const observableSelectionMarkup = operationsDirectory.match(/<section[^>]*class="[^"]*\bobservable-selection\b[^"]*"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? '';
+const observableExampleSlugs = [...observableSelectionMarkup.matchAll(new RegExp(`href="${base.replaceAll('/', '\\/')}operations\/([a-z0-9-]+)\/"`, 'g'))].map((match) => match[1]);
+for (const slug of [
+  'relative-and-formation-energies',
+  'optimize-structure',
+  'harmonic-phonons',
+  'fermi-surface-and-full-brillouin-zone-analysis',
+  'density-of-states-and-projected-density-of-states',
+  'electron-phonon-coupling',
+  'conventional-superconductivity',
+]) {
+  if (!observableExampleSlugs.includes(slug)) errors.push(`Research Workflow observable examples are missing ${slug}`);
+}
 
 for (const topic of workflowTopics) {
   const path = join(distPath, 'operations', topic.slug, 'index.html');
@@ -252,7 +325,7 @@ for (const workflow of workedWorkflows) {
   if (!html) errors.push(`missing Worked Workflow route: ${workflow.slug}`);
   if (!workflowDirectory.includes(`${base}workflows/${workflow.slug}/`)) errors.push(`Worked Workflows directory is missing ${workflow.slug}`);
   if (!text.includes(workflow.title)) errors.push(`${workflow.slug}: workflow title mismatch`);
-  for (const phrase of ['Recorded commands and output', 'Inputs, outputs, tables, and figures', 'What this case supports', 'What this case does not support']) {
+  for (const phrase of ['Recorded execution evidence', 'Complete artifact appendix', 'What this case supports', 'What this case does not support']) {
     if (!text.includes(phrase)) errors.push(`${workflow.slug}: missing terminal-first section ${phrase}`);
   }
   if (!html.includes('data:image/png;base64,')) errors.push(`${workflow.slug}: no case-derived PNG is rendered`);
@@ -306,6 +379,72 @@ for (const legacy of legacyOperations) {
 }
 
 if (!htmlByPath.has(join(distPath, '404.html'))) errors.push('custom English 404 page was not generated');
+
+// DRW_MANUAL_HANDOFF_ACCEPTANCE
+{
+  const possibleRoots = [
+    'dist/DFT-Research-Workflow',
+    'dist',
+  ];
+  const builtRoot = possibleRoots.find((root) =>
+    existsForManualAcceptance(root + '/workflows/silicon-ground-state-electronic-structure/index.html')
+  );
+  if (!builtRoot) {
+    errors.push('built Silicon workflow page is missing for manual acceptance');
+  } else {
+    const siliconHtml = readFileForManualAcceptance(
+      builtRoot + '/workflows/silicon-ground-state-electronic-structure/index.html',
+      'utf8'
+    );
+    const startIndex = siliconHtml.indexOf('Start here');
+    const routeIndex = siliconHtml.indexOf('Follow the calculation');
+    const evidenceIndex = siliconHtml.indexOf('Stored evidence and fresh execution');
+    if (!(startIndex >= 0 && routeIndex > startIndex && evidenceIndex > routeIndex)) {
+      errors.push('worked workflow must render Start here, then reader route, then evidence tracks');
+    }
+    for (const visibleInternal of [
+      '>History kind<',
+      '>Coverage:<',
+      '>Evidence class<',
+      '>Record kind<',
+      '>Route ID<',
+    ]) {
+      if (siliconHtml.includes(visibleInternal)) {
+        errors.push('worked workflow exposes internal label ' + visibleInternal);
+      }
+    }
+    if (/>\s*(obtain-material-structure|test-numerical-convergence|calculate-reference-ground-state)\s*<\/a>/.test(siliconHtml)) {
+      errors.push('worked workflow exposes raw topic slugs as link labels');
+    }
+    for (const token of ['prepare-reference', 'audit-scf', 'extract-runtime', 'package-study']) {
+      if (!siliconHtml.includes(token)) errors.push('built Silicon route is missing ' + token);
+    }
+
+    const guideRoutes = [
+      [
+        'operations/calculate-reference-ground-state/guides/prepare-fixed-geometry-reference-calculation',
+        'accepted-geometry.inc',
+      ],
+      [
+        'operations/test-numerical-convergence/guides/converge-basis-cutoffs-and-grids',
+        'extract-runtime',
+      ],
+      [
+        'operations/calculate-reference-ground-state/guides/package-reusable-reference-state-lineage',
+        'sha256sum -c',
+      ],
+    ];
+    for (const [route, token] of guideRoutes) {
+      const guidePath = builtRoot + '/' + route + '/index.html';
+      if (!existsForManualAcceptance(guidePath)) {
+        errors.push('built practical guide is missing: ' + route);
+      } else if (!readFileForManualAcceptance(guidePath, 'utf8').includes(token)) {
+        errors.push('built practical guide ' + route + ' is missing ' + token);
+      }
+    }
+  }
+}
+
 
 if (errors.length > 0) {
   console.error(`Generated-site validation failed (${errors.length}):`);

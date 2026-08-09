@@ -3,81 +3,82 @@ topic_slug: band-structure
 status: reviewed
 ---
 
-A band-structure calculation represents selected eigenvalues as functions of crystal wavevector. It is a statement about a specified periodic structure, Hamiltonian, electronic state, and reciprocal-space convention. The familiar line plot is useful because it makes dispersions, crossings, and candidate extrema visible; it is not a map of every state in the Brillouin zone and it is not automatically a measured quasiparticle spectrum.
+Use a band calculation when the question depends on eigenvalue dispersion along a declared reciprocal-space path: visible crossings, curvature, symmetry labels, or candidate band extrema. Start only after accepting a structure and a self-consistent electronic state. The real Quantum ESPRESSO 7.5 route in [Build a Reciprocal-Path Ledger Before Plotting Bands](/DFT-Research-Workflow/operations/band-structure/guides/build-reciprocal-path-ledger/) shows the complete SCF-to-path-to-`bands.x` lineage; [Compare a Band Path with a Full-Zone Extremum Search](/DFT-Research-Workflow/operations/band-structure/guides/compare-band-path-and-full-zone-extrema/) shows why the path cannot establish a fundamental gap or full-zone metallicity.
 
-## What the plotted quantity is
+## Run from the accepted reference state
 
-For a periodic effective one-electron problem, Bloch's theorem labels states by a band index `n` and a wavevector `k`. A Kohn--Sham calculation solves
+Prepare an SCF input and a compatible `calculation='bands'` input. They must use the same structure, pseudopotentials, basis settings, charge, spin/SOC treatment, Hubbard definition, `prefix`, and accessible `outdir`. Put the declared ordered path in `K_POINTS crystal_b` or the matching format for the QE version in use.
 
-```text
-H_KS(k) u_nk = ε_nk u_nk,
+```bash
+pw.x -in scf.in > scf.out
+grep -F "convergence has been achieved" scf.out
+grep -F "JOB DONE." scf.out
 ```
 
-where `H_KS(k)` is the chosen periodic Kohn--Sham Hamiltonian, `u_nk` is the cell-periodic part of the Bloch state, and `ε_nk` is its eigenvalue. The plot joins selected `ε_nk` values along a declared path. Its ordinate is normally an energy in eV after a stated reference shift; its abscissa is cumulative distance along a piecewise path in reciprocal space, not a physical real-space distance or a density of states.
+`pw.x` creates the self-consistent parent density. The first `grep` checks the electronic solver condition reported by this run. The second checks normal program termination only; neither establishes basis, k-point, structural, or observable convergence.
 
-Kohn--Sham eigenvalues organize the self-consistent effective problem. Their difference at two band extrema can be a useful DFT observable, but it does not by itself establish a photoemission peak, optical transition, quasiparticle gap, exciton energy, carrier lifetime, or transport coefficient. Those require the corresponding spectral, many-body, optical, or transport model.
+```bash
+pw.x -in bands.in > bands.out
+grep -F "JOB DONE." bands.out
+bands.x -in bands.x.in > bandsx.out
+grep -F "JOB DONE." bandsx.out
+```
+
+The path-mode `pw.x` run diagonalizes the accepted Hamiltonian at the requested path points. `bands.x` reads that result and writes the file named by `filband`, with optional reordering or symmetry analysis controlled by its input. These termination checks do not show that the path, number of bands, energy reference, or target feature is adequate.
 
 ## The reciprocal cell is part of the result
 
-The direct lattice used to make a supercell changes the reciprocal lattice and folds bands into a smaller Brillouin zone. Primitive-cell and conventional-cell paths therefore need not display the same labels or number of branches even when they describe the same physical crystal. A comparison must preserve the chosen cell, reciprocal basis, space group or magnetic group, dimensionality, and the coordinate convention for every special point.
+Before plotting, inspect the path ledger rather than only the image. Record the direct and reciprocal cells, every fractional path coordinate in order, labels, cell standardization and path-generator version, number of bands, spin/SOC state, occupations, units, and energy reference. A primitive-cell path and a conventional- or supercell path are different reciprocal objects even when they describe the same crystal.
 
-High-symmetry labels such as `Γ`, `X`, `K`, or `L` are not universal Cartesian locations. Their meaning depends on the Bravais lattice and, in some cases, on lattice-parameter ratios. Seek-path and related crystallographic conventions can generate a reproducible recommended path from a standardized structure, but they do not infer a relaxed phase, magnetic order, or electronic ground state.
+## What the plotted quantity is
+
+For a periodic effective one-electron problem,
+
+$$
+\hat H_{\mathrm{KS}}(\mathbf{k}) u_{n\mathbf{k}} = \varepsilon_{n\mathbf{k}} u_{n\mathbf{k}}.
+$$
+
+A band plot joins selected $\varepsilon_{n\mathbf{k}}$ along the declared path. Its horizontal coordinate is cumulative path distance, not a real-space distance or a density of states. Labels such as $\Gamma$, $X$, $K$, and $L$ depend on the reciprocal cell and convention; they are not universal Cartesian points.
 
 ## A path is a visual cut, not a full-zone search
 
-The valence-band maximum and conduction-band minimum may occur between labelled points or away from every displayed segment. A direct-looking gap on a path can therefore be indirect in the full Brillouin zone; a path can also miss a small pocket, accidental crossing, or spin-split extremum. Locate extrema on an independently converged uniform mesh or another explicitly declared full-zone search before assigning directness, a fundamental gap, carrier valleys, or a Fermi surface.
-
-Conversely, a dense uniform mesh is not a substitute for a readable path plot. The two objects answer different questions: one samples an integration or search domain; the other provides a symmetry-aware visual section. Record which calculation supplied each claim.
-
-## Choose an energy reference that survives comparison
-
-Subtracting the Fermi energy places occupied and unoccupied branches around `E_F = 0` for a specified calculation, but that reference can move with smearing, electron count, spin state, defects, surfaces, or temperature model. In an insulator, a code may report a chemical-potential convention inside the gap rather than a unique physical level.
-
-Comparing separate bulk calculations after an arbitrary `E_F` shift does not align their bands. A common electrostatic reference, an interface lineup, a core-level or branch-point procedure, or another declared alignment construction is needed for a band-offset claim. That problem is addressed by Electrostatic Potential and Band Alignment, not by superposing two isolated band diagrams.
-
-## Occupations, magnetism, and spin--orbit coupling change the object
-
-The eigenvalues must inherit the same charge, spin treatment, occupation procedure, relativistic Hamiltonian, Hubbard definition, and structural state as the reference calculation. A spin-polarized calculation can have separate spin channels; a noncollinear spinor calculation with spin--orbit coupling generally has no globally conserved “up” and “down” label. Plotting two colours is not evidence that spin is a good quantum number.
-
-Magnetic order can change translational symmetry and fold the Brillouin zone. A band comparison across ferromagnetic, antiferromagnetic, nonmagnetic, or different supercell states must state the mapping or unfolding method rather than visually treating folded branches as new physical bands.
-
-## Interpolation is an approximation with a validation task
-
-Direct diagonalization at path points can be expensive or incompatible with a coarse self-consistent mesh. Wannier interpolation constructs a localized representation and evaluates a fitted Hamiltonian at many `k` points. It can expose fine features efficiently, but its bands are only reliable over the represented energy window and subspace. Disentanglement choices, projections, localization, spinor treatment, frozen windows, and interpolation conventions become part of the evidence.
-
-Compare interpolated and directly calculated eigenvalues at held-out path points and around every feature used for a claim. Smooth curves are not enough: an avoided crossing, band inversion, small gap, or valley ordering can be changed by a poor subspace even when the figure looks plausible.
-
-## Band connectivity deserves care
-
-At a crossing or near-degeneracy, sorting by energy can exchange the visual identity of two branches. Overlap-based ordering can instead follow wavefunction character, while symmetry analysis can label irreducible representations on suitable lines. Neither ordering is a licence to claim a protected crossing: protection depends on the relevant symmetry, representation, perturbations, spin--orbit setting, and numerical resolution.
-
-Quantum ESPRESSO documents both overlap and symmetry-based band reordering, and warns that ordering can fail when path points are not in sequence. Keep the raw eigenvalue ordering, any reordered plot, and symmetry or overlap metadata so a later reader can test a proposed connectivity statement.
-
-## Convergence must target the displayed decision
-
-SCF convergence at one mesh does not show that a gap, curvature, splitting, degeneracy, or ordering is converged. Test the observable against basis representation, Brillouin-zone sampling, occupations, number of computed states, structural and magnetic candidate, spin--orbit treatment, and the path or full-zone search resolution relevant to the question. There is no transferable k-path density, number of empty bands, smearing, cutoff, or gap tolerance.
-
-When a conclusion relies on a small separation, quantify numerical drift and method dependence at the relevant extrema. A change in the Fermi reference may make a graph look stable while the actual extrema move; a converged total energy may coexist with an unresolved band ordering.
+A high-symmetry path is a visual cut. It can miss a small Fermi pocket, an off-path crossing, or the true valence- and conduction-band extrema. Use an independently tested uniform full-zone mesh or a validated interpolation for claims about metallicity, directness, carrier valleys, or a fundamental eigenvalue gap. Conversely, a dense uniform mesh does not replace the readable path plot: retain which dataset supports each statement.
 
 ## Gap labels require their own definitions
 
-For a single specified eigenvalue model, define
+For a single specified eigenvalue model, define the full-zone eigenvalue gap as
 
-```text
-E_g = min_k ε_c(k) − max_k ε_v(k),
-```
+$$
+E_g = \min_{\mathbf{k}} \varepsilon_c(\mathbf{k}) - \max_{\mathbf{k}} \varepsilon_v(\mathbf{k}).
+$$
 
-where `ε_v` is the highest occupied valence eigenvalue and `ε_c` the lowest unoccupied conduction eigenvalue under the declared occupations. The minimum and maximum are over the full stated search region. The gap is direct only when those extrema occur at the same `k` within the stated numerical resolution. Metallic occupations, fractional bands, defects, and finite-temperature sampling can make the valence/conduction partition nontrivial; do not apply the formula by inspecting one path image.
+The gap is direct only if those extrema occur at the same $\mathbf{k}$ within the stated numerical resolution. Do not apply this definition by reading one path image. Metallic occupations, finite-temperature sampling, and defect or spin states can also make the valence/conduction partition nontrivial.
 
-Semilocal DFT commonly has a derivative-discontinuity limitation for fundamental gaps. Hybrid functionals, GW, or experiments answer related but different questions under their own approximations and references. A scissor shift can be a presentation or model choice, not a self-contained validation of dispersions, orbital character, effective masses, offsets, or optical spectra.
+## Check the decision-relevant feature
 
-## Preserve the data behind the figure
+First confirm program termination and the accepted parent SCF state. Then check that the expected path and `filband` artifact were produced, that adjacent points follow the intended order, and that all bands needed across the plotted window are present. Inspect warnings and preserve the raw ordering before applying overlap- or symmetry-based reordering.
 
-Keep the relaxed structure and parent reference; reciprocal vectors; cell transformation; path generator and version; special-point fractional coordinates and labels; every `k` point in order; eigenvalues, occupations, and units; energy reference; spin, SOC, and symmetry metadata; interpolation inputs and held-out comparison; convergence series; plotting transformation; and hashes of raw outputs. Preserve both the full-zone extremum search and the path dataset when a gap or valley claim is made.
+SCF convergence at one mesh does not show that a gap, curvature, splitting, degeneracy, or ordering is converged. Converge the quantity used in the claim, not merely total energy. Test it against basis settings, parent k sampling, occupations, number of computed states, path/full-zone resolution, structural and magnetic candidates, and SOC treatment.
+
+## Choose an energy reference that survives comparison
+
+Subtracting the Fermi energy and setting $E_F=0$ is a display convention for one state, not an alignment between separate bulk calculations. Band offsets need a common electrostatic, interface, core-level, or other justified reference.
+
+## Occupations, magnetism, and spin--orbit coupling change the object
+
+A spin-polarized calculation can have separate spin channels, while a noncollinear SOC calculation generally has no globally conserved up/down label. The path must inherit the parent charge, occupations, magnetic order, relativistic Hamiltonian, and Hubbard definition. Magnetic supercells fold the Brillouin zone and require an explicit mapping or unfolding before comparison with a primitive-cell result.
+
+## Interpolation is an approximation with a validation task
+
+Compare interpolated and directly calculated eigenvalues at held-out path points and around every feature used in the conclusion. Preserve projections, subspace and disentanglement windows, spinor treatment, and interpolation version. A smooth Wannier curve is not validation of the fitted Hamiltonian.
+
+## Band connectivity deserves care
+
+Energy sorting can exchange branch identity at crossings or near-degeneracies. Preserve the raw eigenvalue order and any overlap- or symmetry-based reordering metadata. A visually continuous branch is not evidence that a crossing is symmetry protected.
 
 ## What this topic establishes
 
-This topic establishes how to create and interpret a state-specific band diagram and how to keep reciprocal conventions, energy references, interpolation, crossings, extrema, and numerical controls visible. It does not establish a complete full-zone electronic topology, a quasiparticle or optical spectrum, a fundamental experimental gap, a transport coefficient, a topological invariant, carrier mobility, material stability, or device performance from one plotted path.
+A checked path calculation can support a statement about dispersion and candidate features on that exact path for the declared Kohn--Sham model. It does not establish a complete full-zone electronic topology, full-zone metallicity, a fundamental or experimental gap, a quasiparticle or optical spectrum, a transport coefficient, carrier mobility, material stability, or device performance. Preserve the parent calculation, path ledger, eigenvalues, occupations, energy reference, convergence evidence, plotting transformation, and hashes with the figure.
 
 ## Sources and methods
 

@@ -5,17 +5,22 @@ status: reviewed
 
 Reaction-path calculations ask for the lowest-energy connected route between two declared states under one potential-energy model. They do not merely compare the endpoints. The output is a path in configuration space and, when it contains an appropriate first-order saddle point, a barrier relative to a stated reactant basin. It is not automatically a finite-temperature rate, a mechanism proved in experiment, or a guarantee that every alternative route has been found.
 
+## Build, run, and verify a path
+
+Start with separately verified endpoint minima under one compatible model. Generate more than one physically plausible interpolation when mechanisms can differ, run the path optimization, and inspect every image's state identity, energy, projected force, spacing, and geometry. Refine the high-energy region and validate a candidate transition state by its local curvature and connectivity to the intended basins. Converge the barrier against path initialization, image resolution, electronic settings, finite-size model, and saddle verification. This overview does not claim an executed NEB path.
+
 ## Endpoints define the question before a path can answer it
 
 The initial and final structures must each be relaxed and identified as the intended states under compatible cell, composition, charge, spin, boundary, Hamiltonian, and numerical choices. For an adsorption event, for example, a different site, coverage, surface face, or reference proton/electron state changes the reaction being represented. A path connecting two local minima is conditional on those minima; it cannot decide which reactant population is available or whether a different product is thermodynamically preferred.
 
-Let \(\mathbf R(s)\) be a continuous path of atomic coordinates, parametrized by \(s\), with endpoints \(\mathbf R_A\) and \(\mathbf R_B\). Its energy profile is \(E[\mathbf R(s)]\). The forward potential-energy barrier is
+Let $\mathbf R(s)$ be a continuous path of atomic coordinates, parametrized by $s$, with endpoints $\mathbf R_A$ and $\mathbf R_B$. Its energy profile is $E[\mathbf R(s)]$. The forward potential-energy barrier is
 
-```text
-ΔE‡ = E(R‡) − E(R_A).
-```
+$$
+\Delta E^\ddagger
+= E(\mathbf R^\ddagger)-E(\mathbf R_A).
+$$
 
-Here \(\mathbf R^‡\) is the highest relevant saddle-point configuration on the chosen minimum-energy path and all energies use the same normalization. This subtraction answers a zero-temperature potential-energy question. Vibrational free energies, field work, solvent, electrode potential, entropy, and populations are additional model terms, not implicit properties of a static barrier.
+Here $\mathbf R^\ddagger$ is the highest relevant saddle-point configuration on the chosen minimum-energy path and all energies use the same normalization. This subtraction answers a zero-temperature potential-energy question. Vibrational free energies, field work, solvent, electrode potential, entropy, and populations are additional model terms, not implicit properties of a static barrier.
 
 ## A nudged elastic band is a path optimization, not an ordinary relaxation
 

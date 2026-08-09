@@ -7,31 +7,46 @@ Electron--phonon coupling (EPC) describes how a specified lattice vibration chan
 
 A phonon calculation supplies the normal modes and their perturbations. EPC adds the response of the electronic states to those perturbations. Superconductivity, transport, and spectral renormalization are later uses of that information, each with additional assumptions and convergence requirements.
 
+## Start from a qualified phonon parent
+
+Do not begin with $\lambda$. First establish a compatible electronic reference and a qualified phonon parent: the relevant modes, q coverage, acoustic and polar treatment, and any instability must be understood for the model being coupled. Calculate EPC matrix elements on a declared coarse k--q representation, validate electronic, phonon, and EPC interpolation against direct data, then integrate on dense k and q meshes with controlled occupations, smearing or delta-function treatment, band windows, and long-range small-q reconstruction.
+
+Choose the convergence target before the dense calculation: matrix elements, linewidths, scattering rates, $\alpha^2F(\omega)$, or $\lambda$. Vary k mesh, q mesh, smearing, interpolation, and carrier state independently and jointly. A completed phonon or EPC executable does not qualify the parent, and a smooth $\alpha^2F$ plot does not establish convergence. Preserve unresolved imaginary modes and missing q-point evidence as blockers to a positive downstream interpretation.
+
 ## The matrix element is the primitive quantity
 
-For an initial state `|n k⟩`, a final state `|m, k+q⟩`, and phonon branch `ν`, the coupling is commonly written
+For an initial state $\lvert n\mathbf{k}\rangle$, a final state $\lvert m,\mathbf{k}+\mathbf{q}\rangle$, and phonon branch $\nu$, the coupling is commonly written
 
-```text
-g_mnν(k,q) = ⟨u_m,k+q | Δ_qν v^KS | u_n,k⟩_uc .
-```
+$$
+g_{mn\nu}(\mathbf k,\mathbf q)
+= \left\langle
+u_{m,\mathbf k+\mathbf q}
+\middle|
+\Delta_{\mathbf q\nu}v^{\mathrm{KS}}
+\middle|
+u_{n,\mathbf k}
+\right\rangle_{\mathrm{uc}}.
+$$
 
-Here `u_nk` and `u_m,k+q` are cell-periodic Kohn--Sham states, while `Δ_qν v^KS` is the first-order change in the self-consistent Kohn--Sham potential produced by the normalized phonon mode. The matrix element is an amplitude for one electronic transition induced by one vibrational perturbation.
+Here $u_{n\mathbf k}$ and $u_{m,\mathbf k+\mathbf q}$ are cell-periodic Kohn--Sham states, while $\Delta_{\mathbf q\nu}v^{\mathrm{KS}}$ is the first-order change in the self-consistent Kohn--Sham potential produced by the normalized phonon mode. The matrix element is an amplitude for one electronic transition induced by one vibrational perturbation.
 
-That distinction matters. A matrix element is not yet a scattering rate, linewidth, self-energy, transport coefficient, coupling constant `λ`, or superconducting transition temperature. Those quantities are constructed by combining many channels with occupations, energy conservation, phonon frequencies, reciprocal-space weights, and an observable-specific averaging rule.
+That distinction matters. A matrix element is not yet a scattering rate, linewidth, self-energy, transport coefficient, coupling constant $\lambda$, or superconducting transition temperature. Those quantities are constructed by combining many channels with occupations, energy conservation, phonon frequencies, reciprocal-space weights, and an observable-specific averaging rule.
 
 The normalization convention must also be preserved. Mode eigenvectors, atomic masses, cell choice, phase, and electronic gauge can change intermediate representations. A physically meaningful comparison therefore uses either the same conventions or a final observable that is invariant under the allowed transformations.
 
 ## From a matrix element to an observable
 
-Fermi's golden rule combines `|g_mnν(k,q)|²` with occupations and energy-conserving factors to produce a transition probability. A phonon linewidth describes the decay of a selected phonon into electronic excitations under a declared electronic-state and integration model. An electronic linewidth or self-energy instead describes the lifetime or energy renormalization of a selected electronic excitation. They share the same interaction but answer different questions.
+Fermi's golden rule combines $|g_{mn\nu}(\mathbf k,\mathbf q)|^2$ with occupations and energy-conserving factors. Phonon linewidths, electronic self-energies, transport rates, and superconducting averages use different weights and answer different questions.
 
-For a metal, the interaction can be averaged over the Fermi surface. The Eliashberg spectral function `α²F(ω)` resolves this Fermi-surface-weighted interaction by phonon frequency. A common dimensionless coupling is then
+For a metal, the interaction can be averaged over the Fermi surface. The Eliashberg spectral function $\alpha^2F(\omega)$ resolves this Fermi-surface-weighted interaction by phonon frequency. A common dimensionless coupling is then
 
-```text
-λ = 2 ∫₀∞ α²F(ω) / ω dω .
-```
+$$
+\lambda
+= 2\int_0^\infty
+\frac{\alpha^2F(\omega)}{\omega}\,d\omega .
+$$
 
-A large local `|g|` does not guarantee a large total `λ`: phase space, density of states, phonon frequency, band and momentum weights, and the chosen electronic window also enter. Conversely, a single reported `λ` does not reveal which modes, bands, or regions of the Fermi surface produced it. Preserve mode-, momentum-, or frequency-resolved information when the mechanism matters.
+A large local $|g|$ does not guarantee a large total $\lambda$: phase space, density of states, phonon frequency, band and momentum weights, and the chosen electronic window also enter. Conversely, a single reported $\lambda$ does not reveal which modes, bands, or regions of the Fermi surface produced it. Preserve mode-, momentum-, or frequency-resolved information when the mechanism matters.
 
 ## Comparable inputs and dense reciprocal space
 
@@ -39,19 +54,21 @@ DFPT can evaluate phonon perturbations and EPC matrix elements on a coarse, expl
 
 Wannier--Fourier interpolation is one controlled route from coarse first-principles data to dense k and q meshes. It introduces its own choices: orbital projections, disentanglement and frozen windows, localization, real-space cutoffs, gauge continuity, and treatment of long-range terms. Validate the interpolated electronic bands, phonons, and selected EPC quantities against direct coarse-grid data before relying on the dense result.
 
-The electronic and phonon meshes form a coupled sampling problem. Refining only one mesh, changing only the smearing, or plotting a visually smooth `α²F(ω)` can hide unresolved Fermi-surface or small-q sensitivity. Convergence should be demonstrated for the quantity that will be interpreted downstream.
+The electronic and phonon meshes form a coupled sampling problem. Refining only one mesh, changing only the smearing, or plotting a visually smooth $\alpha^2F(\omega)$ can hide unresolved Fermi-surface or small-q sensitivity. Convergence should be demonstrated for the quantity that will be interpreted downstream.
+
+$\lambda$ convergence is not $T_c$ convergence. A superconducting inference additionally depends on the qualified normal state, the full low-frequency spectrum, $\omega_{\log}$, Coulomb treatment, and the selected transition-temperature solver.
 
 ## Keep the reference state and electrostatics consistent
 
 The ground-state Hamiltonian, pseudopotential or all-electron treatment, exchange--correlation model, spin and SOC state, cell, carrier condition, occupations, phonon eigenvectors, and electrostatic boundary model must remain compatible across the chain.
 
-This is especially important in polar and reduced-dimensional systems. Long-range Fröhlich-like contributions near `q → 0` require an explicit separation and reconstruction rather than being treated as an ordinary short-range interpolation error. Vacuum size, Coulomb truncation, dielectric environment, doping model, and dimensional normalization can all change the intended observable.
+This is especially important in polar and reduced-dimensional systems. Long-range Fröhlich-like contributions near $\mathbf q\to0$ require an explicit separation and reconstruction rather than being treated as an ordinary short-range interpolation error. Vacuum size, Coulomb truncation, dielectric environment, doping model, and dimensional normalization can all change the intended observable.
 
 An intrinsic insulator, a doped semiconductor, and a metal obtained by shifting the Fermi level are not automatically equivalent EPC problems. State how carriers are introduced and which electronic state enters the Fermi-surface or band-edge average.
 
 ## Converge the observable, not the file sequence
 
-Select the convergence target before running the dense calculation. Depending on the study, it may be a matrix element, phonon linewidth, electronic self-energy, mode-resolved coupling, `α²F(ω)`, total `λ`, carrier scattering rate, or an input to a later transport or superconductivity calculation.
+Select the convergence target before running the dense calculation. Depending on the study, it may be a matrix element, phonon linewidth, electronic self-energy, mode-resolved coupling, $\alpha^2F(\omega)$, total $\lambda$, carrier scattering rate, or an input to a later transport or superconductivity calculation.
 
 Relevant tests can include:
 

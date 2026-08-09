@@ -3,166 +3,123 @@ topic_slug: compositional-phase-stability-and-convex-hulls
 status: reviewed
 ---
 
-A compositional phase diagram asks which combination of phases minimizes the relevant thermodynamic potential at a fixed overall composition. A convex hull turns a compatible set of phase energies into that competition. It can identify candidate ground states, decomposition products, and the energy by which a represented phase lies above the lower envelope.
+Use a compositional convex hull when the question is whether a represented phase can lower its thermodynamic potential by decomposing into other represented phases. The output must include the candidate ledger, hull vertices or facets, balanced decomposition coefficients, energy above hull, tolerance, and every phase-set decision.
 
-The answer is always conditional on the candidate set, energy model, normalization, and thermodynamic variables. A negative formation energy is only a comparison with the selected elemental references; it is not, by itself, evidence that the compound is stable against all competing phases.
+Use **Rebuild a Li-P Convex Hull from an OQMD Snapshot** to inspect a public-data post-processing path, then **Stress-Test a Hull Against a Missing Competitor** to test phase-set sensitivity.
 
-## Decide whether the system is closed or open
+## Start from a candidate ledger
 
-In a closed system, the chemical components and overall composition are fixed. The equilibrium state may be a single phase or a mixture whose weighted compositions reproduce that overall composition. The minimized quantity is commonly a static 0 K energy in a basic DFT hull, or a Gibbs free energy when pressure and temperature contributions are included.
+Every row needs an exact composition vector, structure and state identity, raw energy, corrections, compatible final energy, common normalization, method identity, numerical evidence, source or search identity, and inclusion or exclusion reason.
 
-An open system exchanges one or more species with reservoirs. Its composition may change, so a grand-potential or chemical-potential construction answers a different question. A closed-composition convex hull, an open-reservoir stability region, and an experimentally prepared nominal composition should not be combined under an unqualified statement that a phase is “stable.”
+## Define the thermodynamic system
 
-## Formation energy supplies coordinates, not the verdict
+A closed system fixes components and overall composition. An open system exchanges declared species with reservoirs and requires a transformed potential. These answer different scientific questions.
 
-For a compound containing `n_i` atoms of each element `i`, a per-atom formation energy can be written
+A common per-atom formation energy is
 
-```text
-ΔE_f = [E_compound - Σ_i n_i μ_i^ref] / Σ_i n_i .
-```
+$$
+\Delta E_{\mathrm f}
+=
+\frac{E_{\mathrm{compound}}-\sum_i n_i\mu_i^{\mathrm{ref}}}
+{\sum_i n_i}.
+$$
 
-`E_compound` is the comparable static energy of the declared phase and state. `μ_i^ref` is the energy per atom of the chosen elemental reference. The denominator fixes the normalization, and the elemental endpoints appear at zero by convention.
+A negative $\Delta E_{\mathrm f}$ means that the selected elemental decomposition is uphill within the model. It does not exclude decomposition into compounds.
 
-A negative `ΔE_f` means that this particular elemental decomposition is energetically uphill within the model. It does not exclude decomposition into other compounds. Hull stability requires comparison with every lower-energy mixture represented in the candidate set.
+<!-- A negative `ΔE_f` means that this particular elemental decomposition is energetically uphill within the model. -->
 
-## Composition lives on a simplex
+Represent every phase by $\mathbf{x}_j$ in one component basis. Primitive cells, conventional cells, and formula units are interchangeable only after explicit conversion. Partial occupancy, vacancies, charge, and molecular reservoirs require balanced components rather than informal formula matching.
 
-Atomic fractions satisfy `x_i = n_i / Σ_j n_j` and `Σ_i x_i = 1`. A binary system has one independent composition coordinate, a ternary system lies on a triangle, and an `m`-component system occupies an `(m-1)`-dimensional simplex.
+## Build and inspect the lower envelope
 
-All entries must share a consistent component basis and normalization. Primitive cells, conventional cells, formula units, and atoms are interchangeable only after explicit conversion. Partial occupancy, vacancies, charged species, and molecular reservoirs require balanced components rather than informal formula matching.
+Let $\mathcal S$ be the declared phase set, including candidate $k$ when its energy above hull is evaluated. With every $G_j$ in the same normalization, solve
 
-## The lower convex envelope represents allowed mixtures
+$$
+G_{\mathrm{hull}}^{\mathcal S}(\mathbf{x})
+=
+\min_{\{\lambda_j\}}
+\sum_{j\in\mathcal S}\lambda_jG_j
+$$
 
-Let phases `j` coexist with nonnegative fractions `λ_j`. At overall composition `x`,
+subject to
 
-```text
-Σ_j λ_j = 1
-Σ_j λ_j x_j = x
-G_mix(x) = Σ_j λ_j G_j .
-```
+$$
+\lambda_j\ge0,\qquad
+\sum_{j\in\mathcal S}\lambda_j=1,\qquad
+\sum_{j\in\mathcal S}\lambda_j\mathbf{x}_j=\mathbf{x}.
+$$
 
-`x_j` is the composition vector of phase `j` and `G_j` is its potential in a common normalization. Minimizing `G_mix` under mass balance produces the lower convex envelope.
+Every point on it is a macroscopic mixture of its endpoints, not an interpolated homogeneous crystal structure. In higher dimensions, use the full composition vectors rather than trusting a plotting projection.
 
-A tie line has a physical meaning: Every point on it is a macroscopic mixture of its endpoints, not an interpolated homogeneous crystal structure.
+Store the nonzero $\lambda_j$, phase identities, and balanced reaction. Reconstruct both target composition and mixture energy. The scalar hull distance alone hides the products and whether they change when a competitor is added.
 
-## Binary tie lines and multicomponent facets use the same rule
+For candidate $k$ in the same phase set,
 
-In a binary system, hull vertices are connected by line segments. A point above a segment can lower its potential by separating into the endpoint phases with lever-rule proportions. In a ternary or higher-dimensional system, the supporting objects become facets in the full composition space.
+$$
+E_{\mathrm{above\,hull},k}^{\mathcal S}
+=
+G_k-G_{\mathrm{hull}}^{\mathcal S}(\mathbf{x}_k)
+\ge0.
+$$
 
-A plotting projection is not the optimization itself. Decomposition coefficients should be obtained from the complete composition vectors and then checked by reconstructing both composition and energy.
+<!-- E_above_hull,k = G_k - E_hull(x_k) -->
 
-## Energy above hull identifies the represented decomposition force
+Classify zero only within an explicit tolerance. Do not clamp a materially negative value to zero; inspect normalization, phase-set membership, optimizer constraints, and tolerance instead.
 
-For candidate `k`,
+## Control the phase set and compatibility model
 
-```text
-E_hull(x_k) = min_{λ_j ≥ 0} Σ_j λ_j G_j
+At one composition, compare genuine polymorphs, magnetic states, and orderings under one compatibility model before allowing the lowest record onto the envelope. Retain higher states for provenance and metastability.
 
-E_above_hull,k = G_k - E_hull(x_k) .
-```
+A computed hull is monotonic with respect to adding candidates: a newly admitted lower phase can leave the envelope unchanged or lower it. “On hull” is always conditional on the documented search, filters, versions, duplicate policy, and exclusions.
 
-A positive `E_above_hull` is the driving force toward the minimizing represented mixture. A value of zero means that the point lies on the computed envelope within the numerical and geometric tolerance. It may be a vertex, part of a degenerate facet, or numerically indistinguishable from one.
+All phases must share compatible exchange-correlation, core or basis, relativistic and magnetic treatment, numerical quality, energy definition, and correction scheme. Preserve raw energy, each correction, corrected energy, scheme version, and eligibility separately.
 
-The decomposition products and coefficients are part of the result. The scalar distance alone hides the balanced reaction that defines it and whether that reaction changes when a competitor is added.
+## Converge and stress-test the hull
 
-## Polymorphs compete before compositions do
+Rebuild under numerical refinements that can shift competitors unequally. SCF convergence is necessary but does not establish convergence of energy above hull or decomposition identity.
 
-Several structures, magnetic states, orderings, or calculation records can share one composition. The lowest compatible potential at that composition can participate in the lower envelope. Higher polymorphs should still be retained because they may matter for metastability, transformations, finite-temperature ordering, and provenance.
+<!-- SCF convergence of each record is necessary but does not establish convergence of `E_above_hull` or decomposition identity. -->
 
-First distinguish genuine polymorphs from duplicate calculations. Then verify that their Hamiltonians, corrections, magnetic states, and thermodynamic terms are compatible. An energy ordering between incompatible records is not a valid polymorph comparison.
+If vertices, facets, or decomposition products change within plausible variation, report the result as unresolved or near-degenerate.
 
-## Candidate completeness limits every stability claim
+Withhold represented vertices, add plausible candidates, or perturb near-hull values under a documented uncertainty model. Create a new derived result for every phase set. Never delete an inconvenient lower phase from the source ledger.
 
-A computed hull is monotonic with respect to adding candidates: a newly admitted lower phase can leave the envelope unchanged or move it downward, never upward. A phase is therefore “on hull” only relative to the searched and documented candidate set. An omitted competitor can promote another phase to a false vertex and alter decomposition reactions elsewhere.
+## Extend the thermodynamic model consistently
 
-The candidate inventory should be appropriate to the question and may include known experimental phases, database records, prototypes, orderings, magnetic states, and structure-search results. Exhaustive completeness is rarely provable. Record the sources, filters, exclusions, duplicate policy, and database or retrieval version so the claim remains auditable.
+Before rebuilding, apply the same type of free-energy model to every phase:
 
-## Comparable energies require one compatibility model
+$$
+G_j(T,p)=E_{\mathrm{DFT},j}+F_{\mathrm{vib},j}
++F_{\mathrm{el},j}+F_{\mathrm{conf},j}+pV_j+G_{\mathrm{other},j}.
+$$
 
-All phases in one hull should use a compatible exchange--correlation treatment, core or basis convention, relativistic and magnetic model, numerical quality, and energy definition. Chemistry-dependent corrections can be used only through one documented scheme applied consistently to all eligible entries.
+Partial thermal treatment is not a finite-temperature phase diagram.
 
-Mixed GGA/GGA+U compatibility corrections, for example, are fitted bookkeeping rules within a specific methodology. They are not raw total energies or universal constants. Store the raw energy, each correction, the corrected energy, scheme version, and eligibility separately. Never combine corrected and uncorrected entries silently or apply the same correction twice.
+For reservoir species in $\mathcal R$,
 
-## Numerical precision must resolve the envelope
+$$
+\Phi=G-\sum_{i\in\mathcal R}\mu_iN_i.
+$$
 
-SCF convergence of each record is necessary but does not establish convergence of `E_above_hull` or decomposition identity. Basis quality, k sampling, smearing, relaxation, magnetic initialization, cell choice, and method corrections can shift competitors unequally.
+<!-- Φ = G - Σ_{i in R} μ_i N_i -->
 
-Rebuild the hull under defensible numerical refinements and, separately, alternative physical initial states. Near the envelope, test whether plausible energy changes alter vertices, facets, or decomposition products. If the classification changes under the relevant uncertainty, report the phase as unresolved or near-degenerate rather than converting a small nominal distance into a categorical conclusion.
+Chemical potentials remain constrained by host equilibrium, elemental precipitation, competing phases, and stated conditions.
 
-The numerical series estimates fixed-state precision. Alternative initial states test candidate search and basin robustness; report their effects on hull vertices, facets, and decomposition products as a separate evidence class.
+A stability polygon in chemical-potential space must not be read as a range of bulk compositions. A composition-space tie simplex does not specify an experimental pressure or activity without a reservoir model.
 
-Stored database precision is also not calculation precision. An independent reconstruction may agree only to the rounding exposed by the source.
+## Interpret and diagnose the result
 
-## Temperature and pressure change every phase potential
+These distributions do not provide a universal energy-above-hull threshold that separates synthesizable from impossible materials. Kinetics, surfaces, defects, entropy, pressure history, precursors, and model error can change accessibility without changing the static hull definition.
 
-A static DFT hull is usually a 0 K electronic approximation. At finite conditions, each phase may require
+Check missing endpoints, inconsistent reduction, duplicate phases, negative or non-normalized fractions, mixed correction schemes, incompatible magnetic states, and asymmetric thermal terms. Rebuild representative facets from the machine-readable table.
 
-```text
-G_j(T,p) = E_DFT,j + F_vib,j(T) + F_el,j(T)
-           + F_conf,j(T) + pV_j + G_other,j(T,p) .
-```
+## Inspect the public-data example
 
-All phases must be treated consistently. Adding vibrational free energy to one candidate while leaving its competitors at static energy does not create a finite-temperature phase diagram. Numerical smearing used for SCF convergence is not automatically a physical electronic free-energy term.
+This is a real public DFT-data case, not a claim that this project reran the underlying calculations. The frozen OQMD Li-P result checks parsing, attribution, normalization, and convex geometry at source precision; it does not independently establish energy accuracy or phase-space completeness.
 
-The hull must be rebuilt after these contributions are added because different phases shift by different amounts.
+## Preserve the result and claim boundary
 
-## Open reservoirs lead to grand potentials
-
-If species in set `R` exchange with reservoirs, a transformed potential is
-
-```text
-Φ = G - Σ_{i in R} μ_i N_i .
-```
-
-The chemical potentials are constrained by elemental precipitation, host equilibrium, competing phases, and the chosen temperature or pressure model. Gas pressure, electrochemical voltage, and growth conditions enter only through a declared relation to those reservoir potentials.
-
-## Chemical-potential diagrams are a dual view
-
-In chemical-potential space, each phase contributes an affine grand-potential surface, and the lower envelope partitions the space into domains where different phases minimize the potential. This is dual to the composition-space hull, but the axes and scientific question differ.
-
-A stability polygon in chemical-potential space must not be read as a range of bulk compositions, and a tie triangle in composition space does not specify an experimental pressure without a reservoir model.
-
-## Metastability is not a universal distance cutoff
-
-Many synthesized materials lie above a computed 0 K hull. Empirical datasets can characterize the energy scales at which metastable phases have been reported, but those scales depend on chemistry, synthesis route, and model uncertainty. These distributions do not provide a universal energy-above-hull threshold that separates synthesizable from impossible materials.
-
-Kinetic barriers, surfaces, defects, epitaxy, finite-size effects, entropy, pressure history, precursors, and model error can preserve or favour an off-hull phase. Conversely, an on-hull phase may remain inaccessible because no viable formation pathway exists.
-
-## Formation and decomposition energies answer different reactions
-
-Formation energy references the selected elemental states. Decomposition energy references the lowest balanced mixture at the candidate composition. The latter may involve compounds, elements plus compounds, or the candidate itself when it lies on the envelope.
-
-Always retain the balanced reaction, coefficient convention, sign, and normalization alongside the scalar energy. A quantity called “decomposition energy” is not portable without that definition.
-
-## Diagnose geometry and data before interpreting the hull
-
-Common failures include missing elemental endpoints, inconsistent composition reduction, duplicate phases, fractions that do not sum to one, incompatible correction schemes, mixed magnetic models, and free-energy terms applied to only part of the dataset. A visually plausible hull can survive all of these errors.
-
-Check representative facets by reconstructing mass balance and energy. Inspect every near-hull candidate. Treat triangulation details, numerical degeneracy, and plotting projections as implementation choices rather than physical conclusions.
-
-## A real-data rebuild remains a post-processing result
-
-The accompanying Li--P example freezes 46 rows from the public OQMD REST API, keeps their entry and calculation identities, selects the lowest compatible record at each represented composition, adds elemental endpoints, and reconstructs the binary lower envelope.
-
-This is a real public DFT-data case, not a claim that this project reran the underlying calculations. The locally generated plot demonstrates parsing, normalization, provenance, and hull geometry for that snapshot. It does not independently validate OQMD energies, exhaust the Li--P phase space, or establish that any phase is synthesizable.
-
-## Preserve the phase ledger
-
-A reusable result includes exact composition vectors, structure and state identifiers, raw energies and units, reference energies, corrections and scheme versions, finite-temperature terms, convergence evidence, inclusion and exclusion decisions, source versions, hull vertices and facets, decomposition coefficients, and residual checks.
-
-Store the machine-readable candidate table and derived hull together with hashes. When the phase set or compatibility model changes, create a new derived result linked to the original records rather than overwriting the earlier interpretation.
-
-## Keep adjacent stability questions separate
-
-Equation-of-state analysis compares structural branches at fixed composition, while a compositional hull permits mixtures across compositions. Defect formation, surfaces, adsorption, and interfaces introduce reservoirs, finite-size models, or excess quantities that require their own reference constructions.
-
-Mechanical and phonon stability test distortions of a represented phase, not competition against other compositions. Reaction pathways and dynamics address barriers and rates. None of these questions can be replaced by one static hull distance.
-
-## What this topic establishes
-
-This topic can support bounded claims about candidate ground states, decomposition products, and energy above hull for a declared phase set and thermodynamic model. It also explains how those claims change for open reservoirs and finite-temperature potentials.
-
-It does not establish global structure-search completeness, mechanical or dynamical stability, kinetic persistence, finite-temperature equilibrium without the required free energies, experimental synthesis, or accuracy of the underlying electronic-structure method.
+Store candidate rows, vectors, raw and corrected energies, source versions, phase-set decisions, tolerance, vertices, facets, decompositions, residual checks, and hashes. A hull can support bounded ground-state and decomposition claims for that set and model. It does not establish exhaustive search, mechanical or phonon stability, kinetic persistence, finite-temperature equilibrium without required terms, synthesis, or experimental realization.
 
 ## Sources and methods
 

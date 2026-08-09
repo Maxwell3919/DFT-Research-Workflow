@@ -10,7 +10,7 @@ status: reviewed
 summary: Convert an accepted optimization result into a fixed-geometry reference protocol while preserving model and Hamiltonian identity and recording every numerical refinement.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/silicon_qe_convergence.py
+execution_script: examples/practical-guides/qe_manual_handoff.py
 source_ids:
   - qe-pw-75
   - vasp-electronic-minimization
@@ -23,98 +23,120 @@ review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
 reviewed_at: "2026-08-03"
 ---
 
-A reference-state calculation begins from one exact accepted structure and one declared electronic method. The final fixed-geometry protocol should preserve that identity while allowing documented numerical refinement.
+## Purpose
 
-## A real fixed-cell Silicon record
+A fixed-cell relaxation and a static SCF calculation are separate runs. The accepted geometry must be copied explicitly; sharing a prefix or scratch directory is not a geometry handoff.
 
-The published inputs describe fixed-geometry QE 7.5 SCF calculations for a
-two-site COD 9013102 Silicon cell with fixed occupations. The declared companion
-does not execute QE, parse or hash those inputs, or verify the structure or
-potential. It hashes nine expected outputs, requires literal completion markers,
-and parses their final reported total energies. This is not geometry optimization,
-observable convergence, or ground-state evidence.
+## Verify the handoff tool
 
-## Bind the exact final structure
+From the repository root, run:
 
-Record the final geometry checksum, cell, composition, atom order, and optimization lineage. The reference calculation must consume that exact object. Reordering atoms, changing the cell representation, restoring symmetry, or editing coordinates creates a derived structure and requires a recorded transformation.
+~~~bash
+python3 examples/practical-guides/qe_manual_handoff.py self-test
+~~~
 
-Set the calculation type to a fixed-geometry electronic-state evaluation. Forces and stress may still be requested as diagnostics, but atomic and cell variables are not silently updated.
+The test must report <code>"status": "PASS"</code>. It checks public silicon files against <code>workflow/case-file-hashes.json</code> and parses them in a temporary directory. It does not run QE and does not claim that the stored static calculation descended from the stored relaxation.
 
-## Separate method identity from numerical refinement
+## Select the fresh relaxation result
 
-Method-defining fields include the exchange–correlation treatment, potentials or all-electron setup, dispersion correction, Hubbard parameters, relativistic treatment, charge, electrostatic boundary, and external fields.
+Set these paths to the run you just completed:
 
-Numerical controls such as basis size, k-point density, grids, and internal solver thresholds may be tightened for the final calculation. Record old and new values, why the refinement was made, and which observables established its adequacy.
+~~~bash
+repo_root=$(pwd)
+case_root="$repo_root/examples/cases/silicon-ground-state-electronic-structure"
+runtime="$HOME/drw-runs/si-manual"
+relax_out="$runtime/relax/si-relax.out"
+reference="$runtime/reference"
 
-The following continuity fixture illustrates an immutable-key set and refinement
-ledger. It is conceptual on this page and is not executed by the declared
-companion:
+test -f "$relax_out"
+grep -n "JOB DONE" "$relax_out"
+grep -n "bfgs converged" "$relax_out"
+sed -n '/Begin final coordinates/,/End final coordinates/p' "$relax_out" | tail -n 20
+~~~
 
-```python
-from reference_state_protocol_continuity import run
+<code>JOB DONE</code> checks normal program termination only. The BFGS marker and the final force/stress evidence must satisfy the acceptance rule declared before the run. Inspect warnings and every unconstrained force component; an aggregate force line alone is not a geometry gate.
 
-report = run()
-print(report["method_identity_preserved"])
-print(report["declared_refinements"])
-```
+This guide covers a fixed-cell <code>relax</code>. Stop if the accepted run changed the cell: a <code>vc-relax</code> handoff must also transfer the accepted <code>CELL_PARAMETERS</code> in a compatible unit and model.
 
-A change to an immutable field fails the continuity check instead of being relabeled as a harmless refinement.
+## Create the accepted geometry and static input
 
-## Request verification and reusable outputs
+The helper selects the **last complete** <code>Begin final coordinates</code> block, writes it as a separate artifact, and replaces the one <code>ATOMIC_POSITIONS</code> card in a copied SCF template:
 
-The final protocol should request the outputs needed for the intended downstream work:
+~~~bash
+python3 examples/practical-guides/qe_manual_handoff.py prepare-reference \
+  --relax-output "$relax_out" \
+  --scf-template "$case_root/input/scf.in" \
+  --output-dir "$reference"
 
-```text
-total energy or declared free-energy quantity
-electron count and occupations
-Fermi level where meaningful
-total and local magnetic diagnostics
-forces and stress
-charge density or potential
-wavefunctions when justified
-warnings and solver history
-```
+cat "$reference/accepted-geometry.inc"
+cat "$reference/geometry-handoff.json"
+diff -u "$case_root/input/scf.in" "$reference/static-scf.in"
+~~~
 
-Output generation should follow a retention policy. Large restart objects may remain in calculation storage while the public or archival record retains hashes, identifiers, and reconstruction paths.
+The command refuses to reuse an existing output directory, requires the atom count to match <code>nat</code>, and records hashes for the source output, template, accepted geometry, and new input. Review the diff before running: only the intended coordinates should change.
 
-## Preserve the optimization-to-reference edge
+## Stage the exact pseudopotential
 
-A minimal lineage record contains:
+Read the required filename from the copied input and point <code>PSEUDO_SOURCE</code> to the exact file obtained and verified in the pseudopotential guide:
 
-```text
-optimization final-structure checksum
-reference calculation identifier
-fixed-geometry declaration
-method-identity comparison
-declared numerical refinements
-fresh or restart initialization
-software and environment identity
-```
+~~~bash
+pseudo_name=$(awk '
+  /ATOMIC_SPECIES/ {inside=1; next}
+  inside && NF >= 3 {print $3; exit}
+' "$reference/static-scf.in")
 
-This edge prevents the later reference calculation from becoming an untraceable replacement for the optimization result.
+: "${{PSEUDO_SOURCE:?Set PSEUDO_SOURCE to the verified UPF file}"
+test "$(basename "$PSEUDO_SOURCE")" = "$pseudo_name"
+sha256sum "$PSEUDO_SOURCE"
 
-## What this guide verifies
+mkdir -p "$reference/pseudo" "$reference/tmp"
+ln -s "$PSEUDO_SOURCE" "$reference/pseudo/$pseudo_name"
+~~~
 
-`silicon_qe_convergence.py` checks expected output hashes and literal completion
-markers and parses total energies. It does not inspect the inputs or execute the
-continuity fixture. Neither the reconstruction nor the conceptual fixture
-establishes geometry identity, candidate completeness, observable convergence, a
-physical minimum, or global ground-state identity.
+Confirm that <code>pseudo_dir</code> and <code>outdir</code> in <code>static-scf.in</code> resolve to those directories. Preserve the UPF hash; matching a filename is not identity evidence.
 
-## Common mistakes
+## Run the new static calculation
 
-**Using the last relaxation step as the final reference.** Create an independently identified fixed-geometry calculation.
+Run locally only where direct MPI execution is permitted, or run the same command inside an allocated Slurm job:
 
-**Changing a potential or Hamiltonian parameter silently.** That creates a new method branch.
+~~~bash
+(
+  cd "$reference"
+  pw.x -in static-scf.in > static-scf.out 2> static-scf.err
+)
+~~~
 
-**Treating tighter settings as automatically compatible.** Recheck state identity and the observable used to justify refinement.
+Do not run a long calculation on a login node. The scheduler guide shows how to put this command inside <code>sbatch</code>; <code>squeue</code> reports scheduler state, not QE convergence.
 
-**Losing atom order or structure identity.** Bind the exact geometry checksum and mapping.
+Audit the files produced by this exact invocation:
+
+~~~bash
+python3 examples/practical-guides/qe_manual_handoff.py audit-scf \
+  --input "$reference/static-scf.in" \
+  --stdout "$reference/static-scf.out" \
+  --stderr "$reference/static-scf.err" \
+  --report "$reference/static-scf-audit.json"
+
+cat "$reference/static-scf-audit.json"
+grep "JOB DONE" "$reference/static-scf.out"
+grep "convergence has been achieved" "$reference/static-scf.out"
+grep "!    total energy" "$reference/static-scf.out" | tail -n 1
+~~~
+
+The first grep checks termination. The second checks the electronic solver condition reported by this run. Neither proves geometry acceptance, cutoff or k-point convergence, observable convergence, model correctness, or a scientific conclusion.
+
+## If it fails
+
+Keep <code>static-scf.in</code>, stdout, stderr, and the audit report together. Diagnose missing files, pseudopotential paths, scratch permissions, fatal QE messages, and electronic non-convergence separately. Do not silently reuse scratch from the relaxation or substitute the repository's stored static output.
+
+## Next
+
+Use this new static run as the explicit parent of downstream calculations. Record its input/output hashes and carry its prefix, charge, spin, pseudopotentials, numerical setup, and accepted geometry into the bands or DOS branch.
 
 ## Official sources
 
-- [Quantum ESPRESSO `pw.x` input description](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
-- [VASP electronic minimization](https://vasp.at/wiki/Electronic_minimization)
-- [CP2K SCF section](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html)
-- [ABINIT basic ground-state tutorial](https://docs.abinit.org/tutorial/base1/)
-- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)
+- [Quantum ESPRESSO pw.x input reference](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
+- [COD silicon record 9013102](https://www.crystallography.net/cod/9013102.html)
+- [ABINIT basic tutorial](https://docs.abinit.org/tutorial/base1/)
+- [CP2K SCF input reference](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html)
+- [VASP electronic minimization reference](https://vasp.at/wiki/Electronic_minimization)

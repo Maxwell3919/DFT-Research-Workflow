@@ -6,17 +6,52 @@ const base = (process.env.SITE_URL ?? 'http://127.0.0.1:4322/DFT-Research-Workfl
 const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/choose-dft-method-and-computational-setup/';
-const requiredPhrases = [
-  'A computational model says what system a calculation is meant to represent.',
-  'Separate the physical approximation from its discretization',
-  'Choose exchange–correlation treatment by the physics and error',
-  'A formally higher rung is not automatically better for every observable or material.',
-  'A pseudopotential file being readable does not establish its accuracy or transferability.',
-  'DFT+U is not a universal elemental constant',
-  'A smearing width used to stabilize metallic integration is not automatically a physical electronic temperature.',
-  'Match electrostatic boundary treatment to the model',
-  'There is no universal best functional',
-  'Sources and methods',
+const requiredContracts = [
+  {
+    name: 'versioned method sheet',
+    phrases: [
+      'This task produces the method sheet that every later input, output, and comparison must match.',
+      'This task establishes a versioned method identity and a defensible starting setup.',
+    ],
+  },
+  {
+    name: 'physical and numerical choices',
+    phrases: [
+      'Separate the physical approximation from its discretization',
+      'Functional, Hubbard correction, dispersion model, core–valence partition, spin–orbit coupling, ensemble, and electrostatic boundary treatment define the approximate physical problem.',
+    ],
+  },
+  {
+    name: 'pseudopotential identity and compatibility',
+    phrases: [
+      'sha256sum method/pseudo/* > method/pseudopotentials.sha256',
+      'head -n 80 method/pseudo/selected.UPF',
+      'sha256sum fixes the file identity.',
+      'Record its generating functional, explicit valence configuration, frozen-core partition, semicore choice, relativistic treatment, nonlinear core correction where present, format, version, checksum, and any recommended starting cutoffs.',
+      'Check that the selected functional and requested feature are compatible with the dataset and implementation.',
+    ],
+  },
+  {
+    name: 'representative execution and output inspection',
+    phrases: [
+      'pw.x -in scf.in > scf.out',
+      "grep -Ei 'program pwscf|exchange-correlation|pseudo|cutoff|k points|occupation|smearing|spin' scf.out",
+      'The first grep only locates version-dependent setup summaries for inspection.',
+      'The second checks normal program termination only.',
+      'A successful program exit establishes neither methodological suitability nor numerical convergence.',
+    ],
+  },
+  {
+    name: 'baseline versus observable-specific convergence',
+    phrases: [
+      'It does not accept cutoffs, k meshes, smearing widths, vacuum dimensions, or response grids; those require observable-specific tests.',
+      'The next task varies numerical controls at fixed method identity and accepts settings only against a declared observable and tolerance.',
+    ],
+  },
+  {
+    name: 'reviewed sources',
+    phrases: ['Sources and methods'],
+  },
 ];
 const requiredDomains = [
   'quantum-espresso.org',
@@ -43,8 +78,10 @@ async function inspect(page, expectedWidth) {
   if (result.hasContract) throw new Error('reviewed DFT method article exposes a fixed contract');
   if (result.overflow) throw new Error(`DFT method article overflows at ${expectedWidth}px`);
   if (result.headings.length < 14) throw new Error(`DFT method article has only ${result.headings.length} natural topic sections`);
-  for (const phrase of requiredPhrases) {
-    if (!result.text.includes(phrase)) throw new Error(`DFT method article is missing ${phrase}`);
+  for (const contract of requiredContracts) {
+    for (const phrase of contract.phrases) {
+      if (!result.text.includes(phrase)) throw new Error(`DFT method article is missing ${contract.name}: ${phrase}`);
+    }
   }
   for (const domain of requiredDomains) {
     if (!result.links.some((link) => link.includes(domain))) throw new Error(`DFT method article is missing source domain ${domain}`);
@@ -93,8 +130,10 @@ try {
   if (response?.status() !== 200) throw new Error(`DFT method no-JavaScript route returned ${response?.status()}`);
   const noJsText = await noJsPage.$eval('body', (body) => body.innerText);
   for (const phrase of [
-    'A computational model says what system',
-    'A smearing width used to stabilize metallic integration is not automatically a physical electronic temperature.',
+    'This task produces the method sheet that every later input, output, and comparison must match.',
+    'sha256sum method/pseudo/* > method/pseudopotentials.sha256',
+    'pw.x -in scf.in > scf.out',
+    'It does not accept cutoffs, k meshes, smearing widths, vacuum dimensions, or response grids; those require observable-specific tests.',
     'Sources and methods',
   ]) {
     if (!noJsText.includes(phrase)) throw new Error(`DFT method no-JavaScript page is missing ${phrase}`);
@@ -114,11 +153,11 @@ try {
       mobile_width: 390,
       no_javascript: true,
       fixed_contract: false,
-      numerical_convergence_kept_separate: desktop.text.includes('Test Numerical Convergence'),
+      baseline_kept_separate_from_observable_convergence: desktop.text.includes('accepts settings only against a declared observable and tolerance'),
     }, null, 2)}\n`);
   }
 
-  console.log(`Reviewed DFT method smoke passed: natural article rendering, ${desktop.headings.length} topic sections, rendered source links, 1440px and 390px no-overflow, and no-JavaScript reading.`);
+  console.log(`Reviewed DFT method smoke passed: operation-first method sheet, pseudopotential identity, representative execution, output inspection, baseline convergence boundary, ${desktop.headings.length} topic sections, rendered source links, 1440px and 390px no-overflow, and no-JavaScript reading.`);
 } finally {
   await browser.close();
 }
