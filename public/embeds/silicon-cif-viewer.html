@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Silicon CIF viewer</title>
+  <style>
+    html, body, #molstar-frame { width: 100%; height: 100%; margin: 0; border: 0; background: #fff; }
+    body { overflow: hidden; }
+    #molstar-frame { display: block; }
+  </style>
+</head>
+<body>
+  <iframe id="molstar-frame" title="Molstar silicon crystal viewer" allow="fullscreen"></iframe>
+  <script>
+    const structureUrl = new URL('../examples/cif/silicon-cod-9013102-expanded.cif', window.location.href).href;
+    const viewerUrl = new URL('https://molstar.org/viewer/');
+    viewerUrl.searchParams.set('hide-controls', '1');
+    viewerUrl.searchParams.set('structure-url', structureUrl);
+    viewerUrl.searchParams.set('structure-url-format', 'cif');
+    document.getElementById('molstar-frame').src = viewerUrl.href;
+  </script>
+</body>
+</html>
