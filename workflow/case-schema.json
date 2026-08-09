@@ -73,6 +73,9 @@
           "url": { "type": ["string", "null"], "format": "uri" },
           "registry_url": { "type": "string", "format": "uri" },
           "exact_url_status": { "type": "string", "minLength": 1 },
+          "header_generator": { "type": "string", "minLength": 1 },
+          "verified_at": { "type": "string", "format": "date" },
+          "verified_bytes": { "type": "integer", "minimum": 1 },
           "accessed_at": { "type": "string", "format": "date" },
           "licence_boundary": { "type": "string" }
         },
@@ -87,6 +90,19 @@
           {
             "if": { "required": ["registry_url"] },
             "then": { "required": ["exact_url_status"] }
+          },
+          {
+            "if": {
+              "anyOf": [
+                { "required": ["header_generator"] },
+                { "required": ["verified_at"] },
+                { "required": ["verified_bytes"] }
+              ]
+            },
+            "then": {
+              "required": ["url", "header_generator", "verified_at", "verified_bytes"],
+              "properties": { "url": { "type": "string", "format": "uri", "minLength": 1 } }
+            }
           }
         ]
       }
