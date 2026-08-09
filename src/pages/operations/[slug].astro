@@ -2,6 +2,8 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AuthoritativeReferences from '../../components/AuthoritativeReferences.astro';
+import authorityDocument from '../../../sources/topic-authority.json';
 import {
   getLegacyOperations,
   getOperations,
@@ -91,6 +93,12 @@ const Narrative = page.kind === 'topic' && page.narrative
     ? (await render(page.narrative)).Content
     : null;
 const practicalOrder: PracticalGuideKind[] = ['implementation', 'worked-example', 'visual-note'];
+const authorityEntry = page.kind === 'topic'
+  ? authorityDocument.entries.find((entry) => entry.topic_slug === page.topic.slug)
+  : undefined;
+const authorityTextbook = authorityEntry && authorityEntry.textbook_key !== 'none'
+  ? authorityDocument.textbooks[authorityEntry.textbook_key as keyof typeof authorityDocument.textbooks]
+  : undefined;
 ---
 
 <BaseLayout title={title} description={description} current="operations">
@@ -151,6 +159,10 @@ const practicalOrder: PracticalGuideKind[] = ['implementation', 'worked-example'
               );
             })}
           </section>
+        )}
+
+        {authorityEntry && (
+          <AuthoritativeReferences entry={authorityEntry} textbook={authorityTextbook} />
         )}
       </>
     ) : (
