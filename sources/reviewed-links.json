@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 268,
+  "expected_unique_urls": 269,
   "topics": [
     {"topic_slug":"validate-results-and-scientific-conclusions","article":"src/content/topics/validate-results-and-scientific-conclusions.md","review":"docs/reviews/2026-08-04-validate-results-and-scientific-conclusions.md","links":[{"kind":"doi","url":"https://doi.org/10.1016/S0376-0421%2802%2900005-2"},{"kind":"doi","url":"https://doi.org/10.6028/NIST.IR.8298"},{"kind":"page","url":"https://www.nationalacademies.org/read/25303/chapter/3"},{"kind":"doi","url":"https://doi.org/10.1126/science.aad3000"},{"kind":"doi","url":"https://doi.org/10.1063/1.1390175"}]},
     {"topic_slug":"analyze-and-compare-results","article":"src/content/topics/analyze-and-compare-results.md","review":"docs/reviews/2026-08-04-analyze-and-compare-results.md","links":[{"kind":"doi","url":"https://doi.org/10.1126/science.aad3000"},{"kind":"page","url":"https://arxiv.org/abs/2008.10402"},{"kind":"page","url":"https://arxiv.org/abs/2001.01851"},{"kind":"page","url":"https://pml.nist.gov/cuu/Uncertainty/international1.html"},{"kind":"page","url":"https://arxiv.org/abs/2003.12510"}]},
@@ -62,6 +62,7 @@
         { "kind": "page", "url": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data" },
         { "kind": "page", "url": "https://docs.materialsproject.org/frequently-asked-questions" },
         { "kind": "page", "url": "https://www.crystallography.net/cod/" },
+        { "kind": "page", "url": "https://molstar.org/viewer/?hide-controls=1&structure-url=https%3A%2F%2Fmaxwell3919.github.io%2FDFT-Research-Workflow%2Fexamples%2Fcif%2Fsilicon-cod-9013102-expanded.cif&structure-url-format=cif" },
         { "kind": "page", "url": "https://spglib.readthedocs.io/en/v2.7.0/api/autodoc/spglib.html" }
       ]
     },
