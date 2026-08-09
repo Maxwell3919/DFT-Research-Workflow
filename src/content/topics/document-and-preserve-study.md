@@ -7,6 +7,38 @@ A completed calculation tree is not yet a preserved study. Scratch directories c
 
 Preservation turns that working history into an identifiable research object. Another researcher should be able to discover what was studied, recover the evidence behind a result, reconstruct the transformation from inputs to claims, and understand what cannot be redistributed or rerun.
 
+
+## Preserve a minimum usable study
+
+A minimum usable release preserves functional roles, not a mandatory directory name:
+
+- `README`: question, observable, model, method, branch order, acceptance criteria, claim boundary, and the first recovery command;
+- `source/`: structure or public-data origin, access record, license/reuse boundary, and any conversion step;
+- `input/`: every human-authored input, pseudopotential identifier and hash where redistribution is restricted, and scheduler script;
+- `commands/`: exact launch, extraction, plotting, and validation commands with working directories and exit status;
+- `output/`: retained raw stdout, stderr, and the smallest downstream artifacts needed to inspect or regenerate the result;
+- `parsed/`: versioned machine-readable values with units, normalization, source-file hash, and parser identity;
+- `figures/`: published figures together with the exact plotted tables and plotting command;
+- `environment/`: software and launcher versions, platform/scheduler facts, and dependency lock or environment export;
+- `manifest.json`: model, method, parent-child ancestry, expected artifacts, evidence status, and claim boundary;
+- `SHA256SUMS`: byte identities for the files selected into the release.
+
+Generate and verify hashes from the exact release directory:
+
+```bash
+study=${study:?Set study to the exact release directory}
+(
+  cd -- "$study"
+  find README source input commands output parsed figures environment manifest.json \
+    -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+  sha256sum -c SHA256SUMS
+)
+```
+
+This command covers only the named paths and fails if one is absent. A checksum fixes bytes; it does not authenticate the depositor, validate the scientific model, or prove that omitted files were unnecessary.
+
+Before publication, restore the package into a new directory, recreate the documented environment, rerun the documented parsers and plot commands, and compare regenerated tables and figures with the preserved identities. If that recovery fails, the study is not yet preserved even if the archive can be downloaded.
+
 ## Treat provenance as a working connection, not a separate appendix
 
 Provenance connects the A–E workflow whenever a structure is transformed, an input is prepared, a calculation is restarted, an output is parsed, or a figure is derived. Capture the source identity and transformation at the point of work, then preserve the resulting lineage at study completion. This makes later diagnosis possible without pretending that a registry or archive validates the scientific result.

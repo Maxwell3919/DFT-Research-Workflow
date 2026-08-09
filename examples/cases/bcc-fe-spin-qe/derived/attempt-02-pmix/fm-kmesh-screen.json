@@ -3,7 +3,7 @@
     0.0010951900000009118,
     9.699999998247222e-05
   ],
-  "boundary": "Both adjacent absolute energy changes in the three-point FM mesh series are at or below the declared tolerance. This tests only this fixed-geometry FM total-energy screen.",
+  "boundary": "Pass only if both adjacent absolute energy changes in the three-point FM mesh series are at or below the declared tolerance. This tests only this fixed-geometry FM total-energy screen.",
   "candidate_ids": [
     "fm-k8",
     "fm-k10",

@@ -43,10 +43,16 @@ The commands below are read-only unless a side effect is explicitly identified. 
 Anchor the inspection before reading a log:
 
 ```bash
-pwd -P
 case_root=examples/cases/bcc-fe-spin-qe
+(
+  cd -- "$case_root"
+  pwd -P
+)
 test -d "$case_root"
 ```
+
+Changing directory inside the subshell proves that the recorded case path is reachable without silently changing the caller's shell. It does not prove that the path belongs to the intended run or that any output is valid.
+
 
 `pwd -P` proves the shell's resolved current directory at that moment. It does not prove that the directory is the intended project authority, that no process is writing there, or that a similarly named scratch directory is equivalent.
 
@@ -68,7 +74,11 @@ else
   printf '%-10s %s\n' 'mpirun' 'NOT FOUND'
 fi
 
-pw.x -h </dev/null 2>&1 | head -n 5
+if pw_path=$(command -v pw.x 2>/dev/null); then
+  "$pw_path" -h </dev/null 2>&1 | head -n 5
+else
+  printf '%-10s %s\n' 'pw.x' 'NOT FOUND' >&2
+fi
 ```
 
 `command -v` proves only which command the current shell would resolve. `mpirun --version` identifies the currently resolved launcher, not the launcher used by a previous job and not its compatibility with the installed QE build or the scheduler. The help banner can identify a local executable build when that build supports `-h`. None of these commands proves that a calculation succeeded. For a completed run, compare this shell evidence with the version banner inside the exact saved output:
@@ -102,6 +112,35 @@ find "$case_root" -maxdepth 4 -type f -size 0 -print
 
 ## Run
 
+### Invoke only the branch the question requires
+
+These are real serial invocation forms. Replace the filenames with reviewed inputs, use the site-approved MPI or scheduler launcher when required, and run only the branch demanded by the scientific question:
+
+```bash
+# pw.x: reference, relaxation, NSCF, or bands parent as declared by calculation= in this input.
+pw.x -in scf.in > scf.out 2> scf.err
+
+# bands.x: post-process a compatible completed pw.x bands calculation.
+bands.x -in bands.in > bands.out 2> bands.err
+
+# dos.x: read a compatible dense-grid pw.x NSCF parent.
+dos.x -in dos.in > dos.out 2> dos.err
+
+# projwfc.x: read the compatible pw.x prefix/outdir and wavefunctions it requires.
+projwfc.x -in projwfc.in > projwfc.out 2> projwfc.err
+
+# ph.x: start the required phonon branch from a compatible converged pw.x parent.
+ph.x -in ph.in > ph.out 2> ph.err
+
+# q2r.x: transform the declared complete ph.x dynamical-matrix set into real-space force constants.
+q2r.x -in q2r.in > q2r.out 2> q2r.err
+
+# matdyn.x: read the q2r.x force constants for the requested dispersion or mode calculation.
+matdyn.x -in matdyn.in > matdyn.out 2> matdyn.err
+```
+
+Each line proves only that the shell attempted that executable with separate stdout and stderr paths. Its exit status and output must still be inspected. The comments state parent requirements; they do not define one mandatory `pw.x → bands.x → dos.x → projwfc.x → ph.x → q2r.x → matdyn.x` sequence. Keep every branch in its own prefix/outdir and record the actual launcher, working directory, input hash, and parent artifact identity.
+
 Before a submission, a Slurm installation may support a non-submitting syntax and feasibility check:
 
 ```bash
@@ -131,12 +170,28 @@ scontrol show job -dd "$job_id"
 
 `squeue` is a current queue observation. An empty result can mean completion, purge, the wrong cluster, or the wrong ID. `sacct` is scheduler accounting and can preserve step exit codes after the queue entry disappears, but availability and fields depend on site configuration. `scontrol show job -dd` exposes the scheduler's detailed record, including work directory, command, resources, and reason fields when retained. None reads the scientific meaning of QE output.
 
+Inspect processes owned by the current user on the current host without signalling them:
+
+```bash
+ps -u "$USER" -o pid,ppid,stat,etime,cmd --forest
+```
+
+This proves only that matching local processes were visible at that instant. It does not inspect another compute node, establish scheduler ownership, identify the correct calculation without its recorded path and job ID, or authorize cancellation.
+
 Follow a known live log by name:
 
 ```bash
 live_log=${live_log:?Set live_log to the exact stdout path for the recorded stage}
+
+# Follow the currently open file descriptor; stop with Ctrl-C.
+tail -f -- "$live_log"
+
+# Alternative when the named file may be rotated or recreated; stop with Ctrl-C.
 tail -F -- "$live_log"
 ```
+
+`tail -f` follows the currently open file descriptor. `tail -F` follows the filename and retries if it disappears, which is useful for rotation but can attach to replacement bytes. Neither proves scheduler state, normal program termination, SCF convergence, or scientific validity.
+
 
 `tail -F` proves that new bytes become visible at that path and continues across file replacement. Silence does not prove a hung job, and new text does not prove progress or convergence. Exit with `Ctrl-C`; this stops only the local viewer.
 
@@ -173,14 +228,35 @@ Count and search without silently treating a marker as acceptance:
 
 ```bash
 wc -l -- "$out"
-grep -n -E \
+if grep -n -E \
   'Program (PWSCF|PHONON|BANDS|DOS|PROJWFC|Q2R|MATDYN)|JOB DONE|convergence has been achieved|No convergence has been achieved|^!.*total energy|Fermi energy|Forces acting on atoms|Total force|total[[:space:]]+stress|ATOMIC_POSITIONS' \
-  -- "$out" || true
+  -- "$out"; then
+  :
+else
+  grep_status=$?
+  case "$grep_status" in
+    1) printf '%s\n' 'No requested marker was found.' >&2 ;;
+    *) exit "$grep_status" ;;
+  esac
+fi
+
+awk '
+  /^!.*total energy/ { energy=$0 }
+  /the Fermi energy is/ { fermi=$0 }
+  END {
+    if (energy == "") exit 1
+    print energy
+    if (fermi != "") print fermi
+  }
+' "$out"
 
 grep -n -i -E \
   'warning|error in routine|stopping|not converged|no convergence|segmentation fault|out of memory|oom-kill' \
   -- "$out" || true
 ```
+
+`wc -l` counts newline-terminated records only; it does not prove completeness. The guarded `grep` returns 0 when at least one requested marker is found, 1 when none is found, and a value greater than 1 for an access or execution error; only status 1 is translated into “not found.” The `awk` command prints the last matching total-energy line and, when present, the last matching Fermi-energy line. It is a bounded text extraction, not a unit-aware parser and not evidence of convergence.
+
 
 The first search locates evidence candidates; it does not decide which gate they satisfy. The second search locates adverse text; an empty result means only that these patterns were absent. Read surrounding lines and stderr because software- and site-specific failures use other wording.
 
@@ -197,8 +273,19 @@ For a declared `ph.x` or `matdyn.x` output, locate printed mode frequencies:
 
 ```bash
 ph_out=${ph_out:?Set ph_out to the exact ph.x or matdyn.x stdout path}
-grep -n -E 'freq[[:space:]]*\([[:space:]]*[0-9]+\)[[:space:]]*=' "$ph_out" || true
+if grep -n -E 'freq[[:space:]]*\([[:space:]]*[0-9]+\)[[:space:]]*=' "$ph_out"; then
+  :
+else
+  grep_status=$?
+  case "$grep_status" in
+    1) printf '%s\n' 'No printed mode-frequency line was found.' >&2 ;;
+    *) exit "$grep_status" ;;
+  esac
+fi
 ```
+
+A frequency match proves only that a line with the requested QE text shape was printed. It does not establish complete q-point coverage, acoustic-sum-rule treatment, phonon convergence, or dynamical stability.
+
 
 This reports matching frequencies and units at the q points present in that output. It does not establish q-space coverage, acoustic-sum-rule quality, displacement or q-mesh convergence, dynamical stability, anharmonic stability, or experimental agreement. Preserve negative or imaginary modes instead of filtering them out.
 
@@ -229,15 +316,26 @@ Existence and nonzero size are artifact checks, not semantic checks. A zero-byte
 Compare inputs and bind bytes:
 
 ```bash
-diff -u -- \
+if diff -u -- \
   "$case_root/input/fm-k10.scf.in" \
-  "$case_root/input/fm-k12.scf.in" || true
+  "$case_root/input/fm-k12.scf.in"; then
+  printf '%s\n' 'Inputs are byte-for-byte identical.'
+else
+  diff_status=$?
+  case "$diff_status" in
+    1) printf '%s\n' 'Inputs differ; inspect the unified diff above.' >&2 ;;
+    *) exit "$diff_status" ;;
+  esac
+fi
 
 sha256sum -- \
   "$case_root/manifest.json" \
   "$case_root/input/fm-k12.scf.in" \
   "$out"
 ```
+
+For `diff`, exit 0 means identical inputs, exit 1 means a real difference, and an exit value greater than 1 is an operational error that must not be reported as a scientific difference. `sha256sum` binds exact bytes; neither command establishes which input is scientifically appropriate.
+
 
 `diff` makes textual changes inspectable; it does not decide whether two calculations are scientifically comparable or reveal defaults that were not printed. `sha256sum` binds exact bytes; matching hashes do not prove correctness, completeness, convergence, or provenance beyond the declared binding.
 

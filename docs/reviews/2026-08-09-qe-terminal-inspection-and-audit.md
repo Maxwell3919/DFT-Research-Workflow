@@ -39,7 +39,7 @@ The companion scope is pinned to Python 3.12 and the committed QE 7.5 output for
 
 Both companions check every artifact byte count and SHA-256 declared by the existing case manifest. The terminal companion reports file inventory, the preserved invalid early-exit status JSON, Attempt 01's pre-PWSCF PMI failure, Attempt 02 stage exits and markers, the absent live-scheduler observation, and the failed numerical-convergence record.
 
-The audit companion additionally checks final energies, Fermi energies, total forces, stress presence, input coordinates, warning/fatal patterns, the FM/NM comparison, absent phonon artifacts, and the manifest's internal evidence records. It recomputes the mesh pass condition and deliberately detects the contradiction between `fm-kmesh-screen.json`'s passing boundary sentence and its failed value/status evidence. Detecting this known adverse condition is a successful audit execution, not a scientific pass.
+The Fe criterion is now conditional wording consistent with the unchanged recorded FAIL result; no raw value or acceptance state changed.
 
 ## Scientific and claim boundary
 
@@ -48,3 +48,7 @@ The batch separates scheduler state, wrapper and child exit codes, QE terminatio
 It supports teaching how to inspect and audit the committed case. It does not establish a current scheduler state, rerun QE, validate another calculation tree, pass the bcc Fe k-mesh gate, identify the magnetic ground state, establish a relaxed structure, support a phonon or stability conclusion, compare with experiment, or authorize cancellation or new computation.
 
 No media are added. Source reachability, companion execution, content validation, build, and browser behavior remain separate checks and were not run as part of this file-creation task.
+
+## Batch 5A operational closure
+
+The terminal guide now covers `cd`, `awk`, `ps`, both `tail -f` and `tail -F`, and fail-closed `grep`/`diff` exit semantics. It supplies real redirected invocation forms for `pw.x`, `bands.x`, `dos.x`, `projwfc.x`, `ph.x`, `q2r.x`, and `matdyn.x`, each with its parent-artifact boundary and an explicit warning that these branches are not a universal sequence. Slurm commands remain inspection text only; CI and companion scripts do not submit, cancel, or run QE jobs. The Calculation Audit presents the evidence ladder in ordinary scientific language and retains the Fe screen's FAIL and no-claim boundary.
