@@ -7,18 +7,21 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/defect-formation-energies-and-charge-states/';
 const phrases = [
-  'A point-defect calculation compares a host crystal',
-  'Formation energy is a grand-canonical difference',
-  'Atomic reservoirs delimit growth conditions',
-  'The Fermi level is an electron-reservoir coordinate',
+  'Use defect formation energies when atoms and electrons are exchanged',
+  'Prepare the parent calculations',
+  'Store every term and sign separately.',
+  'These allowed domains come from phase stability',
   'A periodic charged supercell is not an isolated charged defect',
-  'Potential alignment must not be counted twice',
-  'Thermodynamic transition levels come from total energies',
-  'A skipped charge state can be real negative-U behaviour',
-  'Thermodynamic and optical levels are different processes',
-  'Charge neutrality determines the equilibrium Fermi level',
-  'Synthesis and measurement can freeze different equilibria',
-  'What this topic establishes',
+  'Avoid double-counting alignment',
+  'Agreement between two corrected values can arise from compensating errors.',
+  'Only crossings on the lower envelope delimit thermodynamically stable charge states.',
+  'Diagnose a skipped charge state',
+  'A Kohn–Sham eigenvalue is neither automatically a thermodynamic transition level nor an optical excitation energy.',
+  'The solution depends on the complete included defect and dopant inventory',
+  'A low equilibrium formation energy does not supply a migration barrier',
+  'Verify program completion, SCF convergence, relaxation, final charge and spin identity, and localization separately.',
+  'Claim boundary and next operation',
+  'It does not establish exhaustive search, isolated-defect convergence without size evidence',
   'Sources and methods',
 ];
 const domains = ['doi.org', 'doped.readthedocs.io'];
@@ -71,7 +74,7 @@ try {
   response = await noJs.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`defect no-JavaScript returned ${response?.status()}`);
   const text = await noJs.$eval('body', (body) => body.innerText);
-  for (const phrase of ['Formation energy is a grand-canonical difference', 'Potential alignment must not be counted twice', 'Sources and methods']) if (!text.includes(phrase)) throw new Error(`defect no-JavaScript missing ${phrase}`);
+  for (const phrase of ['Store every term and sign separately.', 'Avoid double-counting alignment', 'Sources and methods']) if (!text.includes(phrase)) throw new Error(`defect no-JavaScript missing ${phrase}`);
 
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });

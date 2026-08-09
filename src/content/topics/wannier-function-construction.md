@@ -11,7 +11,7 @@ Start from a qualified full-zone electronic parent. Choose the target bands, num
 
 ## A gauge choice over a periodic subspace
 
-For an isolated set of bands, Wannier functions are Fourier transforms of Bloch states after a `k`-dependent unitary rotation,
+For an isolated set of bands, Wannier functions are Fourier transforms of Bloch states after a $\mathbf k$-dependent unitary rotation,
 
 $$
 |w_{n\mathbf R}\rangle
@@ -20,7 +20,7 @@ e^{-i\mathbf k\cdot\mathbf R}
 \sum_m U_{mn}(\mathbf k)|\psi_{m\mathbf k}\rangle .
 $$
 
-`R` labels a lattice vector, `n` labels one function in the chosen subspace, `N_k` is the number of sampled k points, and `U(k)` is a unitary gauge transformation among the selected Bloch states. Energies alone do not determine `U(k)`: phases and rotations can produce equally valid extended or localized functions. Localized functions therefore describe a chosen smooth gauge of a specified subspace, not an observable orbital that existed independently of that choice.
+$\mathbf R$ labels a lattice vector, $n$ labels one function in the chosen subspace, $N_k$ is the number of sampled k points, and $U(\mathbf k)$ is a unitary gauge transformation among the selected Bloch states. Energies alone do not determine $U(\mathbf k)$: phases and rotations can produce equally valid extended or localized functions. Localized functions therefore describe a chosen smooth gauge of a specified subspace, not an observable orbital that existed independently of that choice.
 
 Maximally localized Wannier functions select a gauge by minimizing the total quadratic spread
 
@@ -32,11 +32,11 @@ $$
 \right].
 $$
 
-The centres `<r>_n` and spread terms depend on the cell, k mesh, periodic convention, spin/SOC representation, and subspace. A small final spread is useful diagnostics, but it does not by itself prove correct band character, interpolation outside the target window, topology, or transferability.
+The centres $\langle\mathbf r\rangle_n$ and spread terms depend on the cell, k mesh, periodic convention, spin/SOC representation, and subspace. A small final spread is useful diagnostics, but it does not by itself prove correct band character, interpolation outside the target window, topology, or transferability.
 
 ## Isolated bands and disentangled subspaces are different problems
 
-When exactly the target number of bands is separated by gaps across the sampled Brillouin zone, the construction only chooses a gauge inside that isolated manifold. Metallic and conduction manifolds are commonly entangled with additional bands. Disentanglement first chooses an optimal `N_w`-dimensional subspace inside an outer energy window, often preserving a frozen inner window, and localization is applied afterwards. The outer window, inner/frozen window, number of Wannier functions, trial projections, and any excluded bands are physical modelling choices.
+When exactly the target number of bands is separated by gaps across the sampled Brillouin zone, the construction only chooses a gauge inside that isolated manifold. Metallic and conduction manifolds are commonly entangled with additional bands. Disentanglement first chooses an optimal $N_w$-dimensional subspace inside an outer energy window, often preserving a frozen inner window, and localization is applied afterwards. The outer window, inner/frozen window, number of Wannier functions, trial projections, and any excluded bands are physical modelling choices.
 
 The resulting interpolated band can agree perfectly inside a frozen window while becoming unreliable above it. Conversely, a visually localized orbital can hide an avoided crossing or incorrect orbital exchange. Compare the interpolated and parent eigenvalues, characters where relevant, and symmetry or degeneracy behaviour over the full domain needed by the downstream observable; do not accept a fit only along a presentation band path.
 
@@ -50,7 +50,7 @@ M_{mn}(\mathbf k,\mathbf b)
 |u_{n,\mathbf k+\mathbf b}\rangle .
 $$
 
-Here `u_nk` is the cell-periodic part of a parent Bloch state and `b` connects declared neighbouring k points. Their ordering, phase convention, spinor treatment, reciprocal cell, and parent Hamiltonian must remain consistent. After a gauge is selected, the real-space matrix elements `H_mn(R)` can be Fourier transformed to interpolate `H(k)` on a target mesh. This is a representation transfer, not a new self-consistent electronic solution.
+Here $u_{n\mathbf k}$ is the cell-periodic part of a parent Bloch state and $b$ connects declared neighbouring k points. Their ordering, phase convention, spinor treatment, reciprocal cell, and parent Hamiltonian must remain consistent. After a gauge is selected, the real-space matrix elements $H_{mn}(\mathbf R)$ can be Fourier transformed to interpolate $H(\mathbf k)$ on a target mesh. This is a representation transfer, not a new self-consistent electronic solution.
 
 Interpolation accuracy is controlled by parent k sampling, subspace quality, real-space truncation/interpolation convention, and target energy or k range. A dense interpolated curve does not add information absent from a coarse or incomplete parent calculation. For a non-collinear or SOC calculation, the spinor convention and symmetry treatment must be retained; mixing scalar-relativistic and spinor records can invalidate the representation even if file dimensions match.
 

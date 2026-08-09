@@ -16,23 +16,13 @@ for (const statement of [
 }
 
 for (const heading of [
+  '## Build and audit the reference state',
   '## Define the reference state operationally',
-  '## Freeze geometry and method identity',
-  '## Perform a final fixed-geometry state calculation',
   '## Enumerate candidate electronic states',
-  '## Separate a fresh start from a continuation',
-  '## Choose occupations and electronic temperature deliberately',
-  '## Preserve charge and electrostatic boundary conditions',
-  '## Control spin, magnetization, and relativistic branches',
   '## Distinguish internal SCF convergence from state verification',
-  '## Diagnose oscillation, charge sloshing, and false convergence',
   '## Compare candidate energies under one common evaluator',
-  '## Re-evaluate forces and stress on the fixed structure',
-  '## Verify state identity after convergence',
-  '## Define the reference energy and normalization',
   '## Repeat critical states from independent initializations',
   '## Package charge density and wavefunction lineage',
-  '## Hand the reference state to target calculations',
   '## Preserve a reference-state evidence package',
   '## What this task does not establish',
   '## Sources and methods',
@@ -41,6 +31,12 @@ for (const heading of [
 }
 
 for (const statement of [
+  'Begin with one exact accepted geometry.',
+  'The optimization-to-static route is common, not universal.',
+  'Normal program termination does not establish SCF convergence.',
+  'SCF convergence does not establish ionic optimization convergence.',
+  'Ionic optimization convergence does not identify the lowest relevant state.',
+  'The lowest identified state is not automatically the scientifically appropriate reference state.',
   'A successful SCF solution is not automatically the global electronic ground state.',
   'The reference calculation is fixed-geometry',
   'This calculation is not simply “the last SCF in the relaxation.”',
@@ -126,4 +122,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log('Reviewed reference state valid: 20 natural sections, exact 15-source coverage, fixed-geometry and candidate-set boundaries, O13/O20 migration boundary, and no universal threshold prescription.');
+console.log('Reviewed reference state valid: operation-first fixed-geometry route, four distinct convergence/state gates, exact 15-source coverage, fixed-geometry and candidate-set boundaries, O13/O20 migration boundary, and no universal threshold prescription.');

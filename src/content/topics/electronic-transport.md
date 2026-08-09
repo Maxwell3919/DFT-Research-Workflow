@@ -13,7 +13,7 @@ Start from a qualified electronic parent and calculate or interpolate energies a
 
 ## The response starts from a distribution, not a band plot
 
-At equilibrium, state `(n, k)` has energy `epsilon_nk` and Fermi--Dirac occupation `f0(epsilon_nk, mu, T)`. Its band velocity is
+At equilibrium, state $(n,\mathbf{k})$ has energy $\epsilon_{n\mathbf k}$ and Fermi--Dirac occupation $f_0(\epsilon_{n\mathbf k},\mu,T)$. Its band velocity is
 
 $$
 \mathbf v_{n\mathbf k}
@@ -21,9 +21,9 @@ $$
 \nabla_{\mathbf k}\epsilon_{n\mathbf k}.
 $$
 
-where `n` labels a band, `k` spans the full Brillouin zone, `hbar` is the reduced Planck constant, and the gradient is taken with respect to reciprocal-space wavevector. A line plot along selected symmetry directions does not contain the full set of velocities required by a transport integral.
+where $n$ labels a band, $\mathbf k$ spans the full Brillouin zone, $\hbar$ is the reduced Planck constant, and the gradient is taken with respect to reciprocal-space wavevector. A line plot along selected symmetry directions does not contain the full set of velocities required by a transport integral.
 
-A weak field or temperature gradient changes the distribution by `delta f_nk`. The linearized Boltzmann transport equation balances the driving term against a collision operator. Solving that equation yields a response only within its assumptions: well-defined quasiparticles, a near-equilibrium distribution, a specified scattering model, and a length scale on which a local bulk description is meaningful.
+A weak field or temperature gradient changes the distribution by $\delta f_{n\mathbf k}$. The linearized Boltzmann transport equation balances the driving term against a collision operator. Solving that equation yields a response only within its assumptions: well-defined quasiparticles, a near-equilibrium distribution, a specified scattering model, and a length scale on which a local bulk description is meaningful.
 
 In a relaxation-time approximation, the electrical conductivity tensor can be written schematically as
 
@@ -35,7 +35,7 @@ v_{n\mathbf k,a}v_{n\mathbf k,b}
 \left[-\frac{\partial f_0}{\partial\epsilon}\right]_{\epsilon_{n\mathbf k}}.
 $$
 
-`e` is the positive elementary-charge magnitude, `V` is the real-space normalization volume, `a` and `b` are Cartesian directions, and `tau_nk` is a state- and possibly temperature-dependent transport relaxation time. The derivative of `f0` selects an energy window around the chemical potential; velocities determine which states carry current; `tau_nk` determines how long the driven distribution persists. Depending on k-point weights and spin conventions, prefactors may be written differently, so units and normalization must travel with the output.
+$e$ is the positive elementary-charge magnitude, $V$ is the real-space normalization volume, $a$ and $b$ are Cartesian directions, and $\tau_{n\mathbf k}$ is a state- and possibly temperature-dependent transport relaxation time. The derivative of $f_0$ selects an energy window around the chemical potential; velocities determine which states carry current; $\tau_{n\mathbf k}$ determines how long the driven distribution persists. Depending on k-point weights and spin conventions, prefactors may be written differently, so units and normalization must travel with the output.
 
 ## Transport moments separate what the bands provide from what scattering supplies
 
@@ -45,9 +45,9 @@ If every $\tau_{n\mathbf k}$ is replaced by one constant $\tau$, then $\sigma/\t
 
 ## Chemical potential is not automatically a realizable carrier concentration
 
-Transport is often evaluated as a function of chemical potential and temperature. Converting `mu` into electron or hole concentration requires integration of the same electronic states with a declared cell volume, dimensional normalization, spin counting, and charge-neutrality convention. In a semiconductor, ionized dopants, defects, compensating centres, and temperature-dependent band edges can determine the actual chemical potential.
+Transport is often evaluated as a function of chemical potential and temperature. Converting $\mu$ into electron or hole concentration requires integration of the same electronic states with a declared cell volume, dimensional normalization, spin counting, and charge-neutrality convention. In a semiconductor, ionized dopants, defects, compensating centres, and temperature-dependent band edges can determine the actual chemical potential.
 
-A rigid-band scan changes occupations while leaving the band energies and wavefunctions fixed. It is a model for dilute perturbations, not proof that a chosen carrier concentration can be introduced without structural relaxation, impurity states, band renormalization, phase change, or compensation. Comparing two materials at the same `mu - band edge` answers a different question from comparing them at the same carrier concentration, temperature, and scattering model.
+A rigid-band scan changes occupations while leaving the band energies and wavefunctions fixed. It is a model for dilute perturbations, not proof that a chosen carrier concentration can be introduced without structural relaxation, impurity states, band renormalization, phase change, or compensation. Comparing two materials at the same $\mu-E_{\mathrm{edge}}$ answers a different question from comparing them at the same carrier concentration, temperature, and scattering model.
 
 Mobility introduces another normalization:
 
@@ -56,7 +56,7 @@ $$
 = \frac{\sigma_{ab}}{n|e|}.
 $$
 
-for a single dominant carrier density `n` under compatible tensor and sign conventions. In multiband or bipolar transport this scalar reduction can hide coupled electron and hole currents. Hall mobility additionally depends on magnetic-field response and need not equal drift mobility.
+for a single dominant carrier density $n$ under compatible tensor and sign conventions. In multiband or bipolar transport this scalar reduction can hide coupled electron and hole currents. Hall mobility additionally depends on magnetic-field response and need not equal drift mobility.
 
 ## Scattering is a physical model, not a fitting footnote
 
@@ -70,13 +70,13 @@ First-principles electron--phonon transport therefore consumes more than band en
 
 Transport weights combine sharp occupation derivatives, velocities, near-degeneracies, and scattering phase space. Converge the reported observable over the full temperature and chemical-potential or carrier-density domain, not merely the total energy or a band-path appearance. Relevant tests can include parent electronic-state convergence, number of bands, full-zone k meshes, interpolation quality and derivatives, energy integration or smearing, q meshes for phonon scattering, delta-function treatment, and solver iteration.
 
-Validate an interpolation against directly calculated energies and, when used, velocity or momentum matrix elements on withheld points, especially near band crossings and closely spaced valleys. A visually smooth band curve can have inaccurate derivatives. Check symmetry-equivalent tensor components, Onsager relations where applicable, carrier-count closure, limiting behaviour, and unit conversions. Compare constant-`tau`, state-dependent-lifetime, and iterative solutions only when their inputs and reported quantities are aligned.
+Validate an interpolation against directly calculated energies and, when used, velocity or momentum matrix elements on withheld points, especially near band crossings and closely spaced valleys. A visually smooth band curve can have inaccurate derivatives. Check symmetry-equivalent tensor components, Onsager relations where applicable, carrier-count closure, limiting behaviour, and unit conversions. Compare constant-$\tau$, state-dependent-lifetime, and iterative solutions only when their inputs and reported quantities are aligned.
 
-Electronic thermal conductivity is not the lattice thermal conductivity from **Lattice Thermal Transport**. The Seebeck coefficient is not a direct measure of conductivity, and a large power factor `S^2 sigma` does not establish a large thermoelectric figure of merit without lattice heat transport, geometry, contacts, temperature stability, and the same scattering model. Agreement with one experimental number can mask compensating errors in carrier density, band structure, and lifetime.
+Electronic thermal conductivity is not the lattice thermal conductivity from **Lattice Thermal Transport**. The Seebeck coefficient is not a direct measure of conductivity, and a large power factor $S^2\sigma$ does not establish a large thermoelectric figure of merit without lattice heat transport, geometry, contacts, temperature stability, and the same scattering model. Agreement with one experimental number can mask compensating errors in carrier density, band structure, and lifetime.
 
 ## Preserve enough lineage to reuse the result
 
-Archive the structure and electronic-state identity; functional and quasiparticle corrections; spin, SOC, and dimensional convention; cell volume or sheet-thickness normalization; bands and k weights; interpolation representation and validation; temperature and chemical-potential/carrier grids; scattering mechanisms and approximations; lifetimes or collision kernels; solver settings; tensor basis; units; convergence series; and any experimental inputs. Store `sigma/tau` as such rather than silently assigning a lifetime later.
+Archive the structure and electronic-state identity; functional and quasiparticle corrections; spin, SOC, and dimensional convention; cell volume or sheet-thickness normalization; bands and k weights; interpolation representation and validation; temperature and chemical-potential/carrier grids; scattering mechanisms and approximations; lifetimes or collision kernels; solver settings; tensor basis; units; convergence series; and any experimental inputs. Store $\sigma/\tau$ as such rather than silently assigning a lifetime later.
 
 The subordinate CoSb3 example shows how a real published `.condtens` output can be traced and replotted. It verifies source bytes, selected columns, units, and a sign change in that frozen output; it does not rerun the parent electronic structure, prove transport convergence, or establish experimental behaviour.
 

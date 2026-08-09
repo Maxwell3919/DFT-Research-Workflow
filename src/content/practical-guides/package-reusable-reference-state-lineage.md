@@ -10,7 +10,7 @@ status: reviewed
 summary: Bind structure, method, state, charge density, wavefunctions, outputs, and downstream compatibility into one hashed reference-state manifest.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/silicon_qe_convergence.py
+execution_script: examples/practical-guides/qe_manual_handoff.py
 source_ids:
   - qe-pw-75
   - vasp-electronic-ground-state-properties
@@ -24,97 +24,146 @@ review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
 reviewed_at: "2026-08-03"
 ---
 
-Charge-density and wavefunction files are useful only when their scientific identity remains attached. Package reusable artifacts as one reference-state lineage rather than as anonymous restart files.
+## Purpose
 
-## Audit the parent before packaging it
+A reusable calculation is a directory that can be identified, restored, checked, and regenerated without relying on shell history or memory. Packaging does not make the calculation scientifically valid; it preserves the evidence needed to evaluate it.
 
-```bash
-python3 examples/practical-guides/silicon_qe_convergence.py
-```
+## Verify the packaging tool
 
-This bounded command checks nine stored-output hashes, literal completion markers, and parsed energies. It does not create a reference manifest or verify any charge-density or wavefunction file.
+From the repository root:
 
-Before registering a reusable parent, collect the exact structure checksum, fixed-geometry input, primary stdout/stderr, method and potential identity, charge/spin/occupation state, final diagnostics, numerical settings, software version, and hashes or retention references for every downstream artifact. Check that the intended target calculation expects the same structure, Hamiltonian, charge, state, and representation. If any state-defining field changes, create a new parent rather than reusing a readable but incompatible file.
+~~~bash
+python3 examples/practical-guides/qe_manual_handoff.py self-test
+~~~
 
-The next action is not “copy the wavefunctions.” It is to record the compatible downstream request and the files it consumes, then preserve the reference as immutable evidence. Corrections create a new version and an explicit supersession link.
+The self-test creates a deterministic fixture in a temporary directory, archives it, restores it cleanly, runs <code>sha256sum -c</code>, deletes declared derived targets, regenerates them, and compares their hashes. No fixture output is presented as scientific evidence.
 
-## Hash the state-defining objects
+## Assemble one study directory
 
-A minimal manifest binds:
+Create a new directory outside the repository and copy, rather than link, the files required to understand and reproduce the calculation:
 
-```text
-structure payload and checksum
-method and potential identity
-charge, spin, occupation, and state label
-numerical settings
-software and environment
-SCF completion summary
-energy convention
-forces and stress
-charge-density artifact
-wavefunction artifact
-primary output
-parent and supersession links
-```
+~~~bash
+study="$HOME/drw-archives/si-study"
+mkdir -p "$study"/{source,input,commands,output,parsed,figures,environment}
 
-The following manifest fixture is conceptual on this page. It illustrates payload
-hashes and a compatibility decision, but it is not executed by the declared
-companion:
+cat > "$study/README.md" <<'TXT'
+Scientific question:
+Model and source identity:
+Software and version:
+Pseudopotential filenames and SHA-256:
+Execution context and command:
+Declared numerical acceptance rules:
+Target observable and claim boundary:
+Known failures or exclusions:
+TXT
+~~~
 
-```python
-from reference_state_lineage_manifest import run
+Use the directories consistently:
 
-report = run()
-print(report["manifest_digest"])
-print(report["compatible_downstream_request"])
-```
+| Path | Preserve |
+| --- | --- |
+| <code>source/</code> | downloaded structure, source URL/identifier, access date, and original hash |
+| <code>input/</code> | exact QE inputs and exact pseudopotential identity records; include a redistributable UPF only when its terms allow it |
+| <code>commands/</code> | run, extraction, and regeneration commands |
+| <code>output/</code> | raw stdout/stderr and native post-processing data needed for audit |
+| <code>parsed/</code> | machine-readable tables derived from <code>output/</code> |
+| <code>figures/</code> | figures generated from the parsed data |
+| <code>environment/</code> | QE/MPI versions, scheduler script, host-independent environment notes |
 
-The declared companion does not create or validate that manifest. It checks the
-expected SHA-256 values of nine stored QE outputs, requires literal completion
-markers, and parses total energies. It does not verify input hashes, a potential,
-charge density, wavefunctions, or downstream compatibility.
+Do not package restart wavefunctions, scratch trees, credentials, private host paths, licensed potentials, or unrelated raw data merely because they share a directory.
 
-## Declare downstream compatibility
+## Record deterministic regeneration
 
-A downstream request should identify the expected structure, method, charge, and state. The script accepts a matching request and rejects one with a changed spin–orbit branch.
+Copy the reviewed helper and write a regeneration script that reads only preserved raw/native data:
 
-Compatibility can require more than matching file format. A file produced with another functional, potential set, charge, atom order, or state may be readable yet scientifically incompatible.
+~~~bash
+cp examples/practical-guides/qe_manual_handoff.py \
+  "$study/commands/qe_manual_handoff.py"
 
-## Preserve large artifacts without copying them everywhere
+cat > "$study/commands/regenerate.sh" <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
 
-Large electronic-state files may remain in scratch, archive, or code-specific repositories. The durable manifest can store content hash, size and format, canonical location or retention class, software version, regeneration parent, and expiration or deletion policy.
+python3 commands/qe_manual_handoff.py extract-runtime \
+  --runtime-dir output \
+  --bands-data output/si.bands.dat \
+  --dos-data output/si.dos.dat \
+  --output-dir regeneration-work
 
-Before deleting a reproducible artifact, confirm that its parent inputs, environment, and regeneration path remain available.
+mkdir -p parsed figures
+mv regeneration-work/*.csv parsed/
+mv regeneration-work/analysis.json parsed/
+mv regeneration-work/*.svg figures/
+rmdir regeneration-work
+SH
 
-## Version corrections rather than overwriting
+cat > "$study/commands/regeneration-targets.txt" <<'TXT'
+parsed/convergence.csv
+parsed/bands.csv
+parsed/dos.csv
+parsed/analysis.json
+figures/convergence.svg
+figures/bands.svg
+figures/dos.svg
+TXT
 
-If the reference state changes, create a new identity. Record why the previous state was superseded, which downstream calculations used it, and whether they require recomputation.
+(
+  cd "$study"
+  bash commands/regenerate.sh
+)
+~~~
 
-An immutable parent reference makes later provenance auditable. Silent replacement can mix target calculations derived from different electronic states.
+Adjust the explicit native filenames and target list to the files your branch actually produces. The helper refuses a non-empty analysis destination. Keep raw output immutable during regeneration.
 
-## What this guide verifies
+## Create, restore, and audit the package
 
-The declared companion checks stored-output identity, marker presence, and parsed
-energies for a bounded fixed-geometry set. The manifest and compatibility logic
-remain conceptual and are not execution evidence for this page. Nothing here
-verifies inputs, publishes charge density or wavefunctions, validates a restart,
-or establishes scientific compatibility.
+Choose new paths; the command refuses to restore over an existing directory:
 
-## Common mistakes
+~~~bash
+archive="$HOME/drw-archives/si-study.tar.gz"
+restored="$HOME/drw-restores/si-study"
 
-**Saving only a wavefunction filename.** Preserve the structure, Hamiltonian, state, and generating calculation.
+python3 examples/practical-guides/qe_manual_handoff.py package-study \
+  --study-dir "$study" \
+  --archive "$archive" \
+  --restore-dir "$restored" \
+  --run-regeneration-check
+~~~
 
-**Equating readable with compatible.** Validate state-defining metadata.
+The tool writes:
 
-**Overwriting a corrected reference.** Create a new version and supersession link.
+- <code>manifest.json</code>: path, byte count, and SHA-256 for each payload file;
+- <code>INVENTORY.tsv</code>: a plain tabular inventory;
+- <code>SHA256SUMS</code>: checksums for payload plus manifest and inventory;
+- a deterministic <code>tar.gz</code> archive;
+- <code>restore-audit.json</code> in the clean restore.
 
-**Publishing restricted artifacts.** Keep licensed potentials, private outputs, and host details outside the public repository.
+Repeat the byte-integrity check manually:
+
+~~~bash
+(
+  cd "$restored"
+  sha256sum -c SHA256SUMS
+)
+sha256sum "$archive"
+cat "$restored/restore-audit.json"
+~~~
+
+<code>sha256sum -c</code> proves that restored bytes match the package inventory. The regeneration check proves only that the declared derived files are reproduced byte-for-byte by the preserved command on this software stack. Neither proves numerical convergence, model correctness, physical plausibility, or the scientific claim.
+
+## If it fails
+
+Do not overwrite the archive. Fix the missing file, unsafe path, nondeterministic parser, undeclared dependency, or checksum mismatch in a new study directory. Regenerate and package again, then preserve both the failed audit and the replacement identity if the failed package was already shared.
+
+## Next
+
+Cite the archive hash and manifest identity in the study record. A collaborator should be able to restore the archive, read <code>README.md</code>, verify checksums, rerun the documented extraction, and understand exactly what remains untested.
 
 ## Official sources
 
-- [Quantum ESPRESSO `pw.x` input description](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
+- [Quantum ESPRESSO pw.x input reference](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
+- [COD silicon record 9013102](https://www.crystallography.net/cod/9013102.html)
+- [CP2K DFT input reference](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT.html)
 - [VASP electronic ground-state properties](https://vasp.at/wiki/Electronic_ground-state_properties)
-- [VASP `LCHARG`](https://vasp.at/wiki/LCHARG)
-- [VASP `LWAVE`](https://vasp.at/wiki/LWAVE)
-- [CP2K DFT section](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT.html)
-- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)
+- [VASP LCHARG reference](https://vasp.at/wiki/LCHARG)
+- [VASP LWAVE reference](https://vasp.at/wiki/LWAVE)

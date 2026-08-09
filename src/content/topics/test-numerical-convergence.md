@@ -41,12 +41,10 @@ At B, the purpose is to establish a documented baseline for shared model and ref
 
 The boundaries are direct:
 
-~~~text
-Energy convergence ≠ force convergence.
-Force convergence ≠ DOS convergence.
-DOS convergence ≠ phonon convergence.
-Phonon convergence ≠ EPC convergence.
-~~~
+- Energy convergence does not establish force convergence.
+- Force convergence does not establish DOS convergence.
+- DOS convergence does not establish phonon convergence.
+- Phonon convergence does not establish EPC convergence.
 
 ## Separate completion, solver convergence, and observable convergence
 
@@ -133,7 +131,7 @@ If no affordable point passes, narrow the claim or report the unresolved numeric
 
 Reuse requires a declared family of models, methods, states, and observables. Composition, volume, dimensionality, charge, magnetism, pseudopotential, functional, relativity, software version, or target quantity can invalidate it.
 
-Geometry is not passive. If relaxation changes volume, symmetry, metallicity, or state beyond the tested family, repeat the relevant B baseline on the accepted geometry. Baseline numerical convergence ≠ observable-specific convergence.
+Geometry is not passive. If relaxation changes volume, symmetry, metallicity, or state beyond the tested family, repeat the relevant B baseline on the accepted geometry. Baseline numerical convergence does not establish observable-specific convergence.
 
 ## Preserve a convergence evidence package
 
@@ -143,7 +141,7 @@ A hand-edited figure without the parameter-to-output mapping is not convergence 
 
 ## What this task does not establish
 
-Numerical convergence does not establish that the physical model is appropriate, that the method is accurate, that a pseudopotential is transferable, that the selected state is the ground state, or that experiment must agree. Numerical convergence ≠ model correctness.
+Numerical convergence does not establish that the physical model is appropriate, that the method is accurate, that a pseudopotential is transferable, that the selected state is the ground state, or that experiment must agree. Numerical convergence does not establish model correctness.
 
 The supported statement is bounded:
 

@@ -43,12 +43,33 @@ reason this candidate exists
 After a tool creates a child, inspect and hash it rather than trusting a picture or filename:
 
 ```bash
-find models/candidates -maxdepth 2 -type f -print
-sha256sum models/candidates/* > models/records/candidate-files.sha256
-diff -u models/records/source.sha256 models/records/candidate-files.sha256 || true
+study_root="$(pwd -P)"
+candidate_dir="$study_root/models/candidates"
+source_ledger="$study_root/models/records/source.sha256"
+candidate_ledger="$study_root/models/records/candidate-files.sha256"
+
+test -n "$(find "$candidate_dir" -type f -print -quit)"
+(
+  cd "$candidate_dir"
+  find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum
+) > "$candidate_ledger"
+
+if diff -u "$source_ledger" "$candidate_ledger"; then
+  printf '%s\n' 'No byte/path-ledger differences detected.'
+else
+  diff_status=$?
+  if [ "$diff_status" -eq 1 ]; then
+    printf '%s\n' 'Ledger differences detected; inspect the parsed parent and children.'
+  else
+    printf 'diff failed with status %s\n' "$diff_status" >&2
+    exit "$diff_status"
+  fi
+fi
 ```
 
-`find` inventories produced objects. `sha256sum` fixes their identities. `diff` confirms that the source and child records are not being treated as identical; it does not explain or validate the transformation.
+Run this block from the study directory that contains `models/`. The quoted absolute variables fix that working context, while the subshell records candidate paths relative to `models/candidates/`. `find -type f -print0`, `sort -z`, and `xargs -0` include nested regular files deterministically without breaking on spaces. The non-empty check prevents an empty directory from being mistaken for a completed inventory.
+
+Each digest binds the exact bytes of one preserved artifact at its recorded path. A `diff` status of zero means the two ledgers are textually identical; status one means they differ; any greater status is an execution error and stops the operation. A path-ledger difference does not by itself establish that two structures have different scientific identities, and equal bytes do not establish that a model is suitable. Parse the parent and every child and compare the cell matrix, species and occupancies, coordinates, periodic-boundary flags, atom mapping, and declared transformation before accepting the model.
 
 ## Distinguish representation changes from model changes
 

@@ -54,7 +54,7 @@ The retained synthetic explanation separately evaluates $\mathrm{CO(g)}+*\righta
 
 ## Keep coverage quantities distinct
 
-The synthetic one- and two-CO totals yield an average adsorption energy of `-0.60 eV per CO` at `N=2`, while the second addition is `-0.40 eV`. The average and differential quantities answer different questions. State whether coverage is a site fraction, adsorbates per surface atom, molecules per area, or a surface-cell stoichiometry before comparing rows.
+The synthetic one- and two-CO totals yield an average adsorption energy of `-0.60 eV per CO` at $N=2$, while the second addition is `-0.40 eV`. The average and differential quantities answer different questions. State whether coverage is a site fraction, adsorbates per surface atom, molecules per area, or a surface-cell stoichiometry before comparing rows.
 
 Add zero-point, thermal, entropy, solvent, pressure, or electrode terms only after closing the static reaction ledger. Record the model and unit of every term, and do not count a contribution twice. The [Campbell and Sellers paper](https://doi.org/10.1021/ja3080117) and its [published correction](https://doi.org/10.1021/ja407293b) bound the entropy discussion; [surface thermodynamics](https://doi.org/10.1103/PhysRevB.65.035406) and the [computational hydrogen electrode](https://doi.org/10.1021/jp047349j) define different reservoir transformations.
 

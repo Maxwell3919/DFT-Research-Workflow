@@ -23,14 +23,14 @@ The time step resolves the fastest relevant nuclear motion and couples to force 
 
 ## Averages require an estimator and an uncertainty model
 
-For a time series `A(t)`, the trajectory average is an estimator such as
+For a time series $A(t)$, the trajectory average is an estimator such as
 
 $$
 \langle A\rangle_T
 = \frac{1}{T}\int_0^T A(t)\,dt.
 $$
 
-`T` is the retained production time after a declared equilibration treatment. Correlated frames do not supply one independent sample each; block analysis, autocorrelation times, independent replicas, or another appropriate uncertainty method are needed. A radial distribution function, mean-square displacement, residence time, reaction count, or free-energy estimate each consumes different coordinates, time origins, finite-size assumptions, and statistical evidence.
+$T$ is the retained production time after a declared equilibration treatment. Correlated frames do not supply one independent sample each; block analysis, autocorrelation times, independent replicas, or another appropriate uncertainty method are needed. A radial distribution function, mean-square displacement, residence time, reaction count, or free-energy estimate each consumes different coordinates, time origins, finite-size assumptions, and statistical evidence.
 
 For example, a linear mean-square displacement regime can be mapped to a diffusion coefficient only under declared dimensionality, long-time and finite-size conditions. A single crossing event does not establish a rate. A histogram is not automatically a free energy unless the sampling measure, bias, normalization, and reweighting model support that conversion.
 

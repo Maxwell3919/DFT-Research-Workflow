@@ -11,7 +11,7 @@ Define the observable, perturbation, polarization or momentum transfer, boundary
 
 ## The response function connects a perturbation to an observable
 
-For a weak external perturbation `δv_ext(r',ω)`, linear response defines the density change
+For a weak external perturbation $\delta v_{\mathrm{ext}}(\mathbf r',\omega)$, linear response defines the density change
 
 $$
 \delta n(\mathbf r,\omega)
@@ -21,7 +21,7 @@ $$
 d\mathbf r'.
 $$
 
-`χ` is the interacting density-response function; `r` and `r'` are positions, and `ω` is angular frequency. In TDDFT it is related to the independent Kohn--Sham response `χ₀` through a Dyson-like equation,
+$\chi$ is the interacting density-response function; $\mathbf r$ and $\mathbf r'$ are positions, and $\omega$ is angular frequency. In TDDFT it is related to the independent Kohn--Sham response $\chi_0$ through a Dyson-like equation,
 
 $$
 \chi = \chi_0+\chi_0\left(v+f_{\mathrm{xc}}\right)\chi.
@@ -37,7 +37,7 @@ Casida-style linear response constructs a transition-space problem from occupied
 
 ## Spectra retain their probe and geometry
 
-An absorption cross section for an isolated finite system, a periodic macroscopic dielectric tensor, electron-energy-loss response, Raman intensity, and a nonlinear susceptibility are not interchangeable outputs. Polarization, wave-vector limit, local-field convention, finite versus periodic boundary conditions, spin selection, temperature model, and orientational average can each alter the observable. A molecular dipole response does not acquire a bulk dielectric constant by changing units; a slab response needs its declared volume or sheet normalization; and a finite momentum-loss calculation is not an optical `q→0` spectrum.
+An absorption cross section for an isolated finite system, a periodic macroscopic dielectric tensor, electron-energy-loss response, Raman intensity, and a nonlinear susceptibility are not interchangeable outputs. Polarization, wave-vector limit, local-field convention, finite versus periodic boundary conditions, spin selection, temperature model, and orientational average can each alter the observable. A molecular dipole response does not acquire a bulk dielectric constant by changing units; a slab response needs its declared volume or sheet normalization; and a finite momentum-loss calculation is not an optical $\mathbf q\to0$ spectrum.
 
 Broadening used to display discrete excitations or damp a time signal is not automatically a computed lifetime. Report its functional form and scale, the energy axis and zero, the polarization, units, and whether a peak is an eigenexcitation, a broadened transition, or a derived optical quantity. Compare integrated weight, selected features, and tensor components under justified numerical changes rather than reading physical linewidths from a plotting choice.
 

@@ -56,7 +56,7 @@ These checks establish artifact integrity and software behaviour within their sc
 
 Vary the numerical representation while holding the physical problem fixed. Relevant axes may include basis size, real-space grid, k and q sampling, supercell and vacuum, smearing or integration, band count, interpolation, time step, trajectory length, and solver thresholds.
 
-For a sequence controlled by resolution `h`, one may inspect
+For a sequence controlled by resolution $h$, one may inspect
 
 $$
 Δ_h = y(h_finer) - y(h_coarser) .

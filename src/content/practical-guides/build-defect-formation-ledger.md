@@ -35,7 +35,7 @@ The script emits a report and rewrites the SVG. Inspect the term table and asser
 
 ## Purpose
 
-The input key `delta_atoms` is positive when an atom is added to the defective cell. Charge `q` is positive when electrons are removed. The script evaluates
+The input key `delta_atoms` is positive when an atom is added to the defective cell. Charge $q$ is positive when electrons are removed. The script evaluates
 
 $$
 E_{\mathrm f}
@@ -48,7 +48,7 @@ $$
 
 For the B vacancy, `delta_atoms["B"]` is `-1`, so the atomic-reservoir contribution is $+\mu_{\mathrm B}$. Check this from the stored convention rather than applying a memorized vacancy sign.
 
-At the fixture probe $E_F=1\ \mathrm{eV}$, the electron terms change with slopes $+2$, $+1$, $0$, and $-1$ for the four charge states. The script asserts that these slopes equal `q`.
+At the fixture probe $E_F=1\ \mathrm{eV}$, the electron terms change with slopes $+2$, $+1$, $0$, and $-1$ for the four charge states. The script asserts that these slopes equal $q$.
 
 ## Keep every term separate
 

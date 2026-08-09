@@ -7,13 +7,13 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/equation-of-state-and-structural-phase-stability/';
 const phrases = [
-  'An equation of state connects the energy of one structural branch',
+  'Use an equation of state when you need an equilibrium volume',
   'The equation of state is a derivative relation',
   'Decide what changes when volume changes',
   'Preserve phase and electronic identity across the series',
   'Fit a model, not a decorative curve',
   'Compare phases at one common pressure',
-  'An intersection of two E(V) curves at one common volume is not generally the transition condition.',
+  'Each phase normally minimizes at a different volume. The pressure, potential, and normalization must be common.',
   'Metastability and hysteresis are not equilibrium boundaries',
   'Hydrostatic curvature does not prove structural stability',
   'Temperature changes the potential being minimized',

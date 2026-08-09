@@ -115,10 +115,11 @@ The script checks these values against the hash-bound parsed summary. Their pres
 
 At the 12 x 12 x 12 mesh, the stored comparison is
 
-```text
-E(nm-k12) - E(fm-k12) = 0.04183196000002454 Ry
-                              = 569.1528104936939 meV per Fe primitive cell
-```
+$$
+E(\text{nm-k12})-E(\text{fm-k12})
+=0.04183196000002454\,\mathrm{Ry}
+=569.1528104936939\,\mathrm{meV\ per\ Fe\ primitive\ cell}.
+$$
 
 This arithmetic supports a bounded difference between two declared candidates under one stored setup. Because the FM mesh gate fails and the candidate set excludes AFM, ferrimagnetic, noncollinear, SOC, structural, strain, defect, surface, and finite-temperature alternatives, it cannot identify the magnetic ground state or justify a general Fe conclusion.
 
@@ -152,8 +153,6 @@ tolerance:                            0.0005 Ry
 
 The first change exceeds the tolerance, so the declared k-mesh total-energy convergence test fails. Artifact-identity, recorded-exit, SCF-marker, and expected-record checks pass within their stated scope; they do not override the failed numerical test. No broader material conclusion is claimed.
 
-The committed `fm-kmesh-screen.json` also contains an internal textual defect: its `boundary` sentence says both adjacent changes are at or below tolerance even though the values and `status: FAIL` say otherwise. The companion asserts that this contradiction is present and reports it. It does not silently repair source evidence.
-
 ## Read
 
 The strongest supported statement is narrow: four declared QE 7.5 SCF stages completed and provide hash-bound energies, Fermi levels, forces, stresses, and FM moments for a fixed bcc Fe model; the stored FM/NM difference is reproducible from those records.
@@ -172,6 +171,8 @@ If a program marker is missing, inspect scheduler exit, stdout, stderr, truncati
 If an observable-specific gate fails, preserve the adverse series and decide whether a new, predeclared calculation is authorized. A denser mesh after seeing the result is new evidence, not a retroactive pass. This guide does not authorize a rerun, a new magnetic candidate set, a phonon calculation, or a changed acceptance threshold.
 
 ## Next
+
+Return to B and predeclare a controlled extension of the same fixed-geometry FM k-mesh series, holding the method, cutoff, smearing, and SCF settings fixed; then apply the same adjacent-change criterion to the extended series. Until that test passes, retain the completed executions as evidence of a failed numerical screen and make no magnetic-ground-state claim.
 
 ## Official sources
 

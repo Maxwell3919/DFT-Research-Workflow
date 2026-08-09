@@ -13,13 +13,13 @@ Start with an identified ensemble and trajectory or window set. Define the colle
 
 For a configuration $\mathbf R$, a canonical configurational distribution is proportional to $\exp[-\beta U(\mathbf R)]$, where $\beta=1/(k_{\mathrm B}T)$, $T$ is the declared temperature, $k_{\mathrm B}$ is Boltzmann's constant, and $U$ is the potential-energy surface supplied by the chosen electronic-structure model. In NPT sampling the cell also fluctuates, and the relevant measure contains the volume and pressure terms appropriate to the chosen barostat formulation. The structure, composition, charge, spin, exchange--correlation approximation, finite cell, k-point treatment, constraints, and ensemble therefore remain part of every probability statement.
 
-Most questions use a reduced collective variable `s(R)`: a coordination number, displacement, lattice metric, order parameter, or another stated mapping of the atomic configuration. A probability density `P(s)` depends on that mapping and its binning or kernel estimator. When the sampling measure is canonical and the normalization is defined, the potential of mean force is
+Most questions use a reduced collective variable $s(\mathbf R)$: a coordination number, displacement, lattice metric, order parameter, or another stated mapping of the atomic configuration. A probability density $P(s)$ depends on that mapping and its binning or kernel estimator. When the sampling measure is canonical and the normalization is defined, the potential of mean force is
 
 $$
 F(s) = -k_{\mathrm B}T\ln P(s)+C.
 $$
 
-`C` is an arbitrary additive constant. `F(s)` is a free-energy projection along the declared `s`, not the full free-energy surface, a transition-state free energy, or a kinetic rate. Two studies cannot compare it directly unless their temperature, composition, boundary conditions, reference convention, collective variable, and sampling/reweighting treatment are compatible.
+$C$ is an arbitrary additive constant. $F(s)$ is a free-energy projection along the declared $s$, not the full free-energy surface, a transition-state free energy, or a kinetic rate. Two studies cannot compare it directly unless their temperature, composition, boundary conditions, reference convention, collective variable, and sampling/reweighting treatment are compatible.
 
 ## Ordinary sampling and enhanced sampling answer different coverage problems
 

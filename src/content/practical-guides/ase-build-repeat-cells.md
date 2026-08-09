@@ -80,7 +80,7 @@ P = np.array([
 general = make_supercell(parent, P)
 ```
 
-Here $\det(P)=4$, so the expected volume and atom-count multiplier is four. Record `P` itself, not only the final vectors, because cell shape controls periodic-image geometry.
+Here $\det(P)=4$, so the expected volume and atom-count multiplier is four. Record $P$ itself, not only the final vectors, because cell shape controls periodic-image geometry.
 
 ## Inspect and decide
 

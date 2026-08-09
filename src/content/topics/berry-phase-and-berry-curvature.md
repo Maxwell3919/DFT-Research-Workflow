@@ -11,7 +11,7 @@ Start from an identified occupied or target subspace and specify the reciprocal 
 
 ## A phase around a closed loop
 
-For an isolated cell-periodic Bloch state `|u_nk>`, the Berry connection is
+For an isolated cell-periodic Bloch state $\lvert u_{n\mathbf{k}}\rangle$, the Berry connection is
 
 $$
 \mathbf A_n(\mathbf k)
@@ -32,9 +32,9 @@ $$
 = \nabla_{\mathbf k}\times\mathbf A_n(\mathbf k).
 $$
 
-It is a vector in three-dimensional `k` space (or an antisymmetric tensor in general coordinates). In a non-degenerate representation it can also be written with velocity matrix elements and energy denominators. This makes a practical warning explicit: small gaps, avoided crossings, spin--orbit splittings, and the selected Hamiltonian can create sharply structured curvature even when a plotted dispersion looks innocuous. Near exact degeneracy, the single-band expression is ill-conditioned and a multiband treatment is required.
+It is a vector in three-dimensional $\mathbf k$ space (or an antisymmetric tensor in general coordinates). In a non-degenerate representation it can also be written with velocity matrix elements and energy denominators. This makes a practical warning explicit: small gaps, avoided crossings, spin--orbit splittings, and the selected Hamiltonian can create sharply structured curvature even when a plotted dispersion looks innocuous. Near exact degeneracy, the single-band expression is ill-conditioned and a multiband treatment is required.
 
-Curvature has units set by the reciprocal-coordinate convention, usually length squared for Cartesian `k`; it is not a density of states, magnetic field in real space, orbital moment, Chern number, or conductivity. A colour scale hides sign, coordinate, energy reference, spin channel, and clipping choices unless they are recorded. A high-curvature spot on a path or plane is evidence about that sampled representation only, not a full-zone integral or a material response.
+Curvature has units set by the reciprocal-coordinate convention, usually length squared for Cartesian $\mathbf k$; it is not a density of states, magnetic field in real space, orbital moment, Chern number, or conductivity. A colour scale hides sign, coordinate, energy reference, spin channel, and clipping choices unless they are recorded. A high-curvature spot on a path or plane is evidence about that sampled representation only, not a full-zone integral or a material response.
 
 ## From wave-function overlaps to a measurable difference
 
@@ -49,7 +49,7 @@ C
 \Omega_n(\mathbf k)\,d^2k .
 $$
 
-The sum runs over the declared occupied or target bands. `C` is dimensionless only after the full periodic zone, orientation, gauge-compatible subspace, and gap condition have been specified. The same curvature, weighted by occupations and other factors, can enter intrinsic anomalous or spin Hall calculations. Those observables additionally require a chemical potential, temperature, spin/operator definition, symmetry and magnetic state, and convergence of the full-zone integral. They are not determined by `C`, and an intrinsic clean-crystal term does not include every disorder or experimental contribution to a Hall measurement.
+The sum runs over the declared occupied or target bands. $C$ is dimensionless only after the full periodic zone, orientation, gauge-compatible subspace, and gap condition have been specified. The same curvature, weighted by occupations and other factors, can enter intrinsic anomalous or spin Hall calculations. Those observables additionally require a chemical potential, temperature, spin/operator definition, symmetry and magnetic state, and convergence of the full-zone integral. They are not determined by $C$, and an intrinsic clean-crystal term does not include every disorder or experimental contribution to a Hall measurement.
 
 ## Numerical evidence follows the observable
 

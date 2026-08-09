@@ -13,7 +13,7 @@ Start from compatible quasiparticle energies and screening. Select valence/condu
 
 ## From electron--hole pairs to neutral excitations
 
-At transferred momentum `Q`, an excitonic state can be expanded as
+At transferred momentum $\mathbf Q$, an excitonic state can be expanded as
 
 $$
 |S_{\mathbf Q}\rangle
@@ -23,7 +23,7 @@ A^S_{vc\mathbf k\mathbf Q}
 |c,\mathbf k+\mathbf Q\rangle .
 $$
 
-`v` and `c` label occupied and empty states, `k` is a Brillouin-zone point, and the coefficients `A^S` describe the electron--hole composition of excitation `S`.
+$v$ and $c$ label occupied and empty states, $\mathbf k$ is a Brillouin-zone point, and the coefficients $A^S$ describe the electron--hole composition of excitation $S$.
 
 In a common static formulation,
 
@@ -41,7 +41,7 @@ H^{\mathrm{BSE}}
 +K^x+K^d .
 $$
 
-The diagonal term contains compatible quasiparticle transition energies. `K^x` is the exchange or local-field contribution, and `K^d` is the screened direct electron--hole interaction. Their signs, screening model, spin and SOC convention, Coulomb boundary treatment, and transition basis are part of the result.
+The diagonal term contains compatible quasiparticle transition energies. $K^{\mathrm x}$ is the exchange or local-field contribution, and $K^{\mathrm d}$ is the screened direct electron--hole interaction. Their signs, screening model, spin and SOC convention, Coulomb boundary treatment, and transition basis are part of the result.
 
 The BSE does not apply one universal correction to a band gap. It diagonalizes a two-particle Hamiltonian whose eigenvalues and eigenvectors define neutral excitations.
 
@@ -53,7 +53,7 @@ $$
 E_b = E_g^{\mathrm{QP}}-\Omega_S .
 $$
 
-`E_g^QP` must be the compatible quasiparticle continuum edge, and `Ω_S` must refer to the same geometry, Hamiltonian, spin/SOC state, k mesh, and boundary model.
+$E_g^{\mathrm{QP}}$ must be the compatible quasiparticle continuum edge, and $\Omega_S$ must refer to the same geometry, Hamiltonian, spin/SOC state, k mesh, and boundary model.
 
 The lowest BSE eigenvalue need not be optically bright. A bright peak need not be bound. Determine the continuum threshold, oscillator strength, momentum, and polarization before assigning an exciton binding energy.
 
@@ -61,7 +61,7 @@ This consistency is especially important in reduced-dimensional systems, where d
 
 ## Numerical representation is physical evidence
 
-The numerical representation is defined by the valence and conduction band windows, k sampling, quasiparticle inputs, dielectric screening basis, local-field cutoff, and treatment of `q → 0`. Excitons that are extended in real space can require very dense reciprocal-space sampling; strongly localized states can require a broad transition basis.
+The numerical representation is defined by the valence and conduction band windows, k sampling, quasiparticle inputs, dielectric screening basis, local-field cutoff, and treatment of $\mathbf q\to0$. Excitons that are extended in real space can require very dense reciprocal-space sampling; strongly localized states can require a broad transition basis.
 
 A smooth broadened spectrum can therefore be misleading. Converge the quantity that will be interpreted: a specified excitation energy, continuum onset, oscillator strength, polarization dependence, or exciton character. Solver residual alone is not enough.
 

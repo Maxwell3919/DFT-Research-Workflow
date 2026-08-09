@@ -78,7 +78,15 @@
           "label": "Create a new isolated runtime",
           "launches_dft": true,
           "commands": [
-            "PSEUDO_DIR=\"$prepared/pseudo\" RUNTIME_DIR=/absolute/path/outside/the/repository/silicon-runtime QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash \"$case_root/run.sh\""
+            "RUNTIME_DIR=/absolute/path/outside/the/repository/silicon-runtime; export RUNTIME_DIR",
+            "PSEUDO_DIR=\"$prepared/pseudo\" QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash \"$case_root/run.sh\"",
+            "relax_output=$(find \"$RUNTIME_DIR\" -type f -name \"si-relax.out\" -print -quit); test -f \"$relax_output\"",
+            "python3 examples/practical-guides/qe_manual_handoff.py prepare-reference --relax-output \"$relax_output\" --scf-template \"$case_root/input/scf.in\" --output-dir \"$RUNTIME_DIR/reference\"",
+            "mkdir -p \"$RUNTIME_DIR/reference/tmp\"; ln -s \"$prepared/pseudo\" \"$RUNTIME_DIR/reference/pseudo\"",
+            "(cd \"$RUNTIME_DIR/reference\" && pw.x -in static-scf.in > static-scf.out 2> static-scf.err)",
+            "python3 examples/practical-guides/qe_manual_handoff.py audit-scf --input \"$RUNTIME_DIR/reference/static-scf.in\" --stdout \"$RUNTIME_DIR/reference/static-scf.out\" --stderr \"$RUNTIME_DIR/reference/static-scf.err\" --report \"$RUNTIME_DIR/reference/static-scf-audit.json\"",
+            "bands_data=$(find \"$RUNTIME_DIR\" -type f -name \"si.bands.dat\" -print -quit); dos_data=$(find \"$RUNTIME_DIR\" -type f -name \"si.dos.dat\" -print -quit)",
+            "python3 examples/practical-guides/qe_manual_handoff.py extract-runtime --runtime-dir \"$RUNTIME_DIR\" --bands-data \"$bands_data\" --dos-data \"$dos_data\" --output-dir \"$RUNTIME_DIR/analysis\""
           ],
           "output_policy": "Use a new caller-selected external runtime directory; never overwrite or relabel committed output/, derived/, or figures/ as the new run.",
           "audit": [
@@ -89,8 +97,8 @@
             "Test the selected target observable with its own numerical convergence protocol.",
             "State the scientific claim only after the evidence supports it."
           ],
-          "parse_plot_boundary": "The current case parser and plotting path are not bound to a new external runtime. Do not present stored reconstruction as parsing or plotting the new run.",
-          "boundary": "run.sh is a present-day replay template, not the uncaptured historical launcher and not a public record of the private Maxwell replay."
+          "parse_plot_boundary": "The helper parses only files produced in the named fresh runtime and writes source-hashed CSV plus light SVG. The public stored reconstruction remains separate. Parsing does not establish observable convergence or a scientific claim.",
+          "boundary": "This present-day route creates new external runtime evidence. The geometry handoff and new static run have explicit file ancestry; they do not change the assembled historical case, establish observable convergence, or reproduce a private replay."
         }
       ],
       "source_records": [
@@ -139,16 +147,25 @@
             "id": "source",
             "label": "Obtain the source structure",
             "purpose": "Bind the starting crystal record to an inspectable public source before changing its representation.",
-            "topic_slugs": ["obtain-material-structure"],
+            "topic_slugs": [
+              "obtain-material-structure"
+            ],
             "coverage": "recorded",
-            "case_files": ["source/silicon-cod-9013102.cif", "source/silicon-cod-9013102.sanitization.json", "source/seekpath.json", "prepare-replay.py"],
+            "case_files": [
+              "source/silicon-cod-9013102.cif",
+              "source/silicon-cod-9013102.sanitization.json",
+              "source/seekpath.json",
+              "prepare-replay.py"
+            ],
             "execution_route_ids": [],
             "command_stages": [],
             "artifact_paths": [],
             "action": {
               "label": "Prepare the source-bound replay inputs",
               "cwd": "repository-root",
-              "commands": [".venv/bin/python \"$case_root/prepare-replay.py\" --download-pseudopotential --output-dir \"$prepared\""],
+              "commands": [
+                ".venv/bin/python \"$case_root/prepare-replay.py\" --download-pseudopotential --output-dir \"$prepared\""
+              ],
               "boundary": "This prepares external model and pseudopotential files; it does not launch QE."
             },
             "boundary": "A database structure is a source record, not yet an accepted DFT model."
@@ -157,9 +174,15 @@
             "id": "model",
             "label": "Build the computational model",
             "purpose": "Inspect the checked bridge from the conventional COD cell to the declared two-site primitive QE representation.",
-            "topic_slugs": ["build-or-modify-computational-model"],
+            "topic_slugs": [
+              "build-or-modify-computational-model"
+            ],
             "coverage": "recorded",
-            "case_files": ["prepare-replay.py", "source/seekpath.json", "input/scf.in"],
+            "case_files": [
+              "prepare-replay.py",
+              "source/seekpath.json",
+              "input/scf.in"
+            ],
             "execution_route_ids": [],
             "command_stages": [],
             "artifact_paths": [],
@@ -169,9 +192,14 @@
             "id": "pseudopotential",
             "label": "Obtain and verify the pseudopotential",
             "purpose": "Acquire the exact declared SSSP archive member without redistributing it.",
-            "topic_slugs": ["choose-dft-method-and-computational-setup"],
+            "topic_slugs": [
+              "choose-dft-method-and-computational-setup"
+            ],
             "coverage": "recorded-acquisition-route",
-            "case_files": ["source/pseudopotentials.json", "prepare-replay.py"],
+            "case_files": [
+              "source/pseudopotentials.json",
+              "prepare-replay.py"
+            ],
             "execution_route_ids": [],
             "command_stages": [],
             "artifact_paths": [],
@@ -181,9 +209,21 @@
             "id": "inputs",
             "label": "Prepare the Quantum ESPRESSO inputs",
             "purpose": "Inspect the recorded calculation types, model, method, cutoffs, sampling, and output locations before execution.",
-            "topic_slugs": ["choose-dft-method-and-computational-setup"],
+            "topic_slugs": [
+              "choose-dft-method-and-computational-setup"
+            ],
             "coverage": "recorded",
-            "case_files": ["input/scf.in", "input/si-relax.in", "input/bands.in", "input/bands.x.in", "input/dos-nscf.in", "input/dos.x.in", "input/full-zone/scf.in", "input/full-zone/bands.in", "input/full-zone/bands.x.in"],
+            "case_files": [
+              "input/scf.in",
+              "input/si-relax.in",
+              "input/bands.in",
+              "input/bands.x.in",
+              "input/dos-nscf.in",
+              "input/dos.x.in",
+              "input/full-zone/scf.in",
+              "input/full-zone/bands.in",
+              "input/full-zone/bands.x.in"
+            ],
             "execution_route_ids": [],
             "command_stages": [],
             "artifact_paths": [],
@@ -193,11 +233,20 @@
             "id": "run",
             "label": "Run the calculation",
             "purpose": "Execute the present-day stage order into a new external runtime without rewriting the public history.",
-            "topic_slugs": ["calculate-reference-ground-state"],
+            "topic_slugs": [
+              "calculate-reference-ground-state"
+            ],
             "coverage": "template-only-for-fresh-runtime",
-            "case_files": ["run.sh", "source/execution-provenance.json"],
-            "execution_route_ids": ["native-replay-template"],
-            "command_stages": ["native replay template"],
+            "case_files": [
+              "run.sh",
+              "source/execution-provenance.json"
+            ],
+            "execution_route_ids": [
+              "native-replay-template"
+            ],
+            "command_stages": [
+              "native replay template"
+            ],
             "artifact_paths": [],
             "boundary": "The replay template does not establish the historical launcher, a public fresh replay, or case-wide continuity."
           },
@@ -205,24 +254,58 @@
             "id": "checks",
             "label": "Check program and solver outcomes",
             "purpose": "Separate program termination, electronic convergence, ionic evidence, warnings, and artifact presence.",
-            "topic_slugs": ["validate-results-and-scientific-conclusions"],
+            "topic_slugs": [
+              "validate-results-and-scientific-conclusions"
+            ],
             "coverage": "recorded-stored-checks",
-            "case_files": ["check.sh", "extract.sh", "replay-derived.sh", "parse.py", "source/execution-provenance.json"],
+            "case_files": [
+              "check.sh",
+              "extract.sh",
+              "replay-derived.sh",
+              "parse.py",
+              "source/execution-provenance.json"
+            ],
             "execution_route_ids": [],
-            "command_stages": ["rebuild derived artifacts from stored outputs", "isolated case check"],
-            "artifact_paths": ["derived/observables.json", "derived/full-zone-status.json"],
+            "command_stages": [
+              "rebuild derived artifacts from stored outputs",
+              "isolated case check"
+            ],
+            "artifact_paths": [
+              "derived/observables.json",
+              "derived/full-zone-status.json"
+            ],
             "boundary": "JOB DONE and parser success do not establish ionic convergence, target-observable convergence, or scientific support."
           },
           {
             "id": "convergence",
             "label": "Test the required numerical convergence",
             "purpose": "Inspect the recorded cutoff/k-mesh matrix without promoting it beyond its declared scope.",
-            "topic_slugs": ["test-numerical-convergence"],
+            "topic_slugs": [
+              "test-numerical-convergence"
+            ],
             "coverage": "exploratory-record",
-            "case_files": ["source/qe_plan.json", "input/si_e30_k6.in", "input/si_e30_k8.in", "input/si_e30_k10.in", "input/si_e40_k6.in", "input/si_e40_k8.in", "input/si_e40_k10.in", "input/si_e50_k6.in", "input/si_e50_k8.in", "input/si_e50_k10.in"],
-            "execution_route_ids": ["assembled-stored-output-set"],
-            "command_stages": ["stored real QE stage set"],
-            "artifact_paths": ["derived/convergence.csv", "figures/convergence-matrix.png"],
+            "case_files": [
+              "source/qe_plan.json",
+              "input/si_e30_k6.in",
+              "input/si_e30_k8.in",
+              "input/si_e30_k10.in",
+              "input/si_e40_k6.in",
+              "input/si_e40_k8.in",
+              "input/si_e40_k10.in",
+              "input/si_e50_k6.in",
+              "input/si_e50_k8.in",
+              "input/si_e50_k10.in"
+            ],
+            "execution_route_ids": [
+              "assembled-stored-output-set"
+            ],
+            "command_stages": [
+              "stored real QE stage set"
+            ],
+            "artifact_paths": [
+              "derived/convergence.csv",
+              "figures/convergence-matrix.png"
+            ],
             "assessment": "No accepted observable-specific stable-tail result",
             "observable_convergence": "not tested",
             "boundary": "The 3 by 3 total-energy matrix is not a transferable cutoff/k-mesh recommendation and does not establish DOS, phonon, dielectric, or band convergence."
@@ -231,36 +314,106 @@
             "id": "relaxation-reference-geometry",
             "label": "Establish the reference geometry",
             "purpose": "Inspect the separately recorded fixed-cell relaxation before deciding whether a geometry is an acceptable reference.",
-            "topic_slugs": ["optimize-structure"],
+            "topic_slugs": [
+              "optimize-structure"
+            ],
             "coverage": "separately-recorded-stage",
-            "case_files": ["input/si-relax.in", "output/si-relax.out"],
-            "execution_route_ids": ["assembled-stored-output-set"],
-            "command_stages": ["stored real QE stage set"],
+            "case_files": [
+              "input/si-relax.in",
+              "output/si-relax.out"
+            ],
+            "execution_route_ids": [
+              "assembled-stored-output-set"
+            ],
+            "command_stages": [
+              "stored real QE stage set"
+            ],
             "artifact_paths": [],
-            "boundary": "The public bundle does not establish relax-output to static-SCF input lineage, accepted ionic convergence, stability, or the lowest relevant structure."
+            "boundary": "The public bundle does not establish relax-output to static-SCF input lineage, accepted ionic convergence, stability, or the lowest relevant structure.",
+            "action": {
+              "label": "Transfer the accepted fresh relaxation geometry",
+              "cwd": "repository-root",
+              "commands": [
+                "relax_output=$(find \"$RUNTIME_DIR\" -type f -name \"si-relax.out\" -print -quit); test -f \"$relax_output\"",
+                "python3 examples/practical-guides/qe_manual_handoff.py prepare-reference --relax-output \"$relax_output\" --scf-template \"$case_root/input/scf.in\" --output-dir \"$RUNTIME_DIR/reference\"",
+                "cat \"$RUNTIME_DIR/reference/geometry-handoff.json\"",
+                "diff -u \"$case_root/input/scf.in\" \"$RUNTIME_DIR/reference/static-scf.in\""
+              ],
+              "boundary": "This creates a new explicit file handoff from the selected fresh relax output. It does not establish that the stored static output descended from the stored relaxation or that the geometry is scientifically accepted."
+            }
           },
           {
             "id": "scf",
             "label": "Calculate the reference SCF state",
             "purpose": "Inspect the electronic reference calculation independently of relaxation and downstream observables.",
-            "topic_slugs": ["calculate-reference-ground-state"],
+            "topic_slugs": [
+              "calculate-reference-ground-state"
+            ],
             "coverage": "recorded",
-            "case_files": ["input/scf.in", "output/scf-main.out", "input/full-zone/scf.in"],
-            "execution_route_ids": ["assembled-stored-output-set", "stored-260-point-time-reversal-reduced-bands"],
-            "command_stages": ["stored real QE stage set"],
-            "artifact_paths": ["output/full-zone/scf.out"],
-            "boundary": "Electronic convergence in the named SCF outputs does not establish relax-to-SCF lineage, target-observable convergence, or scientific acceptance."
+            "case_files": [
+              "input/scf.in",
+              "output/scf-main.out",
+              "input/full-zone/scf.in"
+            ],
+            "execution_route_ids": [
+              "assembled-stored-output-set",
+              "stored-260-point-time-reversal-reduced-bands"
+            ],
+            "command_stages": [
+              "stored real QE stage set"
+            ],
+            "artifact_paths": [
+              "output/full-zone/scf.out"
+            ],
+            "boundary": "Electronic convergence in the named SCF outputs does not establish relax-to-SCF lineage, target-observable convergence, or scientific acceptance.",
+            "action": {
+              "label": "Run and audit the new static SCF",
+              "cwd": "new external reference directory",
+              "commands": [
+                "(cd \"$RUNTIME_DIR/reference\" && pw.x -in static-scf.in > static-scf.out 2> static-scf.err)",
+                "python3 examples/practical-guides/qe_manual_handoff.py audit-scf --input \"$RUNTIME_DIR/reference/static-scf.in\" --stdout \"$RUNTIME_DIR/reference/static-scf.out\" --stderr \"$RUNTIME_DIR/reference/static-scf.err\" --report \"$RUNTIME_DIR/reference/static-scf-audit.json\""
+              ],
+              "boundary": "The audit checks this process and reported electronic convergence only. Geometry acceptance, numerical convergence, observable convergence, and scientific support remain separate."
+            }
           },
           {
             "id": "bands-dos",
             "label": "Calculate bands and DOS",
             "purpose": "Follow the line-path, nominal-grid, and uniform-mesh DOS branches as distinct target calculations.",
-            "topic_slugs": ["band-structure", "density-of-states-and-projected-density-of-states"],
+            "topic_slugs": [
+              "band-structure",
+              "density-of-states-and-projected-density-of-states"
+            ],
             "coverage": "recorded-with-warnings",
-            "case_files": ["input/bands.in", "input/bands.x.in", "input/dos-nscf.in", "input/dos.x.in", "output/bands-pw.out", "output/bandsx-main.out", "output/si.bands.dat", "output/dos-nscf.out", "output/dosx.out", "output/si.dos.dat", "input/full-zone/bands.in", "input/full-zone/bands.x.in"],
-            "execution_route_ids": ["assembled-stored-output-set", "stored-260-point-time-reversal-reduced-bands"],
-            "command_stages": ["stored real QE stage set"],
-            "artifact_paths": ["output/full-zone/bands-pw.out", "output/full-zone/bandsx.out", "output/full-zone/si-fullzone.bands.dat", "derived/band-path.csv", "derived/full-zone-bands.csv", "derived/dos.csv"],
+            "case_files": [
+              "input/bands.in",
+              "input/bands.x.in",
+              "input/dos-nscf.in",
+              "input/dos.x.in",
+              "output/bands-pw.out",
+              "output/bandsx-main.out",
+              "output/si.bands.dat",
+              "output/dos-nscf.out",
+              "output/dosx.out",
+              "output/si.dos.dat",
+              "input/full-zone/bands.in",
+              "input/full-zone/bands.x.in"
+            ],
+            "execution_route_ids": [
+              "assembled-stored-output-set",
+              "stored-260-point-time-reversal-reduced-bands"
+            ],
+            "command_stages": [
+              "stored real QE stage set"
+            ],
+            "artifact_paths": [
+              "output/full-zone/bands-pw.out",
+              "output/full-zone/bandsx.out",
+              "output/full-zone/si-fullzone.bands.dat",
+              "derived/band-path.csv",
+              "derived/full-zone-bands.csv",
+              "derived/dos.csv"
+            ],
             "observable_convergence": "not tested",
             "boundary": "The line path retains solver warnings, and the nominal 8x8x8 route is a 260-point time-reversal-reduced sample. Neither branch establishes a converged fundamental gap or DOS."
           },
@@ -268,24 +421,56 @@
             "id": "plot",
             "label": "Rebuild tables and plots",
             "purpose": "Regenerate the public teaching figures directly from the stored raw-output record.",
-            "topic_slugs": ["analyze-and-compare-results"],
+            "topic_slugs": [
+              "analyze-and-compare-results"
+            ],
             "coverage": "stored-reconstruction",
-            "case_files": ["parse.py", "replay-derived.sh"],
+            "case_files": [
+              "parse.py",
+              "replay-derived.sh"
+            ],
             "execution_route_ids": [],
-            "command_stages": ["rebuild derived artifacts from stored outputs"],
-            "artifact_paths": ["figures/convergence-matrix.png", "figures/band-path.png", "figures/full-zone-bands.png", "figures/dos.png", "figures/gamma-response.png"],
-            "boundary": "A reconstructed figure verifies the stored parser path, not a fresh execution or an independently converged observable."
+            "command_stages": [
+              "rebuild derived artifacts from stored outputs"
+            ],
+            "artifact_paths": [
+              "figures/convergence-matrix.png",
+              "figures/band-path.png",
+              "figures/full-zone-bands.png",
+              "figures/dos.png",
+              "figures/gamma-response.png"
+            ],
+            "boundary": "A reconstructed figure verifies the stored parser path, not a fresh execution or an independently converged observable.",
+            "action": {
+              "label": "Parse and plot the fresh runtime",
+              "cwd": "repository-root",
+              "commands": [
+                "bands_data=$(find \"$RUNTIME_DIR\" -type f -name \"si.bands.dat\" -print -quit); dos_data=$(find \"$RUNTIME_DIR\" -type f -name \"si.dos.dat\" -print -quit)",
+                "python3 examples/practical-guides/qe_manual_handoff.py extract-runtime --runtime-dir \"$RUNTIME_DIR\" --bands-data \"$bands_data\" --dos-data \"$dos_data\" --output-dir \"$RUNTIME_DIR/analysis\""
+              ],
+              "boundary": "Source-hashed CSV and light SVG reconstruct the named fresh files. They do not establish target-observable convergence or a scientific claim."
+            }
           },
           {
             "id": "interpret",
             "label": "Interpret within the evidence boundary",
             "purpose": "Read the parsed samples together with warnings, sampling policy, and explicit non-claims.",
-            "topic_slugs": ["validate-results-and-scientific-conclusions"],
+            "topic_slugs": [
+              "validate-results-and-scientific-conclusions"
+            ],
             "coverage": "bounded-record",
-            "case_files": ["source/qe_plan.json"],
-            "execution_route_ids": ["assembled-stored-output-set", "stored-260-point-time-reversal-reduced-bands"],
+            "case_files": [
+              "source/qe_plan.json"
+            ],
+            "execution_route_ids": [
+              "assembled-stored-output-set",
+              "stored-260-point-time-reversal-reduced-bands"
+            ],
             "command_stages": [],
-            "artifact_paths": ["derived/observables.json", "derived/full-zone-status.json"],
+            "artifact_paths": [
+              "derived/observables.json",
+              "derived/full-zone-status.json"
+            ],
             "observable_convergence": "not tested",
             "boundary": "The evidence does not support a converged gap, DOS, stability result, experimental agreement, or material-level conclusion."
           },
@@ -293,13 +478,41 @@
             "id": "preserve",
             "label": "Preserve the reproducible record",
             "purpose": "Keep sources, inputs, outputs, hashes, parsers, environment, routes, and non-claims together.",
-            "topic_slugs": ["document-and-preserve-study"],
+            "topic_slugs": [
+              "document-and-preserve-study"
+            ],
             "coverage": "recorded",
-            "case_files": ["README.md", "manifest.json", "environment.txt", "source/execution-provenance.json", "source/pseudopotentials.json", "source/checksums.sha256", "source/convergence-checksums.sha256", "source/qe_plan.json"],
-            "execution_route_ids": ["assembled-stored-output-set", "stored-260-point-time-reversal-reduced-bands", "native-replay-template"],
-            "command_stages": ["isolated case check"],
-            "artifact_paths": ["source/output-excerpt.txt"],
-            "boundary": "The public record preserves assembled evidence and claim boundaries, not one historical launcher, case-wide shell exits, cross-route save trees, or the private Maxwell replay."
+            "case_files": [
+              "README.md",
+              "manifest.json",
+              "environment.txt",
+              "source/execution-provenance.json",
+              "source/pseudopotentials.json",
+              "source/checksums.sha256",
+              "source/convergence-checksums.sha256",
+              "source/qe_plan.json"
+            ],
+            "execution_route_ids": [
+              "assembled-stored-output-set",
+              "stored-260-point-time-reversal-reduced-bands",
+              "native-replay-template"
+            ],
+            "command_stages": [
+              "isolated case check"
+            ],
+            "artifact_paths": [
+              "source/output-excerpt.txt"
+            ],
+            "boundary": "The public record preserves assembled evidence and claim boundaries, not one historical launcher, case-wide shell exits, cross-route save trees, or the private Maxwell replay.",
+            "action": {
+              "label": "Package, restore, and regenerate the study",
+              "cwd": "repository-root",
+              "commands": [
+                "python3 examples/practical-guides/qe_manual_handoff.py package-study --study-dir \"$study\" --archive \"$archive\" --restore-dir \"$restored\" --run-regeneration-check",
+                "(cd \"$restored\" && sha256sum -c SHA256SUMS)"
+              ],
+              "boundary": "Checksum and byte-for-byte regeneration checks establish artifact identity and deterministic reconstruction only, not scientific validity."
+            }
           }
         ]
       }
@@ -315,7 +528,9 @@
       "history_kind": "assembled-public-evidence-with-one-continuous-route",
       "evidence_boundary": "Program completion, SCF convergence, ionic convergence, expected-artifact presence, target-observable convergence, and scientific support are separate decisions.",
       "continuity_boundary": "The public case assembles several real QE 7.5 routes. Only isolated-dos-route is continuous; the case as a whole does not claim one historical launcher, case-wide shell-exit transcript, execution interval, or cross-route save-tree ancestry.",
-      "continuous_execution_route_ids": ["isolated-dos-route"],
+      "continuous_execution_route_ids": [
+        "isolated-dos-route"
+      ],
       "claim_boundary": "This bounded case does not establish one case-wide historical launcher, a converged DOS, Fermi surface, equation of state, elastic property, carrier density, transport result, universal parameter recommendation, or a material-level conclusion.",
       "start_here": {
         "repository_url": "https://github.com/Maxwell3919/DFT-Research-Workflow.git",
@@ -378,7 +593,10 @@
           "label": "Create a new isolated runtime",
           "launches_dft": true,
           "commands": [
-            "QE_PW=/absolute/path/to/pw.x QE_DOS=/absolute/path/to/dos.x QE_PSEUDO_DIR=/absolute/path/to/pseudos RUN_OUTPUT_ROOT=/absolute/new/external/al-dos-run bash \"$case_root/run.sh\""
+            "RUNTIME_DIR=/absolute/path/outside/the/repository/aluminium-runtime; export RUNTIME_DIR",
+            "PSEUDO_DIR=\"$prepared/pseudo\" QE_PW=pw.x QE_DOS=dos.x bash \"$case_root/run.sh\"",
+            "dos_data=$(find \"$RUNTIME_DIR\" -type f -name \"al.dos\" -print -quit); test -f \"$dos_data\"",
+            "python3 examples/practical-guides/qe_manual_handoff.py extract-runtime --runtime-dir \"$RUNTIME_DIR\" --dos-data \"$dos_data\" --output-dir \"$RUNTIME_DIR/analysis\""
           ],
           "output_policy": "Use a new caller-selected external runtime directory; never overwrite or relabel committed output/, derived/, or figures/ as the new run.",
           "audit": [
@@ -389,8 +607,8 @@
             "Test DOS, band, or Fermi-surface observables with their own numerical convergence protocol.",
             "State the scientific claim only after the evidence supports it."
           ],
-          "parse_plot_boundary": "The current case parser and plotting path are not bound to a new external runtime. Do not present stored reconstruction as parsing or plotting the new run.",
-          "boundary": "A new run is a new evidence object. It does not replace the assembled public history or turn the exploratory convergence screen into target-observable convergence acceptance."
+          "parse_plot_boundary": "The fresh route reconstructs native dos.x data only. It does not add a relaxation, a fresh bands.x data product, observable convergence, or a material-level claim.",
+          "boundary": "This present-day route creates new external SCF, NSCF, dos.x, and path-bands process records, but only native dos.x data enter the fresh parser. No relaxation is part of the case, and no private replay or case-wide historical continuity is claimed."
         }
       ],
       "source_records": [
@@ -432,7 +650,10 @@
       "record_conflicts": [
         {
           "id": "aluminium-pseudopotential-url-status",
-          "case_files": ["source/pseudopotential-metadata.json", "qe_plan.json"],
+          "case_files": [
+            "source/pseudopotential-metadata.json",
+            "qe_plan.json"
+          ],
           "preferred_record": "source/pseudopotential-metadata.json",
           "status": "stale-record-conflict",
           "boundary": "The pseudopotential metadata and README record the exact public URL receipt verified on 2026-08-09, while qe_plan.json retains an older unverified-URL statement. Do not claim that all case records agree until that plan is reconciled."
@@ -445,33 +666,53 @@
             "id": "source",
             "label": "Identify the structure source",
             "purpose": "Establish what structure record the calculation actually starts from.",
-            "topic_slugs": ["obtain-material-structure"],
+            "topic_slugs": [
+              "obtain-material-structure"
+            ],
             "coverage": "explicit-teaching-input",
-            "case_files": ["source/fixture-metadata.json"],
+            "case_files": [
+              "source/fixture-metadata.json"
+            ],
             "execution_route_ids": [],
             "command_stages": [],
-            "artifact_paths": ["input/scf.in"],
+            "artifact_paths": [
+              "input/scf.in"
+            ],
             "boundary": "The structure is an explicit one-atom fcc teaching input, not a database or experimental identity."
           },
           {
             "id": "model",
             "label": "Inspect the computational model",
             "purpose": "Check the one-atom fcc primitive model shared by the electronic routes.",
-            "topic_slugs": ["build-or-modify-computational-model"],
+            "topic_slugs": [
+              "build-or-modify-computational-model"
+            ],
             "coverage": "recorded",
-            "case_files": ["source/fixture-metadata.json"],
+            "case_files": [
+              "source/fixture-metadata.json"
+            ],
             "execution_route_ids": [],
             "command_stages": [],
-            "artifact_paths": ["input/scf.in", "input/nscf.in", "input/bands.in"],
+            "artifact_paths": [
+              "input/scf.in",
+              "input/nscf.in",
+              "input/bands.in"
+            ],
             "boundary": "celldm(1)=7.653 bohr is a recorded teaching geometry, not an independently optimized or universal value."
           },
           {
             "id": "pseudopotential",
             "label": "Obtain and verify the pseudopotential",
             "purpose": "Acquire the exact public Quantum ESPRESSO UPF and reject any byte mismatch.",
-            "topic_slugs": ["choose-dft-method-and-computational-setup"],
+            "topic_slugs": [
+              "choose-dft-method-and-computational-setup"
+            ],
             "coverage": "recorded-acquisition-receipt-with-stale-plan-conflict",
-            "case_files": ["README.md", "source/pseudopotential-metadata.json", "qe_plan.json"],
+            "case_files": [
+              "README.md",
+              "source/pseudopotential-metadata.json",
+              "qe_plan.json"
+            ],
             "execution_route_ids": [],
             "command_stages": [],
             "artifact_paths": [],
@@ -481,48 +722,103 @@
             "id": "inputs",
             "label": "Prepare the Quantum ESPRESSO inputs",
             "purpose": "Inspect the metallic occupations, smearing, cutoff, sampling, prefix, and output ancestry before execution.",
-            "topic_slugs": ["choose-dft-method-and-computational-setup"],
+            "topic_slugs": [
+              "choose-dft-method-and-computational-setup"
+            ],
             "coverage": "recorded",
-            "case_files": ["input/convergence-matrix-plan.json", "input/eos-plan.json"],
+            "case_files": [
+              "input/convergence-matrix-plan.json",
+              "input/eos-plan.json"
+            ],
             "execution_route_ids": [],
             "command_stages": [],
-            "artifact_paths": ["input/scf.in", "input/nscf.in", "input/dos.in", "input/bands.in"],
+            "artifact_paths": [
+              "input/scf.in",
+              "input/nscf.in",
+              "input/dos.in",
+              "input/bands.in"
+            ],
             "boundary": "PBE, 30/240 Ry, Marzari-Vanderbilt smearing, degauss=0.02 Ry, and 8x8x8 are recorded settings, not converged prescriptions."
           },
           {
             "id": "run",
             "label": "Run the calculation",
             "purpose": "Execute SCF, full-zone NSCF, dos.x, and path bands in the declared isolated order.",
-            "topic_slugs": ["calculate-reference-ground-state"],
+            "topic_slugs": [
+              "calculate-reference-ground-state"
+            ],
             "coverage": "one-continuous-recorded-route-plus-template",
-            "case_files": ["run.sh", "source/execution-provenance.json"],
-            "execution_route_ids": ["isolated-dos-route"],
-            "command_stages": ["isolated DOS-route SCF", "isolated DOS-route full-zone NSCF", "isolated DOS-route dos.x", "isolated DOS-route bands"],
-            "artifact_paths": ["output/recorded-commands.txt"],
+            "case_files": [
+              "run.sh",
+              "source/execution-provenance.json"
+            ],
+            "execution_route_ids": [
+              "isolated-dos-route"
+            ],
+            "command_stages": [
+              "isolated DOS-route SCF",
+              "isolated DOS-route full-zone NSCF",
+              "isolated DOS-route dos.x",
+              "isolated DOS-route bands"
+            ],
+            "artifact_paths": [
+              "output/recorded-commands.txt"
+            ],
             "boundary": "Only isolated-dos-route is continuous. The initial captured outputs and later screens are separate routes, and a new run creates new evidence."
           },
           {
             "id": "checks",
             "label": "Check program and solver outcomes",
             "purpose": "Inspect exits, JOB DONE markers, stderr, SCF convergence, retained warnings, and expected artifacts separately.",
-            "topic_slugs": ["validate-results-and-scientific-conclusions"],
+            "topic_slugs": [
+              "validate-results-and-scientific-conclusions"
+            ],
             "coverage": "recorded-route-scoped-checks",
-            "case_files": ["check.sh", "extract.sh", "parse.py", "source/execution-provenance.json"],
-            "execution_route_ids": ["isolated-dos-route", "later-exploratory-screens"],
-            "command_stages": ["isolated DOS-route SCF", "isolated DOS-route full-zone NSCF", "isolated DOS-route dos.x", "isolated DOS-route bands", "later exploratory k/smearing screen", "later bounded E(V) screen"],
-            "artifact_paths": ["derived/captured-run-summary.json"],
+            "case_files": [
+              "check.sh",
+              "extract.sh",
+              "parse.py",
+              "source/execution-provenance.json"
+            ],
+            "execution_route_ids": [
+              "isolated-dos-route",
+              "later-exploratory-screens"
+            ],
+            "command_stages": [
+              "isolated DOS-route SCF",
+              "isolated DOS-route full-zone NSCF",
+              "isolated DOS-route dos.x",
+              "isolated DOS-route bands",
+              "later exploratory k/smearing screen",
+              "later bounded E(V) screen"
+            ],
+            "artifact_paths": [
+              "derived/captured-run-summary.json"
+            ],
             "boundary": "Normal exits and a DOS file do not erase c_bands warnings or establish observable convergence."
           },
           {
             "id": "convergence",
             "label": "Test the required numerical convergence",
             "purpose": "Read the real k-mesh/smearing screen as a bounded negative teaching result.",
-            "topic_slugs": ["test-numerical-convergence"],
+            "topic_slugs": [
+              "test-numerical-convergence"
+            ],
             "coverage": "exploratory-record",
-            "case_files": ["input/convergence-matrix-plan.json", "input/run-convergence-matrix.sh"],
-            "execution_route_ids": ["later-exploratory-screens"],
-            "command_stages": ["later exploratory k/smearing screen"],
-            "artifact_paths": ["derived/aluminium-convergence-matrix.csv", "derived/aluminium-convergence-assessment.json"],
+            "case_files": [
+              "input/convergence-matrix-plan.json",
+              "input/run-convergence-matrix.sh"
+            ],
+            "execution_route_ids": [
+              "later-exploratory-screens"
+            ],
+            "command_stages": [
+              "later exploratory k/smearing screen"
+            ],
+            "artifact_paths": [
+              "derived/aluminium-convergence-matrix.csv",
+              "derived/aluminium-convergence-assessment.json"
+            ],
             "assessment": "FAIL",
             "observable_convergence": "not tested",
             "boundary": "Five SCF programs completed, but the exploratory screen failed its own energy/Fermi thresholds. This is not a program failure, an observable-convergence result, or scientific rejection."
@@ -531,12 +827,18 @@
             "id": "relaxation-reference-geometry",
             "label": "Identify the reference geometry",
             "purpose": "State explicitly which geometry feeds the electronic routes when no relaxation is part of the case.",
-            "topic_slugs": ["optimize-structure"],
+            "topic_slugs": [
+              "optimize-structure"
+            ],
             "coverage": "outside-bounded-case",
-            "case_files": ["source/fixture-metadata.json"],
+            "case_files": [
+              "source/fixture-metadata.json"
+            ],
             "execution_route_ids": [],
             "command_stages": [],
-            "artifact_paths": ["input/scf.in"],
+            "artifact_paths": [
+              "input/scf.in"
+            ],
             "observable_convergence": "not applicable",
             "boundary": "No ionic or cell relaxation is included. The reference is the explicit one-atom fcc teaching geometry, not a relaxed, ranked, or experimentally validated state."
           },
@@ -544,24 +846,56 @@
             "id": "scf",
             "label": "Calculate the reference SCF state",
             "purpose": "Establish the route-scoped electronic state used by the full-zone NSCF and downstream branches.",
-            "topic_slugs": ["calculate-reference-ground-state"],
+            "topic_slugs": [
+              "calculate-reference-ground-state"
+            ],
             "coverage": "recorded-continuous-route",
             "case_files": [],
-            "execution_route_ids": ["isolated-dos-route"],
-            "command_stages": ["isolated DOS-route SCF"],
-            "artifact_paths": ["input/scf.in", "output/dos-route/scf.out", "output/dos-route/scf.err"],
+            "execution_route_ids": [
+              "isolated-dos-route"
+            ],
+            "command_stages": [
+              "isolated DOS-route SCF"
+            ],
+            "artifact_paths": [
+              "input/scf.in",
+              "output/dos-route/scf.out",
+              "output/dos-route/scf.err"
+            ],
             "boundary": "The isolated SCF reports electronic convergence, not structural relaxation, target-observable convergence, or scientific acceptance."
           },
           {
             "id": "bands-dos",
             "label": "Calculate bands and DOS",
             "purpose": "Follow the continuous SCF to full-zone NSCF to native dos.x route and the later path-band branch.",
-            "topic_slugs": ["band-structure", "density-of-states-and-projected-density-of-states"],
+            "topic_slugs": [
+              "band-structure",
+              "density-of-states-and-projected-density-of-states"
+            ],
             "coverage": "recorded-with-retained-warnings",
             "case_files": [],
-            "execution_route_ids": ["isolated-dos-route"],
-            "command_stages": ["isolated DOS-route full-zone NSCF", "isolated DOS-route dos.x", "isolated DOS-route bands"],
-            "artifact_paths": ["input/nscf.in", "input/dos.in", "input/bands.in", "output/dos-route/nscf-full.out", "output/dos-route/nscf-full.err", "output/dos-route/dos.out", "output/dos-route/dos.err", "output/dos-route/al.dos", "output/dos-route/bands.out", "output/dos-route/bands.err", "derived/al-dos-x.csv", "derived/al-dos-x-metadata.json"],
+            "execution_route_ids": [
+              "isolated-dos-route"
+            ],
+            "command_stages": [
+              "isolated DOS-route full-zone NSCF",
+              "isolated DOS-route dos.x",
+              "isolated DOS-route bands"
+            ],
+            "artifact_paths": [
+              "input/nscf.in",
+              "input/dos.in",
+              "input/bands.in",
+              "output/dos-route/nscf-full.out",
+              "output/dos-route/nscf-full.err",
+              "output/dos-route/dos.out",
+              "output/dos-route/dos.err",
+              "output/dos-route/al.dos",
+              "output/dos-route/bands.out",
+              "output/dos-route/bands.err",
+              "derived/al-dos-x.csv",
+              "derived/al-dos-x-metadata.json"
+            ],
             "observable_convergence": "not tested",
             "boundary": "The save tree is not published, NSCF and bands warnings remain visible, and one 8x8x8 DOS sample does not establish a converged DOS or Fermi surface."
           },
@@ -569,24 +903,58 @@
             "id": "plot",
             "label": "Rebuild tables and plots",
             "purpose": "Regenerate the native dos.x, raw-NSCF, and bounded-screen teaching views from committed evidence.",
-            "topic_slugs": ["analyze-and-compare-results"],
+            "topic_slugs": [
+              "analyze-and-compare-results"
+            ],
             "coverage": "stored-reconstruction",
-            "case_files": ["parse.py", "extract.sh"],
-            "execution_route_ids": ["isolated-dos-route", "later-exploratory-screens"],
+            "case_files": [
+              "parse.py",
+              "extract.sh"
+            ],
+            "execution_route_ids": [
+              "isolated-dos-route",
+              "later-exploratory-screens"
+            ],
             "command_stages": [],
-            "artifact_paths": ["figures/raw-nscf-band2-sampling.png", "figures/al-dos-gaussian.png", "figures/al-dos-x.png", "figures/aluminium-eos-fit.png"],
-            "boundary": "The Gaussian representation, native dos.x plot, sampling histogram, and E(V) fit are distinct derived views; none is convergence evidence by itself."
+            "artifact_paths": [
+              "figures/raw-nscf-band2-sampling.png",
+              "figures/al-dos-gaussian.png",
+              "figures/al-dos-x.png",
+              "figures/aluminium-eos-fit.png"
+            ],
+            "boundary": "The Gaussian representation, native dos.x plot, sampling histogram, and E(V) fit are distinct derived views; none is convergence evidence by itself.",
+            "action": {
+              "label": "Parse and plot the fresh native DOS data",
+              "cwd": "repository-root",
+              "commands": [
+                "dos_data=$(find \"$RUNTIME_DIR\" -type f -name \"al.dos\" -print -quit); test -f \"$dos_data\"",
+                "python3 examples/practical-guides/qe_manual_handoff.py extract-runtime --runtime-dir \"$RUNTIME_DIR\" --dos-data \"$dos_data\" --output-dir \"$RUNTIME_DIR/analysis\""
+              ],
+              "boundary": "This creates a fresh DOS CSV and light SVG only. It does not claim a fresh bands.x data product, a relaxation, observable convergence, or a material conclusion."
+            }
           },
           {
             "id": "interpret",
             "label": "Interpret within the evidence boundary",
             "purpose": "Read route-scoped results together with warnings, the exploratory FAIL, and explicit non-claims.",
-            "topic_slugs": ["validate-results-and-scientific-conclusions"],
+            "topic_slugs": [
+              "validate-results-and-scientific-conclusions"
+            ],
             "coverage": "bounded-record",
-            "case_files": ["qe_plan.json"],
-            "execution_route_ids": ["initial-captured-electronic-output-set", "isolated-dos-route", "later-exploratory-screens"],
+            "case_files": [
+              "qe_plan.json"
+            ],
+            "execution_route_ids": [
+              "initial-captured-electronic-output-set",
+              "isolated-dos-route",
+              "later-exploratory-screens"
+            ],
             "command_stages": [],
-            "artifact_paths": ["derived/captured-run-summary.json", "derived/aluminium-convergence-assessment.json", "derived/aluminium-eos-fit.json"],
+            "artifact_paths": [
+              "derived/captured-run-summary.json",
+              "derived/aluminium-convergence-assessment.json",
+              "derived/aluminium-eos-fit.json"
+            ],
             "assessment": "Exploratory convergence screen FAIL; bounded E(V) fit mathematical PASS only",
             "observable_convergence": "not tested",
             "boundary": "The case does not support a converged DOS, Fermi surface, EOS, elastic property, carrier density, transport result, universal parameter recommendation, or material conclusion."
@@ -595,12 +963,28 @@
             "id": "preserve",
             "label": "Preserve the reproducible record",
             "purpose": "Keep route-scoped inputs, outputs, hashes, commands, source receipts, parsers, warnings, and non-claims together.",
-            "topic_slugs": ["document-and-preserve-study"],
+            "topic_slugs": [
+              "document-and-preserve-study"
+            ],
             "coverage": "recorded",
-            "case_files": ["README.md", "manifest.json", "environment.txt", "source/execution-provenance.json", "source/pseudopotential-metadata.json", "qe_plan.json"],
-            "execution_route_ids": ["initial-captured-electronic-output-set", "isolated-dos-route", "later-exploratory-screens"],
+            "case_files": [
+              "README.md",
+              "manifest.json",
+              "environment.txt",
+              "source/execution-provenance.json",
+              "source/pseudopotential-metadata.json",
+              "qe_plan.json"
+            ],
+            "execution_route_ids": [
+              "initial-captured-electronic-output-set",
+              "isolated-dos-route",
+              "later-exploratory-screens"
+            ],
             "command_stages": [],
-            "artifact_paths": ["output/recorded-commands.txt", "output/compact-source-excerpt.txt"],
+            "artifact_paths": [
+              "output/recorded-commands.txt",
+              "output/compact-source-excerpt.txt"
+            ],
             "boundary": "The public record preserves assembled route evidence and its conflict/non-claim boundaries, not one case-wide historical launcher or unpublished save-tree ancestry."
           }
         ]
@@ -608,21 +992,69 @@
     }
   ],
   "legacy_recipe_redirects": [
-    { "slug": "bulk-structure-and-bands", "destination": null },
-    { "slug": "two-dimensional-electronic-structure", "destination": null },
-    { "slug": "magnetic-order-comparison", "destination": null },
-    { "slug": "soc-and-topology", "destination": null },
-    { "slug": "defect-formation-energy", "destination": null },
-    { "slug": "surface-and-adsorption", "destination": null },
-    { "slug": "heterostructure-band-alignment", "destination": null },
-    { "slug": "harmonic-phonons", "destination": null },
-    { "slug": "anharmonic-thermal-transport", "destination": null },
-    { "slug": "electron-phonon-superconductivity", "destination": null },
-    { "slug": "dielectric-polarization-piezoelectric", "destination": null },
-    { "slug": "optical-and-excited-states", "destination": null },
-    { "slug": "reaction-path-and-diffusion", "destination": null },
-    { "slug": "ab-initio-molecular-dynamics", "destination": null },
-    { "slug": "gw-bse", "destination": null },
-    { "slug": "high-throughput-screening", "destination": null }
+    {
+      "slug": "bulk-structure-and-bands",
+      "destination": null
+    },
+    {
+      "slug": "two-dimensional-electronic-structure",
+      "destination": null
+    },
+    {
+      "slug": "magnetic-order-comparison",
+      "destination": null
+    },
+    {
+      "slug": "soc-and-topology",
+      "destination": null
+    },
+    {
+      "slug": "defect-formation-energy",
+      "destination": null
+    },
+    {
+      "slug": "surface-and-adsorption",
+      "destination": null
+    },
+    {
+      "slug": "heterostructure-band-alignment",
+      "destination": null
+    },
+    {
+      "slug": "harmonic-phonons",
+      "destination": null
+    },
+    {
+      "slug": "anharmonic-thermal-transport",
+      "destination": null
+    },
+    {
+      "slug": "electron-phonon-superconductivity",
+      "destination": null
+    },
+    {
+      "slug": "dielectric-polarization-piezoelectric",
+      "destination": null
+    },
+    {
+      "slug": "optical-and-excited-states",
+      "destination": null
+    },
+    {
+      "slug": "reaction-path-and-diffusion",
+      "destination": null
+    },
+    {
+      "slug": "ab-initio-molecular-dynamics",
+      "destination": null
+    },
+    {
+      "slug": "gw-bse",
+      "destination": null
+    },
+    {
+      "slug": "high-throughput-screening",
+      "destination": null
+    }
   ]
 }

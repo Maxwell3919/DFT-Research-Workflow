@@ -19,9 +19,9 @@ $$
 + i\epsilon_{2,\alpha\beta}(\omega).
 $$
 
-`ω` is angular frequency, `α` and `β` label Cartesian polarization directions, and `ε₁` and `ε₂` are the real and imaginary parts. In a non-magnetic isotropic model this may reduce to one scalar; in a low-symmetry, magnetic, strained, layered, or spin--orbit-coupled model it generally does not. A plotted trace must therefore retain the component or polarization, propagation geometry where relevant, the frequency or photon-energy axis, and the macroscopic-volume convention.
+$\omega$ is angular frequency, $\alpha$ and $\beta$ label Cartesian polarization directions, and $\epsilon_1$ and $\epsilon_2$ are the real and imaginary parts. In a non-magnetic isotropic model this may reduce to one scalar; in a low-symmetry, magnetic, strained, layered, or spin--orbit-coupled model it generally does not. A plotted trace must therefore retain the component or polarization, propagation geometry where relevant, the frequency or photon-energy axis, and the macroscopic-volume convention.
 
-Within an independent-particle treatment, `ε₂` is assembled from transitions between occupied and unoccupied states at the same crystal momentum, weighted by optical matrix elements and energy conservation. Schematically,
+Within an independent-particle treatment, $\epsilon_2$ is assembled from transitions between occupied and unoccupied states at the same crystal momentum, weighted by optical matrix elements and energy conservation. Schematically,
 
 $$
 \epsilon_{2,\alpha\beta}(\omega)
@@ -31,7 +31,7 @@ p^\alpha_{vc}(\mathbf k)p^\beta_{cv}(\mathbf k)
 \delta\!\left[E_c(\mathbf k)-E_v(\mathbf k)-\hbar\omega\right].
 $$
 
-`v` and `c` denote initially occupied and final unoccupied bands, `k` is a Brillouin-zone point, `p` is the polarization-resolved transition matrix element, and `ℏ` is the reduced Planck constant. This expression explains why a joint density of states alone is not an absorption spectrum: dipole selection rules and polarization can suppress or enhance transitions with similar energy differences. The real part is conventionally reconstructed through a Kramers--Kronig relation; its quality depends on a sufficiently represented spectral range and a declared treatment of the unresolved tail.
+$v$ and $c$ denote initially occupied and final unoccupied bands, $\mathbf k$ is a Brillouin-zone point, $p$ is the polarization-resolved transition matrix element, and $\hbar$ is the reduced Planck constant. This expression explains why a joint density of states alone is not an absorption spectrum: dipole selection rules and polarization can suppress or enhance transitions with similar energy differences. The real part is conventionally reconstructed through a Kramers--Kronig relation; its quality depends on a sufficiently represented spectral range and a declared treatment of the unresolved tail.
 
 ## From dielectric function to reported optical quantities
 

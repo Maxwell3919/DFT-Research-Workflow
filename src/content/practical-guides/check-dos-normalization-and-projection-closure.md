@@ -1,13 +1,13 @@
 ---
 topic_slug: density-of-states-and-projected-density-of-states
 guide_slug: check-dos-normalization-and-projection-closure
-title: Check a DOS Integral and Projected-Weight Closure
+title: Reconstruct a Stored Total DOS and Define Closure Tests
 kind: implementation
 tools:
   - python
   - quantum-espresso
 status: reviewed
-summary: Reconstruct a bounded Silicon total-DOS plot from actual Quantum ESPRESSO 7.5 SCF, NSCF, and dos.x output.
+summary: Reconstruct a bounded Silicon total-DOS plot from stored Quantum ESPRESSO 7.5 SCF, uniform-NSCF, and dos.x output, then define the electron-count and projected-weight closure tests that remain unperformed.
 tested_versions:
   - Python 3.12
 execution_script: examples/practical-guides/dos_projection_closure.py

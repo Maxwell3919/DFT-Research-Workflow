@@ -17,7 +17,7 @@ const guides = [
     title: 'Build and Repeat Cells with ASE',
     tool: 'ase',
     version: 'ASE 3.29.0',
-    phrase: 'An integer repeat of an unchanged perfect crystal can be an equivalent periodic representation.',
+    phrase: 'Repeating an unchanged perfect crystal can preserve the same ideal periodic system.',
   },
   {
     parentRoute: parentRoutes[0],
@@ -26,7 +26,7 @@ const guides = [
     title: 'Construct Surfaces, Vacuum, and Adsorbates with ASE',
     tool: 'ase',
     version: 'ASE 3.29.0',
-    phrase: 'A surface builder produces a starting model, not a validated surface.',
+    phrase: 'A surface builder produces coordinates; it does not validate the termination, thickness, coverage, vacuum, or adsorption site.',
   },
   {
     parentRoute: parentRoutes[0],
@@ -35,7 +35,7 @@ const guides = [
     title: 'Apply Structure Transformations with pymatgen',
     tool: 'pymatgen',
     version: 'pymatgen-core 2026.7.31',
-    phrase: 'The transformation class does not decide whether the operation preserves the same physical model.',
+    phrase: 'The class executes a structural change; it does not decide whether that change preserves the physical model.',
   },
   {
     parentRoute: parentRoutes[0],
@@ -44,7 +44,7 @@ const guides = [
     title: 'Build a Two-Dimensional Monolayer Model',
     tool: 'ase',
     version: 'ASE 3.29.0',
-    phrase: 'It is not derived from an experimental file',
+    phrase: 'It is not derived from an experimental CIF',
   },
   {
     parentRoute: parentRoutes[0],

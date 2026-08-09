@@ -11,7 +11,7 @@ Begin with a qualified harmonic parent and name the target: a renormalized frequ
 
 ## The quantity beyond the harmonic model
 
-Expanding the Born--Oppenheimer energy in displacements `u` gives a harmonic term with second-order force constants `Φ^(2)`, then cubic and quartic terms `Φ^(3)` and `Φ^(4)`:
+Expanding the Born--Oppenheimer energy in displacements $u$ gives a harmonic term with second-order force constants $\Phi^{(2)}$, then cubic and quartic terms $\Phi^{(3)}$ and $\Phi^{(4)}$:
 
 $$
 E = E_0
@@ -21,13 +21,13 @@ E = E_0
 + \cdots .
 $$
 
-Every sum is over atom, Cartesian, and lattice indices. `E₀` is the energy of the declared reference structure. `Φ^(3)` couples three displacement coordinates and permits three-phonon processes; `Φ^(4)` contributes to frequency renormalization and four-phonon processes. These tensors are derivatives at a specified structural, electronic, magnetic, charge, boundary, and numerical state. They are not transferable labels attached to a chemical formula.
+Every sum is over atom, Cartesian, and lattice indices. $E_0$ is the energy of the declared reference structure. $\Phi^{(3)}$ couples three displacement coordinates and permits three-phonon processes; $\Phi^{(4)}$ contributes to frequency renormalization and four-phonon processes. These tensors are derivatives at a specified structural, electronic, magnetic, charge, boundary, and numerical state. They are not transferable labels attached to a chemical formula.
 
 The harmonic frequencies and eigenvectors provide the basis in which an anharmonic self-energy is expressed. Its real part shifts a mode frequency and its imaginary part gives a model-dependent linewidth or lifetime. A linewidth is not a band width, numerical smearing, or an experimental resolution. A calculated lifetime also does not become a thermal conductivity until group velocities, occupations, scattering channels, reciprocal-space sampling, and a transport equation are declared and converged.
 
 ## Constructing higher-order force constants
 
-Finite-displacement routes evaluate forces for a symmetry-reduced set of singly and multiply displaced supercells, then fit `Φ^(2)`, `Φ^(3)`, and sometimes `Φ^(4)`. The displacement set, supercell, force accuracy, fitting model, interaction range, symmetry treatment, and any cutoff together define the result. Regression residuals alone do not demonstrate that a truncation is physically adequate: omitted long-range or higher-order interactions can change the target linewidth or renormalized spectrum without producing an obvious local fitting failure.
+Finite-displacement routes evaluate forces for a symmetry-reduced set of singly and multiply displaced supercells, then fit $\Phi^{(2)}$, $\Phi^{(3)}$, and sometimes $\Phi^{(4)}$. The displacement set, supercell, force accuracy, fitting model, interaction range, symmetry treatment, and any cutoff together define the result. Regression residuals alone do not demonstrate that a truncation is physically adequate: omitted long-range or higher-order interactions can change the target linewidth or renormalized spectrum without producing an obvious local fitting failure.
 
 Perturbative DFPT routes can obtain selected higher derivatives without enumerating the same supercells, but retain their own response, q-grid, electronic-state, and implementation conditions. Never combine a harmonic model from one cell or Hamiltonian with cubic terms from another merely because their formulas look compatible. Long-range electrostatics, Born charges, dielectric data, sum-rule treatment, occupations, and reference geometry must remain coherent with the harmonic parent.
 

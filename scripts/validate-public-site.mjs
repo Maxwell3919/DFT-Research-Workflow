@@ -1,3 +1,4 @@
+import { existsSync as existsForManualAcceptance, readFileSync as readFileForManualAcceptance } from 'node:fs';
 import { access, readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -378,6 +379,72 @@ for (const legacy of legacyOperations) {
 }
 
 if (!htmlByPath.has(join(distPath, '404.html'))) errors.push('custom English 404 page was not generated');
+
+// DRW_MANUAL_HANDOFF_ACCEPTANCE
+{
+  const possibleRoots = [
+    'dist/DFT-Research-Workflow',
+    'dist',
+  ];
+  const builtRoot = possibleRoots.find((root) =>
+    existsForManualAcceptance(root + '/workflows/silicon-ground-state-electronic-structure/index.html')
+  );
+  if (!builtRoot) {
+    errors.push('built Silicon workflow page is missing for manual acceptance');
+  } else {
+    const siliconHtml = readFileForManualAcceptance(
+      builtRoot + '/workflows/silicon-ground-state-electronic-structure/index.html',
+      'utf8'
+    );
+    const startIndex = siliconHtml.indexOf('Start here');
+    const routeIndex = siliconHtml.indexOf('Follow the calculation');
+    const evidenceIndex = siliconHtml.indexOf('Stored evidence and fresh execution');
+    if (!(startIndex >= 0 && routeIndex > startIndex && evidenceIndex > routeIndex)) {
+      errors.push('worked workflow must render Start here, then reader route, then evidence tracks');
+    }
+    for (const visibleInternal of [
+      '>History kind<',
+      '>Coverage:<',
+      '>Evidence class<',
+      '>Record kind<',
+      '>Route ID<',
+    ]) {
+      if (siliconHtml.includes(visibleInternal)) {
+        errors.push('worked workflow exposes internal label ' + visibleInternal);
+      }
+    }
+    if (/>\s*(obtain-material-structure|test-numerical-convergence|calculate-reference-ground-state)\s*<\/a>/.test(siliconHtml)) {
+      errors.push('worked workflow exposes raw topic slugs as link labels');
+    }
+    for (const token of ['prepare-reference', 'audit-scf', 'extract-runtime', 'package-study']) {
+      if (!siliconHtml.includes(token)) errors.push('built Silicon route is missing ' + token);
+    }
+
+    const guideRoutes = [
+      [
+        'operations/calculate-reference-ground-state/guides/prepare-fixed-geometry-reference-calculation',
+        'accepted-geometry.inc',
+      ],
+      [
+        'operations/test-numerical-convergence/guides/converge-basis-cutoffs-and-grids',
+        'extract-runtime',
+      ],
+      [
+        'operations/calculate-reference-ground-state/guides/package-reusable-reference-state-lineage',
+        'sha256sum -c',
+      ],
+    ];
+    for (const [route, token] of guideRoutes) {
+      const guidePath = builtRoot + '/' + route + '/index.html';
+      if (!existsForManualAcceptance(guidePath)) {
+        errors.push('built practical guide is missing: ' + route);
+      } else if (!readFileForManualAcceptance(guidePath, 'utf8').includes(token)) {
+        errors.push('built practical guide ' + route + ' is missing ' + token);
+      }
+    }
+  }
+}
+
 
 if (errors.length > 0) {
   console.error(`Generated-site validation failed (${errors.length}):`);

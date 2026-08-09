@@ -16,7 +16,7 @@ An experimental deposition and a DFT-relaxed database structure are different so
 
 A **generated or hypothetical structure** is not experimental evidence. Record the generator, prototype or parent, substitutions, imposed symmetry, and every construction choice instead of assigning it a database identity it does not have.
 
-The example below uses silicon, COD ID `9013102`. The record reports formula `Si`, $a=b=c=5.4304$ Å, $\alpha=\beta=\gamma=90^\circ$, space group 227 (`F d -3 m`), diffraction temperature `298.15 K`, atomic coordinates, and no reported disorder. These are facts about the deposited record, not a universal silicon model.
+The example below uses silicon, COD ID `9013102`. The record reports formula Si, $a=b=c=5.4304$ Å, $\alpha=\beta=\gamma=90^\circ$, space group 227 (`F d -3 m`), diffraction temperature `298.15 K`, atomic coordinates, and no reported disorder. These are facts about the deposited record, not a universal silicon model.
 
 ## Download and preserve the CIF
 

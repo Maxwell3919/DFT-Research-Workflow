@@ -7,8 +7,8 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const parentRoute = '/operations/defect-formation-energies-and-charge-states/';
 const guides = [
-  { route: `${parentRoute}guides/build-defect-formation-ledger/`, title: 'Build an Auditable Defect Formation-Energy Ledger', phrase: 'A formation-energy diagram should be generated from an inspectable ledger', boundary: 'It does not parse electronic-structure output' },
-  { route: `${parentRoute}examples/trace-charge-state-envelope/`, title: 'Trace a Charge-State Envelope and Neutrality Root', phrase: 'This worked example starts from four invented formation-energy intercepts', boundary: 'The example does not execute DFT' },
+  { route: `${parentRoute}guides/build-defect-formation-ledger/`, title: 'Build an Auditable Defect Formation-Energy Ledger', phrase: 'Use this guide to assemble host, defect, atomic-reservoir, electron-reservoir, and correction terms before plotting charge-state lines.', boundary: 'It does not parse electronic-structure output, create or relax a defect, validate localization or a correction model, converge a supercell, or predict a real formation energy.' },
+  { route: `${parentRoute}examples/trace-charge-state-envelope/`, title: 'Trace a Charge-State Envelope and Neutrality Root', phrase: 'Use this example only after charge-state intercepts and slopes have been assembled and checked.', boundary: 'It does not execute DFT, validate the band gap or VBM, identify a real defect' },
 ];
 
 async function loadMedia(page) {

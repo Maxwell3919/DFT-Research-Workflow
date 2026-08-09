@@ -101,7 +101,7 @@ $$
 
 <!-- H_α(p_t) = H_β(p_t) -->
 
-An intersection of two `E(V)` curves at one common volume is not generally the transition condition. Retain both minimizing volumes, supported pressure ranges, phase inventory, and sensitivity to fit form and numerical settings.
+An intersection of two $E(V)$ curves at one common volume is not generally the transition condition. Retain both minimizing volumes, supported pressure ranges, phase inventory, and sensitivity to fit form and numerical settings.
 
 ## Metastability and hysteresis are not equilibrium boundaries
 
@@ -126,7 +126,7 @@ $$
 
 <!-- G_i(T,p) = min_V [E_i(V) + F_vib,i(T,V) + F_el,i(T,V) + F_other,i(T,V) + pV] -->
 
-Numerical occupation smearing is not automatically `F_el`. Do not add a thermal term to one candidate while leaving competitors at static energy.
+Numerical occupation smearing is not automatically $F_{\mathrm{el}}$. Do not add a thermal term to one candidate while leaving competitors at static energy.
 
 ## Diagnose failure before interpreting parameters
 

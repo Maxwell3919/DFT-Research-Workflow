@@ -13,14 +13,14 @@ Start with separately verified endpoint minima under one compatible model. Gener
 
 The initial and final structures must each be relaxed and identified as the intended states under compatible cell, composition, charge, spin, boundary, Hamiltonian, and numerical choices. For an adsorption event, for example, a different site, coverage, surface face, or reference proton/electron state changes the reaction being represented. A path connecting two local minima is conditional on those minima; it cannot decide which reactant population is available or whether a different product is thermodynamically preferred.
 
-Let \(\mathbf R(s)\) be a continuous path of atomic coordinates, parametrized by \(s\), with endpoints \(\mathbf R_A\) and \(\mathbf R_B\). Its energy profile is \(E[\mathbf R(s)]\). The forward potential-energy barrier is
+Let $\mathbf R(s)$ be a continuous path of atomic coordinates, parametrized by $s$, with endpoints $\mathbf R_A$ and $\mathbf R_B$. Its energy profile is $E[\mathbf R(s)]$. The forward potential-energy barrier is
 
 $$
 \Delta E^\ddagger
 = E(\mathbf R^\ddagger)-E(\mathbf R_A).
 $$
 
-Here \(\mathbf R^‡\) is the highest relevant saddle-point configuration on the chosen minimum-energy path and all energies use the same normalization. This subtraction answers a zero-temperature potential-energy question. Vibrational free energies, field work, solvent, electrode potential, entropy, and populations are additional model terms, not implicit properties of a static barrier.
+Here $\mathbf R^\ddagger$ is the highest relevant saddle-point configuration on the chosen minimum-energy path and all energies use the same normalization. This subtraction answers a zero-temperature potential-energy question. Vibrational free energies, field work, solvent, electrode potential, entropy, and populations are additional model terms, not implicit properties of a static barrier.
 
 ## A nudged elastic band is a path optimization, not an ordinary relaxation
 

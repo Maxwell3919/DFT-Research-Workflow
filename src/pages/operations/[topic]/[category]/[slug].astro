@@ -69,10 +69,10 @@ const everyDeclaredCheckPassed = gateRecords.length > 0
   && recordedStatuses.length === gateRecords.length
   && recordedStatuses.every((status) => status === 'PASS' || status === 'PASSED');
 const recordedOutcome = hasRecordedFailure
-  ? 'The manifest records at least one failed check. This case is negative or incomplete evidence and must not be read as a successful execution.'
+  ? 'The manifest records at least one failed check, so not every declared check passed. Inspect the failed evidence layer before using the case; an earlier program execution or analysis step may still have completed.'
   : everyDeclaredCheckPassed
     ? 'The manifest records successful completion of every check declared for this bounded case.'
-    : 'The manifest does not record successful completion of every declared check. Treat this case as incomplete evidence rather than a successful execution.';
+    : 'The manifest does not record successful completion of every declared check. Treat this case as incomplete evidence; the record does not by itself establish whether every execution or analysis stage completed.';
 ---
 
 <BaseLayout

@@ -10,7 +10,7 @@ status: reviewed
 summary: Design a coupled basis and grid study around the observable that matters, rather than accepting one cutoff or one library recommendation as universal evidence.
 tested_versions:
   - Python 3.12
-execution_script: examples/practical-guides/silicon_qe_convergence.py
+execution_script: examples/practical-guides/qe_manual_handoff.py
 source_ids:
   - qe-pw-75
   - sssp-paper
@@ -24,103 +24,141 @@ review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
 
-Run the declared companion first:
+## Purpose
+
+Numerical convergence is a comparison, not a single successful run. Choose the quantity and tolerance first, vary one numerical control while holding the physical model fixed, and retain every input and output used in the decision.
+
+The silicon files below are an illustrative series for learning the procedure. Their values are not transferable cutoffs or k meshes for another material, pseudopotential, property, or accuracy target.
+
+## Verify the parser
+
+From the repository root:
 
 ~~~bash
-python3 examples/practical-guides/silicon_qe_convergence.py > silicon-convergence.json
-less silicon-convergence.json
+python3 examples/practical-guides/qe_manual_handoff.py self-test
 ~~~
 
-It reads nine committed QE 7.5 Silicon outputs from <code>examples/practical-guides/data/silicon-qe/convergence/</code>, verifies their expected SHA-256 values, checks stored markers, extracts the final printed total energy, and rebuilds the cutoff and k-mesh figures.
+A passing self-test establishes that the documented parser can reconstruct the hash-registry-bound public fixture. It does not accept a convergence threshold for your new calculation.
 
-Inspect the stored objects directly:
+## Generate and inspect the declared input series
+
+Copy the reviewed input series into a new external runtime directory instead of editing the public case:
 
 ~~~bash
-find examples/practical-guides/data/silicon-qe/convergence -maxdepth 1 -type f -name 'si_e*_k*.out' | sort
-sha256sum examples/practical-guides/data/silicon-qe/convergence/si_e*_k*.out
-grep -H "JOB DONE" examples/practical-guides/data/silicon-qe/convergence/si_e*_k*.out
-grep -H "convergence has been achieved" examples/practical-guides/data/silicon-qe/convergence/si_e*_k*.out
-grep -H "total energy" examples/practical-guides/data/silicon-qe/convergence/si_e*_k*.out
-~~~
+repo_root=$(pwd)
+case_root="$repo_root/examples/cases/silicon-ground-state-electronic-structure"
+runtime="$HOME/drw-runs/si-convergence"
+mkdir -p "$runtime/inputs"
 
-<code>find</code> inventories the files. <code>sha256sum</code> checks local fixity. <code>JOB DONE</code> checks normal termination only. <code>convergence has been achieved</code> checks the electronic solver condition reported in each stored QE output. The energy line supplies the value parsed by the companion. None of these commands establishes observable convergence.
+for ecut in 30 40 50; do
+  for kmesh in 6 8 10; do
+    name="si_e${{ecut}_k${{kmesh}"
+    cp "$case_root/input/${{name}.in" "$runtime/inputs/${{name}.in"
+  done
+done
 
-Basis completeness is not represented by one number across all electronic-structure methods. The archived matrix varies wavefunction cutoff over 30, 40, and 50 Ry and cubic k meshes over 6, 8, and 10. It uses one fixed Silicon teaching structure and one pseudopotential identity. The companion does not execute QE, parse the inputs, verify the potential source, or choose a production setting.
-
-## Plan the calculation series
-
-Before running, write:
-
-~~~text
-target observable and units:
-predeclared tolerance:
-basis controls to vary:
-charge-density, augmentation, or integration-grid controls to vary:
-fixed structure, method, pseudopotential, k sampling, occupations, and solver thresholds:
-state checks:
-input/output naming rule:
-stopping rule:
-~~~
-
-For plane waves, test <code>ecutwfc</code> together with <code>ecutrho</code> or the relevant augmentation/FFT control. For another representation, substitute the basis size, range, integration grid, or real-space spacing that controls completeness.
-
-Prepare every input before launching the sweep, then run the directory:
-
-~~~bash
-mkdir -p convergence/outputs
-for input in convergence/inputs/*.in; do
-  name=$(basename "$input" .in)
-  pw.x -in "$input" > "convergence/outputs/$name.out"
+for input in "$runtime"/inputs/*.in; do
+  printf '\n%s\n' "$input"
+  awk '
+    /ecutwfc/ {print}
+    /K_POINTS/ {print; getline; print}
+  ' "$input"
+  sha256sum "$input"
 done
 ~~~
 
-This command runs the reader's prepared inputs; it is not evidence that the archived Silicon companion executed those calculations.
-
-## Extract the same evidence from every run
-
-Check termination and solver status separately, then extract the target quantity with one versioned rule:
+The inspection proves which <code>ecutwfc</code> and mesh were actually encoded. Also diff the files to confirm that the structure, pseudopotential, XC treatment, occupations, smearing, charge, spin, and SCF thresholds remain fixed:
 
 ~~~bash
-grep -H "JOB DONE" convergence/outputs/*.out
-grep -H "convergence has been achieved" convergence/outputs/*.out
-grep -H "total energy" convergence/outputs/*.out
+diff -u "$runtime/inputs/si_e30_k6.in" "$runtime/inputs/si_e50_k6.in"
+diff -u "$runtime/inputs/si_e50_k6.in" "$runtime/inputs/si_e50_k10.in"
 ~~~
 
-Add force, stress, energy-difference, band, phonon, or response extraction according to the stated target. Preserve the exact parser or <code>awk</code> command beside the table.
+If you generate a different series, preserve the generator or exact edited inputs. Do not describe a filename as evidence of its contents.
 
-The boundary is observable-specific:
+## Run each input in an isolated directory
 
-~~~text
-Energy convergence ≠ force convergence.
-Force convergence ≠ DOS convergence.
-DOS convergence ≠ phonon convergence.
-Phonon convergence ≠ EPC convergence.
+Point <code>PSEUDO_SOURCE</code> to the exact UPF already verified for this model:
+
+~~~bash
+: "${{PSEUDO_SOURCE:?Set PSEUDO_SOURCE to the verified UPF file}"
+
+for input in "$runtime"/inputs/*.in; do
+  name=$(basename "$input" .in)
+  run_dir="$runtime/convergence-$name"
+  mkdir -p "$run_dir/pseudo" "$run_dir/tmp"
+  cp "$input" "$run_dir/$name.in"
+
+  pseudo_name=$(awk '
+    /ATOMIC_SPECIES/ {inside=1; next}
+    inside && NF >= 3 {print $3; exit}
+  ' "$run_dir/$name.in")
+  test "$(basename "$PSEUDO_SOURCE")" = "$pseudo_name"
+  ln -s "$PSEUDO_SOURCE" "$run_dir/pseudo/$pseudo_name"
+
+  (
+    cd "$run_dir"
+    pw.x -in "$name.in" > "$name.out" 2> "$name.err"
+  )
+done
 ~~~
 
-Do not use this stored energy matrix to claim any of the later quantities.
+Use this loop only on a workstation where direct execution is allowed or inside scheduler allocations sized for each run. For Slurm, submit the same isolated directories with <code>sbatch</code>, then use <code>squeue</code> and <code>sacct</code> where available. Never infer QE success from a scheduler state alone.
 
-## Decide from a stable region
+## Audit the outputs before comparing numbers
 
-For each setting $i$, compare the target $O_i$ with a declared stricter reference:
+~~~bash
+for output in "$runtime"/convergence-*/si_e*_k*.out; do
+  printf '\n%s\n' "$output"
+  grep "JOB DONE" "$output"
+  grep "convergence has been achieved" "$output" | tail -n 1
+  grep "!    total energy" "$output" | tail -n 1
+  grep -Ei "warning|error|stopping" "$output" || true
+done
+~~~
 
-$$
-\delta O_i = |O_i - O_{\mathrm{ref}}|.
-$$
+<code>JOB DONE</code> checks normal termination. The SCF line checks the electronic solver condition reported for that run. The energy line supplies the compared scalar. None of them establishes convergence of the series.
 
-Accept the least costly setting only when all required observables satisfy their predeclared tolerances, the state identity remains unchanged, coupled grid controls are adequate, and at least one stricter setting confirms the decision. A library recommendation is a starting prior; the largest tested cutoff is not automatically the selected point.
+## Parse and plot the fresh runtime
 
-If the series is non-monotonic or switches state, do not fit through it. Separate the branches or report the convergence question as unresolved.
+The helper reads the files below <code>runtime</code>, binds every row to its source hash, and writes ordinary CSV plus light-background SVG:
 
-## What this guide verifies
+~~~bash
+python3 examples/practical-guides/qe_manual_handoff.py extract-runtime \
+  --runtime-dir "$runtime" \
+  --output-dir "$runtime/analysis"
 
-The companion verifies the expected hashes, marker presence, nine parsed total energies, filename-encoded $3 \times 3$ coverage, and differences to the 50 Ry, $10^3$ row. Marker presence is stored-output evidence, not an independent runtime or provenance check.
+less -S "$runtime/analysis/convergence.csv"
+xdg-open "$runtime/analysis/convergence.svg"
+cat "$runtime/analysis/analysis.json"
+~~~
 
-It does not test forces, stress, bands, DOS, phonons, response, pseudopotential transferability, or a production cutoff. Numerical convergence does not establish method accuracy, model correctness, experimental agreement, or a Silicon material conclusion.
+If the same runtime also contains native <code>bands.x</code> and <code>dos.x</code> data, pass them explicitly:
+
+~~~bash
+python3 examples/practical-guides/qe_manual_handoff.py extract-runtime \
+  --runtime-dir "$runtime" \
+  --bands-data "$runtime/bands/si.bands.dat" \
+  --dos-data "$runtime/dos/si.dos.dat" \
+  --output-dir "$runtime/analysis-with-targets"
+~~~
+
+This additionally creates <code>bands.csv</code>, <code>bands.svg</code>, <code>dos.csv</code>, and <code>dos.svg</code>. It reconstructs supplied data; it does not turn a high-symmetry band path into full-zone evidence or establish DOS convergence.
+
+## Make the decision
+
+At each fixed k mesh, compare the chosen quantity as the cutoff increases. After selecting a cutoff, compare the same quantity as the k mesh increases. Declare the acceptance tolerance, units, normalization (for example per atom), and reference point before selecting a result. Energy convergence does not imply force, stress, DOS, phonon, or EPC convergence.
+
+If the curve is noisy, non-monotonic, or changes at the edge of the series, extend the series and inspect electronic convergence, smearing, pseudopotential recommendations, and model consistency. Preserve failed runs; they explain why a point was excluded.
+
+## Next
+
+Carry the accepted numerical baseline and its evidence into the reference-state calculation. Test each target observable on its own convergence axes before using it in a claim.
 
 ## Official sources
 
-- [Quantum ESPRESSO 7.5 <code>pw.x</code> input description](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
-- [Prandini et al., precision and efficiency in solid-state pseudopotential calculations](https://doi.org/10.1038/s41524-018-0127-2)
-- [Materials Cloud SSSP archive and provenance record](https://archive.materialscloud.org/record/2021.76)
-- [PseudoDojo training and grading paper](https://doi.org/10.1016/j.cpc.2018.01.012)
-- [Crystallography Open Database entry 9013102](https://www.crystallography.net/cod/9013102.html)
+- [Quantum ESPRESSO pw.x input reference](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
+- [COD silicon record 9013102](https://www.crystallography.net/cod/9013102.html)
+- [Materials Cloud SSSP verification archive](https://archive.materialscloud.org/record/2021.76)
+- [SSSP precision and efficiency protocol](https://doi.org/10.1016/j.cpc.2018.01.012)
+- [SSSP pseudopotential verification study](https://doi.org/10.1038/s41524-018-0127-2)

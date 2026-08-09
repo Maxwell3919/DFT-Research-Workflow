@@ -11,11 +11,9 @@ Use **Rebuild a Li-P Convex Hull from an OQMD Snapshot** to inspect a public-dat
 
 Every row needs an exact composition vector, structure and state identity, raw energy, corrections, compatible final energy, common normalization, method identity, numerical evidence, source or search identity, and inclusion or exclusion reason.
 
-## Choose a closed or open system
+## Define the thermodynamic system
 
 A closed system fixes components and overall composition. An open system exchanges declared species with reservoirs and requires a transformed potential. These answer different scientific questions.
-
-## Compute the formation coordinate
 
 A common per-atom formation energy is
 
@@ -30,11 +28,9 @@ A negative $\Delta E_{\mathrm f}$ means that the selected elemental decompositio
 
 <!-- A negative `ΔE_f` means that this particular elemental decomposition is energetically uphill within the model. -->
 
-## Use full composition vectors
-
 Represent every phase by $\mathbf{x}_j$ in one component basis. Primitive cells, conventional cells, and formula units are interchangeable only after explicit conversion. Partial occupancy, vacancies, charge, and molecular reservoirs require balanced components rather than informal formula matching.
 
-## Solve the lower envelope
+## Build and inspect the lower envelope
 
 Let $\mathcal S$ be the declared phase set, including candidate $k$ when its energy above hull is evaluated. With every $G_j$ in the same normalization, solve
 
@@ -53,15 +49,9 @@ $$
 \sum_{j\in\mathcal S}\lambda_j\mathbf{x}_j=\mathbf{x}.
 $$
 
-## Verify mixture meaning
-
 Every point on it is a macroscopic mixture of its endpoints, not an interpolated homogeneous crystal structure. In higher dimensions, use the full composition vectors rather than trusting a plotting projection.
 
-## Recover the decomposition
-
 Store the nonzero $\lambda_j$, phase identities, and balanced reaction. Reconstruct both target composition and mixture energy. The scalar hull distance alone hides the products and whether they change when a competitor is added.
-
-## Compute energy above hull
 
 For candidate $k$ in the same phase set,
 
@@ -76,19 +66,15 @@ $$
 
 Classify zero only within an explicit tolerance. Do not clamp a materially negative value to zero; inspect normalization, phase-set membership, optimizer constraints, and tolerance instead.
 
-## Compare polymorphs first
+## Control the phase set and compatibility model
 
 At one composition, compare genuine polymorphs, magnetic states, and orderings under one compatibility model before allowing the lowest record onto the envelope. Retain higher states for provenance and metastability.
 
-## Record the phase set
-
 A computed hull is monotonic with respect to adding candidates: a newly admitted lower phase can leave the envelope unchanged or lower it. “On hull” is always conditional on the documented search, filters, versions, duplicate policy, and exclusions.
-
-## Apply one compatibility model
 
 All phases must share compatible exchange-correlation, core or basis, relativistic and magnetic treatment, numerical quality, energy definition, and correction scheme. Preserve raw energy, each correction, corrected energy, scheme version, and eligibility separately.
 
-## Converge the hull output
+## Converge and stress-test the hull
 
 Rebuild under numerical refinements that can shift competitors unequally. SCF convergence is necessary but does not establish convergence of energy above hull or decomposition identity.
 
@@ -96,11 +82,9 @@ Rebuild under numerical refinements that can shift competitors unequally. SCF co
 
 If vertices, facets, or decomposition products change within plausible variation, report the result as unresolved or near-degenerate.
 
-## Stress-test missing competitors
-
 Withhold represented vertices, add plausible candidates, or perturb near-hull values under a documented uncertainty model. Create a new derived result for every phase set. Never delete an inconvenient lower phase from the source ledger.
 
-## Add temperature and pressure consistently
+## Extend the thermodynamic model consistently
 
 Before rebuilding, apply the same type of free-energy model to every phase:
 
@@ -110,8 +94,6 @@ G_j(T,p)=E_{\mathrm{DFT},j}+F_{\mathrm{vib},j}
 $$
 
 Partial thermal treatment is not a finite-temperature phase diagram.
-
-## Transform open reservoirs explicitly
 
 For reservoir species in $\mathcal R$,
 
@@ -123,15 +105,11 @@ $$
 
 Chemical potentials remain constrained by host equilibrium, elemental precipitation, competing phases, and stated conditions.
 
-## Keep chemical-potential diagrams distinct
-
 A stability polygon in chemical-potential space must not be read as a range of bulk compositions. A composition-space tie simplex does not specify an experimental pressure or activity without a reservoir model.
 
-## Avoid a universal metastability cutoff
+## Interpret and diagnose the result
 
 These distributions do not provide a universal energy-above-hull threshold that separates synthesizable from impossible materials. Kinetics, surfaces, defects, entropy, pressure history, precursors, and model error can change accessibility without changing the static hull definition.
-
-## Diagnose data and geometry
 
 Check missing endpoints, inconsistent reduction, duplicate phases, negative or non-normalized fractions, mixed correction schemes, incompatible magnetic states, and asymmetric thermal terms. Rebuild representative facets from the machine-readable table.
 

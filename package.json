@@ -108,14 +108,15 @@
     "validate:site": "node scripts/validate-public-site.mjs",
     "smoke:tools": "node scripts/smoke-tools.mjs",
     "check": "npm run validate:math && npm run validate:workflow && npm run validate:migration && npm run validate:base-paths && npm run validate:content && npm run validate:reviewed-topics && npm run validate:reviewed-convergence && npm run validate:reviewed-optimization && npm run validate:reviewed-reference-state && npm run validate:reviewed-energies && npm run validate:reviewed-eos && npm run validate:reviewed-convex-hulls && npm run validate:reviewed-defects && npm run validate:reviewed-surfaces && npm run validate:reviewed-adsorption && npm run validate:reviewed-interface && npm run validate:reviewed-band-structure && npm run validate:reviewed-density-of-states && npm run validate:reviewed-fermi-surface && npm run validate:reviewed-charge-density && npm run validate:reviewed-potential-alignment && npm run validate:reviewed-chemical-bonding && npm run validate:reviewed-magnetic-ground-state && npm run validate:reviewed-magnetic-anisotropy-exchange && npm run validate:reviewed-elastic-constants && npm run validate:reviewed-dielectric-response && npm run validate:reviewed-polarization && npm run validate:reviewed-piezoelectric && npm run validate:reviewed-harmonic-phonons && npm run validate:reviewed-anharmonic-phonons && npm run validate:reviewed-lattice-thermal-transport && npm run validate:reviewed-electron-phonon-coupling && npm run validate:reviewed-conventional-superconductivity && npm run validate:reviewed-reaction-paths && npm run validate:reviewed-diffusion-barriers && npm run validate:reviewed-aimd && npm run validate:reviewed-structural-sampling && npm run validate:reviewed-independent-particle-optics && npm run validate:reviewed-time-dependent-response && npm run validate:reviewed-quasiparticle-corrections && npm run validate:reviewed-excitons-bse && npm run validate:reviewed-wannier-function-construction && npm run validate:reviewed-berry-phase-and-curvature && npm run validate:reviewed-topological-invariants-and-boundary-states && npm run validate:reviewed-electronic-transport && npm run validate:reviewed-quantum-transport && npm run validate:reviewed-analyze-and-compare-results && npm run validate:reviewed-sources && npm run validate:practical-guides && npm run validate:practical-evidence && npm run validate:cases && npm run validate:reviewed-smoke-files && npm run validate:practical-smoke-files && npm run typecheck && npm run build && npm run validate:site",
-    "validate:math": "node scripts/validate-math-rendering.mjs"
+    "validate:math": "node scripts/validate-math-rendering.mjs",
+    "smoke:math": "node scripts/smoke-math.mjs"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.2.1",
+    "@astrojs/markdown-remark": "7.2.1",
     "astro": "7.1.4",
-    "katex": "^0.18.3",
-    "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0"
+    "katex": "0.16.47",
+    "rehype-katex": "7.0.1",
+    "remark-math": "6.0.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",

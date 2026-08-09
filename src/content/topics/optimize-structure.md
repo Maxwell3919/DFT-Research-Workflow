@@ -24,12 +24,10 @@ This route is common, not universal. An experimental fixed geometry, a strained 
 
 Read four gates separately:
 
-```text
-program finished ≠ SCF converged
-SCF converged ≠ ionic optimization converged
-ionic optimization converged ≠ lowest relevant state identified
-lowest relevant state identified ≠ reference state scientifically appropriate
-```
+- Normal program termination does not establish SCF convergence.
+- SCF convergence does not establish ionic optimization convergence.
+- Ionic optimization convergence does not identify the lowest relevant state.
+- The lowest identified state is not automatically the scientifically appropriate reference state.
 
 The first two gates are checked from the current run. The third requires alternative starts or state branches when they are scientifically plausible. The fourth belongs to the reference-state audit and the intended downstream claim.
 
@@ -41,7 +39,6 @@ Those are different physical problems. Relaxing a bulk crystal at zero external 
 
 Record the active variables explicitly. “The structure was relaxed” is incomplete when it does not say whether atoms, volume, cell shape, selected lattice vectors, or only a subset of coordinates were allowed to move.
 
-## Choose fixed-cell and variable-cell protocols deliberately
 
 Fixed-cell optimization is appropriate when the lattice is a controlled condition, inherited from a substrate or experiment, already established by another calculation, or irrelevant to an isolated object placed in a numerical box. Variable-cell optimization is appropriate when equilibrium volume, lattice shape, pressure, or residual stress is part of the intended reference state.
 
@@ -49,7 +46,6 @@ Partial cell relaxation is often the scientifically correct middle case. A two-d
 
 Do not allow a general cell optimizer to change a vacuum dimension merely because the code exposes that degree of freedom. Empty numerical space is part of the boundary model, not a material coordinate seeking an equilibrium length.
 
-## Treat constraints as part of model identity
 
 Fixed atoms, selective dynamics, frozen layers, fixed bond lengths, cell-shape restrictions, symmetry preservation, and collective-coordinate constraints change the optimization problem. They can represent a substrate, an experimental condition, a reaction coordinate, a rigid molecular fragment, or a deliberate screening approximation. They can also hide relaxation modes and create artificial residual forces at the constrained boundary.
 
@@ -75,7 +71,6 @@ At every ionic step, verify that the electronic state reached the required inter
 
 The B-stage convergence study is an initial baseline rather than a permanent certificate. As geometry, cell, or electronic character changes, recheck the force and stress accuracy that drives motion. If stricter settings move the stationary candidate materially, repeat the affected optimization and carry the revised geometry back into convergence and reference-state checks.
 
-## Preserve electronic and magnetic state continuity
 
 Each geometry step contains an electronic-state calculation. As atoms or the cell move, the self-consistent solution may switch magnetic order, charge localization, occupation pattern, symmetry, spin direction, or another metastable electronic basin. The optimizer then sees a discontinuous or piecewise potential-energy surface.
 
@@ -83,7 +78,6 @@ Track state diagnostics together with energy, force, and stress. Relevant quanti
 
 Do not interpret a state switch as ordinary optimizer noise. Separate branches, restart from controlled electronic initializations, or report that the geometry path does not represent one continuous state evaluator.
 
-## Match the optimizer to the basin and gradient quality
 
 Conjugate-gradient, quasi-Newton, limited-memory, damped-dynamics, FIRE, and related algorithms use different histories and step controls. A method that is efficient near a smooth local minimum may fail when the starting structure is poor, the forces are noisy, or the active degrees of freedom have very different scales.
 
@@ -99,7 +93,6 @@ Intermediate energy increases can occur during a legitimate line search, trust-r
 
 The stopping rule should correspond to the active variables and downstream use. A fixed-cell atomic relaxation does not need a cell-stress condition to stop, but residual stress may still be a scientifically important diagnostic. A variable-cell optimization must assess the stress components that actually drive the permitted cell changes.
 
-## Diagnose stalls, oscillations, and unphysical steps
 
 Repeated structures, alternating forces, growing step sizes, excessive line-search evaluations, abrupt cell changes, persistent electronic failures, or atom collisions are failure evidence. Hitting the maximum number of steps is program termination, not structural convergence.
 
@@ -107,7 +100,6 @@ First inspect the starting model and the quality of the state evaluator. Then ex
 
 A recovery must create a new traceable segment. Record the last accepted structure, changed settings, reason for the change, reused restart objects, and whether the scientific model remained identical.
 
-## Control variable-cell optimization and Pulay stress
 
 Cell optimization couples atomic coordinates to lattice degrees of freedom and can amplify numerical discontinuities. The stress tensor must be converged for the intended cell update, and the representation should remain consistent enough that changes in basis or grid do not masquerade as physical pressure.
 
@@ -115,7 +107,6 @@ Inspect individual stress components rather than only a scalar pressure when sha
 
 A variable-cell run that reaches its internal pressure criterion still represents the chosen electronic method and external-stress condition. It does not establish a finite-temperature lattice constant, zero-point expansion, or experimental equation of state.
 
-## Restart without erasing the optimization history
 
 Long optimizations may stop because of wall time, queue policy, hardware failure, or a recoverable electronic problem. Restart from a documented accepted structure and compatible optimizer or wavefunction state. Preserve the preceding trajectory, restart files, input revision, environment identity, and reason for continuation.
 
@@ -131,7 +122,6 @@ A local minimum should have small active gradients and no descending direction w
 
 Use precise language: “the optimizer satisfied the declared force and stress criteria” is stronger and more auditable than “the structure is stable.”
 
-## Compare multiple starts and retain metastable outcomes
 
 When the potential-energy landscape may contain competing minima, optimize several distinct starts under a consistent method and numerical protocol. Deduplicate structures only after comparing composition, cell, symmetry, atomic mapping, magnetic state, and a declared structural tolerance.
 
@@ -139,7 +129,6 @@ Different starts converging to the same final basin provide useful robustness ev
 
 Do not discard a higher-energy local minimum merely because it is not the current leading candidate. It may correspond to an experimentally accessible polymorph, metastable stacking, defect reconstruction, magnetic branch, or transition intermediate. Preserve the result and the reason it was or was not promoted.
 
-## Allow symmetry breaking when the question requires it
 
 Symmetry can reduce noise and cost, but enforced symmetry also removes degrees of freedom. If the intended structure may distort, reconstruct, polarize, magnetically order, or undergo a Jahn–Teller-like instability, a symmetry-preserving optimization can remain trapped at a stationary point that is unstable to a forbidden perturbation.
 

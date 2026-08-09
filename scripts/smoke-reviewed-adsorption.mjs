@@ -7,17 +7,21 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/adsorption-energies/';
 const phrases = [
-  'Adsorption calculations ask how the energy changes',
-  'Adsorption energy is a balanced energy difference',
-  'Average and differential adsorption energies answer different questions',
-  'Adsorption, interaction, and deformation energies are not synonyms',
-  'Coverage changes the physical problem',
-  'Supercell size and coverage should not be conflated',
-  'Static energy is not adsorption free energy',
-  'Electrochemical references change the ensemble',
-  'A real CMR benchmark exposes method and state dependence',
-  'Keep thermodynamics, kinetics, and catalytic claims separate',
-  'What this topic establishes',
+  'Use an adsorption calculation when the question is the energetic change for moving a specified species',
+  'Write a balanced energy ledger',
+  'Balance atoms, charge, electrons, protons, and other reservoirs before evaluation.',
+  'Do not compare an average at one coverage with a differential value at another.',
+  'Adsorption energy compares relaxed reactants and product under a written reaction.',
+  'The final relaxed structure is the state being measured',
+  'One adsorbate in a larger cell changes both coverage and image separation.',
+  'A normal program exit establishes only that the executable reached an exit path.',
+  'Satisfaction of the declared SCF residual criterion is only an inner numerical condition.',
+  'Numerical convergence of an adsorption energy should be assessed only after coverage and adsorbate order',
+  'one static adsorption energy does not predict an isotherm.',
+  'It does not make a neutral vacuum slab a constant-potential electrochemical interface.',
+  'this repository did not rerun the calculations.',
+  'A negative endpoint energy does not show that adsorption is fast, reversible, selective, or experimentally realized.',
+  'It does not establish a global minimum, equilibrium coverage, kinetics, operando state, catalytic activity, selectivity, or method accuracy',
   'Sources and methods',
 ];
 const domains = ['doi.org', 'cmr.fysik.dtu.dk', 'docs.ase-lib.org', 'pymatgen.org'];
@@ -39,7 +43,7 @@ async function inspect(page, width) {
   if (result.language !== 'en' || result.title !== 'Adsorption Energies') throw new Error(`adsorption identity mismatch: ${result.title}`);
   if (!result.hasArticle || result.hasPlaceholder || result.hasContract) throw new Error('reviewed adsorption narrative was not rendered naturally');
   if (result.scripts !== 0 || result.overflow) throw new Error(`adsorption page is not static or overflows at ${width}px`);
-  if (result.headings !== 25 || result.cards !== 3) throw new Error(`adsorption counts mismatch: ${result.headings} sections, ${result.cards} cards`);
+  if (result.headings < 8 || result.headings > 12 || result.cards !== 3) throw new Error(`adsorption counts mismatch: ${result.headings} sections outside 8..12, ${result.cards} cards`);
   for (const phrase of phrases) if (!result.text.includes(phrase)) throw new Error(`adsorption page is missing ${phrase}`);
   for (const domain of domains) if (!result.links.some((link) => link.includes(domain))) throw new Error(`adsorption page is missing ${domain}`);
   return result;
@@ -70,16 +74,16 @@ try {
   response = await noJs.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`adsorption no-JavaScript returned ${response?.status()}`);
   const text = await noJs.$eval('body', (body) => body.innerText);
-  for (const phrase of ['Adsorption energy is a balanced energy difference', 'Static energy is not adsorption free energy', 'Sources and methods']) if (!text.includes(phrase)) throw new Error(`adsorption no-JavaScript missing ${phrase}`);
+  for (const phrase of ['Balance atoms, charge, electrons, protons, and other reservoirs before evaluation.', 'A normal program exit establishes only that the executable reached an exit path.', 'A negative endpoint energy does not show that adsorption is fast, reversible, selective, or experimentally realized.', 'Sources and methods']) if (!text.includes(phrase)) throw new Error(`adsorption no-JavaScript missing ${phrase}`);
 
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
     await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
     await page.goto(`${base}${route}`, { waitUntil: 'load' });
     await capture(page, join(artifactDirectory, 'topic-adsorption-energies-desktop.png'));
-    await writeFile(join(artifactDirectory, 'reviewed-adsorption-summary.json'), `${JSON.stringify({ site_url: base, route, natural_sections: desktop.headings, practical_cards: desktop.cards, source_links: desktop.links.length, desktop_width: 1440, mobile_width: 390, no_javascript: true, fixed_contract: false, reaction_and_sign_boundary: true, coverage_and_cell_boundary: true, thermodynamics_and_kinetics_boundary: true }, null, 2)}\n`);
+    await writeFile(join(artifactDirectory, 'reviewed-adsorption-summary.json'), `${JSON.stringify({ site_url: base, route, natural_sections: desktop.headings, practical_cards: desktop.cards, source_links: desktop.links.length, desktop_width: 1440, mobile_width: 390, no_javascript: true, fixed_contract: false, reaction_and_sign_boundary: desktop.text.includes('Balance atoms, charge, electrons, protons, and other reservoirs before evaluation.'), coverage_and_cell_boundary: desktop.text.includes('One adsorbate in a larger cell changes both coverage and image separation.'), program_vs_solver_boundary: desktop.text.includes('A normal program exit establishes only that the executable reached an exit path.') && desktop.text.includes('Satisfaction of the declared SCF residual criterion is only an inner numerical condition.'), thermodynamics_and_kinetics_boundary: desktop.text.includes('A negative endpoint energy does not show that adsorption is fast, reversible, selective, or experimentally realized.') }, null, 2)}\n`);
   }
-  console.log('Reviewed adsorption smoke passed: 25 natural sections, 3 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and reaction/coverage/free-energy/kinetics boundaries.');
+  console.log(`Reviewed adsorption smoke passed: ${desktop.headings} natural sections, 3 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and reaction/coverage/program-versus-solver/free-energy/kinetics boundaries.`);
 } finally {
   await browser.close();
 }

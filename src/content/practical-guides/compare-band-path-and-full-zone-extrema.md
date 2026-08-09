@@ -7,7 +7,7 @@ tools:
   - python
   - quantum-espresso
 status: reviewed
-summary: Compare one actual Silicon QE band path with one symmetry-expanded mesh, then keep both sampled separations distinct from a converged fundamental gap.
+summary: Compare one actual Silicon QE band path with one 260-point time-reversal-reduced sample from the nominal 8 x 8 x 8 mesh, then keep both sampled separations distinct from a converged fundamental gap.
 tested_versions:
   - Python 3.12
   - Quantum ESPRESSO 7.5

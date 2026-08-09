@@ -640,8 +640,8 @@
     },
     {
       "path": "examples/cases/bcc-fe-spin-qe/manifest.json",
-      "sha256": "0f3c4c905baebf761084c668131acabc8dc583911569ae53f4f5c328585a3ac4",
-      "bytes": 9581
+      "sha256": "98650ec5022a40cafce756156e4e0b100e584400caabc56310c8887c974e8996",
+      "bytes": 8567
     },
     {
       "path": "examples/cases/bcc-fe-spin-qe/output/README.md",

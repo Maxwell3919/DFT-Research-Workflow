@@ -87,7 +87,7 @@ grep -HiE "total energy|fermi energy|smearing" metallic-convergence/outputs/*.ou
 
 The first command checks termination only. The second checks the electronic solver marker reported by QE. The third locates version-dependent energy, Fermi-level, and smearing lines for inspection; define a parser for the exact quantity used in the decision.
 
-Forces, energy differences, DOS near $E_F$, Fermi-surface geometry, and electron–phonon integrals require their own extraction and tolerance. Force convergence ≠ DOS convergence, and DOS convergence ≠ phonon convergence.
+Forces, energy differences, DOS near $E_F$, Fermi-surface geometry, and electron–phonon integrals require their own extraction and tolerance. Force convergence does not establish DOS convergence, and DOS convergence does not establish phonon convergence.
 
 ## Decide on a two-dimensional stable region
 

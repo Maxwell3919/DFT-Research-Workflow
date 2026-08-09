@@ -5,11 +5,9 @@ status: reviewed
 
 Use a surface-energy calculation to compare the cost of creating declared facets, terminations, or reconstructions. Use a work-function calculation when the question is electron removal from one specified surface to field-free vacuum. Start both from an accepted bulk parent and a fully identified slab; neither quantity belongs to a chemical formula or Miller index alone.
 
-## Prepare the parent bulk
+## Prepare and identify the surface state
 
 Preserve the accepted bulk structure, phase, strain state, magnetic state, method, numerical settings, and energy per stated atom or formula unit. A slab subtraction is useful only when this reference is compatible with the bulk-like material represented inside the slab.
-
-## Name the surface state
 
 A Miller index identifies an orientation, not a unique surface. Also record the termination, reconstruction, stoichiometry, lateral cell, strain, defects or adsorbates, charge and spin, slab thickness, vacuum, fixed layers, and electrostatic boundary model. Preserve the final relaxed state rather than only its starting label.
 
@@ -17,11 +15,9 @@ A Miller index identifies an orientation, not a unique surface. Also record the 
 
 Use **Build a Surface-Energy Ledger and Diagnose Bulk Drift** to audit an attributed public Si ledger and a separate synthetic drift diagnostic. Then use **Extract Side-Specific Work Functions from a Potential Profile** to practise the plateau test. **Compare Published Si Surface Energies and Work Functions** closes the sequence with a bounded public-data audit and redraw.
 
-## Count the represented faces
+## Write the surface-energy ledger
 
 Inspect the periodic cell and decide how many surfaces it contains and whether they are equivalent. Record the one-face area $A$, surface normal, termination on each side, and any passivation. Never infer the divisor from a generic slab label.
-
-## Write the stoichiometric ledger
 
 For a symmetric stoichiometric slab with two equivalent faces,
 
@@ -29,9 +25,7 @@ $$
 \gamma=\frac{E_{\mathrm{slab}}(N)-N e_{\mathrm{bulk}}}{2A}.
 $$
 
-The factor two counts the two equivalent surfaces. $N$ must follow the same counting convention used by $e_{\mathrm{bulk}}$. Convert from $\mathrm{eV\,\AA^{-2}}$ to $\mathrm{J\,m^{-2}}$ only after completing the subtraction.
-
-## Treat asymmetric slabs
+The factor two counts the two equivalent surfaces. $N$ must follow the same counting convention used by $e_{\mathrm{bulk}}$. Convert from $\mathrm{eV}\,\text{\AA}^{-2}$ to $\mathrm{J\,m^{-2}}$ only after completing the subtraction.
 
 For a stoichiometric slab whose faces differ,
 
@@ -42,8 +36,6 @@ $$
 
 One equation determines only the sum of the two surface excesses. Dividing by two reports an average, not either side. Separate values require additional slabs, a cleavage construction, a passivation model, or another explicit thermodynamic cycle.
 
-## Add chemical reservoirs
-
 When a termination adds or removes species, the surface free energy becomes a grand-potential excess. Write the represented reservoirs and interfaces explicitly:
 
 $$
@@ -53,13 +45,11 @@ $$
 
 State the allowed chemical-potential range and every finite-temperature contribution. Static DFT energies provide only part of $G_{\mathrm{slab}}$.
 
-## Build a thickness series
+## Converge the slab model
 
 Hold orientation, termination, reconstruction, stoichiometry, lateral cell, strain, constraints, method, and electronic branch fixed. For each slab, retain $N$, $A$, total energy, bulk reference, surface count, final structure, and output hash. Inspect the central layers before treating greater thickness as a refinement of the same model.
 
-## Diagnose bulk-reference drift
-
-An incompatible bulk slope leaves a residual that grows with $N$. The derived `γ` then drifts linearly with slab thickness even when each SCF calculation meets its inner stopping criterion. Diagnose the cancellation with
+An incompatible bulk slope leaves a residual that grows with $N$. The derived $\gamma$ then drifts linearly with slab thickness even when each SCF calculation meets its inner stopping criterion. Diagnose the cancellation with
 
 $$
 E_{\mathrm{slab}}(N)=N e_{\mathrm{bulk}}^{\mathrm{fit}}+E_{\mathrm{excess}}.
@@ -67,33 +57,23 @@ $$
 
 A fitted slope or intercept does not repair a reconstruction, strain, stoichiometry, magnetic-state, or protocol switch.
 
-## Search terminations and reconstructions
-
 Generate the termination and reconstruction set needed by the intended comparison, relax each under one policy, relabel final structures, and retain metastable states. A constrained unreconstructed slab answers only for that constrained state; a low energy among an incomplete set does not establish the equilibrium surface.
 
-## Check polar surfaces
+## Control electrostatics and periodic images
 
 An ideal unreconstructed polar termination can then have a divergent electrostatic energy rather than a neutral-slab limit. Inspect layer charges, charge neutrality, potential behaviour with thickness, and the physical compensation mechanism. A dipole correction removes a chosen periodic-image field but does not provide missing reconstruction, adsorption, defect, or electronic compensation.
 
-## Separate periodic images
-
 Increase slab thickness and vacuum independently where possible. Track the target surface energy, work function, central-layer geometry, density spill-out, potential profile, and any surface-state splitting. A visually empty region is not evidence that electrostatic and wavefunction images are decoupled.
 
-## Relax under one declared policy
-
 Record which layers and cell components move, whether both faces relax symmetrically, and which in-plane strain is imposed. Inspect residual forces and final surface identity. A converged optimizer does not show that another reconstruction or constraint policy is lower in energy.
-
-## Converge both target observables
 
 Test both against slab thickness, vacuum, lateral cell, k sampling, basis or cutoff, electrostatic grids, occupation treatment, and relaxation policy. Surface energy tests cancellation of extensive energies; work function tests a vacuum-to-electronic reference difference, so their convergence decisions can differ.
 
 Here numerical convergence means thickness, vacuum, sampling, and finite lateral-size refinement within a fixed termination, reconstruction, surface stoichiometry, and physical relaxation-constraint policy.
 
-## Extract the planar potential
+## Extract a defensible work function
 
 Retain the code-specific potential grid, surface normal, potential-component definition, averaging direction, smoothing convention, and $E_F$ from the same energy gauge. Plot the planar or documented macroscopic average before choosing a scalar vacuum level.
-
-## Accept only a flat vacuum reference
 
 The expression is meaningful only when the vacuum reference is flat and charge-free. Record each window, its mean, span or slope, and its distance from charge density and correction discontinuities. Then calculate
 
@@ -102,8 +82,6 @@ $$
 $$
 
 A cell-edge value on a sloping profile is not $E_{\mathrm{vac}}$.
-
-## Keep side-specific work functions
 
 For an asymmetric slab, the left and right plateaus may be unequal even though the slab has one equilibrium Fermi level:
 
@@ -115,19 +93,13 @@ $$
 
 Report the side, termination, surface normal, and plateau window with each value. Do not average physically different surfaces.
 
-## Test the dipole boundary model
-
 Compare corrected and uncorrected profiles, place any discontinuity outside the charge density, and repeat the extraction as vacuum changes. A correction defines the periodic electrostatic boundary; it does not prove adequate vacuum, physical charge compensation, or an isolated-surface result.
 
-## Define semiconductor references
+An in-gap numerical Fermi level can be convention dependent. State whether the question uses work function, ionization potential $E_{\mathrm{vac}}-E_{\mathrm{VBM}}$, or electron affinity $E_{\mathrm{vac}}-E_{\mathrm{CBM}}$. Doping, surface states, band bending, temperature, and charge conditions remain part of the comparison.
 
-An in-gap numerical Fermi level can be convention dependent. State whether the question uses work function, ionization potential `E_vac - E_VBM` and electron affinity `E_vac - E_CBM`, or the rendered equivalents $E_{\mathrm{vac}}-E_{\mathrm{VBM}}$ and $E_{\mathrm{vac}}-E_{\mathrm{CBM}}$. Doping, surface states, band bending, temperature, and charge conditions remain part of the comparison.
-
-## Match the physical environment
+## Match the physical environment and intended claim
 
 Adsorbates, oxidation, defects, solvent, fields, and charge transfer change both surface excess and dipole. Compare a clean-vacuum calculation with experiment only after matching orientation, reconstruction, preparation, temperature, and environment. A vacuum work function alone does not define an electrochemical operating potential.
-
-## Use equilibrium-shape reasoning carefully
 
 The Wulff shape is an equilibrium construction. It requires surface free energies for the relevant orientations and states at common thermodynamic conditions. Missing terminations or reconstructions can alter the construction, while growth morphology additionally depends on kinetics, diffusion, supersaturation, strain, and defects.
 

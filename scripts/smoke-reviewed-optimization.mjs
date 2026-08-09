@@ -6,8 +6,25 @@ const base = (process.env.SITE_URL ?? 'http://127.0.0.1:4322/DFT-Research-Workfl
 const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/optimize-structure/';
+const requiredHeadings = [
+  'Follow the common route from model to accepted geometry',
+  'Define the quantity and variables being optimized',
+  'Begin from physically credible starting structures',
+  'Make forces and stress trustworthy enough to drive motion',
+  'Read energy, force, stress, and displacement together',
+  'Optimizer stopping is not proof of a physical minimum',
+  'Verify the final candidate independently',
+  'Preserve an optimization evidence package',
+  'What this task does not establish',
+  'Sources and methods',
+];
 const requiredPhrases = [
   'Structure optimization searches for a stationary structure',
+  'This route is common, not universal.',
+  'Normal program termination does not establish SCF convergence.',
+  'SCF convergence does not establish ionic optimization convergence.',
+  'Ionic optimization convergence does not identify the lowest relevant state.',
+  'The lowest identified state is not automatically the scientifically appropriate reference state.',
   'Define the quantity and variables being optimized',
   'Empty numerical space is part of the boundary model, not a material coordinate seeking an equilibrium length.',
   'A constrained stationary point is stationary only in the active subspace.',
@@ -52,7 +69,9 @@ async function inspect(page, expectedWidth) {
   if (result.hasContract) throw new Error('optimization overview exposes a fixed contract');
   if (result.hasScript) throw new Error('optimization overview contains client-side script');
   if (result.overflow) throw new Error(`optimization overview overflows at ${expectedWidth}px`);
-  if (result.headings.length !== 18) throw new Error(`optimization overview has ${result.headings.length} sections instead of 18`);
+  for (const heading of requiredHeadings) {
+    if (!result.headings.includes(heading)) throw new Error(`optimization overview is missing semantic section ${heading}`);
+  }
   if (result.cards !== 4) throw new Error(`optimization overview exposes ${result.cards} practical cards instead of 4`);
   for (const phrase of requiredPhrases) {
     if (!result.text.includes(phrase)) throw new Error(`optimization overview is missing ${phrase}`);
@@ -104,6 +123,11 @@ try {
   const noJsText = await noJsPage.$eval('body', (body) => body.innerText);
   for (const phrase of [
     'Structure optimization searches for a stationary structure',
+    'This route is common, not universal.',
+    'Normal program termination does not establish SCF convergence.',
+    'SCF convergence does not establish ionic optimization convergence.',
+    'Ionic optimization convergence does not identify the lowest relevant state.',
+    'The lowest identified state is not automatically the scientifically appropriate reference state.',
     'Optimizer stopping is not proof of a physical minimum',
     'Sources and methods',
   ]) {
@@ -129,7 +153,7 @@ try {
     }, null, 2)}\n`);
   }
 
-  console.log(`Reviewed optimization smoke passed: ${desktop.headings.length} natural sections, 4 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and a separate reference-ground-state boundary.`);
+  console.log(`Reviewed optimization smoke passed: common-not-universal route and four distinct gates, ${desktop.headings.length} natural sections, 4 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and a separate reference-ground-state boundary.`);
 } finally {
   await browser.close();
 }

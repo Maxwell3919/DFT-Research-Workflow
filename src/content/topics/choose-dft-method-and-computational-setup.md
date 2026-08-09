@@ -75,7 +75,7 @@ Check that the selected functional and requested feature are compatible with the
 
 Name every active completeness control. A plane-wave calculation may require wavefunction, charge-density, augmentation, and exact-exchange cutoffs. A localized basis requires orbital identities, ranges, polarization functions, confinement, and integration grids. A real-space method requires domain, spacing, boundary conditions, and discretization order.
 
-Choose the control family here, but accept its value only after testing the target quantity. Energy convergence ≠ force convergence, and a basis adequate for occupied-state energy ordering may be inadequate for stress, unoccupied states, response, or weak differences.
+Choose the control family here, but accept its value only after testing the target quantity. Energy convergence does not establish force convergence, and a basis adequate for occupied-state energy ordering may be inadequate for stress, unoccupied states, response, or weak differences.
 
 ## Decide which spin and relativistic degrees of freedom are active
 

@@ -11,7 +11,7 @@ Start from an accepted structure with a declared residual stress. Choose stress-
 
 ## The elastic tensor is an energy curvature with declared variables
 
-For a reference cell of volume `V₀`, a small strain `ε` changes the energy density schematically as
+For a reference cell of volume $V_0$, a small strain $\epsilon$ changes the energy density schematically as
 
 $$
 \frac{E(\boldsymbol{\epsilon})}{V_0}
@@ -21,9 +21,9 @@ $$
 + \cdots .
 $$
 
-`E(ε)` is the total energy of the strained state, `σ⁽⁰⁾` is the reference stress, and `Cᵢⱼₖₗ` is the second derivative at the declared reference condition. The indices refer to Cartesian components and repeated indices are summed. The linear term matters when the reference state is under nonzero stress; treating an unrelaxed, pressurized cell as if it were a zero-stress equilibrium changes the interpretation of fitted curvature.
+$E(\epsilon)$ is the total energy of the strained state, $\sigma^{(0)}$ is the reference stress, and $C_{ijkl}$ is the second derivative at the declared reference condition. The indices refer to Cartesian components and repeated indices are summed. The linear term matters when the reference state is under nonzero stress; treating an unrelaxed, pressurized cell as if it were a zero-stress equilibrium changes the interpretation of fitted curvature.
 
-In Voigt notation, symmetric strain components are packed into six components and the fourth-rank tensor becomes a `6 × 6` stiffness matrix `Cᵢⱼ`. The exact engineering-shear convention must be retained, because a factor-of-two mismatch between strain labels, stress labels, and fitting equations produces plausible-looking but wrong shear constants. Crystal symmetry can reduce the number of independent entries, but imposed symmetry must match the actual state: a distorted magnetic, defect-containing, strained, or ordered supercell can have lower symmetry than its nominal parent crystal.
+In Voigt notation, symmetric strain components are packed into six components and the fourth-rank tensor becomes a $6\times6$ stiffness matrix $C_{ij}$. The exact engineering-shear convention must be retained, because a factor-of-two mismatch between strain labels, stress labels, and fitting equations produces plausible-looking but wrong shear constants. Crystal symmetry can reduce the number of independent entries, but imposed symmetry must match the actual state: a distorted magnetic, defect-containing, strained, or ordered supercell can have lower symmetry than its nominal parent crystal.
 
 ## Stress--strain and energy--strain routes are related checks, not interchangeable receipts
 
@@ -33,7 +33,7 @@ $$
 \Delta \sigma_i = C_{ij}\epsilon_j + \cdots .
 $$
 
-where `Δσᵢ` is the stress change relative to the declared reference. Another fits the energy changes with a quadratic form. In the linear elastic regime, compatible implementations should agree within their numerical uncertainty. Their disagreement can reveal incomplete electronic convergence, Pulay stress, an asymmetric strain set, an inconsistent reference stress, a poor fit window, a state switch, or unintended structural relaxation. It is evidence to investigate, not an invitation to select the more favorable tensor.
+where $\Delta\sigma_i$ is the stress change relative to the declared reference. Another fits the energy changes with a quadratic form. In the linear elastic regime, compatible implementations should agree within their numerical uncertainty. Their disagreement can reveal incomplete electronic convergence, Pulay stress, an asymmetric strain set, an inconsistent reference stress, a poor fit window, a state switch, or unintended structural relaxation. It is evidence to investigate, not an invitation to select the more favorable tensor.
 
 The strain amplitude is itself a convergence variable. It must be small enough for the selected linear or quadratic model to represent the response, yet large enough for the signal to exceed electronic and stress noise. Test signed strains, multiple amplitudes, and fit stability rather than asserting a universal deformation. Preserve the deformed lattice matrices, internal coordinates, energies, stresses, residuals, and all settings needed to regenerate every row.
 

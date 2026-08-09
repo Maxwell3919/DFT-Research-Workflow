@@ -32,7 +32,7 @@ $$
 + \mathbf e^{\mathrm{internal}}.
 $$
 
-The second term can be large near a soft but stable mode, and it changes if the internal constraints, structural state, or electrical boundary condition changes. It does not justify calling a response large without reporting which contribution is included. A fully relaxed response may further involve macroscopic strain relaxation; it is not equivalent to a fixed-cell `e` tensor.
+The second term can be large near a soft but stable mode, and it changes if the internal constraints, structural state, or electrical boundary condition changes. It does not justify calling a response large without reporting which contribution is included. A fully relaxed response may further involve macroscopic strain relaxation; it is not equivalent to a fixed-cell $e$ tensor.
 
 DFPT evaluates these derivatives around one reference state. Finite differences can provide an independent check only when positive and negative strains use compatible cells, the same electronic state is retained, ionic constraints are identical, and the strain range is verified to be in the intended linear regime. A fitted slope from one strain sign, one branch of a polarization calculation, or one unconstrained relaxation cannot establish the requested tensor.
 
@@ -40,7 +40,7 @@ DFPT evaluates these derivatives around one reference state. Finite differences 
 
 Because periodic polarization is defined modulo a polarization quantum, a piezoelectric finite difference must follow the continuous branch as strain changes. The derivative belongs to a specified path near the reference state. A branch jump can look like a giant response even when it is only a bookkeeping change. Preserve the cell definition and reciprocal-space convention across strained images; a cell transformation can also change the tensor representation.
 
-For a slab or monolayer, the three-dimensional supercell volume includes vacuum. A bulk-style `e` or `d` reported without a vacuum-independent two-dimensional convention changes with the chosen cell height. Report the normalization and mechanical thickness convention explicitly, and do not compare it directly with a three-dimensional bulk coefficient.
+For a slab or monolayer, the three-dimensional supercell volume includes vacuum. A bulk-style $e$ or $d$ reported without a vacuum-independent two-dimensional convention changes with the chosen cell height. Report the normalization and mechanical thickness convention explicitly, and do not compare it directly with a three-dimensional bulk coefficient.
 
 ## Convergence and interpretation
 

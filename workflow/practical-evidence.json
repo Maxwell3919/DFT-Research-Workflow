@@ -205,7 +205,7 @@
       "guide_slug": "compare-band-path-and-full-zone-extrema",
       "parent_topic": "band-structure",
       "evidence_class": "real-execution",
-      "material": "COD 9013102 Silicon; QE 7.5 line path and symmetry-expanded 8x8x8 mesh",
+      "material": "COD 9013102 Silicon; QE 7.5 line path and 260-point time-reversal-reduced sample from the nominal 8x8x8 mesh",
       "real_result": true,
       "interface": false,
       "traceable_data": true,
@@ -610,7 +610,7 @@
       "upgrade": "completed bounded Silicon QE cutoff matrix",
       "blocker": "only total-energy comparison; force, stress, band, DOS and response convergence are untested",
       "priority": 1,
-      "execution_script": "examples/practical-guides/silicon_qe_convergence.py",
+      "execution_script": "examples/practical-guides/qe_manual_handoff.py",
       "media_ids": [
         "convergence-basis-grid-map",
         "silicon-qe-cutoff-matrix"
@@ -772,7 +772,7 @@
       "upgrade": "completed bounded Silicon QE fixed-geometry record",
       "blocker": "no geometry optimization, candidate comparison, or ground-state proof",
       "priority": 1,
-      "execution_script": "examples/practical-guides/silicon_qe_convergence.py",
+      "execution_script": "examples/practical-guides/qe_manual_handoff.py",
       "media_ids": [
         "reference-protocol-continuity"
       ],
@@ -825,7 +825,7 @@
       "upgrade": "completed bounded Silicon QE SCF provenance package",
       "blocker": "no public charge density/wavefunctions or code-specific restart validation",
       "priority": 1,
-      "execution_script": "examples/practical-guides/silicon_qe_convergence.py",
+      "execution_script": "examples/practical-guides/qe_manual_handoff.py",
       "media_ids": [
         "reference-state-lineage"
       ],

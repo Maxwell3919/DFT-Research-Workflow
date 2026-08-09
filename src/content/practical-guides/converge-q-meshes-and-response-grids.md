@@ -95,7 +95,7 @@ Apply a predeclared interpolation tolerance in the units of the mode or quantity
 
 At each adequate coarse mesh, refine the fine integration grid and extract the reported phonon DOS, free energy, linewidth, transport coefficient, or electron–phonon quantity. Inspect modes and q regions that dominate the result, not only a smooth high-symmetry plot.
 
-Phonon convergence ≠ EPC convergence. EPC additionally depends on electronic k sampling, q sampling, band count, matrix-element interpolation, broadening or delta-function treatment, and convergence of $\alpha^2F(\omega)$, $\lambda$, and $\omega_{\log}$ where those are the targets.
+Phonon convergence does not establish EPC convergence. EPC additionally depends on electronic k sampling, q sampling, band count, matrix-element interpolation, broadening or delta-function treatment, and convergence of $\alpha^2F(\omega)$, $\lambda$, and $\omega_{\log}$ where those are the targets.
 
 Accept a pair only when response solves pass, direct-versus-interpolated checks meet tolerance, the final observable is stable against stricter coarse and fine grids, and the physical state remains comparable.
 

@@ -11,7 +11,7 @@ Start from an accepted reference state whose forces, stress, electronic converge
 
 ## From force constants to normal modes
 
-For atoms `κ, κ'`, Cartesian directions `α, β`, and lattice translations `R`, the harmonic force constants are
+For atoms $\kappa,\kappa'$, Cartesian directions $\alpha,\beta$, and lattice translations $\mathbf R$, the harmonic force constants are
 
 $$
 \Phi_{\kappa\alpha,\kappa'\beta}(\mathbf R)
@@ -20,9 +20,9 @@ $$
  \partial u_{\kappa'\beta}(\mathbf R)}.
 $$
 
-`E` is the total energy of the declared electronic state and `u` is a displacement. Fourier transforming mass-weighted force constants gives the dynamical matrix `D(q)` at wavevector `q`; its eigenvalues are `ω²(qν)` and its eigenvectors label branch `ν`. A phonon dispersion is therefore not raw force output: it is an interpolation or DFPT result whose meaning includes structure, masses, cell, force-constant convention, reciprocal mesh, non-analytic terms, and branch labels.
+$E$ is the total energy of the declared electronic state and $u$ is a displacement. Fourier transforming mass-weighted force constants gives the dynamical matrix $D(\mathbf q)$ at wavevector $\mathbf q$; its eigenvalues are $\omega^2(\mathbf q\nu)$ and its eigenvectors label branch $\nu$. A phonon dispersion is therefore not raw force output: it is an interpolation or DFPT result whose meaning includes structure, masses, cell, force-constant convention, reciprocal mesh, non-analytic terms, and branch labels.
 
-There are `3N` branches for a primitive cell with `N` atoms. Three acoustic branches approach zero frequency at Γ in a translationally invariant three-dimensional crystal. Optical branches are not “more stable” merely because they are finite at Γ; stability is assessed over the relevant reciprocal space, not from one labelled branch or one Γ-point calculation.
+There are $3N$ branches for a primitive cell with $N$ atoms. Three acoustic branches approach zero frequency at Γ in a translationally invariant three-dimensional crystal. Optical branches are not “more stable” merely because they are finite at Γ; stability is assessed over the relevant reciprocal space, not from one labelled branch or one Γ-point calculation.
 
 ## DFPT and finite displacements are alternative constructions
 
@@ -32,13 +32,13 @@ Do not combine a force-constant set from one Hamiltonian, magnetic state, charge
 
 ## Long-range electrostatics are part of a polar phonon model
 
-In a polar insulator, the `q → 0` dynamical matrix contains a direction-dependent non-analytic long-range contribution. It uses Born effective charges and an electronic dielectric tensor under compatible conventions, and produces LO--TO splitting. A Γ-point analytic dynamical matrix without this contribution does not contain the corresponding LO--TO splitting. The correction must not be borrowed from a different structural or electronic state, nor should it be applied to a metal as if the same macroscopic-field model held.
+In a polar insulator, the $\mathbf q\to0$ dynamical matrix contains a direction-dependent non-analytic long-range contribution. It uses Born effective charges and an electronic dielectric tensor under compatible conventions, and produces LO--TO splitting. A Γ-point analytic dynamical matrix without this contribution does not contain the corresponding LO--TO splitting. The correction must not be borrowed from a different structural or electronic state, nor should it be applied to a metal as if the same macroscopic-field model held.
 
 The acoustic sum rule, schematically $\sum_{\kappa'\mathbf R}\Phi_{\kappa\alpha,\kappa'\beta}(\mathbf R)=0$, checks translational invariance of the force constants. Enforcing it can remove a small numerical drift, but it cannot repair inadequate supercells, an inconsistent reference, a broken symmetry, or a genuine unstable branch. Preserve whether and how it was imposed.
 
 ## Imaginary frequencies need diagnosis, not a one-word verdict
 
-Many plots display an imaginary harmonic mode as a negative real frequency. It means a negative curvature in the harmonic model at that sampled `q` and reference structure. A robust imaginary branch may identify an athermal local instability and motivate following the eigenvector to a lower-symmetry candidate. It is not automatically a synthesis prediction, a finite-temperature phase, or a reason to replace the structure without checking the path and the numerical model.
+Many plots display an imaginary harmonic mode as a negative real frequency. It means a negative curvature in the harmonic model at that sampled $\mathbf q$ and reference structure. A robust imaginary branch may identify an athermal local instability and motivate following the eigenvector to a lower-symmetry candidate. It is not automatically a synthesis prediction, a finite-temperature phase, or a reason to replace the structure without checking the path and the numerical model.
 
 Conversely, a small isolated imaginary acoustic value near Γ can arise from incomplete acoustic-sum closure, interpolation, finite-size effects, or convergence error. Diagnose its q dependence, magnitude under systematic numerical refinements, eigenvector character, symmetry, reference forces/stress, and the convergence of the target downstream observable. Do not silently take absolute values of imaginary modes in a free-energy calculation and then call the parent structure dynamically stable.
 

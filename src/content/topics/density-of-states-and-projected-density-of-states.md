@@ -3,7 +3,7 @@ topic_slug: density-of-states-and-projected-density-of-states
 status: reviewed
 ---
 
-Calculate a density of states (DOS) when the question concerns how many electronic states occur in an energy interval across the Brillouin zone. A DOS needs an accepted structure and reference electronic state followed by a sufficiently dense, compatible uniform-zone calculation; a high-symmetry band path is not a DOS parent. [Check a DOS Integral and Projected-Weight Closure](/DFT-Research-Workflow/operations/density-of-states-and-projected-density-of-states/guides/check-dos-normalization-and-projection-closure/) reconstructs a real QE 7.5 total-DOS result and states explicitly which diagnostics were not validated.
+Calculate a density of states (DOS) when the question concerns how many electronic states occur in an energy interval across the Brillouin zone. A DOS needs an accepted structure and reference electronic state followed by a sufficiently dense, compatible uniform-zone calculation; a high-symmetry band path is not a DOS parent. [Reconstruct a Stored Total DOS and Define Closure Tests](/DFT-Research-Workflow/operations/density-of-states-and-projected-density-of-states/guides/check-dos-normalization-and-projection-closure/) reconstructs a real QE 7.5 total-DOS result and states explicitly which diagnostics were not validated.
 
 ## Run a total DOS from a uniform-zone state
 

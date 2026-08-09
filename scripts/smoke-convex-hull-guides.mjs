@@ -7,8 +7,8 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const parentRoute = '/operations/compositional-phase-stability-and-convex-hulls/';
 const guides = [
-  { route: `${parentRoute}examples/rebuild-oqmd-li-p-convex-hull/`, title: 'Rebuild a Li–P Convex Hull from an OQMD Snapshot', phrase: 'This worked example reconstructs a binary lower convex envelope', boundary: 'The example does not rerun or independently validate any OQMD DFT calculation.' },
-  { route: `${parentRoute}examples/stress-test-hull-phase-set/`, title: 'Stress-Test a Hull Against a Missing Competitor', phrase: 'This worked example changes no energy.', boundary: 'The example does not show that LiP should be excluded' },
+  { route: `${parentRoute}examples/rebuild-oqmd-li-p-convex-hull/`, title: 'Rebuild a Li–P Convex Hull from an OQMD Snapshot', phrase: 'Use this worked example to reconstruct a binary hull from a frozen public-data table.', boundary: 'It does not validate OQMD energies, prove candidate completeness or mutual convergence for a new claim, establish finite-temperature or pressure stability, or predict synthesis.' },
+  { route: `${parentRoute}examples/stress-test-hull-phase-set/`, title: 'Stress-Test a Hull Against a Missing Competitor', phrase: 'Use this example after rebuilding the full frozen Li-P hull.', boundary: 'It does not show that LiP should be excluded, that Li4P3 is a physical ground state, or that the full frozen OQMD phase set is exhaustive.' },
 ];
 
 async function loadMedia(page) {

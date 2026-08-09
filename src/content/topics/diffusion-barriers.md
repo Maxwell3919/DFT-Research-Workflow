@@ -17,13 +17,13 @@ $$
 E_m = E(\mathbf R^\ddagger)-E(\mathbf R_i).
 $$
 
-where `R_i` is the initial local minimum and `R‡` is the validated saddle point on the stated hop path. `E_m` is a migration energy in the energy unit used for both calculations. If the final site has a different energy, the reverse barrier is different. A formation energy is not a migration barrier: equilibrium diffusion often combines a defect population term with a hop term, whereas a pre-existing tracer defect consumes only the latter model component.
+where $\mathbf R_i$ is the initial local minimum and $\mathbf R^\ddagger$ is the validated saddle point on the stated hop path. $E_m$ is a migration energy in the energy unit used for both calculations. If the final site has a different energy, the reverse barrier is different. A formation energy is not a migration barrier: equilibrium diffusion often combines a defect population term with a hop term, whereas a pre-existing tracer defect consumes only the latter model component.
 
 ## Path resolution is separate from the diffusion interpretation
 
 NEB or a related path method relaxes intermediate images toward a minimum-energy path. The endpoints must remain identifiable; periodic boundary crossings need a consistent minimum-image convention; and images must not silently change charge, composition, spin branch, or cell model. Multiple geometrically plausible routes should be initialized and compared because a one-dimensional hop coordinate can conceal concerted motion, site exchange, host relaxation, or a lower indirect route.
 
-The image spacing, path tangent, initial interpolation, spring representation, electronic convergence, cell size, defect-image interaction, and saddle validation all affect `E_m`. No fixed image count, supercell size, force threshold, or k mesh is transferable across hosts and defects. A path whose images have converged numerically still does not establish that the enumerated hop set is complete.
+The image spacing, path tangent, initial interpolation, spring representation, electronic convergence, cell size, defect-image interaction, and saddle validation all affect $E_m$. No fixed image count, supercell size, force threshold, or k mesh is transferable across hosts and defects. A path whose images have converged numerically still does not establish that the enumerated hop set is complete.
 
 ## Static barriers, migration free energies, and jump rates answer different questions
 
@@ -35,7 +35,7 @@ $$
 \exp\left[-\frac{\Delta G^\ddagger(T)}{k_{\mathrm B}T}\right].
 $$
 
-`Γ` is a jump rate, `ν` a model-dependent prefactor, `ΔG‡` the migration free energy, `k_B` Boltzmann’s constant, and `T` the absolute temperature. In a harmonic approximation, vibrational modes at the minimum and the saddle enter the prefactor and free-energy difference; the unstable saddle mode is excluded from the stable-mode product. Replacing `ΔG‡` by a static `E_m` and assigning an arbitrary prefactor is an approximation that must be labelled, not a first-principles diffusion coefficient.
+$\Gamma$ is a jump rate, $\nu$ a model-dependent prefactor, $\Delta G^\ddagger$ the migration free energy, $k_{\mathrm B}$ Boltzmann’s constant, and $T$ the absolute temperature. In a harmonic approximation, vibrational modes at the minimum and the saddle enter the prefactor and free-energy difference; the unstable saddle mode is excluded from the stable-mode product. Replacing $\Delta G^\ddagger$ by a static $E_m$ and assigning an arbitrary prefactor is an approximation that must be labelled, not a first-principles diffusion coefficient.
 
 For an uncorrelated network of equivalent jumps, a tracer-scale expression can take the form $D=fz\ell^2\Gamma/(2d)$, where $f$ is a correlation factor, $z$ the number of allowed jumps, $\ell$ the jump length, and $d$ the dimensionality. Each term depends on a defined lattice and event network. Correlations, site blocking, defect formation and association, charge-state populations, disorder, surfaces, fields, and multiple barriers can invalidate the simple mapping.
 

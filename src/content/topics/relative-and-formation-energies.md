@@ -88,7 +88,7 @@ $$
 
 <!-- G(T,p) = min_V [F(T,V) + pV] -->
 
-Numerical smearing used for Brillouin-zone integration is not automatically `F_el` at a physical temperature. Every thermal term must refer to the same reaction, state, and denominator.
+Numerical smearing used for Brillouin-zone integration is not automatically $F_{\mathrm{el}}$ at a physical temperature. Every thermal term must refer to the same reaction, state, and denominator.
 
 ## Converge the difference and its least-cancelling terms
 
@@ -112,7 +112,7 @@ A negative reaction energy places the written products below the written reactan
 
 ## A negative formation energy is not a phase-stability proof
 
-`ΔE_f < 0` means that the target is below its chosen elemental references for that formation reaction.
+$\Delta E_{\mathrm f}<0$ means that the target is below its chosen elemental references for that formation reaction.
 
 A compound can have a negative formation energy and still decompose exothermically into other compounds. Formation energy alone establishes neither equilibrium stability nor experimental synthesizability.
 

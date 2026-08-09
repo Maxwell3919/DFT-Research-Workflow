@@ -13,20 +13,22 @@ for (const statement of ['topic_slug: surface-energy-and-work-function', 'status
   if (!article.includes(statement)) errors.push(`${articlePath}: missing frontmatter ${JSON.stringify(statement)}`);
 }
 const headings = article.match(/^## /gm) ?? [];
-if (headings.length !== 24) errors.push(`${articlePath}: expected 24 natural sections, found ${headings.length}`);
+if (headings.length < 8 || headings.length > 12) {
+  errors.push(`${articlePath}: expected 8-12 continuous manual sections, found ${headings.length}`);
+}
 
 for (const statement of [
   'A Miller index identifies an orientation, not a unique surface.',
   'The factor two counts the two equivalent surfaces.',
   'One equation determines only the sum of the two surface excesses.',
   'the surface free energy becomes a grand-potential excess.',
-  'The derived `γ` then drifts linearly with slab thickness',
+  'The derived $\\gamma$ then drifts linearly with slab thickness',
   'An ideal unreconstructed polar termination can then have a divergent electrostatic energy',
   'Test both against slab thickness, vacuum, lateral cell, k sampling',
   'Here numerical convergence means thickness, vacuum, sampling, and finite lateral-size refinement within a fixed termination, reconstruction, surface stoichiometry, and physical relaxation-constraint policy.',
   'The expression is meaningful only when the vacuum reference is flat',
   'the left and right plateaus may be unequal',
-  'ionization potential `E_vac - E_VBM` and electron affinity `E_vac - E_CBM`',
+  'ionization potential $E_{\\mathrm{vac}}-E_{\\mathrm{VBM}}$, or electron affinity $E_{\\mathrm{vac}}-E_{\\mathrm{CBM}}$',
   'The Wulff shape is an equilibrium construction.',
   'It is not a rerun of InterMat',
 ]) {
@@ -78,4 +80,4 @@ if (errors.length > 0) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Reviewed surface topic valid: 24 natural sections, exact 11-source coverage, slab/reference/polarity/plateau/semiconductor boundaries, and no universal numerical prescription.');
+console.log('Reviewed surface topic valid: 8-12 continuous manual sections, exact 11-source coverage, slab/reference/polarity/plateau/semiconductor boundaries, and no universal numerical prescription.');

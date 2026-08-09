@@ -6,6 +6,22 @@ import { readFile } from 'node:fs/promises';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/paths';
 import workflowsDocument from '../../../recipes/index.json';
+import topicRegistryDocument from '../../../workflow/topics.json';
+
+const topicTitleBySlug = new Map<string, string>();
+const indexTopicTitles = (value: unknown): void => {
+  if (Array.isArray(value)) {
+    value.forEach(indexTopicTitles);
+    return;
+  }
+  if (!value || typeof value !== 'object') return;
+  const record = value as Record<string, unknown>;
+  if (typeof record.slug === 'string' && typeof record.title === 'string') {
+    topicTitleBySlug.set(record.slug, record.title);
+  }
+  Object.values(record).forEach(indexTopicTitles);
+};
+indexTopicTitles(topicRegistryDocument);
 
 type ActionRecord = {
   label: string;
@@ -309,11 +325,139 @@ const commandAnchor = (stage: string) => {
     <h1>{workflow.title}</h1>
     <p class="operation-summary">{workflow.summary}</p>
 
-    <section class="article-content" aria-labelledby="case-scope-heading" data-case-evidence-scope>
-      <h2 id="case-scope-heading">How to read this case evidence</h2>
+
+
+    <section class="article-content" aria-labelledby="start-here-heading" data-start-here>
+      <h2 id="start-here-heading">Start here</h2>
+      <p>
+        <strong>Repository:</strong>{' '}
+        <a href={substituteSourceRevision(workflow.start_here.repository_url)}>
+          {substituteSourceRevision(workflow.start_here.repository_url)}
+        </a>
+      </p>
+      <p><strong>Source revision:</strong> <code>{sourceRevision}</code></p>
+      <p><strong>Working directory:</strong> <code>{workflow.start_here.working_directory}</code></p>
+      <p><strong>Case root:</strong> <code>{workflow.start_here.case_root}</code></p>
+      <pre><code>{commandBlock(workflow.start_here.acquisition_commands)}</code></pre>
+      <h3>{workflow.start_here.first_action.label}</h3>
+      <p><strong>Run from:</strong> <code>{substituteSourceRevision(workflow.start_here.first_action.cwd)}</code></p>
+      <pre><code>{commandBlock(workflow.start_here.first_action.commands)}</code></pre>
+      <p><strong>Boundary:</strong> {substituteSourceRevision(workflow.start_here.first_action.boundary)}</p>
+    </section>
+
+<section
+      class="article-content"
+      aria-labelledby="reader-route-heading"
+      data-reader-route={workflow.slug}
+      data-reader-route-schema-version={workflow.reader_route.schema_version}
+    >
+      <h2 id="reader-route-heading">Follow the calculation</h2>
+      <p>
+        Follow this case-specific order for reading or replay, and return to an earlier stage whenever a model, method, reference state, target calculation, or validation check fails. The stage order is not a universal DFT sequence and does not establish historical continuity beyond the routes declared above.
+      </p>
+      <ol>
+        {readerStages.map((stage, index) => (
+          <li
+            data-reader-stage={stage.id}
+            data-reader-stage-index={index + 1}
+            data-topic-slugs={stage.topic_slugs.join(',')}
+            data-case-files={stage.case_files.join(',')}
+            data-execution-route-ids={stage.execution_route_ids.join(',')}
+            data-command-stages={stage.command_stages.join(',')}
+            data-artifact-paths={stage.artifact_paths.join(',')}
+          >
+            <h3 id={`reader-stage-${stage.id}`}>{stage.label}</h3>
+            <p>{stage.purpose}</p>
+
+            {stage.topic_slugs.length > 0 && (
+              <>
+                <p><strong>Research Workflow topics</strong></p>
+                <ul>
+                  {stage.topic_slugs.map((topicSlug) => (
+                    <li data-topic-reference={topicSlug}>
+                      <a href={withBase(`operations/${topicSlug}/`)}>{topicTitleBySlug.get(topicSlug) ?? "Research Workflow topic"}</a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {stage.case_files.length > 0 && (
+              <>
+                <p><strong>Case files</strong></p>
+                <ul>
+                  {stage.case_files.map((path) => (
+                    <li data-case-file-reference={path}>
+                      <a href={caseFileUrl(path)}><code>{path}</code></a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {stage.action && (
+              <div data-reader-stage-action>
+                <h4>{stage.action.label}</h4>
+                <p><strong>Run from:</strong> <code>{substituteSourceRevision(stage.action.cwd)}</code></p>
+                <pre><code>{commandBlock(stage.action.commands)}</code></pre>
+                <p><strong>Boundary:</strong> {substituteSourceRevision(stage.action.boundary)}</p>
+              </div>
+            )}
+
+            {stage.execution_route_ids.length > 0 && (
+              <>
+                <p><strong>Recorded execution routes</strong></p>
+                <ul>
+                  {stage.execution_route_ids.map((routeId) => (
+                    <li data-execution-route-reference={routeId}>
+                      <a href={`#execution-route-${routeId}`}>
+                        {executionRouteById.get(routeId)?.label ?? "Recorded execution route"}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {stage.command_stages.length > 0 && (
+              <>
+                <p><strong>Recorded commands</strong></p>
+                <ul>
+                  {stage.command_stages.map((commandStage) => (
+                    <li data-command-stage-reference={commandStage}>
+                      <a href={`#${commandAnchor(commandStage)}`}><code>{commandStage}</code></a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {stage.artifact_paths.length > 0 && (
+              <>
+                <p><strong>Critical artifacts for this stage</strong></p>
+                <ul>
+                  {stage.artifact_paths.map((path) => (
+                    <li data-artifact-reference={path}>
+                      <a href={caseFileUrl(path)}><code>{path}</code></a>
+                      {' — '}{artifactByPath.get(path)?.role ?? 'manifest artifact'}; SHA-256{' '}
+                      <code>{artifactByPath.get(path)?.sha256 ?? 'not declared'}</code>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {stage.assessment && <p data-stage-assessment><strong>Assessment:</strong> {stage.assessment}</p>}
+            {stage.observable_convergence && <p data-observable-convergence><strong>Observable convergence:</strong> {stage.observable_convergence}</p>}
+            <p><strong>Boundary:</strong> {stage.boundary}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+<section class="article-content" aria-labelledby="case-scope-heading" data-case-evidence-scope>
+      <h2 id="case-scope-heading">How to use this workflow</h2>
       <dl>
-        <dt>History kind</dt>
-        <dd>{workflow.history_kind}</dd>
         <dt>Evidence boundary</dt>
         <dd>{workflow.evidence_boundary}</dd>
         <dt>Continuity boundary</dt>
@@ -335,24 +479,6 @@ const commandAnchor = (stage: string) => {
           </ul>
         </>
       )}
-    </section>
-
-    <section class="article-content" aria-labelledby="start-here-heading" data-start-here>
-      <h2 id="start-here-heading">Start here</h2>
-      <p>
-        <strong>Repository:</strong>{' '}
-        <a href={substituteSourceRevision(workflow.start_here.repository_url)}>
-          {substituteSourceRevision(workflow.start_here.repository_url)}
-        </a>
-      </p>
-      <p><strong>Source revision:</strong> <code>{sourceRevision}</code></p>
-      <p><strong>Working directory:</strong> <code>{workflow.start_here.working_directory}</code></p>
-      <p><strong>Case root:</strong> <code>{workflow.start_here.case_root}</code></p>
-      <pre><code>{commandBlock(workflow.start_here.acquisition_commands)}</code></pre>
-      <h3>{workflow.start_here.first_action.label}</h3>
-      <p><strong>Run from:</strong> <code>{substituteSourceRevision(workflow.start_here.first_action.cwd)}</code></p>
-      <pre><code>{commandBlock(workflow.start_here.first_action.commands)}</code></pre>
-      <p><strong>Boundary:</strong> {substituteSourceRevision(workflow.start_here.first_action.boundary)}</p>
     </section>
 
     <section class="article-content" aria-labelledby="execution-contexts-heading" data-execution-contexts>
@@ -423,7 +549,7 @@ const commandAnchor = (stage: string) => {
         <h2 id="record-conflicts-heading">Retained record conflicts</h2>
         {recordConflicts.map((conflict) => (
           <div data-record-conflict={conflict.id}>
-            <p><strong>{conflict.status}</strong></p>
+            <p><strong>Record note</strong></p>
             <ul>
               {conflict.case_files.map((path) => (
                 <li data-conflicting-case-file-reference={path}>
@@ -441,116 +567,7 @@ const commandAnchor = (stage: string) => {
       </section>
     )}
 
-    <section
-      class="article-content"
-      aria-labelledby="reader-route-heading"
-      data-reader-route={workflow.slug}
-      data-reader-route-schema-version={workflow.reader_route.schema_version}
-    >
-      <h2 id="reader-route-heading">Case reader route</h2>
-      <p>
-        Follow this case-specific order for reading or replay, and return to an earlier stage whenever a model, method, reference state, target calculation, or validation check fails. The stage order is not a universal DFT sequence and does not establish historical continuity beyond the routes declared above.
-      </p>
-      <ol>
-        {readerStages.map((stage, index) => (
-          <li
-            data-reader-stage={stage.id}
-            data-reader-stage-index={index + 1}
-            data-topic-slugs={stage.topic_slugs.join(',')}
-            data-case-files={stage.case_files.join(',')}
-            data-execution-route-ids={stage.execution_route_ids.join(',')}
-            data-command-stages={stage.command_stages.join(',')}
-            data-artifact-paths={stage.artifact_paths.join(',')}
-          >
-            <h3 id={`reader-stage-${stage.id}`}>{stage.label}</h3>
-            <p>{stage.purpose}</p>
-            <p data-reader-stage-coverage><strong>Coverage:</strong> {stage.coverage}</p>
 
-            {stage.topic_slugs.length > 0 && (
-              <>
-                <p><strong>Research Workflow topics</strong></p>
-                <ul>
-                  {stage.topic_slugs.map((topicSlug) => (
-                    <li data-topic-reference={topicSlug}>
-                      <a href={withBase(`operations/${topicSlug}/`)}>{topicSlug}</a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {stage.case_files.length > 0 && (
-              <>
-                <p><strong>Case files</strong></p>
-                <ul>
-                  {stage.case_files.map((path) => (
-                    <li data-case-file-reference={path}>
-                      <a href={caseFileUrl(path)}><code>{path}</code></a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {stage.action && (
-              <div data-reader-stage-action>
-                <h4>{stage.action.label}</h4>
-                <p><strong>Run from:</strong> <code>{substituteSourceRevision(stage.action.cwd)}</code></p>
-                <pre><code>{commandBlock(stage.action.commands)}</code></pre>
-                <p><strong>Boundary:</strong> {substituteSourceRevision(stage.action.boundary)}</p>
-              </div>
-            )}
-
-            {stage.execution_route_ids.length > 0 && (
-              <>
-                <p><strong>Recorded execution routes</strong></p>
-                <ul>
-                  {stage.execution_route_ids.map((routeId) => (
-                    <li data-execution-route-reference={routeId}>
-                      <a href={`#execution-route-${routeId}`}>
-                        {executionRouteById.get(routeId)?.label ?? routeId}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {stage.command_stages.length > 0 && (
-              <>
-                <p><strong>Recorded commands</strong></p>
-                <ul>
-                  {stage.command_stages.map((commandStage) => (
-                    <li data-command-stage-reference={commandStage}>
-                      <a href={`#${commandAnchor(commandStage)}`}><code>{commandStage}</code></a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {stage.artifact_paths.length > 0 && (
-              <>
-                <p><strong>Critical artifacts for this stage</strong></p>
-                <ul>
-                  {stage.artifact_paths.map((path) => (
-                    <li data-artifact-reference={path}>
-                      <a href={caseFileUrl(path)}><code>{path}</code></a>
-                      {' — '}{artifactByPath.get(path)?.role ?? 'manifest artifact'}; SHA-256{' '}
-                      <code>{artifactByPath.get(path)?.sha256 ?? 'not declared'}</code>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {stage.assessment && <p data-stage-assessment><strong>Assessment:</strong> {stage.assessment}</p>}
-            {stage.observable_convergence && <p data-observable-convergence><strong>Observable convergence:</strong> {stage.observable_convergence}</p>}
-            <p><strong>Boundary:</strong> {stage.boundary}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
 
     <section class="article-content" aria-labelledby="case-bundle-heading">
       <h2 id="case-bundle-heading">Case bundle</h2>

@@ -12,8 +12,17 @@ const guides = [
     title: 'Prepare a Fixed-Geometry Reference Calculation',
     tool: 'python',
     version: 'Python 3.12',
-    phrase: 'A reference-state calculation begins from one exact accepted structure',
-    boundary: 'It does not run a DFT code',
+    phrase: 'A fixed-cell relaxation and a static SCF calculation are separate runs.',
+    requiredPhrases: [
+      'last complete',
+      'accepted-geometry.inc',
+      'replaces the one ATOMIC_POSITIONS card in a copied SCF template',
+      'pw.x -in static-scf.in > static-scf.out 2> static-scf.err',
+      'audit-scf',
+      'does not claim that the stored static calculation descended from the stored relaxation',
+      'Neither proves geometry acceptance, cutoff or k-point convergence, observable convergence',
+    ],
+    forbidGateCodes: true,
   },
   {
     route: '/operations/calculate-reference-ground-state/guides/compare-fresh-and-restarted-electronic-states/',
@@ -36,7 +45,7 @@ const guides = [
     title: 'Package a Reusable Reference-State Lineage',
     tool: 'python',
     version: 'Python 3.12',
-    phrase: 'Charge-density and wavefunction files are useful only when their scientific identity remains attached.',
+    phrase: 'A reusable calculation is a directory that can be identified, restored, checked, and regenerated',
     boundary: 'It does not run a DFT code',
   },
 ];
@@ -59,6 +68,14 @@ async function inspectGuide(page, guide, width) {
   if (result.language !== 'en') throw new Error(`${guide.route}: language is not English`);
   if (result.title !== guide.title) throw new Error(`${guide.route}: title mismatch ${result.title}`);
   if (!result.text.includes(guide.phrase)) throw new Error(`${guide.route}: missing scientific phrase`);
+  for (const phrase of guide.requiredPhrases ?? []) {
+    if (!result.text.includes(phrase)) {
+      throw new Error(guide.route + ': missing current handoff/audit contract phrase ' + phrase);
+    }
+  }
+  if (guide.forbidGateCodes && /\bG[0-5]\b/.test(result.text)) {
+    throw new Error(guide.route + ': exposes an internal evidence gate code');
+  }
   if (!result.text.includes(guide.version)) throw new Error(`${guide.route}: missing tested version ${guide.version}`);
   if (!result.toolTags.includes(guide.tool)) throw new Error(`${guide.route}: missing tool tag ${guide.tool}`);
   if (!result.hasMeta || !result.hasEvidence) throw new Error(`${guide.route}: missing metadata or evidence boundary`);

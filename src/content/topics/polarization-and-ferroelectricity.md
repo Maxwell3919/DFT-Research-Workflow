@@ -11,13 +11,13 @@ Prepare compatible nonpolar reference and polar endpoint structures, generate a 
 
 ## A bulk polarization is defined modulo a quantum
 
-For a cell of volume `Ω` with lattice vector `R`, the polarization lattice contains branches separated by
+For a cell of volume $\Omega$ with lattice vector $\mathbf R$, the polarization lattice contains branches separated by
 
 $$
 \mathbf P_q = \frac{e\mathbf R}{\Omega}.
 $$
 
-Here `e` is the elementary charge. The ionic contribution can be represented using ionic positions and valences, while the electronic contribution is obtained from a Berry phase of the occupied Bloch states. Neither part alone is a branch-independent measurable bulk polarization. The meaningful comparison is
+Here $e$ is the elementary charge. The ionic contribution can be represented using ionic positions and valences, while the electronic contribution is obtained from a Berry phase of the occupied Bloch states. Neither part alone is a branch-independent measurable bulk polarization. The meaningful comparison is
 
 $$
 \Delta\mathbf P
@@ -26,7 +26,7 @@ $$
 + n\mathbf P_q .
 $$
 
-where integer `n` is chosen by following a declared insulating structural path, rather than by selecting the visually smallest difference after the fact. `P(final)` and `P(reference)` must use compatible cells, charge states, Hamiltonians, reciprocal sampling, and polarization convention. If the path becomes metallic, changes electronic state discontinuously, or crosses a different branch without being tracked, its Berry-phase difference no longer supplies the intended adiabatic polarization change.
+where integer $n$ is chosen by following a declared insulating structural path, rather than by selecting the visually smallest difference after the fact. $P_{\mathrm{final}}$ and $P_{\mathrm{reference}}$ must use compatible cells, charge states, Hamiltonians, reciprocal sampling, and polarization convention. If the path becomes metallic, changes electronic state discontinuously, or crosses a different branch without being tracked, its Berry-phase difference no longer supplies the intended adiabatic polarization change.
 
 ## Choose the physical comparison before running it
 
@@ -36,7 +36,7 @@ The calculation must specify whether ions and strain are fixed or relaxed, the e
 
 ## From a structural distortion to a polarization path
 
-Start from compatible reference and polar endpoints, then construct a sequence `λ` of structures between them. At each `λ`, retain the same cell definition and solve the intended insulating electronic state. Plot every reported polarization branch against `λ`; unwrap only by adding whole polarization quanta to make the physically followed path continuous. A useful finite-difference interpretation near a reference is
+Start from compatible reference and polar endpoints, then construct a sequence $\lambda$ of structures between them. At each $\lambda$, retain the same cell definition and solve the intended insulating electronic state. Plot every reported polarization branch against $\lambda$; unwrap only by adding whole polarization quanta to make the physically followed path continuous. A useful finite-difference interpretation near a reference is
 
 $$
 \Delta P_\alpha
@@ -45,7 +45,7 @@ $$
 Z^{*}_{\kappa,\alpha\beta}\Delta u_{\kappa\beta}.
 $$
 
-where `Z*κ,αβ` is the Born effective-charge tensor, `Δuκβ` is a sublattice displacement, and `α, β` denote Cartesian components. This is a local linear approximation, not a replacement for a finite Berry-phase path when distortions are large, nonlinear, or branch-changing. It also imports the state, boundary-condition, and convergence limitations of the Born charges.
+where $Z^*_{\kappa,\alpha\beta}$ is the Born effective-charge tensor, $\Delta u_{\kappa\beta}$ is a sublattice displacement, and $\alpha,\beta$ denote Cartesian components. This is a local linear approximation, not a replacement for a finite Berry-phase path when distortions are large, nonlinear, or branch-changing. It also imports the state, boundary-condition, and convergence limitations of the Born charges.
 
 An energy profile along the same path can reveal a local double well relative to the chosen reference, but a double well is not a coercive field, switching rate, transition temperature, or device hysteresis prediction. Those require a field-coupled free-energy model and evidence for relevant domain, defect, strain, screening, and kinetic processes.
 

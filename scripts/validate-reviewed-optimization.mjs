@@ -16,20 +16,12 @@ for (const statement of [
 }
 
 for (const heading of [
+  '## Follow the common route from model to accepted geometry',
   '## Define the quantity and variables being optimized',
-  '## Choose fixed-cell and variable-cell protocols deliberately',
-  '## Treat constraints as part of model identity',
   '## Begin from physically credible starting structures',
   '## Make forces and stress trustworthy enough to drive motion',
-  '## Preserve electronic and magnetic state continuity',
-  '## Match the optimizer to the basin and gradient quality',
   '## Read energy, force, stress, and displacement together',
-  '## Diagnose stalls, oscillations, and unphysical steps',
-  '## Control variable-cell optimization and Pulay stress',
-  '## Restart without erasing the optimization history',
   '## Optimizer stopping is not proof of a physical minimum',
-  '## Compare multiple starts and retain metastable outcomes',
-  '## Allow symmetry breaking when the question requires it',
   '## Verify the final candidate independently',
   '## Preserve an optimization evidence package',
   '## What this task does not establish',
@@ -39,6 +31,11 @@ for (const heading of [
 }
 
 for (const statement of [
+  'This route is common, not universal.',
+  'Normal program termination does not establish SCF convergence.',
+  'SCF convergence does not establish ionic optimization convergence.',
+  'Ionic optimization convergence does not identify the lowest relevant state.',
+  'The lowest identified state is not automatically the scientifically appropriate reference state.',
   'A fixed-cell relaxation minimizes the electronic energy with respect to selected atomic coordinates while holding the lattice fixed.',
   'Those are different physical problems.',
   'Empty numerical space is part of the boundary model, not a material coordinate seeking an equilibrium length.',
@@ -114,4 +111,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log('Reviewed optimization valid: 18 natural sections, exact 10-source coverage, active-subspace and local-minimum boundaries, O13/O14/O20 migration boundary, and no universal threshold prescription.');
+console.log('Reviewed optimization valid: operation-first common route, four distinct convergence/state gates, exact 10-source coverage, active-subspace and local-minimum boundaries, O13/O14/O20 migration boundary, and no universal threshold prescription.');

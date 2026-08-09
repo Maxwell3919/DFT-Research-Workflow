@@ -21,7 +21,7 @@ $$
 W(\mathbf r,\mathbf r',\omega).
 $$
 
-where `G` is a one-particle Green function and `W` is the screened Coulomb interaction. A quasiparticle energy is often obtained from
+where $G$ is a one-particle Green function and $W$ is the screened Coulomb interaction. A quasiparticle energy is often obtained from
 
 $$
 E_{n\mathbf k}^{\mathrm{QP}}
@@ -31,7 +31,7 @@ E_{n\mathbf k}^{\mathrm{QP}}
 \middle|\psi_{n\mathbf k}\right\rangle .
 $$
 
-`ε_nk^KS`, `ψ_nk`, and `v_xc` belong to the declared starting Kohn--Sham calculation. The correction is generally band-, momentum-, spin-, orbital-, and environment-dependent. It is not a universal scissor shift.
+$\epsilon_{n\mathbf k}^{\mathrm{KS}}$, $\psi_{n\mathbf k}$, and $v_{\mathrm{xc}}$ belong to the declared starting Kohn--Sham calculation. The correction is generally band-, momentum-, spin-, orbital-, and environment-dependent. It is not a universal scissor shift.
 
 A scissor operator can be a useful reduced model when the relevant corrections have been shown to behave approximately rigidly over the bands and k region of interest. It must be labelled as that approximation rather than presented as a direct GW result for the entire spectrum.
 
@@ -43,7 +43,7 @@ Important numerical axes include:
 
 - empty-state count or an alternative completeness treatment;
 - dielectric-matrix cutoff or basis size;
-- k-point integration and treatment of `q → 0`;
+- k-point integration and treatment of $\mathbf q\to0$;
 - frequency grid, contour, analytic continuation, or plasmon-pole model;
 - self-energy cutoff and solution convention;
 - Coulomb truncation or image treatment in reduced dimensions.
@@ -54,9 +54,9 @@ For slabs, wires, molecules, and interfaces, periodic-image screening and the di
 
 ## G₀W₀, eigenvalue updates, and self-consistency answer different questions
 
-`G₀W₀` evaluates `G` and `W` from a declared starting state. Its result can depend on the exchange--correlation functional, hybrid fraction, Hubbard treatment, spin and SOC state, and the starting gap.
+$G_0W_0$ evaluates $G$ and $W$ from a declared starting state. Its result can depend on the exchange--correlation functional, hybrid fraction, Hubbard treatment, spin and SOC state, and the starting gap.
 
-Eigenvalue-only updates change selected energies entering later evaluations of `G` or `W`. Partial and fully self-consistent routes update additional quantities. These methods are not interchangeable rungs of a guaranteed accuracy ladder. State exactly which objects were updated, which orbitals and occupations were retained, and which frequency model was used.
+Eigenvalue-only updates change selected energies entering later evaluations of $G$ or $W$. Partial and fully self-consistent routes update additional quantities. These methods are not interchangeable rungs of a guaranteed accuracy ladder. State exactly which objects were updated, which orbitals and occupations were retained, and which frequency model was used.
 
 The common diagonal approximation assumes that the starting orbitals adequately represent the quasiparticle states. Near-degeneracies, strong state mixing, off-diagonal self-energy terms, metallic screening, satellites, or strong correlation can challenge that assumption. Normal program termination cannot establish its physical adequacy.
 

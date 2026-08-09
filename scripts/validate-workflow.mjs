@@ -1,3 +1,4 @@
+import { existsSync as existsForManualAcceptance, readFileSync as readFileForManualAcceptance } from 'node:fs';
 import { access, readFile, readdir } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
@@ -248,6 +249,83 @@ if (!Array.isArray(workedWorkflows)) {
     }
   }
 }
+
+// DRW_MANUAL_HANDOFF_ACCEPTANCE
+{
+  const manualHelper = 'examples/practical-guides/qe_manual_handoff.py';
+  if (!existsForManualAcceptance(manualHelper)) {
+    errors.push('manual handoff helper is missing');
+  }
+
+  const manualRecipes = JSON.parse(readFileForManualAcceptance('recipes/index.json', 'utf8'));
+  const manualWorkflow = (slug) => manualRecipes.workflows.find((item) => item.slug === slug);
+  const siliconManual = manualWorkflow('silicon-ground-state-electronic-structure');
+  const aluminiumManual = manualWorkflow('aluminium-metallic-electronic-structure');
+  if (!siliconManual || !aluminiumManual) {
+    errors.push('manual acceptance requires Silicon and Aluminium worked workflows');
+  } else {
+    const freshTrack = (workflow) => workflow.evidence_tracks.find((track) => track.id === 'fresh-runtime');
+    const siliconFresh = freshTrack(siliconManual);
+    const aluminiumFresh = freshTrack(aluminiumManual);
+    const siliconCommands = siliconFresh?.commands.join('\n') ?? '';
+    const aluminiumCommands = aluminiumFresh?.commands.join('\n') ?? '';
+    for (const token of ['prepare-reference', 'static-scf.in', 'audit-scf', 'extract-runtime']) {
+      if (!siliconCommands.includes(token)) {
+        errors.push('Silicon fresh-runtime is missing ' + token);
+      }
+    }
+    if (!/separate|does not change|not.*historical/i.test(siliconFresh?.boundary ?? '')) {
+      errors.push('Silicon fresh-runtime must remain separate from assembled historical lineage');
+    }
+    if (!aluminiumCommands.includes('extract-runtime') || !aluminiumCommands.includes('--dos-data')) {
+      errors.push('Aluminium fresh-runtime must expose native DOS extraction');
+    }
+    if (aluminiumCommands.includes('prepare-reference')) {
+      errors.push('Aluminium fresh-runtime must not add a relaxation handoff');
+    }
+    if (!/no relaxation/i.test(aluminiumFresh?.boundary ?? '')) {
+      errors.push('Aluminium fresh-runtime must state that no relaxation is included');
+    }
+
+    const stage = (workflow, id) => workflow.reader_route.stages.find((item) => item.id === id);
+    for (const [id, token] of [
+      ['relaxation-reference-geometry', 'prepare-reference'],
+      ['scf', 'audit-scf'],
+      ['plot', 'extract-runtime'],
+      ['preserve', 'package-study'],
+    ]) {
+      const commands = stage(siliconManual, id)?.action?.commands?.join('\n') ?? '';
+      if (!commands.includes(token)) {
+        errors.push('Silicon reader stage ' + id + ' is missing action ' + token);
+      }
+    }
+  }
+
+  const guideChecks = [
+    [
+      'src/content/practical-guides/prepare-fixed-geometry-reference-calculation.md',
+      ['last complete', 'accepted-geometry.inc', 'static-scf.in', 'audit-scf'],
+    ],
+    [
+      'src/content/practical-guides/converge-basis-cutoffs-and-grids.md',
+      ['for ecut in 30 40 50', 'for kmesh in 6 8 10', 'extract-runtime', 'Energy convergence does not imply'],
+    ],
+    [
+      'src/content/practical-guides/package-reusable-reference-state-lineage.md',
+      ['manifest.json', 'INVENTORY.tsv', 'SHA256SUMS', 'sha256sum -c', '--run-regeneration-check'],
+    ],
+  ];
+  for (const [path, tokens] of guideChecks) {
+    const text = readFileForManualAcceptance(path, 'utf8');
+    for (const token of tokens) {
+      if (!text.includes(token)) errors.push(path + ' is missing ' + token);
+    }
+    if (/\bG[0-5]\b/.test(text)) {
+      errors.push(path + ' exposes an internal evidence gate code');
+    }
+  }
+}
+
 
 if (errors.length > 0) {
   console.error(`A–E workflow validation failed (${errors.length}):`);
