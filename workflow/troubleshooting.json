@@ -1,0 +1,397 @@
+{
+  "schema_version": 1,
+  "role": "symptom-first-static-support-route",
+  "public_heading": "Troubleshoot a calculation",
+  "intro": "Start from the symptom that is present in the files, not from a guessed cause. Preserve the failed state, make the first discriminating check, and change one justified condition at a time.",
+  "boundary": "This supporting index does not replace the A-E research workflow or software documentation. Program failure, solver convergence, observable convergence, physical validity, and a supported scientific claim remain separate questions.",
+  "sources": [
+    {
+      "id": "qe-pw-troubleshooting",
+      "title": "PWscf User Guide: Troubleshooting",
+      "organization": "Quantum ESPRESSO",
+      "url": "https://www.quantum-espresso.org/Doc/pw_user_guide/node21.html",
+      "accessed_at": "2026-08-10"
+    },
+    {
+      "id": "qe-ph-troubleshooting",
+      "title": "PHonon User Guide: Troubleshooting",
+      "organization": "Quantum ESPRESSO",
+      "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node18.html",
+      "accessed_at": "2026-08-10"
+    },
+    {
+      "id": "vasp-electronic-convergence-troubleshooting",
+      "title": "Troubleshooting electronic convergence",
+      "organization": "VASP Wiki",
+      "url": "https://vasp.at/wiki/Troubleshooting_electronic_convergence",
+      "accessed_at": "2026-08-10"
+    },
+    {
+      "id": "vasp-imaginary-phonon-modes",
+      "title": "How to handle imaginary phonon modes",
+      "organization": "VASP Wiki",
+      "url": "https://vasp.at/wiki/How_to_handle_imaginary_phonon_modes",
+      "accessed_at": "2026-08-10"
+    },
+    {
+      "id": "abinit-ground-state-faq",
+      "title": "Ground-state FAQ",
+      "organization": "ABINIT",
+      "url": "https://docs.abinit.org/faq/ground_state/",
+      "accessed_at": "2026-08-10"
+    },
+    {
+      "id": "abinit-general-faq",
+      "title": "General questions FAQ",
+      "organization": "ABINIT",
+      "url": "https://docs.abinit.org/faq/general_questions/",
+      "accessed_at": "2026-08-10"
+    },
+    {
+      "id": "abinit-dfpt-faq",
+      "title": "DFPT FAQ",
+      "organization": "ABINIT",
+      "url": "https://docs.abinit.org/faq/dfpt/",
+      "accessed_at": "2026-08-10"
+    },
+    {
+      "id": "gpaw-convergence-issues",
+      "title": "Convergence Issues",
+      "organization": "GPAW",
+      "url": "https://gpaw.readthedocs.io/documentation/convergence.html",
+      "accessed_at": "2026-08-10"
+    },
+    {
+      "id": "cp2k-scf-convergence-guide",
+      "title": "How to make an SCF run converge",
+      "organization": "CP2K",
+      "url": "https://manual.cp2k.org/cp2k-2026_2-branch/methods/dft/convergence.html",
+      "accessed_at": "2026-08-10"
+    }
+  ],
+  "records": [
+    {
+      "slug": "job-stops-before-completion",
+      "title": "The job stops before the calculation completes",
+      "symptom": "The scheduler or launcher exits, the executable stops before its normal completion marker, or the output ends without a complete final electronic or ionic step.",
+      "first_check": "Read the scheduler state, exit code, standard output, and standard error together. Determine whether the executable launched, whether it read the input, and which program stage completed last.",
+      "cause_classes": [
+        "Launcher, module, shared-library, or MPI environment failure",
+        "Malformed, empty, or incorrectly redirected input",
+        "Wall-time, preemption, memory, disk, quota, or scratch failure",
+        "Application-level fatal error after execution began"
+      ],
+      "inspect": [
+        "Scheduler state, exit code, resource record, and job-level error stream",
+        "The first program banner and the last complete output block",
+        "Exact executable, version, launch command, input path, and scratch identity",
+        "Disk space, permissions, concurrent writers, and incomplete artifacts"
+      ],
+      "safe_next_action": [
+        "Correct only the demonstrated environment, resource, input, or storage fault.",
+        "If a diagnostic rerun is required, keep the scientific input unchanged and use isolated scratch with the smallest justified resource change."
+      ],
+      "preserve_before_retry": [
+        "Input, job script, job ID, launch command, standard output, and standard error",
+        "Executable version, scheduler exit and resource record, and a hash or inventory of produced artifacts"
+      ],
+      "do_not_conclude": "A stopped job does not show that the SCF problem is scientifically unconverged, that the structure is unstable, or that a material property is absent. The run may have produced no usable DFT evidence.",
+      "related_topic_slugs": [
+        "validate-results-and-scientific-conclusions"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "abinit-general-faq"
+      ]
+    },
+    {
+      "slug": "input-or-method-rejected",
+      "title": "The input, pseudopotential, or method is rejected",
+      "symptom": "The program reports an input-reading error, unknown keyword, missing file, incompatible pseudopotential family, or inconsistent exchange-correlation setup.",
+      "first_check": "Read the first fatal message against the input reference for the version that actually ran. Verify that the input is plain text and identify every pseudopotential or dataset exactly.",
+      "cause_classes": [
+        "Syntax or keyword mismatch between the input and software version",
+        "Encoding, line-ending, path, permission, or empty-file problem",
+        "Incompatible exchange-correlation and pseudopotential or dataset choices",
+        "Invalid charge, spin, occupation, or boundary-condition specification"
+      ],
+      "inspect": [
+        "The exact rejected namelist, keyword, tag, and preceding error context",
+        "File type, line endings, paths, permissions, and referenced filenames",
+        "Pseudopotential metadata, exchange-correlation identity, valence configuration, and hashes",
+        "Charge, spin, occupation, and boundary-condition declarations"
+      ],
+      "safe_next_action": [
+        "Correct one evidenced input or compatibility fault at a time, using the documentation for the executed version.",
+        "Do not force an override merely to make the parser continue when it changes the declared method."
+      ],
+      "preserve_before_retry": [
+        "The rejected input and complete error output",
+        "Executable version and exact pseudopotential or dataset identities and hashes"
+      ],
+      "do_not_conclude": "Successful parsing does not establish that the method is appropriate, that the numerical setup is converged, or that the resulting state is physically meaningful.",
+      "related_topic_slugs": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "abinit-general-faq"
+      ]
+    },
+    {
+      "slug": "scf-does-not-converge",
+      "title": "The electronic SCF cycle does not converge",
+      "symptom": "The reported electronic residual does not reach its stopping condition, oscillates, rises after falling, or reaches the iteration limit.",
+      "first_check": "Audit the structure, electron count, charge, spin state, occupations, band count, and residual history before changing the mixer or eigensolver.",
+      "cause_classes": [
+        "Implausible geometry, charge, spin state, or initial density",
+        "Metallic occupation switching, too few empty states, or inadequate k-point sampling",
+        "Long-wavelength charge sloshing or unsuitable density mixing",
+        "Insufficient accuracy in the inner eigenproblem or an unsuitable solver"
+      ],
+      "inspect": [
+        "Residual and total-energy trends over every electronic iteration",
+        "Occupations, Fermi level, empty-state coverage, and k-point sampling",
+        "Magnetization or other state labels and whether they change during the cycle",
+        "Geometry, close contacts, warnings, and the exact stopping condition"
+      ],
+      "safe_next_action": [
+        "First correct the model, state, occupations, band coverage, or sampling problem that the output demonstrates.",
+        "Then test one documented mixer or eigensolver change in a bounded diagnostic run and return to the accepted numerical setup before interpreting a result."
+      ],
+      "preserve_before_retry": [
+        "Complete input and output, including the full iteration history and warnings",
+        "Parent-state identity, restart ancestry, executable version, and hashes of reused artifacts"
+      ],
+      "do_not_conclude": "An SCF failure is not proof of physical instability. Conversely, a reported SCF convergence condition does not establish the lowest relevant state, observable convergence, model correctness, or a supported scientific claim.",
+      "related_topic_slugs": [
+        "calculate-reference-ground-state",
+        "test-numerical-convergence"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "vasp-electronic-convergence-troubleshooting",
+        "abinit-ground-state-faq",
+        "gpaw-convergence-issues",
+        "cp2k-scf-convergence-guide"
+      ]
+    },
+    {
+      "slug": "eigensolver-or-fermi-level-error",
+      "title": "The eigensolver, band count, or Fermi-level search fails",
+      "symptom": "The output reports a diagonalization failure, unconverged eigenvectors, insufficient bands, or an inability to determine the Fermi level.",
+      "first_check": "Verify geometry, electron count, pseudopotential or dataset identity, occupations, k-point sampling, broadening, and band count before switching algorithms.",
+      "cause_classes": [
+        "Invalid structure, electron count, charge, or pseudopotential or dataset",
+        "Too few empty states or unsuitable occupations and broadening",
+        "Too sparse a k-point mesh for the occupation treatment",
+        "Numerical-library, build, or eigensolver failure"
+      ],
+      "inspect": [
+        "Cell, coordinates, short distances, electron count, and charge",
+        "Band count, final-state occupations, broadening, and k-point mesh",
+        "Pseudopotential or dataset provenance and warnings",
+        "Whether the same failure reproduces with another supported build or solver"
+      ],
+      "safe_next_action": [
+        "Correct the structure, state, band coverage, occupations, or sampling first.",
+        "Use a documented robust eigensolver only as a controlled diagnostic after the input objects are defensible."
+      ],
+      "preserve_before_retry": [
+        "The exact error with its preceding output context and complete input",
+        "Pseudopotential or dataset hashes and executable, library, and build identities"
+      ],
+      "do_not_conclude": "Making an eigensolver finish does not prove that the converged electronic state is the intended state or the lowest relevant state.",
+      "related_topic_slugs": [
+        "calculate-reference-ground-state",
+        "test-numerical-convergence"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "vasp-electronic-convergence-troubleshooting",
+        "abinit-ground-state-faq",
+        "gpaw-convergence-issues"
+      ]
+    },
+    {
+      "slug": "restart-or-parent-artifact-rejected",
+      "title": "A restart or parent artifact cannot be read or trusted",
+      "symptom": "The program cannot recover a calculation, rejects a restart, or a downstream task cannot find or read the expected density, wavefunction, save tree, or response artifact.",
+      "first_check": "Bind the artifact to its exact parent path, project or prefix, program version, termination state, representation, and hash before attempting reuse.",
+      "cause_classes": [
+        "Incomplete or corrupt write from a failed parent run",
+        "Wrong ancestry, path, project, prefix, or stale artifact",
+        "Incompatible software version or Gamma-only versus k-point representation",
+        "Concurrent jobs writing the same scratch identity"
+      ],
+      "inspect": [
+        "Artifact inventory, size, hash, timestamp, and parent output",
+        "Project or prefix, scratch directory, version, and sampling representation",
+        "Parent termination and solver markers and the downstream reader's exact error",
+        "Concurrent jobs or copied files that could have changed the artifact"
+      ],
+      "safe_next_action": [
+        "Regenerate the artifact from an accepted parent or start from scratch when lineage or integrity cannot be established.",
+        "Use restart conversion or reuse only where the official compatibility contract explicitly permits it."
+      ],
+      "preserve_before_retry": [
+        "A manifest and hashes of the failing artifact set and its parent output",
+        "The failed reader output, exact paths, project or prefix, version, and launch command"
+      ],
+      "do_not_conclude": "A filename, readable file, or successful restart does not prove correct lineage, parent convergence, or suitability for the downstream observable.",
+      "related_topic_slugs": [
+        "calculate-reference-ground-state",
+        "validate-results-and-scientific-conclusions"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "qe-ph-troubleshooting",
+        "cp2k-scf-convergence-guide"
+      ]
+    },
+    {
+      "slug": "io-memory-or-parallel-failure",
+      "title": "I/O, memory, MPI, or scratch fails",
+      "symptom": "The run reports an I/O error, segmentation fault, out-of-memory termination, disk or quota failure, or an intermittent parallel or network-filesystem error.",
+      "first_check": "Read the scheduler resource and exit record with standard error, then inspect disk space, quota, permissions, scratch identity, and concurrent writers.",
+      "cause_classes": [
+        "Insufficient memory or stack and an unsuitable parallel decomposition",
+        "Disk space, quota, permissions, or network-filesystem failure",
+        "MPI, compiler, mathematical-library, or hardware incompatibility",
+        "Two jobs sharing a project, prefix, filename, or scratch directory"
+      ],
+      "inspect": [
+        "Scheduler state, peak memory, exit code, and node-level error messages",
+        "Free space, quota, permissions, ownership, and scratch location",
+        "MPI and library versions, process layout, and reproducibility across supported environments",
+        "Concurrent processes, repeated project identities, and partial files"
+      ],
+      "safe_next_action": [
+        "Correct the demonstrated resource, storage, parallel, or environment fault and give every run an isolated scratch identity.",
+        "Do not continue from an artifact whose write integrity is uncertain."
+      ],
+      "preserve_before_retry": [
+        "Job ID, command, resource request, standard output, standard error, and host/software identity",
+        "Scratch inventory, relevant file hashes, ownership, and the observed resource or storage limit"
+      ],
+      "do_not_conclude": "An infrastructure or I/O failure is not physical instability, numerical evidence for a material, or a scientifically meaningful negative result.",
+      "related_topic_slugs": [
+        "validate-results-and-scientific-conclusions"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "abinit-general-faq"
+      ]
+    },
+    {
+      "slug": "geometry-optimization-stalls",
+      "title": "The geometry optimization stalls or exits without an acceptable structure",
+      "symptom": "The optimizer reports an error, reaches its step limit, repeats large moves, or exits without satisfying the active force and stress conditions.",
+      "first_check": "Verify electronic convergence at every ionic step, then inspect every free force component, relevant stress component, displacement, constraint, and electronic-state identity.",
+      "cause_classes": [
+        "Noisy forces caused by insufficient electronic or numerical convergence",
+        "Poor initial geometry, close contacts, or an unintended electronic state",
+        "Incorrect constraints, relaxed degrees of freedom, or cell objective",
+        "Floppy modes, excessive ionic steps, or inconsistent energy and force quality"
+      ],
+      "inspect": [
+        "The final complete force block and every active constraint",
+        "Relevant stress components, geometry trajectory, step sizes, and objective history",
+        "Electronic convergence and state identity at each ionic step",
+        "Initial and final geometries, symmetry changes, and numerical settings that control force quality"
+      ],
+      "safe_next_action": [
+        "Run a fresh fixed-geometry electronic evaluation on the exact final coordinates and audit its forces, stress, and state.",
+        "Correct force-quality, geometry, or degree-of-freedom problems before making one bounded optimizer or step-control change."
+      ],
+      "preserve_before_retry": [
+        "The complete trajectory, initial and final structures, constraints, and active degrees of freedom",
+        "All inputs and outputs needed to bind force, stress, electronic state, and restart ancestry"
+      ],
+      "do_not_conclude": "Optimizer completion does not establish a global minimum, the lowest relevant electronic state, dynamical stability, or target-observable convergence.",
+      "related_topic_slugs": [
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "gpaw-convergence-issues",
+        "cp2k-scf-convergence-guide"
+      ]
+    },
+    {
+      "slug": "symmetry-or-kq-mapping-mismatch",
+      "title": "Detected symmetry or k/q mapping differs from the intended model",
+      "symptom": "The code finds fewer operations than expected, changes the irreducible mesh, reports a q-point star or degeneracy error, or identifies a different primitive-cell relation.",
+      "first_check": "Compare the exact cell, fractional coordinates, coordinate precision, and magnetic state with the operations reported by the code and with the declared computational model.",
+      "cause_classes": [
+        "Rounded coordinates, a rotated cell, or sites only approximately related by symmetry",
+        "Primitive-versus-conventional-cell or supercell ambiguity",
+        "A q point near but not exactly at the intended high-symmetry position",
+        "Fractional translations, FFT-grid compatibility, or magnetic symmetry"
+      ],
+      "inspect": [
+        "Cell matrix, fractional coordinates, significant figures, species, and magnetic order",
+        "Reported operations, primitive-cell relation, and irreducible k- or q-point sets",
+        "The exact structure transformation and symmetry tolerance used before the run",
+        "Whether cutoff or cell changes altered an automatically selected real-space grid"
+      ],
+      "safe_next_action": [
+        "Correct or standardize the intentional model and regenerate every dependent k mesh, q mesh, and path.",
+        "Do not disable symmetry merely to suppress a diagnostic without explaining the model change."
+      ],
+      "preserve_before_retry": [
+        "Source and transformed structures, transformation record, tolerance, and software version",
+        "Before-and-after symmetry reports and all dependent sampling definitions"
+      ],
+      "do_not_conclude": "A changed symmetry count alone does not establish a phase transition, broken physics, or a software defect.",
+      "related_topic_slugs": [
+        "build-or-modify-computational-model",
+        "harmonic-phonons"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "qe-ph-troubleshooting",
+        "abinit-general-faq"
+      ]
+    },
+    {
+      "slug": "imaginary-phonon-frequencies",
+      "title": "The harmonic phonon calculation contains imaginary frequencies",
+      "symptom": "One or more dynamical-matrix eigenvalues are negative, corresponding to imaginary phonon frequencies; some outputs or plots show these frequencies with a negative sign at Gamma or another q point.",
+      "first_check": "Classify acoustic and non-acoustic modes, q point, magnitude, and eigenvector, then audit the parent geometry, residual forces and stress, electronic convergence, and response convergence.",
+      "cause_classes": [
+        "Acoustic-sum-rule violation, interpolation artifact, or numerical noise",
+        "Residual force, stress, or an insufficiently converged electronic parent",
+        "Insufficient cutoff, k mesh, q mesh, supercell, or force-constant range",
+        "Incorrect masses or data, or a genuine instability of the chosen structure"
+      ],
+      "inspect": [
+        "Frequencies, eigenvectors, q-point identity, degeneracy, and whether the mode is acoustic",
+        "Parent forces, stress, structure, electronic thresholds, and response thresholds",
+        "k/q commensurability, q ledger or supercell, interpolation, masses, and non-analytic treatment",
+        "Mode-displaced structures and convergence of the mode under controlled numerical changes"
+      ],
+      "safe_next_action": [
+        "Use an acoustic sum rule only as a diagnostic, then converge the parent state, response, and sampling and inspect the eigenvector.",
+        "Recalculate on the accepted structure before following a mode or making a physical stability claim."
+      ],
+      "preserve_before_retry": [
+        "Parent and phonon inputs and outputs, dynamical matrices or force constants, and q-point ledger",
+        "Mode eigenvectors, raw frequencies, interpolation settings, software version, and convergence series"
+      ],
+      "do_not_conclude": "An imaginary frequency alone does not prove a physical instability. Removing it with an acoustic sum rule or a single parameter change does not validate the phonon calculation or establish full-zone dynamical stability.",
+      "related_topic_slugs": [
+        "harmonic-phonons",
+        "test-numerical-convergence",
+        "optimize-structure"
+      ],
+      "official_source_ids": [
+        "qe-ph-troubleshooting",
+        "vasp-imaginary-phonon-modes",
+        "abinit-dfpt-faq"
+      ]
+    }
+  ]
+}

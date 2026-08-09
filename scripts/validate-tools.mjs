@@ -29,6 +29,7 @@ if (!/^\d{4}-\d{2}-\d{2}$/.test(registry.verified_at ?? '')) errors.push('regist
 const slugs = new Set();
 const names = new Set();
 const urls = new Set();
+const verificationTexts = new Set();
 const accessKinds = new Set(['open-source', 'restricted-license', 'registration-required', 'free-proprietary']);
 const expectedSlugs = [
   'abinit', 'aiida', 'ase', 'cp2k', 'epw', 'materials-project', 'phono3py', 'phonopy', 'pymatgen',
@@ -41,9 +42,11 @@ for (const tool of registry.tools ?? []) {
   names.add(tool.name);
   if (!accessKinds.has(tool.access)) errors.push(`${tool.slug}: access`);
   if (typeof tool.role !== 'string' || !tool.role.trim()) errors.push(`${tool.slug}: role`);
-  for (const key of ['use_when', 'first_action']) {
+  for (const key of ['use_when', 'first_action', 'verify']) {
     if (typeof tool[key] !== 'string' || !tool[key].trim()) errors.push(`${tool.slug}: ${key}`);
   }
+  if (verificationTexts.has(tool.verify)) errors.push(`${tool.slug}: duplicate verify`);
+  verificationTexts.add(tool.verify);
   for (const key of ['input_objects', 'output_objects']) {
     if (!Array.isArray(tool[key]) || !tool[key].length || tool[key].some((item) => typeof item !== 'string' || !item.trim())) {
       errors.push(`${tool.slug}: ${key}`);
@@ -72,9 +75,11 @@ for (const tool of registry.tools ?? []) {
 }
 for (const tool of guideTools) if (!slugs.has(tool)) errors.push(`practical tool missing: ${tool}`);
 if (JSON.stringify([...slugs].sort()) !== JSON.stringify(expectedSlugs)) errors.push('tool slug inventory changed');
-if (registry.tools.length !== 17 || urls.size !== 49) errors.push(`expected 17/49, found ${registry.tools.length}/${urls.size}`);
+if (registry.tools.length !== 17 || verificationTexts.size !== 17 || urls.size !== 49) {
+  errors.push(`expected 17 tools/17 verification checks/49 URLs, found ${registry.tools.length}/${verificationTexts.size}/${urls.size}`);
+}
 if (errors.length) {
   console.error(errors.join('\n'));
   process.exit(1);
 }
-console.log('Tool registry valid: 17 identity-reviewed tools with actual-use orientation, primary A-E entries, 17 curated start links, 49 deduplicated HTTPS resource URLs, and complete practical-tool coverage.');
+console.log('Tool registry valid: 17 identity-reviewed tools with actual-use orientation, 17 tool-specific verification checks, primary A-E entries, 17 curated start links, 49 deduplicated HTTPS resource URLs, and complete practical-tool coverage.');

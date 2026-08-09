@@ -1,8 +1,61 @@
 {
   "schema_version": 1,
-  "scope": "All external sources cited by reviewed public topic articles and their scientific review records.",
+  "scope": "All external sources cited by reviewed public topic articles, their scientific review records, and declared supporting workflow pages.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 269,
+  "expected_unique_urls": 291,
+  "supporting_pages": [
+    {
+      "page_slug": "troubleshooting",
+      "route": "/operations/troubleshooting/",
+      "source_files": [
+        "workflow/troubleshooting.json",
+        "src/pages/operations/troubleshooting.astro"
+      ],
+      "links": [
+        { "kind": "page", "url": "https://docs.abinit.org/faq/dfpt/" },
+        { "kind": "page", "url": "https://docs.abinit.org/faq/general_questions/" },
+        { "kind": "page", "url": "https://docs.abinit.org/faq/ground_state/" },
+        { "kind": "page", "url": "https://gpaw.readthedocs.io/documentation/convergence.html" },
+        { "kind": "page", "url": "https://manual.cp2k.org/cp2k-2026_2-branch/methods/dft/convergence.html" },
+        { "kind": "page", "url": "https://vasp.at/wiki/How_to_handle_imaginary_phonon_modes" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Troubleshooting_electronic_convergence" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node18.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/pw_user_guide/node21.html" }
+      ]
+    },
+    {
+      "page_slug": "software-bridge",
+      "route": "/operations/software-bridge/",
+      "source_files": [
+        "workflow/software-bridge.json",
+        "src/pages/operations/software-bridge.astro"
+      ],
+      "links": [
+        { "kind": "page", "url": "https://docs.abinit.org/guide/abinit/" },
+        { "kind": "page", "url": "https://docs.abinit.org/topics/ElecDOS/" },
+        { "kind": "page", "url": "https://docs.abinit.org/topics/GeoOpt/" },
+        { "kind": "page", "url": "https://docs.abinit.org/tutorial/base1/" },
+        { "kind": "page", "url": "https://docs.abinit.org/tutorial/base3/" },
+        { "kind": "page", "url": "https://docs.abinit.org/tutorial/rf2/" },
+        { "kind": "page", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/PRINT/BAND_STRUCTURE.html" },
+        { "kind": "page", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html" },
+        { "kind": "page", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/VIBRATIONAL_ANALYSIS.html" },
+        { "kind": "page", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/EXT_RESTART.html" },
+        { "kind": "page", "url": "https://manual.cp2k.org/trunk/methods/electronic_structure/dos.html" },
+        { "kind": "page", "url": "https://manual.cp2k.org/trunk/methods/optimization/geometry_and_cell_opt.html" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Band-structure_calculation_using_density-functional_theory" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Computing_the_phonon_dispersion_and_DOS" },
+        { "kind": "page", "url": "https://vasp.at/wiki/DOSCAR" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Electronic_ground-state_properties" },
+        { "kind": "page", "url": "https://vasp.at/wiki/ISTART" },
+        { "kind": "page", "url": "https://vasp.at/wiki/Structure_optimization" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_BANDS.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/pp_user_guide/" }
+      ]
+    }
+  ],
   "topics": [
     {"topic_slug":"validate-results-and-scientific-conclusions","article":"src/content/topics/validate-results-and-scientific-conclusions.md","review":"docs/reviews/2026-08-04-validate-results-and-scientific-conclusions.md","links":[{"kind":"doi","url":"https://doi.org/10.1016/S0376-0421%2802%2900005-2"},{"kind":"doi","url":"https://doi.org/10.6028/NIST.IR.8298"},{"kind":"page","url":"https://www.nationalacademies.org/read/25303/chapter/3"},{"kind":"doi","url":"https://doi.org/10.1126/science.aad3000"},{"kind":"doi","url":"https://doi.org/10.1063/1.1390175"}]},
     {"topic_slug":"analyze-and-compare-results","article":"src/content/topics/analyze-and-compare-results.md","review":"docs/reviews/2026-08-04-analyze-and-compare-results.md","links":[{"kind":"doi","url":"https://doi.org/10.1126/science.aad3000"},{"kind":"page","url":"https://arxiv.org/abs/2008.10402"},{"kind":"page","url":"https://arxiv.org/abs/2001.01851"},{"kind":"page","url":"https://pml.nist.gov/cuu/Uncertainty/international1.html"},{"kind":"page","url":"https://arxiv.org/abs/2003.12510"}]},

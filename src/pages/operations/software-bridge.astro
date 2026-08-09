@@ -1,0 +1,451 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import bridge from '../../../workflow/software-bridge.json';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const verifiedAt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+}).format(new Date(`${bridge.verified_at}T00:00:00Z`));
+---
+
+<BaseLayout
+  title="Software Bridge"
+  description="A software-neutral bridge from six scientific DFT tasks to official Quantum ESPRESSO, VASP, ABINIT, and CP2K starting points."
+  current="operations"
+>
+  <main class="bridge" data-software-bridge>
+    <header class="bridge__intro">
+      <p class="eyebrow">Research Workflow support</p>
+      <h1>Software Bridge</h1>
+      <p class="lede">
+        Start from the scientific task, not from a package menu. Each row names the upstream term,
+        the parent object you must preserve, the artifacts to inspect first, and one official place to continue.
+      </p>
+      <p class="scope">
+        This is a cross-index, not a parameter manual, software ranking, compatibility promise, or claim that
+        different codes produce interchangeable results. Official pages were checked on {verifiedAt}; match them
+        to the version you actually run.
+      </p>
+    </header>
+
+    <nav class="task-index" aria-label="Software Bridge tasks">
+      <p>Go directly to a task:</p>
+      <ol>
+        {bridge.tasks.map((task) => (
+          <li><a href={`#${task.id}`}>{task.title}</a></li>
+        ))}
+      </ol>
+    </nav>
+
+    {bridge.tasks.map((task, taskIndex) => (
+      <section class="task" id={task.id} data-task-id={task.id} aria-labelledby={`${task.id}-title`}>
+        <div class="task__heading">
+          <p class="task__number">Task {taskIndex + 1}</p>
+          <h2 id={`${task.id}-title`}>{task.title}</h2>
+          <p>{task.scientific_action}</p>
+        </div>
+
+        <dl class="task__contract">
+          <div>
+            <dt>Required parent object</dt>
+            <dd>{task.required_parent_object}</dd>
+          </div>
+          <div>
+            <dt>Validation requirement</dt>
+            <dd>{task.validation_requirement}</dd>
+          </div>
+        </dl>
+
+        <p class="parent-link">
+          DRW parent task:
+          <a data-parent-link href={`${base}/operations/${task.parent_topic}/`}>open {task.parent_topic.replaceAll('-', ' ')}</a>
+        </p>
+
+        <div class="table-frame" tabindex="0" aria-label={`${task.title} software implementations`}>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Software and upstream term</th>
+                <th scope="col">Required inputs</th>
+                <th scope="col">Produced artifacts</th>
+                <th scope="col">First inspection</th>
+                <th scope="col">Official start</th>
+              </tr>
+            </thead>
+            <tbody>
+              {task.implementations.map((implementation) => (
+                <tr data-code={implementation.tool_slug}>
+                  <td data-label="Software and upstream term">
+                    <a data-tool-link href={`${base}/tools/${implementation.tool_slug}/`}>{implementation.software}</a>
+                    <p class="term"><code>{implementation.terminology}</code></p>
+                  </td>
+                  <td data-label="Required inputs" data-required-inputs>
+                    <ul>
+                      {implementation.required_inputs.map((item) => <li>{item}</li>)}
+                    </ul>
+                  </td>
+                  <td data-label="Produced artifacts" data-artifacts>
+                    <ul>
+                      {implementation.artifacts.map((item) => <li>{item}</li>)}
+                    </ul>
+                  </td>
+                  <td data-label="First inspection">
+                    <p>{implementation.first_inspection}</p>
+                    <p class="boundary" data-check-boundary><strong>Do not equate:</strong> {implementation.boundary}</p>
+                  </td>
+                  <td data-label="Official start">
+                    <a
+                      data-official-link
+                      href={implementation.official_url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >{implementation.first_official_start}</a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p class="task__boundary" data-task-boundary>
+          <strong>Scientific boundary:</strong> {task.non_equivalence}
+        </p>
+      </section>
+    ))}
+
+    <section class="use" aria-labelledby="use-title">
+      <h2 id="use-title">Use the bridge without losing the research question</h2>
+      <ol>
+        <li>Open the DRW parent task and decide what observable and validation standard the question requires.</li>
+        <li>Preserve the required parent object before translating it into package-specific inputs.</li>
+        <li>Use the official start link for current command and parameter semantics.</li>
+        <li>Return to the stated inspection and non-equivalence boundary before accepting or continuing the result.</li>
+      </ol>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .bridge {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1rem, 3.5vw, 2.75rem) 5rem;
+  }
+
+  .bridge__intro {
+    max-width: 56rem;
+  }
+
+  .eyebrow,
+  .task__number {
+    margin: 0 0 0.6rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: #6f5c45;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+  }
+
+  .lede {
+    max-width: 48rem;
+    margin: 1.5rem 0 0;
+    font-size: clamp(1.12rem, 2.2vw, 1.42rem);
+    line-height: 1.55;
+  }
+
+  .scope {
+    max-width: 50rem;
+    margin: 1.25rem 0 0;
+    padding-left: 1rem;
+    border-left: 2px solid #b9a98f;
+    color: #50483e;
+    line-height: 1.65;
+  }
+
+  .task-index {
+    margin: 3rem 0 0;
+    padding: 1.1rem 0;
+    border-top: 1px solid #cfc4b4;
+    border-bottom: 1px solid #cfc4b4;
+  }
+
+  .task-index p {
+    margin: 0 0 0.65rem;
+    font-weight: 650;
+  }
+
+  .task-index ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem 1.4rem;
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  a {
+    color: #8a3f25;
+    text-underline-offset: 0.18em;
+  }
+
+  a:focus-visible,
+  .table-frame:focus-visible {
+    outline: 2px solid #8a3f25;
+    outline-offset: 3px;
+  }
+
+  .task {
+    scroll-margin-top: 2rem;
+    padding: clamp(3.5rem, 7vw, 6.5rem) 0 0;
+  }
+
+  .task__heading {
+    max-width: 56rem;
+  }
+
+  .task__heading h2,
+  .use h2 {
+    margin: 0;
+    font-size: clamp(1.9rem, 4vw, 3.1rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .task__heading > p:last-child {
+    margin: 0.9rem 0 0;
+    font-size: 1.08rem;
+    line-height: 1.6;
+  }
+
+  .task__contract {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin: 1.8rem 0 0;
+    padding: 1.2rem 0;
+    border-top: 1px solid #d8cfc1;
+    border-bottom: 1px solid #d8cfc1;
+  }
+
+  .task__contract div {
+    min-width: 0;
+  }
+
+  dt {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6f5c45;
+  }
+
+  dd {
+    margin: 0.5rem 0 0;
+    line-height: 1.55;
+  }
+
+  .parent-link {
+    margin: 1rem 0;
+    color: #50483e;
+  }
+
+  .table-frame {
+    max-width: 100%;
+    overflow-x: auto;
+    border-top: 2px solid #2e2923;
+    border-bottom: 1px solid #9b8d79;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 0.91rem;
+  }
+
+  th,
+  td {
+    vertical-align: top;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  th {
+    padding: 0.8rem 0.7rem;
+    border-bottom: 1px solid #9b8d79;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.67rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #5b5042;
+  }
+
+  td {
+    padding: 1rem 0.7rem 1.15rem;
+    border-bottom: 1px solid #ddd5c9;
+    line-height: 1.48;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  th:nth-child(1) { width: 18%; }
+  th:nth-child(2) { width: 20%; }
+  th:nth-child(3) { width: 19%; }
+  th:nth-child(4) { width: 30%; }
+  th:nth-child(5) { width: 13%; }
+
+  td p,
+  td ul {
+    margin-top: 0;
+  }
+
+  td ul {
+    margin-bottom: 0;
+    padding-left: 1.05rem;
+  }
+
+  td li + li {
+    margin-top: 0.38rem;
+  }
+
+  .term {
+    margin: 0.55rem 0 0;
+  }
+
+  code {
+    font-size: 0.82em;
+    white-space: normal;
+  }
+
+  .boundary {
+    margin: 0.8rem 0 0;
+    color: #634734;
+  }
+
+  .task__boundary {
+    max-width: 65rem;
+    margin: 1.15rem 0 0;
+    padding-left: 1rem;
+    border-left: 2px solid #8a3f25;
+    line-height: 1.58;
+  }
+
+  .use {
+    max-width: 56rem;
+    margin-top: clamp(4rem, 8vw, 7rem);
+    padding-top: 2rem;
+    border-top: 2px solid #2e2923;
+  }
+
+  .use ol {
+    margin: 1.25rem 0 0;
+    padding-left: 1.35rem;
+    line-height: 1.65;
+  }
+
+  .use li + li {
+    margin-top: 0.65rem;
+  }
+
+  @media (max-width: 760px) {
+    .bridge {
+      padding-inline: clamp(0.85rem, 4vw, 1.35rem);
+    }
+
+    .task__contract {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .table-frame {
+      overflow: visible;
+    }
+
+    table,
+    tbody,
+    tr,
+    td {
+      display: block;
+      width: 100%;
+    }
+
+    thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    tbody tr {
+      padding: 0.4rem 0 0.8rem;
+      border-bottom: 1px solid #9b8d79;
+    }
+
+    tbody tr:last-child {
+      border-bottom: 0;
+    }
+
+    td {
+      display: grid;
+      grid-template-columns: minmax(6.8rem, 31%) minmax(0, 1fr);
+      gap: 0.65rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e5ded4;
+    }
+
+    td::before {
+      content: attr(data-label);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.65rem;
+      line-height: 1.4;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #6f5c45;
+    }
+
+    td > * {
+      min-width: 0;
+    }
+
+    td > a:first-child + .term {
+      grid-column: 2;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .task-index ol {
+      display: block;
+    }
+
+    .task-index li + li {
+      margin-top: 0.35rem;
+    }
+
+    td {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+
+    td > a:first-child + .term {
+      grid-column: auto;
+    }
+  }
+</style>

@@ -1,0 +1,536 @@
+{
+  "schema_version": 1,
+  "authority": "Secondary software implementation cross-index for existing DFT Research Workflow tasks.",
+  "scope_note": "This bridge names the first official implementation entry for the same scientific task. It is not a software manual, compatibility promise, benchmark, ranking, or claim that different codes are numerically equivalent.",
+  "verified_at": "2026-08-10",
+  "software_order": [
+    "quantum-espresso",
+    "vasp",
+    "abinit",
+    "cp2k"
+  ],
+  "tasks": [
+    {
+      "id": "fixed-geometry-scf",
+      "title": "Fixed-geometry SCF",
+      "parent_topic": "calculate-reference-ground-state",
+      "scientific_action": "Converge the electronic state for one declared structure without moving atoms or changing the cell.",
+      "required_parent_object": "An audited structure and cell, composition, method, basis or pseudopotential identities, Brillouin-zone sampling, occupations, charge, and spin intent.",
+      "validation_requirement": "Inspect program completion and electronic convergence separately, then check that the converged state is the intended physical and numerical reference.",
+      "non_equivalence": "Program completion is not SCF convergence, and SCF convergence is not proof that the reference state, numerical setup, or physical model is valid.",
+      "implementations": [
+        {
+          "tool_slug": "quantum-espresso",
+          "software": "Quantum ESPRESSO",
+          "terminology": "pw.x with calculation='scf'",
+          "first_official_start": "pw.x input description",
+          "official_url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html",
+          "required_inputs": [
+            "pw.x input with the fixed structure and cell",
+            "pseudopotential files with preserved identities",
+            "declared k-point, occupation, charge, and spin setup"
+          ],
+          "artifacts": [
+            "stdout",
+            "outdir/prefix.save structured state",
+            "charge density and wavefunctions when written"
+          ],
+          "first_inspection": "Confirm normal termination and the achieved SCF threshold separately; then inspect total energy, occupations, magnetization when relevant, and the exact prefix/outdir lineage.",
+          "boundary": "JOB DONE is not SCF convergence, and a converged pw.x state is not automatically a trusted reference state."
+        },
+        {
+          "tool_slug": "vasp",
+          "software": "VASP",
+          "terminology": "Electronic ground-state calculation and electronic minimization",
+          "first_official_start": "Electronic ground-state properties",
+          "official_url": "https://vasp.at/wiki/Electronic_ground-state_properties",
+          "required_inputs": [
+            "POSCAR, INCAR, and KPOINTS for a fixed structure",
+            "licensed POTCAR selected outside DRW",
+            "declared charge, occupation, and magnetic initialization"
+          ],
+          "artifacts": [
+            "OUTCAR and OSZICAR",
+            "vasprun.xml or vaspout.h5 when produced",
+            "CHGCAR and WAVECAR when requested"
+          ],
+          "first_inspection": "Check whether the electronic loop met its criterion rather than merely reaching NELM; then inspect energy, forces, stress, occupations, and the final magnetic state.",
+          "boundary": "OUTCAR, CHGCAR, or WAVECAR can exist without a converged or scientifically suitable reference state."
+        },
+        {
+          "tool_slug": "abinit",
+          "software": "ABINIT",
+          "terminology": "abinit ground-state SCF calculation",
+          "first_official_start": "Basic tutorial: total energy and related quantities",
+          "official_url": "https://docs.abinit.org/tutorial/base1/",
+          "required_inputs": [
+            "ABI input for the fixed geometry and cell",
+            "pseudopotential files with preserved identities",
+            "declared basis, k-point, occupation, charge, and spin setup"
+          ],
+          "artifacts": [
+            "run log and .abo output",
+            "_GSR.nc result",
+            "_DEN and _WFK files when requested"
+          ],
+          "first_inspection": "Read the run log for errors and warnings, then inspect the SCF stopping criterion and the final state in the .abo or _GSR.nc artifact.",
+          "boundary": "A completed .abo or a written _GSR.nc file is not by itself evidence of SCF convergence or reference-state validity."
+        },
+        {
+          "tool_slug": "cp2k",
+          "software": "CP2K",
+          "terminology": "Quickstep DFT with RUN_TYPE ENERGY or ENERGY_FORCE and DFT/SCF",
+          "first_official_start": "DFT/SCF input reference",
+          "official_url": "https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html",
+          "required_inputs": [
+            "CP2K input with coordinates, cell, and the intended RUN_TYPE",
+            "basis-set and potential identities",
+            "declared SCF, k-point, occupation, charge, and spin setup"
+          ],
+          "artifacts": [
+            "main output",
+            "wavefunction restart file when printed",
+            "generated input restart file when enabled"
+          ],
+          "first_inspection": "Confirm the SCF convergence marker and iteration history, then inspect final energy, forces or stress when requested, and the exact PROJECT and method identity.",
+          "boundary": "ENERGY_FORCE evaluates forces but does not optimize geometry, and a WFN or restart file is not proof of convergence or compatibility."
+        }
+      ]
+    },
+    {
+      "id": "geometry-cell-optimization",
+      "title": "Geometry or cell optimization",
+      "parent_topic": "optimize-structure",
+      "scientific_action": "Relax declared atomic and, when intended, cell degrees of freedom on one stated potential-energy surface.",
+      "required_parent_object": "An audited starting structure, a force-capable electronic setup and, when cell degrees of freedom are active, a stress-capable setup; explicit constraints and free degrees of freedom; and the intended external stress or pressure condition when applicable.",
+      "validation_requirement": "Inspect every active ionic and cell stopping criterion, the last electronic steps, constraints, final geometry, forces, and, when applicable, stress before accepting the optimized structure or handing it to a separate static reference calculation.",
+      "non_equivalence": "Electronic convergence is not ionic or cell convergence; reaching a step limit or writing a final structure is not a successful optimization.",
+      "implementations": [
+        {
+          "tool_slug": "quantum-espresso",
+          "software": "Quantum ESPRESSO",
+          "terminology": "pw.x with calculation='relax' or calculation='vc-relax'",
+          "first_official_start": "pw.x input description",
+          "official_url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html",
+          "required_inputs": [
+            "audited starting structure and cell",
+            "force-quality SCF and pseudopotential setup",
+            "explicit atomic constraints and intended cell degrees of freedom"
+          ],
+          "artifacts": [
+            "stdout with ionic and electronic histories",
+            "final atomic coordinates and cell",
+            "outdir/prefix.save restart state"
+          ],
+          "first_inspection": "Check the final complete force block component by component, honoring constraints; for vc-relax also inspect stress, cell criteria, and the final lattice.",
+          "boundary": "relax and vc-relax solve different problems; aggregate Total force alone does not establish the force gate, and a final static SCF remains separate."
+        },
+        {
+          "tool_slug": "vasp",
+          "software": "VASP",
+          "terminology": "Structure optimization controlled by IBRION, NSW, and ISIF",
+          "first_official_start": "Structure optimization",
+          "official_url": "https://vasp.at/wiki/Structure_optimization",
+          "required_inputs": [
+            "audited POSCAR and compatible electronic setup",
+            "declared ionic and cell degrees of freedom",
+            "selective-dynamics constraints and stopping criteria"
+          ],
+          "artifacts": [
+            "OUTCAR and OSZICAR histories",
+            "CONTCAR final written structure",
+            "XDATCAR trajectory when written"
+          ],
+          "first_inspection": "Check electronic convergence at each ionic step, the actual stop reason, all relevant forces and stress components, constraints, and the final cell and coordinates.",
+          "boundary": "A CONTCAR written at NSW or another stop is not proof of ionic or cell convergence, and optimization output is not a substitute for a final static reference run."
+        },
+        {
+          "tool_slug": "abinit",
+          "software": "ABINIT",
+          "terminology": "Geometry optimization with geoopt or ionmov, with optcell for cell relaxation",
+          "first_official_start": "GeoOpt topic",
+          "official_url": "https://docs.abinit.org/topics/GeoOpt/",
+          "required_inputs": [
+            "audited starting geometry and electronic setup",
+            "declared geoopt or ionmov algorithm and stopping criteria",
+            "optcell, constraints, and target stress when cell relaxation is intended"
+          ],
+          "artifacts": [
+            "run log and .abo history",
+            "HIST.nc relaxation history",
+            "final GSR and geometry artifacts when written"
+          ],
+          "first_inspection": "Inspect warnings, active force and stress criteria, the actual termination condition, and the last positions and cell recorded in .abo and HIST.nc.",
+          "boundary": "HIST.nc preserves a trajectory but does not prove convergence; fixed-cell and variable-cell optimizations must not be treated as interchangeable."
+        },
+        {
+          "tool_slug": "cp2k",
+          "software": "CP2K",
+          "terminology": "RUN_TYPE GEO_OPT with MOTION/GEO_OPT or RUN_TYPE CELL_OPT with MOTION/CELL_OPT",
+          "first_official_start": "Geometry and cell optimization",
+          "official_url": "https://manual.cp2k.org/trunk/methods/optimization/geometry_and_cell_opt.html",
+          "required_inputs": [
+            "audited coordinates, cell, and force-evaluation method",
+            "declared GEO_OPT or CELL_OPT degrees of freedom",
+            "constraints, stress method, target pressure, and stopping criteria"
+          ],
+          "artifacts": [
+            "main output and position trajectory",
+            ".cell and .stress histories for cell optimization",
+            "generated .restart input"
+          ],
+          "first_inspection": "Inspect all active maximum and RMS force and displacement criteria; for CELL_OPT also check pressure or stress, the final cell, and the last SCF cycles.",
+          "boundary": "Reaching MAX_ITER or writing .restart is not convergence; GEO_OPT is not CELL_OPT, and neither is a finite-temperature equilibrium calculation."
+        }
+      ]
+    },
+    {
+      "id": "band-path",
+      "title": "Band path",
+      "parent_topic": "band-structure",
+      "scientific_action": "Evaluate Kohn-Sham eigenvalues along an explicit reciprocal-space path from a trusted reference state.",
+      "required_parent_object": "A converged and identifiable reference density or state at the exact structure and method, plus an explicit path convention, labels, energy reference, and sufficient band count.",
+      "validation_requirement": "Verify reference-state lineage, path coordinates and labels, band count and eigenvalue convergence, and the energy zero before interpreting the plot.",
+      "non_equivalence": "A high-symmetry path is not full-Brillouin-zone evidence for metallicity, global band extrema, a Fermi surface, or an indirect gap.",
+      "implementations": [
+        {
+          "tool_slug": "quantum-espresso",
+          "software": "Quantum ESPRESSO",
+          "terminology": "pw.x bands calculation followed by bands.x",
+          "first_official_start": "bands.x input description",
+          "official_url": "https://www.quantum-espresso.org/Doc/INPUT_BANDS.html",
+          "required_inputs": [
+            "trusted pw.x reference state in the same prefix/outdir",
+            "explicit k-point path and labels",
+            "declared number of bands and energy reference"
+          ],
+          "artifacts": [
+            "pw.x band eigenvalues along the path",
+            "bands.x filband output",
+            "formatted or .gnu data when requested"
+          ],
+          "first_inspection": "Confirm the prefix/outdir lineage, exact path and labels, band count, eigenvalue convergence, and the Fermi or valence reference used for plotting.",
+          "boundary": "bands.x ordering or formatting does not establish convergence, and a path plot does not establish full-zone metallicity or global extrema."
+        },
+        {
+          "tool_slug": "vasp",
+          "software": "VASP",
+          "terminology": "DFT band structure via KPOINTS_OPT or a fixed-density ICHARG=11 continuation",
+          "first_official_start": "Band-structure calculation using density-functional theory",
+          "official_url": "https://vasp.at/wiki/Band-structure_calculation_using_density-functional_theory",
+          "required_inputs": [
+            "converged regular-mesh DFT reference and compatible CHGCAR for the split route",
+            "explicit line path or KPOINTS_OPT path",
+            "sufficient NBANDS and the SCF energy reference"
+          ],
+          "artifacts": [
+            "EIGENVAL and OUTCAR eigenvalues",
+            "vasprun.xml or vaspout.h5 band data",
+            "PROCAR projections when requested"
+          ],
+          "first_inspection": "Identify which official route was used, preserve the parent density, inspect the exact path, band count, orbital convergence, and reuse the SCF Fermi reference rather than a path-only estimate.",
+          "boundary": "The ordinary ICHARG=11 fixed-density route is for normal DFT band calculations; hybrid band structures require a different official route and must not use that ordinary fixed-density shortcut."
+        },
+        {
+          "tool_slug": "abinit",
+          "software": "ABINIT",
+          "terminology": "Fixed-potential NSCF band calculation with iscf=-2",
+          "first_official_start": "Basic tutorial: crystalline structure and band structure",
+          "official_url": "https://docs.abinit.org/tutorial/base3/",
+          "required_inputs": [
+            "trusted ground-state density from the same model",
+            "explicit k-point path convention and labels",
+            "declared band count and wavefunction tolerance"
+          ],
+          "artifacts": [
+            ".abo path and eigenvalue output",
+            "_EIG band eigenvalues",
+            "_GSR.nc result when requested"
+          ],
+          "first_inspection": "Confirm density handoff, fixed-potential setup, path convention, number of occupied and empty bands, wavefunction convergence, and the chosen energy zero.",
+          "boundary": "A fixed-potential Kohn-Sham path is not a quasiparticle band structure and does not prove full-zone extrema or the experimental gap."
+        },
+        {
+          "tool_slug": "cp2k",
+          "software": "CP2K",
+          "terminology": "DFT/PRINT/BAND_STRUCTURE with KPOINT_SET",
+          "first_official_start": "BAND_STRUCTURE input reference",
+          "official_url": "https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/PRINT/BAND_STRUCTURE.html",
+          "required_inputs": [
+            "converged SCF state on an appropriate DFT/KPOINTS integration mesh",
+            "explicit BAND_STRUCTURE/KPOINT_SET path",
+            "declared ADDED_MOS and compatible diagonalization route"
+          ],
+          "artifacts": [
+            "main output",
+            "configured BAND_STRUCTURE file",
+            "path and eigenvalue records"
+          ],
+          "first_inspection": "Distinguish the SCF integration mesh from the plotted path, then inspect path coordinates, added bands, energy reference, and current feature compatibility for k-point calculations.",
+          "boundary": "DFT/KPOINTS is an SCF integration set, not the band path; a successful path calculation is not full-zone evidence, and CP2K feature compatibility is version and method dependent."
+        }
+      ]
+    },
+    {
+      "id": "dense-dos-pdos",
+      "title": "Dense DOS or PDOS",
+      "parent_topic": "density-of-states-and-projected-density-of-states",
+      "scientific_action": "Evaluate total and projected electronic states from a sufficiently dense full-zone sampling of one trusted reference state.",
+      "required_parent_object": "A trusted reference state, a target-converged uniform Brillouin-zone mesh, declared occupations and energy zero, and an explicit projection definition for PDOS.",
+      "validation_requirement": "Check mesh and weights, occupations or tetrahedra, energy reference, unoccupied-state coverage, normalization, and projection completeness before interpreting peaks or states at the Fermi level.",
+      "non_equivalence": "A smooth curve is not a convergence test; broadening cannot replace k-point convergence, and projected weights are not a unique charge partition.",
+      "implementations": [
+        {
+          "tool_slug": "quantum-espresso",
+          "software": "Quantum ESPRESSO",
+          "terminology": "Dense pw.x NSCF calculation followed by dos.x or projwfc.x",
+          "first_official_start": "Post-processing user guide",
+          "official_url": "https://www.quantum-espresso.org/Doc/pp_user_guide/",
+          "required_inputs": [
+            "trusted pw.x SCF reference in the same prefix/outdir",
+            "dense uniform full-zone NSCF mesh and sufficient bands",
+            "declared occupations, energy window, and projection intent"
+          ],
+          "artifacts": [
+            "dense NSCF electronic state",
+            "dos.x fildos output",
+            "projwfc.x total and projected DOS files"
+          ],
+          "first_inspection": "Inspect k-point weights and mesh density, occupations, energy zero, band coverage, DOS normalization, and whether the projected channels account for the intended states.",
+          "boundary": "A high-symmetry band path cannot supply a DOS, smoothing cannot repair sparse sampling, and projwfc weights are basis-dependent projections."
+        },
+        {
+          "tool_slug": "vasp",
+          "software": "VASP",
+          "terminology": "Dense regular-mesh DOS calculation with DOSCAR and optional LORBIT projections",
+          "first_official_start": "DOSCAR",
+          "official_url": "https://vasp.at/wiki/DOSCAR",
+          "required_inputs": [
+            "trusted compatible reference state",
+            "dense uniform KPOINTS mesh and sufficient NBANDS",
+            "declared smearing or tetrahedron and LORBIT projection setup"
+          ],
+          "artifacts": [
+            "DOSCAR total and projected data",
+            "OUTCAR energy and setup record",
+            "vasprun.xml or vaspout.h5 data"
+          ],
+          "first_inspection": "Check the uniform mesh, integration method, energy zero, unoccupied-state range, NEDOS resolution, and the LORBIT-dependent projection definition.",
+          "boundary": "DOSCAR existence or a visually smooth DOS does not prove k-point convergence, and atom-orbital projections remain method dependent."
+        },
+        {
+          "tool_slug": "abinit",
+          "software": "ABINIT",
+          "terminology": "Electronic DOS with prtdos and optional partial-DOS controls",
+          "first_official_start": "ElecDOS topic",
+          "official_url": "https://docs.abinit.org/topics/ElecDOS/",
+          "required_inputs": [
+            "trusted compatible ground-state setup",
+            "dense uniform k-point sampling and sufficient bands",
+            "declared prtdos method, energy grid, and projection spheres"
+          ],
+          "artifacts": [
+            "_DOS total DOS file",
+            "partial or orbital-weighted DOS when requested",
+            ".abo and _GSR.nc provenance records"
+          ],
+          "first_inspection": "Inspect the k mesh and weights, prtdos integration method, energy increment and zero, normalization, band coverage, and atom-sphere projection choices.",
+          "boundary": "A smooth _DOS curve does not establish sampling convergence, and partial DOS depends on the declared projection construction."
+        },
+        {
+          "tool_slug": "cp2k",
+          "software": "CP2K",
+          "terminology": "DFT/PRINT/DOS with PDOS subsections",
+          "first_official_start": "Density of States",
+          "official_url": "https://manual.cp2k.org/trunk/methods/electronic_structure/dos.html",
+          "required_inputs": [
+            "trusted Quickstep state and a converged DFT/KPOINTS mesh",
+            "sufficient molecular orbitals above the occupied states",
+            "declared energy zero, projection selections, and broadening"
+          ],
+          "artifacts": [
+            ".dos total state-resolved data",
+            ".pdos projected data",
+            "optional broadened CURVE outputs"
+          ],
+          "first_inspection": "Check the installed CP2K version, full-zone mesh, orbital coverage, energy zero, projection selections, and both raw and broadened outputs.",
+          "boundary": "The unified DOS/PDOS and CURVE interface described here requires CP2K 2026.2 or later; Gamma-only molecular levels and broadened curves are not a converged periodic DOS."
+        }
+      ]
+    },
+    {
+      "id": "harmonic-phonons",
+      "title": "Harmonic phonons",
+      "parent_topic": "harmonic-phonons",
+      "scientific_action": "Evaluate harmonic vibrational modes from a trusted stationary structure using a declared q-grid or supercell route.",
+      "required_parent_object": "A trusted relaxed or stationary structure, tighter force-quality electronic convergence, a declared q-grid or displacement supercell, and the symmetry and long-range electrostatic treatment required by the material.",
+      "validation_requirement": "Check the parent stationary state, electronic and phonon thresholds, q or supercell coverage, acoustic behavior, mode eigenvectors, and sensitivity of any imaginary or near-zero frequency.",
+      "non_equivalence": "An imaginary frequency can be physical or numerical; Gamma-only modes are not a full phonon dispersion, and enforcing an acoustic sum rule cannot repair unconverged force constants.",
+      "implementations": [
+        {
+          "tool_slug": "quantum-espresso",
+          "software": "Quantum ESPRESSO",
+          "terminology": "ph.x to q2r.x to matdyn.x",
+          "first_official_start": "PHonon user guide",
+          "official_url": "https://www.quantum-espresso.org/Doc/ph_user_guide/",
+          "required_inputs": [
+            "trusted pw.x reference state at the stationary structure",
+            "declared irreducible q points or regular q mesh",
+            "tight electronic and response thresholds"
+          ],
+          "artifacts": [
+            "ph.x dynamical-matrix files",
+            "q2r.x real-space force constants",
+            "matdyn.x frequencies and eigenvectors"
+          ],
+          "first_inspection": "Check that every required q point completed and converged, then inspect acoustic modes, sum-rule sensitivity, eigenvectors, and the q-mesh dependence of negative frequencies.",
+          "boundary": "One Gamma calculation is not a dispersion; an imaginary mode may be physical or numerical, and post-processing cannot rescue unconverged dynamical matrices."
+        },
+        {
+          "tool_slug": "vasp",
+          "software": "VASP",
+          "terminology": "Finite-difference or DFPT force constants followed by phonon dispersion or DOS",
+          "first_official_start": "Computing the phonon dispersion and DOS",
+          "official_url": "https://vasp.at/wiki/Computing_the_phonon_dispersion_and_DOS",
+          "required_inputs": [
+            "trusted equilibrium structure and tightly converged forces",
+            "declared finite-displacement supercell or supported DFPT route",
+            "QPOINTS path or uniform q mesh and version-compatible phonon controls"
+          ],
+          "artifacts": [
+            "OUTCAR mode or force-constant records",
+            "vaspout.h5 force constants when produced",
+            "phonon dispersion or DOS output for the declared route"
+          ],
+          "first_inspection": "Check the stationary parent, supercell and displacement or DFPT route, electronic convergence, q sampling, acoustic modes, and the eigenvectors of negative frequencies.",
+          "boundary": "Finite differences and DFPT have different requirements; zone-center output is not full-q stability, and native dispersion features are version dependent."
+        },
+        {
+          "tool_slug": "abinit",
+          "software": "ABINIT",
+          "terminology": "DFPT with abinit, DDB assembly, and anaddb interpolation",
+          "first_official_start": "Second DFPT tutorial",
+          "official_url": "https://docs.abinit.org/tutorial/rf2/",
+          "required_inputs": [
+            "trusted ground state at the stationary structure",
+            "complete symmetry-reduced perturbations on a regular q grid",
+            "declared non-analytic, charge-neutrality, and interpolation setup"
+          ],
+          "artifacts": [
+            "individual and merged DDB data",
+            "anaddb .abo output",
+            "PHBST.nc frequencies and eigenvectors"
+          ],
+          "first_inspection": "Verify that the DDB contains every required irreducible perturbation and q point, then inspect anaddb settings, acoustic behavior, LO-TO treatment, and negative-mode sensitivity.",
+          "boundary": "DDB existence is not DDB completeness; Gamma modes are not a full dispersion, and interpolation cannot replace converged electronic and q-grid inputs."
+        },
+        {
+          "tool_slug": "cp2k",
+          "software": "CP2K",
+          "terminology": "RUN_TYPE VIBRATIONAL_ANALYSIS with finite-difference normal modes",
+          "first_official_start": "VIBRATIONAL_ANALYSIS input reference",
+          "official_url": "https://manual.cp2k.org/trunk/CP2K_INPUT/VIBRATIONAL_ANALYSIS.html",
+          "required_inputs": [
+            "tightly optimized stationary structure",
+            "very tightly converged force evaluation",
+            "declared finite-difference displacement and periodicity treatment"
+          ],
+          "artifacts": [
+            "main vibrational-analysis output",
+            "finite-difference Hessian information",
+            "Gamma-point frequencies and normal modes"
+          ],
+          "first_inspection": "Confirm the stationary parent and tight SCF convergence, then inspect displacement sensitivity, low modes, translational or rotational cleanup, and mode eigenvectors.",
+          "boundary": "This entry is for Gamma-point normal modes and is not a general-q phonon dispersion workflow; thermochemistry is also limited to the documented molecular Gamma-point scope."
+        }
+      ]
+    },
+    {
+      "id": "restart-continuation",
+      "title": "Restart or continuation",
+      "parent_topic": "document-and-preserve-study",
+      "scientific_action": "Continue an interrupted calculation or deliberately hand a preserved state to a compatible next calculation without losing ancestry.",
+      "required_parent_object": "An identifiable parent run with exact code and version, model and method identities, structure and state files, stop point, hashes or equivalent identities, and a written statement of what will be restored.",
+      "validation_requirement": "Inspect ancestry and compatibility before launch, then distinguish same-run restart, electronic-state initialization, geometry handoff, and a scientifically new calculation.",
+      "non_equivalence": "A restart file is not proof of compatible ancestry; density, wavefunction, geometry, optimizer, and scheduler continuation are distinct handoffs.",
+      "implementations": [
+        {
+          "tool_slug": "quantum-espresso",
+          "software": "Quantum ESPRESSO",
+          "terminology": "restart_mode='restart' for the same interrupted pw.x calculation",
+          "first_official_start": "pw.x input description",
+          "official_url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html",
+          "required_inputs": [
+            "the preserved prefix.save tree and required wavefunctions",
+            "the same prefix, outdir, calculation type, structure, and method",
+            "recorded interruption point and parent output"
+          ],
+          "artifacts": [
+            "continued stdout",
+            "updated prefix.save state",
+            "wavefunction and ionic-history data used by the same run"
+          ],
+          "first_inspection": "Verify exact parent ancestry, prefix/outdir ownership, preserved files, code and input compatibility, and whether the previous run stopped cleanly enough to restart.",
+          "boundary": "restart_mode continues the same compatible calculation ancestry; reading a saved density for a changed task is a new calculation and is not the same restart claim."
+        },
+        {
+          "tool_slug": "vasp",
+          "software": "VASP",
+          "terminology": "ISTART from WAVECAR, ICHARG from CHGCAR, or explicit CONTCAR-to-POSCAR geometry handoff",
+          "first_official_start": "ISTART",
+          "official_url": "https://vasp.at/wiki/ISTART",
+          "required_inputs": [
+            "preserved WAVECAR, CHGCAR, or CONTCAR selected for the intended handoff",
+            "compatible structure, cell, basis, k mesh, method, charge, and spin setup",
+            "parent OUTCAR and stop reason"
+          ],
+          "artifacts": [
+            "continued OUTCAR and OSZICAR",
+            "new WAVECAR and CHGCAR when written",
+            "new CONTCAR for an ionic continuation"
+          ],
+          "first_inspection": "Identify whether the ancestry is wavefunction, charge-density, or geometry based; check parent compatibility, chosen POSCAR, magnetic state, and whether the run actually read the intended file.",
+          "boundary": "WAVECAR, CHGCAR, and CONTCAR carry different ancestry; their presence does not prove compatibility, and a fixed-charge continuation is not a same-state SCF restart."
+        },
+        {
+          "tool_slug": "abinit",
+          "software": "ABINIT",
+          "terminology": "getwfk or getden dataset handoff, external WFK or DEN reads, and restartxf from HIST.nc",
+          "first_official_start": "ABINIT executable and file guide",
+          "official_url": "https://docs.abinit.org/guide/abinit/",
+          "required_inputs": [
+            "identified WFK, DEN, GSR, or HIST parent artifact",
+            "compatible dataset, structure, cell, pseudopotential, basis, and method",
+            "parent log, .abo output, and stop point"
+          ],
+          "artifacts": [
+            "continued log and .abo output",
+            "new WFK, DEN, GSR, or HIST files",
+            "explicit dataset-to-dataset lineage"
+          ],
+          "first_inspection": "Confirm the exact source dataset or external file, inspect log errors, model compatibility, and whether density, wavefunctions, cell, positions, or optimizer history are actually being restored.",
+          "boundary": "A get variable, an external file read, and restartxf express different ancestry; density is not wavefunction, and HIST reconstruction is not a generic new-run shortcut."
+        },
+        {
+          "tool_slug": "cp2k",
+          "software": "CP2K",
+          "terminology": "EXT_RESTART for selected saved run state",
+          "first_official_start": "EXT_RESTART input reference",
+          "official_url": "https://manual.cp2k.org/trunk/CP2K_INPUT/EXT_RESTART.html",
+          "required_inputs": [
+            "identified .restart input and the parent files selected for restoration",
+            "compatible PROJECT, structure, cell, basis, potential, method, and k-point formalism",
+            "explicit EXT_RESTART selections and parent output"
+          ],
+          "artifacts": [
+            "continued main output",
+            "new generated .restart input",
+            "new state artifacts requested by the continued calculation"
+          ],
+          "first_inspection": "Verify parent ancestry, every state component selected by EXT_RESTART, and that each restored artifact belongs to the declared parent run.",
+          "boundary": "EXT_RESTART restores only selected saved state; omitted, incompatible, or unintended components can change the continuation, and a restart artifact is not proof of convergence."
+        }
+      ]
+    }
+  ]
+}

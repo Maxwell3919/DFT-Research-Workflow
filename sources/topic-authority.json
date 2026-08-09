@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "authority": "workflow/topics.json",
+  "scope_note": "Each topic points to one official or maintained-project source already under scientific review, an optional specialist source when it changes interpretation or claim limits, and at most one textbook role. These references support deeper checking; they are not prerequisites for using the operational page.",
+  "textbooks": {
+    "martin": {
+      "citation": "Richard M. Martin, Electronic Structure: Basic Theory and Practical Methods, second edition, Cambridge University Press (2020).",
+      "role": "Use for formal meaning, relationships between electronic-structure methods, and limits on what a result can support.",
+      "do_not_copy": "Do not copy derivations, equations, chapter prose, figures, or the book's teaching sequence."
+    },
+    "sholl-steckel": {
+      "citation": "David S. Sholl and Janice A. Steckel, Density Functional Theory: A Practical Introduction, Wiley (2009).",
+      "role": "Use for practical plane-wave DFT reasoning, controlled comparisons, convergence design, and the distinction between numerical convergence and physical accuracy.",
+      "do_not_copy": "Do not copy worked exercises, examples, figures, chapter prose, or parameter recommendations without a page-specific test."
+    },
+    "giustino": {
+      "citation": "Feliciano Giustino, Materials Modelling Using Density Functional Theory: Properties and Predictions, Oxford University Press (2014).",
+      "role": "Use to connect theory to measurable materials properties and to identify the calculation and validation needed for a target observable.",
+      "do_not_copy": "Do not copy derivations, examples, figures, chapter prose, or a textbook workflow as a universal calculation protocol."
+    }
+  },
+  "entries": [
+    {
+      "topic_slug": "obtain-material-structure",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Materials Project API: querying data", "url": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data" }
+      ]
+    },
+    {
+      "topic_slug": "build-or-modify-computational-model",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "ASE: building structures", "url": "https://docs.ase-lib.org/ase/build/build.html" }
+      ]
+    },
+    {
+      "topic_slug": "choose-dft-method-and-computational-setup",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO pw.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" }
+      ]
+    },
+    {
+      "topic_slug": "test-numerical-convergence",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO pw.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
+        { "role": "specialist", "label": "SSSP verification study", "url": "https://doi.org/10.1038/s41524-018-0127-2" }
+      ]
+    },
+    {
+      "topic_slug": "optimize-structure",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO pw.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" }
+      ]
+    },
+    {
+      "topic_slug": "calculate-reference-ground-state",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO pw.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" },
+        { "role": "specialist", "label": "SCF algorithms review", "url": "https://doi.org/10.1088/1361-648X/ab31c0" }
+      ]
+    },
+    {
+      "topic_slug": "relative-and-formation-energies",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Materials Project thermodynamic stability methodology", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/thermodynamic-stability" }
+      ]
+    },
+    {
+      "topic_slug": "equation-of-state-and-structural-phase-stability",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "ASE equation-of-state documentation", "url": "https://docs.ase-lib.org/ase/eos.html" }
+      ]
+    },
+    {
+      "topic_slug": "compositional-phase-stability-and-convex-hulls",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Materials Project phase-diagram methodology", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/phase-diagrams-pds" },
+        { "role": "specialist", "label": "Decomposition-reaction stability analysis", "url": "https://doi.org/10.1038/s41524-018-0143-2" }
+      ]
+    },
+    {
+      "topic_slug": "defect-formation-energies-and-charge-states",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "doped defect thermodynamics documentation", "url": "https://doped.readthedocs.io/en/stable/doped.thermodynamics.html" },
+        { "role": "specialist", "label": "Defect corrections review", "url": "https://doi.org/10.1103/RevModPhys.86.253" }
+      ]
+    },
+    {
+      "topic_slug": "surface-energy-and-work-function",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "VASP: computing the work function", "url": "https://vasp.at/wiki/Computing_the_work_function" },
+        { "role": "specialist", "label": "Surface-energy convergence analysis", "url": "https://doi.org/10.1088/0953-8984/8/36/005" }
+      ]
+    },
+    {
+      "topic_slug": "adsorption-energies",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "ASE surface construction documentation", "url": "https://docs.ase-lib.org/ase/build/surface.html" },
+        { "role": "specialist", "label": "First-principles surface thermodynamics", "url": "https://doi.org/10.1103/PhysRevB.65.035406" }
+      ]
+    },
+    {
+      "topic_slug": "interface-and-heterostructure-energetics",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "pymatgen interface analysis documentation", "url": "https://pymatgen.org/pymatgen.analysis.interfaces.html" },
+        { "role": "specialist", "label": "Interface-energy methodology review", "url": "https://doi.org/10.1038/s41524-019-0160-9" }
+      ]
+    },
+    {
+      "topic_slug": "band-structure",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO bands.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_BANDS.html" },
+        { "role": "specialist", "label": "SeeK-path convention", "url": "https://doi.org/10.1016/j.commatsci.2016.01.017" }
+      ]
+    },
+    {
+      "topic_slug": "density-of-states-and-projected-density-of-states",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO projwfc.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html" },
+        { "role": "specialist", "label": "Improved tetrahedron integration", "url": "https://doi.org/10.1103/PhysRevB.49.16223" }
+      ]
+    },
+    {
+      "topic_slug": "fermi-surface-and-full-brillouin-zone-analysis",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Wannier90 Fermi-surface tutorial", "url": "https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_6/" }
+      ]
+    },
+    {
+      "topic_slug": "charge-density-and-charge-redistribution",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO pp.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PP.html" }
+      ]
+    },
+    {
+      "topic_slug": "electrostatic-potential-and-band-alignment",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO pp.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PP.html" },
+        { "role": "specialist", "label": "Potential-lineup method", "url": "https://doi.org/10.1103/PhysRevB.35.8154" }
+      ]
+    },
+    {
+      "topic_slug": "chemical-bonding-analysis",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "RWTH COHP and LOBSTER project", "url": "https://schmeling.ac.rwth-aachen.de/cohp/" },
+        { "role": "specialist", "label": "COHP definition", "url": "https://doi.org/10.1021/j100135a014" }
+      ]
+    },
+    {
+      "topic_slug": "magnetic-configuration-and-ground-state-comparison",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO pw.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" }
+      ]
+    },
+    {
+      "topic_slug": "magnetic-anisotropy-and-exchange-interactions",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "VASP magnetic-anisotropy guide", "url": "https://vasp.at/wiki/Determining_the_Magnetic_Anisotropy" }
+      ]
+    },
+    {
+      "topic_slug": "elastic-constants-and-mechanical-properties",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "py4vasp elastic-modulus documentation", "url": "https://vasp.at/py4vasp/latest/calculation/elastic_modulus/" },
+        { "role": "specialist", "label": "Elastic stability criteria", "url": "https://doi.org/10.1103/PhysRevB.90.224104" }
+      ]
+    },
+    {
+      "topic_slug": "dielectric-response-and-born-effective-charges",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO ph.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html" },
+        { "role": "specialist", "label": "Density-functional perturbation theory review", "url": "https://doi.org/10.1103/RevModPhys.73.515" }
+      ]
+    },
+    {
+      "topic_slug": "polarization-and-ferroelectricity",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO polarization guide", "url": "https://www.quantum-espresso.org/Doc/pw_user_guide/node10.html" }
+      ]
+    },
+    {
+      "topic_slug": "piezoelectric-response",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "VASP linear-response guide", "url": "https://vasp.at/wiki/Linear_response" },
+        { "role": "specialist", "label": "Density-functional perturbation theory review", "url": "https://doi.org/10.1103/RevModPhys.73.515" }
+      ]
+    },
+    {
+      "topic_slug": "harmonic-phonons",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO ph.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html" },
+        { "role": "specialist", "label": "Density-functional perturbation theory review", "url": "https://doi.org/10.1103/RevModPhys.73.515" }
+      ]
+    },
+    {
+      "topic_slug": "anharmonic-phonons",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "phono3py workflow", "url": "https://phonopy.github.io/phono3py/workflow.html" },
+        { "role": "specialist", "label": "phono3py anharmonic-force-constant method", "url": "https://doi.org/10.1103/PhysRevB.91.054304" }
+      ]
+    },
+    {
+      "topic_slug": "lattice-thermal-transport",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "phono3py direct-solution documentation", "url": "https://phonopy.github.io/phono3py/direct-solution.html" },
+        { "role": "specialist", "label": "Iterative phonon BTE implementation", "url": "https://doi.org/10.1103/PhysRevB.86.174307" }
+      ]
+    },
+    {
+      "topic_slug": "electron-phonon-coupling",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "EPW electron-phonon coupling documentation", "url": "https://docs.epw-code.org/doc/Electron-phononCoupling.html" },
+        { "role": "specialist", "label": "Electron-phonon interactions review", "url": "https://doi.org/10.1103/RevModPhys.89.015003" }
+      ]
+    },
+    {
+      "topic_slug": "conventional-superconductivity",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "EPW input reference", "url": "https://docs.epw-code.org/Inputs/Inputs.html" },
+        { "role": "specialist", "label": "Allen-Dynes relation", "url": "https://doi.org/10.1103/PhysRevB.12.905" }
+      ]
+    },
+    {
+      "topic_slug": "reaction-paths-and-transition-states",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO neb.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_NEB.html" },
+        { "role": "specialist", "label": "Climbing-image nudged elastic band method", "url": "https://doi.org/10.1063/1.1329672" }
+      ]
+    },
+    {
+      "topic_slug": "diffusion-barriers",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO neb.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_NEB.html" },
+        { "role": "specialist", "label": "Climbing-image nudged elastic band method", "url": "https://doi.org/10.1063/1.1329672" }
+      ]
+    },
+    {
+      "topic_slug": "ab-initio-molecular-dynamics",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Quantum ESPRESSO pw.x input reference", "url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html" }
+      ]
+    },
+    {
+      "topic_slug": "finite-temperature-structural-sampling",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "PLUMED bias documentation", "url": "https://www.plumed.org/doc-v2.10/user-doc/html/_bias.html" },
+        { "role": "specialist", "label": "Metadynamics method", "url": "https://doi.org/10.1073/pnas.202427399" }
+      ]
+    },
+    {
+      "topic_slug": "independent-particle-optical-properties",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "VASP LOPTICS reference", "url": "https://vasp.at/wiki/index.php/LOPTICS" }
+      ]
+    },
+    {
+      "topic_slug": "time-dependent-response-and-spectroscopy",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Octopus response tutorial", "url": "https://octopus-code.org/documentation/main/tutorial/response/" }
+      ]
+    },
+    {
+      "topic_slug": "quasiparticle-corrections",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "ABINIT GW tutorial", "url": "https://docs.abinit.org/tutorial/gw1/" }
+      ]
+    },
+    {
+      "topic_slug": "excitons-and-bethe-salpeter-equation",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "BerkeleyGW BSE tutorial", "url": "https://berkeleygw.org/documentation/tutorial/tutorial-bethe-salpeter-equation/" }
+      ]
+    },
+    {
+      "topic_slug": "wannier-function-construction",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Wannier90 methodology", "url": "https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/methodology/" }
+      ]
+    },
+    {
+      "topic_slug": "berry-phase-and-berry-curvature",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Wannier90 postw90 Berry documentation", "url": "https://wannier90.readthedocs.io/en/latest/user_guide/postw90/berry/" }
+      ]
+    },
+    {
+      "topic_slug": "topological-invariants-and-boundary-states",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "Z2Pack numerical implementation", "url": "https://doi.org/10.1103/PhysRevB.95.075146" }
+      ]
+    },
+    {
+      "topic_slug": "electronic-transport",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "EPW GaN transport tutorial", "url": "https://docs.epw-code.org/tutorials/GaN-II.html" },
+        { "role": "specialist", "label": "BoltzTraP2 method", "url": "https://arxiv.org/abs/1712.07946" }
+      ]
+    },
+    {
+      "topic_slug": "quantum-transport",
+      "textbook_key": "martin",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "SIESTA TranSIESTA reference", "url": "https://docs.siesta-project.org/projects/siesta/en/5.4/reference/siesta.html#transiesta" },
+        { "role": "specialist", "label": "Landauer conductance", "url": "https://doi.org/10.1147/rd.13.0223" }
+      ]
+    },
+    {
+      "topic_slug": "analyze-and-compare-results",
+      "textbook_key": "giustino",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "NIST uncertainty guidance", "url": "https://pml.nist.gov/cuu/Uncertainty/international1.html" }
+      ]
+    },
+    {
+      "topic_slug": "validate-results-and-scientific-conclusions",
+      "textbook_key": "sholl-steckel",
+      "textbook_reason": null,
+      "references": [
+        { "role": "official", "label": "National Academies: computational model verification and validation", "url": "https://www.nationalacademies.org/read/25303/chapter/3" },
+        { "role": "specialist", "label": "Computational verification and validation review", "url": "https://doi.org/10.1016/S0376-0421%2802%2900005-2" }
+      ]
+    },
+    {
+      "topic_slug": "document-and-preserve-study",
+      "textbook_key": "none",
+      "textbook_reason": "Preservation is governed here by data and metadata standards rather than by a DFT textbook.",
+      "references": [
+        { "role": "official", "label": "RO-Crate 1.1 specification", "url": "https://www.researchobject.org/ro-crate/specification/1.1/introduction.html" }
+      ]
+    }
+  ]
+}

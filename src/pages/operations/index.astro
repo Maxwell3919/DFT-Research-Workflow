@@ -1,7 +1,126 @@
 ---
+import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { workflowSections } from '../../lib/workflow';
 import { withBase } from '../../lib/paths';
+import researchQuestionNavigator from '../../../workflow/research-question-navigator.json';
+
+type RelatedTopic = {
+  topic_slug: string;
+  context: string;
+};
+
+type GuideAction = {
+  type: 'guide';
+  guide_slug: string;
+  guide_kind: 'implementation' | 'worked-example' | 'visual-note';
+  evidence_boundary: string;
+};
+
+type NoGuideAction = {
+  type: 'no-guide';
+  statement: string;
+};
+
+type ResearchQuestion = {
+  id: string;
+  question: string;
+  required_observable: string;
+  topic_slug: string;
+  related_topics?: RelatedTopic[];
+  prerequisites: string;
+  first_action: GuideAction | NoGuideAction;
+  validation_requirement: string;
+  claim_limitation: string;
+};
+
+type NavigatorDefinition = {
+  schema_version: number;
+  role: string;
+  public_heading: string;
+  intro: string;
+  boundary: string;
+  questions: ResearchQuestion[];
+};
+
+type ResolvedGuideAction = GuideAction & {
+  title: string;
+  href: string;
+};
+
+type ResolvedQuestion = Omit<ResearchQuestion, 'first_action' | 'related_topics'> & {
+  topic: { slug: string; title: string };
+  relatedTopics: Array<RelatedTopic & { title: string; href: string }>;
+  firstAction: ResolvedGuideAction | NoGuideAction;
+};
+
+const navigatorDefinition = researchQuestionNavigator as NavigatorDefinition;
+const topicBySlug = new Map(
+  workflowSections.flatMap((section) =>
+    section.groups.flatMap((group) => group.topics.map((topic) => [topic.slug, topic] as const)),
+  ),
+);
+const practicalGuides = await getCollection('practicalGuides', ({ data }) => data.status === 'reviewed');
+const guideBySlug = new Map<string, CollectionEntry<'practicalGuides'>>();
+
+for (const guide of practicalGuides) {
+  if (guideBySlug.has(guide.data.guide_slug)) {
+    throw new Error(`Research Question Navigator: duplicate guide_slug ${guide.data.guide_slug}`);
+  }
+  guideBySlug.set(guide.data.guide_slug, guide);
+}
+
+if (navigatorDefinition.role !== 'editorial-question-to-existing-route-bridge') {
+  throw new Error('Research Question Navigator: definition must remain an editorial bridge to the A-E registry');
+}
+if (navigatorDefinition.questions.length !== 10) {
+  throw new Error(`Research Question Navigator: expected 10 bounded questions, found ${navigatorDefinition.questions.length}`);
+}
+
+const resolvedQuestions: ResolvedQuestion[] = navigatorDefinition.questions.map((question) => {
+  const topic = topicBySlug.get(question.topic_slug);
+  if (!topic) throw new Error(`Research Question Navigator: unresolved topic_slug ${question.topic_slug}`);
+
+  const relatedTopics = (question.related_topics ?? []).map((related) => {
+    const relatedTopic = topicBySlug.get(related.topic_slug);
+    if (!relatedTopic) throw new Error(`Research Question Navigator: unresolved related topic_slug ${related.topic_slug}`);
+    return {
+      ...related,
+      title: relatedTopic.title,
+      href: withBase(`operations/${relatedTopic.slug}/`),
+    };
+  });
+
+  let firstAction: ResolvedGuideAction | NoGuideAction;
+  if (question.first_action.type === 'guide') {
+    const guide = guideBySlug.get(question.first_action.guide_slug);
+    if (!guide) throw new Error(`Research Question Navigator: unresolved guide_slug ${question.first_action.guide_slug}`);
+    if (guide.data.topic_slug !== question.topic_slug) {
+      throw new Error(`Research Question Navigator: ${guide.data.guide_slug} belongs to ${guide.data.topic_slug}, not ${question.topic_slug}`);
+    }
+    if (guide.data.kind !== question.first_action.guide_kind) {
+      throw new Error(`Research Question Navigator: ${guide.data.guide_slug} kind is ${guide.data.kind}, not ${question.first_action.guide_kind}`);
+    }
+    const category = guide.data.kind === 'worked-example' ? 'examples' : 'guides';
+    firstAction = {
+      ...question.first_action,
+      title: guide.data.title,
+      href: withBase(`operations/${question.topic_slug}/${category}/${guide.data.guide_slug}/`),
+    };
+  } else {
+    if (practicalGuides.some((guide) => guide.data.topic_slug === question.topic_slug)) {
+      throw new Error(`Research Question Navigator: ${question.topic_slug} declares no guide despite a reviewed guide being available`);
+    }
+    firstAction = question.first_action;
+  }
+
+  return {
+    ...question,
+    topic,
+    relatedTopics,
+    firstAction,
+  };
+});
 ---
 
 <BaseLayout
@@ -17,38 +136,69 @@ import { withBase } from '../../lib/paths';
       </p>
     </header>
 
-    <section class="observable-selection" aria-labelledby="observable-heading">
+    <section class="observable-selection question-navigator" data-research-question-navigator aria-labelledby="question-navigator-heading">
       <header>
-        <h2 id="observable-heading">Choose the evidence before the calculation</h2>
-        <p>Different claims require different outputs. Start with the question, then open the task that produces or tests the needed quantity.</p>
+        <h2 id="question-navigator-heading">{navigatorDefinition.public_heading}</h2>
+        <p>{navigatorDefinition.intro}</p>
+        <p class="navigator-boundary">{navigatorDefinition.boundary}</p>
       </header>
-      <dl>
-        <div>
-          <dt>Is the structure stable for the claim I want to make?</dt>
-          <dd>
-            Candidate ranking requires <a href={withBase('operations/relative-and-formation-energies/')}>matched energy differences</a>; a stationary geometry requires <a href={withBase('operations/optimize-structure/')}>accepted forces and stress</a>; dynamical stability requires <a href={withBase('operations/harmonic-phonons/')}>phonons over the relevant q-space</a>. Choose the test that matches the claim.
-          </dd>
-        </div>
-        <div>
-          <dt>Is the material metallic?</dt>
-          <dd>
-            Inspect a sufficiently dense <a href={withBase('operations/fermi-surface-and-full-brillouin-zone-analysis/')}>full-zone electronic sample</a> and the <a href={withBase('operations/density-of-states-and-projected-density-of-states/')}>density of states near the Fermi level</a>. A high-symmetry band path alone is not full-Brillouin-zone evidence of metallicity.
-          </dd>
-        </div>
-        <div>
-          <dt>Is the reference crystal dynamically stable in the harmonic approximation?</dt>
-          <dd>
-            Calculate <a href={withBase('operations/harmonic-phonons/')}>harmonic phonons</a> over the q-space required by the claim, then test the q mesh or supercell and inspect possible numerical artifacts. A Γ-point result is not a general stability test.
-          </dd>
-        </div>
-        <div>
-          <dt>Could conventional electron–phonon superconductivity be supported?</dt>
-          <dd>
-            Establish qualified <a href={withBase('operations/harmonic-phonons/')}>phonons</a>, converge the <a href={withBase('operations/electron-phonon-coupling/')}>electron–phonon calculation</a>, and inspect α²F(ω), λ, ω<sub>log</sub>, the stated μ*, and the declared <a href={withBase('operations/conventional-superconductivity/')}>Tc model</a>. SCF convergence and one phonon calculation do not establish Tc.
-          </dd>
-        </div>
-      </dl>
+
+      <ol class="question-list">
+        {resolvedQuestions.map((question) => (
+          <li data-research-question={question.id}>
+            <div class="question-row">
+              <h3>{question.question}</h3>
+              <dl class="question-details">
+                <div>
+                  <dt>Required observable</dt>
+                  <dd>{question.required_observable}</dd>
+                </div>
+                <div>
+                  <dt>Go to</dt>
+                  <dd>
+                    <a data-primary-topic href={withBase(`operations/${question.topic.slug}/`)}>{question.topic.title}</a>
+                    {question.relatedTopics.map((related) => (
+                      <span class="related-route"> {related.context} <a data-related-topic href={related.href}>{related.title}</a>.</span>
+                    ))}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Before starting</dt>
+                  <dd>{question.prerequisites}</dd>
+                </div>
+                <div>
+                  <dt>First practical action</dt>
+                  <dd>
+                    {question.firstAction.type === 'guide' ? (
+                      <>
+                        <a data-first-action href={question.firstAction.href}>{question.firstAction.title}</a>
+                        <span> {question.firstAction.evidence_boundary}</span>
+                      </>
+                    ) : (
+                      <span class="no-guide" data-no-guide>{question.firstAction.statement}</span>
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Validate</dt>
+                  <dd>{question.validation_requirement}</dd>
+                </div>
+                <div>
+                  <dt>Does not establish</dt>
+                  <dd>{question.claim_limitation}</dd>
+                </div>
+              </dl>
+            </div>
+          </li>
+        ))}
+      </ol>
     </section>
+
+    <p class="workflow-support-links" data-workflow-support-links>
+      If a calculation fails or you need to translate the same scientific task into another code, start with
+      {' '}<a href={withBase('operations/troubleshooting/')}>Troubleshooting</a> or the
+      {' '}<a href={withBase('operations/software-bridge/')}>Software Bridge</a>.
+    </p>
 
     <section class="topic-directory" aria-labelledby="directory-heading">
       <header class="directory-heading">
@@ -112,20 +262,20 @@ import { withBase } from '../../lib/paths';
     max-width: 45em;
   }
 
-  .observable-selection,
+  .question-navigator,
   .topic-directory {
     border-top: 1px solid var(--ink);
   }
 
-  .observable-selection {
+  .question-navigator {
     padding: 1.35rem 0 clamp(3rem, 6vw, 5rem);
   }
 
-  .observable-selection > header {
-    max-width: 52rem;
+  .question-navigator > header {
+    max-width: 58rem;
   }
 
-  .observable-selection h2,
+  .question-navigator h2,
   .directory-heading h2 {
     font-size: clamp(1.55rem, 2.6vw, 2.35rem);
     font-weight: 500;
@@ -134,49 +284,101 @@ import { withBase } from '../../lib/paths';
     margin: 0;
   }
 
-  .observable-selection > header > p,
+  .question-navigator > header > p,
   .directory-heading > p {
     color: var(--muted);
     line-height: 1.55;
   }
 
-  .observable-selection > header > p {
+  .question-navigator > header > p {
     margin: 0.75rem 0 0;
   }
 
-  .observable-selection dl {
-    margin: 2rem 0 0;
+  .navigator-boundary {
+    font-style: italic;
   }
 
-  .observable-selection dl > div {
+  .question-list {
+    margin: 2.2rem 0 0;
+    padding-left: 2.2rem;
+  }
+
+  .question-list > li {
     border-top: 1px solid var(--rule);
-    display: grid;
-    gap: 1rem 4rem;
-    grid-template-columns: minmax(15rem, 0.85fr) minmax(22rem, 1.6fr);
-    padding: 1.1rem 0 1.35rem;
+    padding: 1.35rem 0 1.7rem 0.25rem;
   }
 
-  .observable-selection dt {
-    font-size: 1.04rem;
+  .question-list > li::marker {
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
     font-weight: 700;
-    line-height: 1.35;
   }
 
-  .observable-selection dd {
+  .question-row {
+    display: grid;
+    gap: 1rem clamp(2rem, 5vw, 4rem);
+    grid-template-columns: minmax(15rem, 0.85fr) minmax(22rem, 1.6fr);
+  }
+
+  .question-row h3 {
+    font-size: clamp(1.12rem, 1.7vw, 1.34rem);
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    line-height: 1.32;
+    margin: 0;
+  }
+
+  .question-details {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .question-details > div {
+    display: grid;
+    gap: 0.35rem 1.15rem;
+    grid-template-columns: minmax(7.8rem, 0.34fr) minmax(0, 1fr);
+  }
+
+  .question-details > div + div {
+    border-top: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
+    margin-top: 0.72rem;
+    padding-top: 0.72rem;
+  }
+
+  .question-details dt {
+    color: var(--ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .question-details dd {
     color: var(--muted);
     line-height: 1.55;
-    margin: 0.65rem 0 0;
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
-  .observable-selection dd a {
+  .question-details dd a {
     color: var(--ink);
     font-weight: 700;
     text-underline-offset: 0.16em;
   }
 
-  .observable-selection dd a:hover,
-  .observable-selection dd a:focus-visible {
+  .question-details dd a:hover,
+  .question-details dd a:focus-visible {
     color: var(--accent);
+  }
+
+  .related-route {
+    display: block;
+    margin-top: 0.35rem;
+  }
+
+  .no-guide {
+    color: var(--ink);
+    font-weight: 600;
   }
 
   .topic-directory {
@@ -290,13 +492,8 @@ import { withBase } from '../../lib/paths';
       display: block;
     }
 
-    .observable-selection dl > div {
-      gap: 0.6rem;
+    .question-row {
       grid-template-columns: 1fr;
-    }
-
-    .observable-selection dd {
-      margin-top: 0;
     }
 
     .directory-heading > p,
@@ -313,6 +510,18 @@ import { withBase } from '../../lib/paths';
     .directory-heading > p,
     .workflow-group {
       margin-top: 1.4rem;
+    }
+
+    .question-list {
+      padding-left: 1.65rem;
+    }
+
+    .question-list > li {
+      padding-left: 0.1rem;
+    }
+
+    .question-details > div {
+      grid-template-columns: 1fr;
     }
   }
 </style>

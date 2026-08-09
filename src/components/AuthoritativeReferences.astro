@@ -1,0 +1,81 @@
+---
+interface ReferenceItem {
+  role: string;
+  label: string;
+  url: string;
+}
+
+interface AuthorityEntry {
+  topic_slug: string;
+  textbook_key: string;
+  textbook_reason: string | null;
+  references: ReferenceItem[];
+}
+
+interface Textbook {
+  citation: string;
+  role: string;
+  do_not_copy: string;
+}
+
+interface Props {
+  entry: AuthorityEntry;
+  textbook?: Textbook;
+}
+
+const { entry, textbook } = Astro.props;
+const headingId = `authoritative-references-${entry.topic_slug}`;
+---
+
+<section class="authoritative-references" aria-labelledby={headingId}>
+  <h2 id={headingId}>Authoritative references</h2>
+  <ul>
+    {entry.references.map((reference) => (
+      <li>
+        <strong>{reference.role === 'official' ? 'Selected implementation or method source.' : 'Claim boundary.'}</strong>{' '}
+        <a href={reference.url}>{reference.label}</a>
+      </li>
+    ))}
+    {textbook ? (
+      <li>
+        <strong>Deeper theory.</strong>{' '}
+        <cite>{textbook.citation}</cite>{' '}
+        {textbook.role}
+      </li>
+    ) : (
+      <li>
+        <strong>Reference basis.</strong>{' '}
+        {entry.textbook_reason}
+      </li>
+    )}
+  </ul>
+</section>
+
+<style>
+  .authoritative-references {
+    margin-top: clamp(2.4rem, 5vw, 4.5rem);
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+
+  h2 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.25rem, 2vw, 1.55rem);
+    line-height: 1.2;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  li {
+    margin: 0.45rem 0;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+  }
+
+  a {
+    text-underline-offset: 0.15em;
+  }
+</style>

@@ -4,12 +4,14 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ContextualLinks from '../../../../components/ContextualLinks.astro';
 import {
   practicalGuidePath,
   practicalKindLabel,
   practicalRouteSegment,
 } from '../../../../lib/practical-guides';
 import { getWorkflowTopics, type WorkflowTopic } from '../../../../lib/workflow';
+import { getContextualNavigation } from '../../../../lib/contextual-navigation';
 import { withBase } from '../../../../lib/paths';
 import mediaDocument from '../../../../../workflow/practical-guide-media.json';
 import evidenceDocument from '../../../../../workflow/practical-evidence.json';
@@ -73,6 +75,7 @@ const recordedOutcome = hasRecordedFailure
   : everyDeclaredCheckPassed
     ? 'The manifest records successful completion of every check declared for this bounded case.'
     : 'The manifest does not record successful completion of every declared check. Treat this case as incomplete evidence; the record does not by itself establish whether every execution or analysis stage completed.';
+const contextualNavigation = getContextualNavigation({ kind: 'practical', guide_slug: guide.data.guide_slug });
 ---
 
 <BaseLayout
@@ -156,6 +159,8 @@ const recordedOutcome = hasRecordedFailure
         ))}
       </section>
     )}
+
+    {contextualNavigation && <ContextualLinks navigation={contextualNavigation} />}
 
     <p class="directory-link">
       <a href={withBase(`operations/${topic.slug}/`)}>Return to {topic.title}</a>
