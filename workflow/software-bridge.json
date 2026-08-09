@@ -102,8 +102,8 @@
       "title": "Geometry or cell optimization",
       "parent_topic": "optimize-structure",
       "scientific_action": "Relax declared atomic and, when intended, cell degrees of freedom on one stated potential-energy surface.",
-      "required_parent_object": "An audited starting structure, a force- and stress-capable electronic setup, explicit constraints and free degrees of freedom, and the intended external stress or pressure condition.",
-      "validation_requirement": "Inspect every active ionic and cell stopping criterion, the last electronic steps, constraints, final geometry, forces, and stress before a separate static reference calculation.",
+      "required_parent_object": "An audited starting structure, a force-capable electronic setup and, when cell degrees of freedom are active, a stress-capable setup; explicit constraints and free degrees of freedom; and the intended external stress or pressure condition when applicable.",
+      "validation_requirement": "Inspect every active ionic and cell stopping criterion, the last electronic steps, constraints, final geometry, forces, and, when applicable, stress before accepting the optimized structure or handing it to a separate static reference calculation.",
       "non_equivalence": "Electronic convergence is not ionic or cell convergence; reaching a step limit or writing a final structure is not a successful optimization.",
       "implementations": [
         {
@@ -514,21 +514,21 @@
         {
           "tool_slug": "cp2k",
           "software": "CP2K",
-          "terminology": "EXT_RESTART for saved run state and SCF_GUESS RESTART with WFN_RESTART_FILE_NAME for electronic initialization",
-          "first_official_start": "SCF convergence and WFN restart",
-          "official_url": "https://manual.cp2k.org/trunk/methods/dft/convergence.html",
+          "terminology": "EXT_RESTART for selected saved run state",
+          "first_official_start": "EXT_RESTART input reference",
+          "official_url": "https://manual.cp2k.org/trunk/CP2K_INPUT/EXT_RESTART.html",
           "required_inputs": [
-            "identified .restart input and/or WFN restart artifact",
+            "identified .restart input and the parent files selected for restoration",
             "compatible PROJECT, structure, cell, basis, potential, method, and k-point formalism",
             "explicit EXT_RESTART selections and parent output"
           ],
           "artifacts": [
             "continued main output",
             "new generated .restart input",
-            "new Gamma .wfn or k-point .kp wavefunction restart"
+            "new state artifacts requested by the continued calculation"
           ],
-          "first_inspection": "Verify parent ancestry, every state component selected by EXT_RESTART, and WFN compatibility; Gamma .wfn and k-point .kp restart formats must not be interchanged.",
-          "boundary": "EXT_RESTART state and WFN electronic initialization are different ancestry paths; selectively restored state can be unintended, and a restart artifact is not proof of convergence."
+          "first_inspection": "Verify parent ancestry, every state component selected by EXT_RESTART, and that each restored artifact belongs to the declared parent run.",
+          "boundary": "EXT_RESTART restores only selected saved state; omitted, incompatible, or unintended components can change the continuation, and a restart artifact is not proof of convergence."
         }
       ]
     }

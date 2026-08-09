@@ -48,7 +48,7 @@ const expectedUrls = new Map([
   ['restart-continuation:quantum-espresso', 'https://www.quantum-espresso.org/Doc/INPUT_PW.html'],
   ['restart-continuation:vasp', 'https://vasp.at/wiki/ISTART'],
   ['restart-continuation:abinit', 'https://docs.abinit.org/guide/abinit/'],
-  ['restart-continuation:cp2k', 'https://manual.cp2k.org/trunk/methods/dft/convergence.html'],
+  ['restart-continuation:cp2k', 'https://manual.cp2k.org/trunk/CP2K_INPUT/EXT_RESTART.html'],
 ]);
 const allowedDomains = new Set([
   'www.quantum-espresso.org',

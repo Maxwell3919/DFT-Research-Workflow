@@ -359,7 +359,7 @@
     {
       "slug": "imaginary-phonon-frequencies",
       "title": "The harmonic phonon calculation contains imaginary frequencies",
-      "symptom": "One or more dynamical-matrix eigenvalues are reported as imaginary or plotted with a negative sign at Gamma or another q point.",
+      "symptom": "One or more dynamical-matrix eigenvalues are negative, corresponding to imaginary phonon frequencies; some outputs or plots show these frequencies with a negative sign at Gamma or another q point.",
       "first_check": "Classify acoustic and non-acoustic modes, q point, magnitude, and eigenvector, then audit the parent geometry, residual forces and stress, electronic convergence, and response convergence.",
       "cause_classes": [
         "Acoustic-sum-rule violation, interpolation artifact, or numerical noise",

@@ -63,13 +63,14 @@ The benchmark authorizes six bounded changes:
    scientific tasks and their parent/result artifacts across QE, VASP, ABINIT,
    and CP2K. It translates task and artifact names, not parameters or defaults.
 4. A build-time authoritative-reference crosswalk for all 46 topics. Each topic
-   receives at most one textbook role, one official manual, and one optional
-   specialist reference. Existing reviewed sources are reused where possible.
+   receives at most one textbook role, one selected implementation or method
+   source, and one optional specialist reference. Existing reviewed sources are
+   reused where possible.
 5. A `verify` field for the existing 17 tools, plus first-action and artifact
    wording where the benchmark found a concrete gap. No tool is added.
-6. Six to eight contextual links for the highest-friction routes: CIF to model,
-   SCF and phonons to troubleshooting, reference state to full-zone/DOS, and
-   code tools to Software Bridge.
+6. Eleven bounded source pages with fourteen contextual links for the
+   highest-friction routes: CIF to model, SCF and phonons to troubleshooting,
+   reference state to full-zone/DOS, and code tools to Software Bridge.
 
 ## Explicit non-adoption decisions
 
@@ -99,4 +100,3 @@ Possible future evidence-driven candidates are an ionic insulator, a 2D model,
 a magnetic model, a surface, a full phonon workflow, and an EPC workflow. This
 is an internal roadmap only. No candidate is authorized for execution or public
 promotion by this benchmark.
-

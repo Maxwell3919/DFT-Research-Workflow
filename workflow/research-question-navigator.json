@@ -7,7 +7,7 @@
   "questions": [
     {
       "id": "local-minimum",
-      "question": "Has the structure reached a defensible local minimum?",
+      "question": "Have the declared geometry-optimization conditions been satisfied?",
       "required_observable": "Accepted coordinates, every relevant force component, stress for relaxed cell degrees of freedom, and evidence that the electronic state remained the intended one.",
       "topic_slug": "optimize-structure",
       "prerequisites": "Declare the computational model, active degrees of freedom, constraints, electronic state, and numerical baseline before optimization.",
@@ -30,7 +30,7 @@
         "type": "guide",
         "guide_slug": "build-comparable-energy-ledger",
         "guide_kind": "implementation",
-        "evidence_boundary": "This guide builds a comparability gate; it does not validate the underlying energies or reference states."
+        "evidence_boundary": "This is a synthetic A2B3 ledger fixture. It demonstrates the comparability gate but does not provide a real material formation-energy result or validate the underlying energies and reference states."
       },
       "validation_requirement": "Check reaction balance, normalization, reference-state identity, numerical convergence of every term, and sensitivity to defensible reference choices.",
       "claim_limitation": "A negative formation energy does not establish convex-hull stability, synthesis, kinetic accessibility, or experimental formation."

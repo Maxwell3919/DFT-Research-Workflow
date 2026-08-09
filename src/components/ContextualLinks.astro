@@ -17,6 +17,7 @@ const headingId = `continue-${navigation.sourceKey.replace(/[^a-z0-9]+/g, '-')}`
   aria-labelledby={headingId}
 >
   <p class="contextual-heading" id={headingId}>Continue from here</p>
+  <p class="contextual-boundary">{navigation.boundary}</p>
   <ul>
     {navigation.links.map((link) => (
       <li data-contextual-link data-contextual-relation={link.relation}>
@@ -42,6 +43,11 @@ const headingId = `continue-${navigation.sourceKey.replace(/[^a-z0-9]+/g, '-')}`
     font-weight: 650;
     line-height: 1.2;
     margin: 0;
+  }
+
+  .contextual-boundary {
+    color: var(--muted, #666158);
+    margin: 0.35rem 0 0;
   }
 
   ul {

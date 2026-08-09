@@ -32,7 +32,7 @@ const headingId = `authoritative-references-${entry.topic_slug}`;
   <ul>
     {entry.references.map((reference) => (
       <li>
-        <strong>{reference.role === 'official' ? 'Primary authority.' : 'Claim boundary.'}</strong>{' '}
+        <strong>{reference.role === 'official' ? 'Selected implementation or method source.' : 'Claim boundary.'}</strong>{' '}
         <a href={reference.url}>{reference.label}</a>
       </li>
     ))}

@@ -271,8 +271,8 @@ try {
   const workflowState = await page.evaluate(() => ({
     text: document.body.innerText,
     topicLinks: [...document.querySelectorAll('.topic-list a')].map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)),
-    observableRows: document.querySelectorAll('.observable-selection dl > div').length,
-    observableLinks: [...document.querySelectorAll('.observable-selection a')].map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)),
+    observableRows: document.querySelectorAll('[data-research-question]').length,
+    observableLinks: [...document.querySelectorAll('[data-research-question-navigator] a')].map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)),
     transitionalLinks: [...document.querySelectorAll('a[href*="/operations/"]')].filter((link) => {
       const slug = link.getAttribute('href')?.split('/').filter(Boolean).at(-1) ?? '';
       return /^o\d{2}-/.test(slug);
@@ -285,7 +285,7 @@ try {
     }
   }
   if (JSON.stringify(workflowState.topicLinks) !== JSON.stringify(topicSlugs)) throw new Error('Research Workflow topic links do not match the registry order');
-  if (workflowState.observableRows !== 4) throw new Error(`Research Workflow exposes ${workflowState.observableRows}/4 observable examples`);
+  if (workflowState.observableRows !== 10) throw new Error(`Research Question Navigator exposes ${workflowState.observableRows}/10 question routes`);
   for (const slug of observableExampleSlugs) {
     if (!workflowState.observableLinks.includes(slug)) throw new Error(`Research Workflow observable examples are missing ${slug}`);
   }

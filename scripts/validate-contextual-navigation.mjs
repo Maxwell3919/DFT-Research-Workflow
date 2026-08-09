@@ -17,7 +17,7 @@ const softwareBridgeSource = await readFile(new URL('src/pages/operations/softwa
 
 const topicSlugs = new Set(workflow.sections.flatMap((section) => section.groups.flatMap((group) => group.topics.map((topic) => topic.slug))));
 const toolSlugs = new Set(tools.tools.map((tool) => tool.slug));
-const relations = new Set(['Next', 'Related check', 'If this fails', 'Use another code']);
+const relations = new Set(['Next', 'Target branch', 'Related check', 'If this fails', 'Use another code']);
 const supportTargets = new Map([
   ['troubleshooting', new Set(['job-stops-before-completion', 'scf-does-not-converge', 'imaginary-phonon-frequencies'])],
   ['software-bridge', new Set([null])],
@@ -95,7 +95,7 @@ function escapeRegExp(value) {
 
 const expected = new Map([
   ['topic:obtain-material-structure', ['Next|topic:build-or-modify-computational-model']],
-  ['topic:calculate-reference-ground-state', ['Next|topic:fermi-surface-and-full-brillouin-zone-analysis', 'Next|topic:density-of-states-and-projected-density-of-states']],
+  ['topic:calculate-reference-ground-state', ['Target branch|topic:fermi-surface-and-full-brillouin-zone-analysis', 'Target branch|topic:density-of-states-and-projected-density-of-states']],
   ['topic:fermi-surface-and-full-brillouin-zone-analysis', ['Related check|topic:density-of-states-and-projected-density-of-states']],
   ['topic:density-of-states-and-projected-density-of-states', ['Related check|topic:fermi-surface-and-full-brillouin-zone-analysis']],
   ['topic:harmonic-phonons', ['If this fails|support:troubleshooting#imaginary-phonon-frequencies']],
@@ -110,7 +110,7 @@ const expected = new Map([
 exactKeys(navigation, new Set(['schema_version', 'role', 'boundary', 'pages']), 'contextual navigation');
 if (navigation.schema_version !== 1) errors.push(`schema_version must be 1, found ${navigation.schema_version}`);
 if (navigation.role !== 'build-time-contextual-cross-index') errors.push('role must remain build-time-contextual-cross-index');
-if (!navigation.boundary?.includes('not a new taxonomy') || !navigation.boundary?.includes('required order')) errors.push('boundary must reject a new taxonomy and required order');
+if (!navigation.boundary?.includes('Choose only the branch required by the scientific question') || !navigation.boundary?.includes('not a new taxonomy') || !navigation.boundary?.includes('required order')) errors.push('boundary must require question-selected branches and reject a new taxonomy and required order');
 if (!Array.isArray(navigation.pages) || navigation.pages.length !== expected.size) errors.push(`expected ${expected.size} contextual source pages`);
 
 const seenSources = new Set();
@@ -172,8 +172,8 @@ for (const [pageIndex, page] of (navigation.pages ?? []).entries()) {
 for (const key of expected.keys()) if (!seenSources.has(key)) errors.push(`missing contextual source ${key}`);
 
 const sourceContracts = [
-  [componentSource, ['data-contextual-navigation', 'data-contextual-source', 'data-contextual-link', 'Continue from here']],
-  [resolverSource, ['getContextualNavigation', 'operations/troubleshooting/', 'operations/software-bridge/']],
+  [componentSource, ['data-contextual-navigation', 'data-contextual-source', 'data-contextual-link', 'Continue from here', 'navigation.boundary']],
+  [resolverSource, ['getContextualNavigation', 'boundary: definition.boundary', 'operations/troubleshooting/', 'operations/software-bridge/']],
   [topicRouteSource, ['ContextualLinks', 'getContextualNavigation', "page.kind === 'topic'", 'AuthoritativeReferences']],
   [practicalRouteSource, ['ContextualLinks', 'getContextualNavigation', 'guide.data.guide_slug']],
   [toolRouteSource, ['ContextualLinks', 'getContextualNavigation', 'What to verify', 'data-tool-verify']],

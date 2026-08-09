@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "role": "build-time-contextual-cross-index",
-  "boundary": "These links are reader cues, not a new taxonomy, required order, or substitute for the scientific decision on each page.",
+  "boundary": "Choose only the branch required by the scientific question. These links are reader cues, not a new taxonomy, required order, or substitute for the scientific decision on each page.",
   "pages": [
     {
       "source": { "kind": "topic", "slug": "obtain-material-structure" },
@@ -18,13 +18,13 @@
       "source": { "kind": "topic", "slug": "calculate-reference-ground-state" },
       "links": [
         {
-          "relation": "Next",
+          "relation": "Target branch",
           "title": "Inspect the full Brillouin zone",
           "target": { "kind": "topic", "slug": "fermi-surface-and-full-brillouin-zone-analysis" },
           "note": "Use the trusted reference state as the parent of dense full-zone sampling when the claim depends on states at the Fermi level or extrema away from a chosen path."
         },
         {
-          "relation": "Next",
+          "relation": "Target branch",
           "title": "Calculate the density of states",
           "target": { "kind": "topic", "slug": "density-of-states-and-projected-density-of-states" },
           "note": "Reuse the same reference state for energy-resolved or projected-state analysis, then converge the sampling and broadening for that observable."

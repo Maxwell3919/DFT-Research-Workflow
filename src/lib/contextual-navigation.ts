@@ -2,7 +2,7 @@ import navigationDocument from '../../workflow/contextual-navigation.json';
 import { getTools } from './tools';
 import { getWorkflowTopics } from './workflow';
 
-export type ContextualRelation = 'Next' | 'Related check' | 'If this fails' | 'Use another code';
+export type ContextualRelation = 'Next' | 'Target branch' | 'Related check' | 'If this fails' | 'Use another code';
 
 export type ContextualSource =
   | { kind: 'topic'; slug: string }
@@ -41,11 +41,12 @@ export interface ResolvedContextualLink {
 
 export interface ResolvedContextualNavigation {
   sourceKey: string;
+  boundary: string;
   links: ResolvedContextualLink[];
 }
 
 const definition = navigationDocument as unknown as ContextualNavigationDefinition;
-const allowedRelations = new Set<ContextualRelation>(['Next', 'Related check', 'If this fails', 'Use another code']);
+const allowedRelations = new Set<ContextualRelation>(['Next', 'Target branch', 'Related check', 'If this fails', 'Use another code']);
 const topicSlugs = new Set(getWorkflowTopics().map((topic) => topic.slug));
 const toolSlugs = new Set(getTools().map((tool) => tool.slug));
 const supportRoutes = {
@@ -134,6 +135,7 @@ export function getContextualNavigation(source: ContextualSource): ResolvedConte
   if (!page) return undefined;
   return {
     sourceKey,
+    boundary: definition.boundary,
     links: page.links.map((link) => ({
       relation: link.relation,
       title: link.title,

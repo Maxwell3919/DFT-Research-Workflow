@@ -40,7 +40,7 @@
         { "kind": "page", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/PRINT/BAND_STRUCTURE.html" },
         { "kind": "page", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html" },
         { "kind": "page", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/VIBRATIONAL_ANALYSIS.html" },
-        { "kind": "page", "url": "https://manual.cp2k.org/trunk/methods/dft/convergence.html" },
+        { "kind": "page", "url": "https://manual.cp2k.org/trunk/CP2K_INPUT/EXT_RESTART.html" },
         { "kind": "page", "url": "https://manual.cp2k.org/trunk/methods/electronic_structure/dos.html" },
         { "kind": "page", "url": "https://manual.cp2k.org/trunk/methods/optimization/geometry_and_cell_opt.html" },
         { "kind": "page", "url": "https://vasp.at/wiki/Band-structure_calculation_using_density-functional_theory" },
