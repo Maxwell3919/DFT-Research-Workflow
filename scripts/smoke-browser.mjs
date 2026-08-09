@@ -324,16 +324,20 @@ try {
     headingCount: document.querySelectorAll('.article-content h2').length,
   }));
   for (const phrase of [
-    'A structure file is not yet a computational model.',
-    'Start with the origin of the structure',
-    'Read the crystallographic representation, not just the picture',
-    'Symmetry is tolerance-dependent',
-    'Inspect geometry before trusting automated checks',
+    'Start with a source record',
+    'Download and preserve the CIF',
+    'Read the CIF as text',
+    'Visualize the same object',
+    'Parse, check symmetry, and inspect geometry',
+    'Decide whether to continue',
+    'COD 9013102',
+    'curl',
+    'sha256sum',
     'Sources and standards',
   ]) {
     if (!reviewedArticle.text.includes(phrase)) throw new Error(`Obtain a Material Structure is missing ${phrase}`);
   }
-  if (reviewedArticle.headingCount < 10) throw new Error('Obtain a Material Structure lost its natural topic sections');
+  if (reviewedArticle.headingCount < 8) throw new Error('Obtain a Material Structure lost its operation-first sections');
   for (const domain of ['iucr.org', 'docs.materialsproject.org', 'crystallography.net', 'molstar.org', 'spglib.readthedocs.io']) {
     if (!reviewedArticle.links.some((link) => link.includes(domain))) throw new Error(`Obtain a Material Structure is missing source domain ${domain}`);
   }
@@ -388,13 +392,41 @@ try {
   await page.goto(`${base}/workflows/`, { waitUntil: 'load' });
   const workflowLinks = await page.$$eval('.directory-list a', (links) => links.length);
   if (workflowLinks !== 2) throw new Error(`Worked Workflows directory exposes ${workflowLinks}/2 published cases`);
-  for (const slug of ['silicon-ground-state-electronic-structure', 'aluminium-metallic-electronic-structure']) {
-    await page.goto(`${base}/workflows/${slug}/`, { waitUntil: 'load' });
-    const state = await page.evaluate(() => ({
-      text: document.body.innerText,
-      figures: document.querySelectorAll('figure img[src^="data:image/png;base64,"]').length,
-      commands: document.querySelectorAll('pre code').length,
-    }));
+  const readerRouteRecipes = JSON.parse(await readFile(new URL('../recipes/index.json', import.meta.url), 'utf8'));
+  const expectedWorkedWorkflowSlugs = ['silicon-ground-state-electronic-structure', 'aluminium-metallic-electronic-structure'];
+  const readerRouteWorkflows = expectedWorkedWorkflowSlugs.map((slug) => {
+    const entry = readerRouteRecipes.workflows.find((workflowEntry) => workflowEntry.slug === slug);
+    if (!entry) throw new Error(`recipes/index.json is missing ${slug}`);
+    return entry;
+  });
+  const inspectWorkedWorkflow = async (targetPage, entry, mode, expectedWidth = null) => {
+    const response = await targetPage.goto(`${base}/workflows/${entry.slug}/`, { waitUntil: 'load' });
+    if (response?.status() !== 200) throw new Error(`${mode} ${entry.slug}: HTTP ${response?.status() ?? 'no response'}`);
+    const state = await targetPage.evaluate(() => {
+      const split = (value) => value ? value.split(',').map((item) => item.trim()).filter(Boolean) : [];
+      return {
+        text: document.body.innerText,
+        figures: document.querySelectorAll('figure img[src^="data:image/png;base64,"]').length,
+        commands: document.querySelectorAll('pre code').length,
+        routeMarkers: [...document.querySelectorAll('[data-reader-route]')].map((element) => element.getAttribute('data-reader-route')),
+        historyKinds: [...document.querySelectorAll('[data-history-kind]')].map((element) => element.getAttribute('data-history-kind')),
+        stages: [...document.querySelectorAll('[data-reader-stage]')].map((element) => ({
+          id: element.getAttribute('data-reader-stage'),
+          topic_slugs: split(element.getAttribute('data-topic-slugs')),
+          case_files: split(element.getAttribute('data-case-files')),
+          execution_route_ids: split(element.getAttribute('data-execution-route-ids')),
+          command_stages: split(element.getAttribute('data-command-stages')),
+          artifact_paths: split(element.getAttribute('data-artifact-paths')),
+        })),
+        innerWidth: window.innerWidth,
+        overflow: document.documentElement.scrollWidth - window.innerWidth,
+        invalidPreOverflow: [...document.querySelectorAll('pre')].filter((element) => element.scrollWidth > element.clientWidth + 1 && getComputedStyle(element).overflowX === 'visible').length,
+      };
+    });
+    const expectedStages = entry.reader_route.stages.map((stage) => ({ id: stage.id, topic_slugs: stage.topic_slugs, case_files: stage.case_files, execution_route_ids: stage.execution_route_ids, command_stages: stage.command_stages, artifact_paths: stage.artifact_paths }));
+    if (JSON.stringify(state.routeMarkers) !== JSON.stringify([entry.slug])) throw new Error(`${mode} ${entry.slug}: reader route marker mismatch`);
+    if (JSON.stringify(state.stages) !== JSON.stringify(expectedStages)) throw new Error(`${mode} ${entry.slug}: reader route order/reference mismatch`);
+    if (!state.historyKinds.includes(entry.history_kind)) throw new Error(`${mode} ${entry.slug}: history_kind mismatch`);
     if (
       state.figures < 1
       || state.commands < 2
@@ -403,9 +435,14 @@ try {
       || !state.text.includes('Claim boundary')
       || !state.text.includes('No material-level claim is made')
     ) {
-      throw new Error(`${slug}: incomplete terminal-first workflow rendering`);
+      throw new Error(`${mode} ${entry.slug}: incomplete terminal-first workflow rendering`);
     }
-  }
+    for (const boundary of [entry.evidence_boundary, entry.continuity_boundary, entry.claim_boundary]) if (!state.text.replace(/\s+/g, ' ').includes(boundary.replace(/\s+/g, ' '))) throw new Error(`${mode} ${entry.slug}: reviewed boundary text is missing`);
+    if (expectedWidth !== null && state.innerWidth !== expectedWidth) throw new Error(`${mode} ${entry.slug}: expected ${expectedWidth}px, rendered ${state.innerWidth}px`);
+    if (expectedWidth !== null && state.overflow > 1) throw new Error(`${mode} ${entry.slug}: ${state.overflow}px document overflow`);
+    if (expectedWidth !== null && state.invalidPreOverflow > 0) throw new Error(`${mode} ${entry.slug}: invalid pre overflow`);
+  };
+  for (const entry of readerRouteWorkflows) await inspectWorkedWorkflow(page, entry, 'desktop');
   await page.goto(`${base}/recipes/`, { waitUntil: 'load' });
   await waitForRecipeRedirect(page);
   const recipeRedirectText = await page.evaluate(() => document.body.innerText);
@@ -444,6 +481,7 @@ try {
   if (!noJsTopicText.includes('A structure file is not yet a computational model.') || !noJsTopicText.includes('Sources and standards')) {
     throw new Error('no-JavaScript reviewed topic page is incomplete');
   }
+  for (const entry of readerRouteWorkflows) await inspectWorkedWorkflow(noJsPage, entry, 'no-JavaScript desktop');
 
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   for (const target of requiredRoutes) {
@@ -452,6 +490,16 @@ try {
     if (target.route.startsWith('/recipes/')) await waitForRecipeRedirect(page);
     await inspectPage(page, target.status);
   }
+  const mobileNoJsPage = await browser.newPage();
+  await mobileNoJsPage.setCacheEnabled(false);
+  await mobileNoJsPage.setJavaScriptEnabled(false);
+  await mobileNoJsPage.emulate({
+    name: 'DRW 390px mobile',
+    userAgent: 'Mozilla/5.0 (Linux; Android 13; DRW Smoke) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36',
+    viewport: { width: 390, height: 844, deviceScaleFactor: 3, isMobile: true, hasTouch: true, isLandscape: false },
+  });
+  for (const entry of readerRouteWorkflows) await inspectWorkedWorkflow(mobileNoJsPage, entry, 'no-JavaScript mobile', 390);
+  await mobileNoJsPage.close();
 
   if (artifactDirectory) {
     await mkdir(artifactDirectory, { recursive: true });
@@ -478,6 +526,13 @@ try {
     reviewed_topic_narratives: [...topicNarrativeStatuses.values()].filter((status) => status === 'reviewed').length,
     target_calculation_groups: 5,
     published_workflows: workflowLinks,
+    worked_workflow_reader_routes: readerRouteWorkflows.length,
+    worked_workflow_stage_orders_verified: true,
+    worked_workflow_reference_bindings_verified: true,
+    worked_workflow_boundaries_verified: true,
+    no_javascript_worked_workflows: readerRouteWorkflows.length,
+    mobile_emulation: true,
+    mobile_no_javascript_worked_workflows: readerRouteWorkflows.length,
     framework_migration_destinations: frameworkLinks,
     migration_routes_sampled: representativeTransitionalSlugs.length + representativeLegacySlugs.length,
     fixed_contracts: 0,

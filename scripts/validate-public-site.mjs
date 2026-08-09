@@ -100,6 +100,15 @@ function stripMarkup(html) {
     .trim();
 }
 
+function dataList(tag, attribute) {
+  const value = tag.match(new RegExp(`\\b${attribute}="([^"]*)"`, 'i'))?.[1] ?? '';
+  return value === '' ? [] : value.split(',').map((entry) => entry.trim()).filter(Boolean);
+}
+
+function normalizedText(value) {
+  return value.replace(/\s+/g, ' ').trim();
+}
+
 function outputPath(href) {
   const clean = href.split('#')[0].split('?')[0];
   if (clean === base) return join(distPath, 'index.html');
@@ -145,6 +154,38 @@ for (const path of htmlFiles) {
       try { await access(target); } catch { errors.push(`${path}: broken media path ${src}`); }
     }
   }
+}
+
+const expectedWorkedWorkflowSlugs = ['silicon-ground-state-electronic-structure', 'aluminium-metallic-electronic-structure'];
+if (JSON.stringify(workedWorkflows.map((entry) => entry.slug)) !== JSON.stringify(expectedWorkedWorkflowSlugs)) errors.push(`Worked Workflow routes do not match the frozen Silicon/Aluminium order: ${JSON.stringify(workedWorkflows.map((entry) => entry.slug))}`);
+const workflowsDirectoryHtml = htmlByPath.get(join(distPath, 'workflows', 'index.html')) ?? '';
+for (const entry of workedWorkflows) {
+  const html = htmlByPath.get(join(distPath, 'workflows', entry.slug, 'index.html')) ?? '';
+  const text = stripMarkup(html);
+  const routeHref = `${base}workflows/${entry.slug}/`;
+  if (!html) errors.push(`${entry.slug}: built Worked Workflow route is missing`);
+  if (!workflowsDirectoryHtml.includes(`href="${routeHref}"`)) errors.push(`${entry.slug}: Worked Workflows directory link is missing`);
+  const routeMarkers = [...html.matchAll(/\bdata-reader-route="([^"]+)"/g)].map((match) => match[1]);
+  if (JSON.stringify(routeMarkers) !== JSON.stringify([entry.slug])) errors.push(`${entry.slug}: expected exactly one matching data-reader-route marker`);
+  const tags = [...html.matchAll(/<(?:li|section|article)\b[^>]*\bdata-reader-stage="[^"]+"[^>]*>/gi)].map((match) => match[0]);
+  const renderedIds = tags.map((tag) => tag.match(/\bdata-reader-stage="([^"]+)"/i)?.[1]);
+  const expectedStages = entry.reader_route?.stages ?? [];
+  if (JSON.stringify(renderedIds) !== JSON.stringify(expectedStages.map((stage) => stage.id))) errors.push(`${entry.slug}: rendered reader_route stage order mismatch: ${JSON.stringify(renderedIds)}`);
+  for (let index = 0; index < expectedStages.length; index += 1) {
+    const stage = expectedStages[index];
+    const tag = tags[index] ?? '';
+    for (const [attribute, field] of [['data-topic-slugs', 'topic_slugs'], ['data-case-files', 'case_files'], ['data-execution-route-ids', 'execution_route_ids'], ['data-command-stages', 'command_stages'], ['data-artifact-paths', 'artifact_paths']]) {
+      if (JSON.stringify(dataList(tag, attribute)) !== JSON.stringify(stage[field])) errors.push(`${entry.slug}/${stage.id}: rendered ${attribute} does not match recipes/index.json`);
+    }
+    for (const slug of stage.topic_slugs ?? []) if (!html.includes(`href="${base}operations/${slug}/"`)) errors.push(`${entry.slug}/${stage.id}: topic route link is missing for ${slug}`);
+    for (const path of [...(stage.case_files ?? []), ...(stage.artifact_paths ?? [])]) {
+      const normalizedPath = path.startsWith('examples/cases/') ? path : `${entry.start_here.case_root}/${path}`;
+      const blobPattern = new RegExp(`href="https:\\/\\/github\\.com\\/Maxwell3919\\/DFT-Research-Workflow\\/blob\\/[a-f0-9]{40}\\/${normalizedPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'i');
+      if (!blobPattern.test(html)) errors.push(`${entry.slug}/${stage.id}: exact-revision GitHub blob link is missing for ${normalizedPath}`);
+    }
+  }
+  for (const boundary of [entry.evidence_boundary, entry.continuity_boundary, entry.claim_boundary]) if (!text.includes(normalizedText(boundary))) errors.push(`${entry.slug}: reviewed evidence/continuity/claim boundary is missing`);
+  if (!html.includes(`data-history-kind="${entry.history_kind}"`)) errors.push(`${entry.slug}: rendered history_kind mismatch`);
 }
 
 for (const retired of retiredPaths) {
@@ -283,7 +324,7 @@ for (const workflow of workedWorkflows) {
   if (!html) errors.push(`missing Worked Workflow route: ${workflow.slug}`);
   if (!workflowDirectory.includes(`${base}workflows/${workflow.slug}/`)) errors.push(`Worked Workflows directory is missing ${workflow.slug}`);
   if (!text.includes(workflow.title)) errors.push(`${workflow.slug}: workflow title mismatch`);
-  for (const phrase of ['Recorded commands and output', 'Inputs, outputs, tables, and figures', 'What this case supports', 'What this case does not support']) {
+  for (const phrase of ['Recorded execution evidence', 'Complete artifact appendix', 'What this case supports', 'What this case does not support']) {
     if (!text.includes(phrase)) errors.push(`${workflow.slug}: missing terminal-first section ${phrase}`);
   }
   if (!html.includes('data:image/png;base64,')) errors.push(`${workflow.slug}: no case-derived PNG is rendered`);
