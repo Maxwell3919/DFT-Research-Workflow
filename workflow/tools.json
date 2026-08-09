@@ -9,7 +9,10 @@
       "name": "Python",
       "aliases": [],
       "category": "Scientific programming",
-      "interfaces": ["language", "command-line"],
+      "interfaces": [
+        "language",
+        "command-line"
+      ],
       "access": "open-source",
       "role": "A general programming language used here for transparent parsing, transformation, validation, and plotting companions.",
       "use_when": "Use Python when a bounded workflow step needs transparent parsing, transformation, validation, automation, or plotting that can be reviewed as source code.",
@@ -22,6 +25,7 @@
         "Parsed or transformed data tables",
         "Validation results, figures, or other explicitly written artifacts"
       ],
+      "verify": "Verify that the script, interpreter and dependency versions, exact inputs, parameters, exit status, and written artifacts are recorded, and compare a fresh rerun when the step is expected to be deterministic.",
       "primary_topic": "analyze-and-compare-results",
       "homepage": "https://www.python.org/",
       "documentation": "https://docs.python.org/3/",
@@ -41,21 +45,27 @@
     {
       "slug": "ase",
       "name": "Atomic Simulation Environment",
-      "aliases": ["ASE"],
+      "aliases": [
+        "ASE"
+      ],
       "category": "Structure and workflow libraries",
-      "interfaces": ["python-api", "command-line"],
+      "interfaces": [
+        "python-api",
+        "command-line"
+      ],
       "access": "open-source",
       "role": "Python components for representing atomistic structures, constructing models, connecting calculators, and analyzing bounded workflow steps.",
       "use_when": "Use ASE when structures must be read, inspected, constructed, transformed, or passed through a documented calculator interface.",
-      "first_action": "Read one representative structure into an Atoms object and inspect its cell, species, positions, periodic boundaries, and units before applying a transformation.",
+      "first_action": "Read one representative structure with an explicit format and frame or data-block selection, preserve the source file, and inspect composition, atom count, cell, positions, periodic boundaries and constraints before transforming it.",
       "input_objects": [
-        "An atomistic structure file or Atoms object",
-        "Declared geometry operations or calculator settings"
+        "A source structure file with explicit format and frame or data-block selection",
+        "A declared geometry operation or calculator configuration"
       ],
       "output_objects": [
-        "A checked or transformed Atoms object",
-        "A written structure, calculator input, trajectory, or bounded analysis result"
+        "An inspected or transformed Atoms object plus a recorded transformation",
+        "A written structure, trajectory, calculator input, or bounded analysis artifact"
       ],
+      "verify": "Verify the selected frame or data block, composition, atom count, cell, periodic boundaries, constraints, units, and any metadata lost or changed when the structure is written to another format.",
       "primary_topic": "build-or-modify-computational-model",
       "homepage": "https://ase-lib.org/",
       "documentation": "https://docs.ase-lib.org/index.html",
@@ -75,21 +85,26 @@
     {
       "slug": "pymatgen",
       "name": "pymatgen",
-      "aliases": ["Python Materials Genomics"],
+      "aliases": [
+        "Python Materials Genomics"
+      ],
       "category": "Structure and workflow libraries",
-      "interfaces": ["python-api"],
+      "interfaces": [
+        "python-api"
+      ],
       "access": "open-source",
       "role": "Python data structures and analysis modules for materials representations, transformations, interfaces, phase diagrams, and related post-processing.",
       "use_when": "Use pymatgen when a workflow needs typed materials structures, transformations, entries, phase diagrams, defects, or interface-analysis objects.",
-      "first_action": "Parse one representative structure or entry and inspect its composition, lattice, site properties, charge or state metadata, and serialization before further analysis.",
+      "first_action": "Parse one representative structure or entry, preserve its source identifier, inspect composition, occupancies, lattice, site properties and charge or magnetic metadata, then apply one declared transformation to a copy.",
       "input_objects": [
         "CIF, POSCAR, database records, structures, or computed entries",
         "Declared transformation or analysis parameters"
       ],
       "output_objects": [
-        "Typed structure or entry objects",
-        "Phase, defect, interface, or other analysis objects and serialized records"
+        "Typed source and transformed structure or entry objects",
+        "Analysis or serialized records with transformation parameters and before-and-after identity retained"
       ],
+      "verify": "Verify the source identity, composition, occupancies, lattice, site properties, charge or magnetic metadata before and after each transformation, and retain the transformation parameters rather than only the final serialized object.",
       "primary_topic": "build-or-modify-computational-model",
       "homepage": "https://pymatgen.org/",
       "documentation": "https://pymatgen.org/pymatgen.html",
@@ -111,7 +126,10 @@
       "name": "spglib",
       "aliases": [],
       "category": "Symmetry and reciprocal space",
-      "interfaces": ["library", "python-api"],
+      "interfaces": [
+        "library",
+        "python-api"
+      ],
       "access": "open-source",
       "role": "A crystallographic symmetry library used to identify symmetry operations and standardized representations under declared tolerances.",
       "use_when": "Use spglib when symmetry operations, a space-group assignment, or a standardized cell are needed under an explicit numerical tolerance.",
@@ -121,9 +139,10 @@
         "Explicit symmetry and angle tolerances"
       ],
       "output_objects": [
-        "A symmetry dataset and identified operations",
-        "An optional standardized or primitive cell representation"
+        "A symmetry dataset with setting, equivalent-atom mapping, transformations and origin shift",
+        "An optional standardized or primitive cell stored alongside the input cell"
       ],
+      "verify": "Verify that the symmetry assignment is stable over physically justified tolerances, and retain the tolerance, setting, equivalent-atom mapping, transformation matrix, origin shift, and both input and standardized cells.",
       "primary_topic": "build-or-modify-computational-model",
       "homepage": "https://spglib.github.io/spglib/",
       "documentation": "https://spglib.readthedocs.io/en/stable/",
@@ -142,23 +161,29 @@
     {
       "slug": "materials-project",
       "name": "Materials Project",
-      "aliases": ["MP"],
+      "aliases": [
+        "MP"
+      ],
       "category": "Materials data services",
-      "interfaces": ["web-services", "python-api"],
+      "interfaces": [
+        "web-services",
+        "python-api"
+      ],
       "access": "registration-required",
       "access_note": "The public documentation is readable without a key; the official mp-api client requires an account API key for data retrieval.",
       "verified_version": "mp-api access method reviewed 2026-08-04; no API key was available in this environment",
       "role": "A materials-data service that can supply database records and structures when a query, fields, retrieval date, and provenance are recorded.",
       "use_when": "Use Materials Project when candidate structures or database properties are needed with an explicit query, field selection, retrieval date, and database provenance.",
-      "first_action": "Choose one material identifier or narrow query, request only the needed fields with the official client, and retain the returned identifiers and retrieval metadata.",
+      "first_action": "Search one material identifier or narrow chemistry query, inspect one candidate record, request or export only the needed fields and structure, and retain the database version, origin task, returned-cell representation and retrieval metadata.",
       "input_objects": [
-        "A material identifier, chemistry query, and requested fields",
-        "An authorized API client configuration"
+        "A material identifier or narrow chemistry query and requested fields",
+        "An authorized API client or documented web export"
       ],
       "output_objects": [
-        "Database documents or structure records",
-        "Query, identifier, field, and retrieval provenance"
+        "A candidate database document or source-structure export",
+        "Material ID, database version, query, requested fields, origin task, cell representation and retrieval provenance"
       ],
+      "verify": "Verify the material ID, database version, exact query and fields, structure or property origin task, returned cell representation, retrieval date, composition and disorder; treat the download as a candidate source structure, not an accepted computational model.",
       "primary_topic": "obtain-material-structure",
       "homepage": "https://materialsproject.org/",
       "documentation": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data",
@@ -167,14 +192,21 @@
         "url": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data"
       },
       "source_repository": "https://github.com/materialsproject/api",
-      "topics": ["obtain-material-structure", "calculate-reference-ground-state", "analyze-and-compare-results", "document-and-preserve-study"]
+      "topics": [
+        "obtain-material-structure",
+        "calculate-reference-ground-state",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ]
     },
     {
       "slug": "vesta",
       "name": "VESTA",
       "aliases": [],
       "category": "Structure visualization",
-      "interfaces": ["graphical-desktop"],
+      "interfaces": [
+        "graphical-desktop"
+      ],
       "access": "free-proprietary",
       "access_note": "VESTA is free of charge under its published terms, but its distributed files are not to be redistributed without written permission; drawings require acknowledgement.",
       "verified_version": "Official Linux archive 3.5.8 inspected 2026-08-04; GUI execution is blocked on Talos by the unavailable virtual-display dependency",
@@ -189,6 +221,7 @@
         "An inspected interactive view",
         "An exported rendering with its display choices recorded"
       ],
+      "verify": "Verify the displayed cell, composition, periodic images, orientation, coordinate convention, boundary and isosurface settings against the source file; an exported rendering is display evidence only.",
       "primary_topic": "obtain-material-structure",
       "homepage": "https://jp-minerals.org/vesta/en/",
       "documentation": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf",
@@ -197,28 +230,37 @@
         "url": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf"
       },
       "source_repository": null,
-      "topics": ["obtain-material-structure", "build-or-modify-computational-model", "analyze-and-compare-results"]
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "analyze-and-compare-results"
+      ]
     },
     {
       "slug": "seekpath",
       "name": "SeeK-path",
-      "aliases": ["SeeKpath"],
+      "aliases": [
+        "SeeKpath"
+      ],
       "category": "Symmetry and reciprocal space",
-      "interfaces": ["python-api"],
+      "interfaces": [
+        "python-api"
+      ],
       "access": "open-source",
       "access_note": "The Python package is open source; its path is conditional on the supplied cell, symmetry settings, and convention.",
       "verified_version": "SeeK-path 2.2.1 with spglib 2.7.0 executed for the Silicon teaching case on 2026-08-04",
       "role": "A crystallographic path generator that standardizes a declared cell and returns labelled reciprocal-space paths for compatible band calculations.",
       "use_when": "Use SeeK-path when a settled periodic model needs a convention-labelled reciprocal-space path generated from its actual crystallographic cell.",
-      "first_action": "Submit the lattice, fractional positions, and species for one cell with an explicit symmetry tolerance, then inspect the standardized cells and labelled path before writing a band input.",
+      "first_action": "Submit the settled lattice, fractional positions and species with explicit symmetry tolerances and time-reversal assumption, then save the returned standardized primitive cell together with its labelled path, transformations and warnings before writing a band input.",
       "input_objects": [
-        "Lattice vectors, fractional positions, and atomic numbers",
-        "An explicit symmetry tolerance and path convention"
+        "Lattice vectors, fractional positions and atomic numbers for the settled model",
+        "Explicit symmetry and angle tolerances, path recipe and time-reversal assumption"
       ],
       "output_objects": [
-        "Standardized primitive and conventional cells",
-        "Labelled reciprocal points, path segments, and coordinates"
+        "Standardized primitive and conventional cells with transformation and volume mappings",
+        "Labelled reciprocal points, path segments, coordinates and warnings"
       ],
+      "verify": "Verify that the downstream calculation uses the exact cell associated with the returned path, and record the recipe, symmetry tolerances, time-reversal assumption, transformations and warnings; a high-symmetry path is not full-Brillouin-zone evidence.",
       "primary_topic": "band-structure",
       "homepage": "https://seekpath.readthedocs.io/en/latest/",
       "documentation": "https://seekpath.readthedocs.io/en/latest/maindoc.html",
@@ -227,14 +269,23 @@
         "url": "https://seekpath.readthedocs.io/en/latest/maindoc.html"
       },
       "source_repository": "https://github.com/giovannipizzi/seekpath",
-      "topics": ["obtain-material-structure", "build-or-modify-computational-model", "band-structure", "harmonic-phonons"]
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "band-structure",
+        "harmonic-phonons"
+      ]
     },
     {
       "slug": "quantum-espresso",
       "name": "Quantum ESPRESSO",
-      "aliases": ["QE"],
+      "aliases": [
+        "QE"
+      ],
       "category": "Electronic-structure engines",
-      "interfaces": ["command-line"],
+      "interfaces": [
+        "command-line"
+      ],
       "access": "open-source",
       "role": "A plane-wave and pseudopotential electronic-structure suite with ground-state, response, phonon, molecular-dynamics, and post-processing executables.",
       "use_when": "Use Quantum ESPRESSO when a declared plane-wave and pseudopotential model must be executed for a bounded ground-state, response, phonon, dynamics, or post-processing task.",
@@ -247,6 +298,7 @@
         "Program stdout and declared stderr",
         "Restart data, structured results, and compatible post-processing parents"
       ],
+      "verify": "Verify executable and pseudopotential identities, exact input and command, fatal and completion markers, SCF convergence, any ionic or cell stopping criterion, restart ancestry and target-observable convergence; for a relaxation, inspect every free Cartesian force component rather than only the printed Total force.",
       "primary_topic": "choose-dft-method-and-computational-setup",
       "homepage": "https://www.quantum-espresso.org/",
       "documentation": "https://www.quantum-espresso.org/documentation/",
@@ -268,9 +320,13 @@
     {
       "slug": "vasp",
       "name": "VASP",
-      "aliases": ["Vienna Ab initio Simulation Package"],
+      "aliases": [
+        "Vienna Ab initio Simulation Package"
+      ],
       "category": "Electronic-structure engines",
-      "interfaces": ["command-line"],
+      "interfaces": [
+        "command-line"
+      ],
       "access": "restricted-license",
       "role": "A licensed electronic-structure package documented for periodic ground-state, response, dynamics, and post-processing calculations.",
       "use_when": "Use VASP when a licensed periodic electronic-structure calculation is selected and the required executable and potential access are already authorized.",
@@ -283,6 +339,7 @@
         "OUTCAR, vasprun.xml, and declared log files",
         "Restart and derived artifacts retained under the applicable licence boundary"
       ],
+      "verify": "Verify the executable and licensed potential identities, exact POSCAR, INCAR and KPOINTS, electronic and ionic stop reasons in OUTCAR or vasprun.xml, restart compatibility and target-observable convergence; the presence of CONTCAR, CHGCAR or WAVECAR is not a convergence result.",
       "primary_topic": "choose-dft-method-and-computational-setup",
       "homepage": "https://vasp.at/",
       "documentation": "https://vasp.at/wiki/",
@@ -305,7 +362,10 @@
       "name": "CP2K",
       "aliases": [],
       "category": "Electronic-structure engines",
-      "interfaces": ["command-line", "library"],
+      "interfaces": [
+        "command-line",
+        "library"
+      ],
       "access": "open-source",
       "role": "An atomistic simulation package spanning electronic-structure, molecular-dynamics, optimization, and mixed quantum/classical methods.",
       "use_when": "Use CP2K when an atomistic electronic-structure, optimization, molecular-dynamics, or mixed quantum/classical route fits the declared model.",
@@ -318,6 +378,7 @@
         "Program stdout and selected printed data",
         "Restart files, trajectories, forces, energies, or other requested artifacts"
       ],
+      "verify": "Verify the executable, basis and potential identities, units, cell and periodicity, intended RUN_TYPE, SCF or geometry convergence markers, requested print artifacts and restart or WFN lineage; file existence alone does not establish a compatible continuation.",
       "primary_topic": "choose-dft-method-and-computational-setup",
       "homepage": "https://www.cp2k.org/",
       "documentation": "https://manual.cp2k.org/",
@@ -338,7 +399,9 @@
       "name": "ABINIT",
       "aliases": [],
       "category": "Electronic-structure engines",
-      "interfaces": ["command-line"],
+      "interfaces": [
+        "command-line"
+      ],
       "access": "open-source",
       "role": "An electronic-structure suite with ground-state, response, phonon, and many-body perturbation workflows documented as separate capabilities.",
       "use_when": "Use ABINIT when a periodic ground-state, response, phonon, or many-body workflow is selected under an explicit dataset and pseudopotential model.",
@@ -351,6 +414,7 @@
         "Text output and requested NetCDF datasets",
         "Restart, wavefunction, density, response, or many-body artifacts"
       ],
+      "verify": "Verify the executable and pseudopotential identities, dataset dependencies, WARN and ERROR messages, SCF or relaxation stopping criteria, produced ABO, GSR and HIST artifacts and restart lineage; a completed output file alone is insufficient.",
       "primary_topic": "choose-dft-method-and-computational-setup",
       "homepage": "https://www.abinit.org/",
       "documentation": "https://docs.abinit.org/",
@@ -372,7 +436,9 @@
       "name": "SIESTA",
       "aliases": [],
       "category": "Electronic-structure engines",
-      "interfaces": ["command-line"],
+      "interfaces": [
+        "command-line"
+      ],
       "access": "open-source",
       "role": "A localized-orbital electronic-structure package used for periodic calculations and as a parent engine for selected transport workflows.",
       "use_when": "Use SIESTA when a localized-orbital periodic electronic-structure route is appropriate and its basis and pseudopotential choices can be declared explicitly.",
@@ -385,6 +451,7 @@
         "Program stdout and system-label data files",
         "Densities, matrices, bands, DOS, restart, or transport-parent artifacts when requested"
       ],
+      "verify": "Verify the executable and pseudopotential identities, species-label mapping, basis definition, mesh and k-point sampling, occupations, system label, completion and convergence messages, and the lineage of restart or transport-parent files.",
       "primary_topic": "choose-dft-method-and-computational-setup",
       "homepage": "https://siesta-project.org/",
       "documentation": "https://docs.siesta-project.org/projects/siesta/en/latest/",
@@ -406,11 +473,14 @@
       "name": "Phonopy",
       "aliases": [],
       "category": "Lattice dynamics",
-      "interfaces": ["command-line", "python-api"],
+      "interfaces": [
+        "command-line",
+        "python-api"
+      ],
       "access": "open-source",
       "role": "A harmonic lattice-dynamics package that constructs and analyzes force-constant models from external force calculations.",
       "use_when": "Use Phonopy when harmonic force constants or phonon observables are needed from a declared reference cell and comparable external force calculations.",
-      "first_action": "Generate a small displacement set from the exact reference cell, record the supercell and displacement settings, and inspect the generated structures before calculating forces.",
+      "first_action": "From the exact trusted reference cell, declare the primitive or supercell relationship and calculator interface, generate a small displacement set, and inspect atom ordering and displacement-to-force provenance before calculating forces.",
       "input_objects": [
         "A reference unit cell and supercell matrix",
         "Displacement settings and matched force outputs from an external calculator"
@@ -419,6 +489,7 @@
         "Displaced supercell structures and force datasets",
         "Harmonic force constants, frequencies, eigenvectors, or thermodynamic tables"
       ],
+      "verify": "Verify that every displaced supercell maps one-to-one to the correct force output with unchanged atom order and units, then audit electronic-force, supercell and applicable q-mesh convergence and distinguish numerical or acoustic artifacts from a physical imaginary mode.",
       "primary_topic": "harmonic-phonons",
       "homepage": "https://phonopy.github.io/phonopy/",
       "documentation": "https://phonopy.github.io/phonopy/phonopy.html",
@@ -427,18 +498,24 @@
         "url": "https://phonopy.github.io/phonopy/phonopy.html"
       },
       "source_repository": "https://github.com/phonopy/phonopy",
-      "topics": ["harmonic-phonons", "test-numerical-convergence"]
+      "topics": [
+        "harmonic-phonons",
+        "test-numerical-convergence"
+      ]
     },
     {
       "slug": "phono3py",
       "name": "Phono3py",
       "aliases": [],
       "category": "Lattice dynamics",
-      "interfaces": ["command-line", "python-api"],
+      "interfaces": [
+        "command-line",
+        "python-api"
+      ],
       "access": "open-source",
       "role": "An anharmonic lattice-dynamics package for third-order force constants, phonon interactions, and lattice-thermal-transport analysis.",
       "use_when": "Use Phono3py when a stable harmonic protocol is being extended to third-order force constants, phonon interactions, or lattice thermal transport.",
-      "first_action": "Generate and count the declared second- and third-order displacement sets, inspect symmetry reduction and cutoffs, and plan the matching force calculations before running them.",
+      "first_action": "Confirm the harmonic reference and force protocol first, then generate and count the declared second- and third-order displacement sets, inspect symmetry reduction and cutoffs, and plan their one-to-one force calculations.",
       "input_objects": [
         "A reference cell, supercell matrices, and displacement settings",
         "Matched force datasets and optional Born-charge or dielectric data"
@@ -447,6 +524,7 @@
         "Second- and third-order force constants",
         "Interaction, linewidth, lifetime, and lattice-transport datasets"
       ],
+      "verify": "Verify a trusted harmonic baseline, complete displacement-to-force mapping, second- and third-order supercell and cutoff choices, q-mesh and observable convergence, and any isotope or non-analytical-correction settings; program completion is not a transport result.",
       "primary_topic": "anharmonic-phonons",
       "homepage": "https://phonopy.github.io/phono3py/",
       "documentation": "https://phonopy.github.io/phono3py/workflow.html",
@@ -466,7 +544,10 @@
       "name": "Wannier90",
       "aliases": [],
       "category": "Interpolation and topology",
-      "interfaces": ["command-line", "library"],
+      "interfaces": [
+        "command-line",
+        "library"
+      ],
       "access": "open-source",
       "role": "A code for constructing Wannier representations and using them for interpolation and selected Berry, topology, and transport analyses.",
       "use_when": "Use Wannier90 when compatible parent eigenstates must be represented by Wannier functions for interpolation, Berry, topology, Fermi-surface, or transport analysis.",
@@ -479,6 +560,7 @@
         "Wannier centres, spreads, matrices, and a checkpoint",
         "Interpolated bands or downstream Berry, topology, surface, and transport inputs"
       ],
+      "verify": "Verify the parent eigenstate and k-mesh identity, projections and frozen or disentanglement windows, interface-file completeness and localization convergence, then compare interpolated bands or observables with the ab-initio reference over the target region; a small spread alone is insufficient.",
       "primary_topic": "wannier-function-construction",
       "homepage": "https://wannier.org/",
       "documentation": "https://wannier90.readthedocs.io/en/latest/",
@@ -500,19 +582,22 @@
       "name": "EPW",
       "aliases": [],
       "category": "Electron-phonon and transport",
-      "interfaces": ["command-line"],
+      "interfaces": [
+        "command-line"
+      ],
       "access": "open-source",
       "role": "A Wannier-based code for electron-phonon coupling and related electronic, transport, and superconducting observables using compatible parent data.",
       "use_when": "Use EPW when compatible coarse-grid electronic, phonon, and Wannier parent data are available for electron-phonon, transport, or superconducting observables.",
-      "first_action": "Audit the parent QE and Wannier identities, grids, bands, phonon coverage, and saved data before preparing one bounded EPW interpolation task.",
+      "first_action": "Audit the converged SCF and NSCF states, DFPT dynamical and perturbation data, QE save tree and Wannier files as one compatible parent lineage before preparing a bounded EPW interpolation task.",
       "input_objects": [
-        "Compatible electronic save data, phonon dynamical data, and Wannier files",
-        "An EPW input with declared coarse and fine grids, bands, windows, and target observable"
+        "Compatible QE save data, dynamical matrices, perturbation data and Wannier interface files",
+        "An EPW input with declared coarse and fine grids, bands, windows and target observable"
       ],
       "output_objects": [
         "Interpolated electron, phonon, and electron-phonon datasets",
         "Observable-specific coupling, linewidth, transport, or superconducting tables and logs"
       ],
+      "verify": "Verify exact SCF, NSCF, DFPT and Wannier parent ancestry and coarse-grid completeness, compare direct and interpolated bands, phonons and electron-phonon matrix elements, then converge fine k and q meshes, smearing and the target observable; an example lambda, mobility or Tc is not a production result.",
       "primary_topic": "electron-phonon-coupling",
       "homepage": "https://epw-code.org/",
       "documentation": "https://docs.epw-code.org/",
@@ -532,11 +617,15 @@
       "name": "AiiDA",
       "aliases": [],
       "category": "Workflow and provenance",
-      "interfaces": ["python-api", "command-line", "web-services"],
+      "interfaces": [
+        "python-api",
+        "command-line",
+        "web-services"
+      ],
       "access": "open-source",
       "role": "A workflow and provenance infrastructure for automating calculations and retaining queryable data-process lineage.",
-      "use_when": "Use AiiDA when calculations or analyses must be automated while retaining queryable data-process provenance across repeated or dependent steps.",
-      "first_action": "Configure a profile, computer, and code, then run one small provenance-tracked process and inspect its inputs, outputs, state, logs, and links before building a larger workflow.",
+      "use_when": "Use AiiDA as an optional implementation layer when repeated or dependent calculations need provenance-preserving execution and reuse; DRW remains manually executable without it.",
+      "first_action": "Configure a profile, computer and code, run one small process, then inspect its inputs, outputs, state, logs and provenance links together with a preserved failed process when available before building a larger workflow.",
       "input_objects": [
         "A process builder with typed data nodes",
         "Configured profile, computer, code, resources, and optional parent nodes"
@@ -545,6 +634,7 @@
         "Process and data nodes with logs and execution state",
         "A queryable provenance graph linking inputs, processes, outputs, and descendants"
       ],
+      "verify": "Verify that each result traces to exact inputs, code and version, computer and resources, input and output files and parent or restart lineage, and retain failed process nodes and logs; provenance does not establish numerical convergence or scientific validity.",
       "primary_topic": "document-and-preserve-study",
       "homepage": "https://www.aiida.net/",
       "documentation": "https://aiida.readthedocs.io/projects/aiida-core/en/stable/",

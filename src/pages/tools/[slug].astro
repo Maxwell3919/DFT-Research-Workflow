@@ -57,6 +57,9 @@ const verifiedAtLabel = new Intl.DateTimeFormat('en-GB', {
   <h3>Output objects</h3>
   <ul data-tool-outputs>{tool.output_objects.map((item) => <li>{item}</li>)}</ul>
 
+  <h2>What to verify</h2>
+  <p data-tool-verify>{tool.verify}</p>
+
   <h2>Where in DRW</h2>
   <p><a data-tool-primary href={withBase(`operations/${primaryTopic.slug}/`)}>{primaryTopic.title}</a> is the primary scientific entry for this record.</p>
   {relatedTopics.length > 0 && (

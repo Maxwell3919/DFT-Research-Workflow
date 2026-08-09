@@ -20,6 +20,7 @@ export interface ToolRecord {
   first_action: string;
   input_objects: string[];
   output_objects: string[];
+  verify: string;
   primary_topic: string;
   homepage: string;
   documentation: string;
