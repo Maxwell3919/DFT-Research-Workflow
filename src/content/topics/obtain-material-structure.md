@@ -62,9 +62,9 @@ For a simple reference, search COD for **silicon, COD ID `9013102`**. The record
 
 After downloading the CIF, locate the cell parameters, symmetry information, atom-site loop, occupancy, and bibliographic fields. These values describe the database record; they do not establish that this representation is the correct starting model for every silicon calculation.
 
-<figure class="cif-viewer">
-  <iframe src="../../embeds/silicon-cif-viewer.html" title="Interactive silicon crystal structure derived from COD 9013102" loading="lazy" allow="fullscreen"></iframe>
-  <figcaption>
+<figure class="cif-viewer" style="margin: 1.5rem 0 2.2rem;">
+  <iframe src="../../embeds/silicon-cif-viewer.html" title="Interactive silicon crystal structure derived from COD 9013102" loading="lazy" allow="fullscreen" style="display: block; width: 100%; height: clamp(22rem, 60vw, 30rem); border: 1px solid #dcdcdc; background: #fafafa;"></iframe>
+  <figcaption style="margin-top: 0.65rem; color: #666666; font-size: 0.9rem; line-height: 1.5;">
     Interactive Mol* view of a <a href="../../examples/cif/silicon-cod-9013102-expanded.cif">fixed teaching CIF</a> stored with this site. The snapshot uses the COD 9013102 cell and silicon diamond geometry but is symmetry-expanded to <code>P 1</code> for stable display; it is not the byte-for-byte COD download.
   </figcaption>
 </figure>
