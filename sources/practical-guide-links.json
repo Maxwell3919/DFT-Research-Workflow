@@ -90,7 +90,7 @@
     { "id": "phonopy-qha", "url": "https://phonopy.github.io/phonopy/qha.html", "kind": "page" },
     { "id": "iupac-enthalpy", "url": "https://goldbook.iupac.org/terms/view/H02752", "kind": "page" },
     { "id": "oqmd-api", "url": "https://static.oqmd.org/static/docs/restful.html", "kind": "page" },
-    { "id": "oqmd-download-license", "url": "https://www.oqmd.org/download/", "kind": "page" },
+    { "id": "oqmd-download-license", "url": "https://www.oqmd.org/api/", "kind": "page" },
     { "id": "oqmd-paper", "url": "https://doi.org/10.1007/s11837-013-0755-4", "kind": "doi" },
     { "id": "pymatgen-phase-diagram-api", "url": "https://pymatgen.org/pymatgen.analysis.html#module-pymatgen.analysis.phase_diagram", "kind": "page" },
     { "id": "zhang-northrup-defects", "url": "https://doi.org/10.1103/PhysRevLett.67.2339", "kind": "doi" },
