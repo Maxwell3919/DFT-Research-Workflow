@@ -82,11 +82,12 @@ the source record; the local snapshot is only a stable visualization artifact.
 ### Interactive visualization
 
 The page delegates only the interactive rendering surface to the hosted Mol*
-viewer. The viewer is configured to load the site-local teaching CIF as CIF data;
-this dependency does not become a crystallographic source or a DFT validation
-method.
+viewer. The generic URL loader is configured with Mol*'s registered `cifCore`
+trajectory format so that the site-local crystallographic CIF is parsed into a
+structure before the default representation is rendered. This dependency does
+not become a crystallographic source or a DFT validation method.
 
-- https://molstar.org/viewer/?hide-controls=1&structure-url=https%3A%2F%2Fmaxwell3919.github.io%2FDFT-Research-Workflow%2Fexamples%2Fcif%2Fsilicon-cod-9013102-expanded.cif&structure-url-format=cif
+- https://molstar.org/viewer/?hide-controls=1&url=https%3A%2F%2Fmaxwell3919.github.io%2FDFT-Research-Workflow%2Fexamples%2Fcif%2Fsilicon-cod-9013102-expanded.cif&url-format=cifCore
 
 ### Numerical symmetry detection
 
@@ -147,14 +148,15 @@ tolerance, bond-distance threshold, or database ranking.
 
 The page remains static-first. Its scientific text, links, and CIF teaching
 snapshot are available without site-side client hydration. The interactive
-region is a direct external iframe to the hosted Mol* viewer, which receives the
-absolute URL of the deployed site-local teaching CIF. Failure of that external
-viewer does not remove the source discussion or the local CIF artifact.
+region is a direct external iframe to the hosted Mol* viewer, whose generic URL
+loader receives the absolute URL of the deployed site-local teaching CIF and the
+registered `cifCore` format key. Failure of that external viewer does not remove
+the source discussion or the local CIF artifact.
 
 The visualization establishes only that the declared teaching representation can
-be rendered interactively. It does not independently validate the deposited COD
-record, the transformation to the teaching snapshot, or suitability for a DFT
-calculation.
+be parsed and rendered interactively. It does not independently validate the
+deposited COD record, the transformation to the teaching snapshot, or suitability
+for a DFT calculation.
 
 ## Deliberate limitations
 
@@ -175,8 +177,8 @@ next content topic is **Build or Modify a Computational Model**.
 
 ## External-link verification
 
-The hosted Mol* viewer URL is now an explicit reviewed external dependency, so it
-is declared together with the scientific-source URLs in
+The hosted Mol* viewer URL is an explicit reviewed external dependency, so it is
+declared together with the scientific-source URLs in
 `sources/reviewed-links.json`. The local teaching CIF remains an internal
 artifact and is checked separately by the exact-SHA browser smoke.
 
@@ -189,8 +191,10 @@ destination under the rules documented in
 
 The semantic source review establishes that the article represents the cited
 sources within its declared scope. The dedicated external-link audit establishes
-HTTP reachability only at its recorded run time. Browser smoke establishes that
-the public page and local teaching CIF load under the deployed site and that the
-Mol* iframe is configured for that CIF; it does not establish scientific
-correctness. None of these checks establishes that an arbitrary structure file
-is correct, complete, stable, or suitable for a particular DFT calculation.
+HTTP reachability only at its recorded run time. Browser smoke must establish
+three separate facts for this example: the deployed teaching CIF returns
+successfully, Mol* creates an actual structure containing at least the eight
+explicit teaching-snapshot sites, and a rendered representation exists. A canvas
+or successful CIF HTTP request alone is insufficient. None of these checks
+establishes that an arbitrary structure file is correct, complete, stable, or
+suitable for a particular DFT calculation.
