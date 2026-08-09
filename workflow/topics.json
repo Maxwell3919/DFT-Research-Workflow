@@ -6,7 +6,7 @@
     {
       "id": "A",
       "slug": "structures",
-      "title": "Structures",
+      "title": "Structure & Model",
       "role": "backbone",
       "summary": "Obtain a trustworthy structure and build the model required by the study.",
       "groups": [
@@ -25,7 +25,7 @@
     {
       "id": "B",
       "slug": "calculation-preparation",
-      "title": "Calculation Preparation",
+      "title": "Method & Numerical Setup",
       "role": "backbone",
       "summary": "Choose a physically appropriate setup and establish numerical reliability.",
       "groups": [
@@ -44,7 +44,7 @@
     {
       "id": "C",
       "slug": "reference-state-calculations",
-      "title": "Reference-State Calculations",
+      "title": "Reference State",
       "role": "backbone",
       "summary": "Establish the structure and electronic state used by later calculations.",
       "groups": [
@@ -149,7 +149,7 @@
     {
       "id": "E",
       "slug": "research-completion",
-      "title": "Research Completion",
+      "title": "Validation, Interpretation & Reproducibility",
       "role": "backbone",
       "summary": "Turn calculations into an interpretable, supported, and reusable study.",
       "groups": [

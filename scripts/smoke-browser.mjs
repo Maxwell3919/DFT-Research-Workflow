@@ -68,6 +68,20 @@ const requiredRoutes = [
   ...representativeLegacySlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
   { route: '/missing-page-for-smoke/', status: 404, name: '404' },
 ];
+const responsiveWidths = [360, 390, 430, 600, 768, 900, 1024, 1280, 1440];
+const responsiveTargets = [
+  { route: '/', name: 'Home' },
+  { route: '/operations/', name: 'Research Workflow' },
+];
+const observableExampleSlugs = [
+  'relative-and-formation-energies',
+  'optimize-structure',
+  'harmonic-phonons',
+  'fermi-surface-and-full-brillouin-zone-analysis',
+  'density-of-states-and-projected-density-of-states',
+  'electron-phonon-coupling',
+  'conventional-superconductivity',
+];
 const prohibitedText = /View contract|Operation registry|Automation maturity|Candidate automation|Claim ledger|查看契约|验证门/i;
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
@@ -132,6 +146,92 @@ async function inspectPage(page, expectedStatus) {
   return observation;
 }
 
+async function inspectResponsiveLayout(page, target, width) {
+  await page.setViewport({ width, height: Math.max(900, Math.round(width * 0.75)), deviceScaleFactor: 1 });
+  const response = await page.goto(`${base}${target.route}`, { waitUntil: 'load' });
+  if (response?.status() !== 200) throw new Error(`${target.name} at ${width}px: HTTP ${response?.status() ?? 'no response'}`);
+
+  const observation = await page.evaluate(() => {
+    const tolerance = 1;
+    const viewportWidth = document.documentElement.clientWidth;
+    const describe = (element) => {
+      const id = element.id ? `#${element.id}` : '';
+      const classes = [...element.classList].slice(0, 3).map((name) => `.${name}`).join('');
+      return `${element.tagName.toLowerCase()}${id}${classes}`;
+    };
+    const visible = (element) => {
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > tolerance && rect.height > tolerance;
+    };
+    const documentOverflow = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - viewportWidth;
+    const invalidPreOverflow = [];
+    let localPreOverflow = 0;
+
+    for (const pre of document.querySelectorAll('pre')) {
+      if (!visible(pre)) continue;
+      const rect = pre.getBoundingClientRect();
+      const style = getComputedStyle(pre);
+      if (rect.left < -tolerance || rect.right > viewportWidth + tolerance) {
+        invalidPreOverflow.push(`${describe(pre)} leaves the viewport`);
+      }
+      if (pre.scrollWidth > pre.clientWidth + tolerance) {
+        localPreOverflow += 1;
+        if (!['auto', 'scroll'].includes(style.overflowX)) {
+          invalidPreOverflow.push(`${describe(pre)} has unclipped local overflow (${style.overflowX})`);
+        }
+      }
+    }
+
+    const intrinsicOverflow = [];
+    for (const element of document.querySelectorAll('.primary-nav, .primary-nav *, main, main *')) {
+      if (!(element instanceof HTMLElement) || element.closest('pre') || !visible(element) || element.clientWidth <= tolerance) continue;
+      if (element.scrollWidth > element.clientWidth + tolerance) {
+        intrinsicOverflow.push(`${describe(element)} ${element.scrollWidth}px > ${element.clientWidth}px`);
+      }
+    }
+
+    const collisions = [];
+    for (const parent of document.querySelectorAll('.primary-nav, main, main *')) {
+      if (!(parent instanceof HTMLElement) || parent.closest('pre') || !visible(parent)) continue;
+      const parentDisplay = getComputedStyle(parent).display;
+      const isFlexOrGrid = parentDisplay.includes('flex') || parentDisplay.includes('grid');
+      const children = [...parent.children].filter((child) => {
+        if (!(child instanceof HTMLElement) || child.parentElement?.closest('pre') || !visible(child)) return false;
+        const display = getComputedStyle(child).display;
+        return isFlexOrGrid || !['inline', 'inline-block', 'contents'].includes(display);
+      });
+      for (let first = 0; first < children.length; first += 1) {
+        const firstRect = children[first].getBoundingClientRect();
+        for (let second = first + 1; second < children.length; second += 1) {
+          const secondRect = children[second].getBoundingClientRect();
+          const horizontalOverlap = Math.min(firstRect.right, secondRect.right) - Math.max(firstRect.left, secondRect.left);
+          const verticalOverlap = Math.min(firstRect.bottom, secondRect.bottom) - Math.max(firstRect.top, secondRect.top);
+          if (horizontalOverlap > tolerance && verticalOverlap > tolerance) {
+            collisions.push(`${describe(parent)}: ${describe(children[first])} overlaps ${describe(children[second])}`);
+          }
+        }
+      }
+    }
+
+    return {
+      innerWidth: window.innerWidth,
+      documentOverflow,
+      intrinsicOverflow: [...new Set(intrinsicOverflow)].slice(0, 10),
+      collisions: [...new Set(collisions)].slice(0, 10),
+      invalidPreOverflow,
+      localPreOverflow,
+    };
+  });
+
+  if (observation.innerWidth !== width) throw new Error(`${target.name} requested ${width}px but rendered ${observation.innerWidth}px`);
+  if (observation.documentOverflow > 1) throw new Error(`${target.name} at ${width}px has ${observation.documentOverflow}px document overflow`);
+  if (observation.intrinsicOverflow.length > 0) throw new Error(`${target.name} at ${width}px has intrinsic overflow: ${observation.intrinsicOverflow.join('; ')}`);
+  if (observation.collisions.length > 0) throw new Error(`${target.name} at ${width}px has collisions: ${observation.collisions.join('; ')}`);
+  if (observation.invalidPreOverflow.length > 0) throw new Error(`${target.name} at ${width}px has invalid pre overflow: ${observation.invalidPreOverflow.join('; ')}`);
+  return observation.localPreOverflow;
+}
+
 const deploymentManifest = await waitForDeploymentManifest();
 const browser = await puppeteer.launch({ executablePath, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
 
@@ -158,10 +258,21 @@ try {
     }
   }
 
+  let responsiveChecks = 0;
+  let responsiveLocalPreOverflows = 0;
+  for (const width of responsiveWidths) {
+    for (const target of responsiveTargets) {
+      responsiveLocalPreOverflows += await inspectResponsiveLayout(page, target, width);
+      responsiveChecks += 1;
+    }
+  }
+
   await page.goto(`${base}/operations/`, { waitUntil: 'load' });
   const workflowState = await page.evaluate(() => ({
     text: document.body.innerText,
     topicLinks: [...document.querySelectorAll('.topic-list a')].map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)),
+    observableRows: document.querySelectorAll('.observable-selection dl > div').length,
+    observableLinks: [...document.querySelectorAll('.observable-selection a')].map((link) => link.getAttribute('href')?.split('/').filter(Boolean).at(-1)),
     transitionalLinks: [...document.querySelectorAll('a[href*="/operations/"]')].filter((link) => {
       const slug = link.getAttribute('href')?.split('/').filter(Boolean).at(-1) ?? '';
       return /^o\d{2}-/.test(slug);
@@ -174,6 +285,10 @@ try {
     }
   }
   if (JSON.stringify(workflowState.topicLinks) !== JSON.stringify(topicSlugs)) throw new Error('Research Workflow topic links do not match the registry order');
+  if (workflowState.observableRows !== 4) throw new Error(`Research Workflow exposes ${workflowState.observableRows}/4 observable examples`);
+  for (const slug of observableExampleSlugs) {
+    if (!workflowState.observableLinks.includes(slug)) throw new Error(`Research Workflow observable examples are missing ${slug}`);
+  }
   if (workflowState.transitionalLinks !== 0) throw new Error('Research Workflow exposes transitional numbered routes');
   if (/Core Operations|O01|O24|Operation 00/.test(workflowState.text)) throw new Error('Research Workflow exposes a superseded numbered taxonomy');
 
@@ -371,6 +486,12 @@ try {
     mobile_horizontal_overflow: false,
     no_javascript_workflow: true,
     no_javascript_reviewed_topic: true,
+    responsive_widths: responsiveWidths,
+    responsive_routes: responsiveTargets.map((target) => target.route),
+    responsive_layout_checks: responsiveChecks,
+    responsive_collisions: 0,
+    responsive_document_overflow: 0,
+    responsive_local_pre_overflows: responsiveLocalPreOverflows,
     cif_teaching_snapshot: true,
     cif_viewer_loaded: true,
     cif_viewer_source_fetch_status: viewerCifStatus,
@@ -380,7 +501,7 @@ try {
     public_language: 'en',
   };
   if (artifactDirectory) await writeFile(join(artifactDirectory, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`);
-  console.log(`Browser smoke passed: registry-driven A–E workflow, two terminal-first Worked Workflows, migration-safe old routes, keyboard navigation, true 390px no overflow, no-JavaScript reading, deployed CIF teaching snapshot, Mol* parsed ${molstarStructureState.elementCount} structure elements with ${molstarStructureState.representationCount} representation(s), and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
+  console.log(`Browser smoke passed: registry-driven A–E workflow, ${responsiveChecks} Home/Research Workflow responsive layout checks across ${responsiveWidths.join(', ')}px, two terminal-first Worked Workflows, migration-safe old routes, keyboard navigation, no-JavaScript reading, deployed CIF teaching snapshot, Mol* parsed ${molstarStructureState.elementCount} structure elements with ${molstarStructureState.representationCount} representation(s), and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
 } finally {
   await browser.close();
 }

@@ -8,9 +8,10 @@ interface Props {
   description: string;
   current?: 'home' | 'operations' | 'workflows' | 'tools';
   redirectTo?: string;
+  wide?: boolean;
 }
 
-const { title, description, current, redirectTo } = Astro.props;
+const { title, description, current, redirectTo, wide = false } = Astro.props;
 const pageTitle = title === 'DFT Research Workflow' ? title : `${title} · DFT Research Workflow`;
 const navigation = [
   { id: 'home', label: 'Home', href: withBase() },
@@ -41,7 +42,7 @@ const navigation = [
     </style>
     <title>{pageTitle}</title>
   </head>
-  <body>
+  <body class:list={{ 'wide-shell': wide }}>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
       <a class="site-name" href={withBase()}>DFT Research Workflow</a>

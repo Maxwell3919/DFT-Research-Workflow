@@ -2,10 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { workflowSections } from '../../lib/workflow';
 import { withBase } from '../../lib/paths';
-
-const backboneSections = workflowSections.filter((section) => ['A', 'B', 'C'].includes(section.id));
-const targetSection = workflowSections.find((section) => section.id === 'D');
-const completionSection = workflowSections.find((section) => section.id === 'E');
 ---
 
 <BaseLayout
@@ -15,79 +11,49 @@ const completionSection = workflowSections.find((section) => section.id === 'E')
 >
   <article class="workflow-manual">
     <header class="workflow-lede">
-      <p class="kicker">Question first · observable next · calculation last</p>
-      <h1>Calculate what the question requires</h1>
+      <h1>Choose the calculation your question requires</h1>
       <p class="page-intro">
-        Do not begin by asking which calculation is customary. State the scientific question, name the observable that could answer it, define the comparison and precision required, and only then choose a target branch. A–C establish a defensible model and reference state; D is a branching calculation library; E tests whether the resulting evidence supports the intended conclusion.
+        Write the scientific question as a comparison or decision, then identify the observable and precision it requires. Use A–C to establish a defensible model and reference state, choose only the D calculation that produces that observable, and use E to decide what the evidence supports.
       </p>
     </header>
 
     <section class="observable-selection" aria-labelledby="observable-heading">
       <header>
-        <p>Four bounded examples</p>
-        <h2 id="observable-heading">A question determines its evidence</h2>
+        <h2 id="observable-heading">Choose the evidence before the calculation</h2>
+        <p>Different claims require different outputs. Start with the question, then open the task that produces or tests the needed quantity.</p>
       </header>
       <dl>
         <div>
-          <dt>Which same-composition polymorph is lower in static-lattice energy at 0 K?</dt>
-          <dd><strong>Required observable:</strong> a matched energy difference per formula unit, with numerical uncertainty small enough to resolve the ranking. One isolated total energy cannot answer the comparison.</dd>
+          <dt>Is the structure stable for the claim I want to make?</dt>
+          <dd>
+            Candidate ranking requires <a href={withBase('operations/relative-and-formation-energies/')}>matched energy differences</a>; a stationary geometry requires <a href={withBase('operations/optimize-structure/')}>accepted forces and stress</a>; dynamical stability requires <a href={withBase('operations/harmonic-phonons/')}>phonons over the relevant q-space</a>. Choose the test that matches the claim.
+          </dd>
         </div>
         <div>
-          <dt>Is the fundamental gap direct or indirect within the chosen approximation?</dt>
-          <dd><strong>Required observable:</strong> valence- and conduction-band extrema, their k-points, and the gap from adequate Brillouin-zone coverage. A high-symmetry path alone is not a full-zone search.</dd>
+          <dt>Is the material metallic?</dt>
+          <dd>
+            Inspect a sufficiently dense <a href={withBase('operations/fermi-surface-and-full-brillouin-zone-analysis/')}>full-zone electronic sample</a> and the <a href={withBase('operations/density-of-states-and-projected-density-of-states/')}>density of states near the Fermi level</a>. A high-symmetry band path alone is not full-Brillouin-zone evidence of metallicity.
+          </dd>
         </div>
         <div>
           <dt>Is the reference crystal dynamically stable in the harmonic approximation?</dt>
-          <dd><strong>Required observable:</strong> phonon frequencies over the q-space needed by the claim, with displacement or q-mesh convergence and numerical artifact checks. A Γ-point result is not a general stability test.</dd>
+          <dd>
+            Calculate <a href={withBase('operations/harmonic-phonons/')}>harmonic phonons</a> over the q-space required by the claim, then test the q mesh or supercell and inspect possible numerical artifacts. A Γ-point result is not a general stability test.
+          </dd>
         </div>
         <div>
-          <dt>What electron–phonon estimate of Tc follows for a stated Coulomb parameter?</dt>
-          <dd><strong>Required observable:</strong> converged α²F(ω), λ, ω<sub>log</sub>, the stated μ*, and the declared Tc equation or solver. SCF convergence and one phonon calculation do not establish Tc.</dd>
+          <dt>Could conventional electron–phonon superconductivity be supported?</dt>
+          <dd>
+            Establish qualified <a href={withBase('operations/harmonic-phonons/')}>phonons</a>, converge the <a href={withBase('operations/electron-phonon-coupling/')}>electron–phonon calculation</a>, and inspect α²F(ω), λ, ω<sub>log</sub>, the stated μ*, and the declared <a href={withBase('operations/conventional-superconductivity/')}>Tc model</a>. SCF convergence and one phonon calculation do not establish Tc.
+          </dd>
         </div>
       </dl>
     </section>
 
-    <figure class="branch-map" aria-labelledby="branch-map-title">
-      <figcaption>
-        <span>Dependency map</span>
-        <strong id="branch-map-title">D branches; E sends evidence back</strong>
-      </figcaption>
-
-      <div class="map-backbone" aria-label="A through C research backbone">
-        {backboneSections.map((section) => (
-          <a href={`#part-${section.id.toLowerCase()}`}>
-            <strong>{section.id}</strong>
-            <span>{section.title}</span>
-          </a>
-        ))}
-      </div>
-
-      {targetSection && (
-        <div class="map-target">
-          <div class="map-target-heading">
-            <a href="#part-d"><strong>D</strong><span>{targetSection.title}</span></a>
-            <p>Choose only the branch or branches required by the observable.</p>
-          </div>
-          <ul aria-label="Existing D navigation groups">
-            {targetSection.groups.map((group) => (
-              <li><span>{group.id}</span>{group.title}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {completionSection && (
-        <div class="map-completion">
-          <a href="#part-e"><strong>E</strong><span>{completionSection.title}</span></a>
-          <p><b>Feedback:</b> validation, disagreement, or insufficient precision can return the study to A, B, C, or another D branch.</p>
-        </div>
-      )}
-    </figure>
-
     <section class="topic-directory" aria-labelledby="directory-heading">
       <header class="directory-heading">
-        <p>Read by scientific need</p>
-        <h2 id="directory-heading">The A–E manual</h2>
+        <h2 id="directory-heading">Choose the next task</h2>
+        <p>Open the task that produces or checks the object you need. D is grouped by target quantity; this directory is not a required linear sequence.</p>
       </header>
 
       {workflowSections.map((section) => (
@@ -111,10 +77,6 @@ const completionSection = workflowSections.find((section) => section.id === 'E')
         </section>
       ))}
     </section>
-
-    <p class="framework-note">
-      Older Framework and numbered direct links remain only as migration surfaces. They are not an alternative taxonomy, reading order, or calculation prescription.
-    </p>
   </article>
 </BaseLayout>
 
@@ -129,71 +91,69 @@ const completionSection = workflowSections.find((section) => section.id === 'E')
   }
 
   .workflow-lede {
-    max-width: 61rem;
-    padding: clamp(1rem, 3vw, 2.5rem) 0 clamp(2.5rem, 6vw, 5.5rem);
-  }
-
-  .kicker,
-  .observable-selection > header > p,
-  .directory-heading > p {
-    color: var(--accent);
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.13em;
-    margin: 0 0 0.9rem;
-    text-transform: uppercase;
+    max-width: 58rem;
+    padding: clamp(0.5rem, 2vw, 1.5rem) 0 clamp(2.5rem, 5vw, 4rem);
   }
 
   h1 {
-    font-size: clamp(3rem, 7vw, 6.9rem);
+    font-size: clamp(2.9rem, 5.5vw, 5.4rem);
     font-weight: 500;
-    letter-spacing: -0.055em;
-    line-height: 0.91;
+    letter-spacing: -0.045em;
+    line-height: 0.96;
     margin: 0;
-    max-width: 11ch;
+    max-width: 14ch;
   }
 
   .page-intro {
     color: var(--muted);
-    font-size: clamp(1.08rem, 2vw, 1.35rem);
+    font-size: clamp(1.08rem, 1.8vw, 1.3rem);
     line-height: 1.58;
-    margin: 2rem 0 0;
-    max-width: 47em;
+    margin: 1.6rem 0 0;
+    max-width: 45em;
   }
 
   .observable-selection,
-  .branch-map,
-  .topic-directory,
-  .framework-note {
+  .topic-directory {
     border-top: 1px solid var(--ink);
   }
 
   .observable-selection {
-    display: grid;
-    gap: 2rem 4rem;
-    grid-template-columns: minmax(12rem, 0.8fr) minmax(20rem, 2fr);
-    padding: 1.25rem 0 clamp(3.5rem, 7vw, 6rem);
+    padding: 1.35rem 0 clamp(3rem, 6vw, 5rem);
+  }
+
+  .observable-selection > header {
+    max-width: 52rem;
   }
 
   .observable-selection h2,
   .directory-heading h2 {
-    font-size: clamp(1.65rem, 3vw, 2.7rem);
+    font-size: clamp(1.55rem, 2.6vw, 2.35rem);
     font-weight: 500;
     letter-spacing: -0.025em;
-    line-height: 1.05;
+    line-height: 1.1;
     margin: 0;
   }
 
+  .observable-selection > header > p,
+  .directory-heading > p {
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .observable-selection > header > p {
+    margin: 0.75rem 0 0;
+  }
+
   .observable-selection dl {
-    display: grid;
-    gap: 0 2rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin: 0;
+    margin: 2rem 0 0;
   }
 
   .observable-selection dl > div {
     border-top: 1px solid var(--rule);
-    padding: 1rem 0 1.4rem;
+    display: grid;
+    gap: 1rem 4rem;
+    grid-template-columns: minmax(15rem, 0.85fr) minmax(22rem, 1.6fr);
+    padding: 1.1rem 0 1.35rem;
   }
 
   .observable-selection dt {
@@ -208,178 +168,14 @@ const completionSection = workflowSections.find((section) => section.id === 'E')
     margin: 0.65rem 0 0;
   }
 
-  .observable-selection dd strong {
+  .observable-selection dd a {
     color: var(--ink);
-  }
-
-  .branch-map {
-    margin: 0;
-    padding: 1.25rem 0 clamp(3.5rem, 7vw, 6rem);
-  }
-
-  .branch-map figcaption {
-    align-items: baseline;
-    display: flex;
-    gap: 1rem 2rem;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-  }
-
-  .branch-map figcaption span {
-    color: var(--accent);
-    font-size: 0.74rem;
     font-weight: 700;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
+    text-underline-offset: 0.16em;
   }
 
-  .branch-map figcaption strong {
-    font-size: clamp(1.35rem, 2.5vw, 2rem);
-    font-weight: 500;
-  }
-
-  .map-backbone {
-    display: grid;
-    gap: 2.6rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    position: relative;
-  }
-
-  .map-backbone::after {
-    background: var(--accent);
-    content: "";
-    height: 1px;
-    left: 1.25rem;
-    position: absolute;
-    right: 1.25rem;
-    top: 1.25rem;
-    z-index: 0;
-  }
-
-  .map-backbone a,
-  .map-target-heading a,
-  .map-completion a {
-    align-items: baseline;
-    color: inherit;
-    display: flex;
-    gap: 0.8rem;
-    position: relative;
-    text-decoration: none;
-    z-index: 1;
-  }
-
-  .map-backbone a::before {
-    background: #fff;
-    bottom: -0.3rem;
-    content: "";
-    left: -0.25rem;
-    position: absolute;
-    right: -0.25rem;
-    top: -0.3rem;
-    z-index: -1;
-  }
-
-  .map-backbone strong,
-  .map-target-heading strong,
-  .map-completion strong {
-    color: var(--accent);
-    font-size: 2.3rem;
-    font-weight: 500;
-    line-height: 1;
-  }
-
-  .map-backbone span,
-  .map-target-heading span,
-  .map-completion span {
-    font-size: 0.94rem;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  .map-target {
-    border: 1px solid var(--ink);
-    display: grid;
-    gap: 2rem 4rem;
-    grid-template-columns: minmax(12rem, 0.75fr) minmax(22rem, 2fr);
-    margin: 2.2rem 0;
-    padding: clamp(1.25rem, 3vw, 2.2rem);
-    position: relative;
-  }
-
-  .map-target::before {
-    color: var(--accent);
-    content: "↓";
-    font-size: 1.2rem;
-    left: 1rem;
-    position: absolute;
-    top: -2rem;
-  }
-
-  .map-target-heading p,
-  .map-completion p {
-    color: var(--muted);
-    line-height: 1.5;
-    margin: 0.8rem 0 0;
-  }
-
-  .map-target ul {
-    display: grid;
-    gap: 0;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .map-target li {
-    border-top: 1px solid var(--rule);
-    font-size: 0.88rem;
-    line-height: 1.3;
-    padding: 0.72rem 0;
-  }
-
-  .map-target li span {
-    color: var(--accent);
-    display: inline-block;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    min-width: 2.4rem;
-  }
-
-  .map-completion {
-    border-bottom: 1px solid var(--rule);
-    display: grid;
-    gap: 1rem 4rem;
-    grid-template-columns: minmax(13rem, 0.75fr) minmax(20rem, 2fr);
-    padding-bottom: 1.2rem;
-    position: relative;
-  }
-
-  .map-completion::before {
-    color: var(--accent);
-    content: "↺";
-    font-size: 2rem;
-    position: absolute;
-    right: 0;
-    top: -0.2rem;
-  }
-
-  .map-completion p {
-    margin: 0;
-    padding-right: 3rem;
-  }
-
-  .map-completion b {
-    color: var(--ink);
-  }
-
-  .map-backbone a:hover span,
-  .map-backbone a:focus-visible span,
-  .map-target-heading a:hover span,
-  .map-target-heading a:focus-visible span,
-  .map-completion a:hover span,
-  .map-completion a:focus-visible span {
+  .observable-selection dd a:hover,
+  .observable-selection dd a:focus-visible {
     color: var(--accent);
   }
 
@@ -395,14 +191,14 @@ const completionSection = workflowSections.find((section) => section.id === 'E')
   }
 
   .directory-heading > p {
-    margin: 0;
+    margin: 0.15rem 0 0;
   }
 
   .part-section {
     border-top: 1px solid var(--rule);
     display: grid;
     gap: 1.5rem 4rem;
-    grid-template-columns: minmax(12rem, 0.8fr) minmax(20rem, 2fr);
+    grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 2fr);
     padding: 1.5rem 0 clamp(3rem, 6vw, 5rem);
     scroll-margin-top: 1rem;
   }
@@ -453,19 +249,20 @@ const completionSection = workflowSections.find((section) => section.id === 'E')
   }
 
   .topic-list a {
+    align-items: baseline;
     color: inherit;
-    display: block;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
     line-height: 1.35;
-    padding: 0.72rem 1.8rem 0.72rem 0;
-    position: relative;
+    padding: 0.72rem 0;
     text-decoration: none;
   }
 
   .topic-list a::after {
     color: var(--accent);
     content: "→";
-    position: absolute;
-    right: 0;
+    flex: 0 0 auto;
   }
 
   .topic-list a:hover,
@@ -473,78 +270,49 @@ const completionSection = workflowSections.find((section) => section.id === 'E')
     color: var(--accent);
   }
 
-  .framework-note {
-    color: var(--muted);
-    font-size: 0.88rem;
-    line-height: 1.55;
-    margin: 0;
-    padding: 1.2rem 0 0;
+  @media (max-width: 80rem) {
+    .part-section {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .workflow-group {
+      grid-column: 1;
+    }
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 56.25rem) {
     .workflow-lede {
       padding-top: 0.5rem;
     }
 
-    h1 {
-      font-size: clamp(3.1rem, 17vw, 5.25rem);
-    }
-
-    .observable-selection,
     .directory-heading,
     .part-section {
       display: block;
     }
 
-    .observable-selection > header,
-    .directory-heading {
-      margin-bottom: 2rem;
-    }
-
-    .observable-selection dl {
+    .observable-selection dl > div {
+      gap: 0.6rem;
       grid-template-columns: 1fr;
     }
 
-    .branch-map figcaption {
-      align-items: flex-start;
-      flex-direction: column;
+    .observable-selection dd {
+      margin-top: 0;
     }
 
-    .map-backbone {
-      gap: 1.8rem;
-      grid-template-columns: 1fr;
-    }
-
-    .map-backbone::after {
-      bottom: 1.25rem;
-      height: auto;
-      left: 1.1rem;
-      right: auto;
-      top: 1.25rem;
-      width: 1px;
-    }
-
-    .map-backbone a::before {
-      right: auto;
-      width: 12rem;
-    }
-
-    .map-target,
-    .map-completion {
-      display: block;
-    }
-
-    .map-target ul {
-      grid-template-columns: 1fr;
-      margin-top: 1.5rem;
-    }
-
-    .map-completion p {
-      margin-top: 1rem;
-    }
-
+    .directory-heading > p,
     .workflow-group {
       margin-top: 2rem;
+    }
+  }
+
+  @media (max-width: 44rem) {
+    h1 {
+      font-size: clamp(2.8rem, 12vw, 4.2rem);
+    }
+
+    .directory-heading > p,
+    .workflow-group {
+      margin-top: 1.4rem;
     }
   }
 </style>

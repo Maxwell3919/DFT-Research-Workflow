@@ -15,11 +15,11 @@ operations.
 The current reader-facing structure is:
 
 ```text
-A · Structures
-B · Calculation Preparation
-C · Reference-State Calculations
+A · Structure & Model
+B · Method & Numerical Setup
+C · Reference State
 D · Target Calculations
-E · Research Completion
+E · Validation, Interpretation & Reproducibility
 ```
 
 These letters are navigation aids. They do not imply that every project follows
@@ -96,17 +96,17 @@ appropriate organization.
 
 ## Public workflow structure
 
-### A · Structures
+### A · Structure & Model
 
 - Obtain a Material Structure
 - Build or Modify a Computational Model
 
-### B · Calculation Preparation
+### B · Method & Numerical Setup
 
 - Choose the DFT Method and Computational Setup
 - Test Numerical Convergence
 
-### C · Reference-State Calculations
+### C · Reference State
 
 - Optimize the Structure
 - Calculate the Reference Ground State
@@ -182,7 +182,7 @@ axes, and evidence boundary.
 Wannier construction, Berry quantities, topology, and transport may be linked
 inside a research workflow, but they are not one indivisible operation.
 
-### E · Research Completion
+### E · Validation, Interpretation & Reproducibility
 
 - Analyze and Compare Results
 - Validate Results and Scientific Conclusions

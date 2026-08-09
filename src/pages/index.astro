@@ -2,80 +2,73 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { workflowSections } from '../lib/workflow';
 import { withBase } from '../lib/paths';
+
+const flowLabels = {
+  A: 'Structure & Model',
+  B: 'Method & Numerical Setup',
+  C: 'Reference State',
+  D: 'Target Calculation',
+  E: 'Validation',
+} as const;
 ---
 
 <BaseLayout
   title="DFT Research Workflow"
   description="A software-neutral, terminal-first manual for turning scientific questions into supported DFT conclusions."
   current="home"
+  wide
 >
   <article class="manual-home">
     <header class="home-lede">
-      <p class="kicker">Software-neutral · terminal-first · evidence-bounded</p>
       <h1>DFT Research Workflow</h1>
       <p class="home-intro">
-        DRW is a manual for deciding what to calculate, running it from inspectable terminal inputs, and judging what the evidence can support. It begins with a scientific question rather than a software menu. It ends with a bounded conclusion rather than a finished job message. Use the A–E map to connect a required observable to a physical model, theoretical and numerical choices, a defensible reference state, the necessary calculation branch, and explicit validation. The practical pages show how to prepare files, run real software, inspect outputs, diagnose failure, and preserve enough provenance for another researcher to repeat the work without an AI assistant.
+        Use this manual to turn a scientific question into a calculation you can execute and a conclusion you can defend. Start with the scientific question, choose the required observable, prepare the model and numerical setup, establish a reference state, run only the target calculation you need, and validate the result before making a claim. Where execution evidence exists, practical guides and worked workflows identify the file to prepare, the command to run, the output to inspect, and what the recorded evidence establishes. They also state which numerical, structural, or physical conditions remain untested, so a finished job is not mistaken for a supported conclusion.
       </p>
     </header>
 
     <section class="question-chain" aria-labelledby="question-chain-heading">
-      <h2 id="question-chain-heading">From question to conclusion</h2>
+      <h2 id="question-chain-heading">Move from a question to a defensible claim</h2>
       <ol aria-label="Scientific question to supported scientific conclusion">
-        <li class="chain-bookend"><span>Scientific<br />Question</span></li>
-        <li class="chain-bookend"><span>Required<br />Observable</span></li>
+        <li class="chain-bookend"><span class="chain-title">Scientific Question</span></li>
+        <li class="chain-bookend"><span class="chain-title">Required Observable</span></li>
         {workflowSections.map((section) => (
           <li class="chain-part">
             <a href={withBase(`operations/#part-${section.id.toLowerCase()}`)} aria-label={`${section.id}, ${section.title}`}>
-              <strong>{section.id}</strong>
-              <small>{section.title}</small>
+              <span class="chain-id">{section.id}</span>
+              <span class="chain-title">{flowLabels[section.id as keyof typeof flowLabels]}</span>
             </a>
           </li>
         ))}
-        <li class="chain-bookend chain-conclusion"><span>Supported Scientific<br />Conclusion</span></li>
+        <li class="chain-bookend chain-conclusion"><span class="chain-title">Supported Scientific Conclusion</span></li>
       </ol>
       <p class="return-note">
-        This is a dependency map, not a one-way pipeline. Evidence in E can return the study to <a href={withBase('operations/#part-a')}>A</a>, <a href={withBase('operations/#part-b')}>B</a>, <a href={withBase('operations/#part-c')}>C</a>, or a different branch of <a href={withBase('operations/#part-d')}>D</a>.
+        This is a dependency map, not a one-way pipeline. Validation can return the study to <a href={withBase('operations/#part-a')}>the model</a>, <a href={withBase('operations/#part-b')}>numerical setup</a>, <a href={withBase('operations/#part-c')}>reference state</a>, or <a href={withBase('operations/#part-d')}>calculation branch</a>.
       </p>
     </section>
 
-    <section class="nested-loops" aria-labelledby="loops-heading">
-      <header>
-        <p class="section-number">Three loops, with an inner solver</p>
-        <h2 id="loops-heading">SCF is the innermost solver, not the workflow</h2>
-        <p>An SCF-converged output is not automatically a converged structure, a converged target observable, or a supported scientific conclusion.</p>
-      </header>
-
-      <div class="loop loop-outer">
-        <h3><span>03</span> Research loop</h3>
-        <p>Define the question and observable, select a D branch, test convergence and physical consistency, then revise A, B, C, or D until E can support a bounded claim.</p>
-        <div class="loop loop-middle">
-          <h3><span>02</span> Numerical convergence loop</h3>
-          <p>For each named target observable, vary the relevant numerical control at fixed model, method, and state; compare with a declared tolerance; then refine or narrow the claim. A B-stage baseline is not a certificate for every D branch.</p>
-          <div class="loop loop-ionic">
-            <h3><span>01</span> Ionic optimization loop, when applicable</h3>
-            <p>When geometry is an active variable, forces and stress update atoms or the cell. Every new geometry invokes an electronic solve; ionic criteria decide when this loop stops. Fixed, constrained, and scanned geometries do not require this loop.</p>
-            <div class="loop loop-inner">
-              <h3><span>SCF</span> Electronic self-consistency</h3>
-              <p>For one fixed geometry, model, and method, update the density or potential, solve the electronic problem, mix, and repeat to the declared electronic threshold.</p>
-            </div>
-          </div>
-        </div>
+    <section class="solver-boundary" aria-labelledby="solver-boundary-heading">
+      <div>
+        <p class="section-label">One boundary to remember</p>
+        <h2 id="solver-boundary-heading">SCF convergence is one inner numerical condition.</h2>
       </div>
+      <p>
+        <strong>Electronic self-consistency</strong> is the inner fixed-geometry solver, while program termination is a separate check. A <strong>Numerical convergence loop</strong> must still test the target observable. SCF convergence does not establish structural, observable, or scientific convergence.
+      </p>
     </section>
 
     <nav class="manual-entries" aria-labelledby="entry-heading">
-      <h2 id="entry-heading">Enter the manual</h2>
+      <h2 id="entry-heading">Start where you are</h2>
       <a href={withBase('operations/')}>
-        <strong>Research Workflow</strong>
-        <span>A–E tasks, the branching D library, and feedback to earlier decisions.</span>
+        <strong>Start the Research Workflow</strong>
+        <span>Choose the required observable, then move through the model, setup, reference state, calculation, and validation.</span>
       </a>
       <a href={withBase('workflows/')}>
-        <strong>Worked Workflows</strong>
-        <span>Terminal-first cases whose displayed inputs, outputs, parsers, and gates are file-backed.</span>
+        <strong>Follow a Worked Workflow</strong>
+        <span>Read a continuous terminal-first route with file-backed inputs, outputs, checks, and claim boundaries.</span>
       </a>
       <a href={withBase('tools/')}>
-        <strong>Tools</strong>
-        <span>A secondary index of software and data services, not a ranking or a scientific method.</span>
+        <strong>Find a Tool</strong>
+        <span>Locate software or a data service by the research task it helps you perform.</span>
       </a>
     </nav>
   </article>
@@ -88,128 +81,113 @@ import { withBase } from '../lib/paths';
     --rule: #d9d4ca;
     --accent: #8a3f28;
     color: var(--ink);
+    margin-inline: auto;
     max-width: 76rem;
   }
 
   .home-lede {
-    max-width: 58rem;
-    padding: clamp(1rem, 3vw, 2.5rem) 0 clamp(2.5rem, 6vw, 5rem);
-  }
-
-  .kicker,
-  .section-number {
-    color: var(--accent);
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.13em;
-    margin: 0 0 0.9rem;
-    text-transform: uppercase;
+    max-width: 52rem;
+    padding: clamp(0.5rem, 2vw, 1.5rem) 0 clamp(2.5rem, 5vw, 4rem);
   }
 
   h1 {
-    font-size: clamp(3.1rem, 8vw, 7.7rem);
+    font-size: clamp(3.5rem, 7vw, 6.2rem);
     font-weight: 500;
-    letter-spacing: -0.055em;
-    line-height: 0.88;
+    letter-spacing: -0.045em;
+    line-height: 0.94;
     margin: 0;
-    max-width: 10ch;
+    max-width: 13ch;
   }
 
   .home-intro {
     color: var(--muted);
-    font-size: clamp(1.12rem, 2vw, 1.42rem);
+    font-size: clamp(1.15rem, 1.8vw, 1.38rem);
     line-height: 1.55;
-    margin: 2rem 0 0;
-    max-width: 43em;
+    margin: 1.75rem 0 0;
+    max-width: 40em;
   }
 
   .question-chain,
-  .nested-loops,
+  .solver-boundary,
   .manual-entries {
     border-top: 1px solid var(--ink);
-    padding: 1.25rem 0 clamp(3rem, 7vw, 6rem);
+    padding: 1.4rem 0 clamp(2.8rem, 5vw, 4.5rem);
   }
 
   .question-chain h2,
   .manual-entries h2 {
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
-    margin: 0 0 1.5rem;
-    text-transform: uppercase;
+    font-size: 1.22rem;
+    letter-spacing: -0.01em;
+    margin: 0 0 1.4rem;
   }
 
   .question-chain ol {
-    align-items: stretch;
-    display: flex;
-    gap: 0;
+    display: grid;
+    gap: 1rem clamp(0.8rem, 1.4vw, 1.35rem);
+    grid-template-columns: repeat(8, minmax(0, 1fr));
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
   .question-chain li {
-    align-items: center;
-    display: flex;
+    align-content: start;
+    display: grid;
+    gap: 0.45rem;
+    grid-template-columns: minmax(0, 1fr) auto;
     min-width: 0;
   }
 
   .question-chain li:not(:last-child)::after {
+    align-self: center;
     color: var(--accent);
     content: "→";
-    flex: 0 0 auto;
-    font-size: 1.15rem;
-    margin: 0 clamp(0.25rem, 0.8vw, 0.75rem);
+    font-size: 0.9rem;
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .chain-bookend {
-    flex: 1.35 1 9rem;
-    font-size: clamp(0.85rem, 1.4vw, 1.04rem);
     font-weight: 700;
-    line-height: 1.15;
-  }
-
-  .chain-part {
-    flex: 0 1 5.5rem;
   }
 
   .chain-part a {
     color: inherit;
-    display: block;
+    display: grid;
+    gap: 0.35rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    min-width: 0;
     text-decoration: none;
   }
 
-  .chain-part strong {
-    display: block;
-    font-size: clamp(1.6rem, 3vw, 2.7rem);
-    font-weight: 500;
-    line-height: 1;
+  .chain-id {
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
   }
 
-  .chain-part small {
-    color: var(--muted);
+  .chain-title {
     display: block;
-    font-size: 0.66rem;
-    line-height: 1.15;
-    margin-top: 0.35rem;
+    font-size: 0.94rem;
+    line-height: 1.28;
+    overflow-wrap: break-word;
   }
 
-  .chain-part a:hover strong,
-  .chain-part a:focus-visible strong,
+  .chain-part a:hover .chain-title,
+  .chain-part a:focus-visible .chain-title,
   .return-note a:hover,
   .return-note a:focus-visible {
     color: var(--accent);
-  }
-
-  .chain-conclusion {
-    flex-basis: 11rem;
   }
 
   .return-note {
     color: var(--muted);
     font-size: 0.92rem;
     line-height: 1.55;
-    margin: 1.75rem 0 0;
-    max-width: 64rem;
+    margin: 1.5rem 0 0;
+    max-width: 58rem;
   }
 
   .return-note a {
@@ -217,65 +195,34 @@ import { withBase } from '../lib/paths';
     font-weight: 700;
   }
 
-  .nested-loops > header {
+  .solver-boundary {
     display: grid;
-    gap: 0 2rem;
-    grid-template-columns: minmax(12rem, 0.8fr) minmax(20rem, 2fr);
-    margin-bottom: 2.5rem;
+    gap: 1.25rem clamp(2rem, 5vw, 5rem);
+    grid-template-columns: minmax(16rem, 0.85fr) minmax(20rem, 1.4fr);
   }
 
-  .nested-loops > header .section-number {
-    grid-row: 1 / 3;
-  }
-
-  .nested-loops > header h2 {
-    font-size: clamp(2rem, 4vw, 3.8rem);
-    font-weight: 500;
-    letter-spacing: -0.035em;
-    line-height: 1;
-    margin: 0;
-    max-width: 18ch;
-  }
-
-  .nested-loops > header > p:last-child {
-    color: var(--muted);
-    font-size: 1.05rem;
-    line-height: 1.55;
-    margin: 1.2rem 0 0;
-    max-width: 45rem;
-  }
-
-  .loop {
-    border-left: 1px solid var(--rule);
-    border-top: 1px solid var(--rule);
-    padding: 1.2rem 0 0 1.4rem;
-  }
-
-  .loop h3 {
-    font-size: 1.03rem;
-    margin: 0;
-  }
-
-  .loop h3 span {
+  .section-label {
     color: var(--accent);
-    display: inline-block;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    margin-right: 0.7rem;
-    vertical-align: 0.12em;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin: 0 0 0.55rem;
   }
 
-  .loop p {
+  .solver-boundary h2 {
+    font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    margin: 0;
+  }
+
+  .solver-boundary > p {
     color: var(--muted);
+    font-size: 1.02rem;
     line-height: 1.55;
-    margin: 0.55rem 0 0;
-    max-width: 55rem;
-  }
-
-  .loop-middle,
-  .loop-ionic,
-  .loop-inner {
-    margin: 1.4rem 0 0 clamp(1rem, 5vw, 4.5rem);
+    margin: 0;
+    max-width: 42rem;
   }
 
   .manual-entries {
@@ -288,7 +235,7 @@ import { withBase } from '../lib/paths';
     color: inherit;
     display: grid;
     gap: 1rem 2rem;
-    grid-template-columns: minmax(11rem, 0.7fr) minmax(18rem, 1.5fr) auto;
+    grid-template-columns: minmax(15rem, 0.75fr) minmax(18rem, 1.45fr) auto;
     padding: 1.2rem 0;
     text-decoration: none;
   }
@@ -312,57 +259,62 @@ import { withBase } from '../lib/paths';
     color: var(--accent);
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 67.99rem) {
+    .question-chain ol {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      row-gap: 1.5rem;
+    }
+
+    .question-chain li:nth-child(1),
+    .question-chain li:nth-child(2) {
+      grid-column: span 3;
+    }
+
+    .question-chain li:nth-child(n + 3) {
+      grid-column: span 2;
+    }
+
+    .question-chain li:nth-child(2)::after,
+    .question-chain li:nth-child(5)::after {
+      content: "↓";
+    }
+  }
+
+  @media (max-width: 44rem) {
     .home-lede {
-      padding-top: 0.5rem;
+      padding-top: 0;
     }
 
     h1 {
-      font-size: clamp(3.25rem, 18vw, 5.5rem);
+      font-size: clamp(3rem, 14vw, 4.4rem);
+      max-width: 10ch;
     }
 
     .question-chain ol {
-      display: grid;
+      gap: 0;
+      grid-template-columns: 1fr;
     }
 
-    .question-chain li {
-      display: grid;
-      grid-template-columns: 1fr;
+    .question-chain li:nth-child(n) {
+      border-top: 1px solid var(--rule);
+      grid-column: 1 / -1;
+      padding: 0.65rem 0;
+    }
+
+    .question-chain li:first-child {
+      border-top: 0;
     }
 
     .question-chain li:not(:last-child)::after {
       content: "↓";
-      margin: 0.3rem 0 0.3rem 0.55rem;
     }
 
-    .chain-bookend,
-    .chain-part {
-      min-height: auto;
-    }
-
-    .chain-part a {
-      align-items: baseline;
-      display: flex;
-      gap: 0.8rem;
-    }
-
-    .chain-part small {
-      font-size: 0.78rem;
-      margin: 0;
-    }
-
-    .nested-loops > header {
+    .solver-boundary {
       display: block;
     }
 
-    .nested-loops > header h2 {
-      font-size: 2.35rem;
-    }
-
-    .loop-middle,
-    .loop-ionic,
-    .loop-inner {
-      margin-left: 0.8rem;
+    .solver-boundary > p {
+      margin-top: 1rem;
     }
 
     .manual-entries > a {

@@ -18,6 +18,19 @@ if (!Array.isArray(workflow.sections)) errors.push('workflow registry sections m
 
 const sectionIds = workflow.sections.map((section) => section.id);
 if (JSON.stringify(sectionIds) !== JSON.stringify(expectedSections)) errors.push(`workflow sections must be A–E in order: ${JSON.stringify(sectionIds)}`);
+const expectedSectionTitles = new Map([
+  ['A', 'Structure & Model'],
+  ['B', 'Method & Numerical Setup'],
+  ['C', 'Reference State'],
+  ['D', 'Target Calculations'],
+  ['E', 'Validation, Interpretation & Reproducibility'],
+]);
+for (const section of workflow.sections) {
+  const expectedTitle = expectedSectionTitles.get(section.id);
+  if (expectedTitle !== undefined && section.title !== expectedTitle) {
+    errors.push(`section ${section.id} title must be ${JSON.stringify(expectedTitle)}: ${JSON.stringify(section.title)}`);
+  }
+}
 const sectionSlugs = workflow.sections.map((section) => section.slug);
 if (new Set(sectionSlugs).size !== sectionSlugs.length) errors.push('workflow section slugs must be unique');
 

@@ -13,11 +13,11 @@ and preservation.
 The reader-facing structure is:
 
 ```text
-A · Structures
-B · Calculation Preparation
-C · Reference-State Calculations
+A · Structure & Model
+B · Method & Numerical Setup
+C · Reference State
 D · Target Calculations
-E · Research Completion
+E · Validation, Interpretation & Reproducibility
 ```
 
 A, B, C, and E provide the common research backbone. D is a branching library

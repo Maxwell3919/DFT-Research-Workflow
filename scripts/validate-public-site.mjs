@@ -94,6 +94,7 @@ function stripMarkup(html) {
     .replace(/&middot;/g, '·')
     .replace(/&ndash;/g, '–')
     .replace(/&mdash;/g, '—')
+    .replace(/&amp;/g, '&')
     .replace(/&[a-z]+;/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
@@ -158,10 +159,23 @@ const homeText = stripMarkup(home);
 const homeNav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
 const navLabels = [...homeNav.matchAll(/<a[^>]*>([^<]+)<\/a>/g)].map((match) => match[1].trim());
 if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
-for (const phrase of ['Scientific Question', 'Required Observable', 'Supported Scientific Conclusion', 'This is a dependency map, not a one-way pipeline.', 'Numerical convergence loop', 'Electronic self-consistency']) {
+for (const phrase of [
+  'Scientific Question',
+  'Required Observable',
+  'Supported Scientific Conclusion',
+  'Move from a question to a defensible claim',
+  'Where execution evidence exists, practical guides and worked workflows identify the file to prepare',
+  'SCF convergence is one inner numerical condition.',
+  'Start the Research Workflow',
+  'Follow a Worked Workflow',
+  'Find a Tool',
+]) {
   if (!homeText.includes(phrase)) errors.push(`Home is missing ${phrase}`);
 }
-for (const section of workflowDocument.sections) if (!home.includes(`aria-label="${section.id}, ${section.title}"`)) errors.push(`Home is missing ${section.id}, ${section.title}`);
+for (const section of workflowDocument.sections) {
+  const escapedTitle = section.title.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
+  if (!home.includes(`aria-label="${section.id}, ${escapedTitle}"`)) errors.push(`Home is missing ${section.id}, ${section.title}`);
+}
 if (/24 typed core operations|former 35 chapter URLs/.test(homeText)) errors.push('Home advertises a superseded numbered taxonomy');
 
 const operationsDirectory = htmlByPath.get(join(distPath, 'operations', 'index.html')) ?? '';
@@ -175,8 +189,25 @@ for (const section of workflowDocument.sections) {
 if (/Core Operations|O01|O24|Operation 00/.test(operationsText)) errors.push('Research Workflow directory exposes a superseded numbered framework');
 if (/\/operations\/o\d{2}-/.test(operationsDirectory)) errors.push('Research Workflow directory links transitional O routes as the current sequence');
 
-const directoryTopicLinks = [...operationsDirectory.matchAll(new RegExp(`href="${base.replaceAll('/', '\\/')}operations\/([a-z0-9-]+)\/"`, 'g'))].map((match) => match[1]);
+const topicListMarkup = [...operationsDirectory.matchAll(/<ul[^>]*class="[^"]*\btopic-list\b[^"]*"[^>]*>([\s\S]*?)<\/ul>/g)]
+  .map((match) => match[1])
+  .join('');
+const directoryTopicLinks = [...topicListMarkup.matchAll(new RegExp(`href="${base.replaceAll('/', '\\/')}operations\/([a-z0-9-]+)\/"`, 'g'))].map((match) => match[1]);
 if (JSON.stringify(directoryTopicLinks) !== JSON.stringify(topicSlugs)) errors.push('Research Workflow directory topic links do not match workflow/topics.json order');
+
+const observableSelectionMarkup = operationsDirectory.match(/<section[^>]*class="[^"]*\bobservable-selection\b[^"]*"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? '';
+const observableExampleSlugs = [...observableSelectionMarkup.matchAll(new RegExp(`href="${base.replaceAll('/', '\\/')}operations\/([a-z0-9-]+)\/"`, 'g'))].map((match) => match[1]);
+for (const slug of [
+  'relative-and-formation-energies',
+  'optimize-structure',
+  'harmonic-phonons',
+  'fermi-surface-and-full-brillouin-zone-analysis',
+  'density-of-states-and-projected-density-of-states',
+  'electron-phonon-coupling',
+  'conventional-superconductivity',
+]) {
+  if (!observableExampleSlugs.includes(slug)) errors.push(`Research Workflow observable examples are missing ${slug}`);
+}
 
 for (const topic of workflowTopics) {
   const path = join(distPath, 'operations', topic.slug, 'index.html');
