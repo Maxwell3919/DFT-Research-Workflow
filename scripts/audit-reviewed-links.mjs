@@ -27,6 +27,7 @@ const sourcesByUrl = new Map();
 
 if (manifest.schema_version !== 1) errors.push(`unsupported manifest schema_version ${manifest.schema_version}`);
 if (!Array.isArray(manifest.topics) || manifest.topics.length === 0) errors.push('manifest must declare reviewed topics');
+if (!Array.isArray(manifest.supporting_pages)) errors.push('manifest must declare supporting_pages');
 if (!Number.isInteger(manifest.expected_unique_urls) || manifest.expected_unique_urls < 1) errors.push('manifest must declare expected_unique_urls');
 
 try {
@@ -51,6 +52,7 @@ for (const topic of manifest.topics ?? []) {
         kind: entry.kind,
         url: entry.url,
         topic_slugs: [topic.topic_slug],
+        supporting_page_slugs: [],
       });
     }
   }
@@ -74,9 +76,78 @@ for (const topic of manifest.topics ?? []) {
   }
 }
 
+const supportingPageSlugs = new Set();
+const supportingPageRoutes = new Set();
+
+for (const page of manifest.supporting_pages ?? []) {
+  const pageSlug = page.page_slug;
+  if (typeof pageSlug !== 'string' || pageSlug.length === 0) {
+    errors.push('supporting page must declare a non-empty page_slug');
+  } else if (supportingPageSlugs.has(pageSlug)) {
+    errors.push(`${pageSlug}: duplicate supporting page slug`);
+  } else {
+    supportingPageSlugs.add(pageSlug);
+  }
+
+  if (typeof page.route !== 'string' || !page.route.startsWith('/') || !page.route.endsWith('/')) {
+    errors.push(`${pageSlug || '<unknown supporting page>'}: route must start and end with /`);
+  } else if (supportingPageRoutes.has(page.route)) {
+    errors.push(`${page.route}: duplicate supporting page route`);
+  } else {
+    supportingPageRoutes.add(page.route);
+  }
+
+  const sourceFiles = Array.isArray(page.source_files) ? page.source_files : [];
+  if (sourceFiles.length !== 2) errors.push(`${pageSlug}: supporting page must declare exactly two source_files`);
+  if (new Set(sourceFiles).size !== sourceFiles.length) errors.push(`${pageSlug}: duplicate supporting page source_files`);
+
+  const links = Array.isArray(page.links) ? page.links : [];
+  if (links.length === 0) errors.push(`${pageSlug}: supporting page must declare links`);
+  const expected = new Set(links.map((entry) => entry.url));
+  if (expected.size !== links.length) errors.push(`${pageSlug}: duplicate URLs inside supporting page manifest`);
+
+  for (const entry of links) {
+    if (!['page', 'doi'].includes(entry.kind)) errors.push(`${pageSlug}: invalid link kind ${entry.kind}`);
+    if (!entry.url.startsWith('https://')) errors.push(`${pageSlug}: source is not HTTPS: ${entry.url}`);
+    const existing = sourcesByUrl.get(entry.url);
+    if (existing) {
+      if (existing.kind !== entry.kind) errors.push(`${entry.url}: inconsistent link kinds ${existing.kind} and ${entry.kind}`);
+      existing.supporting_page_slugs.push(pageSlug);
+    } else {
+      sourcesByUrl.set(entry.url, {
+        kind: entry.kind,
+        url: entry.url,
+        topic_slugs: [],
+        supporting_page_slugs: [pageSlug],
+      });
+    }
+  }
+
+  const actual = new Set();
+  for (const path of sourceFiles) {
+    let source = '';
+    try {
+      source = await readFile(new URL(path, root), 'utf8');
+    } catch {
+      errors.push(`${pageSlug}: missing source file ${path}`);
+      continue;
+    }
+    for (const url of extractUrls(source)) actual.add(url);
+    if (source.includes('wiki.fysik.dtu.dk/ase/')) errors.push(`${path}: retired ASE documentation host remains`);
+  }
+
+  if (!sameSet(actual, expected)) {
+    const missing = setDifference(expected, actual);
+    const undeclared = setDifference(actual, expected);
+    if (missing.length > 0) errors.push(`${pageSlug}: source_files missing manifest URLs: ${missing.join(', ')}`);
+    if (undeclared.length > 0) errors.push(`${pageSlug}: source_files contain undeclared external URLs: ${undeclared.join(', ')}`);
+  }
+}
+
 const allEntries = [...sourcesByUrl.values()].map((entry) => ({
   ...entry,
   topic_slugs: [...new Set(entry.topic_slugs)].sort(),
+  supporting_page_slugs: [...new Set(entry.supporting_page_slugs)].sort(),
 }));
 if (allEntries.length !== manifest.expected_unique_urls) {
   errors.push(`reviewed source manifest expected ${manifest.expected_unique_urls} unique URLs, found ${allEntries.length}`);
@@ -89,7 +160,7 @@ if (errors.length > 0) {
 }
 
 if (manifestOnly) {
-  console.log(`Reviewed-source manifest valid: ${manifest.topics.length} reviewed topics, ${allEntries.length} unique HTTPS sources, exact article/review coverage, reusable cross-topic sources, and no retired ASE URLs.`);
+  console.log(`Reviewed-source manifest valid: ${manifest.topics.length} reviewed topics, ${manifest.supporting_pages.length} supporting pages, ${allEntries.length} unique HTTPS sources, exact article/review and supporting-page source-file coverage, reusable sources requested once, and no retired ASE URLs.`);
   process.exit(0);
 }
 
@@ -171,6 +242,7 @@ async function request(entry, attempt) {
 
     return {
       topic_slugs: entry.topic_slugs,
+      supporting_page_slugs: entry.supporting_page_slugs,
       kind: entry.kind,
       requested_url: entry.url,
       state,
@@ -201,6 +273,7 @@ async function auditEntry(entry) {
   }
   return lastResult ?? {
     topic_slugs: entry.topic_slugs,
+    supporting_page_slugs: entry.supporting_page_slugs,
     kind: entry.kind,
     requested_url: entry.url,
     state: 'failed',
@@ -233,6 +306,7 @@ async function browserAuditEntry(browser, entry) {
     const reachable = status !== null && status >= 200 && status < 300 && !soft404 && !blocked;
     return {
       topic_slugs: entry.topic_slugs,
+      supporting_page_slugs: entry.supporting_page_slugs,
       kind: entry.kind,
       requested_url: entry.url,
       state: reachable ? 'reachable' : 'failed',
@@ -254,6 +328,7 @@ async function browserAuditEntry(browser, entry) {
   } catch (error) {
     return {
       topic_slugs: entry.topic_slugs,
+      supporting_page_slugs: entry.supporting_page_slugs,
       kind: entry.kind,
       requested_url: entry.url,
       state: 'failed',
@@ -335,6 +410,7 @@ const report = {
     boundary: 'Reachability is time-bound and does not establish scientific correctness, long-term availability, unrestricted regional access, or publisher reuse rights.',
   },
   topic_count: manifest.topics.length,
+  supporting_page_count: manifest.supporting_pages.length,
   unique_url_count: allEntries.length,
   reachable_count: results.length - failures.length,
   failed_count: failures.length,
@@ -355,4 +431,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Reviewed external-link audit passed: ${results.length} unique sources across ${manifest.topics.length} reviewed topics; reusable URLs were requested once, page destinations returned live non-404 documents, and DOI links resolved successfully.`);
+console.log(`Reviewed external-link audit passed: ${results.length} unique sources across ${manifest.topics.length} reviewed topics and ${manifest.supporting_pages.length} supporting pages; reusable URLs were requested once, page destinations returned live non-404 documents, and DOI links resolved successfully.`);
