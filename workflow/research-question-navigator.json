@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "role": "editorial-question-to-existing-route-bridge",
+  "public_heading": "Start from the research question",
+  "intro": "Choose the observable that can answer the question, then open the existing task that produces or tests it. All target calculations assume a trustworthy model, method, numerical baseline, and reference state.",
+  "boundary": "These routes are independent starting points, not a new taxonomy or a required sequence. A result may send the study back to the model, method, reference state, or target calculation.",
+  "questions": [
+    {
+      "id": "local-minimum",
+      "question": "Has the structure reached a defensible local minimum?",
+      "required_observable": "Accepted coordinates, every relevant force component, stress for relaxed cell degrees of freedom, and evidence that the electronic state remained the intended one.",
+      "topic_slug": "optimize-structure",
+      "prerequisites": "Declare the computational model, active degrees of freedom, constraints, electronic state, and numerical baseline before optimization.",
+      "first_action": {
+        "type": "guide",
+        "guide_slug": "choose-relaxed-degrees-and-constraints",
+        "guide_kind": "implementation",
+        "evidence_boundary": "This guide defines the active coordinates and constraints before a run; it does not prove that a minimum has been found."
+      },
+      "validation_requirement": "Inspect every free force component rather than only an aggregate force, the relevant stress components, the final geometry, electronic convergence, and state identity. Audit the accepted structure again in the fixed-geometry reference calculation.",
+      "claim_limitation": "A local optimization does not establish the global minimum, dynamical stability, thermodynamic stability, or an experimental structure."
+    },
+    {
+      "id": "formation-energy",
+      "question": "What is the formation or reaction energy?",
+      "required_observable": "A normalized energy or free-energy difference for an explicitly balanced reaction and declared reference states.",
+      "topic_slug": "relative-and-formation-energies",
+      "prerequisites": "Use compatible composition accounting, evaluator, charge and spin treatment, numerical settings, state identities, and thermodynamic convention for every term.",
+      "first_action": {
+        "type": "guide",
+        "guide_slug": "build-comparable-energy-ledger",
+        "guide_kind": "implementation",
+        "evidence_boundary": "This guide builds a comparability gate; it does not validate the underlying energies or reference states."
+      },
+      "validation_requirement": "Check reaction balance, normalization, reference-state identity, numerical convergence of every term, and sensitivity to defensible reference choices.",
+      "claim_limitation": "A negative formation energy does not establish convex-hull stability, synthesis, kinetic accessibility, or experimental formation."
+    },
+    {
+      "id": "decomposition-stability",
+      "question": "Is this composition stable against decomposition?",
+      "required_observable": "Energy above a lower convex envelope constructed from a sufficiently complete competing-phase set at common thermodynamic conditions.",
+      "topic_slug": "compositional-phase-stability-and-convex-hulls",
+      "related_topics": [
+        {
+          "topic_slug": "equation-of-state-and-structural-phase-stability",
+          "context": "For same-composition phases as a function of pressure, use this route instead of a composition hull."
+        }
+      ],
+      "prerequisites": "Prepare comparable formation energies, consistent composition normalization, a declared chemical system and thermodynamic convention, and an inspectable candidate phase set.",
+      "first_action": {
+        "type": "guide",
+        "guide_slug": "rebuild-oqmd-li-p-convex-hull",
+        "guide_kind": "worked-example",
+        "evidence_boundary": "This is a derived-public-data Li-P worked example, not a guide for importing and validating a new project's complete phase set."
+      },
+      "validation_requirement": "Challenge candidate-set completeness, phase-set sensitivity, energy normalization, numerical convergence, and reasonable method choices.",
+      "claim_limitation": "Hull membership is conditional on the declared phase set, thermodynamic conditions, and energy model. It does not establish kinetic stability, synthesis, finite-temperature stability, or dynamical stability."
+    },
+    {
+      "id": "metallicity",
+      "question": "Is the reference state metallic?",
+      "required_observable": "Converged full-zone electronic sampling around the Fermi level, supported by a converged density of states referenced to the same Fermi level.",
+      "topic_slug": "fermi-surface-and-full-brillouin-zone-analysis",
+      "related_topics": [
+        {
+          "topic_slug": "density-of-states-and-projected-density-of-states",
+          "context": "Use a converged density of states near the same Fermi level as supporting evidence."
+        }
+      ],
+      "prerequisites": "Use a qualified reference state, adequate band coverage, uniform full-zone sampling, declared occupations or smearing, and one consistent Fermi-energy convention.",
+      "first_action": {
+        "type": "guide",
+        "guide_slug": "compare-full-zone-isovalue-and-band-path",
+        "guide_kind": "implementation",
+        "evidence_boundary": "This bounded real Aluminium comparison does not claim that its stored full-zone sample is converged."
+      },
+      "validation_requirement": "Test k-point sampling, smearing, band coverage, full-zone extrema or crossings, density-of-states broadening, and energy-zero consistency.",
+      "claim_limitation": "A high-symmetry band path alone is not full-Brillouin-zone evidence of metallicity, and a broadened finite density of states on one mesh can be a numerical artifact."
+    },
+    {
+      "id": "dynamical-stability",
+      "question": "Is the structure dynamically stable in the harmonic approximation?",
+      "required_observable": "A qualified harmonic phonon spectrum over the q-space domain required by the claim, with apparent imaginary modes challenged against numerical and acoustic-consistency errors.",
+      "topic_slug": "harmonic-phonons",
+      "prerequisites": "Start from a suitable reference geometry and electronic state, force-accurate numerical settings, tight response convergence, and an appropriate q-mesh or supercell representation.",
+      "first_action": {
+        "type": "guide",
+        "guide_slug": "check-harmonic-mode-ledger",
+        "guide_kind": "implementation",
+        "evidence_boundary": "This reconstructs one real Silicon Gamma-point mode ledger only; no published practical guide currently executes and validates a complete q-grid or supercell stability workflow."
+      },
+      "validation_requirement": "Test electronic thresholds, cutoff and k-point sampling, q mesh or supercell size, interpolation, acoustic modes, mode eigenvectors, and non-analytic treatment where applicable.",
+      "claim_limitation": "A Gamma-point result does not establish full-Brillouin-zone dynamical stability. Harmonic stability does not establish thermodynamic, anharmonic, or finite-temperature stability."
+    },
+    {
+      "id": "conventional-superconductivity",
+      "question": "Could conventional phonon-mediated superconductivity be supported?",
+      "required_observable": "Qualified phonons, electron-phonon matrix elements, an Eliashberg spectral function, coupling strength, logarithmic phonon frequency, and a declared transition-temperature model.",
+      "topic_slug": "electron-phonon-coupling",
+      "related_topics": [
+        {
+          "topic_slug": "harmonic-phonons",
+          "context": "A qualified phonon parent is required before electron-phonon coupling."
+        },
+        {
+          "topic_slug": "conventional-superconductivity",
+          "context": "Interpret a transition-temperature model only after the coupling observables are converged."
+        }
+      ],
+      "prerequisites": "Establish a metallic full-zone reference state, dynamically qualified phonons, sufficiently dense k and q sampling, and a declared broadening or delta-function treatment.",
+      "first_action": {
+        "type": "no-guide",
+        "statement": "No executable practical guide is published for electron-phonon coupling or conventional superconductivity. Use the two topic overviews to define the qualified phonon parent and observable-specific convergence before attempting software-specific execution."
+      },
+      "validation_requirement": "Converge the phonons, matrix elements, k mesh, q mesh, interpolation, broadening, spectral function, coupling strength, logarithmic frequency, transition-temperature result, and Coulomb-parameter sensitivity separately.",
+      "claim_limitation": "A computed coupling strength or model transition temperature does not establish experimental superconductivity. An unstable or insufficiently sampled phonon parent invalidates the downstream claim."
+    },
+    {
+      "id": "surface-energy",
+      "question": "Which surface termination is energetically favored?",
+      "required_observable": "Comparable surface energies for explicitly defined facets, terminations, reconstructions, and chemical-potential conditions.",
+      "topic_slug": "surface-energy-and-work-function",
+      "prerequisites": "Use a converged bulk reference and declare slab orientation, termination, area and multiplicity, thickness, vacuum, relaxation policy, and stoichiometric or chemical-potential convention.",
+      "first_action": {
+        "type": "guide",
+        "guide_slug": "build-surface-energy-ledger",
+        "guide_kind": "implementation",
+        "evidence_boundary": "This combines attributed published data with a synthetic bulk-drift diagnostic; it is not an end-to-end surface calculation."
+      },
+      "validation_requirement": "Test slab thickness, vacuum, lateral sampling, bulk-reference drift, reconstruction, termination, relaxation depth, and asymmetric-slab treatment.",
+      "claim_limitation": "One slab energy does not establish equilibrium morphology, environmental stability, kinetics, or the experimentally realized termination."
+    },
+    {
+      "id": "work-function",
+      "question": "What is the work function of this surface?",
+      "required_observable": "A side-specific field-free vacuum potential plateau minus a compatible Fermi level from the same qualified slab calculation.",
+      "topic_slug": "surface-energy-and-work-function",
+      "prerequisites": "Use a qualified slab, adequate vacuum, a controlled electrostatic profile, a declared dipole treatment, and clear identification of the surface side.",
+      "first_action": {
+        "type": "guide",
+        "guide_slug": "extract-work-function-potential",
+        "guide_kind": "implementation",
+        "evidence_boundary": "This uses a synthetic planar-potential fixture; it is not evidence for a real surface work function."
+      },
+      "validation_requirement": "Check plateau flatness, vacuum and slab-thickness sensitivity, k-point sampling, Fermi-level identity, dipole correction, and inequivalent surface sides.",
+      "claim_limitation": "Work function is not surface energy and does not identify the stable facet, interface band alignment, or an experimental contact potential without the corresponding model."
+    },
+    {
+      "id": "adsorption",
+      "question": "How favorable is adsorption, and which site is preferred?",
+      "required_observable": "Comparable adsorption energies or free energies across declared sites, coverages, periodic cells, molecular references, and surface states.",
+      "topic_slug": "adsorption-energies",
+      "prerequisites": "Prepare a qualified clean slab, adsorbate reference, enumerated starting sites, a coverage and cell convention, and compatible relaxed endpoint calculations.",
+      "first_action": {
+        "type": "guide",
+        "guide_slug": "build-adsorption-energy-ledger",
+        "guide_kind": "implementation",
+        "evidence_boundary": "This uses attributed and synthetic bookkeeping material; it is not an executed adsorption project."
+      },
+      "validation_requirement": "Check site and state identity after relaxation, coverage, cell size, slab convergence, reference states, numerical convergence, and thermal or electrochemical corrections when claiming a free energy.",
+      "claim_limitation": "Negative adsorption energy does not establish catalytic activity, reaction rate, selectivity, poisoning resistance, or experimental adsorption conditions."
+    },
+    {
+      "id": "charge-redistribution",
+      "question": "Where did charge redistribute?",
+      "required_observable": "A difference density built from compatible component densities on the same cell, geometry, grid, and electronic convention, with an integral-closure check.",
+      "topic_slug": "charge-density-and-charge-redistribution",
+      "prerequisites": "Evaluate the combined and fragment densities with compatible geometry, cell, grid, basis or core treatment, occupations, and electron counts.",
+      "first_action": {
+        "type": "guide",
+        "guide_slug": "check-charge-difference-closure",
+        "guide_kind": "implementation",
+        "evidence_boundary": "This uses invented compatible grids; it does not generate a real DFT density-difference chain."
+      },
+      "validation_requirement": "Check grid and cell identity, electron-count convention, full-cell integral closure, interpolation control, and sensitivity to any charge-partition scheme.",
+      "claim_limitation": "Difference-density lobes do not define a unique transferred-electron count, bond order, oxidation state, or causal bonding mechanism. Partitioned charges remain method-dependent."
+    }
+  ]
+}
