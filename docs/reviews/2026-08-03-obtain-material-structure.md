@@ -54,9 +54,7 @@ checkCIF is not presented as a DFT-readiness certificate.
 
 Materials Project documentation supports the discussion of material identifiers,
 database versions, task origins, calculation methods, non-unique unit-cell
-representations, and data retrieval. The page now exposes these existing source
-links near the beginning so that a new reader can reach an actual structure-data
-source before the provenance discussion becomes detailed.
+representations, and data retrieval.
 
 - https://docs.materialsproject.org/methodology/materials-methodology/understanding-structures-and-properties-in-the-materials-project
 - https://docs.materialsproject.org/downloading-data/using-the-api/querying-data
@@ -66,15 +64,18 @@ source before the provenance discussion becomes detailed.
 
 The Crystallography Open Database supports the example of an openly accessible
 crystallographic collection whose data are provided under CC0 while original
-structure authors should still be acknowledged. The revised article also uses
-COD ID `9013102` as a bounded record-reading example. The current COD record
-identifies silicon, reports a cubic cell with `a = b = c = 5.4304 Å`, space group
-227 (`F d -3 m`), an ambient diffraction temperature of 298.15 K, coordinates
+structure authors should still be acknowledged. The article uses COD ID
+`9013102` as a bounded record-reading example. The record identifies silicon,
+reports a cubic cell with `a = b = c = 5.4304 Å`, space group 227
+(`F d -3 m`), an ambient diffraction temperature of 298.15 K, coordinates
 present, and no reported disorder.
 
-The article does not reproduce the complete downloaded CIF or claim to validate
-that record as a DFT input. It asks the reader to locate the stable COD ID through
-the COD interface and inspect the downloaded artifact directly.
+The interactive figure does not claim to reproduce the deposited CIF byte for
+byte. The site stores a separate teaching snapshot that keeps the reported cell
+and diamond-cubic silicon geometry while explicitly expanding the conventional
+cell into eight fully occupied sites and declaring `P 1`. That transformation is
+stated in both the file and the figure caption. The deposited COD record remains
+the source record; the local snapshot is only a stable visualization artifact.
 
 - https://www.crystallography.net/cod/
 
@@ -93,13 +94,13 @@ The article correctly keeps the following distinctions visible:
 - CIF is introduced as a crystallographic data representation, not as a synonym
   for a DFT-ready geometry;
 - lattice parameters, atom-site fractional coordinates, symmetry, occupancy, and
-  provenance are introduced as related but distinct parts of the record;
+  provenance are related but distinct parts of the record;
 - fractional coordinates are interpreted through the lattice vectors rather
   than as Cartesian ångström coordinates;
 - a visualizer may expand asymmetric-unit sites using symmetry, so the visible
-  atom count need not equal the number of atom-site rows stored in the CIF;
-- the silicon example is explicitly a database-record reading exercise, not an
-  accepted computational model or validation benchmark;
+  atom count need not equal the number of atom-site rows stored in the source CIF;
+- the interactive silicon view is a derived teaching representation, not the
+  original COD artifact, an accepted computational model, or a validation benchmark;
 - experimental, computed, inherited, and hypothetical structures carry different
   evidence and provenance;
 - the original artifact is preserved separately from parsed, normalized, or
@@ -118,36 +119,42 @@ The article correctly keeps the following distinctions visible:
   chemical or DFT-specific judgement;
 - extracting a monolayer, adding vacuum, choosing magnetic order, constructing a
   supercell, or selecting a defect configuration belongs to the next task;
-- obtaining a structure does not establish phase stability, synthesizability, or
-  validity of a later DFT conclusion.
+- obtaining or visualizing a structure does not establish phase stability,
+  synthesizability, or validity of a later DFT conclusion.
 
 ## Editorial review
 
-The revised article now starts from the lowest-cost conceptual questions a new
-reader actually encounters: what a CIF is, what its basic fields mean, where a
-structure can be obtained, and how to inspect one real database record. It then
-moves into the existing source-quality and provenance discussion rather than
-asking the reader to audit a file format that has not yet been introduced.
+The article begins with the practical sequence a new researcher needs: what a CIF
+is, where a structure can be obtained, and how to inspect one real database
+record. The interactive view is placed directly beside that record rather than
+made into a separate tool catalogue or a second workflow stage.
 
-The later scientific sequence remains topic-specific rather than returning to an
-Inputs/Outputs-style contract: source meaning, preservation, crystallographic
-semantics, identity, conversion, symmetry, geometry inspection, comparison, and
-handoff.
+The later sequence remains topic-specific: source meaning, preservation,
+crystallographic semantics, identity, conversion, symmetry, geometry inspection,
+comparison, and handoff. The page contains no universal cutoff, symmetry
+tolerance, bond-distance threshold, or database ranking.
 
-The source list is separated from the explanatory text, and code-specific details
-are examples rather than definitions of the task. The page contains no universal
-cutoff, symmetry tolerance, bond-distance threshold, or database ranking.
+## Visualization implementation boundary
+
+The page remains static-first. Its scientific text, links, and CIF teaching
+snapshot are available without client-side hydration. The interactive region is
+isolated in an iframe and delegates rendering to Mol*. Failure of that external
+viewer does not remove the source discussion or the local CIF artifact.
+
+The visualization establishes only that the declared teaching representation can
+be rendered interactively. It does not independently validate the deposited COD
+record, the transformation to the teaching snapshot, or suitability for a DFT
+calculation.
 
 ## Deliberate limitations
 
-The silicon section is a **record-reading example**, not a worked DFT calculation.
-This batch still does not include:
+The silicon section is a **record-reading and visualization example**, not a
+worked DFT calculation. This batch still does not include:
 
 - an executable parser comparison;
 - a complete catalogue or ranking of crystallographic and computational databases;
-- a byte-for-byte reproduction of an external CIF;
-- detailed magnetic-CIF, modulated-structure, twinning, or powder-refinement
-  tutorials;
+- a byte-for-byte reproduction of the external CIF;
+- detailed magnetic-CIF, modulated-structure, twinning, or powder-refinement tutorials;
 - quantitative geometry thresholds that could be misused as universal rules;
 - construction of ordered disorder models, slabs, monolayers, defects, surfaces,
   or heterostructures;
@@ -158,10 +165,10 @@ next content topic is **Build or Modify a Computational Model**.
 
 ## External-link verification
 
-The revised article reuses the same declared external URL set as the previous
-review. No new URL was added: the COD silicon example is referenced by its stable
-COD ID and reached through the already-declared COD database interface. Therefore
-`sources/reviewed-links.json` does not require a URL-set change for this revision.
+The article and this review retain the same declared scientific-source URL set.
+The visualization wrapper and local CIF are implementation artifacts rather than
+additional scientific references, so `sources/reviewed-links.json` does not
+require a URL-set change for this revision.
 
 Deterministic validation still requires exact agreement between the article,
 this review, and that manifest. A separate network CI job requests every declared
@@ -173,8 +180,8 @@ destination under the rules documented in
 The semantic source review establishes that the article represents the cited
 sources within its declared scope. The dedicated external-link audit establishes
 HTTP reachability only at its recorded run time. Browser smoke establishes that
-links are rendered in the public page; it does not establish destination
-availability. The COD metadata check supports only the fields explicitly used in
-the teaching example. None of these checks establishes that an arbitrary
+the public page, local teaching CIF, and interactive viewer path load under the
+deployed site; it does not establish destination availability beyond that run or
+scientific correctness. None of these checks establishes that an arbitrary
 structure file is correct, complete, stable, or suitable for a particular DFT
 calculation.
