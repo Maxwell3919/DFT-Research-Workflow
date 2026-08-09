@@ -186,6 +186,13 @@ try {
     if (!hasNarrative && (state.articleContent || !state.hasStableNotice)) throw new Error(`${slug}: neutral destination state mismatch`);
   }
 
+  const cifAssetUrl = `${base}/examples/cif/silicon-cod-9013102-expanded.cif`;
+  let viewerCifStatus = null;
+  const observeViewerCif = (response) => {
+    if (response.url().split('?')[0] === cifAssetUrl) viewerCifStatus = response.status();
+  };
+  page.on('response', observeViewerCif);
+
   await page.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'load' });
   const reviewedArticle = await page.evaluate(() => ({
     text: document.body.innerText,
@@ -203,9 +210,33 @@ try {
     if (!reviewedArticle.text.includes(phrase)) throw new Error(`Obtain a Material Structure is missing ${phrase}`);
   }
   if (reviewedArticle.headingCount < 10) throw new Error('Obtain a Material Structure lost its natural topic sections');
-  for (const domain of ['iucr.org', 'docs.materialsproject.org', 'crystallography.net', 'spglib.readthedocs.io']) {
+  for (const domain of ['iucr.org', 'docs.materialsproject.org', 'crystallography.net', 'molstar.org', 'spglib.readthedocs.io']) {
     if (!reviewedArticle.links.some((link) => link.includes(domain))) throw new Error(`Obtain a Material Structure is missing source domain ${domain}`);
   }
+
+  const cifAssetResponse = await fetch(`${cifAssetUrl}?smoke=${Date.now()}`, { cache: 'no-store' });
+  if (!cifAssetResponse.ok) throw new Error(`silicon teaching CIF returned HTTP ${cifAssetResponse.status}`);
+  const cifAssetText = await cifAssetResponse.text();
+  if (!cifAssetText.includes('data_silicon_cod_9013102_teaching_snapshot')) throw new Error('silicon teaching CIF data block missing');
+  if (!cifAssetText.includes('not the byte-for-byte COD download')) throw new Error('silicon teaching CIF provenance boundary missing');
+  if ((cifAssetText.match(/^Si\d+\s+Si\s/gm) ?? []).length !== 8) throw new Error('silicon teaching CIF does not contain eight expanded Si sites');
+
+  const viewerElement = await page.waitForSelector('.cif-viewer > iframe', { timeout: 5000 });
+  await viewerElement.evaluate((element) => element.scrollIntoView({ block: 'center' }));
+  let molstarFrame = null;
+  for (let attempt = 0; attempt < 100; attempt += 1) {
+    molstarFrame = await viewerElement.contentFrame();
+    if (molstarFrame?.url().startsWith('https://molstar.org/viewer/')) break;
+    await delay(250);
+  }
+  if (!molstarFrame?.url().startsWith('https://molstar.org/viewer/')) throw new Error(`Mol* frame did not load: ${molstarFrame?.url() ?? 'no frame'}`);
+  const molstarUrl = new URL(molstarFrame.url());
+  if (molstarUrl.searchParams.get('structure-url-format') !== 'cif') throw new Error('Mol* viewer was not configured for CIF');
+  if (molstarUrl.searchParams.get('structure-url') !== cifAssetUrl) throw new Error(`Mol* structure URL mismatch: ${molstarUrl.searchParams.get('structure-url')}`);
+  await molstarFrame.waitForSelector('canvas', { timeout: 45000 });
+  for (let attempt = 0; attempt < 180 && viewerCifStatus === null; attempt += 1) await delay(250);
+  page.off('response', observeViewerCif);
+  if (viewerCifStatus !== 200) throw new Error(`Mol* did not fetch the deployed CIF successfully: ${viewerCifStatus ?? 'no request observed'}`);
 
   await page.goto(`${base}/workflows/`, { waitUntil: 'load' });
   const workflowLinks = await page.$$eval('.directory-list a', (links) => links.length);
@@ -301,10 +332,13 @@ try {
     mobile_horizontal_overflow: false,
     no_javascript_workflow: true,
     no_javascript_reviewed_topic: true,
+    cif_teaching_snapshot: true,
+    cif_viewer_loaded: true,
+    cif_viewer_source_fetch_status: viewerCifStatus,
     public_language: 'en',
   };
   if (artifactDirectory) await writeFile(join(artifactDirectory, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`);
-  console.log(`Browser smoke passed: registry-driven A–E workflow, two terminal-first Worked Workflows, migration-safe old routes, keyboard navigation, true 390px no overflow, no-JavaScript reading, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
+  console.log(`Browser smoke passed: registry-driven A–E workflow, two terminal-first Worked Workflows, migration-safe old routes, keyboard navigation, true 390px no overflow, no-JavaScript reading, deployed CIF teaching snapshot and Mol* viewer fetch, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
 } finally {
   await browser.close();
 }
