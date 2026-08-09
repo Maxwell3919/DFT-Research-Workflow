@@ -62,7 +62,7 @@
         { "kind": "page", "url": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data" },
         { "kind": "page", "url": "https://docs.materialsproject.org/frequently-asked-questions" },
         { "kind": "page", "url": "https://www.crystallography.net/cod/" },
-        { "kind": "page", "url": "https://molstar.org/viewer/?hide-controls=1&structure-url=https%3A%2F%2Fmaxwell3919.github.io%2FDFT-Research-Workflow%2Fexamples%2Fcif%2Fsilicon-cod-9013102-expanded.cif&structure-url-format=cif" },
+        { "kind": "page", "url": "https://molstar.org/viewer/?hide-controls=1&url=https%3A%2F%2Fmaxwell3919.github.io%2FDFT-Research-Workflow%2Fexamples%2Fcif%2Fsilicon-cod-9013102-expanded.cif&url-format=cifCore" },
         { "kind": "page", "url": "https://spglib.readthedocs.io/en/v2.7.0/api/autodoc/spglib.html" }
       ]
     },
