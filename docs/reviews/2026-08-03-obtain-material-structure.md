@@ -79,6 +79,15 @@ the source record; the local snapshot is only a stable visualization artifact.
 
 - https://www.crystallography.net/cod/
 
+### Interactive visualization
+
+The page delegates only the interactive rendering surface to the hosted Mol*
+viewer. The viewer is configured to load the site-local teaching CIF as CIF data;
+this dependency does not become a crystallographic source or a DFT validation
+method.
+
+- https://molstar.org/viewer/?hide-controls=1&structure-url=https%3A%2F%2Fmaxwell3919.github.io%2FDFT-Research-Workflow%2Fexamples%2Fcif%2Fsilicon-cod-9013102-expanded.cif&structure-url-format=cif
+
 ### Numerical symmetry detection
 
 spglib documentation supports the description of `symprec` as a length tolerance
@@ -137,8 +146,9 @@ tolerance, bond-distance threshold, or database ranking.
 ## Visualization implementation boundary
 
 The page remains static-first. Its scientific text, links, and CIF teaching
-snapshot are available without client-side hydration. The interactive region is
-isolated in an iframe and delegates rendering to Mol*. Failure of that external
+snapshot are available without site-side client hydration. The interactive
+region is a direct external iframe to the hosted Mol* viewer, which receives the
+absolute URL of the deployed site-local teaching CIF. Failure of that external
 viewer does not remove the source discussion or the local CIF artifact.
 
 The visualization establishes only that the declared teaching representation can
@@ -165,13 +175,13 @@ next content topic is **Build or Modify a Computational Model**.
 
 ## External-link verification
 
-The article and this review retain the same declared scientific-source URL set.
-The visualization wrapper and local CIF are implementation artifacts rather than
-additional scientific references, so `sources/reviewed-links.json` does not
-require a URL-set change for this revision.
+The hosted Mol* viewer URL is now an explicit reviewed external dependency, so it
+is declared together with the scientific-source URLs in
+`sources/reviewed-links.json`. The local teaching CIF remains an internal
+artifact and is checked separately by the exact-SHA browser smoke.
 
-Deterministic validation still requires exact agreement between the article,
-this review, and that manifest. A separate network CI job requests every declared
+Deterministic validation requires exact agreement between the article, this
+review, and that manifest. A separate network CI job requests every declared
 destination under the rules documented in
 `docs/reviews/2026-08-03-reviewed-source-link-audit.md`.
 
@@ -180,8 +190,7 @@ destination under the rules documented in
 The semantic source review establishes that the article represents the cited
 sources within its declared scope. The dedicated external-link audit establishes
 HTTP reachability only at its recorded run time. Browser smoke establishes that
-the public page, local teaching CIF, and interactive viewer path load under the
-deployed site; it does not establish destination availability beyond that run or
-scientific correctness. None of these checks establishes that an arbitrary
-structure file is correct, complete, stable, or suitable for a particular DFT
-calculation.
+the public page and local teaching CIF load under the deployed site and that the
+Mol* iframe is configured for that CIF; it does not establish scientific
+correctness. None of these checks establishes that an arbitrary structure file
+is correct, complete, stable, or suitable for a particular DFT calculation.
