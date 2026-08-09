@@ -26,6 +26,18 @@ reviewed_at: "2026-08-03"
 
 Charge-density and wavefunction files are useful only when their scientific identity remains attached. Package reusable artifacts as one reference-state lineage rather than as anonymous restart files.
 
+## Audit the parent before packaging it
+
+```bash
+python3 examples/practical-guides/silicon_qe_convergence.py
+```
+
+This bounded command checks nine stored-output hashes, literal completion markers, and parsed energies. It does not create a reference manifest or verify any charge-density or wavefunction file.
+
+Before registering a reusable parent, collect the exact structure checksum, fixed-geometry input, primary stdout/stderr, method and potential identity, charge/spin/occupation state, final diagnostics, numerical settings, software version, and hashes or retention references for every downstream artifact. Check that the intended target calculation expects the same structure, Hamiltonian, charge, state, and representation. If any state-defining field changes, create a new parent rather than reusing a readable but incompatible file.
+
+The next action is not “copy the wavefunctions.” It is to record the compatible downstream request and the files it consumes, then preserve the reference as immutable evidence. Corrections create a new version and an explicit supersession link.
+
 ## Hash the state-defining objects
 
 A minimal manifest binds:

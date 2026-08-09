@@ -25,6 +25,27 @@ reviewed_at: "2026-08-03"
 
 A reference-state calculation begins from one exact accepted structure and one declared electronic method. The final fixed-geometry protocol should preserve that identity while allowing documented numerical refinement.
 
+## Prepare, run, and audit the fixed-geometry parent
+
+Prepare four named objects before execution:
+
+```text
+accepted geometry and checksum
+fixed-geometry SCF input
+SCF stdout and stderr
+retained density, potential, or wavefunctions with their parent identity
+```
+
+Run the repository's bounded stored-output checker separately from the real calculation:
+
+```bash
+python3 examples/practical-guides/silicon_qe_convergence.py
+```
+
+This command checks nine committed QE output hashes, literal completion markers, and final reported energies. It does not run `pw.x`, inspect the corresponding inputs, or establish that the geometry or method identity is correct.
+
+For the actual reference calculation, confirm that the input contains the accepted coordinates and no ionic or cell update. After execution, check normal program termination, electronic SCF convergence, electron count and occupations, state identity, warnings, final forces and stress, and the exact output artifacts required downstream. Reject or branch the state when these checks fail; otherwise register it as one comparable reference candidate and continue to the candidate audit.
+
 ## A real fixed-cell Silicon record
 
 The published inputs describe fixed-geometry QE 7.5 SCF calculations for a

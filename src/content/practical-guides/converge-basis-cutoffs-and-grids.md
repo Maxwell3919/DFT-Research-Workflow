@@ -24,86 +24,102 @@ review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
 
-Basis completeness is not represented by one number across all electronic-structure methods. In a plane-wave pseudopotential calculation it commonly involves a wavefunction cutoff together with a denser charge-density or augmentation grid. In local-orbital, real-space, or all-electron methods, different basis and integration controls play the same role.
+Run the declared companion first:
 
-## Choose the quantities that must remain stable
+~~~bash
+python3 examples/practical-guides/silicon_qe_convergence.py > silicon-convergence.json
+less silicon-convergence.json
+~~~
 
-Do not test only the total energy when the study will use forces, stress, a phase difference, a band edge, or a phonon frequency. Create a table that preserves every tested control and every target observable.
+It reads nine committed QE 7.5 Silicon outputs from <code>examples/practical-guides/data/silicon-qe/convergence/</code>, verifies their expected SHA-256 values, checks stored markers, extracts the final printed total energy, and rebuilds the cutoff and k-mesh figures.
 
-A minimal record can contain:
+Inspect the stored objects directly:
 
-```text
-basis control
-charge-density or integration-grid control
-SCF threshold
-state identity
-absolute energy diagnostic
-reported energy difference or derivative
-maximum force component
-stress component or pressure
-runtime and memory
-```
+~~~bash
+find examples/practical-guides/data/silicon-qe/convergence -maxdepth 1 -type f -name 'si_e*_k*.out' | sort
+sha256sum examples/practical-guides/data/silicon-qe/convergence/si_e*_k*.out
+grep -H "JOB DONE" examples/practical-guides/data/silicon-qe/convergence/si_e*_k*.out
+grep -H "convergence has been achieved" examples/practical-guides/data/silicon-qe/convergence/si_e*_k*.out
+grep -H "total energy" examples/practical-guides/data/silicon-qe/convergence/si_e*_k*.out
+~~~
 
-The diagram is conceptual. Separately, nine committed output files are recorded
-as a bounded QE 7.5 Silicon matrix over 30, 40, and 50 Ry and 6³, 8³, and 10³
-meshes. The published inputs describe the COD 9013102 cell, SSSP potential, and
-eight-times density cutoff; the declared companion does not execute QE or parse
-those inputs.
+<code>find</code> inventories the files. <code>sha256sum</code> checks local fixity. <code>JOB DONE</code> checks normal termination only. <code>convergence has been achieved</code> checks the electronic solver condition reported in each stored QE output. The energy line supplies the value parsed by the companion. None of these commands establishes observable convergence.
 
-## Scan the coupled control surface
+Basis completeness is not represented by one number across all electronic-structure methods. The archived matrix varies wavefunction cutoff over 30, 40, and 50 Ry and cubic k meshes over 6, 8, and 10. It uses one fixed Silicon teaching structure and one pseudopotential identity. The companion does not execute QE, parse the inputs, verify the potential source, or choose a production setting.
 
-A one-dimensional cutoff sweep can hide dependence on the associated real-space grid. Test a small matrix first, then refine the region where all target quantities stabilize.
+## Plan the calculation series
 
-```bash
-python3 examples/practical-guides/silicon_qe_convergence.py
-```
+Before running, write:
 
-The companion hashes the nine expected outputs, requires the literal
-electronic-convergence and `JOB DONE` markers, parses the last reported total
-energy, derives cutoff and mesh labels from filenames, and reports differences
-to the 50 Ry, 10³ row. It does not verify the inputs, potential, forces, stress,
-or a production setting.
+~~~text
+target observable and units:
+predeclared tolerance:
+basis controls to vary:
+charge-density, augmentation, or integration-grid controls to vary:
+fixed structure, method, pseudopotential, k sampling, occupations, and solver thresholds:
+state checks:
+input/output naming rule:
+stopping rule:
+~~~
 
-## Use recommendations as prior evidence
+For plane waves, test <code>ecutwfc</code> together with <code>ecutrho</code> or the relevant augmentation/FFT control. For another representation, substitute the basis size, range, integration grid, or real-space spacing that controls completeness.
 
-Pseudopotential libraries may publish suggested cutoffs or tested precision/efficiency settings. These are valuable starting points and can reduce exploratory cost. They do not establish convergence for a new structure, oxidation state, pressure, magnetic state, response property, or software version.
+Prepare every input before launching the sweep, then run the directory:
 
-The SSSP protocol explicitly evaluates several observables because cohesive energies, pressure, band properties, and phonon frequencies do not converge identically. PseudoDojo similarly grades pseudopotentials using defined tests. Preserve the library identity and version, then test the quantity used in the present study.
+~~~bash
+mkdir -p convergence/outputs
+for input in convergence/inputs/*.in; do
+  name=$(basename "$input" .in)
+  pw.x -in "$input" > "convergence/outputs/$name.out"
+done
+~~~
 
-## Watch for discontinuities
+This command runs the reader's prepared inputs; it is not evidence that the archived Silicon companion executed those calculations.
 
-A cutoff change can alter FFT grids, projector representation, diagonalization behaviour, or the converged electronic state. Record magnetic moments, occupations, symmetry, and other state diagnostics. A discontinuity should be investigated before any tail-spread estimate is interpreted.
+## Extract the same evidence from every run
 
-Do not fit a smooth curve across a state switch. Separate the branches or report that the tested protocol did not produce one comparable series.
+Check termination and solver status separately, then extract the target quantity with one versioned rule:
 
-## Compare cost inside the stable region
+~~~bash
+grep -H "JOB DONE" convergence/outputs/*.out
+grep -H "convergence has been achieved" convergence/outputs/*.out
+grep -H "total energy" convergence/outputs/*.out
+~~~
 
-Once several settings satisfy the observable-specific tolerance, cost can select a production point. Record wall time, memory, parallel layout, and I/O conditions, but do not confuse lower cost with scientific adequacy.
+Add force, stress, energy-difference, band, phonon, or response extraction according to the stated target. Preserve the exact parser or <code>awk</code> command beside the table.
 
-The selected point should be followed by at least one stricter point that remains inside the tolerance. The largest tested cutoff is not automatically the best production choice.
+The boundary is observable-specific:
+
+~~~text
+Energy convergence ≠ force convergence.
+Force convergence ≠ DOS convergence.
+DOS convergence ≠ phonon convergence.
+Phonon convergence ≠ EPC convergence.
+~~~
+
+Do not use this stored energy matrix to claim any of the later quantities.
+
+## Decide from a stable region
+
+For each setting $i$, compare the target $O_i$ with a declared stricter reference:
+
+$$
+\delta O_i = |O_i - O_{\mathrm{ref}}|.
+$$
+
+Accept the least costly setting only when all required observables satisfy their predeclared tolerances, the state identity remains unchanged, coupled grid controls are adequate, and at least one stricter setting confirms the decision. A library recommendation is a starting prior; the largest tested cutoff is not automatically the selected point.
+
+If the series is non-monotonic or switches state, do not fit through it. Separate the branches or report the convergence question as unresolved.
 
 ## What this guide verifies
 
-The declared companion verifies expected output SHA-256 values, marker presence,
-nine parsed total energies, filename-encoded 3 × 3 coverage, and reported
-differences. Marker presence is stored-output evidence, not an independent runtime
-or provenance check. The script does not test force, stress, band, DOS, phonon,
-or response convergence, validate the potential, establish a transferable cutoff,
-or support a Silicon material conclusion.
+The companion verifies the expected hashes, marker presence, nine parsed total energies, filename-encoded $3 \times 3$ coverage, and differences to the 50 Ry, $10^3$ row. Marker presence is stored-output evidence, not an independent runtime or provenance check.
 
-## Common mistakes
-
-**Testing one control while silently changing another.** Preserve the complete numerical specification at every point.
-
-**Using total energy alone.** Test the final difference, force, stress, response, or other reported quantity.
-
-**Accepting a library recommendation as final evidence.** Treat it as a starting prior with a declared version.
-
-**Selecting the largest point without a stopping rule.** Require a stable region and at least one stricter confirmation.
+It does not test forces, stress, bands, DOS, phonons, response, pseudopotential transferability, or a production cutoff. Numerical convergence does not establish method accuracy, model correctness, experimental agreement, or a Silicon material conclusion.
 
 ## Official sources
 
-- [Quantum ESPRESSO 7.5 `pw.x` input description](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
+- [Quantum ESPRESSO 7.5 <code>pw.x</code> input description](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
 - [Prandini et al., precision and efficiency in solid-state pseudopotential calculations](https://doi.org/10.1038/s41524-018-0127-2)
 - [Materials Cloud SSSP archive and provenance record](https://archive.materialscloud.org/record/2021.76)
 - [PseudoDojo training and grading paper](https://doi.org/10.1016/j.cpc.2018.01.012)

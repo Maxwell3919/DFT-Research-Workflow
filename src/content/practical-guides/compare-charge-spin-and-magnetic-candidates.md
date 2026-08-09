@@ -26,6 +26,16 @@ reviewed_at: "2026-08-03"
 
 A ground-state statement is bounded by the electronic states that were prepared and made comparable. Build a candidate table before selecting the reference.
 
+## Run the bounded candidate ledger
+
+```bash
+python3 examples/practical-guides/reference_state_candidate_comparison.py
+```
+
+The deterministic report separates completed comparable candidates from an incomplete candidate and a different-charge candidate, then ranks only the eligible fixture rows. It does not run DFT, inspect geometry, or establish a real magnetic state.
+
+For each real candidate, provide the fixed geometry, charge/electron count, state initialization, final occupations and moments, symmetry, method identity, completion and SCF evidence, comparable energy quantity, and normalization. Exclude incomplete or state-ambiguous rows without deleting them. Select only the lowest verified candidate within that explicit comparable set, then ask whether that state is scientifically appropriate for the target calculation.
+
 ## Define candidate identity
 
 Each row should preserve the candidate identifier, charge and electron count, spin treatment, magnetic initialization, final moments, occupation or localization signature, symmetry, relativistic branch, completion diagnostics, energy convention, normalization, and method identity.

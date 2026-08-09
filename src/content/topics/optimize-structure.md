@@ -5,6 +5,34 @@ status: reviewed
 
 Structure optimization searches for a stationary structure of the declared energy or enthalpy model by updating selected atomic and cell degrees of freedom from one or more starting configurations. Its scientific output is not merely a final coordinate file. It is a traceable statement about which variables were allowed to change, which state evaluator supplied energies, forces, and stress, which constraints were imposed, how the optimization behaved, and what was verified after it stopped.
 
+## Follow the common route from model to accepted geometry
+
+Start with a named computational model and one or more physically motivated structures. Declare which atomic coordinates and cell components may move, which constraints remain active, and which electronic or magnetic state the optimizer should follow. Run the relaxation, inspect the electronic and ionic history together, and accept a geometry only after a fresh energy-and-gradient evaluation on the exact final coordinates.
+
+The common sequence is:
+
+```text
+prepared structure and state
+→ declared active degrees of freedom and constraints
+→ relaxation trajectory
+→ termination, SCF, force, stress, displacement, and state checks
+→ accepted geometry with a stable identity
+→ fresh fixed-geometry reference calculation
+```
+
+This route is common, not universal. An experimental fixed geometry, a strained or constrained structure, a deliberately scanned coordinate, or a metastable state can be the intended object. In those cases, record why the geometry is held or constrained instead of silently forcing it through a free relaxation.
+
+Read four gates separately:
+
+```text
+program finished ≠ SCF converged
+SCF converged ≠ ionic optimization converged
+ionic optimization converged ≠ lowest relevant state identified
+lowest relevant state identified ≠ reference state scientifically appropriate
+```
+
+The first two gates are checked from the current run. The third requires alternative starts or state branches when they are scientifically plausible. The fourth belongs to the reference-state audit and the intended downstream claim.
+
 ## Define the quantity and variables being optimized
 
 Before choosing an optimizer, define the mathematical problem. A fixed-cell relaxation minimizes the electronic energy with respect to selected atomic coordinates while holding the lattice fixed. A variable-cell calculation may optimize atomic coordinates, cell shape, volume, or some restricted combination, often under a declared external pressure or stress condition.

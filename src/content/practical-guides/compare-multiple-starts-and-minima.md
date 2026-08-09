@@ -23,6 +23,16 @@ reviewed_at: "2026-08-03"
 
 A local optimizer answers a basin-dependent question: which stationary structure is reached from this starting point under this state evaluator and active subspace? It does not generally search the full configurational landscape.
 
+## Run the bounded basin exercise
+
+```bash
+python3 examples/practical-guides/optimization_multiple_starts.py
+```
+
+The script starts the same deterministic local minimizer from four coordinates, reports which of two synthetic basins each start reaches, and retains both minima. It does not run DFT or prove that the lower fixture basin is globally lowest.
+
+For a material study, prepare one directory and stable candidate ID per physically motivated start. Preserve each input, trajectory, final geometry, final state, termination evidence, and fresh final energy-and-gradient check. Deduplicate only after structure, cell, atom mapping, state identity, and numerical tolerances agree. Send every distinct verified minimum to the same fixed-geometry reference-state protocol; do not rank raw last-step relaxation energies.
+
 ## Identify why multiple minima are plausible
 
 Multiple starts are especially important when the model admits alternatives such as:

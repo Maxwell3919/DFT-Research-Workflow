@@ -26,6 +26,16 @@ reviewed_at: "2026-08-03"
 
 A restart continues from stored electronic data. A fresh run begins from a newly generated initial state. Both are useful, but they provide different evidence.
 
+## Run the bounded comparison
+
+```bash
+python3 examples/practical-guides/silicon_qe_restarts.py
+```
+
+The companion checks two stored SCF outputs plus two relaxation-segment outputs. For the fresh/restart SCF pair it requires literal electronic-convergence and `JOB DONE` markers and compares the printed total energies. It does not inspect the inputs or saved restart objects.
+
+Use the report as a first check only. Inspect the structure, prefix/outdir lineage, Hamiltonian, potential, charge, occupations, moments, symmetry, and warnings in both runs. Equal printed energy supports neither equal state identity nor restart compatibility by itself. If the final states agree under all declared diagnostics, retain fresh and restart as two paths to the same candidate. If they differ, preserve both and send them to the candidate-state comparison instead of selecting the convenient result.
+
 ## Actual Silicon fresh/restart comparison
 
 The published inputs describe a fresh QE 7.5 SCF and a restart for one Silicon

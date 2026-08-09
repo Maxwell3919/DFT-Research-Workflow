@@ -5,6 +5,33 @@ status: reviewed
 
 A reference ground-state calculation establishes the fixed-geometry electronic state, energy reference, and reusable parent data used by later calculations. The phrase “ground state” must be used with care. A self-consistent calculation normally finds one stationary electronic solution compatible with the chosen model, method, boundary conditions, occupations, and initialization. The durable result is therefore a verified reference-state candidate and a record of the competing states that were actually tested.
 
+## Build and audit the reference state
+
+Begin with one exact accepted geometry. Prepare a fixed-geometry input with the final method and numerical settings, run a fresh static self-consistent calculation, and inspect the output before reusing its density, potential, or wavefunctions. If competing charge, spin, occupation, symmetry, or relativistic branches are plausible, evaluate them under one comparable protocol and retain every excluded or failed candidate with its reason.
+
+```text
+accepted geometry
+→ fixed-geometry static calculation
+→ termination and SCF checks
+→ charge, occupations, moments, symmetry, forces, stress, and warnings
+→ comparable candidate-state ledger
+→ selected reference candidate and claim boundary
+→ versioned parent artifacts for the required target calculation
+```
+
+The optimization-to-static route is common, not universal. A fixed experimental geometry, imposed strain, constrained state, or deliberately metastable model can enter directly when that choice answers the research question. The reference is scientifically appropriate only if its geometry, state, method, and boundary conditions match the quantity and claim that follow.
+
+Keep the acceptance gates separate:
+
+```text
+program finished ≠ SCF converged
+SCF converged ≠ ionic optimization converged
+ionic optimization converged ≠ lowest relevant state identified
+lowest relevant state identified ≠ reference state scientifically appropriate
+```
+
+A static calculation does not rerun the ionic optimization. It audits the accepted coordinates under the reference evaluator, identifies the electronic state actually reached, and supplies the reusable parent object for later work.
+
 ## Define the reference state operationally
 
 For fixed nuclei and a declared electronic Hamiltonian, the task is to obtain a reproducible self-consistent state that can serve as the common parent for later energies and properties. Define its identity before execution:

@@ -20,78 +20,93 @@ review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
 
-Response calculations add sampling layers beyond the reference electronic state. A converged linear-response solve at one q point does not establish a converged q mesh, force-constant range, interpolation, density of states, thermal integral, or electron–phonon coupling parameter.
+Run the declared companion first:
 
-## Separate the four numerical layers
+~~~bash
+python3 examples/practical-guides/convergence_response_grids.py > response-grid-analysis.json
+less response-grid-analysis.json
+~~~
 
-Treat these as distinct evidence questions:
+It analyses a hard-coded synthetic matrix of coarse-q and fine-integration labels, applies illustrative tolerances, checks one direct-versus-interpolated error field, and requires stricter coarse and fine confirmations. It does not run a response calculation.
 
-```text
-reference electronic state and k mesh
-response solver at each perturbation or q point
-coarse response grid used to build an interpolant
-fine integration or interpolation grid used for the reported quantity
-```
+A converged linear-response solve at one q point does not establish a converged q mesh, force-constant range, interpolation, density of states, thermal integral, or electron–phonon coupling parameter.
 
-A change in the final observable can originate from any layer. Preserve the complete grid lineage rather than reporting only the final dense interpolation mesh.
+## Prepare four linked convergence layers
 
-## Converge the response solve first
+Record:
 
-At fixed k and q, verify the internal response threshold, number of bands where relevant, perturbation basis, symmetry handling, and reference-state consistency. A failed or loosely converged perturbation should not be hidden inside a later interpolation.
+~~~text
+target observable, units, and tolerance:
+accepted reference electronic state and k mesh:
+response solver threshold and perturbations:
+coarse q-mesh series:
+interpolation method and direct check points:
+fine integration-grid series:
+fixed basis, pseudopotential, bands, symmetry, occupations, and broadening:
+state and mode checks:
+~~~
 
-The response residual is a solver diagnostic. It is not a q-mesh convergence test.
+Treat the layers separately:
 
-## Refine the coarse q mesh
+~~~text
+reference electronic state
+response solve at each q point
+coarse response grid used to construct the interpolant
+fine grid used for the reported integral or spectrum
+~~~
 
-Quantum ESPRESSO exposes `nq1`, `nq2`, and `nq3` as the uniform phonon grid when dispersion calculations are requested. Refining that grid extends the real-space force-constant information available to Fourier interpolation, but the required density depends on the spatial range and target quantity.
+A fine mesh cannot repair unconverged response solves or an inadequate coarse grid.
 
-The illustrative script analyses synthetic results for several coarse q meshes and fine integration meshes:
+## Run and preserve the lineage
 
-```python
-from convergence_response_grids import analyse_response_grid_table
+For a QE phonon route, a study may use a sequence such as:
 
-report = analyse_response_grid_table()
-print(report["accepted_pair"])
-```
+~~~bash
+ph.x -in ph-q4.in > ph-q4.out
+q2r.x -in q2r-q4.in > q2r-q4.out
+matdyn.x -in matdyn-q4-fine24.in > matdyn-q4-fine24.out
+~~~
 
-The values are not phonon or electron–phonon calculations.
+These filenames illustrate a traceable production protocol. They are not files supplied or executions performed by the synthetic companion. Prepare a series of coarse q meshes and, for each viable coarse mesh, more than one fine interpolation or integration grid.
 
-## Validate interpolation against direct calculations
+Check each program separately:
 
-A smooth interpolated curve can be visually convincing while the coarse grid remains insufficient. Select off-grid or intermediate points and compare interpolated values with direct response calculations. Record the interpolation method, real-space cutoff, acoustic sum rule or other constraints, and any non-analytic corrections.
+~~~bash
+grep "JOB DONE" ph-q4.out q2r-q4.out matdyn-q4-fine24.out
+tail -n 40 ph-q4.out
+tail -n 40 q2r-q4.out
+tail -n 40 matdyn-q4-fine24.out
+~~~
 
-The comparison should include the modes or regions that dominate the target observable, not only visually convenient high-symmetry points.
+<code>JOB DONE</code> checks normal termination only. The <code>tail</code> commands expose final diagnostics for inspection; use the code's documented response residual, artifact checks, and frequency or observable parser to decide whether each layer is usable.
 
-## Refine the final integration grid separately
+## Compare direct and interpolated quantities
 
-A fixed coarse q mesh can feed several fine meshes for a phonon density of states, free-energy integral, linewidth, transport coefficient, or electron–phonon coupling. Convergence of the fine integration grid does not repair an inadequate coarse response grid.
+Select off-grid or intermediate q points and calculate them directly. Compare the direct value $O_{\mathrm{direct}}$ with its interpolation:
 
-For electron–phonon quantities, electronic k sampling, q sampling, band count, broadening, and double-delta integration can be strongly coupled. Giustino's review describes the multiple interpolation and integration layers involved. Test the reported quantity over more than one path through this multidimensional space.
+$$
+\delta O_{\mathrm{interp}} =
+|O_{\mathrm{direct}} - O_{\mathrm{interpolated}}|.
+$$
 
-## Check constraints and sensitive regions
+Apply a predeclared interpolation tolerance in the units of the mode or quantity that controls the claim. Preserve raw and constrained results when applying an acoustic sum rule or other correction; enforcing a rule does not prove the underlying grid is converged.
 
-Useful diagnostics can include symmetry-equivalent q points, acoustic behaviour near Γ, charge neutrality, sum rules, direct-versus-interpolated frequencies, and mode-resolved contributions. A small violation may be a numerical diagnostic rather than a physical result.
+## Converge the final observable
 
-Do not enforce a correction silently and then use the corrected curve as proof that the underlying grid was converged. Preserve both the raw and constrained results.
+At each adequate coarse mesh, refine the fine integration grid and extract the reported phonon DOS, free energy, linewidth, transport coefficient, or electron–phonon quantity. Inspect modes and q regions that dominate the result, not only a smooth high-symmetry plot.
+
+Phonon convergence ≠ EPC convergence. EPC additionally depends on electronic k sampling, q sampling, band count, matrix-element interpolation, broadening or delta-function treatment, and convergence of $\alpha^2F(\omega)$, $\lambda$, and $\omega_{\log}$ where those are the targets.
+
+Accept a pair only when response solves pass, direct-versus-interpolated checks meet tolerance, the final observable is stable against stricter coarse and fine grids, and the physical state remains comparable.
 
 ## What this guide verifies
 
-The companion script verifies an illustrative two-level response-grid analysis. It requires at least three coarse meshes, at least two fine meshes for each accepted coarse mesh, a direct-versus-interpolated check, consistent state labels, and a stricter confirmation pair.
+The companion verifies illustrative two-level response-grid analysis: at least three coarse labels, multiple fine labels, a direct-versus-interpolated field, consistent state labels, and stricter confirmation pairs. It detects a smooth fine-grid tail built on an inadequate coarse grid.
 
-It does not run DFPT, compute phonons or electron–phonon coupling, validate an acoustic sum rule, or recommend a universal q mesh.
-
-## Common mistakes
-
-**Reporting only the final interpolation mesh.** Preserve the expensive coarse response grid and all solver settings.
-
-**Using a smooth dispersion as convergence evidence.** Compare selected interpolated points with direct calculations.
-
-**Refining the fine integration grid while freezing an inadequate coarse mesh.** The two errors are independent.
-
-**Treating Γ-point stability as full-grid stability.** A single q point cannot establish the dispersion or integrated response.
+It does not run <code>ph.x</code>, <code>q2r.x</code>, or <code>matdyn.x</code>; compute phonons or EPC; validate an acoustic sum rule; or recommend a universal q mesh.
 
 ## Official sources
 
-- [Quantum ESPRESSO 7.5 `ph.x` input description](https://www.quantum-espresso.org/Doc/INPUT_PH.html)
+- [Quantum ESPRESSO 7.5 <code>ph.x</code> input description](https://www.quantum-espresso.org/Doc/INPUT_PH.html)
 - [Baroni et al., phonons and related properties from density-functional perturbation theory](https://doi.org/10.1103/RevModPhys.73.515)
 - [Giustino, electron–phonon interactions from first principles](https://doi.org/10.1103/RevModPhys.89.015003)

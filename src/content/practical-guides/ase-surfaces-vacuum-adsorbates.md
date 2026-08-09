@@ -22,11 +22,23 @@ review: docs/reviews/2026-08-03-practical-guides-model-building-pilot.md
 reviewed_at: 2026-08-03
 ---
 
-A surface builder produces a starting model, not a validated surface. The model is defined jointly by the parent crystal, orientation, termination, slab thickness, lateral cell, surface equivalence, constraints, adsorbate configuration, and boundary treatment.
+Use this guide to create a traceable slab and adsorbate starting candidate. A surface builder produces coordinates; it does not validate the termination, thickness, coverage, vacuum, or adsorption site.
 
-## Build one explicit slab candidate
+## Run the checked construction
 
-The executable example follows the ASE documentation pattern for an Al(111) slab:
+From the repository root, run:
+
+```bash
+python3 examples/practical-guides/ase_surface_vacuum_adsorbates.py
+```
+
+The companion uses ASE 3.29.0 to construct one illustrative Al(111) slab, add one H atom, center the object in its cell, and print a structured summary. It checks substrate and adsorbate counts, in-plane periodicity, out-of-plane nonperiodicity, adsorbate placement, cell length, atomic extent, and empty-cell length.
+
+These checks establish the declared object construction only. They do not calculate an adsorption energy, relax the geometry, compare sites, converge slab thickness or vacuum, or validate an Al–H model.
+
+## Build one explicit candidate
+
+The executable operation is:
 
 ```python
 from ase.build import add_adsorbate, fcc111
@@ -36,83 +48,50 @@ add_adsorbate(slab, "H", height=1.5, position="ontop")
 slab.center(vacuum=10.0, axis=2)
 ```
 
-The values are illustrative. They are not recommended slab thicknesses, vacuum sizes, adsorption heights, or coverages for a production study.
+Every numerical value is illustrative. The call encodes a (111) orientation, a two-by-two lateral repeat, three substrate layers, one initial on-top H site, an out-of-plane nonperiodic ASE object, and centered empty-cell length. None is a production recommendation.
 
-The construction encodes several assumptions:
+## Inspect the produced object
 
-- the surface orientation is (111);
-- the lateral cell repeats two by two;
-- the slab contains three atomic layers;
-- one hydrogen atom occupies an initial on-top site;
-- the out-of-plane direction is nonperiodic in the ASE model;
-- vacuum is distributed around the centered slab.
-
-Each assumption should be visible in the model record.
-
-## Inspect the generated object
-
-At minimum, check:
+Check at least:
 
 ```python
 assert slab.pbc.tolist() == [True, True, False]
 assert slab.get_chemical_symbols().count("H") == 1
 ```
 
-Also record:
+Also record the final cell matrix, atomic extent along the surface normal, remaining empty-cell length, substrate and adsorbate counts, surface-cell area, implied coverage, tagged or fixed layers, parent structure, orientation, and termination.
 
-- the final cell matrix;
-- the atomic extent along the surface normal;
-- the remaining empty-cell length;
-- the number of substrate atoms and adsorbates;
-- the surface-cell area and implied coverage;
-- the tagged or constrained layers, when used.
+Report the actual cell length and object extent rather than only the `vacuum` argument. One adsorbate in a different lateral area is a different coverage and therefore a different physical model.
 
-The word `vacuum` should not hide the actual geometry. Report the cell length and object extent rather than only the argument passed to `center`.
+## Generate alternatives before selecting a model
 
-## Generate alternatives rather than one convenient site
+A named high-symmetry site is an initial coordinate, not a stable adsorption conclusion. Prepare the symmetry-distinct sites, orientations, coverages, lateral cells, terminations, initial heights, coadsorbate arrangements, and constraint variants required by the question.
 
-Named high-symmetry positions are useful for creating candidates, but they do not establish the stable adsorption geometry. A serious adsorption study may need several:
+Relaxation may move an adsorbate away from its named starting site. A completed relaxation still does not show that all relevant candidates were considered.
 
-- symmetry-distinct sites;
-- molecular orientations;
-- coverages and lateral cells;
-- surface terminations;
-- initial heights;
-- coadsorbate arrangements;
-- constrained and unconstrained slab models.
+Adding empty cell length does not automatically remove electrostatic image interactions. Asymmetric, polar, charged, or dipolar slabs can require method-specific boundary treatment. A three-layer slab and ten units of vacuum are not automatically sufficient; converge the actual surface energy, work function, adsorption energy, charge redistribution, field, phonon, or other target quantity.
 
-Relaxation can move the adsorbate away from the initial named site. A successful geometry optimization still does not prove that all relevant candidates were considered.
+## Decide and continue
 
-## Distinguish slab construction from electrostatic treatment
-
-Adding empty cell length does not automatically remove all interactions between periodic images. Asymmetric slabs, polar terminations, charged slabs, and systems with a net dipole can require method-specific electrostatic treatment. Those decisions belong to calculation setup and convergence, not to the surface builder alone.
-
-Likewise, a three-layer slab is not automatically thick enough and ten units of vacuum are not automatically sufficient. The relevant quantity may be a surface energy, work function, adsorption energy, charge redistribution, field, phonon mode, or another observable with a different convergence behaviour.
+Accept a generated candidate only when its parent, orientation, termination, lateral cell, layer count, periodicity, cell and atomic extent, adsorbate identity/site/coverage, constraints, and alternatives are explicit. The next operation is to choose compatible electronic and electrostatic treatments, then converge the slab and target observable before interpreting it.
 
 ## What this guide verifies
 
-The companion script checks:
+The companion verifies the pinned ASE version, object construction, atom counts, periodicity, adsorbate position, cell and atomic extents, empty-cell length, and structured summary generation.
 
-- the pinned ASE version;
-- substrate and adsorbate atom counts;
-- in-plane periodicity and out-of-plane nonperiodicity;
-- the presence of the adsorbate above the top substrate layer;
-- the final cell length, atomic extent, and empty-cell length;
-- successful generation of a structured summary.
-
-It does not calculate an adsorption energy, relax the geometry, converge slab thickness or vacuum, compare sites, or validate the Al–H model.
+It does not validate a surface phase, adsorption site, coverage, relaxation, energy reference, electrostatic treatment, or scientific conclusion.
 
 ## Common mistakes
 
-**Using one named site as a conclusion.** It is an initial candidate only.
+**Using one named site as a conclusion.** It is one starting candidate.
 
-**Reporting vacuum without the cell geometry.** Centering and atomic extent determine the actual empty region.
+**Reporting vacuum without the cell geometry.** Centering and atomic extent determine the represented empty region.
 
-**Ignoring coverage.** One adsorbate in different lateral cells represents different physical models.
+**Ignoring coverage.** Adsorbate count and lateral area must be recorded together.
 
-**Calling a constrained slab fully relaxed.** Fixed layers reduce the accessible configuration space and must be reported.
+**Calling a constrained slab fully relaxed.** Fixed layers reduce the active subspace.
 
-**Comparing incompatible references.** Adsorption energies require method-compatible slab, adsorbate, and combined-system references.
+**Comparing incompatible references.** Adsorption energies require method-compatible slab, adsorbate, and combined-system calculations.
 
 ## Official sources
 

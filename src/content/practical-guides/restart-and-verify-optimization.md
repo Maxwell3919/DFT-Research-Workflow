@@ -25,6 +25,20 @@ reviewed_at: "2026-08-03"
 
 A restart is a continuation of a traceable optimization problem, not permission to overwrite an unfinished calculation. Geometry, optimizer state, constraints, electronic restart data, software identity, and the reason for continuation must remain connected.
 
+## Run, inspect, decide, then continue
+
+Run the bounded stored-output checker:
+
+```bash
+python3 examples/practical-guides/silicon_qe_restarts.py
+```
+
+The report checks the hashes and literal markers of the stored fresh/restart SCF pair and two relaxation segments. It does not execute a restart or verify that the saved electronic and optimizer objects were compatible.
+
+Before continuing your own run, identify the last accepted geometry, the parent segment, the exact restart objects, and the unchanged model fields. Inspect the previous stdout for its termination reason and electronic/ionic state; do not select a file merely because its name contains `final` or `restart`. Write the continuation to a new output and retain the original segment.
+
+After the continuation stops, run a fresh fixed-geometry energy-and-gradient calculation on the accepted coordinates. If fresh and restarted paths disagree in state, energy, forces, or warnings, keep them as separate branches and resolve the discrepancy before using either as the reference state.
+
 ## Actual bounded QE continuation
 
 The published inputs describe an intentionally displaced COD 9013102 Silicon

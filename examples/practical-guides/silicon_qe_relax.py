@@ -17,6 +17,8 @@ def run() -> dict[str, object]:
     assert hashlib.sha256(source.encode()).hexdigest() == OUTPUT_SHA256
     assert hashlib.sha256((DATA / "si-relax.in").read_bytes()).hexdigest() == INPUT_SHA256
     assert "End of BFGS Geometry Optimization" in source and "JOB DONE" in source
+    electronic_convergence_markers = source.count("convergence has been achieved")
+    assert electronic_convergence_markers == 5
     energies = [float(value) for value in re.findall(r"!\s+total energy\s+=\s+([-0-9.]+) Ry", source)]
     forces = [float(value) for value in re.findall(r"Total force =\s*([-0-9.]+)", source)]
     assert len(energies) == len(forces) == 5
@@ -28,7 +30,7 @@ def run() -> dict[str, object]:
         "input_sha256": INPUT_SHA256,
         "output_sha256": OUTPUT_SHA256,
         "ionic_steps": [{"step": i + 1, "energy_Ry": energy, "total_force_Ry_per_bohr": force} for i, (energy, force) in enumerate(zip(energies, forces))],
-        "electronic_completion_each_step": True,
+        "electronic_convergence_markers": electronic_convergence_markers,
         "geometry_completion_marker": True,
         "boundary": "One fixed-cell Silicon teaching relaxation only; no cell optimization, independent starts, force/stress convergence, global-minimum, or material-structure claim.",
     }

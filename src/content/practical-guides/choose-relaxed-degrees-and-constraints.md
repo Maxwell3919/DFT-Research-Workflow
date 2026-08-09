@@ -27,6 +27,34 @@ reviewed_at: "2026-08-03"
 
 A relaxation protocol begins with a declaration of active variables. “Relax the structure” is ambiguous until the atomic coordinates, cell components, constraints, symmetry treatment, and external stress condition are specified.
 
+## Start with the stored Silicon input and output
+
+The bounded case reads these exact objects:
+
+```text
+examples/practical-guides/data/silicon-qe/relax/si-relax.in
+examples/practical-guides/data/silicon-qe/relax/si-relax.out
+```
+
+Run the companion reconstruction:
+
+```bash
+python3 examples/practical-guides/silicon_qe_relax.py
+```
+
+Inspect the stored output directly:
+
+```bash
+grep -F "JOB DONE" examples/practical-guides/data/silicon-qe/relax/si-relax.out
+grep -cF "convergence has been achieved" examples/practical-guides/data/silicon-qe/relax/si-relax.out
+grep -F "End of BFGS Geometry Optimization" examples/practical-guides/data/silicon-qe/relax/si-relax.out
+grep -F "Total force =" examples/practical-guides/data/silicon-qe/relax/si-relax.out
+```
+
+`JOB DONE` checks normal program termination only. The literal electronic-convergence marker occurs five times, but the parser does not claim a one-to-one mapping between those markers and the five parsed ionic energy/force rows. The BFGS marker records the optimizer's stopping condition; it does not establish that the active subspace was scientifically appropriate or that another start could not reach a lower state.
+
+Use the input to decide which variables were active, then compare the initial and final cell and coordinates. If the executed motion differs from the declared subspace, reject the run as the wrong model. If it agrees, continue to force/state diagnosis rather than declaring the structure accepted from the marker alone.
+
 ## Actual fixed-cell Silicon case
 
 The published QE 7.5 input declares an intentionally displaced two-site COD
@@ -122,10 +150,11 @@ If a supposedly fixed atom moved, or a vacuum vector changed, the optimization e
 ## What this guide verifies
 
 `silicon_qe_relax.py` verifies the input/output hashes, `JOB DONE` and BFGS
-markers, five parsed energy/total-force pairs, and that the last reported total
-force is lower than the first. It does not verify five separate SCF completions
-or execute the conceptual ASE constraint. Neither item validates variable-cell
-behavior, a force threshold, or a physical minimum.
+markers, five literal electronic-convergence markers, five parsed energy/total-force
+pairs, and that the last reported total force is lower than the first. The marker
+count is not a step-by-step mapping. The script does not execute the conceptual ASE
+constraint or validate variable-cell behavior, a force threshold, or a physical
+minimum.
 
 ## Common mistakes
 
