@@ -16,6 +16,11 @@ export interface ToolRecord {
   access_note?: string;
   verified_version?: string;
   role: string;
+  use_when: string;
+  first_action: string;
+  input_objects: string[];
+  output_objects: string[];
+  primary_topic: string;
   homepage: string;
   documentation: string;
   getting_started: ToolGettingStarted;

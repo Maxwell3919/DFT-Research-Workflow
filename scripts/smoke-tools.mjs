@@ -13,7 +13,7 @@ const verifiedAtLabel = new Intl.DateTimeFormat('en-GB', {
   year: 'numeric',
   timeZone: 'UTC',
 }).format(new Date(`${toolsRegistry.verified_at}T00:00:00Z`));
-const requiredHeadings = ['What', 'Where in DRW', 'Start here', 'Official documentation'];
+const requiredHeadings = ['What', 'Use it when', 'First useful action', 'Inputs and outputs', 'Where in DRW', 'Start here', 'Official documentation'];
 const routes = [
   { route: '/tools/', title: 'Tools', phrase: 'Materials data services' },
   ...toolsRegistry.tools.map((tool) => ({
@@ -21,14 +21,24 @@ const routes = [
     title: tool.name,
     phrase: tool.getting_started.label,
     startUrl: tool.getting_started.url,
+    useWhen: tool.use_when,
+    firstAction: tool.first_action,
+    inputObjects: tool.input_objects,
+    outputObjects: tool.output_objects,
+    primaryTopic: tool.primary_topic,
   })),
 ];
 
 function detailStateIsValid(route, state) {
   if (!route.startUrl) return true;
-  return requiredHeadings.every((heading) => state.headings.includes(heading))
+  return JSON.stringify(state.headings) === JSON.stringify(requiredHeadings)
     && state.startLabel === route.phrase
     && state.startUrl === route.startUrl
+    && state.useWhen === route.useWhen
+    && state.firstAction === route.firstAction
+    && JSON.stringify(state.inputObjects) === JSON.stringify(route.inputObjects)
+    && JSON.stringify(state.outputObjects) === JSON.stringify(route.outputObjects)
+    && state.primaryHref?.endsWith(`/operations/${route.primaryTopic}/`)
     && state.text.includes(verifiedAtLabel)
     && state.text.includes('does not rank or endorse tools');
 }
@@ -46,6 +56,11 @@ try {
         headings: [...document.querySelectorAll('h2')].map((heading) => heading.textContent?.trim()),
         startLabel: document.querySelector('[data-tool-start]')?.textContent?.trim(),
         startUrl: document.querySelector('[data-tool-start]')?.getAttribute('href'),
+        useWhen: [...document.querySelectorAll('h2')].find((heading) => heading.textContent?.trim() === 'Use it when')?.nextElementSibling?.textContent?.trim(),
+        firstAction: [...document.querySelectorAll('h2')].find((heading) => heading.textContent?.trim() === 'First useful action')?.nextElementSibling?.textContent?.trim(),
+        inputObjects: [...document.querySelectorAll('[data-tool-inputs] li')].map((item) => item.textContent?.trim()),
+        outputObjects: [...document.querySelectorAll('[data-tool-outputs] li')].map((item) => item.textContent?.trim()),
+        primaryHref: document.querySelector('[data-tool-primary]')?.getAttribute('href'),
         scripts: document.scripts.length,
         overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
       }));
@@ -66,13 +81,18 @@ try {
       headings: [...document.querySelectorAll('h2')].map((heading) => heading.textContent?.trim()),
       startLabel: document.querySelector('[data-tool-start]')?.textContent?.trim(),
       startUrl: document.querySelector('[data-tool-start]')?.getAttribute('href'),
+      useWhen: [...document.querySelectorAll('h2')].find((heading) => heading.textContent?.trim() === 'Use it when')?.nextElementSibling?.textContent?.trim(),
+      firstAction: [...document.querySelectorAll('h2')].find((heading) => heading.textContent?.trim() === 'First useful action')?.nextElementSibling?.textContent?.trim(),
+      inputObjects: [...document.querySelectorAll('[data-tool-inputs] li')].map((item) => item.textContent?.trim()),
+      outputObjects: [...document.querySelectorAll('[data-tool-outputs] li')].map((item) => item.textContent?.trim()),
+      primaryHref: document.querySelector('[data-tool-primary]')?.getAttribute('href'),
     }));
     if (response?.status() !== 200 || !state.text.includes(route.title) || !state.text.includes(route.phrase) || !detailStateIsValid(route, state)) {
       throw Error(`${route.route} no-js`);
     }
   }
   await page.close();
-  console.log('Tools browser smoke passed: index and all 17 detail pages, curated start links and registry verification date, 1440px/390px no-overflow, and no-JavaScript reading.');
+  console.log('Tools browser smoke passed: index and all 17 operationalized detail pages, ordered actual-use sections, registry-bound inputs/outputs and primary DRW entries, 1440px/390px no-overflow, and no-JavaScript reading.');
 } finally {
   await browser.close();
 }
