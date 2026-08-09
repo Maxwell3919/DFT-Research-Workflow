@@ -3,57 +3,77 @@ topic_slug: fermi-surface-and-full-brillouin-zone-analysis
 status: reviewed
 ---
 
-A Fermi-surface calculation identifies the reciprocal-space locus associated with a chosen chemical potential in a specified electronic state. For a periodic eigenvalue model it is an isosurface, not a band path, density-of-states curve, carrier-density measurement, or transport calculation. It is meaningful only after the structure, charge, spin/SOC treatment, occupations, reciprocal cell, and energy reference have been fixed.
+Use a full-Brillouin-zone calculation when the question depends on where a band reaches a chosen energy: a possible Fermi-surface sheet, pocket, neck, off-path crossing, or extremum. Start from an accepted structure and electronic reference state, then create a compatible uniform-zone eigenvalue field. [Compare a Full-Zone Isovalue with a Band-Path Crossing](/DFT-Research-Workflow/operations/fermi-surface-and-full-brillouin-zone-analysis/guides/compare-full-zone-isovalue-and-band-path/) reconstructs a real QE 7.5 aluminium mesh and path while keeping sampled crossings separate from a converged Fermi-surface claim.
 
-## The object is an equal-energy set over the full zone
+## Produce the full-zone state
 
-For band `n`, a zero-temperature Fermi-surface sheet is the set of wavevectors satisfying
+Prepare compatible `scf.in` and `nscf.in` files with the same structure, pseudopotentials, basis settings, charge, spin/SOC treatment, Hubbard definition, `prefix`, and accessible `outdir`. Choose a uniform mesh and enough bands for the energy window being searched.
 
-```text
-ε_n(k) = μ,
+```bash
+pw.x -in scf.in > scf.out
+grep -F "convergence has been achieved" scf.out
+grep -F "JOB DONE." scf.out
 ```
 
-where `ε_n(k)` is the specified eigenvalue and `μ` is the chemical potential in the same calculation. In three dimensions the set is generally a two-dimensional surface; in two dimensions it is a contour; in one dimension it is a set of points. A plotted sheet therefore depends on the reciprocal-lattice basis and periodic-zone convention used to render repeated images.
+This establishes the parent density and checks, separately, the electronic solver message and normal program termination. It does not establish full-zone resolution.
 
-At finite electronic temperature or with smearing, occupation changes continuously near `μ`. An isosurface chosen at a reported Fermi energy remains a useful visualization convention, but it does not turn a broadened occupation into a sharp experimental Fermi surface. State the occupation model and whether the displayed energy is the code-reported chemical potential or a deliberately scanned value.
+```bash
+pw.x -in nscf.in > nscf.out
+grep -F "JOB DONE." nscf.out
+```
+
+The NSCF run supplies eigenvalues over the declared uniform mesh. Preserve the coordinates and weights actually represented; disabling symmetry may be useful when a downstream format needs every grid point, but it is not a universal requirement and does not make the mesh converged.
 
 ## A high-symmetry path cannot establish a Fermi surface
 
-Crossings on a band path show only where selected lines meet an energy. A pocket may avoid every plotted segment, and an apparent crossing can disappear away from the line. Construct the isosurface from a declared full-Brillouin-zone mesh or a validated interpolation, then retain the mesh, weights, cell transformation, band indices, and isovalue. The DOS complements this work by integrating energy-resolved weight; it does not locate the sheet geometry.
+A path calculation may be generated from the same accepted state for visual comparison:
 
-The same warning applies to extrema and topology. A visible neck, pocket, or touching point can be changed by the mesh, interpolation subspace, energy reference, structural state, magnetic order, spin--orbit coupling, or a small numerical energy shift. Treat it as a candidate feature until its local energy field and robustness are checked.
+```bash
+pw.x -in bands.in > bands.out
+grep -F "JOB DONE." bands.out
+```
 
-## Electron and hole labels require a declared reference
+This produces eigenvalues only on the requested lines. A path crossing is not a substitute for the full-zone field and cannot prove metallicity, a pocket, or a fundamental gap.
 
-Near a selected band extremum, an electron-like or hole-like description refers to local curvature and filling within a specified band model. It is not determined by whether a rendered surface looks convex or concave from one viewpoint. In multiband, folded, spin-split, compensated, or semimetallic systems, counting pockets requires a band-by-band full-zone analysis and a documented zone convention.
+## The object is an equal-energy set over the full zone
 
-Luttinger's relation connects the volume enclosed by a Fermi surface to particle density under assumptions that include an appropriate translationally invariant Fermi-liquid setting and a correctly defined interacting Fermi surface. A Kohn--Sham isosurface is not automatically an experimental carrier density or a proof that those assumptions hold. Broken symmetry, disorder, finite-temperature reconstruction, strong correlations, and incomplete occupied-band accounting can change the interpretation.
+For band $n$, an equal-energy sheet at chemical potential $\mu$ satisfies
+
+$$
+\varepsilon_n(\mathbf{k})=\mu.
+$$
+
+Use $\mu$ and $\varepsilon_n(\mathbf{k})$ from the same electronic state. Keep the reciprocal basis, periodic-zone convention, mesh, weights, band and spin/SOC labels, occupations, and interpolation method with the surface or contour. In three dimensions the object is generally a surface; in two dimensions it is a contour. A slab calculation should not be presented as an ordinary three-dimensional bulk surface without addressing the intended dimensional reciprocal manifold.
+
+Inspect point and band counts, energy range, finite eigenvalues, chemical-potential marker, coordinate order, and the scalar-field or vertex artifact used by the renderer. A screenshot alone cannot recover the band assignment, pocket volume, mesh, or isovalue.
 
 ## Interpolation makes a dense mesh practical, not automatically reliable
 
-Wannier interpolation can evaluate a fitted Hamiltonian efficiently on a regular grid and export an isosurface. Its subspace, disentanglement, windows, localization, spinor treatment, and interpolation convention are part of the result. A dense interpolated picture can be wrong in a small energy window if the fit misses a crossing or shifts a pocket.
+If Wannier interpolation supplies a denser grid, compare direct and interpolated eigenvalues at held-out points near every claimed sheet. Preserve the subspace, projections, disentanglement and frozen windows, spinor treatment, and interpolation version. A dense smooth surface can still be wrong near a crossing.
 
-Compare direct and interpolated eigenvalues at held-out points around every sheet used for a claim. Refine the full-zone grid and perturb the chosen isovalue within the numerical and physical uncertainty relevant to that claim. There is no universal k mesh, interpolation window, energy offset, pocket-volume tolerance, or number of empty bands.
+## Electron and hole labels require a declared reference
 
-## Symmetry, magnetism, and dimensionality change the comparison object
+Electron- and hole-like labels require local curvature and filling in the declared band model, not the apparent convexity of one rendering. Luttinger's relation connects the volume enclosed by a Fermi surface to particle density only under its stated translational and many-body assumptions; a Kohn--Sham isosurface is not automatically an experimental carrier density.
 
-Magnetic order or a supercell can fold the Brillouin zone, yielding surfaces that require an explicit unfolding or reciprocal-cell mapping before comparison with a primitive-cell result. Collinear spin channels can have separate sheets. In a noncollinear spinor calculation with SOC, “spin-up sheet” is generally a projection onto a declared axis rather than a conserved quantum number.
+## Test the feature before naming it
 
-For slabs and two-dimensional materials, periodicity in the nonperiodic direction and vacuum can generate artificial three-dimensional rendering context. Use the intended dimensional reciprocal manifold and distinguish a two-dimensional Fermi contour from a projected three-dimensional bulk surface. Surface spectral states and bulk Fermi surfaces require different evidence.
+Refine the uniform mesh and vary the isovalue over the numerical and physical uncertainty relevant to the question. Repeat the check for basis settings, number of bands, occupations or smearing, structural and magnetic candidates, and SOC treatment. A pocket, neck, touching point, or topology that disappears under these tests is not established.
+
+Supercells and magnetic order fold the zone; compare with a primitive-cell result only after an explicit mapping or unfolding. For noncollinear SOC, a "spin-up" sheet is generally a projection onto a declared axis rather than a conserved quantum number.
 
 ## Geometry alone is not a transport calculation
 
-Fermi velocity is the band gradient, `v_n(k) = (1/ℏ) ∇_k ε_n(k)`, evaluated for the declared model. Even a well-resolved velocity field and sheet geometry do not supply scattering times, phonons, impurities, vertices, contacts, nonequilibrium distributions, or a conductivity tensor. Nesting-like parallel patches are geometric observations; they do not establish an instability, electron--phonon coupling, superconductivity, density wave, or enhanced response without the corresponding susceptibility or coupling calculation.
+The band velocity is
 
-Angle-resolved photoemission, quantum oscillations, and transport can probe related information under their own surface, matrix-element, field, temperature, and many-body conditions. Agreement of a visually similar calculated sheet is not validation without an explicit observable-level comparison.
+$$
+\mathbf{v}_n(\mathbf{k})=\frac{1}{\hbar}\nabla_{\mathbf{k}}\varepsilon_n(\mathbf{k}),
+$$
 
-## Preserve the field, not only the rendered surface
-
-Keep the parent structure and reference state; reciprocal vectors and zone convention; full mesh and weights; eigenvalues and occupations; chemical potential or chosen isovalue; band and spin/SOC labels; interpolation inputs and held-out checks; mesh/isovalue sensitivity; any unfolding; surface-generation algorithm and version; and machine-readable vertices or scalar fields. A screenshot alone cannot recover a pocket volume, a band assignment, or a perturbation test.
+but sheet geometry and velocity do not supply scattering times, interactions, contacts, or a conductivity tensor. A nesting-like geometry does not establish an instability, electron-phonon coupling, superconductivity, or density-wave response without the corresponding calculation.
 
 ## What this topic establishes
 
-This topic establishes how to construct and interpret a state-specific full-zone equal-energy surface while keeping path data, DOS, energy reference, interpolation, symmetry, dimensionality, and transport claims distinct. It does not establish an experimental Fermi surface, carrier concentration, effective mass, scattering rate, conductivity, quantum oscillation frequency, electronic instability, superconductivity, topology, material stability, or device performance from a rendered isosurface alone.
+A converged full-zone field can support a state-specific equal-energy geometry for the declared model, mesh or validated interpolation, and isovalue. It does not establish an experimental Fermi surface, carrier concentration, effective mass, scattering rate, conductivity, quantum-oscillation frequency, instability, superconductivity, topology, material stability, or device performance. Preserve the parent state, full field, mesh/isovalue sensitivity, any path comparison, interpolation checks, rendering method, machine-readable surface data, and hashes.
 
 ## Sources and methods
 

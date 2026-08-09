@@ -7,13 +7,19 @@ Electronic transport connects an electronic structure to the charge and heat cur
 
 This topic concerns diffusive or semiclassical transport in an extended material. A nanoscale conductor whose contacts, finite scattering region, transmission channels, and bias profile are explicit belongs to **Quantum Transport**. The distinction matters: a bulk conductivity has units per length and depends on scattering, whereas a ballistic conductance is a contact-to-contact property and can remain finite without a bulk relaxation time.
 
+## Build the full-zone transport object
+
+Start from a qualified electronic parent and calculate or interpolate energies and velocities over the full Brillouin zone; a high-symmetry line path is not transport sampling. Choose the temperature and chemical-potential or carrier-density domain, dimensional normalization, and scattering model before solving for $\sigma$, $S$, or $\kappa_e$. Validate interpolation on withheld points, inspect tensor symmetry, carrier-count closure, units, and sensitivity to k mesh, bands, energy integration, smearing, derivatives, and every scattering input. The CoSb3 guide reprocesses derived public data only; it does not run the parent electronic or transport calculation.
+
 ## The response starts from a distribution, not a band plot
 
 At equilibrium, state `(n, k)` has energy `epsilon_nk` and Fermi--Dirac occupation `f0(epsilon_nk, mu, T)`. Its band velocity is
 
-```text
-v_nk = (1 / hbar) grad_k epsilon_nk,
-```
+$$
+\mathbf v_{n\mathbf k}
+= \frac{1}{\hbar}
+\nabla_{\mathbf k}\epsilon_{n\mathbf k}.
+$$
 
 where `n` labels a band, `k` spans the full Brillouin zone, `hbar` is the reduced Planck constant, and the gradient is taken with respect to reciprocal-space wavevector. A line plot along selected symmetry directions does not contain the full set of velocities required by a transport integral.
 
@@ -21,36 +27,21 @@ A weak field or temperature gradient changes the distribution by `delta f_nk`. T
 
 In a relaxation-time approximation, the electrical conductivity tensor can be written schematically as
 
-```text
-sigma_ab(mu, T) = (e^2 / V) sum_nk
-                  tau_nk v_nk,a v_nk,b
-                  [-d f0 / d epsilon]_(epsilon_nk).
-```
+$$
+\sigma_{ab}(\mu,T)
+= \frac{e^2}{V}\sum_{n\mathbf k}
+\tau_{n\mathbf k}
+v_{n\mathbf k,a}v_{n\mathbf k,b}
+\left[-\frac{\partial f_0}{\partial\epsilon}\right]_{\epsilon_{n\mathbf k}}.
+$$
 
 `e` is the positive elementary-charge magnitude, `V` is the real-space normalization volume, `a` and `b` are Cartesian directions, and `tau_nk` is a state- and possibly temperature-dependent transport relaxation time. The derivative of `f0` selects an energy window around the chemical potential; velocities determine which states carry current; `tau_nk` determines how long the driven distribution persists. Depending on k-point weights and spin conventions, prefactors may be written differently, so units and normalization must travel with the output.
 
 ## Transport moments separate what the bands provide from what scattering supplies
 
-It is useful to collect the energy-weighted velocity correlations into moments
+Energy-weighted velocity moments combine the full-zone bands with $\tau_{n\mathbf k}$ and the occupation window. They produce conductivity, Seebeck, and electronic thermal-conductivity tensors only under the declared normalization and collision model. Tensor order matters in anisotropic systems; componentwise division is not generally valid.
 
-```text
-L_ab^(m)(mu, T) = (1 / V) sum_nk
-                   tau_nk v_nk,a v_nk,b
-                   (epsilon_nk - mu)^m
-                   [-d f0 / d epsilon]_(epsilon_nk).
-```
-
-The zeroth moment controls electrical conduction, the first measures electron--hole asymmetry around `mu`, and the second carries electronic heat. With one common sign convention,
-
-```text
-sigma = e^2 L^(0)
-S = -(1 / e T) [L^(0)]^(-1) L^(1)
-kappa_e = (1 / T) {L^(2) - L^(1)[L^(0)]^(-1)L^(1)}.
-```
-
-`S` is the Seebeck tensor in volts per kelvin and `kappa_e` is the open-circuit electronic thermal-conductivity tensor in watts per metre-kelvin for a three-dimensional bulk normalization. Tensor order matters in anisotropic systems; componentwise division is not generally equivalent to the matrix expression.
-
-If one replaces every `tau_nk` by the same constant `tau`, then `sigma/tau` and `kappa_e/tau` are band-structure transport functions rather than absolute conductivities. The common factor cancels from `S` only under that strict assumption. It does not cancel when relaxation times depend on energy, band, direction, carrier type, or temperature. A constant-relaxation-time result can compare band-shape trends under a shared model, but it cannot determine an absolute mobility or resistivity without additional scattering information.
+If every $\tau_{n\mathbf k}$ is replaced by one constant $\tau$, then $\sigma/\tau$ and $\kappa_e/\tau$ are band-structure transport functions rather than absolute conductivities. The common factor cancels from $S$ only under that strict assumption. A constant-$\tau$ result can compare band-shape trends under one shared model; it cannot determine absolute mobility or resistivity.
 
 ## Chemical potential is not automatically a realizable carrier concentration
 
@@ -60,9 +51,10 @@ A rigid-band scan changes occupations while leaving the band energies and wavefu
 
 Mobility introduces another normalization:
 
-```text
-mu_drift,ab = sigma_ab / (n |e|)
-```
+$$
+\mu_{\mathrm{drift},ab}
+= \frac{\sigma_{ab}}{n|e|}.
+$$
 
 for a single dominant carrier density `n` under compatible tensor and sign conventions. In multiband or bipolar transport this scalar reduction can hide coupled electron and hole currents. Hall mobility additionally depends on magnetic-field response and need not equal drift mobility.
 

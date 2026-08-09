@@ -5,15 +5,20 @@ status: reviewed
 
 Piezoelectric response connects a mechanical perturbation to a change in macroscopic polarization, or an electric perturbation to stress or strain. It is a linear derivative of a declared insulating crystal state under declared electrical and mechanical boundary conditions. A polar crystal, a finite polarization difference, or a large dielectric constant is not itself a piezoelectric coefficient.
 
+## Choose the coefficient before perturbing the structure
+
+Decide whether the required output is $e$, $d$, or another constitutive tensor and declare the electrical, mechanical, clamped-ion, and internally relaxed conditions. Starting from one accepted insulating state, run compatible DFPT or signed finite-strain calculations, follow the polarization branch, fit the requested derivative, and inspect tensor symmetry, units, linearity, and convergence. Converge every elastic or dielectric tensor used in a conversion. The subordinate ledger is synthetic-only and verifies arithmetic rather than a material response.
+
 ## Decide which constitutive tensor answers the question
 
 The direct piezoelectric stress tensor is commonly written
 
-```text
-e_iJ = (∂P_i / ∂η_J)|E ,
-```
+$$
+e_{iJ}
+= \left.\frac{\partial P_i}{\partial \eta_J}\right|_{\mathbf E}.
+$$
 
-where `P_i` is polarization, `η_J` is a symmetric strain in Voigt notation, `E` is electric field, and `i` and `J` label Cartesian electrical and mechanical components. The converse relation gives the electric-field derivative of stress under the compatible mechanical constraint. The strain tensor `d_iJ = (∂P_i / ∂σ_J)|E` instead uses stress `σ_J`; it is related to `e` through the appropriate elastic compliance or stiffness. `e`, `d`, voltage coefficients, and electromechanical coupling factors therefore have different units and require different elastic, dielectric, and boundary-condition inputs. They must not be compared as interchangeable tables.
+where $P_i$ is polarization, $\eta_J$ is a symmetric strain in Voigt notation, $\mathbf E$ is electric field, and $i$ and $J$ label Cartesian electrical and mechanical components. The converse relation gives the electric-field derivative of stress under the compatible mechanical constraint. The strain tensor $d_{iJ}=\left.\partial P_i/\partial\sigma_J\right|_{\mathbf E}$ instead uses stress $\sigma_J$; it is related to $e$ through the appropriate elastic compliance or stiffness. $e$, $d$, voltage coefficients, and electromechanical coupling factors therefore have different units and require different elastic, dielectric, and boundary-condition inputs. They must not be compared as interchangeable tables.
 
 Crystal symmetry constrains which tensor components can be nonzero, but symmetry does not replace calculation or convergence. State the conventional cell, axis convention, Voigt ordering, stress sign convention, electric boundary condition, and whether a reported tensor is proper or improper before comparing it with another calculation or measurement.
 
@@ -21,9 +26,11 @@ Crystal symmetry constrains which tensor components can be nonzero, but symmetry
 
 At fixed ion positions, the clamped-ion contribution describes the immediate electronic change in polarization with strain. Allowing internal coordinates to relax adds an ionic contribution mediated by internal strain, force constants, and Born effective charges. A schematic decomposition is
 
-```text
-e = e^clamped + e^internal .
-```
+$$
+\mathbf e
+= \mathbf e^{\mathrm{clamped}}
++ \mathbf e^{\mathrm{internal}}.
+$$
 
 The second term can be large near a soft but stable mode, and it changes if the internal constraints, structural state, or electrical boundary condition changes. It does not justify calling a response large without reporting which contribution is included. A fully relaxed response may further involve macroscopic strain relaxation; it is not equivalent to a fixed-cell `e` tensor.
 

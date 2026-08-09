@@ -20,32 +20,34 @@ review: docs/reviews/2026-08-04-surface-energy-and-work-function.md
 reviewed_at: "2026-08-04"
 ---
 
-This guide isolates the post-processing logic behind `Φ = E_vac - E_F`. Its analytic fixture mimics an asymmetric slab: atomic-scale oscillations occupy the middle, while the two sides approach different constant vacuum levels.
+Run the analytic plateau fixture:
 
-## Define windows before reading values
-
-The script selects left and right vacuum windows by position, then records the mean and span of each. The span is the first gate: a region with a residual slope is not accepted merely because one grid point looks plausible. A real parser should also retain the original potential grid, surface normal, smoothing convention, charge-density evidence, and uncertainty from moving the window.
-
-The VASP [official work-function workflow](https://vasp.at/wiki/Computing_the_work_function) defines the vacuum plateau and explicitly notes two surface-normal directions. The GPAW [dipole-layer tutorial](https://gpaw.readthedocs.io/tutorialsexercises/electrostatics/dipole_correction/dipole.html) demonstrates planar averaging and the need for field-free vacuum. Bengtsson's [primary method](https://doi.org/10.1103/PhysRevB.59.12301) explains the periodic-slab dipole correction.
-
-## Preserve the two physical sides
-
-The invented plateaus are `0.18` and `0.67 eV`, and the common fixture Fermi energy is `−4.65 eV`. The script therefore recovers `4.83` and `5.32 eV`. These numbers exist only to make the subtraction independently checkable. They are not defaults, expected material values, or recommendations.
-
-## Rebuild the diagram
-
-```text
+```bash
 python3 examples/practical-guides/work_function_potential.py \
   --svg public/media/practical-guides/surface-energy-and-work-function/extract-work-function-potential/work-function-potential.svg
 ```
 
-The resulting original SVG labels both plateaus, the common Fermi level, and the slab region. It does not copy a software screenshot or publisher figure.
+The command generates its own synthetic planar potential, checks two predefined plateau windows, subtracts one compatible fixture Fermi level, and writes the SVG. It does not read VASP, GPAW, Quantum ESPRESSO, or another real calculation output.
 
-## What this guide verifies
+## Purpose
 
-The script verifies deterministic planar-profile generation, plateau-window arithmetic, plateau flatness, and side-specific work-function subtraction. It does not parse VASP, GPAW, Quantum ESPRESSO, or another electronic-structure output.
+For a real slab, retain the code-specific potential grid, surface normal, potential-component definition, averaging or smoothing convention, charge-density evidence for vacuum, and $E_F$ from the same energy gauge. Plot the profile before choosing any scalar vacuum level.
 
-Execution success is not electrostatic or work-function convergence for a real slab. It establishes no physical dipole, vacuum width, surface state, electron chemical potential, or experimental emission property.
+For each side, declare a charge-free window and record its mean, span, and slope. A field-free plateau, not a single endpoint, supplies $E_{\mathrm{vac}}$. Then calculate
+
+$$
+\Phi_{\mathrm{side}}=E_{\mathrm{vac,side}}-E_F.
+$$
+
+The fixture plateaus are `0.18` and `0.67 eV`, and its Fermi energy is `-4.65 eV`; the resulting `4.83` and `5.32 eV` values make the arithmetic inspectable. They are invented test values, not defaults or expected material results.
+
+## Check the plateau before accepting the subtraction
+
+Preserve left and right values separately for an asymmetric slab. Move each window within the charge-free region, increase vacuum and slab thickness, and inspect whether the plateau mean and slope remain stable. Compare corrected and uncorrected profiles when a dipole correction is used. The correction defines a boundary model; it does not by itself prove a physical dipole, adequate vacuum, or isolated-surface convergence.
+
+Reject the extraction when the vacuum is sloped, the chosen window overlaps charge density or a correction discontinuity, the value changes materially with the window, or $E_F$ comes from an incompatible calculation. For a semiconductor, document whether the intended reference is $E_F$, the VBM, or the CBM.
+
+Successful fixture execution verifies only deterministic profile generation, window arithmetic, plateau-flatness checks, side-specific subtraction, and rendering. It establishes no real work function, surface state, electrostatic convergence, electron chemical potential, or emission property.
 
 ## Official sources
 

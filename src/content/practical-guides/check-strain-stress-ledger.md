@@ -20,7 +20,7 @@ review: docs/reviews/2026-08-04-elastic-constants-and-mechanical-properties.md
 reviewed_at: "2026-08-04"
 ---
 
-This fixture uses invented signed uniaxial strain and stress rows in one declared component convention. It verifies a least-squares slope, signed-strain symmetry, and the cubic stability inequalities for the invented matrix. It does not calculate a stress tensor or infer a material response.
+**Evidence class: synthetic-only.** This fixture uses invented signed uniaxial strain and stress rows in one declared component convention. It verifies a least-squares slope, signed-strain symmetry, and the cubic stability inequalities for the invented matrix. It does not calculate a stress tensor or infer a material response.
 
 ## Run the deterministic ledger
 

@@ -21,11 +21,27 @@ review: docs/reviews/2026-08-03-relative-and-formation-energies.md
 reviewed_at: "2026-08-03"
 ---
 
-An energy table becomes scientifically useful only after every row has passed the comparison rules for the question being asked. This guide builds a small ledger for two abstract `A2B3` candidates and records why three other calculations are excluded.
+Use this guide before subtracting total energies from different calculation records. The fixture contains two accepted abstract `A2B3` candidates and three deliberately incompatible rows.
 
-## Define the comparison key
+Inspect the report from the companion-script directory:
 
-For a same-composition relative-energy table, the fixture requires:
+```bash
+cd examples/practical-guides
+python3 - <<'PY'
+from formation_energy_ledger import run
+
+report = run()
+print(report["accepted_entries"])
+print(report["excluded_entries"])
+print(report["comparison"])
+PY
+```
+
+The report is the output to inspect. It records accepted rows, rejected rows and reasons, normalized energies, and the bounded comparison. It does not run an electronic-structure program.
+
+## Purpose
+
+The fixture requires:
 
 ```text
 composition: A2B3
@@ -36,44 +52,31 @@ calculation complete: true
 final state verified: true
 ```
 
-The key is intentionally stricter than file readability or a common unit. A charged calculation, a different method branch, or an unfinished state answers a different question even if it reports a lower number in eV.
+For production data, add structure and state identifiers, method and potential identity, numerical settings, geometry status, correction scheme, software version, artifact hashes, and target-convergence evidence. A common unit is not enough to make two rows comparable.
 
-## Preserve cell contents before normalization
+## Normalize before ranking
 
-The accepted `alpha` fixture contains two formula units in its computational cell; the accepted `beta` fixture contains one. Comparing their cell totals directly would create a meaningless ordering. The script first converts each entry to eV per `A2B3` formula unit, then chooses the lowest accepted row as the table reference.
+The accepted `alpha` cell contains two formula units and the accepted `beta` cell contains one. The script converts both totals to eV per A2B3 formula unit before selecting a reference. It also reports eV per atom from the explicit five-atom formula unit.
 
-```python
-from formation_energy_ledger import run
+Inspect that cell contents and denominators are present in every accepted row. Never rank raw cell totals from different cell sizes.
 
-report = run()
-print(report["accepted_entries"])
-print(report["excluded_entries"])
-print(report["comparison"])
-```
+## Read exclusions as evidence
 
-The output reports both eV per formula unit and eV per atom. The conversion is exact because the formula-unit count and five atoms per formula unit are explicit fixture metadata.
+The report rejects:
 
-## Keep exclusions in the evidence
+- `charged-a2b3` for a different total charge;
+- `mixed-method-a2b3` for a different evaluator;
+- `unfinished-a2b3` because completion and final-state identity are unverified.
 
-The ledger rejects:
+Do not delete these rows. Their exclusion reasons define the boundary of the candidate comparison and expose whether a lower-looking number was omitted for a scientific reason.
 
-- `charged-a2b3` because its total charge differs;
-- `mixed-method-a2b3` because its evaluator differs;
-- `unfinished-a2b3` because completion and state identity are not verified.
+Within the accepted fixture, `alpha-a2b3` defines zero and `beta-a2b3` is higher by $0.12$ eV per formula unit, or $0.024$ eV per atom. These invented values validate filtering and arithmetic only.
 
-These rows are not deleted. Their identifiers and exclusion reasons remain in the report, making the candidate search and its limits auditable.
+## Decide whether the ledger can continue
 
-## Interpret the bounded result
+Continue to a reaction, formation energy, EOS, or hull only when every accepted row shares the required composition or balance, charge, evaluator, energy field, state identity, correction convention, and numerical adequacy. Retain the raw value and normalized value together.
 
-Within the two accepted fixture rows, `alpha-a2b3` defines zero and `beta-a2b3` is higher by `0.12 eV` per formula unit, or `0.024 eV` per atom. Those invented values test arithmetic and filtering only. The table does not show that `alpha` is a real phase, a global minimum, or stable against another composition.
-
-For production use, extend each ledger row with structure, method, potential, correction, integration, geometry, state, convergence, software, and artifact-lineage identifiers. The exact fields depend on the comparison, but their meaning must be fixed before subtraction.
-
-## What this guide verifies
-
-The companion script verifies deterministic schema filtering, formula-unit normalization, reference selection, relative-energy subtraction, and preservation of excluded rows.
-
-It does not run a DFT code, test numerical convergence, validate an energy method, establish physical ordering, find a global minimum, calculate a formation energy, or prove stability.
+This guide does not test DFT execution, numerical convergence, method accuracy, global structural search, formation energy, or phase stability. A deterministic ledger result is software evidence, not a material conclusion.
 
 ## Official sources
 

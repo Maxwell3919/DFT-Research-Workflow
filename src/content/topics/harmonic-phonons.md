@@ -5,13 +5,20 @@ status: reviewed
 
 Harmonic phonons describe the local curvature of the Born--Oppenheimer potential-energy surface around one declared reference structure. They answer how small collective displacements vibrate in that model; they do not by themselves establish finite-temperature stability, a phase transition, thermal conductivity, electron--phonon coupling, or an experimentally observed spectrum.
 
+## Build the spectrum required by the question
+
+Start from an accepted reference state whose forces, stress, electronic convergence, k sampling, and occupations are trustworthy for force response. Choose DFPT or finite displacement. A Gamma calculation yields Gamma modes only; a dispersion requires a converged q mesh or supercell force-constant range, interpolation, and checks away from Gamma. Inspect frequencies, eigenvectors, acoustic consistency, non-analytic corrections where required, and the sensitivity of every imaginary mode to the reference state, q/supercell sampling, and interpolation. Converge the dispersion, phonon DOS, or downstream phonon quantity actually used. The Silicon guide is a real one-Gamma case, not a stability or dispersion workflow.
+
 ## From force constants to normal modes
 
 For atoms `κ, κ'`, Cartesian directions `α, β`, and lattice translations `R`, the harmonic force constants are
 
-```text
-Φκα,κ'β(R) = ∂²E / ∂uκα(0)∂uκ'β(R) .
-```
+$$
+\Phi_{\kappa\alpha,\kappa'\beta}(\mathbf R)
+= \frac{\partial^2 E}
+{\partial u_{\kappa\alpha}(\mathbf 0)\,
+ \partial u_{\kappa'\beta}(\mathbf R)}.
+$$
 
 `E` is the total energy of the declared electronic state and `u` is a displacement. Fourier transforming mass-weighted force constants gives the dynamical matrix `D(q)` at wavevector `q`; its eigenvalues are `ω²(qν)` and its eigenvectors label branch `ν`. A phonon dispersion is therefore not raw force output: it is an interpolation or DFPT result whose meaning includes structure, masses, cell, force-constant convention, reciprocal mesh, non-analytic terms, and branch labels.
 
@@ -27,7 +34,7 @@ Do not combine a force-constant set from one Hamiltonian, magnetic state, charge
 
 In a polar insulator, the `q → 0` dynamical matrix contains a direction-dependent non-analytic long-range contribution. It uses Born effective charges and an electronic dielectric tensor under compatible conventions, and produces LO--TO splitting. A Γ-point analytic dynamical matrix without this contribution does not contain the corresponding LO--TO splitting. The correction must not be borrowed from a different structural or electronic state, nor should it be applied to a metal as if the same macroscopic-field model held.
 
-The acoustic sum rule, schematically `Σκ'R Φκα,κ'β(R) = 0`, checks translational invariance of the force constants. Enforcing it can remove a small numerical drift, but it cannot repair inadequate supercells, an inconsistent reference, a broken symmetry, or a genuine unstable branch. Preserve whether and how it was imposed.
+The acoustic sum rule, schematically $\sum_{\kappa'\mathbf R}\Phi_{\kappa\alpha,\kappa'\beta}(\mathbf R)=0$, checks translational invariance of the force constants. Enforcing it can remove a small numerical drift, but it cannot repair inadequate supercells, an inconsistent reference, a broken symmetry, or a genuine unstable branch. Preserve whether and how it was imposed.
 
 ## Imaginary frequencies need diagnosis, not a one-word verdict
 

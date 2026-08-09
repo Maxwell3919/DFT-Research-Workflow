@@ -5,13 +5,17 @@ status: reviewed
 
 A diffusion-barrier calculation asks how a specified mobile object moves between specified sites in a declared host and what energy or free-energy cost it encounters along that elementary hop. A vacancy hop, adatom hop, interstitial jump, ionic migration event, and collective exchange are different physical pathways even when their endpoint displacement is similar. The result is conditional on the defect charge, concentration model, host state, cell, composition, magnetic state, boundary conditions, and Hamiltonian; it is not a universal material diffusivity.
 
+## Define the hop before calculating its barrier
+
+Prepare relaxed initial and final sites with the same host, charge, cell, and state, record the migrating object and periodic image, then construct and optimize multiple plausible paths. Inspect image geometry, electronic convergence, force projection, saddle connectivity, forward/reverse references, and finite-size sensitivity. Converge the static barrier before adding vibrational free energies, prefactors, event networks, or diffusion coefficients. A completed path is evidence for one declared hop, not for exhaustive transport.
+
 ## A hop is defined by sites, state, and multiplicity
 
 Start from relaxed initial and final site states under one compatible model. Record which atom or defect moves, its periodic image, the site labels after relaxation, and the degeneracy of symmetry-equivalent hops. A path calculation then gives a forward static barrier
 
-```text
-E_m = E(R‡) − E(R_i),
-```
+$$
+E_m = E(\mathbf R^\ddagger)-E(\mathbf R_i).
+$$
 
 where `R_i` is the initial local minimum and `R‡` is the validated saddle point on the stated hop path. `E_m` is a migration energy in the energy unit used for both calculations. If the final site has a different energy, the reverse barrier is different. A formation energy is not a migration barrier: equilibrium diffusion often combines a defect population term with a hop term, whereas a pre-existing tracer defect consumes only the latter model component.
 
@@ -25,13 +29,15 @@ The image spacing, path tangent, initial interpolation, spring representation, e
 
 At finite temperature, a transition-state-theory description uses a rate such as
 
-```text
-Γ(T) = ν(T) exp[−ΔG‡(T)/(k_B T)].
-```
+$$
+\Gamma(T)
+= \nu(T)
+\exp\left[-\frac{\Delta G^\ddagger(T)}{k_{\mathrm B}T}\right].
+$$
 
 `Γ` is a jump rate, `ν` a model-dependent prefactor, `ΔG‡` the migration free energy, `k_B` Boltzmann’s constant, and `T` the absolute temperature. In a harmonic approximation, vibrational modes at the minimum and the saddle enter the prefactor and free-energy difference; the unstable saddle mode is excluded from the stable-mode product. Replacing `ΔG‡` by a static `E_m` and assigning an arbitrary prefactor is an approximation that must be labelled, not a first-principles diffusion coefficient.
 
-For an uncorrelated network of equivalent jumps, a tracer-scale expression can take the form `D = f z ℓ² Γ/(2d)`, where `f` is a correlation factor, `z` the number of allowed jumps, `ℓ` the jump length, and `d` the dimensionality. Each term depends on a defined lattice and event network. Correlations, site blocking, defect formation and association, charge-state populations, disorder, surfaces, fields, and multiple barriers can invalidate the simple mapping.
+For an uncorrelated network of equivalent jumps, a tracer-scale expression can take the form $D=fz\ell^2\Gamma/(2d)$, where $f$ is a correlation factor, $z$ the number of allowed jumps, $\ell$ the jump length, and $d$ the dimensionality. Each term depends on a defined lattice and event network. Correlations, site blocking, defect formation and association, charge-state populations, disorder, surfaces, fields, and multiple barriers can invalidate the simple mapping.
 
 ## Evidence needed for a transport claim
 

@@ -3,55 +3,59 @@ topic_slug: magnetic-anisotropy-and-exchange-interactions
 status: reviewed
 ---
 
-Magnetic anisotropy and exchange interactions answer two different questions after a compatible magnetic state has been selected. Anisotropy asks how the energy changes when an otherwise specified magnetic texture is rotated relative to the crystal. Exchange asks how the energy changes when the relative orientations of specified local moments are changed. Both are small differences between carefully matched electronic calculations. Neither follows from the existence of a spin-polarized solution, a local moment, or a lower collinear magnetic candidate.
-
-## Direction is a physical variable only when it is coupled to the lattice
-
-Without spin--orbit coupling (SOC), a simultaneous rotation of all spins is a symmetry of the usual spin-rotation-invariant model. The energy of a ferromagnetic texture therefore cannot distinguish an in-plane from an out-of-plane direction merely by changing the axis used to print moments. SOC couples spin space to the real-space lattice and makes that directional comparison meaningful. Crystal symmetry then constrains the allowed angular form: a uniaxial model is often written
-
-```text
-E(θ, φ) − E_reference = K₁ sin²θ + K₂ sin⁴θ + … ,
-```
-
-where `θ` and `φ` locate the magnetization relative to declared crystallographic axes, `E_reference` is the energy of one declared direction, and the `K` values are anisotropy coefficients in the stated normalization. This is a model for a fitted angular dependence, not an input-independent definition of a material constant. The axes, magnetic texture, cell, strain, charge, SOC treatment, exchange--correlation functional, Hubbard treatment, and whether ions are held fixed must accompany every reported coefficient.
-
-For a finite set of directions, the directly computed quantity is the magnetocrystalline anisotropy energy (MAE), for example
-
-```text
-MAE(u; 0) = [E(u) − E(0)] / N.
-```
-
-Here `E(u)` and `E(0)` are SOC-inclusive total energies for the same magnetic state with directions `u` and `0`, and `N` is explicitly a magnetic ion, formula unit, area, or common cell. A positive number says only that `u` is higher than the declared reference in that model. It does not by itself determine a bulk coercive field, domain pattern, switching barrier, Curie temperature, or experimentally observable easy axis.
-
-## Exchange parameters are a reduced model, not raw energy differences renamed
-
-For localized moments, a common effective model is the Heisenberg form
-
-```text
-H = − Σᵢⱼ Jᵢⱼ eᵢ · eⱼ,
-```
-
-where `eᵢ` is a unit vector defining the orientation assigned to site `i`, `Jᵢⱼ` is an exchange parameter under the chosen sign convention, and the sum convention must state whether each pair is counted once. A positive `J` favours parallel alignment in the form written above; changing the sign or pair-counting convention changes the numerical interpretation. Anisotropic exchange, Dzyaloshinskii--Moriya terms, single-ion anisotropy, itinerant magnetism, and longitudinal moment changes can make this minimal Hamiltonian insufficient.
-
-One can fit `Jᵢⱼ` to a deliberately chosen set of compatible total-energy differences, or derive response-based parameters under their own assumptions. In either case, the mapping is an inference from DFT energies to a model with a defined lattice, neighbor shell, spin length convention, and set of terms. It should be challenged by predicting energies of held-out magnetic configurations. A good fit to two collinear states does not prove uniqueness of the interaction range, validate a classical-spin approximation, or justify a finite-temperature transition temperature.
+Calculate magnetic anisotropy or exchange only after a compatible magnetic reference state has been selected. They are different target quantities. Anisotropy compares the same magnetic texture rotated relative to the lattice, normally with spin--orbit coupling (SOC). Exchange maps relative changes among local-moment configurations to a declared effective Hamiltonian.
 
 ## Establish a compatible SOC reference before subtracting micro-energy differences
 
-Start from the identified magnetic candidate and decide which degrees of freedom remain fixed. A fixed geometry isolates directional electronic energy within that geometry. Relaxing each direction can instead measure a magnetostructural response, provided equal relaxation freedom and the final structures are retained. Do not subtract a scalar-relativistic energy from an SOC energy, or compare different pseudopotentials, Hubbard branches, charge states, occupation treatments, smearing models, symmetry reductions, or k-point sets and call the result MAE.
+The parent object must retain the magnetic cell, final moment map, structure, charge, Hamiltonian, Hubbard treatment, spinor/noncollinear mode, SOC-capable potential data, occupations, k sampling, symmetry treatment, and energy normalization. A spin-polarized solution or local moment alone is not sufficient.
 
-For each direction, preserve the real-space vector moment map, the crystallographic coordinate frame, the SOC-capable potential data, initial and final charge/spin density lineage, symmetry behaviour, total energy, and the normalization. A spin axis in code coordinates has no portable physical meaning until it is mapped to the cell axes. In noncollinear calculations, a global rotation can also alter which symmetries survive and hence the irreducible reciprocal sampling. Use a compatible full-zone representation or explicitly verify that the symmetry choice has not changed the numerical comparison.
+Start with [Fit an Anisotropy and Exchange Ledger](/DFT-Research-Workflow/operations/magnetic-anisotropy-and-exchange-interactions/guides/fit-anisotropy-and-exchange-ledger/) to inspect sign, normalization, and held-out reconstruction. That guide uses invented energies. It verifies ledger arithmetic only and does not run SOC or calculate a material parameter.
+
+## Direction is a physical variable only when it is coupled to the lattice
+
+Choose the crystallographic directions before running and map every code-coordinate spin axis to the cell axes. For each direction, keep the magnetic texture, structure, charge, pseudopotential/PAW set, functional, Hubbard settings, SOC mode, k points, occupations, smearing, basis/grid, and convergence thresholds compatible. Use the selected code's official noncollinear and SOC documentation; exact inputs vary by code and version.
+
+For a direction $\mathbf u$ relative to a declared reference $\mathbf u_0$, compute
+
+$$
+\mathrm{MAE}(\mathbf u;\mathbf u_0)
+= \frac{E(\mathbf u)-E(\mathbf u_0)}{N}.
+$$
+
+$N$ must be a declared magnetic ion, formula unit, area, or common cell. A positive value means only that $\mathbf u$ is higher than the chosen reference under this convention. Do not subtract a scalar-relativistic energy from an SOC energy, or mix collinear and noncollinear Hamiltonians.
+
+If an angular model is required, fit the calculated directions rather than treating the coefficients as input-independent constants. For a uniaxial example,
+
+$$
+E(\theta,\phi)-E_{\mathrm{ref}}
+= K_1\sin^2\theta+K_2\sin^4\theta+\cdots .
+$$
+
+Retain the sampled directions and test the fit on directions not used to determine the coefficients. Symmetry can change with a global spin rotation in a noncollinear calculation; use compatible full-zone sampling or demonstrate that changes in irreducible sampling do not control the micro-energy difference.
+
+## Exchange parameters are a reduced model, not raw energy differences renamed
+
+Choose the local-moment lattice, neighbor shells, pair-counting rule, spin-length convention, and candidate configurations before fitting. A common convention is
+
+$$
+H=-\sum_{ij}J_{ij}\,\mathbf e_i\cdot\mathbf e_j,
+$$
+
+where each $\mathbf e_i$ is a unit orientation. Under this written convention, positive $J_{ij}$ favours parallel alignment; a different sign or pair-counting convention changes the reported parameter.
+
+Run enough compatible magnetic configurations to identify the chosen parameters, then fit their normalized energy differences. Preserve final moment magnitudes and directions because a configuration that collapses or changes moment length may not represent the assumed model. Predict held-out configurations before accepting the mapping. A fit to two collinear energies does not establish a unique interaction range or validate a classical-spin model.
 
 ## Converge the observable that is actually being subtracted
 
-MAE is commonly much smaller than total energies, so apparent directional order can reverse when reciprocal sampling, basis/grid representation, occupation integration, empty-state treatment, charge-density strategy, SOC implementation, or symmetry changes. Converge directional differences and the easy-axis ranking together; an SCF residual or a stable absolute total energy alone is not sufficient. Repeating a calculation from independent compatible starts tests path dependence, but it does not replace convergence with respect to the physical and numerical model.
+Confirm normal program termination and electronic convergence first, then reconstruct every reported difference from retained total energies and normalization. MAE and exchange energy differences can be much smaller than absolute energies. Keep adequate output precision and converge the difference and ranking with respect to k points, basis/grid, occupations, smearing, empty states where relevant, charge-density strategy, SOC implementation, symmetry, and independent compatible starts.
 
-Exchange fitting has an additional resolution problem. The magnetic supercell must represent the selected relative orientations; each configuration must use compatible structural and electronic conditions; and the energy set must contain enough independent changes to identify the chosen parameters. If fit parameters change materially as extra configurations or neighbor shells are added, that is evidence about model inadequacy or underdetermination, not a reason to report only the most convenient fit.
+For exchange, also test whether fitted parameters change when candidate configurations or neighbor shells are added. Material changes indicate underdetermination or model inadequacy, not a reason to retain the smallest fit. For MAE, verify that the final magnetic texture remains the intended rotated state in every direction.
 
 ## Read results at the scope they support
 
-An easy direction is conditional on the selected state, geometry, Hamiltonian, angular sampling, and numerical convergence. A fitted `J` set is conditional on the chosen effective Hamiltonian and mapping. Magnetic ordering temperatures require an additional statistical-mechanics model, dimensionality and anisotropy treatment, finite-size analysis, and sensitivity to the fitted interactions. In low-dimensional systems, an isotropic short-range classical model has special limitations; SOC-derived anisotropy can be physically central rather than a small decorative correction.
+An easy direction is conditional on the selected magnetic state, structure, Hamiltonian, SOC treatment, angular sampling, normalization, and numerical resolution. A fitted $J_{ij}$ set is conditional on the explicit effective model and mapping data.
 
-This topic supplies a traceable comparison of SOC directional energies and, where justified, a tested mapping from compatible magnetic energies to an explicitly written exchange model. It does not establish a complete magnetic Hamiltonian, spin-wave spectrum, domain behaviour, finite-temperature phase transition, experimental easy axis, or magnetic-device performance.
+It does not establish a complete magnetic Hamiltonian, Curie or Neel temperature, coercive field, domain pattern, switching barrier, spin-wave spectrum, or experimental easy axis. Finite-temperature predictions require a separate statistical-mechanics model, dimensionality and anisotropy treatment, finite-size analysis, and sensitivity to the fitted interactions.
 
 ## Sources and methods
 

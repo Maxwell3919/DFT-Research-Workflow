@@ -5,13 +5,21 @@ status: reviewed
 
 Lattice thermal transport asks how vibrational degrees of freedom carry heat in one declared material model and environment. In a crystalline phonon picture, the result is a thermal-conductivity tensor, not a single material label: it depends on temperature, structure, dimensionality, isotopes, defects, boundaries, scattering model, and the transport equation. A harmonic dispersion or an anharmonic linewidth is an input to this question, not its answer.
 
+## Solve for the transport tensor, then challenge it
+
+Start with mutually compatible harmonic and anharmonic force constants and a stable or explicitly temperature-renormalized phonon parent. Choose RTA, direct LBTE, or an inter-band/Wigner treatment according to the target. Compute the tensor over the required temperature range, then inspect symmetry, dimensional normalization, mesh trends, mode contributions, solver convergence, and sensitivity to isotope, boundary, defect, electron, and omitted higher-order scattering. Converge the reported tensor component or cumulative quantity, not a visually smooth curve. This overview does not claim an executed transport calculation.
+
 ## From modes to a heat-current response
 
 In a particle-like phonon treatment, a common schematic form is
 
-```text
-κ_αβ = (1/V) Σ_qν C_qν v_qν,α F_qν,β .
-```
+$$
+\kappa_{\alpha\beta}
+= \frac{1}{V}\sum_{\mathbf q\nu}
+C_{\mathbf q\nu}
+v_{\mathbf q\nu,\alpha}
+F_{\mathbf q\nu,\beta}.
+$$
 
 `κ_αβ` is the lattice thermal-conductivity tensor, `V` is the chosen bulk normalization volume, `C_qν` is the mode heat-capacity contribution, `v_qν,α` is the group-velocity component, and `F_qν,β` is the nonequilibrium response to a temperature gradient along `β`. In a two-dimensional material the reported normalization convention needs special care: an arbitrary vacuum height changes a volume-normalized number without changing the isolated layer. State the convention and do not compare it directly with a bulk value whose geometry and normalization differ.
 

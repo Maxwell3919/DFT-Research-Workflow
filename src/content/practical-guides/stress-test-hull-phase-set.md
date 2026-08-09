@@ -21,13 +21,13 @@ review: docs/reviews/2026-08-04-compositional-phase-stability-and-convex-hulls.m
 reviewed_at: "2026-08-04"
 ---
 
-This worked example changes no energy. It removes one represented competitor—OQMD entry 17007, the lowest LiP row—from the frozen Li–P candidate set and rebuilds the lower envelope. The comparison isolates a central property of convex-hull evidence: stability is conditional on which phases were allowed to compete.
+Use this example after rebuilding the full frozen Li-P hull. It removes one represented competitor without changing any energy, then shows which hull membership and decomposition claims change.
 
-## Follow the affected facet
+From the companion-script directory, run the comparison:
 
-With all 46 rows present, OQMD entry 2053607, Li₄P₃, lies `0.00452626 eV/atom` above the LiP–Li₃P₇ tie line. When LiP entry 17007 is withheld, Li₄P₃ becomes a vertex of the reduced-set hull. The second panel highlights the same database row at the same energy; only the competing set has changed.
-
-```python
+```bash
+cd examples/practical-guides
+python3 - <<'PY'
 from li_p_convex_hull import load_snapshot, analyze
 
 _, entries = load_snapshot()
@@ -35,25 +35,28 @@ complete = analyze(entries)
 reduced = analyze(entries, excluded_entry_id=17007)
 print([point["name"] for point in complete["hull"]])
 print([point["name"] for point in reduced["hull"]])
+PY
 ```
 
-The reduced hull contains Li₄P₃ where the complete frozen set contains LiP. That does not make the reduced result numerically wrong: it answers a different optimization problem. It makes any unqualified claim such as “Li₄P₃ is stable” incomplete unless the candidate inventory accompanies it.
+The two printed vertex lists are the first output to compare. Keep the exclusion ID with the reduced result.
 
-## Use exclusion tests as claim sensitivity, not data editing
+## Follow the changed facet
 
-A useful audit can rebuild a hull after removing each vertex in turn, adding plausible candidates, perturbing near-hull energies within documented uncertainty, or changing a correction scheme coherently. The output should identify which facets, decomposition products, and membership labels change. This is a sensitivity analysis; it is not permission to omit an inconvenient lower phase from the final scientific comparison.
+With all 46 rows, OQMD entry 2053607, Li4P3, is $0.00452626\ \mathrm{eV/atom}$ above the LiP-Li3P7 tie line. Withholding OQMD entry 17007, the lowest LiP row, makes the same Li4P3 row a vertex of the reduced-set hull. Its composition and energy did not change; only the feasible competitor set changed.
 
-The [Materials Project phase-diagram methodology](https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/phase-diagrams-pds) explains the lower-hull and decomposition construction. Bartel and co-workers discuss why [decomposition reactions and their signs](https://doi.org/10.1038/s41524-018-0143-2) need explicit interpretation rather than a bare stability label.
+Confirm that the complete and reduced reports use the same input energies, normalization, tolerance, and algorithm. Then identify every vertex, facet, decomposition product, and membership label that changes.
 
-## Preserve why a phase was absent
+## Record absence rather than editing data
 
-An exclusion may be scientifically justified when an entry has the wrong components, charge, thermodynamic state, method, correction scheme, or failed calculation status. It may also reflect a bounded search or database query. Record the exact entry, reason, and resulting hull rather than editing the source table or silently replacing the baseline.
+A phase can be excluded for a wrong component set, charge, thermodynamic state, method, correction scheme, or failed calculation status. A bounded database query or structure search can also leave a phase absent. Record the exact entry and reason, and write a new derived result. Do not delete the source row or silently substitute the reduced hull for the baseline.
 
-The frozen rows came from the documented [OQMD REST API](https://static.oqmd.org/static/docs/restful.html), whose database construction is described in the [OQMD paper](https://doi.org/10.1007/s11837-013-0755-4). The local script tests only the geometry and declared exclusion; it does not judge the physical validity of entry 17007.
+Repeat this type of test by withholding each vertex in turn, adding plausible candidates, perturbing near-hull values within a documented uncertainty model, or changing a correction scheme coherently. These are claim-sensitivity tests, not permission to omit an inconvenient competitor.
 
-## What this example does not establish
+## Claim boundary
 
-The example does not show that LiP should be excluded, that Li₄P₃ is a real ground state, or that the complete frozen OQMD result is exhaustive. It executes no DFT and introduces no uncertainty model for the stored energies. It demonstrates exactly how one missing represented competitor changes a bounded static hull claim.
+The reduced result is not arithmetically wrong; it solves a different optimization problem. It cannot support an unqualified statement that Li4P3 is stable. The conclusion must identify the phase set and why entry 17007 is absent.
+
+This fixture executes no DFT and supplies no uncertainty model for the stored energies. It does not show that LiP should be excluded, that Li4P3 is a physical ground state, or that the full frozen OQMD phase set is exhaustive.
 
 ## Official sources
 

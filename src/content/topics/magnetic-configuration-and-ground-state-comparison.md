@@ -3,47 +3,49 @@ topic_slug: magnetic-configuration-and-ground-state-comparison
 status: reviewed
 ---
 
-Magnetic ground-state comparison asks which explicitly enumerated spin, charge, structural, and Hamiltonian candidates has the lowest compatible energy at the stated conditions. It is a competition among calculation objects, not a label inferred from one self-consistent field (SCF) run. A converged ferromagnetic, antiferromagnetic, ferrimagnetic, or nominally nonmagnetic solution is evidence for one stationary state; it does not establish that state as the magnetic ground state.
+Perform a magnetic-candidate comparison before a downstream calculation needs a magnetic reference state. The parent object is a declared structure and numerical method; the output is a ledger of compatible final spin states, total energies, moment maps, and normalization. One converged ferromagnetic, antiferromagnetic, ferrimagnetic, or nominally nonmagnetic SCF solution is only one candidate.
+
+No executed practical guide currently accompanies this topic. The bounded route is to enumerate representable candidates, prepare one calculation object per candidate with the selected code, run them under compatible conditions, extract final energies and moment maps, and compare them in an auditable ledger. Quantum ESPRESSO documents the relevant `pw.x` magnetic inputs, and VASP documents `MAGMOM`; exact initialization and noncollinear syntax depend on the code and version.
 
 ## Magnetic order belongs to the calculation object
 
-Specify the magnetic cell and each candidate’s site-resolved moments, relative orientation, collinear or noncollinear representation, spin axis, spin--orbit coupling (SOC), total charge, occupations, structural degrees of freedom, and symmetry treatment. A primitive structural cell may be unable to represent a proposed antiferromagnetic pattern; changing to a magnetic supercell changes the reciprocal sampling and must be compared on a compatible numerical basis.
-
-The net moment is not a magnetic-order label. A compensated antiferromagnet can have zero total magnetization while retaining finite, oppositely aligned local moments. Conversely, a cell with a tiny net moment can arise from incomplete cancellation, inequivalent sites, canting, a constrained state, or numerical noise. Preserve the real-space moment pattern, not only a single total value.
+For each row, record the magnetic cell, site-to-sublattice mapping, initial moment vectors or collinear signs, charge and nominal spin state, collinear or noncollinear representation, spin axis, SOC setting, symmetry treatment, structural freedom, and intended normalization. A primitive structural cell may be unable to represent an antiferromagnetic pattern. If cells differ, make their k-point density, basis, and energy normalization comparable.
 
 ## Initial moments generate candidates; they are not final evidence
 
-Spin-density functionals can contain multiple local minima. An initial moment pattern is a way to explore them, and a restart can retain or symmetrize a previous state depending on the code and symmetry settings. Run multiple physically motivated seeds for every candidate family and classify the final state from its converged spin density, local moments, charge/spin state, symmetry, and energy—not from the input label.
-
-For a collinear comparison, the relevant energy difference is schematically
-
-```text
-ΔE(A,B) = [E_A − E_B] / N,
-```
-
-where `E_A` and `E_B` are total energies of compatible final states and `N` is a declared normalization, such as magnetic ion, formula unit, or common supercell. `ΔE` answers only the defined zero-temperature electronic comparison. It is not a Curie or Néel temperature, an exchange constant, an experimental magnetic phase diagram, or a proof that unenumerated configurations lie higher.
+Use multiple physically motivated seeds where metastability is plausible. Preserve every seed and identify whether it converges to the intended state, collapses to another recorded state, or fails electronically.
 
 ## A fair comparison requires the same physical model
 
-Keep exchange--correlation functional, pseudopotential/PAW data set, Hubbard treatment and double-counting convention, SOC/noncollinearity setting, charge, cell boundary conditions, occupation model, and correction scheme coherent across the compared candidates. A Hubbard `U` is part of the Hamiltonian, not a post-processing display choice; a magnetic ordering can change when it changes. If one candidate requires SOC, the comparison question has changed unless SOC is included consistently for all relevant candidates.
+Keep the exchange-correlation functional, pseudopotential or PAW data set, Hubbard treatment and double-counting convention, charge, occupations, correction scheme, boundary conditions, and numerical thresholds coherent. Decide whether all candidates share one fixed geometry or receive the same relaxation protocol.
 
-Decide deliberately whether each candidate uses a common fixed structure or receives the same allowed relaxation protocol. Fixed-geometry energies isolate an electronic competition at that geometry. Independently relaxed energies compare different coupled magnetostructural states. Mixing the two can create an apparent magnetic preference that actually comes from unequal structural freedom.
+Fixed-geometry energies compare electronic states at one structure. Independently relaxed energies compare coupled magnetostructural states. Do not mix those two questions in one ranking.
 
-## Candidate completeness controls the strength of a ground-state claim
-
-Build a candidate set from crystallographic sublattices, valence and spin-state possibilities, known or symmetry-distinct ordering vectors, likely ferrimagnetic arrangements, and—where relevant—noncollinear or disordered local-moment models. Enumerate the magnetic cell relation and the mapping from input sites to final moments. Symmetry reduction may remove duplicates, but it must not silently restore a symmetry incompatible with the intended spin pattern.
-
-The lowest energy in an enumerated set is an **identified lowest candidate**, not necessarily the thermodynamic magnetic ground state. Long-period orders, spin spirals, frustrated states, disorder, quantum fluctuations, finite-temperature entropy, defects, strain, surfaces, and external fields may lie outside the model. State candidate-set coverage next to every conclusion.
+If SOC or noncollinearity is physically required, use a compatible spinor/SOC Hamiltonian for every energy entering that comparison. Do not subtract a scalar-relativistic collinear energy from an SOC energy and interpret the result as a magnetic-order difference. Noncollinear candidates require final vector moment maps, not only a total magnetization.
 
 ## Convergence is observable-specific and magnetic-state-specific
 
-Converge energy differences and final moment patterns with respect to the numerical representation used by each magnetic cell. k-point sampling, smearing, basis/grid, supercell size, occupation handling, mixing, starting seeds, force/stress thresholds where relaxed, SOC settings, and projection method for reported local moments can alter a small ordering difference. Total-energy convergence alone does not show that `ΔE` or the final spin texture has converged.
+First confirm normal program termination and the reported electronic-solver condition. These checks do not establish that the intended magnetic state survived.
 
-For each final state retain initial and final moment maps; charge/spin/SOC/constraint inputs; symmetry operations retained or broken; electronic convergence traces; total energies and normalization; structural relaxation status; k-point and basis lineage; local-moment definition; and all seeds that collapsed to the same or a different final state. This lineage lets a downstream anisotropy, exchange, phonon, or transport calculation consume the selected state without confusing it with an arbitrary initial guess.
+Inspect the final site-resolved moments or spin density, total magnetization, symmetry, charge/spin state, constraints, structure, and energy. A compensated antiferromagnet may have zero net moment while retaining opposing local moments. A small net moment can instead reflect incomplete cancellation, canting, inequivalent sites, a constraint, or numerical noise.
+
+For compatible final states $A$ and $B$, report
+
+$$
+\Delta E(A,B) = \frac{E_A-E_B}{N},
+$$
+
+where $N$ is explicitly the magnetic ion, formula unit, area, or common cell. Retain enough printed precision that the reported difference can be reconstructed from the underlying energies. If the ordering changes with k-point sampling, smearing, basis/grid, seed, moment projection, structure threshold, or SOC/symmetry choice, the ranking is not yet resolved.
+
+## Candidate completeness controls the strength of a ground-state claim
+
+Build the candidate set from crystallographic sublattices, plausible valence and spin states, symmetry-distinct ordering vectors, ferrimagnetic arrangements, and relevant noncollinear states. Symmetry reduction can remove duplicates only after it is shown not to restore a symmetry incompatible with the intended pattern.
+
+The lowest compatible energy identifies the lowest candidate in the declared set. Report the candidate coverage and every unresolved near-degeneracy next to that result. $\Delta E$ is not a Curie or Neel temperature, an exchange parameter, a proof that unenumerated states lie higher, or an experimental magnetic structure.
 
 ## What this topic establishes
 
-This topic establishes a bounded comparison of explicitly prepared magnetic candidates and identifies the lowest state in that declared set. It does not establish a complete magnetic ground state, finite-temperature ordering temperature, exchange parameter, magnetic anisotropy, spin-wave spectrum, experimental magnetic structure, or material application from one SCF solution or one energy difference alone.
+The accepted ledger can become the parent for anisotropy, exchange, phonon, or transport work. Preserve its structure, final moment map, Hamiltonian, SOC/noncollinear mode, numerical lineage, energy normalization, and all collapsed seeds so that a downstream calculation does not restart from an arbitrary input label. It does not establish a complete magnetic ground state, finite-temperature ordering temperature, exchange model, experimental magnetic structure, or proof that unenumerated configurations lie higher.
 
 ## Sources and methods
 

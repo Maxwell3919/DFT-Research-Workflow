@@ -7,15 +7,27 @@ Conventional superconductivity asks whether a declared phonon-mediated pairing m
 
 The calculation consumes mutually compatible electronic states, phonons, and electron--phonon coupling data. It then adds a treatment of retarded attraction, residual Coulomb repulsion, temperature, and the superconducting gap equation. Each step has its own numerical and physical boundary.
 
+## Audit the parent chain before solving for a transition
+
+Start with the selected metallic normal state, its Fermi surface, a qualified phonon spectrum, and converged EPC data. Inspect unresolved imaginary modes and low-frequency spectral weight before forming $\alpha^2F(\omega)$, $\lambda$, or $\omega_{\log}$. Declare the Coulomb model and $\mu^*$ sensitivity, choose an approximate formula or an isotropic/anisotropic Eliashberg solver, and converge the final reported quantity against k and q meshes, smearing, interpolation, bands, frequency and temperature grids, and solver cutoffs.
+
+$\lambda$ convergence is not $T_c$ convergence. If an Allen--Dynes implementation reports an undefined result because its denominator or inputs fall outside the meaningful model, preserve it as undefined; do not rewrite it as $T_c=0$. A numerical transition in the pairing model is not evidence of an experimentally realized superconducting phase.
+
 ## From an Eliashberg spectrum to a pairing model
 
 For an isotropic phonon-mediated model, the Eliashberg spectral function `α²F(ω)` organizes the Fermi-surface-weighted interaction by phonon frequency. Two commonly reported moments are
 
-```text
-λ = 2 ∫₀∞ α²F(ω) / ω dω,
-
-ω_log = exp[(2/λ) ∫₀∞ ln(ω) α²F(ω) / ω dω].
-```
+$$
+\lambda
+= 2\int_0^\infty\frac{\alpha^2F(\omega)}{\omega}\,d\omega,
+\qquad
+\omega_{\log}
+= \exp\left[
+\frac{2}{\lambda}
+\int_0^\infty
+\frac{\ln(\omega)\alpha^2F(\omega)}{\omega}\,d\omega
+\right].
+$$
 
 `λ` is a dimensionless coupling measure, while `ω_log` is a logarithmic average of the phonon frequencies. Both depend on the full spectrum and on the electronic state, Fermi surface, phonons, matrix elements, reciprocal meshes, occupations, and integration treatment used to construct it.
 
@@ -31,10 +43,14 @@ State how `μ*` was chosen or calculated, the cutoff convention to which it belo
 
 McMillan and Allen--Dynes-type formulas map a small set of spectral moments and `μ*` to an approximate isotropic transition temperature. A schematic Allen--Dynes form is
 
-```text
-T_c = f₁ f₂ ω_log / 1.2
-      × exp[-1.04(1+λ) / (λ - μ*(1+0.62λ))].
-```
+$$
+T_c
+= \frac{f_1f_2\omega_{\log}}{1.2}
+\exp\left[
+-\frac{1.04(1+\lambda)}
+{\lambda-\mu^*(1+0.62\lambda)}
+\right].
+$$
 
 The factors `f₁` and `f₂` account for strong-coupling and spectral-shape effects, and the temperature unit follows the unit convention used for `ω_log`.
 

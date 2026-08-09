@@ -21,11 +21,26 @@ review: docs/reviews/2026-08-03-equation-of-state-and-structural-phase-stability
 reviewed_at: "2026-08-03"
 ---
 
-An EOS fit should begin only after its energy–volume points form one comparable structural and electronic branch. This guide validates an abstract A2B2 ledger and keeps two rejected records as evidence.
+Use this guide before fitting an EOS. It filters an abstract A2B2 point ledger so only one structural and electronic branch reaches the fit.
 
-## Define the branch identity
+Inspect the accepted points and their order from the companion-script directory:
 
-The fixture accepts records only when they share:
+```bash
+cd examples/practical-guides
+python3 - <<'PY'
+from eos_sampling_protocol import run
+
+report = run()
+print(report["accepted_ids"])
+print(report["accepted_volumes_angstrom3_per_cell"])
+PY
+```
+
+The output is a filtered, ordered ledger. It is not an EOS fit or a DFT result.
+
+## Purpose
+
+The fixture accepts only:
 
 ```text
 composition: A2B2
@@ -36,33 +51,29 @@ relaxation policy: fixed-volume shape and internal relaxation
 electronic state: state-A
 ```
 
-In a production series, the relaxation policy must specify whether cell shape and internal coordinates are fixed or relaxed. Two cells with the same scalar volume but different shape constraints do not represent interchangeable points.
+For a production series, also record the source structure, full cell and strain mapping, allowed degrees of freedom, final coordinates, forces and stress, method and potential identity, numerical settings, software version, state diagnostics, and input/output hashes.
 
-## Keep the point ledger ordered but independent
+A scalar volume is not a complete structure. Fixed-shape scaling, fixed-volume shape relaxation, internal relaxation, and full hydrostatic relaxation trace different branches.
 
-Each accepted record carries its own volume and energy. The script sorts records by volume only after compatibility filtering:
+## Inspect the series before fitting
 
-```python
-from eos_sampling_protocol import run
+The fixture filters for compatibility, then sorts by volume. Its seven accepted points bracket the sampled minimum at $40\ \text{\AA}^3$ per A2B2 cell. Confirm that lower and higher accepted volumes have higher energies; this brackets the sampled minimum but does not establish the fitted continuous minimum.
 
-report = run()
-print(report["accepted_ids"])
-print(report["accepted_volumes_angstrom3_per_cell"])
-```
+The report retains `v32-state-switch` because it ended in `state-B`, and `v48-unfinished` because completion and state identity are missing. Both are excluded from the fit rather than relabelled or deleted.
 
-Seven accepted volumes bracket the invented sampled minimum at `40 Å³` per A2B2 cell. Bracketing means that the nearest accepted points on both sides have higher fixture energy. It does not establish the continuous fitted minimum.
+For real points, inspect symmetry, lattice metrics, atom mapping, magnetic state, charge, occupations, forces, stress, and numerical settings across the ordered series. A discontinuity can be a branch change or numerical artifact. It is not repaired by deleting the point.
 
-## Retain branch breaks and incomplete points
+## Decide whether fitting may begin
 
-The `v32-state-switch` record is excluded because it ended in `state-B`; it is not silently relabelled as a compressed state-A point. The `v48-unfinished` record is excluded because completion and state identity are not established. Both identifiers and reasons remain in the report.
+Proceed only when:
 
-For a real calculation, add structure and parent hashes, the full cell metric and strain mapping, relaxed coordinates, forces, stress, symmetry and state diagnostics, method and potential identity, numerical settings, software version, and artifact locations. A smooth sequence of filenames is not lineage evidence.
+- accepted volumes are unique and bracket the intended minimum or pressure interval;
+- every point uses the same declared deformation and relaxation policy;
+- the structural and electronic branch remains identifiable;
+- energy differences and stress are converged across the changing cells;
+- rejected and failed points remain recorded with reasons.
 
-## What this guide verifies
-
-The companion script verifies exact metadata filtering, ordered unique volumes, exclusion provenance, and sampled-minimum bracketing for one deterministic ledger.
-
-It does not run a DFT code, generate structures, relax a cell, test pressure or energy convergence, fit an EOS, calculate an equilibrium volume or bulk modulus, identify a phase transition, or establish stability.
+The companion script verifies metadata filtering, ordering, exclusions, and sampled-minimum bracketing. It does not generate structures, run or relax DFT, test pressure convergence, fit an EOS, or establish structural stability.
 
 ## Official sources
 

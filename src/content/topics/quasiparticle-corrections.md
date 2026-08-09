@@ -7,20 +7,29 @@ Quasiparticle calculations address the energy required to add or remove an elect
 
 A GW result is not automatically an optical spectrum or an experimental band gap. It is a one-particle excitation result whose meaning depends on the starting state, screening model, self-energy approximation, numerical representation, boundary conditions, and comparison target.
 
+## Converge the quasiparticle quantity directly
+
+Start from an identified mean-field parent and specify the quasiparticle energies, gap, ordering, or dispersion needed. Construct the screening and self-energy with declared empty-state or completeness treatment, dielectric cutoff, k sampling, $q\rightarrow0$ handling, frequency model, Coulomb boundary, and self-consistency level. Inspect root selection, state character, off-diagonal or mixing risks, and starting-point sensitivity. Converge the requested quasiparticle output; a converged SCF parent does not establish any of these response-space limits. This overview does not claim an executed GW calculation.
+
 ## From Kohn--Sham levels to a quasiparticle equation
 
 In the GW approximation, the electronic self-energy is written schematically as
 
-```text
-Σ(r,r',ω) = i G(r,r',ω) W(r,r',ω),
-```
+$$
+\Sigma(\mathbf r,\mathbf r',\omega)
+= iG(\mathbf r,\mathbf r',\omega)
+W(\mathbf r,\mathbf r',\omega).
+$$
 
 where `G` is a one-particle Green function and `W` is the screened Coulomb interaction. A quasiparticle energy is often obtained from
 
-```text
-E_nk^QP = ε_nk^KS
-          + ⟨ψ_nk | Σ(E_nk^QP) - v_xc | ψ_nk⟩ .
-```
+$$
+E_{n\mathbf k}^{\mathrm{QP}}
+= \epsilon_{n\mathbf k}^{\mathrm{KS}}
++ \left\langle\psi_{n\mathbf k}\middle|
+\Sigma(E_{n\mathbf k}^{\mathrm{QP}})-v_{\mathrm{xc}}
+\middle|\psi_{n\mathbf k}\right\rangle .
+$$
 
 `ε_nk^KS`, `ψ_nk`, and `v_xc` belong to the declared starting Kohn--Sham calculation. The correction is generally band-, momentum-, spin-, orbital-, and environment-dependent. It is not a universal scissor shift.
 
@@ -28,7 +37,7 @@ A scissor operator can be a useful reduced model when the relevant corrections h
 
 ## Screening is a calculated object, not a label
 
-The screened interaction is commonly represented as `W = ε⁻¹v`. Constructing it requires a polarizability model, reciprocal-space basis, response space, frequency treatment, and boundary convention.
+The screened interaction is commonly represented as $W=\epsilon^{-1}v$. Constructing it requires a polarizability model, reciprocal-space basis, response space, frequency treatment, and boundary convention.
 
 Important numerical axes include:
 

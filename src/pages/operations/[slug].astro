@@ -103,12 +103,17 @@ const practicalOrder: PracticalGuideKind[] = ['implementation', 'worked-example'
         <h1>{page.topic.title}</h1>
         {page.topic.section === 'D' && (
           <p class="page-intro">
-            This topic is an optional target-calculation branch, chosen for a specific research question rather than a required step in every DFT study.
+            Part D branches by the observable required to answer the research question. This topic is chosen only when that quantity is needed; it is not a required step in every DFT study.
           </p>
         )}
         {page.topic.section === 'E' && (
           <p class="page-intro">
             Work in E can send a study back to A, B, C, or the relevant D branch when validation, documentation, or preservation reveals a gap in the evidence.
+          </p>
+        )}
+        {page.practicalGuides.length > 0 && (
+          <p class="practical-jump">
+            <a href="#practical-resources-heading">Go directly to practical resources for this task</a>.
           </p>
         )}
         {Narrative ? (

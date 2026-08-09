@@ -21,7 +21,16 @@ review: docs/reviews/2026-08-04-electronic-transport.md
 reviewed_at: "2026-08-04"
 ---
 
-This example adds a real material transport figure without presenting public output as a calculation performed by this repository. It traces all 14 rows of `CoSb3.condtens` from the BoltzTraP2 public source archive, stores only the five columns needed here, and generates an original two-panel SVG.
+**Evidence class: derived-public-data.** This example adds a real material transport figure without presenting public output as a calculation performed by this repository. It traces all 14 rows of `CoSb3.condtens` from the BoltzTraP2 public source archive, stores only the five columns needed here, and generates an original two-panel SVG.
+
+## Rebuild the bounded artifact
+
+```bash
+python3 examples/practical-guides/boltztrap_cosb3_transport.py \
+  --svg public/media/practical-guides/electronic-transport/replot-boltztrap-cosb3-transport/boltztrap-cosb3-transport.svg
+```
+
+The script reads `examples/practical-guides/data/boltztrap-cosb3-condtens-20260804.json`, checks the frozen source hashes, row and temperature ordering, selected values and sign-change bracket, then writes the SVG. It does not run WIEN2k, BoltzTraP, BoltzTraP2, or a transport convergence study.
 
 ## Trace the source before interpreting the curves
 
@@ -35,12 +44,7 @@ The source stores `sigma_xx/tau`, not an absolute conductivity. Its rise or fall
 
 For this fixed output coordinate, the stored Seebeck values change sign between 200 and 250 K. The script reports that bracket directly from adjacent rows; it does not interpolate a transition temperature or attribute the sign to a unique carrier type. The electron count and thermal occupation change slightly over the series, and the result belongs to the exact source model rather than to all CoSb3 samples.
 
-## Rebuild and inspect the artifact
-
-```text
-python3 examples/practical-guides/boltztrap_cosb3_transport.py \
-  --svg public/media/practical-guides/electronic-transport/replot-boltztrap-cosb3-transport/boltztrap-cosb3-transport.svg
-```
+## Inspect the artifact and its assumptions
 
 The standard-library script checks the exact JSON bytes, both recorded source hashes, row count, temperature grid, fixed energy coordinate, selected values, sign-change bracket, and monotonic temperature ordering before redrawing the SVG. The plot footer carries source, licence, commit, and execution boundaries so that a detached image does not become stronger evidence than its data.
 

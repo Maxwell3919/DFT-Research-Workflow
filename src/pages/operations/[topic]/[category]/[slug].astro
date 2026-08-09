@@ -93,6 +93,8 @@ const recordedOutcome = hasRecordedFailure
     <h1>{guide.data.title}</h1>
     <p class="page-intro">{guide.data.summary}</p>
 
+    <div class="article-content"><GuideContent /></div>
+
     <dl class="guide-meta">
       <div>
         <dt>Tools</dt>
@@ -142,8 +144,6 @@ const recordedOutcome = hasRecordedFailure
         {publishedWorkflow && <p><a href={withBase(`workflows/${publishedWorkflow.slug}/`)}>Read the Worked Workflow</a>.</p>}
       </section>
     )}
-
-    <div class="article-content"><GuideContent /></div>
 
     {assets.length > 0 && (
       <section class="guide-media" aria-labelledby="guide-media-heading">

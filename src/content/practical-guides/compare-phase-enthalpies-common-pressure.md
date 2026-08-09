@@ -23,45 +23,52 @@ review: docs/reviews/2026-08-03-equation-of-state-and-structural-phase-stability
 reviewed_at: "2026-08-03"
 ---
 
-This worked example uses two invented analytic branches. Alpha has lower energy at zero pressure; beta has a smaller equilibrium volume. The example determines when the `pV` advantage of the denser branch outweighs its zero-pressure energy offset.
+Use this fixture after two phase branches have been fitted over a common supported pressure interval. It checks the common-pressure operation with invented analytic alpha and beta branches; it is not a material calculation.
 
-## Minimize each branch at the same pressure
+Inspect the report from the companion-script directory:
 
-For phase `i`, the fixture evaluates
-
-```text
-H_i(p) = min_V [E_i(V) + pV]
-```
-
-The analytic quadratic branches make the minimizing volume available exactly. Pressure in GPa is converted to eV/Å³ with ASE 3.29.0 before forming `pV`, so energy, pressure, and volume share one unit system.
-
-```python
+```bash
+cd examples/practical-guides
+python3 - <<'PY'
 from eos_phase_enthalpy import run
 
 report = run()
 print(report["crossing_pressure_gpa"])
 print(report["common_pressure_samples"])
+PY
 ```
 
-At every sampled pressure, alpha and beta use different minimizing volumes but the same external pressure. Comparing both phases at one arbitrary common volume would answer a different question.
+The output contains the fixture crossing and sampled enthalpy records. Inspect both branches, not only the reported crossing.
 
-## Locate the fixture crossing
+## Minimize each phase independently
 
-At zero pressure, beta is higher by the invented `0.08 eV` per abstract cell. At `6 GPa`, beta has lower fixture enthalpy. Bisection locates equality near `2.6209 GPa` for these analytic parameters.
+At every external pressure $p$, evaluate
 
-That number is a deterministic test target, not a prediction. A real crossing inherits uncertainty from energy convergence, fit form, phase identity, sampled range, pressure conversion, and the completeness of the candidate set.
+$$
+H_i(p)=\min_V\left[E_i(V)+pV\right].
+$$
 
-## Read equilibrium and metastability separately
+Alpha and beta normally minimize at different volumes. They must use the same pressure, energy convention, and cell or formula-unit normalization. The fixture converts GPa to eV per cubic angstrom with ASE 3.29.0 before adding $pV$.
 
-The lower enthalpy among two represented branches defines only their equilibrium ordering in this zero-temperature fixture. The calculation contains no pathway, barrier, nucleation model, phonons, elastic tensor, competing third phase, temperature contribution, or experimental pressure scale.
+Confirm in each sample that the pressure is common, the minimizing volume is phase-specific, and $pV$ has energy units. Comparing both phases at one arbitrary common volume is not this calculation.
 
-A branch may remain locally metastable beyond an enthalpy crossing, or disappear before it. Neither event changes the mathematical equality condition, but both affect what a real compression experiment or relaxation path might observe.
+## Locate and challenge the crossing
 
-## What this example does not establish
+The invented beta branch begins $0.08$ eV per abstract cell above alpha at zero pressure but has a smaller equilibrium volume. In the fixture it is lower in enthalpy by 6 GPa, and bisection finds equality near 2.6209 GPa.
 
-The example does not execute DFT, validate phase curves, predict a material transition, establish coexistence or hysteresis, prove mechanical or dynamical stability, include finite-temperature free energies, or support an experimental phase assignment.
+Treat that value as a regression target. For real phase curves, repeat the minimization across accepted EOS forms, fit windows, numerical settings, and candidate branches. A crossing is usable only when both minimizing volumes lie inside supported data ranges and each phase retains its intended structural and electronic identity.
 
-It verifies common-pressure enthalpy minimization, unit conversion, crossing bracketing, and sign changes for two invented branches only.
+## Claim boundary
+
+A crossing satisfies
+
+$$
+H_\alpha(p_t)=H_\beta(p_t)
+$$
+
+for the represented branches. Report the accepted pressure range, both minimizing volumes, phase-set scope, and sensitivity. If a third phase lies lower, or fit and numerical variation are comparable to the claimed resolution, the two-phase transition is unresolved or pre-empted.
+
+The fixture contains no DFT run, pathway, barrier, nucleation model, phonons, elastic tensor, finite-temperature contribution, or experimental pressure calibration. It verifies common-pressure minimization, unit conversion, bracketing, and sign change only.
 
 ## Official and primary sources
 

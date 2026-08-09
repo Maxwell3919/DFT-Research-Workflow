@@ -19,24 +19,24 @@ review: docs/reviews/2026-08-04-interface-and-heterostructure-energetics.md
 reviewed_at: "2026-08-04"
 ---
 
-This companion script is deliberately smaller than a production lattice matcher. It enumerates diagonal integer repetitions for two invented square lattices and reports their scalar mismatch. It makes the search boundary visible: neither rotations nor general integer matrices, terminations, strain partition, relaxation, or a proof of completeness are included.
+Run the bounded teaching enumeration:
 
-## A matched cell is not a selected interface
-
-The [Zur--McGill method](https://doi.org/10.1063/1.333084) is a systematic superlattice search, and the [pymatgen interface documentation](https://pymatgen.org/pymatgen.analysis.interfaces.html) describes coherent-interface construction tools. This fixture does not implement either full method. Its useful lesson is narrower: a chosen periodic cell is only one candidate, while translation or registry must still be sampled and relaxed.
-
-## Run the bounded enumeration
-
-```text
+```bash
 python3 examples/practical-guides/interface_lattice_match.py \
   --svg public/media/practical-guides/interface-and-heterostructure-energetics/enumerate-lattice-matches-and-registry/interface-lattice-match-map.svg
 ```
 
-The output lists the bounded integer pairs, repeated lengths, mismatch, and three named fractional translations for each retained candidate. The numeric lattice constants are invented teaching values, not a recommended mismatch criterion or a model for a material.
+The command enumerates diagonal integer repetitions for two invented square lattices, sorts the retained pairs by its declared scalar mismatch, adds three named fractional translations, and writes the SVG. It does not read material structures, execute the Zur--McGill method, or run DFT.
 
-## What this guide verifies
+## Purpose
 
-Execution verifies deterministic enumeration, sorting, explicit mismatch arithmetic, registry labels, and SVG rendering. It does not validate a Zur--McGill implementation, identify a real commensurate interface, establish strain convergence, or find a stable registry.
+The fixture output lists integer pairs, repeated lengths, mismatch, and registry labels. Its lattice constants and retained range are invented. Rotations, general integer matrices, terminations, strain partition, relaxation, electrostatics, and proof of completeness are deliberately absent, so no fixture value is a recommended mismatch threshold.
+
+For a real interface, begin with accepted parent cells and record the orientation relationship. Use a systematic matcher such as the [Zur--McGill construction](https://doi.org/10.1063/1.333084) or documented [pymatgen interface tools](https://pymatgen.org/pymatgen.analysis.interfaces.html), then preserve every transformation matrix, residual strain tensor, area, and applied strain allocation. Reject candidates that exceed the study's physical or computational boundary; do not infer that the smallest scalar mismatch is the best interface.
+
+For each retained cell, enumerate terminations and lateral translations as separate variables. Relax under one policy, inspect the final registry, deduplicate equivalent outcomes, and retain metastable contacts. A matched periodic cell is candidate geometry only; energy, stability, and convergence come from later calculations and ledgers.
+
+Successful fixture execution verifies bounded enumeration, sorting, mismatch arithmetic, registry labels, and rendering. It does not validate a production matcher, identify a real commensurate interface, establish strain convergence, or find a stable registry.
 
 ## Official sources
 

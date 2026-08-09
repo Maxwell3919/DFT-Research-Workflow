@@ -5,28 +5,37 @@ status: reviewed
 
 Independent-particle optical properties ask how a declared electronic structure absorbs or disperses light when an electron--hole pair is represented as two independent single-particle states. The central output is a frequency- and direction-dependent dielectric response, not a generic experimental spectrum. It begins with a ground-state structure and electronic state whose symmetry, spin state, spin--orbit treatment, occupations, energy reference, and numerical representation are known.
 
+## Calculate the tensor over the required spectral window
+
+Start from a qualified parent state and choose the tensor components, polarization, photon-energy range, dimensional normalization, and independent-particle/local-field model. Include enough full-zone k points and unoccupied states for that range, calculate the transition matrix elements, and inspect raw real/imaginary response, sum or causality checks where available, broadening dependence, peak positions, integrated weight, and unit conversions. Converge the reported spectrum rather than the parent SCF energy. This overview does not claim an executed optical calculation.
+
 ## A spectrum is a tensor response to specified light
 
 For a periodic solid in the long-wavelength limit, the complex macroscopic dielectric tensor is written
 
-```text
-ε_αβ(ω) = ε₁,αβ(ω) + i ε₂,αβ(ω).
-```
+$$
+\epsilon_{\alpha\beta}(\omega)
+= \epsilon_{1,\alpha\beta}(\omega)
++ i\epsilon_{2,\alpha\beta}(\omega).
+$$
 
 `ω` is angular frequency, `α` and `β` label Cartesian polarization directions, and `ε₁` and `ε₂` are the real and imaginary parts. In a non-magnetic isotropic model this may reduce to one scalar; in a low-symmetry, magnetic, strained, layered, or spin--orbit-coupled model it generally does not. A plotted trace must therefore retain the component or polarization, propagation geometry where relevant, the frequency or photon-energy axis, and the macroscopic-volume convention.
 
 Within an independent-particle treatment, `ε₂` is assembled from transitions between occupied and unoccupied states at the same crystal momentum, weighted by optical matrix elements and energy conservation. Schematically,
 
-```text
-ε₂,αβ(ω) ∝ Σ_vc ∫_BZ d k  p^α_vc(k) p^β_cv(k)
-                 δ[E_c(k)-E_v(k)-ℏω].
-```
+$$
+\epsilon_{2,\alpha\beta}(\omega)
+\propto
+\sum_{vc}\int_{\mathrm{BZ}}d\mathbf k\,
+p^\alpha_{vc}(\mathbf k)p^\beta_{cv}(\mathbf k)
+\delta\!\left[E_c(\mathbf k)-E_v(\mathbf k)-\hbar\omega\right].
+$$
 
 `v` and `c` denote initially occupied and final unoccupied bands, `k` is a Brillouin-zone point, `p` is the polarization-resolved transition matrix element, and `ℏ` is the reduced Planck constant. This expression explains why a joint density of states alone is not an absorption spectrum: dipole selection rules and polarization can suppress or enhance transitions with similar energy differences. The real part is conventionally reconstructed through a Kramers--Kronig relation; its quality depends on a sufficiently represented spectral range and a declared treatment of the unresolved tail.
 
 ## From dielectric function to reported optical quantities
 
-The complex refractive index `N(ω)=n(ω)+iκ(ω)` satisfies `N²=ε` for the stated non-magnetic bulk convention. Absorption, reflectance, loss functions, and refractive indices are derived quantities with additional geometry and boundary assumptions. For example, an absorption coefficient often uses `α(ω)=2ωκ(ω)/c`, where `c` is the speed of light. That conversion is meaningful only when the chosen dielectric response and sample geometry match the optical model. A bulk three-dimensional `ε` cannot be compared point by point with an absorbance measured for a thin supported flake without the appropriate thickness, environment, polarization, and multiple-reflection treatment.
+The complex refractive index $N(\omega)=n(\omega)+i\kappa(\omega)$ satisfies $N^2=\epsilon$ for the stated non-magnetic bulk convention. Absorption, reflectance, loss functions, and refractive indices are derived quantities with additional geometry and boundary assumptions. For example, an absorption coefficient often uses $\alpha(\omega)=2\omega\kappa(\omega)/c$, where $c$ is the speed of light. That conversion is meaningful only when the chosen dielectric response and sample geometry match the optical model. A bulk three-dimensional $\epsilon$ cannot be compared point by point with an absorbance measured for a thin supported flake without the appropriate thickness, environment, polarization, and multiple-reflection treatment.
 
 For a slab supercell, vacuum enters the cell volume used to report a three-dimensional macroscopic response. Changing the vacuum can change the reported bulk-normalized tensor even when the isolated layer physics is unchanged. Report the supercell convention and, when appropriate, a declared two-dimensional polarizability or sheet-response transformation. Do not hide this normalization issue by treating a vacuum-dependent peak height as a material-intrinsic bulk dielectric constant.
 

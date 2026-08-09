@@ -5,21 +5,32 @@ status: reviewed
 
 Wannier construction changes the representation of a declared Bloch-state subspace. It is useful when localized orbitals and a real-space Hamiltonian make interpolation, Berry-response, surface, tight-binding, or transport analysis tractable. It is not an energy correction, a substitute for a converged parent electronic calculation, or a guarantee that a selected orbital picture is physically unique.
 
+## Construct and validate the required subspace
+
+Start from a qualified full-zone electronic parent. Choose the target bands, number of Wannier functions, projections, outer and frozen windows, spin/SOC representation, and symmetry treatment. Run disentanglement and localization, inspect spread history and centres, then compare interpolated energies, characters, degeneracies, and operator matrix elements with direct parent data over the full domain needed downstream. Converge the downstream observable as well as the representation. This overview does not claim an executed Wannier construction.
+
 ## A gauge choice over a periodic subspace
 
 For an isolated set of bands, Wannier functions are Fourier transforms of Bloch states after a `k`-dependent unitary rotation,
 
-```text
-|w_nR> = (1/N_k) sum_k exp(-i k·R) sum_m U_mn(k) |psi_mk>.
-```
+$$
+|w_{n\mathbf R}\rangle
+= \frac{1}{N_k}\sum_{\mathbf k}
+e^{-i\mathbf k\cdot\mathbf R}
+\sum_m U_{mn}(\mathbf k)|\psi_{m\mathbf k}\rangle .
+$$
 
 `R` labels a lattice vector, `n` labels one function in the chosen subspace, `N_k` is the number of sampled k points, and `U(k)` is a unitary gauge transformation among the selected Bloch states. Energies alone do not determine `U(k)`: phases and rotations can produce equally valid extended or localized functions. Localized functions therefore describe a chosen smooth gauge of a specified subspace, not an observable orbital that existed independently of that choice.
 
 Maximally localized Wannier functions select a gauge by minimizing the total quadratic spread
 
-```text
-Omega = sum_n [ <r^2>_n - |<r>_n|^2 ].
-```
+$$
+\Omega
+= \sum_n\left[
+\langle r^2\rangle_n
+-|\langle\mathbf r\rangle_n|^2
+\right].
+$$
 
 The centres `<r>_n` and spread terms depend on the cell, k mesh, periodic convention, spin/SOC representation, and subspace. A small final spread is useful diagnostics, but it does not by itself prove correct band character, interpolation outside the target window, topology, or transferability.
 
@@ -33,9 +44,11 @@ The resulting interpolated band can agree perfectly inside a frozen window while
 
 Construction consumes compatible eigenvalues, Bloch states, neighbour connectivity, and overlaps such as
 
-```text
-M_mn(k,b) = <u_mk | u_n,k+b>.
-```
+$$
+M_{mn}(\mathbf k,\mathbf b)
+= \langle u_{m\mathbf k}
+|u_{n,\mathbf k+\mathbf b}\rangle .
+$$
 
 Here `u_nk` is the cell-periodic part of a parent Bloch state and `b` connects declared neighbouring k points. Their ordering, phase convention, spinor treatment, reciprocal cell, and parent Hamiltonian must remain consistent. After a gauge is selected, the real-space matrix elements `H_mn(R)` can be Fourier transformed to interpolate `H(k)` on a target mesh. This is a representation transfer, not a new self-consistent electronic solution.
 

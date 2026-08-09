@@ -7,6 +7,10 @@ Quantum transport asks how charge crosses a finite, atomically resolved region c
 
 A band structure of the isolated central fragment cannot answer this question because it contains neither reservoir occupations nor contact-induced shifts and broadening. Quantum transport is also distinct from **Electronic Transport**, which describes an extended material through a bulk distribution, scattering model, and conductivity. Inferring bulk conductivity from device conductance requires an additional geometry and scaling model; it is not a direct conversion.
 
+## Construct and converge the open system
+
+Prepare bulk-like left and right electrodes, principal layers, matching planes, a central region long enough to recover lead behaviour, transverse periodicity, and electrostatic boundary conditions. Verify the electrode Hamiltonian and surface Green function before calculating zero-bias transmission. For finite bias, solve the charge and potential self-consistently at each bias and inspect terminal currents and charge conservation. Converge the reported $T(E)$ or current against central length, contacts, transverse k mesh, basis/grid, real-energy and contour integration, temperature, bias sequence, and restart path. A line-path band structure and an isolated fragment are not valid parents for this calculation.
+
 ## The device is defined by its boundaries
 
 A two-terminal model contains a left electrode, a central region, and a right electrode. The electrode Hamiltonians should reproduce bulk-like leads. The central region must contain the interface and enough electrode-like material for the perturbation from the junction to decay before the matching planes.
@@ -19,24 +23,30 @@ The reservoirs are described by electrochemical potentials `μ_L` and `μ_R` and
 
 In a non-orthogonal localized basis, the retarded Green function of the central region is
 
-```text
-G^r(E) = [(E + iη)S - H_C
-          - Σ_L^r(E) - Σ_R^r(E)]⁻¹ .
-```
+$$
+G^r(E)
+= \left[
+(E+i\eta)S-H_C
+-\Sigma_L^r(E)-\Sigma_R^r(E)
+\right]^{-1}.
+$$
 
-`S` is the overlap matrix, `H_C` is the central Hamiltonian, and `Σ_L^r` and `Σ_R^r` are the energy-dependent electrode self-energies. These self-energies shift and broaden central-region states according to the lead surface Green functions and contact couplings.
+$S$ is the overlap matrix, $H_C$ is the central Hamiltonian, and $\Sigma_L^r$ and $\Sigma_R^r$ are the energy-dependent electrode self-energies. These self-energies shift and broaden central-region states according to the lead surface Green functions and contact couplings.
 
 The contact broadening matrices are
 
-```text
-Γ_α(E) = i[Σ_α^r(E) - Σ_α^a(E)] .
-```
+$$
+\Gamma_\alpha(E)
+= i\left[\Sigma_\alpha^r(E)-\Sigma_\alpha^a(E)\right].
+$$
 
 For coherent elastic transport,
 
-```text
-T(E) = Tr[Γ_L G^r Γ_R G^a] .
-```
+$$
+T(E)
+= \operatorname{Tr}
+\left[\Gamma_LG^r\Gamma_RG^a\right].
+$$
 
 `T(E)` is dimensionless and sums transmission probabilities over the channels, spin convention, and transverse k points included in the calculation. It is not a density of states. A localized state can create a strong DOS peak while transmitting poorly if it couples weakly or asymmetrically to the contacts.
 
@@ -44,10 +54,13 @@ T(E) = Tr[Γ_L G^r Γ_R G^a] .
 
 For a two-terminal coherent conductor, a common spin-resolved convention is
 
-```text
-I = (e/h) ∫ dE T(E,V)
-    [f(E,μ_L,T_L) - f(E,μ_R,T_R)] .
-```
+$$
+I
+= \frac{e}{h}\int dE\,T(E,V)
+\left[
+f(E,\mu_L,T_L)-f(E,\mu_R,T_R)
+\right].
+$$
 
 If `T` already includes twofold spin degeneracy, the prefactor is often written `2e/h`. Preserve the channel and spin convention with the data.
 

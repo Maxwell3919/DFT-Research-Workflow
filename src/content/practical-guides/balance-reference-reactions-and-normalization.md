@@ -22,70 +22,73 @@ review: docs/reviews/2026-08-03-relative-and-formation-energies.md
 reviewed_at: "2026-08-03"
 ---
 
-This worked example uses invented energies for abstract species `A`, `B2`, `AB`, and `A2B3`. It demonstrates exact reaction balance, signed stoichiometric coefficients, and normalization. No symbol denotes a real element or compound.
+Use this fixture when you need to check reaction balance, coefficient signs, and reporting normalization before inserting calculated energies. It uses invented energies for abstract species `A`, `B2`, `AB`, and `A2B3`; none denotes a real material.
 
-## Write two different reactions
+From the companion-script directory, inspect the returned report with:
 
-The elemental formation reaction is
+```bash
+cd examples/practical-guides
+python3 - <<'PY'
+from formation_energy_reactions import run
 
-```text
-2 A + 3/2 B2 -> A2B3
+report = run()
+print(report["elemental_formation_reaction"])
+print(report["compound_reservoir_reaction"])
+PY
 ```
 
-The compound-reservoir reaction is
+This calls the reviewed `run()` object. It does not execute DFT.
 
-```text
-2 AB + 1/2 B2 -> A2B3
-```
+## Enter the reactions exactly
 
-Both conserve two `A` atoms and three `B` atoms, but they use different reservoirs. The first asks for formation from declared elemental references. The second asks for an energy change from an `AB` precursor and a `B2` reservoir. They are not interchangeable labels for one number.
+The fixture compares two distinct reservoir choices:
 
-## Represent coefficients without rounding
+$$
+2\,\mathrm A+\frac{3}{2}\,\mathrm{B_2}
+\rightarrow
+\mathrm{A_2B_3},
+$$
 
-Reactant coefficients are negative and product coefficients positive. Python's `Fraction` keeps `3/2` and `1/2` exact:
+$$
+2\,\mathrm{AB}+\frac{1}{2}\,\mathrm{B_2}
+\rightarrow
+\mathrm{A_2B_3}.
+$$
+
+Both conserve two A atoms and three B atoms. The first is formation from declared elemental references; the second starts from an AB precursor and a B2 reservoir. They answer different questions.
+
+Keep coefficients exact in the input object:
 
 ```python
 elemental = {"A": Fraction(-2), "B2": Fraction(-3, 2), "A2B3": Fraction(1)}
 compound = {"AB": Fraction(-2), "B2": Fraction(-1, 2), "A2B3": Fraction(1)}
 ```
 
-The script multiplies every coefficient by the elemental composition of its species and asserts that the net amount of both elements is zero. Arithmetic begins only after this balance passes.
+Reactants are negative and products positive. The first check is the net amount of every element and charge. Do not calculate an energy until each balance is zero.
 
-## Evaluate the signed energy sum
+## Inspect the report
 
 For either reaction,
 
-```text
-ΔE_rxn = Σ_j ν_j E_j
-```
+$$
+\Delta E_{\mathrm{rxn}}=\sum_j\nu_jE_j.
+$$
 
-`ν_j` is the exact signed coefficient and `E_j` is the fixture energy per listed calculation object. The invented table yields `-0.50 eV` per `A2B3` formula unit for elemental formation and `-0.10 eV` per formula unit for the compound-reservoir reaction.
+Confirm that the report preserves the written reaction, signed coefficients, exact balance, energy per formula unit, and energy per atom. The invented values are $-0.50$ eV per A2B3 formula unit for the elemental reaction and $-0.10$ eV per formula unit for the compound-reservoir reaction. Because A2B3 has five atoms, the corresponding fixture values are $-0.10$ and $-0.02$ eV per atom.
 
-Because `A2B3` contains five atoms, the same fixture results are `-0.10 eV` per atom and `-0.02 eV` per atom, respectively. Reporting the denominator prevents a per-formula-unit value from being compared accidentally with a per-atom value.
+Those numbers check fixture arithmetic only. If a real ledger uses a different cell size, convert each energy to the same reaction extent before summing. Keep fitted references and database corrections as separate named terms.
 
-## Read the sign with the reaction
+## Claim boundary
 
-Under the chosen sign convention, a negative result places the products below the written reactants in this static fixture energy model. It says nothing about an omitted phase, a reaction barrier, finite-temperature equilibrium, or whether the reference calculations are accurate.
+Accept the reaction object only when:
 
-The two values differ because their reservoirs differ. A fitted elemental reference or database correction would add another declared ledger term; it would not be hidden by replacing a raw energy.
+- every conserved component balances exactly;
+- each energy corresponds to the object named by its coefficient;
+- the coefficient sign convention is explicit;
+- the formula-unit, atom, or reaction denominator is stored;
+- the same method and correction model applies to all accepted terms.
 
-## Reproduce the fixture
-
-```python
-from formation_energy_reactions import run
-
-report = run()
-print(report["elemental_formation_reaction"])
-print(report["compound_reservoir_reaction"])
-```
-
-The output includes equations, exact balance checks, per-formula-unit and per-atom results, and the interpretation boundary.
-
-## What this example does not establish
-
-The example does not run a DFT code, validate elemental reference phases, converge a reaction energy, calculate a real formation enthalpy, add zero-point or thermal terms, construct a convex hull, establish phase stability, or predict synthesizability.
-
-Its negative fixture formation energy is deliberately insufficient as a stability claim. Real phase stability requires the complete relevant competitor set and a thermodynamic model appropriate to the conditions.
+A negative result places the written products below the written reactants in the stated static model. It does not establish an omitted competitor, a barrier, finite-temperature equilibrium, calculation accuracy, or synthesizability. Move to a convex hull only after a compatible competitor ledger exists.
 
 ## Official and primary sources
 

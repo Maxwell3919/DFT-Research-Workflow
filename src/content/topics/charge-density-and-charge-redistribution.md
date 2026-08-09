@@ -3,55 +3,69 @@ topic_slug: charge-density-and-charge-redistribution
 status: reviewed
 ---
 
-Charge density is a real-space field of a declared electronic state. It answers where the selected calculation places electronic charge in its periodic cell; it is not an atom charge, an oxidation state, a bond order, or a measured charge-transfer experiment. Before comparing fields, fix the structure, cell, pseudopotential or all-electron convention, spin/SOC treatment, occupation model, real-space representation, and density units.
+Use a charge-density calculation when the next decision depends on where a declared electronic state places charge: for example, whether an interface produces a reproducible redistribution, whether a defect changes a local region, or whether a spatial feature survives a change of numerical representation. The parent object is an accepted electronic state with its structure, cell, pseudopotential or all-electron convention, spin/SOC treatment, occupations, and real-space density representation still attached.
+
+If the intended conclusion needs an electron count rather than a picture, choose the integration region or partition before generating the plot. A density is not automatically an atomic charge, oxidation state, bond order, or measured charge-transfer observable.
 
 ## A density field has a normalization and a representation
 
-For an electron number `N`, the density `n(r)` is normalized as `∫cell n(r) dr = N` for the declared cell and electron convention. A code may instead write electron charge density with a sign convention, pseudo-valence density, PAW reconstruction, or a grid value whose conversion to `1/volume` must be stated. Core treatment is therefore not cosmetic: two fields with different reconstructed-core conventions cannot be subtracted or integrated as if they were identical observables.
+The implementation depends on the electronic-structure code and version.
 
-The field is sampled on a finite grid. An isosurface, plane cut, or planar average discards information and introduces a chosen contour, slice, colour scale, origin, and periodic image. Preserve the volumetric array, lattice vectors, grid dimensions, units, and plotting transform; a screenshot alone cannot reproduce an integral or establish convergence.
+- In Quantum ESPRESSO, the bounded route is a compatible `pw.x` parent state followed by `pp.x`, using the documented `prefix`, `outdir`, density selector, and output format to write a volumetric field. Confirm the exact selector in the linked `INPUT_PP` documentation for the installed release.
+- In VASP, the parent run can produce `CHGCAR`. Preserve whether the comparison uses the valence grid, augmentation information, or another explicitly reconstructed density convention.
+
+Do not subtract a Quantum ESPRESSO pseudo-valence field from a differently reconstructed PAW field, or compare grids only because both can be visualized. Record the lattice vectors, grid dimensions, units, density convention, and parent calculation identity with every exported field.
+
+For an electron number $N$, first confirm the declared normalization,
+
+$$
+\int_{\mathrm{cell}} n(\mathbf r)\,d\mathbf r = N.
+$$
+
+A program can instead report electron charge density with a sign convention or grid normalization. Resolve that convention from the official output documentation before integrating.
 
 ## Difference density is a subtraction between compatible objects
 
-A common redistribution field is
+For a combined system and declared fragments, a common redistribution field is
 
-```text
-Δn(r) = n_combined(r) − Σ_i n_i(r).
-```
+$$
+\Delta n(\mathbf r) = n_{\mathrm{combined}}(\mathbf r)
+- \sum_i n_i(\mathbf r).
+$$
 
-Here `n_combined(r)` is the selected full system and `n_i(r)` are declared fragment calculations or superposed reference densities evaluated on the same real-space coordinates. The expression asks how density changes relative to that reference construction. It does not define a unique charge-transfer observable: changing the fragments, frozen geometries, charge states, spin states, cell, boundary conditions, or density convention changes `Δn(r)`.
+Generate every term in the same cell, on the same grid, with compatible Hamiltonian, spin/SOC, occupations, charge convention, and coordinates. Decide whether fragment densities use frozen combined-system coordinates or separately relaxed fragments. The first isolates redistribution at one geometry; the second also contains structural deformation.
 
-For an adsorption or interface question, calculate every term in the same cell and grid, with compatible Hamiltonian, spin/SOC, occupations, and geometry convention. A relaxed-fragment difference mixes electronic redistribution with structural deformation; a frozen-fragment difference isolates a different comparison. Neither is intrinsically preferable without the stated question.
+Before processing real fields, [Check a Compatible Difference-Density Closure](/DFT-Research-Workflow/operations/charge-density-and-charge-redistribution/guides/check-charge-difference-closure/). That practical guide runs an invented-grid arithmetic fixture. It verifies subtraction and full-cell bookkeeping only; it does not produce a material density.
 
-## Red and blue lobes are evidence of a field difference, not an atomic charge
+## Check the numerical object before reading the image
 
-Positive and negative regions show local accumulation and depletion under the displayed sign convention. They do not by themselves supply an electron count. Integrate `Δn(r)` over the complete compatible cell as a closure check, then integrate only over a declared region or partition if a regional number is needed. For a neutral, exactly compatible full-cell subtraction, the integral should close within numerical representation error; failure can expose a grid, normalization, alignment, or reference mismatch.
+Inspect the postprocessor output for normal completion and confirm that the written grid has the expected cell, dimensions, units, and density type. Normal program termination establishes only that the export ran.
 
-An apparent lobe also depends on the selected contour level. Show at least the sign convention, units, isovalue, view direction, and cell boundary. Check whether the decision-relevant feature persists under density-grid refinement and under a bounded, explicit contour change rather than interpreting one aesthetically chosen image.
+For a neutral compatible subtraction, integrate $\Delta n$ over the complete cell. The result should close within a tolerance justified by the grid and representation. A failed closure is a reason to inspect grid registration, normalization, electron counts, reference states, and reconstruction conventions before discussing local lobes.
+
+Then test the quantity used for the conclusion. Refine the grid for an integrated charge, vary a declared isovalue for a visual feature, or repeat the selected partition consistently across the comparison. SCF convergence and stable total energy do not establish convergence of a regional integral, planar average, Bader population, or difference-density feature.
+
+## Read only the quantity that was constructed
+
+Positive and negative regions mean accumulation and depletion under the displayed sign convention. Report units, isovalue, view direction, cell boundary, and whether periodic images are shown. A lobe is not an electron count.
 
 ## Atomic populations depend on the partition
 
-Bader basins partition a density by zero-flux surfaces of its gradient; Hirshfeld partitions use reference-atom weights. Both can produce useful, reproducible numbers when the input density, core treatment, grid, and algorithm are recorded. They answer different partition questions, so their values need not agree and neither automatically equals a formal oxidation state.
-
-Report the partition method, density type, reference atoms or reconstruction choice, grid, algorithm version, integrated total, and residual. Compare like with like across a series. A change in a Bader or Hirshfeld population can support a conditional statement about that partition of that calculation; it cannot alone prove a literal transfer of an integer electron, a bond order, catalytic mechanism, or experimental charge state.
+Bader and Hirshfeld values remain conditional on their respective partition definitions. They can be compared only when the density type, grid, reconstruction, reference atoms where applicable, algorithm version, integrated total, and residual are recorded consistently.
 
 ## Spin density and charge density are different fields
 
-In a collinear calculation, a magnetization density is commonly related to the difference between spin-channel densities, while total charge is their sum. In spinor/SOC calculations, magnetization can be vector-valued and a selected component requires an axis. Do not interpret a spin-density lobe as total-charge accumulation, or subtract spin channels from calculations with changed magnetic states without declaring the mapping.
-
-## Numerical completion is not density reliability
-
-SCF completion only establishes the solver criterion for its represented state. Density features can still change with the real-space grid, basis, k sampling, augmentation/reconstruction, smearing, structural state, cell size, vacuum, and chosen reference fragments. Converge the observable actually used downstream: full-cell closure, a regional integral, a planar-average step, a partitioned population difference, or a resolved feature—not only the total energy.
+In spin-polarized work, distinguish total charge density from magnetization density. A spinor/SOC magnetization field may be vector-valued and requires a declared axis or vector representation.
 
 ## What this topic establishes
 
-This topic establishes how to generate, compare, visualize, integrate, and partition a declared charge-density field while keeping density convention, reference construction, grid, and partition choice visible. It does not establish a unique atomic charge, oxidation state, bond order, charge-transfer mechanism, chemical reactivity, experimental density, material stability, or device performance from a density image or one population analysis alone.
+The supported result is a bounded statement about a declared field, difference, integral, or partition for the accepted parent state. It does not establish a unique atomic charge, formal oxidation state, bond order, charge-transfer mechanism, chemical reactivity, experimental density, or material performance.
 
 ## Sources and methods
 
 - [Hohenberg and Kohn, inhomogeneous electron gas](https://doi.org/10.1103/PhysRev.136.B864)
 - [Kohn and Sham, self-consistent equations](https://doi.org/10.1103/PhysRev.140.A1133)
-- [Henkelman, Arnaldsson, and Jónsson, Bader decomposition](https://doi.org/10.1016/j.commatsci.2005.04.010)
+- [Henkelman, Arnaldsson, and Jonsson, Bader decomposition](https://doi.org/10.1016/j.commatsci.2005.04.010)
 - [Tang, Sanville, and Henkelman, grid-based Bader analysis](https://doi.org/10.1088/0953-8984/21/8/084204)
 - [Hirshfeld, spatial partitioning of charge density](https://doi.org/10.1002/ijch.197700033)
 - [Quantum ESPRESSO `pp.x` documentation](https://www.quantum-espresso.org/Doc/INPUT_PP.html)

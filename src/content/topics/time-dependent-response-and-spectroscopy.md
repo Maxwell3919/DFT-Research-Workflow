@@ -5,21 +5,29 @@ status: reviewed
 
 Time-dependent response asks how the electron density of a declared reference state changes under a specified perturbation in time or frequency. It is the appropriate next model when an independent-particle transition sum omits the induced Hartree and exchange--correlation response. It does not make every calculated peak an experimental assignment: the perturbation, observable, response approximation, geometry, and comparison model remain part of the result.
 
+## Choose the probe and numerical route first
+
+Define the observable, perturbation, polarization or momentum transfer, boundary geometry, response kernel, and desired energy resolution. Choose real-time propagation, transition-space response, or a Sternheimer/Lanczos route, then retain the raw time signal or response solution. Inspect perturbation linearity, propagation or solver stability, transition-space completeness, causality/sum rules where applicable, polarization selection, Fourier/window dependence, and convergence of the reported peak or integrated response. This overview does not claim an executed spectroscopy calculation.
+
 ## The response function connects a perturbation to an observable
 
 For a weak external perturbation `δv_ext(r',ω)`, linear response defines the density change
 
-```text
-δn(r,ω) = ∫ χ(r,r',ω) δv_ext(r',ω) d r'.
-```
+$$
+\delta n(\mathbf r,\omega)
+= \int
+\chi(\mathbf r,\mathbf r',\omega)
+\delta v_{\mathrm{ext}}(\mathbf r',\omega)\,
+d\mathbf r'.
+$$
 
 `χ` is the interacting density-response function; `r` and `r'` are positions, and `ω` is angular frequency. In TDDFT it is related to the independent Kohn--Sham response `χ₀` through a Dyson-like equation,
 
-```text
-χ = χ₀ + χ₀ [v + f_xc] χ.
-```
+$$
+\chi = \chi_0+\chi_0\left(v+f_{\mathrm{xc}}\right)\chi.
+$$
 
-Here `v` is the Coulomb kernel and `f_xc=δv_xc/δn` is the chosen exchange--correlation kernel. The equation states the scientific distinction: independent-particle transitions enter `χ₀`, while screening and the kernel alter the collective response. A named functional alone does not define `f_xc`, nor does a successful solution show that a kernel is adequate for a particular excitation.
+Here $v$ is the Coulomb kernel and $f_{\mathrm{xc}}=\delta v_{\mathrm{xc}}/\delta n$ is the chosen exchange--correlation kernel. The equation states the scientific distinction: independent-particle transitions enter $\chi_0$, while screening and the kernel alter the collective response. A named functional alone does not define $f_{\mathrm{xc}}$, nor does a successful solution show that a kernel is adequate for a particular excitation.
 
 ## Three numerical routes can target related response
 

@@ -23,39 +23,42 @@ review: docs/reviews/2026-08-03-equation-of-state-and-structural-phase-stability
 reviewed_at: "2026-08-03"
 ---
 
-This worked example generates one invented energy–volume table from a Birch–Murnaghan expression and adds small deterministic perturbations. It then asks how much the reported parameters change when the fit form or volume window changes.
+Use this fixture after a traceable energy-volume table has passed branch and convergence checks. It fits one invented table with several forms and windows so model spread remains visible.
 
-## Keep generating data and fitted results distinct
+Inspect the report from the companion-script directory:
 
-The fixture uses nine volumes from `34` to `46 Å³` per abstract A2B2 cell. Its generating values are invented and exist only to make regression assertions reproducible. They are not material properties or recommended sampling limits.
-
-```python
+```bash
+cd examples/practical-guides
+python3 - <<'PY'
 from eos_fit_sensitivity import run
 
 report = run()
 print(report["full_window_fits"])
 print(report["narrow_window_fits"])
+PY
 ```
 
-ASE's `EquationOfState` returns equilibrium volume and energy plus bulk modulus in eV/Å³. The script converts the modulus to GPa with the pinned ASE unit constant and retains both units.
+The report contains fitted equilibrium volumes, energies, bulk moduli, unit conversions, and the difference between fit choices. It does not contain a material property.
 
-## Compare forms on the same points
+## Confirm the input object
 
-The full-window Birch–Murnaghan, Murnaghan, and Vinet fits all recover an equilibrium volume near the invented `40 Å³` minimum, but they are not identical. The fixture records a nonzero spread in both volume and bulk modulus.
+The fixture uses nine volumes from $34$ to $46\ \text{\AA}^3$ per abstract A2B2 cell. The energies were generated from a Birch-Murnaghan expression with small deterministic perturbations. These are regression data, not recommended sampling bounds.
 
-Similarity is expected here because the data were generated from a smooth nearby form with very small perturbations. A real dataset can show much larger disagreement when its range is broad, its noise is structured, or its branch changes state.
+For a real table, confirm that the minimum is bracketed, each point belongs to one structural and electronic branch, energies use one normalization, and numerical noise is below the precision required for the target parameter.
 
-## Change the window without changing the claim
+## Compare forms and windows
 
-The script repeats all three fits on the five central points. A narrow window may constrain the immediate curvature while weakening higher-order pressure behaviour; a wide window may reveal model inadequacy or include a branch change. Neither is automatically superior.
+The script applies Birch-Murnaghan, Murnaghan, and Vinet fits to the same full window, then repeats them on five central points. ASE returns the modulus in eV per cubic angstrom; the script preserves that value and converts it to GPa with the pinned ASE unit constant.
 
-For a real study, inspect pointwise residuals, fitted-parameter covariance, endpoint leverage, alternative defensible forms, and convergence of the target observable. If the goal is a phase boundary, propagate every accepted fit through the enthalpy comparison rather than selecting a curve by appearance.
+Inspect the pointwise residuals and parameter spread, not only one minimum. A narrow window may describe local curvature while poorly constraining pressure behaviour. A broad window may reveal model failure or include a branch change.
 
-## What this example does not establish
+For production work, retain the form, range, weights, covariance or resampling estimate, endpoint leverage, code version, residuals, and unit conversion. If the target is a phase boundary, carry every accepted fit into the common-pressure enthalpy comparison.
 
-The example does not run DFT, validate an energy–volume series, recommend a fit form or volume range, calculate a physical equilibrium volume or bulk modulus, calibrate pressure, establish elastic or phonon stability, or predict a phase transition.
+## Claim boundary
 
-It demonstrates deterministic fitting, native-unit handling, and model/window sensitivity only.
+Accept a fitted parameter only when it is stable under defensible numerical, fit-form, and fit-window changes and remains inside the sampled range. If $V_0$, $B_0$, or the intended pressure interval changes materially, collect better points or narrow the claim.
+
+The fixture demonstrates deterministic fitting and sensitivity only. It does not run DFT, validate the point series, select a universally preferred EOS, calculate a physical equilibrium volume or modulus, establish elastic or phonon stability, or predict a transition.
 
 ## Official and primary sources
 
