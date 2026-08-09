@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Historical QE 7.5 command chain.  This case has no UPF payload by design.
+# Native QE 7.5 replay template assembled from recorded stage inputs. It is not
+# the uncaptured historical launcher and this case has no UPF payload by design.
 set -euo pipefail
 root="$(cd "$(dirname "$0")" && pwd)"
 pseudo_dir="${PSEUDO_DIR:-$root/pseudo}"
@@ -11,7 +12,7 @@ qe_dos="${QE_DOS:-dos.x}"
 qe_ph="${QE_PH:-ph.x}"
 qe_launcher="${QE_LAUNCHER:-}"
 if ! test -s "$pseudo"; then
-  echo "PRECONDITION FAILED: obtain the declared SSSP UPF separately at $pseudo; its body is not public in this case." >&2
+  echo "PRECONDITION FAILED: prepare the exact archive member outside the repository with python3 prepare-replay.py --download-pseudopotential --output-dir /absolute/new/path, then set PSEUDO_DIR." >&2
   exit 2
 fi
 if test "$(sha256sum "$pseudo" | awk '{print $1}')" != "$expected"; then
@@ -19,7 +20,7 @@ if test "$(sha256sum "$pseudo" | awk '{print $1}')" != "$expected"; then
   exit 2
 fi
 for program in "$qe_pw" "$qe_bands" "$qe_dos" "$qe_ph"; do command -v "$program" >/dev/null || { echo "PRECONDITION FAILED: $program is not in PATH" >&2; exit 2; }; done
-runtime="$root/runtime-output"
+runtime="${RUNTIME_DIR:-$root/runtime-output}"
 if test -e "$runtime"; then echo "Refusing to overwrite $runtime; select a new runtime directory." >&2; exit 2; fi
 stage() {
   local name="$1"
@@ -41,7 +42,7 @@ run_qe() {
   fi
 }
 mkdir -p "$runtime"
-# Actual recorded 3 by 3 cutoff/k-mesh matrix and fixed-cell relaxation.
+# Replay the recorded 3 by 3 cutoff/k-mesh inputs and fixed-cell relaxation.
 for input in "$root"/input/si_e*_k*.in; do
   name="$(basename "${input%.in}")"
   stage "convergence-$name"
@@ -49,12 +50,12 @@ for input in "$root"/input/si_e*_k*.in; do
 done
 stage relax
 ( cd "$runtime/relax"; run_qe "$qe_pw" si-relax.in si-relax.out )
-# Actual restart and interrupted-relaxation restart pairs share their save tree.
+# In this replay, each restart pair shares its newly created runtime save tree.
 stage restart
 ( cd "$runtime/restart"; run_qe "$qe_pw" fresh.in fresh.out; run_qe "$qe_pw" restart.in restart.out )
 stage relax-restart
 ( cd "$runtime/relax-restart"; run_qe "$qe_pw" segment1.in segment1.out; run_qe "$qe_pw" segment2-restart.in segment2-restart.out )
-# Actual recorded ground-state/electronic and Gamma response program order.
+# Replay the recorded ground-state/electronic and Gamma-response stage order.
 stage electronic
 (
   cd "$runtime/electronic"
@@ -83,4 +84,4 @@ stage full-zone
   run_qe "$qe_pw" full-zone-bands.in bands-pw.out
   run_qe "$qe_bands" full-zone-bands.x.in bandsx.out
 )
-echo "Runtime outputs are isolated in runtime-output/; inspect each stdout/stderr before any claim."
+echo "Runtime outputs are isolated in runtime-output/; this replay does not prove historical continuity. Inspect each stdout/stderr before any claim."

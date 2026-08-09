@@ -1,15 +1,73 @@
 ---
-import{getCollection}from'astro:content';import BaseLayout from'../../layouts/BaseLayout.astro';import{getTool,getTools,getToolTopics}from'../../lib/tools';import{withBase}from'../../lib/paths';
-export const getStaticPaths=()=>getTools().map(tool=>({params:{slug:tool.slug}}));
-const tool=getTool(Astro.params.slug!),topics=getToolTopics(tool),guides=(await getCollection('practicalGuides')).filter(g=>g.data.status==='reviewed'&&g.data.tools.includes(tool.slug)).sort((a,b)=>a.data.title.localeCompare(b.data.title)),access={"open-source":"Open source","restricted-license":"Restricted licence","registration-required":"Registration required","free-proprietary":"Free proprietary licence"}[tool.access];
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getTool, getTools, getToolTopics, toolRegistryMetadata } from '../../lib/tools';
+import { withBase } from '../../lib/paths';
+
+export const getStaticPaths = () => getTools().map((tool) => ({ params: { slug: tool.slug } }));
+
+const tool = getTool(Astro.params.slug!);
+const topics = getToolTopics(tool);
+const guides = (await getCollection('practicalGuides'))
+  .filter((guide) => guide.data.status === 'reviewed' && guide.data.tools.includes(tool.slug))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+const accessLabels = {
+  'open-source': 'Open source',
+  'restricted-license': 'Restricted licence',
+  'registration-required': 'Registration required',
+  'free-proprietary': 'Free proprietary licence',
+} as const;
+const access = accessLabels[tool.access];
+const verifiedAtLabel = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+}).format(new Date(`${toolRegistryMetadata.verifiedAt}T00:00:00Z`));
 ---
 <BaseLayout title={tool.name} description={`${tool.name}: verified identity, access, workflow topics, and reviewed practical pages.`} current="tools">
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href={withBase('tools/')}>Tools</a> / {tool.name}</nav><p class="operation-label">{tool.category}</p><h1>{tool.name}</h1>
-  {tool.aliases.length>0&&<p class="tool-aliases">Also known as {tool.aliases.join(', ')}.</p>}<p class="page-intro">{tool.role}</p>
-  <dl class="tool-facts"><div><dt>Access</dt><dd>{access}</dd></div><div><dt>Interfaces</dt><dd>{tool.interfaces.join(', ')}</dd></div><div><dt>Identity checked</dt><dd>4 August 2026</dd></div></dl>
-  {tool.access_note&&<p>{tool.access_note}</p>}{tool.verified_version&&<p><strong>Version or environment checked:</strong> {tool.verified_version}</p>}
-  <h2>Official resources</h2><ul><li><a href={tool.homepage}>Homepage</a></li><li><a href={tool.documentation}>Documentation</a></li>{tool.source_repository&&<li><a href={tool.source_repository}>Source repository</a></li>}</ul>
-  <h2>Connected workflow topics</h2><p>These links identify scientific tasks where the tool may have a role. They do not claim complete feature coverage or compatibility with every method described there.</p><ul class="directory-list">{topics.map(topic=><li><a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a></li>)}</ul>
-  <h2>Reviewed practical pages</h2>{guides.length>0?<ul class="directory-list">{guides.map(guide=>{const segment=guide.data.kind==='worked-example'?'examples':guide.data.kind==='visual-note'?'notes':'guides';return <li><a href={withBase(`operations/${guide.data.topic_slug}/${segment}/${guide.data.guide_slug}/`)}>{guide.data.title}</a><span>{guide.data.summary}</span></li>})}</ul>:<p>No reviewed practical page currently makes an executable claim for this tool. Consult the connected scientific topics before choosing an implementation.</p>}
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href={withBase('tools/')}>Tools</a> / {tool.name}</nav>
+  <p class="operation-label">{tool.category}</p>
+  <h1>{tool.name}</h1>
+  {tool.aliases.length > 0 && <p class="tool-aliases">Also known as {tool.aliases.join(', ')}.</p>}
+  <p class="framework-note"><strong>Secondary index:</strong> {toolRegistryMetadata.scopeNote}</p>
+
+  <h2>What</h2>
+  <p class="page-intro">{tool.role}</p>
+  <dl class="tool-facts">
+    <div><dt>Access</dt><dd>{access}</dd></div>
+    <div><dt>Interfaces</dt><dd>{tool.interfaces.join(', ')}</dd></div>
+    <div><dt>Identity checked</dt><dd><time datetime={toolRegistryMetadata.verifiedAt}>{verifiedAtLabel}</time></dd></div>
+  </dl>
+  {tool.access_note && <p>{tool.access_note}</p>}
+  {tool.verified_version && <p><strong>Version or environment checked:</strong> {tool.verified_version}</p>}
+
+  <h2>Where in DRW</h2>
+  <p>These links identify scientific tasks where the tool may have a role. They do not claim complete feature coverage or compatibility with every method described there.</p>
+  <h3>Connected workflow topics</h3>
+  <ul class="directory-list">
+    {topics.map((topic) => <li><a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a></li>)}
+  </ul>
+  <h3>Reviewed practical pages</h3>
+  {guides.length > 0 ? (
+    <ul class="directory-list">
+      {guides.map((guide) => {
+        const segment = guide.data.kind === 'worked-example' ? 'examples' : guide.data.kind === 'visual-note' ? 'notes' : 'guides';
+        return <li><a href={withBase(`operations/${guide.data.topic_slug}/${segment}/${guide.data.guide_slug}/`)}>{guide.data.title}</a><span>{guide.data.summary}</span></li>;
+      })}
+    </ul>
+  ) : (
+    <p>No reviewed practical page currently makes an executable claim for this tool. Consult the connected scientific topics before choosing an implementation.</p>
+  )}
+
+  <h2>Start here</h2>
+  <p><a data-tool-start href={tool.getting_started.url}>{tool.getting_started.label}</a> is the curated official entry point for this record. Read its access and version notes before applying it to a specific workflow.</p>
+
+  <h2>Official documentation</h2>
+  <ul>
+    <li><a href={tool.documentation}>Documentation</a></li>
+    <li><a href={tool.homepage}>Homepage</a></li>
+    {tool.source_repository && <li><a href={tool.source_repository}>Source repository</a></li>}
+  </ul>
   <p class="framework-note">Identity and link verification do not establish successful execution, numerical convergence, scientific validity, or suitability for a particular material.</p>
 </BaseLayout>

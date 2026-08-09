@@ -28,12 +28,12 @@ A restart continues from stored electronic data. A fresh run begins from a newly
 
 ## Actual Silicon fresh/restart comparison
 
-The public companion uses the fixed two-site COD 9013102 Silicon cell and QE 7.5.
-It runs a fresh SCF followed by `restart_mode='restart'` with the same prefix,
-outdir, potential, cell, occupations and k mesh. Both hash-bound output snapshots
-have electronic-convergence and `JOB DONE` markers and print -22.83943950 Ry.
-This is a reproducible execution comparison, not proof that the electronic state
-is unique or physically lowest.
+The published inputs describe a fresh QE 7.5 SCF and a restart for one Silicon
+cell. The declared companion does not read those inputs or verify prefix, outdir,
+potential, cell, occupations, k mesh, or restart data. It hashes the two stored
+outputs, requires literal electronic-convergence and `JOB DONE` markers, and
+confirms equal printed total energies. Equal energy does not establish equal state
+identity, compatible execution, uniqueness, or physical ordering.
 
 ## Declare the initialization lineage
 
@@ -43,7 +43,9 @@ A stored file being readable does not show that it belongs to the same Hamiltoni
 
 ## Compare final state identity, not only energy
 
-The deterministic fixture contains a fresh initialization that reaches `FM-A`, a compatible restart that reaches the same state, and another completed restart that reaches `AFM-B`.
+The following deterministic fixture concept contains a fresh initialization that
+reaches `FM-A`, a compatible restart that reaches the same state, and another
+restart that reaches `AFM-B`. It is not executed by the declared companion:
 
 ```python
 from reference_state_fresh_restart import run
@@ -67,10 +69,12 @@ Changes to structure, atom order, functional, potentials, charge, spin treatment
 
 ## What this guide verifies
 
-`silicon_qe_restarts.py` verifies the actual public-output hashes, matching printed
-energies, and completion markers. The retained fixture illustrates a separate
-state branch. Neither establishes restart portability, observable convergence,
-candidate completeness, or the lowest physical state.
+`silicon_qe_restarts.py` verifies four stored-output hashes and marker strings,
+equal printed energies for the fresh/restart SCF pair, and two relaxation-segment
+messages. It does not verify input compatibility, restart data, or electronic-state
+identity and does not execute the conceptual magnetic fixture. It establishes no
+restart portability, observable convergence, candidate completeness, or physical
+ordering.
 
 ## Common mistakes
 

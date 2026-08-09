@@ -29,6 +29,8 @@ It preserves these distinctions:
 - a fresh electronic start and a continuation from stored charge density or wavefunctions;
 - internal solver convergence and verification of charge, occupation, symmetry, and magnetic state;
 - one raw total energy and a comparable, normalized candidate-state table;
+- fixed-geometry electronic ordering and state-specific magnetostructural ordering;
+- one fixed-charge ranking and a separate charged-state thermodynamic framework;
 - reusable electronic artifacts and scientifically compatible downstream reuse;
 - the C-stage reference state and later D-stage target-property calculations.
 
@@ -88,47 +90,43 @@ The organization is natural to the subject and does not restore a fixed Inputs/O
 
 ## Executable evidence
 
-The four companion scripts are:
+Current declared companion bindings are:
 
-- `examples/practical-guides/reference_state_protocol_continuity.py`;
-- `examples/practical-guides/reference_state_fresh_restart.py`;
-- `examples/practical-guides/reference_state_candidate_comparison.py`;
-- `examples/practical-guides/reference_state_lineage_manifest.py`.
+- `examples/practical-guides/silicon_qe_convergence.py` for fixed-geometry
+  preparation and lineage packaging;
+- `examples/practical-guides/silicon_qe_restarts.py` for fresh/restart comparison;
+- `examples/practical-guides/reference_state_candidate_comparison.py` for the
+  charge/spin/magnetic candidate fixture.
 
-They are executed by the pinned practical-guide runner under Python 3.12. The repository continues to install ASE 3.29.0 and `pymatgen-core` 2026.7.31 for the earlier batches, but these four scripts use only the Python standard library and deterministic teaching fixtures.
+The earlier protocol-continuity, synthetic fresh/restart, and lineage-manifest
+modules remain conceptual teaching support; they are not declared execution
+evidence for those three pages. The scripts calculate no electronic energy with
+a DFT code and call no electronic-structure engine; that statement applies to
+those conceptual modules and the candidate-table companion.
 
-The scripts check only bounded metadata and diagnostic logic:
-
-- model-, method-, potential-, charge-, and geometry-continuity fields are preserved between an optimization record and a final fixed-geometry protocol;
-- declared numerical refinements are separated from Hamiltonian changes;
-- a fresh and a compatible restart fixture reach the same declared state within a fixture-only comparison tolerance;
-- a second restart fixture that reaches a different state is not merged into the same reference lineage;
-- only converged, state-identified, and mutually comparable candidate fixtures enter a bounded energy ranking;
-- the selected candidate is described as lowest only among the enumerated accepted set;
-- structure, method, state, density, wavefunction, and output payloads receive deterministic hashes;
-- downstream compatibility is accepted only when the requested structure, method, charge, and state identity match the manifest.
-
-The original deterministic scripts calculate no electronic energy with a DFT code and call no electronic-structure engine.
-For those retained deterministic scripts, the prior boundary remains literal: The scripts calculate no electronic energy with a DFT code and call no electronic-structure engine.
-
-The energies, residuals, state labels, tolerances, payloads, and hashes are deterministic teaching fixtures. They are not DFT results, benchmarks, or parameter recommendations.
+The candidate script filters explicit charge, evaluator, normalization,
+completion, and state-label fields and ranks two accepted fixture rows. It does
+not encode geometry or a charged-state thermodynamic potential.
+`silicon_qe_convergence.py` verifies expected output hashes, marker strings, and
+parsed energies; it does not inspect inputs or construct a lineage manifest.
+`silicon_qe_restarts.py` verifies four output hashes, marker strings, equal printed
+fresh/restart energies, and two relaxation-segment messages; it does not inspect
+input compatibility, restart data, or state identity.
 
 Execution success is not reference-ground-state verification for a real calculation.
-
-None of those fixture checks establishes global ground-state identity for a real calculation, candidate-state completeness, SCF convergence, force or stress accuracy, physical stability, method accuracy, transferability, or scientific support.
-None of those checks establishes global ground-state identity for a real calculation.
+None of those checks establishes global ground-state identity for a real calculation,
+candidate completeness, SCF convergence, force/stress accuracy, physical stability,
+method accuracy, transferability, or scientific support.
 
 ### Silicon execution addendum (2026-08-04)
 
-Two guides additionally use a public hash-bound QE 7.5 evidence package for the
-fixed two-site COD 9013102 Silicon cell. Nine SCF outputs and their inputs are
-reconstructed from SHA-256, electronic-convergence and `JOB DONE` markers. A
-separate fresh/restart pair uses the same declared structure, method, prefix and
-grid and prints the same final total energy (`-22.83943950 Ry`) after a compatible
-QE restart. The package establishes file lineage and bounded SCF/restart execution
-only: it contains no charge density or wavefunction, does not identify a complete
-electronic state, compare candidate states, demonstrate observable convergence, or
-prove a ground state.
+Three guides use stored outputs recorded as QE 7.5 evidence for the fixed two-site
+COD 9013102 Silicon cell. The reconstruction checks nine SCF output hashes,
+electronic-convergence and `JOB DONE` strings, and reported energies. A separate
+fresh/restart pair has matching printed total energy (`-22.83943950 Ry`), but the
+script does not verify the inputs or electronic state. The package contains no
+charge density or wavefunction and establishes no candidate comparison,
+observable convergence, compatible restart execution, or ground state.
 
 ## Media review
 
@@ -153,19 +151,14 @@ The pages remain readable without client-side JavaScript. Browser validation mus
 
 ## Deliberate exclusions
 
-This batch does not include:
-
-- a real VASP, CP2K, ABINIT, or other DFT calculation beyond the bounded public
-  Quantum ESPRESSO evidence packages described above;
-- a claim that one SCF solution is the global electronic ground state;
-- exhaustive magnetic, charge, occupation, or symmetry-state enumeration;
-- a universal SCF, energy, smearing, band-count, moment, or initialization threshold;
-- D-section band, DOS, phonon, response, EPC, defect, transport, or other target calculations;
-- a public `/tools/` directory;
-- licensed potential contents, restart data, private hosts, or unpublished calculation trees.
+This reference-state review does not validate real VASP, CP2K, or ABINIT runs;
+one-SCF global-ground-state identity; exhaustive magnetic, charge, occupation,
+geometry, or symmetry enumeration; a transferable SCF or initialization
+threshold; D-stage target calculations; licensed potential contents; restart
+payloads; private hosts; or unpublished calculation trees.
 
 ## Evidence boundary
 
-Semantic source review establishes that the educational article and guides accurately describe the cited concepts and implementations within their stated scope. Link auditing establishes only time-bounded source reachability. Browser smoke establishes public rendering and layout. Python execution establishes the declared metadata, comparison, and hashing logic under the pinned Python version.
+Semantic source review establishes that the educational article and guides accurately describe the cited concepts and implementations within their stated scope. Link auditing establishes only time-bounded source reachability. Browser smoke establishes public rendering and layout. Python execution establishes only the current companion scripts' stored-output checks and bounded candidate-table logic; conceptual continuity and manifest snippets are not execution evidence.
 
 None of those checks establishes a real reference ground state, exhaustive global ground-state identity, SCF convergence, force or stress accuracy, physical stability, method accuracy, transferability, or scientific support for any real DFT study.

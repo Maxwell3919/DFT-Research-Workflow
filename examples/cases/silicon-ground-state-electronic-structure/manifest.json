@@ -1,10 +1,10 @@
 {
   "artifacts": [
     {
-      "bytes": 361,
+      "bytes": 409,
       "path": "source/output-excerpt.txt",
       "role": "deterministic public output excerpt rendered by the Worked Workflow",
-      "sha256": "c5a49549aeebaafca49944bbc72a4d1901c8812979151de9328d7bc2f573127a"
+      "sha256": "26e8498be220c2c64e6c7996a47628f3f60a1cd9f3733e14c9da6331cbc3c1e6"
     },
     {
       "bytes": 433,
@@ -23,7 +23,7 @@
       "bytes": 21237,
       "path": "derived/full-zone-bands.csv",
       "raw_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
-      "role": "full_zone_table",
+      "role": "time_reversal_reduced_zone_table",
       "sha256": "5f181b3b664353a5a46bdd71a0841975f623d7eaf26aa21260266f90d65b53b9"
     },
     {
@@ -34,17 +34,17 @@
       "sha256": "b2bbe7e1f52bfb71a212a8ae3682d143a9faa00adfb1a68cf849f0cfdd94b941"
     },
     {
-      "bytes": 4957,
+      "bytes": 6146,
       "path": "derived/observables.json",
       "role": "observable_report",
-      "sha256": "eb88c3dd0d760294ab121b6d49bae58ac8f82e4031d403cdd256197f216d508d"
+      "sha256": "8f27a4cd306332ca21e9f16d89dc58b186665f759008c1de15e2e94cdcc6a5c6"
     },
     {
-      "bytes": 2543,
+      "bytes": 2861,
       "path": "derived/full-zone-status.json",
       "raw_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
-      "role": "full_zone_result",
-      "sha256": "3ab5ba090e21801a575d3b17d0fd8b266969f57689b30eb7114afa37cce63fb7"
+      "role": "time_reversal_reduced_zone_result",
+      "sha256": "4bafa7f633726f42f333d723e483e0d025c389c8cfece082f9f9fcd70fe5ca1a"
     },
     {
       "bytes": 15667,
@@ -55,19 +55,19 @@
     {
       "bytes": 6732,
       "path": "output/full-zone/bands-pw.out",
-      "role": "full_zone_bands_pw",
+      "role": "time_reversal_reduced_bands_pw",
       "sha256": "3c25f43a5e4eaa78e35eff57a300ab3c51bd8bb974e34e30c2a20375aad2da5b"
     },
     {
       "bytes": 204497,
       "path": "output/full-zone/bandsx.out",
-      "role": "full_zone_bandsx",
+      "role": "time_reversal_reduced_bandsx",
       "sha256": "9d4deac9e49b3e33ff3e8bdcdcb4139122074217fd721de134ec1539039cb6e6"
     },
     {
       "bytes": 29671,
       "path": "output/full-zone/si-fullzone.bands.dat",
-      "role": "full_zone_band_data",
+      "role": "time_reversal_reduced_band_data",
       "sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"
     },
     {
@@ -85,7 +85,7 @@
       "sha256": "50108e1b6c391380d85f35bc8fae59fa747fee1f053ba4ffdfadbda62e1cdc0f"
     },
     {
-      "alt": "Scatter plot of Silicon band 4 occupied and band 5 empty eigenvalues over 260 points of the 8 by 8 by 8 full-zone enumeration; the sampled bands remain separated.",
+      "alt": "Scatter plot of Silicon band 4 occupied and band 5 empty eigenvalues over the 260-point time-reversal-reduced sample from the nominal 8 by 8 by 8 grid; the sampled bands remain separated.",
       "bytes": 62583,
       "path": "figures/full-zone-bands.png",
       "role": "full-zone occupied and empty band samples",
@@ -110,60 +110,157 @@
   "case_kind": "worked-workflow",
   "claim_boundary": {
     "does_not_support": [
+      "One continuous historical launcher, shell-exit transcript, case-wide execution interval, or cross-route save-tree ancestry.",
+      "Pseudopotential transferability or scientific suitability beyond the exact archive/member identity checks.",
       "A transferable cutoff or k-mesh recommendation.",
-      "A converged band gap, DOS, phonon or dielectric observable.",
-      "Structural stability, physical validity, experimental agreement or a material conclusion.",
-      "A converged full-zone fundamental, quasiparticle, optical, or experimental gap."
+      "A converged band gap, DOS, phonon, dielectric, structural-stability, physical-validity, or experimental-material conclusion."
     ],
     "supports": [
-      "Hash-bound reconstruction of the stored QE 7.5 teaching inputs, compact outputs and derived plots.",
-      "A documented missing-raw boundary for the full-zone ledger.",
-      "Direct parsing of the recorded 260-point, 8-band full-zone sample with its SHA-256-bound QE outputs."
+      "An assembled set of hash-bound, separately recorded real QE 7.5 stage inputs, outputs, and derived plots.",
+      "Direct parsing of the recorded 260-point, eight-band time-reversal-reduced sample from the nominal 8x8x8 grid.",
+      "A fail-closed manual bridge from the exact public COD CIF to the declared two-site QE geometry and exact-hash SSSP archive member."
     ]
   },
   "commands": [
     {
-      "command": "OMP_NUM_THREADS=4 QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash run.sh",
-      "exit_code": 0,
-      "stage": "recorded historical QE 7.5 cutoff, relaxation and restart stages"
+      "command": "Exact historical shell commands and launcher were not captured; inspect the hash-bound inputs and stdout records.",
+      "evidence_scope": "Real QE 7.5 stdout is present for the declared stages; one historical continuous run is not claimed.",
+      "exit_code": null,
+      "exit_code_scope": "Shell exits not recorded; QE JOB DONE markers remain program-output evidence only.",
+      "input_artifacts": [
+        "input/*.in",
+        "input/full-zone/*.in"
+      ],
+      "output_artifacts": [
+        "output/*.out",
+        "output/full-zone/*.out",
+        "output/full-zone/si-fullzone.bands.dat"
+      ],
+      "record_kind": "recorded-output-only",
+      "route_id": "assembled-stored-output-set",
+      "stage": "stored real QE stage set"
     },
     {
-      "command": "OMP_NUM_THREADS=8 QE_LAUNCHER='mpirun -np 4' QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash run.sh",
-      "exit_code": 0,
-      "stage": "recorded historical QE 7.5 electronic, full-zone and Gamma-response stages"
+      "command": "PSEUDO_DIR=/absolute/path/to/pseudo QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x QE_LAUNCHER='mpirun -np 4' bash run.sh",
+      "evidence_scope": "Exact current replay invocation; not an assertion about the historical launcher.",
+      "exit_code": null,
+      "exit_code_scope": "No fresh replay exit is recorded.",
+      "input_artifacts": [
+        "prepare-replay.py",
+        "run.sh",
+        "input/*.in",
+        "input/full-zone/*.in",
+        "source/pseudopotentials.json"
+      ],
+      "output_artifacts": [
+        "caller-selected external preparation and runtime directories (not committed)"
+      ],
+      "record_kind": "replay-command-not-executed-by-this-edit",
+      "route_id": "native-replay-template",
+      "stage": "native replay template"
     },
     {
       "command": "bash replay-derived.sh",
-      "exit_code": 0,
-      "stage": "replay stored evidence"
-    },
-    {
-      "command": "bash extract.sh",
-      "exit_code": 0,
-      "stage": "extract"
+      "evidence_scope": "Operates on stored outputs only; it does not launch QE.",
+      "exit_code": null,
+      "exit_code_scope": "No fresh exit is recorded pending the later replay follow-up.",
+      "output_artifacts": [
+        "derived/",
+        "figures/",
+        "manifest.json"
+      ],
+      "parent_artifacts": [
+        "source/",
+        "input/",
+        "output/"
+      ],
+      "record_kind": "available-command-not-rerun-by-this-edit",
+      "route_id": "stored-output-postprocess",
+      "stage": "rebuild derived artifacts from stored outputs"
     },
     {
       "command": "bash check.sh",
-      "exit_code": 0,
-      "stage": "acceptance"
-    },
-    {
-      "command": "bash run.sh",
-      "exit_code": 2,
-      "stage": "native preflight without UPF"
+      "evidence_scope": "check.sh copies the case to a temporary directory before parse.py materializes files.",
+      "exit_code": null,
+      "exit_code_scope": "No fresh exit is recorded pending the later replay follow-up.",
+      "input_artifacts": [
+        "check.sh",
+        "parse.py",
+        "source/",
+        "input/",
+        "output/"
+      ],
+      "record_kind": "isolated-copy-check-command-not-rerun-by-this-edit",
+      "route_id": "stored-output-postprocess",
+      "stage": "isolated case check"
     }
   ],
-  "completed_at": "2026-08-05T00:06:24+08:00",
+  "completed_at": null,
+  "completion_boundary": "No case-wide start, completion, or exit is claimed. 2026-08-05T00:06:24+08:00 is only the latest QE-printed termination among separately recorded artifacts.",
   "evidence_class": "real-execution",
-  "exit_code": 0,
+  "execution_routes": [
+    {
+      "ancestry": [
+        "The cutoff, relax/restart, electronic, DOS, Gamma-response, and nominal-grid outputs were recorded as separate stage groups.",
+        "Inputs and outputs are hash-bound; cross-route scheduler records and save-tree payloads are absent.",
+        "No single run.sh invocation is claimed for the historical artifact set."
+      ],
+      "boundary": "Assembled real stages do not establish one continuous historical execution, observable convergence, or a material-level scientific claim.",
+      "exact_command_status": "Not captured for the historical stages. run.sh contains a present-day replay template, not the original launcher.",
+      "exact_exit_code_status": "Shell exit codes were not retained. Each declared stdout has one QE JOB DONE marker; that marker is reported separately.",
+      "label": "Assembled stored real QE 7.5 stages",
+      "route_id": "assembled-stored-output-set",
+      "timing": {
+        "completed_at": "2026-08-05T00:06:24+08:00",
+        "scope": "Earliest and latest QE-printed timestamps across the assembled artifact set only; this is not a continuous case run or publication-completion window.",
+        "started_at": "2026-08-04T20:44:32+08:00"
+      }
+    },
+    {
+      "ancestry": [
+        "input/full-zone/scf.in -> output/full-zone/scf.out",
+        "input/full-zone/bands.in declares the same prefix/outdir -> output/full-zone/bands-pw.out",
+        "input/full-zone/bands.x.in -> output/full-zone/bandsx.out -> output/full-zone/si-fullzone.bands.dat",
+        "nosym=.true. with no noinv=.true. retained time-reversal equivalence, producing 260 printed k points from the nominal 8x8x8 grid."
+      ],
+      "boundary": "The save-tree payload is not published; the hash-bound input/output declarations support stage ancestry, not a converged fundamental gap.",
+      "exact_command_status": "Historical shell launcher not captured; replay commands and ordering are declared in run.sh.",
+      "exact_exit_code_status": "Shell exit codes not captured; all three stdout files print JOB DONE and the three committed stderr files are empty.",
+      "label": "Stored nominal-8x8x8 bands route",
+      "route_id": "stored-260-point-time-reversal-reduced-bands",
+      "timing": {
+        "completed_at": "2026-08-04T22:27:05+08:00",
+        "scope": "QE-printed timestamps for output/full-zone/scf.out, bands-pw.out, and bandsx.out only.",
+        "started_at": "2026-08-04T22:26:20+08:00"
+      }
+    },
+    {
+      "ancestry": [
+        "prepare-replay.py binds the exact public CIF to the declared two-site primitive geometry and obtains only the pinned SSSP archive member after archive/member checks.",
+        "A caller-supplied UPF must match the declared SHA-256 before any QE executable starts.",
+        "run.sh creates a new caller-selected runtime directory and never supplies the missing historical save trees."
+      ],
+      "boundary": "The pinned archive/member route establishes exact replay-byte identity only. It does not establish pseudopotential transferability, numerical convergence, physical validity, or a material-level claim.",
+      "exact_command_status": "The caller-facing invocation and program order are in run.sh.",
+      "exact_exit_code_status": "Not recorded for the updated template.",
+      "label": "Optional native replay template",
+      "route_id": "native-replay-template",
+      "timing": {
+        "completed_at": null,
+        "scope": "Not executed by this provenance edit; no Maxwell replay result is recorded.",
+        "started_at": null
+      }
+    }
+  ],
+  "exit_code": null,
   "gates": {
     "G0": {
       "status": "PASS",
-      "summary": "copied public inputs/outputs and generated artifacts are SHA-256 checked against recorded source identities"
+      "summary": "Stored source/input/output identities and generated artifact relationships carry the existing case PASS; the manual preparation source is hash-bound but this parser does not download or redistribute the UPF."
     },
     "G1": {
       "status": "PASS",
-      "summary": "stored QE 7.5 outputs each have one JOB DONE marker"
+      "summary": "Each declared stored QE 7.5 stdout has one JOB DONE marker; shell exit codes remain separately unrecorded."
     },
     "G2": {
       "status": "WARN",
@@ -171,7 +268,7 @@
     },
     "G3": {
       "status": "PASS",
-      "summary": "the corrected 8x8x8 full-zone SCF, bands, bands.x and 260-point 8-band data are hash-bound and directly parsed"
+      "summary": "The nominal 8x8x8 SCF, bands, bands.x and 260-point time-reversal-reduced eight-band data are hash-bound and directly parsed."
     },
     "G4": {
       "status": "NOT TESTED",
@@ -194,6 +291,16 @@
       "interface": "stored-output parser",
       "name": "Python",
       "version": "3.12.11"
+    },
+    {
+      "interface": "manual CIF parsing and occupancy checks",
+      "name": "pymatgen-core",
+      "version": "2026.7.31"
+    },
+    {
+      "interface": "manual symmetry and primitive-cell checks",
+      "name": "spglib",
+      "version": "2.7.0"
     }
   ],
   "sources": [
@@ -216,26 +323,40 @@
     },
     {
       "accessed_at": "2026-08-04",
+      "exact_url_status": "Pinned official archive URL, byte count and SHA-256 identify the archive; publisher-listed MD5 is a cross-check; exact regular-member path, byte count, and member SHA-256 identify the replay UPF.",
       "id": "silicon-qe-pseudopotential-identity",
-      "licence_boundary": "Filename, declared source and SHA-256 are retained; the UPF body is absent.",
+      "licence_boundary": "The UPF body is absent. Matching archive/member identity does not establish transferability, numerical convergence, or scientific suitability.",
       "path": "source/pseudopotentials.json",
-      "role": "UPF identity only; no potential body",
-      "sha256": "cd01fa4af67f1998b16b30cd40c0beabe80be0a20eb2e43fb713b244a8fe7893",
-      "url": "https://www.materialscloud.org/discover/sssp/table/precision"
+      "registry_url": "https://www.materialscloud.org/discover/sssp/table/precision",
+      "role": "exact SSSP archive-member identity; no potential body",
+      "sha256": "3595017fe2e2fc386d1433b8cf437f78179abca15187c002f64f998996110b10",
+      "url": "https://archive.materialscloud.org/records/rcyfm-68h65/files/SSSP_1.3.0_PBE_precision.tar.gz?download=1"
     },
     {
       "id": "silicon-qe-plan",
       "path": "source/qe_plan.json",
-      "role": "recorded plan",
-      "sha256": "75bd7ee6091b4ebf21d99f42ad81607977d6cc7a9e2366e42b89ce6f73ce6261"
+      "role": "fail-closed evidence plan",
+      "sha256": "2f128610e180b48b48bc558cade31d3d2c6e6e8f0a79daa88dff5f96935dae9e"
     },
     {
       "id": "silicon-full-zone-ledger",
       "path": "source/full-zone-extrema.json",
-      "role": "full-zone checksum ledger and independently parsed raw-output cross-check",
-      "sha256": "2a30ebb89071af1b9aa5167547a5939ec3780be1c4722534704c165aaffd2ea3"
+      "role": "260-point time-reversal-reduced checksum ledger and raw-output cross-check",
+      "sha256": "e72bfde85c36e07aab2cb6ccce75cf70ffda56c97a5cd2a84d2028d28f5411be"
+    },
+    {
+      "id": "silicon-execution-provenance",
+      "path": "source/execution-provenance.json",
+      "role": "route timing, command, exit-status, ancestry, and claim boundary",
+      "sha256": "a388edaaf4a43046ffcbdeb344d6f2090b903823a55fdf9f557528829f7d696e"
+    },
+    {
+      "id": "silicon-manual-preparation",
+      "path": "prepare-replay.py",
+      "role": "fail-closed CIF-to-QE-model and pinned-archive-member preparation",
+      "sha256": "54f8f13198d5d75003661c96c3412d04aa96733a13127e83774bc8e92c8a9439"
     }
   ],
   "started_at": null,
-  "title": "Silicon QE 7.5 ground-state and electronic-structure evidence chain"
+  "title": "Silicon QE 7.5 assembled ground-state and electronic-structure evidence"
 }

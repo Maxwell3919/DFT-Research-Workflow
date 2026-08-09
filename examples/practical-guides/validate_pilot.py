@@ -84,26 +84,26 @@ DOS_ANALYSIS_SCRIPTS = [
 ]
 FERMI_SURFACE_ANALYSIS_SCRIPTS = ["fermi_surface_isovalue_fixture.py"]
 CHARGE_DENSITY_ANALYSIS_SCRIPTS = ["charge_difference_closure.py"]
-POTENTIAL_ALIGNMENT_ANALYSIS_SCRIPTS = ["potential_lineup_fixture.py"]
-CHEMICAL_BONDING_ANALYSIS_SCRIPTS = ["cohp_window_fixture.py"]
-MAGNETIC_CONFIGURATION_ANALYSIS_SCRIPTS = ["magnetic_candidate_ledger.py"]
+POTENTIAL_ALIGNMENT_ANALYSIS_SCRIPTS = []
+CHEMICAL_BONDING_ANALYSIS_SCRIPTS = []
+MAGNETIC_CONFIGURATION_ANALYSIS_SCRIPTS = []
 MAGNETIC_ANISOTROPY_EXCHANGE_ANALYSIS_SCRIPTS = ["anisotropy_exchange_ledger.py"]
 ELASTIC_RESPONSE_ANALYSIS_SCRIPTS = ["strain_stress_ledger.py"]
 DIELECTRIC_RESPONSE_ANALYSIS_SCRIPTS = ["silicon_qe_dielectric.py"]
 POLARIZATION_ANALYSIS_SCRIPTS = ["polarization_branch_path.py"]
 PIEZOELECTRIC_ANALYSIS_SCRIPTS = ["piezoelectric_tensor_ledger.py"]
 HARMONIC_PHONON_ANALYSIS_SCRIPTS = ["silicon_gamma_phonon.py"]
-ANHARMONIC_PHONON_ANALYSIS_SCRIPTS = ["anharmonic_linewidth_ledger.py"]
-LATTICE_THERMAL_TRANSPORT_ANALYSIS_SCRIPTS = ["thermal_transport_tensor_ledger.py"]
-EPC_ANALYSIS_SCRIPTS = ["epc_channel_ledger.py"]
-SUPERCONDUCTIVITY_ANALYSIS_SCRIPTS = ["superconductivity_moment_ledger.py"]
-REACTION_PATH_ANALYSIS_SCRIPTS = ["reaction_path_barrier_ledger.py"]
-DIFFUSION_ANALYSIS_SCRIPTS = ["diffusion_network_ledger.py"]
-AIMD_ANALYSIS_SCRIPTS = ["aimd_segment_ledger.py"]
-STRUCTURAL_SAMPLING_ANALYSIS_SCRIPTS = ["structural_sampling_overlap.py"]
-OPTICAL_SPECTRUM_ANALYSIS_SCRIPTS = ["optical_spectrum_comparison_ledger.py"]
-TIME_DEPENDENT_RESPONSE_ANALYSIS_SCRIPTS = ["time_dependent_response_ledger.py"]
-QUASIPARTICLE_ANALYSIS_SCRIPTS = ["quasiparticle_comparison_ledger.py"]
+ANHARMONIC_PHONON_ANALYSIS_SCRIPTS = []
+LATTICE_THERMAL_TRANSPORT_ANALYSIS_SCRIPTS = []
+EPC_ANALYSIS_SCRIPTS = []
+SUPERCONDUCTIVITY_ANALYSIS_SCRIPTS = []
+REACTION_PATH_ANALYSIS_SCRIPTS = []
+DIFFUSION_ANALYSIS_SCRIPTS = []
+AIMD_ANALYSIS_SCRIPTS = []
+STRUCTURAL_SAMPLING_ANALYSIS_SCRIPTS = []
+OPTICAL_SPECTRUM_ANALYSIS_SCRIPTS = []
+TIME_DEPENDENT_RESPONSE_ANALYSIS_SCRIPTS = []
+QUASIPARTICLE_ANALYSIS_SCRIPTS = []
 ELECTRONIC_TRANSPORT_ANALYSIS_SCRIPTS = ["boltztrap_cosb3_transport.py"]
 SCRIPTS = [
     *STRUCTURE_SCRIPTS,
@@ -171,7 +171,7 @@ def main() -> None:
             raise RuntimeError(f"{path} does not define run()")
         results[path.stem] = module.run()
 
-    assert len(results) == 65
+    assert len(results) == 51
     report = {
         "schema_version": 17,
         "project_root": str(ROOT),
@@ -218,7 +218,7 @@ def main() -> None:
         "evidence_boundary": (
             "Execution establishes declared structural transformations, synthetic convergence-table "
             "analysis, bounded ASE/EMT or synthetic optimization diagnostics, and deterministic "
-            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, Fermi-isovalue, charge-difference closure, potential-lineup, COHP-window, magnetic-candidate, magnetic-anisotropy/exchange-ledger, elastic strain--stress-ledger, polarization-branch, piezoelectric-ledger, anharmonic-linewidth-ledger, lattice-transport-tensor-ledger, EPC-channel-ledger, superconductivity-spectral-moment-ledger, reaction-path-barrier-ledger, diffusion-network-ledger, AIMD-segment-ledger, structural-sampling-overlap, optical-spectrum-comparison, time-dependent-response, and quasiparticle-comparison metadata analysis; actual bounded Silicon QE 7.5 SCF plus Gamma-point phonon and dielectric/Born-charge DFPT output reconstructions; and frozen public-data convex-hull, Si-surface, CMR adsorption, and CoSb3 transport redraws only; "
+            "reference-state metadata, energy-ledger arithmetic, synthetic EOS, defect, surface, adsorption, Fermi-isovalue, charge-difference closure, magnetic-anisotropy/exchange-ledger, elastic strain--stress-ledger, polarization-branch, and piezoelectric-ledger analysis; actual bounded Silicon QE 7.5 SCF plus Gamma-point phonon and dielectric/Born-charge DFPT output reconstructions; and frozen public-data convex-hull, Si-surface, CMR adsorption, and CoSb3 transport redraws only; "
             "it does not establish DFT convergence, a physical minimum, a real reference ground state, "
             "a material formation, surface or adsorption energy, real work function, defect charge state or concentration, physical EOS or phase transition, independent database validation, "
             "candidate completeness, phonon-frequency convergence, phonon dispersion or stability, transferability, a converged material dielectric response, GW result, or a scientific conclusion."
@@ -239,7 +239,7 @@ def main() -> None:
         "four synthetic convergence analyses plus one hash-bound Silicon QE SCF reconstruction, four bounded optimization diagnostics plus one hash-bound Silicon QE BFGS reconstruction, and "
         "four deterministic reference-state diagnostics plus one hash-bound Silicon QE restart reconstruction, two energy-ledger fixtures, three synthetic EOS analyses, "
         "one frozen public-data convex-hull reconstruction, two synthetic defect analyses, two synthetic surface analyses, "
-            "one hash-bound Silicon QE path/mesh reconstruction, one bounded Silicon QE Gamma-point phonon reconstruction, one hash-bound Silicon QE dielectric/Born-charge response reconstruction, one frozen public-data Si-surface redraw, one hash-bound InterMat surface ledger, one frozen public-data Al/TiN interface ledger, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one frozen public-output CoSb3 transport redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented potential-lineup fixture, one invented COHP-window fixture, one invented magnetic-candidate fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented polarization-branch fixture, one invented piezoelectric ledger fixture, one invented anharmonic-linewidth ledger fixture, one invented lattice-transport tensor ledger fixture, one invented EPC channel ledger fixture, one invented superconductivity spectral-moment ledger fixture, one invented reaction-path barrier ledger fixture, one invented diffusion-network ledger fixture, one invented AIMD segment ledger fixture, one invented structural-sampling overlap ledger fixture, one invented optical-spectrum comparison ledger fixture, one invented time-dependent-response ledger fixture, and one invented quasiparticle-comparison ledger fixture under pinned versions; the real-output companions perform no additional DFT, dielectric-response, GW, transport rerun, or material-property calculation."
+            "one hash-bound Silicon QE path/mesh reconstruction, one bounded Silicon QE Gamma-point phonon reconstruction, one hash-bound Silicon QE dielectric/Born-charge response reconstruction, one frozen public-data Si-surface redraw, one hash-bound InterMat surface ledger, one frozen public-data Al/TiN interface ledger, two synthetic adsorption analyses, one frozen public-data CMR adsorption redraw, one frozen public-output CoSb3 transport redraw, one invented Fermi-isovalue fixture, one invented charge-difference closure fixture, one invented magnetic-anisotropy/exchange-ledger fixture, one invented elastic strain--stress ledger fixture, one invented polarization-branch fixture, and one invented piezoelectric ledger fixture under pinned versions; the real-output companions perform no additional DFT, dielectric-response, GW, transport rerun, or material-property calculation."
     )
 
 

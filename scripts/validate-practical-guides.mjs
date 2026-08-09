@@ -46,6 +46,8 @@ const requiredGuideSlugs = new Set([
   'build-adsorption-energy-ledger',
   'compare-adsorption-sites-and-coverage',
   'replot-cmr-co-adsorption',
+  'inspect-qe-hpc-calculations-from-the-terminal',
+  'audit-a-qe-calculation',
 ]);
 const requiredParentMinimum = new Map([
   ['build-or-modify-computational-model', 4],
@@ -58,8 +60,16 @@ const requiredParentMinimum = new Map([
   ['defect-formation-energies-and-charge-states', 2],
   ['surface-energy-and-work-function', 3],
   ['adsorption-energies', 3],
+  ['validate-results-and-scientific-conclusions', 2],
 ]);
 const reviewRequirements = new Map([
+  ['docs/reviews/2026-08-09-qe-terminal-inspection-and-audit.md', [
+    'Internal manifest codes are not taught as a reader-facing taxonomy.',
+    'They do not write files, call QE or Slurm, submit or cancel work, or access a private host.',
+    'It does not establish a current scheduler state, rerun QE',
+    'No media are added.',
+    'Source reachability, companion execution, content validation, build, and browser behavior remain separate checks',
+  ]],
   ['docs/reviews/2026-08-05-structure-candidate-construction.md', [
     'reviewed within this construction-only boundary',
     'No electronic-structure solver, geometry optimizer',
@@ -315,6 +325,9 @@ function parseFrontmatter(source) {
     if (rawValue.trim() === '') {
       data[key] = [];
       activeArray = key;
+    } else if (rawValue.trim() === '[]') {
+      data[key] = [];
+      activeArray = null;
     } else {
       data[key] = rawValue.trim().replace(/^['"]|['"]$/g, '');
       activeArray = null;
@@ -360,10 +373,11 @@ for (const file of files) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(data.reviewed_at ?? '')) errors.push(`${file}: invalid reviewed_at`);
   if (!data.summary || data.summary.length < 20) errors.push(`${file}: summary is too short`);
 
-  for (const requiredPhrase of ['What this guide verifies', 'Official sources']) {
-    if (data.kind === 'implementation' && !body.includes(requiredPhrase)) errors.push(`${file}: missing ${requiredPhrase}`);
+  if (data.kind === 'implementation') {
+    if (!/^## (?:Purpose|What this guide verifies)$/m.test(body)) errors.push(`${file}: missing Purpose or What this guide verifies`);
+    if (!body.includes('Official sources')) errors.push(`${file}: missing Official sources`);
   }
-  if (data.kind === 'worked-example' && !body.includes('What this example does not establish')) {
+  if (data.kind === 'worked-example' && !/What this example does not establish|claim boundary/i.test(body)) {
     errors.push(`${file}: worked example is missing its claim boundary`);
   }
   if (/^## (?:Inputs|Outputs|Requirement|Repeatability|Dependencies|Alternatives|Exclusions)$/m.test(body)) {
@@ -394,7 +408,7 @@ for (const file of files) {
   if (missingUrls.length) errors.push(`${file}: missing declared source URLs: ${missingUrls.join(', ')}`);
   if (undeclaredUrls.length) errors.push(`${file}: undeclared external URLs: ${undeclaredUrls.join(', ')}`);
 
-  if (!Array.isArray(data.media_ids) || data.media_ids.length === 0) errors.push(`${file}: missing media_ids`);
+  if (!Array.isArray(data.media_ids)) errors.push(`${file}: missing media_ids`);
   for (const mediaId of data.media_ids ?? []) {
     if (usedMediaIds.has(mediaId)) errors.push(`${mediaId}: media asset is reused by more than one page`);
     usedMediaIds.add(mediaId);
@@ -440,7 +454,7 @@ for (const asset of mediaManifest.assets) {
 const reviewPaths = new Set(guides.map((guide) => guide.data.review));
 for (const reviewPath of reviewPaths) {
   const review = await readFile(new URL(reviewPath, root), 'utf8');
-  const normalizedReview = review.toLowerCase();
+  const normalizedReview = review.replace(/\s+/g, ' ').toLowerCase();
   const requirements = reviewRequirements.get(reviewPath);
   if (!requirements) {
     errors.push(`${reviewPath}: no practical review requirements declared`);

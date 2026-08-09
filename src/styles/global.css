@@ -111,27 +111,6 @@ p { margin: 0 0 1.2rem; }
   font-size: 1.2rem;
 }
 
-.parts-overview { margin-top: 3rem; }
-
-.parts-overview ol {
-  margin: 1rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.parts-overview li {
-  padding: 0.8rem 0;
-  border-top: 1px solid #ececec;
-}
-
-.parts-overview li:last-child { border-bottom: 1px solid #ececec; }
-
-.parts-overview span {
-  display: block;
-  color: #666666;
-  font-size: 0.94rem;
-}
-
 .framework-note {
   margin-top: 2rem;
   color: #555555;

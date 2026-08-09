@@ -1,6 +1,6 @@
 {
   "case_id": "silicon-ground-state-electronic-structure",
-  "claim_boundary": "Stored public outputs demonstrate bounded execution and parsing lineage only. They do not establish convergence of any electronic, vibrational, or response observable; a band gap; stability; or experimental agreement.",
+  "claim_boundary": "Stored public outputs are an assembled set of separately recorded real QE stages. They support bounded execution and parsing lineage only, not one continuous historical launcher, convergence, a band gap, stability, or experimental agreement.",
   "execution_observations": {
     "dielectric_tensor": [
       [
@@ -20,7 +20,7 @@
       ]
     ],
     "full_zone": {
-      "boundary": "This parses the recorded 8x8x8 full-zone sample only. It does not establish a converged fundamental, quasiparticle, optical, or experimental gap.",
+      "boundary": "This parses a 260-point time-reversal-reduced sample from the nominal 8x8x8 grid. It does not establish a converged fundamental, quasiparticle, optical, or experimental gap.",
       "parsed": {
         "band_count": 8,
         "cbm_coordinate": [
@@ -45,7 +45,7 @@
         "si-fullzone.bands.dat": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc"
       },
       "recorded_ledger": {
-        "claim_boundary": "Hash-bound teaching samples from real QE execution. The line path and 8x8x8 mesh are different samplings; neither sampled separation is a converged fundamental, quasiparticle, optical, or experimental gap.",
+        "claim_boundary": "Hash-bound teaching samples from separately recorded real QE stages. The line path and 260-point time-reversal-reduced 8x8x8 sample are different samplings; neither sampled separation is a converged fundamental, quasiparticle, optical, or experimental gap, and no continuous historical launcher is claimed.",
         "execution_date": "2026-08-04",
         "full_zone_sample": {
           "band_count": 8,
@@ -63,7 +63,7 @@
           "kpoint_count": 260,
           "sampled_separation_eV": 0.617,
           "source_output_sha256": "46fc87a9741eb6abb6ec527e0374878b2efef191414027dab3d54b070b33fabc",
-          "symmetry_policy": "nosym=.true.; QE 7.5 documents a uniform grid as expanded over the Brillouin zone while retaining time-reversal equivalence unless noinv=.true.",
+          "symmetry_policy": "Nominal 8x8x8 automatic grid with nosym=.true.; noinv=.true. was not set, so time-reversal equivalence remained and QE printed 260 points rather than a 512-point enumeration.",
           "vbm_bandsx_coordinate": [
             0.0,
             0.0,
@@ -97,6 +97,7 @@
         },
         "structure_source_url": "https://www.crystallography.net/cod/9013102.html"
       },
+      "sampling_policy": "Nominal 8x8x8 automatic grid with nosym=.true.; noinv=.true. absent, so time-reversal equivalence remained and QE printed 260 points.",
       "status": "PARSED_RAW_OUTPUT"
     },
     "gamma_epsilon_phonon_cm-1": [
@@ -129,11 +130,19 @@
   "model": {
     "formula": "Si",
     "pseudopotential": {
+      "extracted_bytes": 1299382,
       "filename": "Si.pbe-n-rrkjus_psl.1.0.0.UPF",
       "relativistic": "scalar",
       "sha256": "ae3aefd0811f9499dbc4a72f1f9ae02ef4fc7f3568bf6f559b68668719c69e2b",
-      "source": "SSSP PBE Precision bundle distributed with Quantum ESPRESSO 7.5",
-      "source_url": "https://www.materialscloud.org/discover/sssp/table/precision",
+      "source": "Official Materials Cloud SSSP v1.3.0 PBE precision archive member.",
+      "source_archive_bytes": 62963841,
+      "source_archive_md5": "fde94756886f32ada7bf597547557eb5",
+      "source_archive_md5_role": "Publisher-listed cross-check; the archive SHA-256 is the fail-closed identity.",
+      "source_archive_member": "./Si.pbe-n-rrkjus_psl.1.0.0.UPF",
+      "source_archive_sha256": "d91db6b4b3788501d535a5b84ebabf3859ea3e3ac6ea154c4be3718da50f0c85",
+      "source_registry_url": "https://www.materialscloud.org/discover/sssp/table/precision",
+      "source_url": "https://archive.materialscloud.org/records/rcyfm-68h65/files/SSSP_1.3.0_PBE_precision.tar.gz?download=1",
+      "source_url_status": "The pinned official archive URL, 62963841-byte size, archive SHA-256, publisher-listed MD5 cross-check, exact regular-member path, extracted byte count, and member SHA-256 identify the replay bytes. A same-name file with a different hash must be rejected.",
       "xc_functional": "PBE"
     },
     "relativity": "scalar",

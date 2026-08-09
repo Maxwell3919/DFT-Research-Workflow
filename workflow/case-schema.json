@@ -18,6 +18,10 @@
     "gates",
     "claim_boundary"
   ],
+  "dependentRequired": {
+    "completion_boundary": ["execution_routes"],
+    "execution_routes": ["completion_boundary"]
+  },
   "properties": {
     "schema_version": { "const": "1.0" },
     "case_id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
@@ -32,6 +36,13 @@
     "started_at": { "type": ["string", "null"], "format": "date-time" },
     "completed_at": { "type": ["string", "null"], "format": "date-time" },
     "exit_code": { "type": ["integer", "null"] },
+    "completion_boundary": { "type": "string", "minLength": 1 },
+    "execution_routes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/executionRoute" }
+    },
     "software": {
       "type": "array",
       "minItems": 1,
@@ -59,10 +70,25 @@
           "sha256": { "$ref": "#/$defs/sha256" },
           "raw_sha256": { "$ref": "#/$defs/sha256" },
           "sanitization": { "type": "string" },
-          "url": { "type": "string", "format": "uri" },
+          "url": { "type": ["string", "null"], "format": "uri" },
+          "registry_url": { "type": "string", "format": "uri" },
+          "exact_url_status": { "type": "string", "minLength": 1 },
           "accessed_at": { "type": "string", "format": "date" },
           "licence_boundary": { "type": "string" }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": { "url": { "type": "null" } },
+              "required": ["url"]
+            },
+            "then": { "required": ["exact_url_status"] }
+          },
+          {
+            "if": { "required": ["registry_url"] },
+            "then": { "required": ["exact_url_status"] }
+          }
+        ]
       }
     },
     "commands": {
@@ -75,8 +101,46 @@
         "properties": {
           "stage": { "type": "string", "minLength": 1 },
           "command": { "type": "string", "minLength": 1 },
-          "exit_code": { "type": "integer" }
-        }
+          "exit_code": { "type": ["integer", "null"] },
+          "route_id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "record_kind": {
+            "enum": [
+              "existing-route-execution-record",
+              "recorded-output-only",
+              "replay-command-not-executed-by-this-edit",
+              "available-command-not-rerun-by-this-edit",
+              "isolated-copy-check-command-not-rerun-by-this-edit"
+            ]
+          },
+          "evidence_scope": { "type": "string", "minLength": 1 },
+          "exit_code_scope": { "type": "string", "minLength": 1 },
+          "input_artifacts": { "$ref": "#/$defs/provenanceArtifactPaths" },
+          "output_artifacts": { "$ref": "#/$defs/provenanceArtifactPaths" },
+          "parent_artifacts": { "$ref": "#/$defs/provenanceArtifactPaths" }
+        },
+        "allOf": [
+          {
+            "if": {
+              "anyOf": [
+                { "required": ["route_id"] },
+                { "required": ["record_kind"] },
+                { "required": ["evidence_scope"] },
+                { "required": ["exit_code_scope"] },
+                { "required": ["input_artifacts"] },
+                { "required": ["output_artifacts"] },
+                { "required": ["parent_artifacts"] }
+              ]
+            },
+            "then": {
+              "required": ["route_id", "record_kind", "evidence_scope", "exit_code_scope"],
+              "anyOf": [
+                { "required": ["input_artifacts"] },
+                { "required": ["output_artifacts"] },
+                { "required": ["parent_artifacts"] }
+              ]
+            }
+          }
+        ]
       }
     },
     "validation": {
@@ -134,6 +198,47 @@
   "$defs": {
     "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
     "relativePath": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$" },
+    "provenanceArtifactPaths": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/relativePath" }
+    },
+    "executionRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route_id",
+        "label",
+        "timing",
+        "exact_command_status",
+        "exact_exit_code_status",
+        "ancestry",
+        "boundary"
+      ],
+      "properties": {
+        "route_id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "label": { "type": "string", "minLength": 1 },
+        "timing": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["started_at", "completed_at", "scope"],
+          "properties": {
+            "started_at": { "type": ["string", "null"], "format": "date-time" },
+            "completed_at": { "type": ["string", "null"], "format": "date-time" },
+            "scope": { "type": "string", "minLength": 1 }
+          }
+        },
+        "exact_command_status": { "type": "string", "minLength": 1 },
+        "exact_exit_code_status": { "type": "string", "minLength": 1 },
+        "ancestry": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "boundary": { "type": "string", "minLength": 1 }
+      }
+    },
     "gate": {
       "type": "object",
       "additionalProperties": false,

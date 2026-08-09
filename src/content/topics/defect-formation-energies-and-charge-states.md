@@ -3,7 +3,7 @@ topic_slug: defect-formation-energies-and-charge-states
 status: reviewed
 ---
 
-A point-defect calculation compares a host crystal with a crystal in which atoms and electrons have been exchanged with declared reservoirs. Its primary result is therefore a formation free energy as a function of atomic chemical potentials and electron chemical potential, not a single intrinsic “defect energy.”
+A point-defect calculation compares a host crystal with a crystal in which atoms and electrons have been exchanged with declared reservoirs. Its primary result is therefore a formation energy as a function of atomic and electron chemical potentials, not a single intrinsic “defect energy.” Call it a formation free energy only when the declared thermal and statistical-mechanical contributions are included.
 
 Charge-state ordering, transition levels, equilibrium populations, and doping limits are later constructions. Each remains conditional on the defect configurations considered, supercell convergence, electrostatic treatment, band edges, thermodynamic conditions, and electronic-structure method.
 

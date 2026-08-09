@@ -275,193 +275,6 @@
       "case_id": "silicon-ground-state-electronic-structure"
     },
     {
-      "guide_slug": "check-epc-channel-ledger",
-      "parent_topic": "electron-phonon-coupling",
-      "evidence_class": "synthetic-only",
-      "material": "invented EPC fixture",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "identity-bound EPW example output",
-      "blocker": "EPC runtime and data provenance pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/epc_channel_ledger.py",
-      "media_ids": [
-        "epc-channel-ledger"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "check-superconductivity-moment-ledger",
-      "parent_topic": "conventional-superconductivity",
-      "evidence_class": "synthetic-only",
-      "material": "invented alpha2F fixture",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "identity-bound EPW example output",
-      "blocker": "EPC runtime and data provenance pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/superconductivity_moment_ledger.py",
-      "media_ids": [
-        "superconductivity-moment-ledger"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "check-lattice-transport-tensor-ledger",
-      "parent_topic": "lattice-thermal-transport",
-      "evidence_class": "synthetic-only",
-      "material": "invented tensor fixture",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open Phono3py data",
-      "blocker": "third-order workflow and source selection pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/thermal_transport_tensor_ledger.py",
-      "media_ids": [
-        "lattice-transport-tensor-ledger"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "check-anharmonic-linewidth-ledger",
-      "parent_topic": "anharmonic-phonons",
-      "evidence_class": "synthetic-only",
-      "material": "invented linewidth fixture",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open Phono3py data",
-      "blocker": "third-order workflow and source selection pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/anharmonic_linewidth_ledger.py",
-      "media_ids": [
-        "anharmonic-linewidth-ledger"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "check-optical-spectrum-comparison-ledger",
-      "parent_topic": "independent-particle-optical-properties",
-      "evidence_class": "synthetic-only",
-      "material": "invented spectrum",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open tutorial dielectric output",
-      "blocker": "source selection pending",
-      "priority": 3,
-      "execution_script": "examples/practical-guides/optical_spectrum_comparison_ledger.py",
-      "media_ids": [
-        "optical-spectrum-comparison-ledger"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "check-time-dependent-response-ledger",
-      "parent_topic": "time-dependent-response-and-spectroscopy",
-      "evidence_class": "synthetic-only",
-      "material": "invented response fixture",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open Octopus tutorial output",
-      "blocker": "source selection pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/time_dependent_response_ledger.py",
-      "media_ids": [
-        "time-dependent-response-ledger"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "check-quasiparticle-comparison-ledger",
-      "parent_topic": "quasiparticle-corrections",
-      "evidence_class": "synthetic-only",
-      "material": "invented GW fixture",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open ABINIT/Yambo tutorial output",
-      "blocker": "source selection pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/quasiparticle_comparison_ledger.py",
-      "media_ids": [
-        "quasiparticle-comparison-ledger"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "check-aimd-segment-ledger",
-      "parent_topic": "ab-initio-molecular-dynamics",
-      "evidence_class": "synthetic-only",
-      "material": "invented trajectory labels",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open tutorial trajectory",
-      "blocker": "MD run/data selection pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/aimd_segment_ledger.py",
-      "media_ids": [
-        "aimd-segment-ledger"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "check-structural-sampling-window-overlap",
-      "parent_topic": "finite-temperature-structural-sampling",
-      "evidence_class": "synthetic-only",
-      "material": "invented window supports",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open sampling dataset",
-      "blocker": "source selection pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/structural_sampling_overlap.py",
-      "media_ids": [
-        "structural-sampling-window-overlap"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "check-reaction-path-barrier-ledger",
-      "parent_topic": "reaction-paths-and-transition-states",
-      "evidence_class": "synthetic-only",
-      "material": "invented barrier fixture",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open NEB tutorial output",
-      "blocker": "source selection pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/reaction_path_barrier_ledger.py",
-      "media_ids": [
-        "reaction-path-barrier-ledger"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "check-diffusion-network-ledger",
-      "parent_topic": "diffusion-barriers",
-      "evidence_class": "synthetic-only",
-      "material": "invented diffusion fixture",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open NEB tutorial output",
-      "blocker": "source selection pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/diffusion_network_ledger.py",
-      "media_ids": [
-        "diffusion-network-ledger"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
       "guide_slug": "check-strain-stress-ledger",
       "parent_topic": "elastic-constants-and-mechanical-properties",
       "evidence_class": "synthetic-only",
@@ -545,57 +358,6 @@
       "execution_script": "examples/practical-guides/charge_difference_closure.py",
       "media_ids": [
         "charge-difference-closure"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "assemble-a-potential-lineup",
-      "parent_topic": "electrostatic-potential-and-band-alignment",
-      "evidence_class": "synthetic-only",
-      "material": "invented lineup fixture",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open planar-potential output",
-      "blocker": "source selection pending",
-      "priority": 3,
-      "execution_script": "examples/practical-guides/potential_lineup_fixture.py",
-      "media_ids": [
-        "potential-lineup-fixture"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "integrate-a-declared-cohp-energy-window",
-      "parent_topic": "chemical-bonding-analysis",
-      "evidence_class": "synthetic-only",
-      "material": "invented COHP fixture",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open LOBSTER tutorial output",
-      "blocker": "source selection pending",
-      "priority": 4,
-      "execution_script": "examples/practical-guides/cohp_window_fixture.py",
-      "media_ids": [
-        "cohp-window-fixture"
-      ],
-      "upgrade_readiness": "blocked"
-    },
-    {
-      "guide_slug": "compare-enumerated-magnetic-candidates",
-      "parent_topic": "magnetic-configuration-and-ground-state-comparison",
-      "evidence_class": "synthetic-only",
-      "material": "invented magnetic ledger",
-      "real_result": false,
-      "interface": false,
-      "traceable_data": false,
-      "upgrade": "open magnetic tutorial data",
-      "blocker": "source selection pending",
-      "priority": 3,
-      "execution_script": "examples/practical-guides/magnetic_candidate_ledger.py",
-      "media_ids": [
-        "magnetic-candidate-ledger"
       ],
       "upgrade_readiness": "blocked"
     },
@@ -1069,6 +831,38 @@
       ],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
+    },
+    {
+      "guide_slug": "inspect-qe-hpc-calculations-from-the-terminal",
+      "parent_topic": "validate-results-and-scientific-conclusions",
+      "evidence_class": "real-execution",
+      "material": "bcc Fe FM and non-spin-polarized QE 7.5 adverse execution record",
+      "real_result": true,
+      "interface": false,
+      "traceable_data": true,
+      "upgrade": "completed read-only terminal inspection of the committed bcc Fe case",
+      "blocker": "committed records cannot establish a live scheduler state or authorize job control",
+      "priority": 1,
+      "execution_script": "examples/practical-guides/qe_hpc_terminal_inspection.py",
+      "media_ids": [],
+      "upgrade_readiness": "completed",
+      "case_id": "bcc-fe-spin-qe"
+    },
+    {
+      "guide_slug": "audit-a-qe-calculation",
+      "parent_topic": "validate-results-and-scientific-conclusions",
+      "evidence_class": "real-execution",
+      "material": "bcc Fe FM and non-spin-polarized QE 7.5 adverse execution record",
+      "real_result": true,
+      "interface": false,
+      "traceable_data": true,
+      "upgrade": "preserve the failed G4 screen and require a separately authorized predeclared series for any upgrade",
+      "blocker": "G4 fixed-geometry FM k-mesh screen failed, G5 is not claimed, and no phonon artifacts exist",
+      "priority": 1,
+      "execution_script": "examples/practical-guides/qe_calculation_audit.py",
+      "media_ids": [],
+      "upgrade_readiness": "completed",
+      "case_id": "bcc-fe-spin-qe"
     }
   ]
 }

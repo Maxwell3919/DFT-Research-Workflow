@@ -2,40 +2,549 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { workflowSections } from '../../lib/workflow';
 import { withBase } from '../../lib/paths';
+
+const backboneSections = workflowSections.filter((section) => ['A', 'B', 'C'].includes(section.id));
+const targetSection = workflowSections.find((section) => section.id === 'D');
+const completionSection = workflowSections.find((section) => section.id === 'E');
 ---
 
 <BaseLayout
   title="Research Workflow"
-  description="The A–E DFT research workflow, from structures to target calculations and research completion."
+  description="A question-led A–E DFT manual: define the required observable, select a bounded target calculation, and follow evidence back when necessary."
   current="operations"
 >
-  <h1>Research Workflow</h1>
-  <p class="page-intro">
-    The workflow is organized around tasks that researchers plan and discuss as meaningful units of work. A–C establish the structure, setup, and reference state; D branches into the calculations required by the scientific question; E turns the results into a supported and reproducible conclusion. The map is not a one-way pipeline: diagnostics and new evidence can return the study to an earlier task, change a branch, or require a stricter observable-specific convergence test.
-  </p>
+  <article class="workflow-manual">
+    <header class="workflow-lede">
+      <p class="kicker">Question first · observable next · calculation last</p>
+      <h1>Calculate what the question requires</h1>
+      <p class="page-intro">
+        Do not begin by asking which calculation is customary. State the scientific question, name the observable that could answer it, define the comparison and precision required, and only then choose a target branch. A–C establish a defensible model and reference state; D is a branching calculation library; E tests whether the resulting evidence supports the intended conclusion.
+      </p>
+    </header>
 
-  {workflowSections.map((section) => (
-    <section class="part-section" id={`part-${section.id.toLowerCase()}`} aria-labelledby={`part-${section.id.toLowerCase()}-heading`}>
+    <section class="observable-selection" aria-labelledby="observable-heading">
       <header>
-        <h2 id={`part-${section.id.toLowerCase()}-heading`}>{section.id} · {section.title}</h2>
-        <p>{section.summary}</p>
+        <p>Four bounded examples</p>
+        <h2 id="observable-heading">A question determines its evidence</h2>
       </header>
+      <dl>
+        <div>
+          <dt>Which same-composition polymorph is lower in static-lattice energy at 0 K?</dt>
+          <dd><strong>Required observable:</strong> a matched energy difference per formula unit, with numerical uncertainty small enough to resolve the ranking. One isolated total energy cannot answer the comparison.</dd>
+        </div>
+        <div>
+          <dt>Is the fundamental gap direct or indirect within the chosen approximation?</dt>
+          <dd><strong>Required observable:</strong> valence- and conduction-band extrema, their k-points, and the gap from adequate Brillouin-zone coverage. A high-symmetry path alone is not a full-zone search.</dd>
+        </div>
+        <div>
+          <dt>Is the reference crystal dynamically stable in the harmonic approximation?</dt>
+          <dd><strong>Required observable:</strong> phonon frequencies over the q-space needed by the claim, with displacement or q-mesh convergence and numerical artifact checks. A Γ-point result is not a general stability test.</dd>
+        </div>
+        <div>
+          <dt>What electron–phonon estimate of Tc follows for a stated Coulomb parameter?</dt>
+          <dd><strong>Required observable:</strong> converged α²F(ω), λ, ω<sub>log</sub>, the stated μ*, and the declared Tc equation or solver. SCF convergence and one phonon calculation do not establish Tc.</dd>
+        </div>
+      </dl>
+    </section>
 
-      {section.groups.map((group) => (
-        <div class="workflow-group">
-          {section.id === 'D' && <h3>{group.id} · {group.title}</h3>}
-          {section.id === 'D' && <p class="group-summary">{group.summary}</p>}
-          <ul class="directory-list topic-list">
-            {group.topics.map((topic) => (
-              <li><a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a></li>
+    <figure class="branch-map" aria-labelledby="branch-map-title">
+      <figcaption>
+        <span>Dependency map</span>
+        <strong id="branch-map-title">D branches; E sends evidence back</strong>
+      </figcaption>
+
+      <div class="map-backbone" aria-label="A through C research backbone">
+        {backboneSections.map((section) => (
+          <a href={`#part-${section.id.toLowerCase()}`}>
+            <strong>{section.id}</strong>
+            <span>{section.title}</span>
+          </a>
+        ))}
+      </div>
+
+      {targetSection && (
+        <div class="map-target">
+          <div class="map-target-heading">
+            <a href="#part-d"><strong>D</strong><span>{targetSection.title}</span></a>
+            <p>Choose only the branch or branches required by the observable.</p>
+          </div>
+          <ul aria-label="Existing D navigation groups">
+            {targetSection.groups.map((group) => (
+              <li><span>{group.id}</span>{group.title}</li>
             ))}
           </ul>
         </div>
+      )}
+
+      {completionSection && (
+        <div class="map-completion">
+          <a href="#part-e"><strong>E</strong><span>{completionSection.title}</span></a>
+          <p><b>Feedback:</b> validation, disagreement, or insufficient precision can return the study to A, B, C, or another D branch.</p>
+        </div>
+      )}
+    </figure>
+
+    <section class="topic-directory" aria-labelledby="directory-heading">
+      <header class="directory-heading">
+        <p>Read by scientific need</p>
+        <h2 id="directory-heading">The A–E manual</h2>
+      </header>
+
+      {workflowSections.map((section) => (
+        <section class="part-section" id={`part-${section.id.toLowerCase()}`} aria-labelledby={`part-${section.id.toLowerCase()}-heading`}>
+          <header>
+            <h2 id={`part-${section.id.toLowerCase()}-heading`}>{section.id} · {section.title}</h2>
+            <p>{section.summary}</p>
+          </header>
+
+          {section.groups.map((group) => (
+            <div class="workflow-group">
+              {section.id === 'D' && <h3>{group.id} · {group.title}</h3>}
+              {section.id === 'D' && <p class="group-summary">{group.summary}</p>}
+              <ul class="directory-list topic-list">
+                {group.topics.map((topic) => (
+                  <li><a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
       ))}
     </section>
-  ))}
 
-  <p class="framework-note">
-    Older Framework and numbered direct links remain as migration surfaces. Their useful branching, method, evidence, and provenance material now lives in the relevant A–E topics; the old routes are not part of the current reading structure.
-  </p>
+    <p class="framework-note">
+      Older Framework and numbered direct links remain only as migration surfaces. They are not an alternative taxonomy, reading order, or calculation prescription.
+    </p>
+  </article>
 </BaseLayout>
+
+<style>
+  .workflow-manual {
+    --ink: #181714;
+    --muted: #666158;
+    --rule: #d9d4ca;
+    --accent: #8a3f28;
+    color: var(--ink);
+    max-width: 76rem;
+  }
+
+  .workflow-lede {
+    max-width: 61rem;
+    padding: clamp(1rem, 3vw, 2.5rem) 0 clamp(2.5rem, 6vw, 5.5rem);
+  }
+
+  .kicker,
+  .observable-selection > header > p,
+  .directory-heading > p {
+    color: var(--accent);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    margin: 0 0 0.9rem;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(3rem, 7vw, 6.9rem);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    line-height: 0.91;
+    margin: 0;
+    max-width: 11ch;
+  }
+
+  .page-intro {
+    color: var(--muted);
+    font-size: clamp(1.08rem, 2vw, 1.35rem);
+    line-height: 1.58;
+    margin: 2rem 0 0;
+    max-width: 47em;
+  }
+
+  .observable-selection,
+  .branch-map,
+  .topic-directory,
+  .framework-note {
+    border-top: 1px solid var(--ink);
+  }
+
+  .observable-selection {
+    display: grid;
+    gap: 2rem 4rem;
+    grid-template-columns: minmax(12rem, 0.8fr) minmax(20rem, 2fr);
+    padding: 1.25rem 0 clamp(3.5rem, 7vw, 6rem);
+  }
+
+  .observable-selection h2,
+  .directory-heading h2 {
+    font-size: clamp(1.65rem, 3vw, 2.7rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  .observable-selection dl {
+    display: grid;
+    gap: 0 2rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+  }
+
+  .observable-selection dl > div {
+    border-top: 1px solid var(--rule);
+    padding: 1rem 0 1.4rem;
+  }
+
+  .observable-selection dt {
+    font-size: 1.04rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .observable-selection dd {
+    color: var(--muted);
+    line-height: 1.55;
+    margin: 0.65rem 0 0;
+  }
+
+  .observable-selection dd strong {
+    color: var(--ink);
+  }
+
+  .branch-map {
+    margin: 0;
+    padding: 1.25rem 0 clamp(3.5rem, 7vw, 6rem);
+  }
+
+  .branch-map figcaption {
+    align-items: baseline;
+    display: flex;
+    gap: 1rem 2rem;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+
+  .branch-map figcaption span {
+    color: var(--accent);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .branch-map figcaption strong {
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    font-weight: 500;
+  }
+
+  .map-backbone {
+    display: grid;
+    gap: 2.6rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    position: relative;
+  }
+
+  .map-backbone::after {
+    background: var(--accent);
+    content: "";
+    height: 1px;
+    left: 1.25rem;
+    position: absolute;
+    right: 1.25rem;
+    top: 1.25rem;
+    z-index: 0;
+  }
+
+  .map-backbone a,
+  .map-target-heading a,
+  .map-completion a {
+    align-items: baseline;
+    color: inherit;
+    display: flex;
+    gap: 0.8rem;
+    position: relative;
+    text-decoration: none;
+    z-index: 1;
+  }
+
+  .map-backbone a::before {
+    background: #fff;
+    bottom: -0.3rem;
+    content: "";
+    left: -0.25rem;
+    position: absolute;
+    right: -0.25rem;
+    top: -0.3rem;
+    z-index: -1;
+  }
+
+  .map-backbone strong,
+  .map-target-heading strong,
+  .map-completion strong {
+    color: var(--accent);
+    font-size: 2.3rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .map-backbone span,
+  .map-target-heading span,
+  .map-completion span {
+    font-size: 0.94rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .map-target {
+    border: 1px solid var(--ink);
+    display: grid;
+    gap: 2rem 4rem;
+    grid-template-columns: minmax(12rem, 0.75fr) minmax(22rem, 2fr);
+    margin: 2.2rem 0;
+    padding: clamp(1.25rem, 3vw, 2.2rem);
+    position: relative;
+  }
+
+  .map-target::before {
+    color: var(--accent);
+    content: "↓";
+    font-size: 1.2rem;
+    left: 1rem;
+    position: absolute;
+    top: -2rem;
+  }
+
+  .map-target-heading p,
+  .map-completion p {
+    color: var(--muted);
+    line-height: 1.5;
+    margin: 0.8rem 0 0;
+  }
+
+  .map-target ul {
+    display: grid;
+    gap: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .map-target li {
+    border-top: 1px solid var(--rule);
+    font-size: 0.88rem;
+    line-height: 1.3;
+    padding: 0.72rem 0;
+  }
+
+  .map-target li span {
+    color: var(--accent);
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    min-width: 2.4rem;
+  }
+
+  .map-completion {
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    gap: 1rem 4rem;
+    grid-template-columns: minmax(13rem, 0.75fr) minmax(20rem, 2fr);
+    padding-bottom: 1.2rem;
+    position: relative;
+  }
+
+  .map-completion::before {
+    color: var(--accent);
+    content: "↺";
+    font-size: 2rem;
+    position: absolute;
+    right: 0;
+    top: -0.2rem;
+  }
+
+  .map-completion p {
+    margin: 0;
+    padding-right: 3rem;
+  }
+
+  .map-completion b {
+    color: var(--ink);
+  }
+
+  .map-backbone a:hover span,
+  .map-backbone a:focus-visible span,
+  .map-target-heading a:hover span,
+  .map-target-heading a:focus-visible span,
+  .map-completion a:hover span,
+  .map-completion a:focus-visible span {
+    color: var(--accent);
+  }
+
+  .topic-directory {
+    padding-top: 1.25rem;
+  }
+
+  .directory-heading {
+    display: grid;
+    gap: 0 4rem;
+    grid-template-columns: minmax(12rem, 0.8fr) minmax(20rem, 2fr);
+    margin-bottom: 3rem;
+  }
+
+  .directory-heading > p {
+    margin: 0;
+  }
+
+  .part-section {
+    border-top: 1px solid var(--rule);
+    display: grid;
+    gap: 1.5rem 4rem;
+    grid-template-columns: minmax(12rem, 0.8fr) minmax(20rem, 2fr);
+    padding: 1.5rem 0 clamp(3rem, 6vw, 5rem);
+    scroll-margin-top: 1rem;
+  }
+
+  .part-section > header h2 {
+    font-size: clamp(1.45rem, 2.8vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  .part-section > header p,
+  .group-summary {
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .part-section > header p {
+    margin: 0.8rem 0 0;
+  }
+
+  .workflow-group {
+    grid-column: 2;
+  }
+
+  .workflow-group + .workflow-group {
+    margin-top: 1.5rem;
+  }
+
+  .workflow-group h3 {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .group-summary {
+    margin: 0.45rem 0 1rem;
+  }
+
+  .topic-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .topic-list li {
+    border-top: 1px solid var(--rule);
+  }
+
+  .topic-list a {
+    color: inherit;
+    display: block;
+    line-height: 1.35;
+    padding: 0.72rem 1.8rem 0.72rem 0;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .topic-list a::after {
+    color: var(--accent);
+    content: "→";
+    position: absolute;
+    right: 0;
+  }
+
+  .topic-list a:hover,
+  .topic-list a:focus-visible {
+    color: var(--accent);
+  }
+
+  .framework-note {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+    margin: 0;
+    padding: 1.2rem 0 0;
+  }
+
+  @media (max-width: 760px) {
+    .workflow-lede {
+      padding-top: 0.5rem;
+    }
+
+    h1 {
+      font-size: clamp(3.1rem, 17vw, 5.25rem);
+    }
+
+    .observable-selection,
+    .directory-heading,
+    .part-section {
+      display: block;
+    }
+
+    .observable-selection > header,
+    .directory-heading {
+      margin-bottom: 2rem;
+    }
+
+    .observable-selection dl {
+      grid-template-columns: 1fr;
+    }
+
+    .branch-map figcaption {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .map-backbone {
+      gap: 1.8rem;
+      grid-template-columns: 1fr;
+    }
+
+    .map-backbone::after {
+      bottom: 1.25rem;
+      height: auto;
+      left: 1.1rem;
+      right: auto;
+      top: 1.25rem;
+      width: 1px;
+    }
+
+    .map-backbone a::before {
+      right: auto;
+      width: 12rem;
+    }
+
+    .map-target,
+    .map-completion {
+      display: block;
+    }
+
+    .map-target ul {
+      grid-template-columns: 1fr;
+      margin-top: 1.5rem;
+    }
+
+    .map-completion p {
+      margin-top: 1rem;
+    }
+
+    .workflow-group {
+      margin-top: 2rem;
+    }
+  }
+</style>

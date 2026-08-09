@@ -290,7 +290,7 @@ const startedAt = new Date().toISOString();
 let results = await mapWithConcurrency(allEntries, 2, auditEntry);
 const fallbackIndices = results
   .map((result, index) => ({ result, index }))
-  .filter(({ result }) => [401, 403].includes(result.status))
+  .filter(({ result }) => result.state !== 'reachable' && (result.status === null || [401, 403].includes(result.status)))
   .map(({ index }) => index);
 
 if (fallbackIndices.length > 0) {
@@ -330,8 +330,8 @@ const report = {
   started_at: startedAt,
   completed_at: completedAt,
   semantics: {
-    page: 'A current non-DOI page must return HTTP 2xx after redirects and must not expose a 404/not-found or access-block title or h1. HTTP 401/403 may be retried once through a controlled headless browser, and that access method is recorded.',
-    doi: 'A DOI link is reachable when doi.org returns HTTP 2xx or a valid publisher redirect. HTTP 401/403 may be retried through a controlled browser; the final destination must return HTTP 2xx without a 404 or access-block marker. Publisher content is not semantically reviewed by this reachability check.',
+    page: 'A current non-DOI page must return HTTP 2xx after redirects and must not expose a 404/not-found or access-block title or h1. Transport errors that exhaust the bounded HTTP retries, plus HTTP 401/403, may be retried once through a controlled headless browser, and that access method is recorded.',
+    doi: 'A DOI link is reachable when doi.org returns HTTP 2xx or a valid publisher redirect. Transport errors that exhaust the bounded HTTP retries, plus HTTP 401/403, may be retried through a controlled browser; the final destination must return HTTP 2xx without a 404 or access-block marker. Publisher content is not semantically reviewed by this reachability check.',
     boundary: 'Reachability is time-bound and does not establish scientific correctness, long-term availability, unrestricted regional access, or publisher reuse rights.',
   },
   topic_count: manifest.topics.length,

@@ -33,6 +33,22 @@ const prohibitedText = [
   '验证门',
 ];
 const retiredPaths = ['workflow', 'branches', 'evidence', 'registry', 'stages'];
+const retiredPracticalRedirects = [
+  ['operations/electron-phonon-coupling/guides/check-epc-channel-ledger', 'operations/electron-phonon-coupling/'],
+  ['operations/conventional-superconductivity/guides/check-superconductivity-moment-ledger', 'operations/conventional-superconductivity/'],
+  ['operations/lattice-thermal-transport/guides/check-lattice-transport-tensor-ledger', 'operations/lattice-thermal-transport/'],
+  ['operations/anharmonic-phonons/guides/check-anharmonic-linewidth-ledger', 'operations/anharmonic-phonons/'],
+  ['operations/independent-particle-optical-properties/examples/check-optical-spectrum-comparison-ledger', 'operations/independent-particle-optical-properties/'],
+  ['operations/time-dependent-response-and-spectroscopy/examples/check-time-dependent-response-ledger', 'operations/time-dependent-response-and-spectroscopy/'],
+  ['operations/quasiparticle-corrections/examples/check-quasiparticle-comparison-ledger', 'operations/quasiparticle-corrections/'],
+  ['operations/ab-initio-molecular-dynamics/examples/check-aimd-segment-ledger', 'operations/ab-initio-molecular-dynamics/'],
+  ['operations/finite-temperature-structural-sampling/examples/check-structural-sampling-window-overlap', 'operations/finite-temperature-structural-sampling/'],
+  ['operations/reaction-paths-and-transition-states/examples/check-reaction-path-barrier-ledger', 'operations/reaction-paths-and-transition-states/'],
+  ['operations/diffusion-barriers/examples/check-diffusion-network-ledger', 'operations/diffusion-barriers/'],
+  ['operations/electrostatic-potential-and-band-alignment/guides/assemble-a-potential-lineup', 'operations/electrostatic-potential-and-band-alignment/'],
+  ['operations/chemical-bonding-analysis/guides/integrate-a-declared-cohp-energy-window', 'operations/chemical-bonding-analysis/'],
+  ['operations/magnetic-configuration-and-ground-state-comparison/guides/compare-enumerated-magnetic-candidates', 'operations/magnetic-configuration-and-ground-state-comparison/'],
+];
 
 function parseFrontmatter(source) {
   const match = source.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
@@ -92,7 +108,7 @@ function outputPath(href) {
 }
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
-const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.tools.length + 2 + workedWorkflows.length + 1;
+const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.tools.length + 2 + workedWorkflows.length + 1 + retiredPracticalRedirects.length;
 if (htmlFiles.length !== expectedHtmlCount) errors.push(`generated HTML route set mismatch: expected ${expectedHtmlCount}, found ${htmlFiles.length}`);
 
 const htmlByPath = new Map();
@@ -100,7 +116,8 @@ for (const path of htmlFiles) {
   const html = await readFile(path, 'utf8');
   htmlByPath.set(path, html);
   const text = stripMarkup(html);
-  if (!/<html lang="en">/.test(html)) errors.push(`${path}: html language must be English`);
+  const isStaticRedirect = /<meta http-equiv="refresh"/i.test(html);
+  if (!isStaticRedirect && !/<html lang="en">/.test(html)) errors.push(`${path}: html language must be English`);
   if (/[\u3400-\u9fff]/u.test(text)) errors.push(`${path}: public HTML contains CJK text`);
   if (/<script(?:\s|>)/i.test(html)) errors.push(`${path}: client-side script is not allowed`);
   if (/class="operation-contract"/.test(html)) errors.push(`${path}: fixed operation contract is not allowed`);
@@ -141,7 +158,10 @@ const homeText = stripMarkup(home);
 const homeNav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
 const navLabels = [...homeNav.matchAll(/<a[^>]*>([^<]+)<\/a>/g)].map((match) => match[1].trim());
 if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
-for (const section of workflowDocument.sections) if (!homeText.includes(`${section.id} · ${section.title}`)) errors.push(`Home is missing ${section.id} · ${section.title}`);
+for (const phrase of ['Scientific Question', 'Required Observable', 'Supported Scientific Conclusion', 'This is a dependency map, not a one-way pipeline.', 'Numerical convergence loop', 'Electronic self-consistency']) {
+  if (!homeText.includes(phrase)) errors.push(`Home is missing ${phrase}`);
+}
+for (const section of workflowDocument.sections) if (!home.includes(`aria-label="${section.id}, ${section.title}"`)) errors.push(`Home is missing ${section.id}, ${section.title}`);
 if (/24 typed core operations|former 35 chapter URLs/.test(homeText)) errors.push('Home advertises a superseded numbered taxonomy');
 
 const operationsDirectory = htmlByPath.get(join(distPath, 'operations', 'index.html')) ?? '';
@@ -190,13 +210,13 @@ for (const guide of practicalGuides) {
     errors.push(`${guide.guide_slug}: missing execution evidence boundary`);
   }
   if (!html.includes('class="guide-meta"')) errors.push(`${guide.guide_slug}: missing guide metadata`);
-  if (!html.includes('class="guide-media"')) errors.push(`${guide.guide_slug}: missing declared media`);
   const evidenceRecord = practicalEvidence.guides.find((record) => record.guide_slug === guide.guide_slug);
+  if ((evidenceRecord?.media_ids?.length ?? 0) > 0 && !html.includes('class="guide-media"')) errors.push(`${guide.guide_slug}: missing declared media`);
   if (evidenceRecord?.evidence_class === 'real-execution') {
-    if (!evidenceRecord.case_id || !text.includes('Terminal-first execution case') || !text.includes(evidenceRecord.case_id)) {
+    if (!evidenceRecord.case_id || !text.includes('Evidence scope.') || !text.includes(evidenceRecord.case_id)) {
       errors.push(`${guide.guide_slug}: real-execution page is not visibly bound to its terminal-first case`);
     }
-    if (!text.includes('G4 ') || !text.includes('G5 ')) errors.push(`${guide.guide_slug}: terminal-first gate ceiling is not rendered`);
+    if (!text.includes('Claim ceiling.')) errors.push(`${guide.guide_slug}: natural-language claim ceiling is not rendered`);
   }
   const parentHref = `${base}operations/${guide.topic_slug}/`;
   if (!html.includes(parentHref)) errors.push(`${guide.guide_slug}: missing parent-topic link`);
@@ -236,7 +256,19 @@ for (const workflow of workedWorkflows) {
     if (!text.includes(phrase)) errors.push(`${workflow.slug}: missing terminal-first section ${phrase}`);
   }
   if (!html.includes('data:image/png;base64,')) errors.push(`${workflow.slug}: no case-derived PNG is rendered`);
-  if (!text.includes('G4 NOT TESTED') || !text.includes('G5 NOT CLAIMED')) errors.push(`${workflow.slug}: claim ceiling gates are missing`);
+  for (const phrase of ['Inputs and identity', 'Program completion', 'Electronic solver and ionic or structural checks', 'Artifacts and stage ancestry', 'Observable convergence', 'Claim boundary', 'No material-level claim is made']) {
+    if (!text.includes(phrase)) errors.push(`${workflow.slug}: natural-language evidence boundary is missing ${phrase}`);
+  }
+  if (/\bG[0-5]\b/.test(text)) errors.push(`${workflow.slug}: exposes internal evidence gate codes`);
+}
+
+for (const [route, target] of retiredPracticalRedirects) {
+  const html = htmlByPath.get(join(distPath, route, 'index.html')) ?? '';
+  const targetHref = `${base}${target}`;
+  if (!html) errors.push(`missing retired practical redirect: ${route}`);
+  if (!html.includes(`content="0;url=${targetHref}"`) || !html.includes(`href="${targetHref}"`)) {
+    errors.push(`${route}: retired practical redirect target mismatch`);
+  }
 }
 
 for (const slug of frameworkSlugs) {

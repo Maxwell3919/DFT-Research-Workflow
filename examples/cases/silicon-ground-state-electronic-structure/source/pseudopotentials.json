@@ -4,10 +4,19 @@
     {
       "filename": "Si.pbe-n-rrkjus_psl.1.0.0.UPF",
       "sha256": "ae3aefd0811f9499dbc4a72f1f9ae02ef4fc7f3568bf6f559b68668719c69e2b",
-      "source": "SSSP PBE Precision bundle distributed with Quantum ESPRESSO 7.5",
-      "source_url": "https://www.materialscloud.org/discover/sssp/table/precision",
+      "source": "Official Materials Cloud SSSP v1.3.0 PBE precision archive member.",
+      "source_url": "https://archive.materialscloud.org/records/rcyfm-68h65/files/SSSP_1.3.0_PBE_precision.tar.gz?download=1",
+      "source_archive_bytes": 62963841,
+      "source_archive_sha256": "d91db6b4b3788501d535a5b84ebabf3859ea3e3ac6ea154c4be3718da50f0c85",
+      "source_archive_md5": "fde94756886f32ada7bf597547557eb5",
+      "source_archive_md5_role": "Publisher-listed cross-check; the archive SHA-256 is the fail-closed identity.",
+      "source_archive_member": "./Si.pbe-n-rrkjus_psl.1.0.0.UPF",
+      "extracted_bytes": 1299382,
+      "source_registry_url": "https://www.materialscloud.org/discover/sssp/table/precision",
+      "source_url_status": "The pinned official archive URL, 62963841-byte size, archive SHA-256, publisher-listed MD5 cross-check, exact regular-member path, extracted byte count, and member SHA-256 identify the replay bytes. A same-name file with a different hash must be rejected.",
       "xc_functional": "PBE",
       "relativistic": "scalar"
     }
-  ]
+  ],
+  "boundary": "Identity and acquisition metadata only. No UPF body is stored or redistributed. Archive SHA-256 and member SHA-256 are fail-closed byte identities; the publisher-listed archive MD5 is only a cross-check. These checks do not establish pseudopotential transferability, numerical convergence, or scientific suitability."
 }

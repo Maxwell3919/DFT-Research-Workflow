@@ -6,6 +6,7 @@ const reviewPath = 'docs/reviews/2026-08-03-calculate-reference-ground-state.md'
 const errors = [];
 const article = await readFile(new URL(articlePath, root), 'utf8');
 const review = await readFile(new URL(reviewPath, root), 'utf8');
+const normalizedReview = review.replace(/\s+/g, ' ').toLowerCase();
 
 for (const statement of [
   'topic_slug: calculate-reference-ground-state',
@@ -51,6 +52,9 @@ for (const statement of [
   'A small final residual does not identify which self-consistent basin was reached.',
   'Increasing the iteration limit does not repair an unstable state evaluator.',
   'The lowest accepted candidate among the tested inventory is the current reference.',
+  'not a universal workflow law',
+  'This same-geometry ranking answers a fixed-nuclei',
+  'For magnetostructural ordering',
   'Force and stress verification does not establish vibrational, dynamical, thermal, or thermodynamic stability.',
   'State identity should be checked from outputs, not inferred from input labels.',
   'The reference energy is a provenance anchor for one state, not a standalone physical observable.',
@@ -89,9 +93,12 @@ for (const statement of [
   'The scripts calculate no electronic energy with a DFT code',
   'Execution success is not reference-ground-state verification for a real calculation',
   'None of those checks establishes global ground-state identity for a real calculation',
+  'examples/practical-guides/silicon_qe_convergence.py',
+  'examples/practical-guides/silicon_qe_restarts.py',
+  'they are not declared execution evidence',
   'None of those checks establishes a real reference ground state, exhaustive global ground-state identity, SCF convergence, force or stress accuracy, physical stability, method accuracy, transferability, or scientific support for any real DFT study.',
 ]) {
-  if (!review.toLowerCase().includes(statement.toLowerCase())) errors.push(`${reviewPath}: missing review boundary ${JSON.stringify(statement)}`);
+  if (!normalizedReview.includes(statement.toLowerCase())) errors.push(`${reviewPath}: missing review boundary ${JSON.stringify(statement)}`);
 }
 
 for (const heading of [

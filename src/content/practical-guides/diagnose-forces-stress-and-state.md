@@ -51,17 +51,12 @@ Keep rejected line-search points or failed electronic steps distinguishable from
 
 An electronic threshold controls the state evaluator within one geometry. An ionic threshold controls the gradient or step across geometries. Reaching the first does not imply the second, and a noisy electronic solve can make the second unreliable.
 
-The retained executable fixture applies three independent synthetic checks:
-
-```python
-from optimization_history_diagnostics import analyse_history
-
-report = analyse_history()
-print(report["accepted_branch"])
-print(report["state_switches"])
-```
-
-It requires each accepted structural step to carry a successful electronic-state label, a maximum active force, the relevant stress diagnostic, and a consistent state identity. The main case also reconstructs five real QE 7.5 ionic steps from a deliberately displaced Silicon cell; its total force falls from 0.058078 to 0.000036 Ry/bohr and the final output carries the BFGS completion marker.
+A conceptual history rule can require every accepted step to carry an electronic
+label, active-force value, stress diagnostic, and consistent state identity. That
+claim-check is not executed by the declared companion. The companion instead
+parses five energy and total-force rows from one stored QE 7.5 Silicon output,
+checks its input/output hashes and completion markers, and confirms only that the
+last reported total force is lower than the first.
 
 ## Examine force and stress in the active subspace
 
@@ -122,10 +117,10 @@ A plot may display the segments together, but it should not conceal their differ
 
 ## What this guide verifies
 
-The real-output reconstruction verifies hashes, five electronic completion markers,
-five total-force rows, and the BFGS completion marker. It contains no stress-path
-analysis or independent state comparison. It does not validate a stopping threshold
-or establish that the final structure is a local or global minimum.
+The declared companion verifies one input hash, one output hash, `JOB DONE` and
+BFGS markers, five parsed energies and total-force rows, and a lower final than
+initial total force. It does not verify per-step SCF markers, stress, displacement,
+constraints, state continuity, a stopping threshold, or a local/global minimum.
 
 ## Common mistakes
 

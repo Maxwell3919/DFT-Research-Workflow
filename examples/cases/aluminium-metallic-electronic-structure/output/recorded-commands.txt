@@ -1,6 +1,32 @@
-Reproducible stage invocations (the original site launcher was not captured in the public artifact):
-pw.x -in scf.in > scf.out 2> scf.err
-pw.x -in nscf.in > nscf-full.out 2> nscf-full.err
-pw.x -in bands.in > bands.out 2> bands.err
+Command and ancestry boundary
+=============================
 
-The stdout reports one MPI process on one node.  No scheduler record, private host path, save-tree payload, or pseudopotential body is published.
+Initial captured output set:
+- The exact historical launcher, shell command lines, shell exit codes, scheduler
+  record, and save-tree payload were not retained in the public artifact.
+- output/scf.out, output/nscf-full.out, and output/bands.out each retain their
+  QE-printed program/version, timestamps, terminal JOB DONE marker, and raw bytes.
+- The following are replay-equivalent invocations, not claimed historical commands:
+  pw.x -in scf.in > scf.out 2> scf.err
+  pw.x -in nscf.in > nscf-full.out 2> nscf-full.err
+  pw.x -in bands.in > bands.out 2> bands.err
+
+Isolated DOS rerun route described by run.sh:
+  pw.x -in scf.in > scf.out 2> scf.err
+  pw.x -in nscf.in > nscf-full.out 2> nscf-full.err
+  dos.x -in dos.in > dos.out 2> dos.err
+  pw.x -in bands.in > bands.out 2> bands.err
+
+The rerun uses one new runtime directory and the same prefix/outdir declarations,
+so run.sh specifies SCF -> NSCF -> dos.x ancestry before the later path stage.
+The save-tree payload itself is not published. The manifest scopes the existing
+exit-code records to this route; JOB DONE and empty stderr are inspectable but
+are not substitutes for a separately published shell transcript.
+
+Later bounded routes use their committed runners:
+  bash input/run-convergence-matrix.sh
+  bash input/run-eos.sh
+
+These later routes are not part of the 04:21:54-04:22:02 DOS-route window. No
+private host path, scheduler record, pseudopotential body, or exact public UPF
+file URL is published.

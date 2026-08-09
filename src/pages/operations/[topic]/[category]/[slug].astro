@@ -59,6 +59,20 @@ const canonicalPath = practicalGuidePath(guide);
 const publishedWorkflow = workflowsDocument.workflows.find((workflow) => workflow.case_id === evidence.case_id);
 const caseRoot = evidence.case_id ? `examples/cases/${evidence.case_id}/` : undefined;
 const caseUrl = caseRoot ? `https://github.com/Maxwell3919/DFT-Research-Workflow/tree/main/${caseRoot}` : undefined;
+const caseManifestUrl = caseRoot ? `https://github.com/Maxwell3919/DFT-Research-Workflow/blob/main/${caseRoot}manifest.json` : undefined;
+const gateRecords = Object.values(caseGates ?? {});
+const recordedStatuses = gateRecords
+  .map((record) => record.status?.trim().toUpperCase())
+  .filter((status): status is string => Boolean(status));
+const hasRecordedFailure = recordedStatuses.some((status) => status === 'FAIL' || status === 'FAILED');
+const everyDeclaredCheckPassed = gateRecords.length > 0
+  && recordedStatuses.length === gateRecords.length
+  && recordedStatuses.every((status) => status === 'PASS' || status === 'PASSED');
+const recordedOutcome = hasRecordedFailure
+  ? 'The manifest records at least one failed check. This case is negative or incomplete evidence and must not be read as a successful execution.'
+  : everyDeclaredCheckPassed
+    ? 'The manifest records successful completion of every check declared for this bounded case.'
+    : 'The manifest does not record successful completion of every declared check. Treat this case as incomplete evidence rather than a successful execution.';
 ---
 
 <BaseLayout
@@ -102,20 +116,30 @@ const caseUrl = caseRoot ? `https://github.com/Maxwell3919/DFT-Research-Workflow
       </p>
     </div>
 
-    {evidence.case_id && caseGates && (
+    {evidence.case_id && (
       <section class="article-content" aria-labelledby="terminal-case-heading">
-        <h2 id="terminal-case-heading">Terminal-first execution case</h2>
+        <h2 id="terminal-case-heading">Evidence scope and limitations</h2>
         <p>
-          This page's <strong>{evidence.evidence_class}</strong> classification is bound to
-          {' '}<a href={caseUrl}>{caseRoot}</a>. The case directory, rather than this prose page,
-          is the authority for exact inputs, commands, stdout/stderr, hashes, parser, derived data, and claim boundary.
+          <strong>Evidence scope.</strong> This page's <strong>{evidence.evidence_class}</strong> classification is bound to
+          {' '}<a href={caseUrl}>{caseRoot}</a>. The case directory documents its available source
+          and input identities, declared command records, stored raw or explicitly sanitized
+          outputs, hashes, parser, derived data, and claim boundary; its
+          {' '}<a href={caseManifestUrl}>manifest</a> is the checkable record of the declared checks and their outcomes.
         </p>
-        {publishedWorkflow && <p><a href={withBase(`workflows/${publishedWorkflow.slug}/`)}>Read the continuous Worked Workflow</a>.</p>}
-        <dl>
-          {Object.entries(caseGates).sort(([a], [b]) => a.localeCompare(b)).map(([gate, record]) => (
-            <><dt>{gate} {record.status ?? 'UNKNOWN'}</dt><dd>{record.summary ?? 'No summary declared.'}</dd></>
-          ))}
-        </dl>
+        <p><strong>Recorded outcome.</strong> {recordedOutcome}</p>
+        <p>
+          <strong>Limitations.</strong> These records address only the deterministic software,
+          parsing, or analysis assertions encoded for this example. They do not establish DFT
+          convergence, adequate sampling or model choices, physical validity, or transferability
+          to another system.
+        </p>
+        <p>
+          <strong>Claim ceiling.</strong> A fully passed case supports only reproduction of the
+          bounded assertion in the recorded environment. A failed or incomplete case supports
+          only the corresponding negative or incomplete finding. Neither outcome establishes a
+          material property, predictive accuracy, or a scientific conclusion.
+        </p>
+        {publishedWorkflow && <p><a href={withBase(`workflows/${publishedWorkflow.slug}/`)}>Read the Worked Workflow</a>.</p>}
       </section>
     )}
 

@@ -192,9 +192,13 @@ try {
   }
 
   const cifAssetUrl = `${base}/examples/cif/silicon-cod-9013102-expanded.cif`;
+  // The hosted Mol* iframe cannot fetch a localhost preview asset. Keep its
+  // structure source on the public Pages origin while testing the same local
+  // bytes separately below.
+  const canonicalViewerCifUrl = 'https://maxwell3919.github.io/DFT-Research-Workflow/examples/cif/silicon-cod-9013102-expanded.cif';
   let viewerCifStatus = null;
   const observeViewerCif = (response) => {
-    if (response.url().split('?')[0] === cifAssetUrl) viewerCifStatus = response.status();
+    if (response.url().split('?')[0] === canonicalViewerCifUrl) viewerCifStatus = response.status();
   };
   page.on('response', observeViewerCif);
 
@@ -237,7 +241,7 @@ try {
   if (!molstarFrame?.url().startsWith('https://molstar.org/viewer/')) throw new Error(`Mol* frame did not load: ${molstarFrame?.url() ?? 'no frame'}`);
   const molstarUrl = new URL(molstarFrame.url());
   if (molstarUrl.searchParams.get('url-format') !== 'cifCore') throw new Error(`Mol* viewer format mismatch: ${molstarUrl.searchParams.get('url-format')}`);
-  if (molstarUrl.searchParams.get('url') !== cifAssetUrl) throw new Error(`Mol* structure URL mismatch: ${molstarUrl.searchParams.get('url')}`);
+  if (molstarUrl.searchParams.get('url') !== canonicalViewerCifUrl) throw new Error(`Mol* structure URL mismatch: ${molstarUrl.searchParams.get('url')}`);
   await molstarFrame.waitForSelector('canvas', { timeout: 45000 });
   await molstarFrame.waitForFunction(() => {
     const structures = window.__smokeMolstarViewer?.plugin?.managers?.structure?.hierarchy?.current?.structures ?? [];
@@ -276,7 +280,14 @@ try {
       figures: document.querySelectorAll('figure img[src^="data:image/png;base64,"]').length,
       commands: document.querySelectorAll('pre code').length,
     }));
-    if (state.figures < 1 || state.commands < 2 || !state.text.includes('G4 NOT TESTED') || !state.text.includes('G5 NOT CLAIMED')) {
+    if (
+      state.figures < 1
+      || state.commands < 2
+      || !state.text.includes('Observable convergence')
+      || !state.text.includes('Not established by this case')
+      || !state.text.includes('Claim boundary')
+      || !state.text.includes('No material-level claim is made')
+    ) {
       throw new Error(`${slug}: incomplete terminal-first workflow rendering`);
     }
   }

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "authority": "secondary tool identity and workflow cross-index",
-  "scope_note": "Tools implement, inspect, or preserve parts of the A-E workflow. They are not research operations, endorsements, compatibility guarantees, or substitutes for scientific method selection.",
+  "scope_note": "Tools implement, inspect, or preserve parts of the A-E workflow. They are not research operations. This secondary index does not rank or endorse tools, guarantee compatibility, or substitute for scientific method selection.",
   "verified_at": "2026-08-04",
   "tools": [
     {
@@ -14,6 +14,10 @@
       "role": "A general programming language used here for transparent parsing, transformation, validation, and plotting companions.",
       "homepage": "https://www.python.org/",
       "documentation": "https://docs.python.org/3/",
+      "getting_started": {
+        "label": "Python 3 documentation",
+        "url": "https://docs.python.org/3/"
+      },
       "source_repository": "https://github.com/python/cpython",
       "topics": [
         "build-or-modify-computational-model",
@@ -33,6 +37,10 @@
       "role": "Python components for representing atomistic structures, constructing models, connecting calculators, and analyzing bounded workflow steps.",
       "homepage": "https://ase-lib.org/",
       "documentation": "https://docs.ase-lib.org/index.html",
+      "getting_started": {
+        "label": "ASE documentation index",
+        "url": "https://docs.ase-lib.org/index.html"
+      },
       "source_repository": "https://gitlab.com/ase/ase",
       "topics": [
         "obtain-material-structure",
@@ -52,6 +60,10 @@
       "role": "Python data structures and analysis modules for materials representations, transformations, interfaces, phase diagrams, and related post-processing.",
       "homepage": "https://pymatgen.org/",
       "documentation": "https://pymatgen.org/pymatgen.html",
+      "getting_started": {
+        "label": "pymatgen API documentation",
+        "url": "https://pymatgen.org/pymatgen.html"
+      },
       "source_repository": "https://github.com/materialsproject/pymatgen",
       "topics": [
         "obtain-material-structure",
@@ -71,6 +83,10 @@
       "role": "A crystallographic symmetry library used to identify symmetry operations and standardized representations under declared tolerances.",
       "homepage": "https://spglib.github.io/spglib/",
       "documentation": "https://spglib.readthedocs.io/en/stable/",
+      "getting_started": {
+        "label": "spglib stable documentation",
+        "url": "https://spglib.readthedocs.io/en/stable/"
+      },
       "source_repository": "https://github.com/spglib/spglib",
       "topics": [
         "obtain-material-structure",
@@ -91,6 +107,10 @@
       "role": "A materials-data service that can supply database records and structures when a query, fields, retrieval date, and provenance are recorded.",
       "homepage": "https://materialsproject.org/",
       "documentation": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data",
+      "getting_started": {
+        "label": "Materials Project API query guide",
+        "url": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data"
+      },
       "source_repository": "https://github.com/materialsproject/api",
       "topics": ["obtain-material-structure", "calculate-reference-ground-state", "analyze-and-compare-results", "document-and-preserve-study"]
     },
@@ -106,6 +126,10 @@
       "role": "A desktop visualizer for crystal, volumetric, and morphology data; a rendered view documents display choices, not structure identity or a calculation result.",
       "homepage": "https://jp-minerals.org/vesta/en/",
       "documentation": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf",
+      "getting_started": {
+        "label": "VESTA manual",
+        "url": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf"
+      },
       "source_repository": null,
       "topics": ["obtain-material-structure", "build-or-modify-computational-model", "analyze-and-compare-results"]
     },
@@ -121,6 +145,10 @@
       "role": "A crystallographic path generator that standardizes a declared cell and returns labelled reciprocal-space paths for compatible band calculations.",
       "homepage": "https://seekpath.readthedocs.io/en/latest/",
       "documentation": "https://seekpath.readthedocs.io/en/latest/maindoc.html",
+      "getting_started": {
+        "label": "SeeK-path main documentation",
+        "url": "https://seekpath.readthedocs.io/en/latest/maindoc.html"
+      },
       "source_repository": "https://github.com/giovannipizzi/seekpath",
       "topics": ["obtain-material-structure", "build-or-modify-computational-model", "band-structure", "harmonic-phonons"]
     },
@@ -134,6 +162,10 @@
       "role": "A plane-wave and pseudopotential electronic-structure suite with ground-state, response, phonon, molecular-dynamics, and post-processing executables.",
       "homepage": "https://www.quantum-espresso.org/",
       "documentation": "https://www.quantum-espresso.org/documentation/",
+      "getting_started": {
+        "label": "Quantum ESPRESSO documentation",
+        "url": "https://www.quantum-espresso.org/documentation/"
+      },
       "source_repository": "https://gitlab.com/QEF/q-e",
       "topics": [
         "choose-dft-method-and-computational-setup",
@@ -155,6 +187,10 @@
       "role": "A licensed electronic-structure package documented for periodic ground-state, response, dynamics, and post-processing calculations.",
       "homepage": "https://vasp.at/",
       "documentation": "https://vasp.at/wiki/",
+      "getting_started": {
+        "label": "VASP Wiki",
+        "url": "https://vasp.at/wiki/"
+      },
       "source_repository": null,
       "topics": [
         "choose-dft-method-and-computational-setup",
@@ -175,6 +211,10 @@
       "role": "An atomistic simulation package spanning electronic-structure, molecular-dynamics, optimization, and mixed quantum/classical methods.",
       "homepage": "https://www.cp2k.org/",
       "documentation": "https://manual.cp2k.org/",
+      "getting_started": {
+        "label": "CP2K reference manual",
+        "url": "https://manual.cp2k.org/"
+      },
       "source_repository": "https://github.com/cp2k/cp2k",
       "topics": [
         "choose-dft-method-and-computational-setup",
@@ -193,6 +233,10 @@
       "role": "An electronic-structure suite with ground-state, response, phonon, and many-body perturbation workflows documented as separate capabilities.",
       "homepage": "https://www.abinit.org/",
       "documentation": "https://docs.abinit.org/",
+      "getting_started": {
+        "label": "ABINIT documentation",
+        "url": "https://docs.abinit.org/"
+      },
       "source_repository": "https://github.com/abinit/abinit",
       "topics": [
         "choose-dft-method-and-computational-setup",
@@ -212,6 +256,10 @@
       "role": "A localized-orbital electronic-structure package used for periodic calculations and as a parent engine for selected transport workflows.",
       "homepage": "https://siesta-project.org/",
       "documentation": "https://docs.siesta-project.org/projects/siesta/en/latest/",
+      "getting_started": {
+        "label": "SIESTA documentation",
+        "url": "https://docs.siesta-project.org/projects/siesta/en/latest/"
+      },
       "source_repository": "https://gitlab.com/siesta-project/siesta",
       "topics": [
         "choose-dft-method-and-computational-setup",
@@ -231,6 +279,10 @@
       "role": "A harmonic lattice-dynamics package that constructs and analyzes force-constant models from external force calculations.",
       "homepage": "https://phonopy.github.io/phonopy/",
       "documentation": "https://phonopy.github.io/phonopy/phonopy.html",
+      "getting_started": {
+        "label": "Phonopy command and API guide",
+        "url": "https://phonopy.github.io/phonopy/phonopy.html"
+      },
       "source_repository": "https://github.com/phonopy/phonopy",
       "topics": ["harmonic-phonons", "test-numerical-convergence"]
     },
@@ -244,6 +296,10 @@
       "role": "An anharmonic lattice-dynamics package for third-order force constants, phonon interactions, and lattice-thermal-transport analysis.",
       "homepage": "https://phonopy.github.io/phono3py/",
       "documentation": "https://phonopy.github.io/phono3py/workflow.html",
+      "getting_started": {
+        "label": "Phono3py workflow guide",
+        "url": "https://phonopy.github.io/phono3py/workflow.html"
+      },
       "source_repository": "https://github.com/phonopy/phono3py",
       "topics": [
         "anharmonic-phonons",
@@ -261,6 +317,10 @@
       "role": "A code for constructing Wannier representations and using them for interpolation and selected Berry, topology, and transport analyses.",
       "homepage": "https://wannier.org/",
       "documentation": "https://wannier90.readthedocs.io/en/latest/",
+      "getting_started": {
+        "label": "Wannier90 documentation",
+        "url": "https://wannier90.readthedocs.io/en/latest/"
+      },
       "source_repository": "https://github.com/wannier-developers/wannier90",
       "topics": [
         "wannier-function-construction",
@@ -280,6 +340,10 @@
       "role": "A Wannier-based code for electron-phonon coupling and related electronic, transport, and superconducting observables using compatible parent data.",
       "homepage": "https://epw-code.org/",
       "documentation": "https://docs.epw-code.org/",
+      "getting_started": {
+        "label": "EPW documentation",
+        "url": "https://docs.epw-code.org/"
+      },
       "source_repository": "https://gitlab.com/QEF/q-e/-/tree/develop/EPW",
       "topics": [
         "electron-phonon-coupling",
@@ -297,6 +361,10 @@
       "role": "A workflow and provenance infrastructure for automating calculations and retaining queryable data-process lineage.",
       "homepage": "https://www.aiida.net/",
       "documentation": "https://aiida.readthedocs.io/projects/aiida-core/en/stable/",
+      "getting_started": {
+        "label": "AiiDA stable documentation",
+        "url": "https://aiida.readthedocs.io/projects/aiida-core/en/stable/"
+      },
       "source_repository": "https://github.com/aiidateam/aiida-core",
       "topics": [
         "calculate-reference-ground-state",

@@ -4,9 +4,12 @@
     {
       "filename": "Al.pbe-n-rrkjus_psl.1.0.0.UPF",
       "sha256": "cc4f5dc6afe09c8f482dc7645e6e7cca546a55f8d907c71c825c62bf85a38d3e",
-      "source": "PSLibrary PBE scalar-relativistic USPP entry, as recorded by the teaching fixture.",
-      "source_url": null,
-      "source_url_status": "No exact public source URL for this file/hash has been independently verified in this case record.",
+      "source": "PSLibrary PBE scalar-relativistic USPP entry retrieved from the public Quantum ESPRESSO pseudopotential repository.",
+      "source_url": "https://pseudopotentials.quantum-espresso.org/upf_files/Al.pbe-n-rrkjus_psl.1.0.0.UPF",
+      "source_url_status": "Exact public Quantum ESPRESSO UPF URL retrieved and verified by byte count and SHA-256 on 2026-08-09.",
+      "source_bytes": 1500731,
+      "source_verified_at": "2026-08-09",
+      "header_generator": "atomic v6.3",
       "xc_functional": "PBE",
       "relativistic": "scalar"
     }

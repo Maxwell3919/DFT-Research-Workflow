@@ -10,7 +10,7 @@
       "excerpt_path": "source/output-excerpt.txt",
       "material": "Silicon",
       "status": "published-when-case-complete",
-      "summary": "A terminal-first chain from a sourced silicon structure through reference-state calculations to electronic-structure analysis."
+      "summary": "An assembled, provenance-bound set of separately recorded real Silicon QE 7.5 stages, without asserting one historical continuous launcher."
     },
     {
       "slug": "aluminium-metallic-electronic-structure",
@@ -19,7 +19,7 @@
       "excerpt_path": "output/compact-source-excerpt.txt",
       "material": "Aluminium",
       "status": "published-when-case-complete",
-      "summary": "A terminal-first metallic workflow with SCF/NSCF, native DOS, full-zone sampling, a failed exploratory k/smearing screen, and a bounded five-point E(V) entry with explicit evidence ceilings."
+      "summary": "An assembled Aluminium record separating initial captured outputs, an isolated SCF/NSCF/dos.x/bands rerun, and later bounded screens with explicit evidence ceilings."
     }
   ],
   "legacy_recipe_redirects": [

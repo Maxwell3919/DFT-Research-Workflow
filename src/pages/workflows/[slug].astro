@@ -15,17 +15,43 @@ type Workflow = {
   summary: string;
 };
 
+type CommandRecord = {
+  stage?: string;
+  command?: string;
+  exit_code?: number | null;
+  route_id?: string;
+  record_kind?: string;
+  evidence_scope?: string;
+  exit_code_scope?: string;
+  input_artifacts?: string[];
+  parent_artifacts?: string[];
+  output_artifacts?: string[];
+};
+
+type ExecutionRoute = {
+  route_id?: string;
+  label?: string;
+  timing?: { started_at?: string | null; completed_at?: string | null; scope?: string };
+  exact_command_status?: string;
+  exact_exit_code_status?: string;
+  ancestry?: string[];
+  boundary?: string;
+};
+
 type CaseManifest = {
   evidence_class?: string;
   public_host_label?: string;
   software?: Array<{ name?: string; version?: string; interface?: string }>;
-  commands?: Array<{ stage?: string; command?: string; exit_code?: number }>;
+  commands?: CommandRecord[];
   artifacts?: Array<{ path?: string; role?: string; sha256?: string; bytes?: number; alt?: string; caption?: string }>;
   gates?: Record<string, { status?: string; summary?: string }>;
   claim_boundary?: { supports?: string[]; does_not_support?: string[] };
+  completion_boundary?: string;
+  execution_routes?: ExecutionRoute[];
 };
 
 type Figure = { path: string; role: string; sha256: string; alt: string; caption?: string; dataUrl: string };
+type ManualStage = { label: string; href: string; detail: string };
 type Props = { workflow: Workflow; manifest: CaseManifest; excerpt: string; figures: Figure[] };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -76,11 +102,52 @@ const { workflow, manifest, excerpt, figures } = Astro.props as Props;
 const software = (manifest.software ?? [])
   .map((item) => [item.name, item.version, item.interface ? `(${item.interface})` : ''].filter(Boolean).join(' '));
 const commands = manifest.commands ?? [];
+const executionRoutes = manifest.execution_routes ?? [];
 const artifacts = manifest.artifacts ?? [];
 const gates = Object.entries(manifest.gates ?? {}).sort(([a], [b]) => a.localeCompare(b));
+const gateLabels: Record<string, string> = {
+  G0: 'Inputs and identity',
+  G1: 'Program completion',
+  G2: 'Electronic solver and ionic or structural checks',
+  G3: 'Artifacts and stage ancestry',
+  G4: 'Observable convergence',
+  G5: 'Claim boundary',
+};
+const gateStatusText = (status?: string) => ({
+  PASS: 'Recorded as passed within the stated scope',
+  WARN: 'Warnings or limitations are retained',
+  FAIL: 'Did not meet the stated check',
+  'NOT TESTED': 'Not established by this case',
+  'NOT CLAIMED': 'No material-level claim is made',
+}[status ?? ''] ?? 'No public status is declared');
 const caseRoot = `examples/cases/${workflow.case_id}/`;
 const sourceRevision = process.env.GITHUB_SHA ?? 'main';
 const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Research-Workflow/blob/${sourceRevision}/${caseRoot}${file}`;
+const pseudopotentialArchiveUrl = 'https://archive.materialscloud.org/records/rcyfm-68h65/files/SSSP_1.3.0_PBE_precision.tar.gz?download=1';
+const manualStages: ManualStage[] = workflow.case_id === 'silicon-ground-state-electronic-structure' ? [
+  { label: 'Obtain and inspect the source CIF', href: withBase('operations/obtain-material-structure/'), detail: 'Download COD 9013102, preserve its identity, read the crystallographic fields, and inspect the structure.' },
+  { label: 'Build the computational model', href: withBase('operations/build-or-modify-computational-model/'), detail: 'Run the case preparation script to check the conventional Si8 record and emit the declared NOT_RANKED two-site primitive QE geometry.' },
+  { label: 'Choose the method and numerical setup', href: withBase('operations/choose-dft-method-and-computational-setup/'), detail: 'Keep PBE, the exact-hash UPF, spin, occupations, cutoffs, grids, and solver controls as explicit choices.' },
+  { label: 'Test cutoff and k-point convergence', href: withBase('operations/test-numerical-convergence/'), detail: 'Run and inspect the 3 by 3 matrix, then set an observable-specific tolerance instead of copying its largest setting.' },
+  { label: 'Optimize the structure', href: withBase('operations/optimize-structure/'), detail: 'Run the displaced fixed-cell relaxation and distinguish electronic iterations from ionic convergence and minimum identification.' },
+  { label: 'Calculate the reference state', href: withBase('operations/calculate-reference-ground-state/'), detail: 'Run the fixed-geometry SCF and retain its structure, method, state, output, and restart lineage.' },
+  { label: 'Calculate and read bands', href: withBase('operations/band-structure/'), detail: 'Keep the line path, full-zone sample, retained solver warning, and fundamental-gap boundary separate.' },
+  { label: 'Calculate and read DOS', href: withBase('operations/density-of-states-and-projected-density-of-states/'), detail: 'Use a full-zone NSCF parent and dos.x, then inspect integration, reference energy, and mesh sensitivity.' },
+  { label: 'Audit termination, solvers, artifacts, and convergence', href: withBase('operations/validate-results-and-scientific-conclusions/guides/inspect-qe-hpc-calculations-from-the-terminal/'), detail: 'Check scheduler and program exits, SCF and ionic markers, warnings, expected files, and the target observable independently.' },
+  { label: 'Interpret only the supported result', href: withBase('operations/analyze-and-compare-results/'), detail: 'Compare like with like and stop below any claim whose numerical, physical, or model challenge is unresolved.' },
+  { label: 'Preserve the study', href: withBase('operations/document-and-preserve-study/'), detail: 'Retain source, model, method, inputs, outputs, parsed data, figures, hashes, failures, and claim boundaries.' },
+] : [];
+const manualStartCommand = `python3 -m venv .venv
+.venv/bin/pip install -r requirements-practical.txt
+prepared=/absolute/path/outside/the/repository/silicon-prepared
+.venv/bin/python examples/cases/silicon-ground-state-electronic-structure/prepare-replay.py \\
+  --download-pseudopotential \\
+  --output-dir "$prepared"
+
+PSEUDO_DIR="$prepared/pseudo" \\
+RUNTIME_DIR=/absolute/path/outside/the/repository/silicon-runtime \\
+QE_LAUNCHER='mpirun -np 4' \\
+bash examples/cases/silicon-ground-state-electronic-structure/run.sh`;
 ---
 
 <BaseLayout title={workflow.title} description={workflow.summary} current="workflows">
@@ -90,16 +157,38 @@ const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Resear
     <h1>{workflow.title}</h1>
     <p class="operation-summary">{workflow.summary}</p>
 
+    {manualStages.length > 0 && (
+      <section class="article-content" aria-labelledby="manual-route-heading">
+        <h2 id="manual-route-heading">Run the workflow manually</h2>
+        <p>
+          Follow these links in order for a first run, but return to an earlier stage whenever a model, method, reference state, target calculation, or validation check fails. This is not a one-way pipeline.
+        </p>
+        <ol>
+          {manualStages.map((stage) => (
+            <li><a href={stage.href}>{stage.label}</a>{' — '}{stage.detail}</li>
+          ))}
+        </ol>
+        <p>
+          The <a href={caseFileUrl('prepare-replay.py')}>manual preparation script</a> binds the exact public CIF to the declared two-site geometry and obtains the exact-hash member from the <a href={pseudopotentialArchiveUrl}>official SSSP v1.3.0 PBE precision archive</a>. It writes the UPF only to a caller-selected directory outside the repository.
+        </p>
+        <pre><code>{manualStartCommand}</code></pre>
+        <p>
+          The generated model is <strong>NOT_RANKED</strong>. Matching source, symmetry, geometry, archive, member, size, and hashes makes this route reproducible; it does not establish model stability, pseudopotential suitability, observable convergence, or a scientific conclusion.
+        </p>
+      </section>
+    )}
+
     <section class="article-content" aria-labelledby="case-bundle-heading">
       <h2 id="case-bundle-heading">Case bundle</h2>
       <p>
-        This page is a reader-facing entry point for the case directory. Inspect the files themselves for the exact source record, input, command line, raw or sanitized output, checks, extraction, parser, derived data, and figure lineage.
+        This page is a reader-facing entry point for the case directory. Inspect the files themselves for the exact source record, input, command scope, raw or sanitized output, checks, extraction, parser, derived data, and figure lineage.
       </p>
       <ul>
         <li><a href={caseFileUrl('README.md')}>Case README</a></li>
         <li><a href={caseFileUrl('manifest.json')}>Execution manifest</a></li>
-        <li><a href={caseFileUrl('run.sh')}>Executed command script</a></li>
-        <li><a href={caseFileUrl('check.sh')}>Quick acceptance check</a></li>
+        <li><a href={caseFileUrl('run.sh')}>Native replay template</a></li>
+        {manualStages.length > 0 && <li><a href={caseFileUrl('prepare-replay.py')}>Manual CIF, model, and pseudopotential preparation</a></li>}
+        <li><a href={caseFileUrl('check.sh')}>Case-local isolated check</a></li>
         <li><a href={caseFileUrl('parse.py')}>Strict parser</a></li>
         <li><a href={caseFileUrl(workflow.excerpt_path)}>Hash-bound output excerpt</a></li>
       </ul>
@@ -107,11 +196,32 @@ const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Resear
 
     <section class="article-content" aria-labelledby="commands-heading">
       <h2 id="commands-heading">Recorded commands and output</h2>
-      <p>The commands below are read from the execution manifest. Exit code records describe the captured run; they are not a convergence claim.</p>
+      <p>
+        These records distinguish captured output, replay instructions, and unavailable historical shell details. An exit is shown only when the manifest scopes where that value came from; a QE terminal marker is not silently converted into a shell exit code.
+      </p>
+      {manifest.completion_boundary && <p><strong>Case-wide timing boundary:</strong> {manifest.completion_boundary}</p>}
+      {executionRoutes.map((route) => (
+        <div>
+          <p><strong>{route.label ?? route.route_id ?? 'Execution route'}</strong></p>
+          {route.route_id && <p><strong>Route ID:</strong> <code>{route.route_id}</code></p>}
+          {route.timing && <p><strong>Route timing:</strong> {route.timing.started_at ?? 'start not recorded'} to {route.timing.completed_at ?? 'completion not recorded'}. {route.timing.scope}</p>}
+          {route.exact_command_status && <p><strong>Exact historical command:</strong> {route.exact_command_status}</p>}
+          {route.exact_exit_code_status && <p><strong>Exact historical exit:</strong> {route.exact_exit_code_status}</p>}
+          {route.ancestry && route.ancestry.length > 0 && <ul>{route.ancestry.map((item) => <li>{item}</li>)}</ul>}
+          {route.boundary && <p><strong>Boundary:</strong> {route.boundary}</p>}
+        </div>
+      ))}
       {commands.map((entry) => (
         <div>
-          <p><strong>{entry.stage ?? 'Recorded stage'} · exit {entry.exit_code ?? 'not recorded'}</strong></p>
+          <p><strong>{entry.stage ?? 'Recorded stage'} · {typeof entry.exit_code === 'number' ? `exit ${entry.exit_code}` : 'exit not recorded'}</strong></p>
+          {entry.route_id && <p><strong>Route:</strong> <code>{entry.route_id}</code></p>}
+          {entry.record_kind && <p><strong>Record kind:</strong> {entry.record_kind}</p>}
           <pre><code>{entry.command ?? 'See manifest'}</code></pre>
+          {entry.evidence_scope && <p><strong>Evidence scope:</strong> {entry.evidence_scope}</p>}
+          {entry.exit_code_scope && <p><strong>Exit scope:</strong> {entry.exit_code_scope}</p>}
+          {entry.input_artifacts && entry.input_artifacts.length > 0 && <p><strong>Inputs:</strong> <code>{entry.input_artifacts.join(' -> ')}</code></p>}
+          {entry.parent_artifacts && entry.parent_artifacts.length > 0 && <p><strong>Declared parents:</strong> <code>{entry.parent_artifacts.join(' -> ')}</code></p>}
+          {entry.output_artifacts && entry.output_artifacts.length > 0 && <p><strong>Outputs:</strong> <code>{entry.output_artifacts.join(' -> ')}</code></p>}
         </div>
       ))}
       <p><strong>Source-bound excerpt: {workflow.excerpt_path}</strong></p>
@@ -143,7 +253,7 @@ const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Resear
       {manifest.public_host_label && <p><strong>Execution host:</strong> {manifest.public_host_label}.</p>}
       <dl>
         {gates.map(([gate, record]) => (
-          <><dt>{gate} {record.status ?? 'UNKNOWN'}</dt><dd>{record.summary ?? 'No summary declared.'}</dd></>
+          <><dt>{gateLabels[gate] ?? 'Additional evidence boundary'}</dt><dd><strong>{gateStatusText(record.status)}</strong>. {record.summary ?? 'No summary declared.'}</dd></>
         ))}
       </dl>
       <h3>What this case supports</h3>
@@ -158,7 +268,7 @@ const caseFileUrl = (file: string) => `https://github.com/Maxwell3919/DFT-Resear
     <section class="article-content" aria-labelledby="workflow-context-heading">
       <h2 id="workflow-context-heading">Research-workflow context</h2>
       <p>
-        Use this case together with <a href={withBase('operations/')}>Research Workflow</a> for the A–E scientific map. The case illustrates one material and one bounded route; it does not prescribe parameters or establish a general material conclusion.
+        Use this case together with <a href={withBase('operations/')}>Research Workflow</a> for the A–E scientific map. The case illustrates one bounded case and its declared routes; it does not prescribe parameters or establish a general material conclusion.
       </p>
     </section>
 

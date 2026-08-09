@@ -143,6 +143,8 @@ The article correctly preserves the following distinctions:
   defines the approximate electronic problem solved for that model;
 - physical approximations and numerical discretizations are related but are not
   the same source of error;
+- changing theory, Hamiltonian, ensemble, or boundary model tests physical or
+  theoretical robustness, whereas refinement at fixed method tests numerical error;
 - increasing a cutoff or grid cannot repair an inappropriate physical
   approximation;
 - exchange–correlation families are not a universal accuracy ladder;

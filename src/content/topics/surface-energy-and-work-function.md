@@ -85,7 +85,9 @@ Check residual forces together with surface identity and thickness. A low force 
 
 ## Converge the surface observables, not only the SCF cycle
 
-Surface energy and work function respond differently to numerical choices. The former is a cancellation of extensive energies; the latter is a difference between an electronic chemical potential and a vacuum reference. Converge both against slab thickness, vacuum, lateral cell, k sampling, basis or cutoff, electrostatic grids, occupation treatment, and relaxation policy over the range relevant to the claim.
+Surface energy and work function respond differently to numerical choices. The former is a cancellation of extensive energies; the latter is a difference between an electronic chemical potential and a vacuum reference. Test both against slab thickness, vacuum, lateral cell, k sampling, basis or cutoff, electrostatic grids, occupation treatment, and relaxation policy over the range relevant to the claim.
+
+Here numerical convergence means thickness, vacuum, sampling, and finite lateral-size refinement within a fixed termination, reconstruction, surface stoichiometry, and physical relaxation-constraint policy. Different reconstruction cells or relaxation policies define state or model robustness comparisons rather than additional discretization points.
 
 Metallic surface states can make k sampling and occupation treatment especially important. Asymmetric dipoles can make vacuum and electrostatic boundary conditions dominant. There is no transferable slab thickness, vacuum width, mesh, smearing, force threshold, or work-function tolerance for all materials.
 

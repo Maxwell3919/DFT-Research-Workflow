@@ -44,12 +44,11 @@ stress component or pressure
 runtime and memory
 ```
 
-The retained conceptual diagram explains why the controls are coupled. The main
-case is a hash-bound, nine-run Silicon matrix: the same COD 9013102 primitive
-cell and SSSP Si potential were evaluated by QE 7.5 at 30, 40, and 50 Ry with
-charge-density cutoff fixed at eight times `ecutwfc`, and at 6³, 8³, and 10³
-k meshes. This is a real, deliberately small teaching dataset—not a library
-recommendation or transferable convergence result.
+The diagram is conceptual. Separately, nine committed output files are recorded
+as a bounded QE 7.5 Silicon matrix over 30, 40, and 50 Ry and 6³, 8³, and 10³
+meshes. The published inputs describe the COD 9013102 cell, SSSP potential, and
+eight-times density cutoff; the declared companion does not execute QE or parse
+those inputs.
 
 ## Scan the coupled control surface
 
@@ -59,10 +58,11 @@ A one-dimensional cutoff sweep can hide dependence on the associated real-space 
 python3 examples/practical-guides/silicon_qe_convergence.py
 ```
 
-The companion reconstruction verifies SHA-256 for all nine committed `pw.x`
-outputs, their electronic-convergence and `JOB DONE` markers, and the full
-cutoff-by-mesh coverage. It reports each total energy relative to the 50 Ry,
-10³ row; that row is a comparison reference, not an accepted production setting.
+The companion hashes the nine expected outputs, requires the literal
+electronic-convergence and `JOB DONE` markers, parses the last reported total
+energy, derives cutoff and mesh labels from filenames, and reports differences
+to the 50 Ry, 10³ row. It does not verify the inputs, potential, forces, stress,
+or a production setting.
 
 ## Use recommendations as prior evidence
 
@@ -84,11 +84,12 @@ The selected point should be followed by at least one stricter point that remain
 
 ## What this guide verifies
 
-The stored outputs come from actual QE 7.5 `pw.x` executions and establish only
-electronic completion for the nine declared inputs plus a reproducible total-energy
-comparison. They do not test force, stress, band, DOS, phonon, or response
-convergence; they do not validate the SSSP potential, establish a transferable
-cutoff, or support a Silicon material conclusion.
+The declared companion verifies expected output SHA-256 values, marker presence,
+nine parsed total energies, filename-encoded 3 × 3 coverage, and reported
+differences. Marker presence is stored-output evidence, not an independent runtime
+or provenance check. The script does not test force, stress, band, DOS, phonon,
+or response convergence, validate the potential, establish a transferable cutoff,
+or support a Silicon material conclusion.
 
 ## Common mistakes
 

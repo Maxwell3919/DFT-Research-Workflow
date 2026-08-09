@@ -1,3 +1,4 @@
 Captured execution: Quantum ESPRESSO PWSCF v.7.5, MPI parallel mode, one process and one node (as printed in each stdout).
-Case inspection and deterministic replay: Python 3.12, NumPy 2.5.1, matplotlib 3.11.0, Pillow 12.3.0; no QE job is launched by run.sh.
-Pseudopotential boundary: filename and hash metadata are recorded, but no UPF payload is copied into this repository.
+Case inspection and deterministic parsing: Python 3.12, NumPy 2.5.1, matplotlib 3.11.0, Pillow 12.3.0; parse.py, extract.sh, and check.sh do not launch QE.
+Native replay boundary: run.sh does launch caller-supplied pw.x and dos.x only after explicit executable, pseudopotential, hash, and new external output-root checks.
+Pseudopotential boundary: filename and hash metadata are recorded, but no UPF payload or independently verified exact public file URL is copied into this repository.
