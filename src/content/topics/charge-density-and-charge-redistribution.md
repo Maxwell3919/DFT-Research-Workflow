@@ -41,7 +41,7 @@ $$
 
 Generate every term in the same cell, on the same grid, with compatible Hamiltonian, spin/SOC, occupations, charge convention, and coordinates. Decide whether fragment densities use frozen combined-system coordinates or separately relaxed fragments. The first isolates redistribution at one geometry; the second also contains structural deformation.
 
-Before processing real fields, [Check a Compatible Difference-Density Closure](/DFT-Research-Workflow/operations/charge-density-and-charge-redistribution/guides/check-charge-difference-closure/). That practical guide runs an invented-grid arithmetic fixture. It verifies subtraction and full-cell bookkeeping only; it does not produce a material density.
+The first real action is to export compatible fields and inspect their cells, grids, units, and electron counts. [Check a Compatible Difference-Density Closure](/DFT-Research-Workflow/operations/charge-density-and-charge-redistribution/guides/check-charge-difference-closure/) is only an optional four-cell arithmetic check after that workflow is understood; it does not read a volumetric file or produce a material density.
 
 ## Check the numerical object before reading the image
 
@@ -63,7 +63,7 @@ Bader and Hirshfeld values remain conditional on their respective partition defi
 
 In spin-polarized work, distinguish total charge density from magnetization density. A spinor/SOC magnetization field may be vector-valued and requires a declared axis or vector representation.
 
-## What this topic establishes
+## Decide what the field may support
 
 The supported result is a bounded statement about a declared field, difference, integral, or partition for the accepted parent state. It does not establish a unique atomic charge, formal oxidation state, bond order, charge-transfer mechanism, chemical reactivity, experimental density, or material performance.
 

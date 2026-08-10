@@ -17,8 +17,7 @@ source_ids:
   - vinet-eos
   - mouhat-elastic-stability
   - phonopy-qha
-media_ids:
-  - common-pressure-enthalpy-crossing
+media_ids: []
 review: docs/reviews/2026-08-03-equation-of-state-and-structural-phase-stability.md
 reviewed_at: "2026-08-03"
 ---
@@ -27,21 +26,14 @@ reviewed_at: "2026-08-03"
 
 A real comparison starts by opening the competing phase structures, checking their state identities, and plotting each energy-volume or enthalpy-pressure branch over the same range. At a chosen pressure, inspect the minimizing volume on both branches and the pressure-volume contribution before locating a crossing. Compare the pressure range and phase candidates with the relevant literature through [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
 
-**Audit the stored fixture:** both phase branches and the crossing figure are invented conceptual data. The companion script tests common-pressure bookkeeping only; it cannot support a phase boundary or stability claim for a material.
+**Optional common-pressure exercise:** both phase branches are invented conceptual data. Use them only after inspecting two accepted real branches; the script tests common-pressure bookkeeping and cannot support a material phase boundary or stability claim.
 
 Use this fixture after two phase branches have been fitted over a common supported pressure interval. It checks the common-pressure operation with invented analytic alpha and beta branches; it is not a material calculation.
 
-Inspect the report from the companion-script directory:
+From the repository root, print the complete sampled enthalpy report:
 
 ```bash
-cd examples/practical-guides
-python3 - <<'PY'
-from eos_phase_enthalpy import run
-
-report = run()
-print(report["crossing_pressure_gpa"])
-print(report["common_pressure_samples"])
-PY
+python3 examples/practical-guides/eos_phase_enthalpy.py
 ```
 
 The output contains the fixture crossing and sampled enthalpy records. Inspect both branches, not only the reported crossing.

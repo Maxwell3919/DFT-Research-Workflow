@@ -3,102 +3,105 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ContextualLinks from '../../components/ContextualLinks.astro';
 import { getContextualNavigation } from '../../lib/contextual-navigation';
-import { getTool, getTools, getToolTopics, toolRegistryMetadata } from '../../lib/tools';
+import {
+  getDetailedResources,
+  getResource,
+  getResourceTaskGroups,
+  getResourceTopics,
+  toolRegistryMetadata,
+} from '../../lib/tools';
 import { withBase } from '../../lib/paths';
 
-export const getStaticPaths = () => getTools().map((tool) => ({ params: { slug: tool.slug } }));
+export const getStaticPaths = () => getDetailedResources().map((resource) => ({ params: { slug: resource.slug } }));
 
-const tool = getTool(Astro.params.slug!);
-const topics = getToolTopics(tool);
-const primaryTopic = topics.find((topic) => topic.slug === tool.primary_topic);
-if (!primaryTopic) throw new Error(`${tool.slug}: primary topic is not connected to this tool`);
-const relatedTopics = topics.filter((topic) => topic.slug !== tool.primary_topic);
+const resource = getResource(Astro.params.slug!);
+if (!resource.detail) throw new Error(`${resource.slug}: catalog-only resource has no depth route`);
+const topics = getResourceTopics(resource);
+const taskGroups = getResourceTaskGroups();
+const primaryGroup = taskGroups.find((group) => group.id === resource.task_groups[0]);
+if (!primaryGroup) throw new Error(`${resource.slug}: primary resource task is unresolved`);
 const guides = (await getCollection('practicalGuides'))
-  .filter((guide) => guide.data.status === 'reviewed' && guide.data.tools.includes(tool.slug))
+  .filter((guide) => guide.data.status === 'reviewed' && guide.data.tools.includes(resource.slug))
   .sort((a, b) => a.data.title.localeCompare(b.data.title));
 const accessLabels = {
-  'open-source': 'Open source',
-  'restricted-license': 'Restricted licence',
-  'registration-required': 'Registration required',
-  'free-proprietary': 'Free proprietary licence',
+  open: 'Open',
+  registration: 'Registration required',
   institutional: 'Institutional access',
   subscription: 'Subscription',
   commercial: 'Commercial',
   mixed: 'Mixed access',
+  restricted: 'Restricted licence',
+  'free-proprietary': 'Free proprietary licence',
 } as const;
-const access = accessLabels[tool.access];
-const verifiedAtLabel = new Intl.DateTimeFormat('en-GB', {
+const reviewedAtLabel = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
   month: 'long',
   year: 'numeric',
   timeZone: 'UTC',
 }).format(new Date(`${toolRegistryMetadata.verifiedAt}T00:00:00Z`));
-const contextualNavigation = getContextualNavigation({ kind: 'tool', slug: tool.slug });
+const contextualNavigation = getContextualNavigation({ kind: 'tool', slug: resource.slug });
+const verificationNote = resource.caveat
+  ?? 'Check current official documentation, access terms, release compatibility, input semantics, and the evidence needed for the specific research claim.';
 ---
-<BaseLayout title={tool.name} description={`${tool.name}: verified identity, access, workflow topics, and reviewed practical pages.`} current="tools">
-  <nav class="breadcrumb" aria-label="Breadcrumb"><a href={withBase('tools/')}>Tools</a> / {tool.name}</nav>
-  <p class="operation-label">{tool.category}</p>
-  <h1>{tool.name}</h1>
-  {tool.aliases.length > 0 && <p class="tool-aliases">Also known as {tool.aliases.join(', ')}.</p>}
-  <p class="framework-note"><strong>Secondary index:</strong> {toolRegistryMetadata.scopeNote}</p>
 
-  <h2>What</h2>
-  <p class="page-intro">{tool.role}</p>
-  <dl class="tool-facts">
-    <div><dt>Access</dt><dd>{access}</dd></div>
-    <div><dt>Interfaces</dt><dd>{tool.interfaces.join(', ')}</dd></div>
-    <div><dt>Identity checked</dt><dd><time datetime={toolRegistryMetadata.verifiedAt}>{verifiedAtLabel}</time></dd></div>
-  </dl>
-  {tool.access_note && <p>{tool.access_note}</p>}
-  {tool.verified_version && <p><strong>Version or environment checked:</strong> {tool.verified_version}</p>}
+<BaseLayout
+  title={resource.name}
+  description={`${resource.name}: official entry points and connections to the DFT research workflow.`}
+  current="tools"
+>
+  <article class="tool-detail" data-resource-detail={resource.slug}>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href={withBase('tools/')}>Tools & Resources</a> / {resource.name}</nav>
+    <p class="operation-label">{primaryGroup.title}</p>
+    <h1>{resource.name}</h1>
+    {resource.aliases.length > 0 && <p class="tool-aliases">Also known as {resource.aliases.join(', ')}.</p>}
+    <p class="page-intro">{resource.one_line}</p>
 
-  <h2>Use it when</h2>
-  <p>{tool.use_when}</p>
+    <dl class="tool-facts">
+      <div><dt>Access</dt><dd>{accessLabels[resource.access]}</dd></div>
+      <div><dt>Interfaces</dt><dd>{resource.interface_tags.join(', ')}</dd></div>
+      <div><dt>Tags</dt><dd>{resource.kind_tags.join(', ')}</dd></div>
+      <div><dt>Entry points reviewed</dt><dd><time datetime={toolRegistryMetadata.verifiedAt}>{reviewedAtLabel}</time></dd></div>
+    </dl>
 
-  <h2>First useful action</h2>
-  <p>{tool.first_action}</p>
-
-  <h2>Inputs and outputs</h2>
-  <h3>Input objects</h3>
-  <ul data-tool-inputs>{tool.input_objects.map((item) => <li>{item}</li>)}</ul>
-  <h3>Output objects</h3>
-  <ul data-tool-outputs>{tool.output_objects.map((item) => <li>{item}</li>)}</ul>
-
-  <h2>What to verify</h2>
-  <p data-tool-verify>{tool.verify}</p>
-
-  <h2>Where in DRW</h2>
-  <p><a data-tool-primary href={withBase(`operations/${primaryTopic.slug}/`)}>{primaryTopic.title}</a> is the primary scientific entry for this record.</p>
-  {relatedTopics.length > 0 && (
-    <>
-      <h3>Related workflow topics</h3>
-      <ul class="directory-list">
-        {relatedTopics.map((topic) => <li><a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a></li>)}
-      </ul>
-    </>
-  )}
-  <h3>Reviewed practical pages</h3>
-  {guides.length > 0 ? (
+    <h2>Official entry points</h2>
     <ul class="directory-list">
-      {guides.map((guide) => {
-        const segment = guide.data.kind === 'worked-example' ? 'examples' : guide.data.kind === 'visual-note' ? 'notes' : 'guides';
-        return <li><a href={withBase(`operations/${guide.data.topic_slug}/${segment}/${guide.data.guide_slug}/`)}>{guide.data.title}</a><span>{guide.data.summary}</span></li>;
-      })}
+      {resource.links.map((link) => <li><a data-resource-link href={link.url}>{link.label}</a><span>{link.role}</span></li>)}
     </ul>
-  ) : (
-    <p>No reviewed hands-on walkthrough currently demonstrates this tool. Use the connected scientific topics and official start to choose and inspect an appropriate human route.</p>
-  )}
 
-  {contextualNavigation && <ContextualLinks navigation={contextualNavigation} />}
+    <h2>Where in the research workflow</h2>
+    <ul class="directory-list" data-resource-topics>
+      {topics.map((topic) => <li><a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a></li>)}
+    </ul>
 
-  <h2>Start here</h2>
-  <p>After choosing a bounded task, open the curated human entry point: <a data-tool-start href={tool.getting_started.url}>{tool.getting_started.label}</a>.</p>
+    <h2>Reviewed practical pages</h2>
+    {guides.length > 0 ? (
+      <ul class="directory-list">
+        {guides.map((guide) => {
+          const segment = guide.data.kind === 'worked-example' ? 'examples' : guide.data.kind === 'visual-note' ? 'notes' : 'guides';
+          return <li><a href={withBase(`operations/${guide.data.topic_slug}/${segment}/${guide.data.guide_slug}/`)}>{guide.data.title}</a><span>{guide.data.summary}</span></li>;
+        })}
+      </ul>
+    ) : (
+      <p>No reviewed hands-on page currently demonstrates this resource. Start from the connected research task and the official entry point.</p>
+    )}
 
-  <h2>Official documentation</h2>
-  <ul>
-    <li><a href={tool.documentation}>Documentation</a></li>
-    <li><a href={tool.homepage}>Homepage</a></li>
-    {tool.source_repository && <li><a href={tool.source_repository}>Source repository</a></li>}
-  </ul>
-  <p class="framework-note">Identity and link verification do not establish successful execution, numerical convergence, scientific validity, or suitability for a particular material.</p>
+    <h2>What to verify</h2>
+    <p data-tool-verify>{verificationNote}</p>
+    <p class="framework-note">A resource identity, reachable link, successful program run, or plausible figure does not by itself establish numerical convergence, scientific validity, or suitability for a material.</p>
+
+    {contextualNavigation && <ContextualLinks navigation={contextualNavigation} />}
+  </article>
 </BaseLayout>
+
+<style>
+  .tool-detail { max-width: 58rem; margin: 0 auto; padding-bottom: 4rem; }
+  .tool-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin: 1.5rem 0 2.5rem; border-block: 1px solid var(--rule); }
+  .tool-facts > div { padding: 0.7rem 0; }
+  .tool-facts > div:nth-child(odd) { padding-right: 1.25rem; }
+  .tool-facts dt { font-weight: 700; }
+  .tool-facts dd { margin: 0.2rem 0 0; color: var(--muted); overflow-wrap: anywhere; }
+  @media (max-width: 600px) {
+    .tool-facts { grid-template-columns: 1fr; }
+    .tool-facts > div:nth-child(odd) { padding-right: 0; }
+  }
+</style>

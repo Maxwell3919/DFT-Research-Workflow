@@ -20,7 +20,7 @@ const phrases = [
   'The solution depends on the complete included defect and dopant inventory',
   'A low equilibrium formation energy does not supply a migration barrier',
   'Verify program completion, SCF convergence, relaxation, final charge and spin identity, and localization separately.',
-  'Claim boundary and next operation',
+  'Decide the claim and next calculation',
   'It does not establish exhaustive search, isolated-defect convergence without size evidence',
   'Sources and methods',
 ];
@@ -37,13 +37,13 @@ async function inspect(page, width) {
     hasArticle: Boolean(document.querySelector('.article-content')),
     hasPlaceholder: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     hasContract: Boolean(document.querySelector('.operation-contract')),
-    scripts: document.querySelectorAll('script').length,
+    scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en' || result.title !== 'Defect Formation Energies and Charge States') throw new Error(`defect identity mismatch: ${result.title}`);
   if (!result.hasArticle || result.hasPlaceholder || result.hasContract) throw new Error('reviewed defect narrative was not rendered naturally');
   if (result.scripts !== 0 || result.overflow) throw new Error(`defect page is not static or overflows at ${width}px`);
-  if (result.headings < 12 || result.headings > 26 || result.cards !== 2) throw new Error(`defect counts mismatch: ${result.headings} sections, ${result.cards} cards`);
+  if (result.headings < 12 || result.headings > 26 || result.cards !== 0) throw new Error(`defect counts mismatch: ${result.headings} sections, ${result.cards} synthetic-only cards`);
   for (const phrase of phrases) if (!result.text.includes(phrase)) throw new Error(`defect page is missing ${phrase}`);
   for (const domain of domains) if (!result.links.some((link) => link.includes(domain))) throw new Error(`defect page is missing ${domain}`);
   return result;
@@ -83,7 +83,7 @@ try {
     await capture(page, join(artifactDirectory, 'topic-defect-formation-energies-desktop.png'));
     await writeFile(join(artifactDirectory, 'reviewed-defects-summary.json'), `${JSON.stringify({ site_url: base, route, natural_sections: desktop.headings, practical_cards: desktop.cards, source_links: desktop.links.length, desktop_width: 1440, mobile_width: 390, no_javascript: true, fixed_contract: false, correction_boundary: true, transition_level_boundary: true, neutrality_boundary: true }, null, 2)}\n`);
   }
-  console.log(`Reviewed defect smoke passed: ${desktop.headings} natural sections, 2 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and correction/transition/neutrality boundaries.`);
+  console.log(`Reviewed defect smoke passed: ${desktop.headings} natural sections, no synthetic-only primary cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and correction/transition/neutrality boundaries.`);
 } finally {
   await browser.close();
 }

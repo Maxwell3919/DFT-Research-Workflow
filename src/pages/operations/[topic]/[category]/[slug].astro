@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import { execFileSync } from 'node:child_process';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -60,8 +61,23 @@ const assets = mediaDocument.assets.filter((asset) => guide.data.media_ids.inclu
 const canonicalPath = practicalGuidePath(guide);
 const publishedWorkflow = workflowsDocument.workflows.find((workflow) => workflow.case_id === evidence.case_id);
 const caseRoot = evidence.case_id ? `examples/cases/${evidence.case_id}/` : undefined;
-const caseUrl = caseRoot ? `https://github.com/Maxwell3919/DFT-Research-Workflow/tree/main/${caseRoot}` : undefined;
-const caseManifestUrl = caseRoot ? `https://github.com/Maxwell3919/DFT-Research-Workflow/blob/main/${caseRoot}manifest.json` : undefined;
+const sourceRevision = (() => {
+  const declared = process.env.GITHUB_SHA ?? process.env.SOURCE_REVISION;
+  if (/^[a-f0-9]{40}$/i.test(declared ?? '')) return declared as string;
+  try {
+    const local = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+    if (/^[a-f0-9]{40}$/i.test(local)) return local;
+  } catch {
+    // The public link remains absent if no exact revision can be established.
+  }
+  return undefined;
+})();
+const caseUrl = caseRoot && sourceRevision
+  ? `https://github.com/Maxwell3919/DFT-Research-Workflow/tree/${sourceRevision}/${caseRoot}`
+  : undefined;
+const caseManifestUrl = caseRoot && sourceRevision
+  ? `https://github.com/Maxwell3919/DFT-Research-Workflow/blob/${sourceRevision}/${caseRoot}manifest.json`
+  : undefined;
 const isInterfaceWalkthrough = evidence.evidence_class === 'real-interface-walkthrough';
 const gateRecords = Object.values(caseGates ?? {});
 const recordedStatuses = gateRecords
@@ -99,76 +115,43 @@ const contextualNavigation = getContextualNavigation({ kind: 'practical', guide_
 
     <div class="article-content"><GuideContent /></div>
 
-    <dl class="guide-meta">
-      <div>
-        <dt>Tools</dt>
-        <dd class="tool-list">
-          {guide.data.tools.map((tool) => <span class="tool-tag">{tool}</span>)}
-        </dd>
-      </div>
-      {guide.data.interfaces.length > 0 && (
-        <div>
-          <dt>Interfaces</dt>
-          <dd>{guide.data.interfaces.join('; ')}</dd>
-        </div>
-      )}
-      <div>
-        <dt>{isInterfaceWalkthrough ? 'Observed with' : 'Executed with'}</dt>
-        <dd>{guide.data.tested_versions.join('; ')}</dd>
-      </div>
-      <div>
-        <dt>{isInterfaceWalkthrough ? 'Interface evidence' : 'Execution evidence'}</dt>
-        <dd>
-          {guide.data.execution_script
-            ? <code>{guide.data.execution_script}</code>
-            : 'Actual browser walkthrough; no terminal execution script is claimed.'}
-        </dd>
-      </div>
-    </dl>
-
-    <div class="evidence-note">
-      {isInterfaceWalkthrough
-        ? <p>The captured interface state establishes only that the public record, viewer, and declared object were displayed at the recorded time. It does not validate the structure or any DFT result.</p>
-        : <p>Execution checks confirm only the bounded software or analysis assertions made by this page. They do not establish numerical convergence, energetic stability, or transferability to another system.</p>}
-    </div>
-
-    {evidence.case_id && (
-      <section class="article-content" aria-labelledby="terminal-case-heading">
-        <h2 id="terminal-case-heading">Evidence scope and limitations</h2>
-        <p>
-          <strong>Evidence scope.</strong> This page's <strong>{evidence.evidence_class}</strong> classification is bound to
-          {' '}<a href={caseUrl}>{caseRoot}</a>. The case directory documents its available source
-          and input identities, declared command records, stored raw or explicitly sanitized
-          outputs, hashes, parser, derived data, and claim boundary; its
-          {' '}<a href={caseManifestUrl}>manifest</a> is the checkable record of the declared checks and their outcomes.
-        </p>
-        <p><strong>Recorded outcome.</strong> {recordedOutcome}</p>
-        <p>
-          <strong>Limitations.</strong> These records address only the deterministic software,
-          parsing, or analysis assertions encoded for this example. They do not establish DFT
-          convergence, adequate sampling or model choices, physical validity, or transferability
-          to another system.
-        </p>
-        <p>
-          <strong>Claim ceiling.</strong> A fully passed case supports only reproduction of the
-          bounded assertion in the recorded environment. A failed or incomplete case supports
-          only the corresponding negative or incomplete finding. Neither outcome establishes a
-          material property, predictive accuracy, or a scientific conclusion.
-        </p>
-        {publishedWorkflow && <p><a href={withBase(`workflows/${publishedWorkflow.slug}/`)}>Read the Worked Workflow</a>.</p>}
-      </section>
-    )}
-
     {assets.length > 0 && (
       <section class="guide-media" aria-labelledby="guide-media-heading">
         <h2 id="guide-media-heading">Visual reference</h2>
         {assets.map((asset) => (
           <figure>
             <img src={withBase(asset.path)} alt={asset.alt} loading="lazy" />
-            <figcaption>{asset.caption}</figcaption>
+            <figcaption>{asset.caption} <a href={withBase(asset.path)}>Open the full-size figure.</a></figcaption>
           </figure>
         ))}
       </section>
+    )}
+
+    <div class="guide-ways guide-meta">
+      <p>
+        <strong>Ways to work:</strong>{' '}
+        {guide.data.interfaces.length > 0 ? `${guide.data.interfaces.join(' · ')} · ` : ''}
+        <span class="tool-list">{guide.data.tools.map((tool) => <span class="tool-tag">{tool}</span>)}</span>
+      </p>
+      <p><strong>Companion checked with:</strong> {guide.data.tested_versions.join('; ')}.</p>
+    </div>
+
+    {(evidence.case_id || guide.data.tested_versions.length > 0) && (
+      <details class="reproducibility-note evidence-note">
+        <summary>Reproducibility note</summary>
+        <p>
+          The companion material was checked with {guide.data.tested_versions.join('; ')}.
+          It tests only the bounded software or analysis behaviour described here; it does not establish numerical convergence, model validity, or a material property.
+        </p>
+        {evidence.case_id && <p>{recordedOutcome}</p>}
+        {caseUrl && caseManifestUrl && (
+          <p>
+            <a href={caseUrl}>Open the exact case record</a> or its <a href={caseManifestUrl}>manifest</a>.
+          </p>
+        )}
+        {publishedWorkflow && <p><a href={withBase(`workflows/${publishedWorkflow.slug}/`)}>Read the Worked Workflow</a>.</p>}
+        {isInterfaceWalkthrough && <p>A captured interface proves only what was displayed at the recorded time; it does not validate the structure or any DFT result.</p>}
+      </details>
     )}
 
     {contextualNavigation && <ContextualLinks navigation={contextualNavigation} />}

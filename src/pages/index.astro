@@ -22,9 +22,25 @@ const flowLabels = {
     <header class="home-lede">
       <h1>DFT Research Workflow</h1>
       <p class="home-intro">
-        Use this manual to turn a scientific question into a calculation you can execute and a conclusion you can defend. Start with the scientific question, choose the required observable, prepare the model and numerical setup, establish a reference state, run only the target calculation you need, and validate the result before making a claim. Where execution evidence exists, practical guides and worked workflows identify the file to prepare, the command to run, the output to inspect, and what the recorded evidence establishes. They also state which numerical, structural, or physical conditions remain untested, so a finished job is not mistaken for a supported conclusion.
+        Use this manual to turn a scientific question into a calculation you can execute and a conclusion you can scientifically defend. Choose the observable you need, then open the Research Workflow or a worked case below. Where execution evidence exists, practical guides and worked workflows identify the file to prepare, the command to run, the output to inspect, and what that evidence establishes. They also state what remains untested, so a finished job is not mistaken for a supported conclusion.
       </p>
     </header>
+
+    <nav class="manual-entries" aria-labelledby="entry-heading">
+      <h2 id="entry-heading">Choose a starting point</h2>
+      <a href={withBase('operations/')}>
+        <strong>Start the Research Workflow</strong>
+        <span>Choose the required observable, then move through the model, setup, reference state, calculation, and validation.</span>
+      </a>
+      <a href={withBase('workflows/')}>
+        <strong>Follow a Worked Workflow</strong>
+        <span>Open a real research route and follow the sources, files, commands, outputs, checks, and next decisions.</span>
+      </a>
+      <a href={withBase('tools/')}>
+        <strong>Find a Tool</strong>
+        <span>Locate software or a data service by the research task it helps you perform.</span>
+      </a>
+    </nav>
 
     <section class="question-chain" aria-labelledby="question-chain-heading">
       <h2 id="question-chain-heading">Move from a question to a defensible claim</h2>
@@ -56,21 +72,6 @@ const flowLabels = {
       </p>
     </section>
 
-    <nav class="manual-entries" aria-labelledby="entry-heading">
-      <h2 id="entry-heading">Start where you are</h2>
-      <a href={withBase('operations/')}>
-        <strong>Start the Research Workflow</strong>
-        <span>Choose the required observable, then move through the model, setup, reference state, calculation, and validation.</span>
-      </a>
-      <a href={withBase('workflows/')}>
-        <strong>Follow a Worked Workflow</strong>
-        <span>Follow a human research route across sources, visual inspection, files, commands, outputs, checks, and claim boundaries.</span>
-      </a>
-      <a href={withBase('tools/')}>
-        <strong>Find a Tool</strong>
-        <span>Locate software or a data service by the research task it helps you perform.</span>
-      </a>
-    </nav>
   </article>
 </BaseLayout>
 
@@ -226,7 +227,7 @@ const flowLabels = {
   }
 
   .manual-entries {
-    padding-bottom: 1rem;
+    padding-bottom: clamp(2.8rem, 5vw, 4.5rem);
   }
 
   .manual-entries > a {

@@ -22,6 +22,23 @@ Preserve operations that happened outside the terminal:
 
 For structure work, the [VESTA tool page](/DFT-Research-Workflow/tools/vesta/) identifies the object to open and what visual inspection can and cannot establish. For provenance automation, [AiiDA](/DFT-Research-Workflow/tools/aiida/) is an optional implementation; a manual calculation remains preservable when its interfaces, objects, decisions, and lineage are recorded.
 
+## Preserve the path from question to claim
+
+For every calculation branch, the record should answer:
+
+- Which structure, composition, charge, spin state, boundary model, and reference states were used?
+- Which code, version, build features, potentials or basis sets, and libraries defined the calculation?
+- Which input and command produced each output, and in what execution environment?
+- Which convergence and physical-consistency checks made the result eligible for analysis?
+- Which versioned script, parameters, units, and intermediate values produced the reported observable?
+- Which table, figure, or scientific claim uses that observable?
+
+Draw the connections in whatever form the research group can maintain: dated notes, a table of parent and child files, or an exported provenance graph. The representation matters less than being able to start from a claim and walk back through its figure, table, analysis, output, input, and source. If a parent calculation or decision is missing, record the gap and the work needed to close it instead of inventing continuity.
+
+Record identifiers and checksums for external assets even when their contents cannot be redistributed. Licensed potentials, credentials, tokens, and private host details do not belong in a public package. Their omission should be explicit, with an acquisition route and compatibility metadata where permitted.
+
+Automatic provenance capture can reduce omissions, but a live workflow database is not a durable research object unless it can be exported, versioned, restored, and interpreted independently. Manual calculations can also be preserved rigorously when their connections and identities are recorded.
+
 
 ## Preserve a minimum usable study
 
@@ -41,11 +58,15 @@ A minimum usable release preserves functional roles, not a mandatory directory n
 Generate and verify hashes from the exact release directory:
 
 ```bash
+set -euo pipefail
 study=${study:?Set study to the exact release directory}
 (
   cd -- "$study"
+  for required in README source input commands output parsed figures environment manifest.json; do
+    test -e "$required"
+  done
   find README source input commands output parsed figures environment manifest.json \
-    -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+    -type f -print0 | sort -z | xargs -0 -r sha256sum > SHA256SUMS
   sha256sum -c SHA256SUMS
 )
 ```
@@ -78,23 +99,6 @@ A machine-readable manifest should identify each retained object with:
 Relative paths make a package relocatable. Logical identifiers keep the graph stable when storage locations change. A cryptographic checksum detects byte changes after the manifest was created; it does not prove scientific correctness, authorship, or trustworthiness of the original machine.
 
 Persistent identifiers solve discoverability and citation rather than fixity. A DOI or repository record should resolve to metadata that identifies the version, creators, license or access conditions, related publications, and object. A checksum without a durable location is difficult to find; a DOI without usable files and metadata is difficult to reuse.
-
-## Preserve the path from question to claim
-
-Computational provenance is naturally represented as a graph. Data nodes describe structures, parameters, inputs, outputs, and derived products. Process nodes describe calculations, conversions, fits, and analyses. Directed edges identify what each process consumed and produced.
-
-For every calculation branch, the record should answer:
-
-- Which structure, composition, charge, spin state, boundary model, and reference states were used?
-- Which code, version, build features, potentials or basis sets, and libraries defined the calculation?
-- Which input and command produced each output, and in what execution environment?
-- Which convergence and physical-consistency checks made the result eligible for analysis?
-- Which versioned script, parameters, units, and intermediate values produced the reported observable?
-- Which table, figure, or scientific claim uses that observable?
-
-Record identifiers and checksums for external assets even when their contents cannot be redistributed. Licensed potentials, credentials, tokens, and private host details do not belong in a public package. Their omission should be explicit, with an acquisition route and compatibility metadata where permitted.
-
-Automatic provenance capture can reduce omissions, but a live workflow database is not a durable research object unless it can be exported, versioned, restored, and interpreted independently. Manual calculations can also be preserved rigorously when their graph and identities are recorded.
 
 ## Select artifacts by reconstruction value
 

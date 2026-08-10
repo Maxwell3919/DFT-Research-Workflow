@@ -13,8 +13,7 @@ execution_script: examples/practical-guides/interface_ledger_al_tin.py
 source_ids:
   - feldbauer-al-tin
   - feldbauer-al-tin-arxiv
-media_ids:
-  - al-tin-interface-ledger
+media_ids: []
 review: docs/reviews/2026-08-04-interface-and-heterostructure-energetics.md
 reviewed_at: "2026-08-04"
 ---
@@ -23,7 +22,7 @@ reviewed_at: "2026-08-04"
 
 Return to the attributed publication, identify the cell, termination, registry, layer count, separation coordinate, and per-cell energy definition behind each row, and open an atomistic structure if the source supplies one. Plot energy against separation and keep per-cell adhesion or interaction values separate from area-normalized interface energies. The source table supports only its stated geometries and method; it does not establish a generally preferred registry. Browse [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist interface tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for the missing human-visible context.
 
-**Reproduce this site's figure:** the companion script redraws the frozen, attributed table and audits the arithmetic. It does not reconstruct or relax the interface geometry.
+**Audit the source definitions and signs:** the companion script keeps the frozen table's per-cell quantities, units, and transfer labels together. Use this page to decide what each scalar means before any area normalization; it does not reconstruct or relax the interface geometry.
 
 Reconstruct the published seven-row ledger:
 
@@ -32,9 +31,8 @@ python3 examples/practical-guides/interface_ledger_al_tin.py \
   --svg public/media/practical-guides/interface-and-heterostructure-energetics/build-interface-energy-and-separation-ledger/al-tin-interface-ledger.svg
 ```
 
-The command checks the source DOI and preprint identity, snapshot hash, Table 2 identity, units, seven selected rows, and deterministic SVG rendering. Its printed JSON is an audit of declared public data. It does not execute DFT or reconstruct missing structural objects.
+The command checks the source DOI and preprint identity, snapshot hash, Table 2 identity, units, and seven selected rows. Its printed JSON is an audit of declared public data. It does not execute DFT or reconstruct missing structural objects.
 
-![Published Al/TiN interface ledger comparing adhesion or interaction magnitude with Al-layer removal energy.](/DFT-Research-Workflow/media/practical-guides/interface-and-heterostructure-energetics/build-interface-energy-and-separation-ledger/al-tin-interface-ledger.svg)
 
 ## Read each source quantity literally
 

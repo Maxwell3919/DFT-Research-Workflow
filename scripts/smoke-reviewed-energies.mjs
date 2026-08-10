@@ -17,7 +17,7 @@ const requiredPhrases = [
   'Numerical smearing used for Brillouin-zone integration is not automatically',
   'A negative formation energy is not a phase-stability proof',
   'Formation energy alone establishes neither equilibrium stability nor experimental synthesizability.',
-  'What this topic establishes',
+  'Decide what may continue',
   'Sources and methods',
 ];
 const requiredDomains = ['docs.materialsproject.org', 'goldbook.iupac.org', 'phonopy.github.io', 'doi.org'];
@@ -33,7 +33,7 @@ async function inspect(page, expectedWidth) {
     hasArticle: Boolean(document.querySelector('.article-content')),
     hasPlaceholder: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     hasContract: Boolean(document.querySelector('.operation-contract')),
-    hasScript: Boolean(document.querySelector('script')),
+    hasScript: Boolean(document.querySelector('script:not([data-copy-enhancement])')),
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en') throw new Error('energy overview language is not English');
@@ -43,7 +43,7 @@ async function inspect(page, expectedWidth) {
   if (result.hasScript) throw new Error('energy overview contains client-side script');
   if (result.overflow) throw new Error(`energy overview overflows at ${expectedWidth}px`);
   if (result.headings.length < 12 || result.headings.length > 24) throw new Error(`energy overview has ${result.headings.length} sections outside the natural 12-24 range`);
-  if (result.cards !== 2) throw new Error(`energy overview exposes ${result.cards} practical cards instead of 2`);
+  if (result.cards !== 0) throw new Error(`energy overview exposes ${result.cards} synthetic-only practical cards instead of 0`);
   for (const phrase of requiredPhrases) if (!result.text.includes(phrase)) throw new Error(`energy overview is missing ${phrase}`);
   for (const domain of requiredDomains) if (!result.links.some((link) => link.includes(domain))) throw new Error(`energy overview is missing source domain ${domain}`);
   return result;
@@ -102,7 +102,7 @@ try {
       formation_stability_distinction: desktop.text.includes('not a phase-stability proof'),
     }, null, 2)}\n`);
   }
-  console.log(`Reviewed energy smoke passed: ${desktop.headings.length} natural sections, 2 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and formation-versus-stability language.`);
+  console.log(`Reviewed energy smoke passed: ${desktop.headings.length} natural sections, no synthetic-only primary cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and formation-versus-stability language.`);
 } finally {
   await browser.close();
 }

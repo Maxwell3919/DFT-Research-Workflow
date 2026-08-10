@@ -17,9 +17,7 @@ source_ids:
   - kohn-sham
   - setyawan-curtarolo
   - cod-9013102
-media_ids:
-  - silicon-qe-path-full-zone
-  - band-path-full-zone-extrema
+media_ids: []
 review: docs/reviews/2026-08-04-band-structure.md
 reviewed_at: "2026-08-04"
 ---
@@ -28,13 +26,21 @@ reviewed_at: "2026-08-04"
 
 Open the silicon Brillouin-zone path and band plot, then inspect a separate uniform-mesh view or table of the extrema. Identify where each reported valence maximum and conduction minimum occurs and whether it lies on the selected path; if a three-dimensional viewer is available, use it to locate off-path regions rather than relying on a sorted list alone. Use [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties).
 
-**Reproduce this site's figure:** the companion script compares actual stored QE path data with a 260-point time-reversal-reduced sample of the nominal mesh. The auxiliary comparison graphic is secondary, and neither finite sample establishes a converged fundamental gap.
+**Inspect two stored real-output samples:** the companion script compares an actual QE path dataset with a 260-point time-reversal-reduced sample of the nominal mesh. Check each extremum's coordinate and dataset before the scalar separation; neither finite sample establishes a converged fundamental gap.
 
 Use this real, hash-bound Silicon comparison when a band-path extremum appears to support a gap or valley statement. It shows the next required operation: calculate a separate full-zone sample from the same accepted state and keep the two datasets distinct. Neither dataset in this teaching example is an observable-convergence study.
 
+From the repository root, reconstruct the committed comparison first:
+
+```bash
+python3 examples/practical-guides/silicon_qe_full_zone.py
+```
+
+Inspect the path and mesh extrema, their fractional coordinates, k-point counts, input/output hashes, and the warning that both are finite samples.
+
 ## Purpose
 
-First establish the compatible SCF parent:
+For a new calculation, first establish the compatible SCF parent inside its prepared QE work directory; the following filenames are work-directory names, not repository-root commands:
 
 ```bash
 pw.x -in scf.in > scf.out
@@ -59,19 +65,13 @@ In the stored full-zone case, `bands.in` uses `nosym=.true.` on an 8 x 8 x 8 gri
 
 The two-site structure comes from the CC0 [COD 9013102 Silicon record](https://www.crystallography.net/cod/9013102.html). The 141-point SeeK-path line sample has a `0.574 eV` separation between its sampled fourth- and fifth-band extrema. The separate mesh sample gives `0.617 eV`. The mesh value need not be lower because both are finite, different samples; neither result is a converged full-zone gap.
 
-![A real Silicon QE comparison of a 141-point path and a 260-point mesh, explicitly marked as unconverged samples.](/DFT-Research-Workflow/media/practical-guides/band-structure/compare-band-path-and-full-zone-extrema/silicon-qe-path-full-zone.svg)
 
 The stored `full-zone-extrema.json` binds structure identity, program versions, input/output SHA-256 values, coordinates written by `bands.x`, and the two derived extrema. The conceptual drawing below demonstrates only the possibility of an off-path extremum; it is not Silicon data.
 
-![Conceptual reciprocal grid showing an invented off-path conduction minimum.](/DFT-Research-Workflow/media/practical-guides/band-structure/compare-band-path-and-full-zone-extrema/band-path-full-zone-extrema.svg)
 
 ## Reconstruct the actual-output comparison
 
-```bash
-python3 examples/practical-guides/silicon_qe_full_zone.py
-```
-
-The companion does not launch QE. Execution verifies reconstruction of two declared real-output samples: it checks the path-output hash and frozen real-output ledger, k-point and band counts, derived extrema, and SVG. This is not a continuous rerun from a fresh public scratch directory.
+The companion command above does not launch QE. Execution verifies reconstruction of two declared real-output samples: it checks the path-output hash and frozen real-output ledger, k-point and band counts, derived extrema, and plot. This is not a continuous rerun from a fresh public scratch directory.
 
 ## Decide what remains untested
 

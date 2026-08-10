@@ -11,7 +11,7 @@ try {
     const page = await browser.newPage(); await page.setCacheEnabled(false); await page.setViewport({ width, height: 844 });
     for (const [route, title, phrase] of routes) {
       const response = await page.goto(base + route, { waitUntil: 'load' });
-      const state = await page.evaluate(async () => { const image = document.querySelector('.guide-media img'); if (image) { image.loading = 'eager'; image.scrollIntoView(); try { await image.decode(); } catch {} } return { title: document.querySelector('h1')?.textContent?.trim(), text: document.body.innerText, scripts: document.scripts.length, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1, image: image ? image.complete && image.naturalWidth > 0 : true }; });
+      const state = await page.evaluate(async () => { const image = document.querySelector('.guide-media img'); if (image) { image.loading = 'eager'; image.scrollIntoView(); try { await image.decode(); } catch {} } return { title: document.querySelector('h1')?.textContent?.trim(), text: document.body.innerText, scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1, image: image ? image.complete && image.naturalWidth > 0 : true }; });
       if (response?.status() !== 200 || state.title !== title || !state.text.includes(phrase) || state.scripts || state.overflow || !state.image) throw Error(`${route} failed at ${width}px`);
     }
     await page.close();

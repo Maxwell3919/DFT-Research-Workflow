@@ -11,6 +11,8 @@ Start with mutually compatible harmonic and anharmonic force constants and a sta
 
 Inspect tensor symmetry, dimensional normalization, q-mesh trends, collision-solver convergence, and sensitivity to isotope, boundary, defect, electron, and omitted higher-order scattering. Visual plateaus complement but do not replace numerical convergence. Converge the reported tensor component or cumulative quantity, not a visually smooth curve. Major particle-like, direct-LBTE, and specialist implementations are indexed under [lattice dynamics](/DFT-Research-Workflow/operations/resource-landscape/#lattice-dynamics) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). This overview does not claim an executed transport calculation.
 
+For a [Phono3py](/DFT-Research-Workflow/tools/phono3py/) route, begin by opening the primitive/supercell mapping, `fc2.hdf5`, `fc3.hdf5`, Born-charge/dielectric input when used, and the mesh-specific transport HDF5 output together. Check that the force constants share one parent force protocol, then read mode frequencies, group velocities, linewidths, and tensor components from the same mesh before plotting cumulative mean-free-path or branch contributions. If the collision solve is ill-conditioned, conductivity changes materially with q mesh or broadening, or RTA and direct-LBTE trends disagree, preserve both outputs and return to mesh, force-constant range, scattering channels, and solver convergence rather than selecting the smoother curve.
+
 ## From modes to a heat-current response
 
 In a particle-like phonon treatment, a common schematic form is

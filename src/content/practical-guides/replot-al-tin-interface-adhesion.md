@@ -23,9 +23,9 @@ reviewed_at: "2026-08-04"
 
 Read the attributed table and Methods section, identify termination, registry, layer count, cell area, separation, and sign convention for every Al/TiN row, and inspect an atomistic structure when the source provides one. Plot the values only after distinguishing per-cell adhesion or interaction energy from area-normalized interface quantities and from the stated layer-removal comparison. See [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist interface tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
 
-**Reproduce this site's figure:** the companion script redraws seven frozen published rows. The scatter plot is a public-data view, not an interface geometry, relaxation, or independent reproduction of the calculations.
+**Optional attributed redraw:** first read Table 2 and its Methods context in the published article or open preprint. The companion script then redraws seven frozen rows so the two per-cell axes and reported transfer labels can be compared together. It is not an interface geometry, relaxation, or independent reproduction of the calculations.
 
-Rebuild the traceable redraw:
+After that source check, redraw the selected rows:
 
 ```bash
 python3 examples/practical-guides/al_tin_interface_adhesion.py \
@@ -33,7 +33,7 @@ python3 examples/practical-guides/al_tin_interface_adhesion.py \
   --svg public/media/practical-guides/interface-and-heterostructure-energetics/replot-al-tin-interface-adhesion/al-tin-interface-adhesion.svg
 ```
 
-The command checks the snapshot schema, exact selected Table 2 values, published sign convention, reported transfer labels, and deterministic rendering. It does not rerun the source calculations or copy the source figure.
+Open the resulting plot and printed rows. Confirm that the horizontal coordinate is the magnitude of the source's negative adhesion or interaction energy, the vertical coordinate is the Al-layer removal energy, both are per interface cell, and colour carries the reported transfer label. If any definition or row label differs from Table 2, stop the comparison. The command does not rerun the source calculations or copy the source figure.
 
 ## Inspect the axes and references
 

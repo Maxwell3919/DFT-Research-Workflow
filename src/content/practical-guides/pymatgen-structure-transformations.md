@@ -5,8 +5,13 @@ title: Apply Structure Transformations with pymatgen
 kind: implementation
 tools:
   - pymatgen
+interfaces:
+  - Terminal
+  - pymatgen Python API
+  - Crystal viewer
+  - Text editor
 status: reviewed
-summary: Use pymatgen transformation objects to create supercell, deformed, and species-substituted descendants while preserving the difference between representation and physical-model changes.
+summary: Write and reopen a parent CIF and separate supercell, deformed, and substituted children while preserving which operations change representation and which change the physical model.
 tested_versions:
   - pymatgen-core 2026.7.31
   - Python 3.12
@@ -20,111 +25,68 @@ review: docs/reviews/2026-08-03-practical-guides-model-building-pilot.md
 reviewed_at: "2026-08-03"
 ---
 
-Use a transformation object when the parent, operation, parameters, and child must remain reconstructable. The class executes a structural change; it does not decide whether that change preserves the physical model.
+Use a transformation object when the parent, operation, parameters, and child must remain reconstructable. State the intended physical change before choosing a class, and apply one meaningful operation to one preserved parent at a time.
 
-## Manual route: choose and inspect each transformation
+## Choose the operation and comparison first
 
-State the physical change before selecting a transformation object: representation change, integer repetition, strain, substitution, site removal, or another model change. Open the parent first, preserve an unchanged copy, and make one scientifically meaningful change at a time.
+Decide whether the action is an equivalent representation, an integer repeat, strain, substitution, site removal, ordering, or another model change. Open the parent, preserve an unchanged copy, and write the acceptance checks before transformation. A class can produce an object; it cannot decide whether the object answers the scientific question.
 
-After each change, compare parent and child in a viewer with cell boundaries visible. Check orientation, composition, coordination, site identity, periodic images, and any strain or displacement that the operation introduced. A successful library call proves only that an object was produced; visual plausibility and numerical lineage checks are both still required.
+The companion uses a two-site Li/O fixture. It is not an experimental phase, stable compound, or DFT reference. Its purpose is to expose a complete file route for three different transformation meanings.
 
-[Compare visual, symmetry, and model-building tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
-
-## Optional automation: run the checked transformations
-
-From the repository root, run:
+## Write, read, transform, write, and reopen
 
 ```bash
-python3 examples/practical-guides/pymatgen_structure_transformations.py
+run_root="$(mktemp -d)"
+python3 examples/practical-guides/pymatgen_structure_transformations.py --workdir "$run_root"
+python3 -m json.tool "$run_root/summary.json"
+ase info --files \
+  "$run_root/source/li-o-parent.cif" \
+  "$run_root/output/li-o-supercell.cif" \
+  "$run_root/output/li-o-strained.cif" \
+  "$run_root/output/na-o-substituted.cif"
 ```
 
-The companion uses pymatgen-core 2026.7.31 to create one illustrative parent, generate an integer supercell, apply a deformation, replace one species, and serialize a transformation-lineage summary. It verifies imports, site-count and volume multipliers, lattice changes, resulting species and composition, and immutability of the parent object.
+The script first writes `source/li-o-parent.cif` and reads that exact file with `Structure.from_file`. It then creates three independent children:
 
-The two-site Li/O parent is a software fixture. It is not a claimed experimental phase, stable compound, or DFT reference structure.
+- an integer supercell with matrix `[[2, 0, 0], [0, 1, 0], [0, 0, 1]]`;
+- a child with deformation gradient `diag(1.02, 1, 1)`;
+- a child in which parent site index 0 changes from Li to Na.
 
-## Create an explicit parent
+Each child is written to its own CIF and reopened. The script checks the reopened site-count and volume multipliers, composition change, parent immutability, and file hashes. The numerical values are demonstration inputs, not recommended strain, concentration, or material parameters.
 
-```python
-from pymatgen.core import Lattice, Structure
+## Compare one child at a time
 
-parent = Structure(
-    Lattice.cubic(4.0),
-    ["Li", "O"],
-    [[0, 0, 0], [0.5, 0.5, 0.5]],
-)
+Open the parent beside each child in a viewer. One possible local route is:
+
+```bash
+ase gui \
+  "$run_root/source/li-o-parent.cif" \
+  "$run_root/output/li-o-supercell.cif" \
+  "$run_root/output/li-o-strained.cif" \
+  "$run_root/output/na-o-substituted.cif"
 ```
 
-For research use, replace this fixture with the parsed, checked working structure and retain its source checksum, data block, atom mapping, and parser version.
+Show cell boundaries and compare orientation, composition, coordination, site identity, periodic contacts, and the displacement or strain introduced by the operation. Also inspect the CIF text because format writing can change labels, symmetry records, precision, or other metadata even when the represented sites remain understandable.
 
-## Apply one operation and inspect its meaning
+An unchanged integer repeat can represent the same ideal infinite crystal. Deformation and substitution create different physical models. A substitution does not by itself define a dilute dopant calculation: supercell size, concentration, charge, reconstruction, and reservoirs remain separate decisions.
 
-Read the operation as a scientific model change, not merely as an API call. Inspect the resulting object visually, then compare composition, cell, coordinates, site mapping, symmetry, and nearest periodic contacts numerically. If either view contradicts the intended change, stop before generating a DFT input.
+## Preserve the lineage and continue
 
+For every child retain the parent checksum, class and module, parameters, software version, parent and child compositions and cells, site mapping, output checksum, and scientific reason. Reject or repair a child when the reopened file no longer matches the intended transformation.
 
-An integer supercell is generated with:
-
-```python
-from pymatgen.transformations.standard_transformations import SupercellTransformation
-
-make_supercell = SupercellTransformation([
-    [2, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1],
-])
-supercell = make_supercell.apply_transformation(parent)
-```
-
-With no species, coordinate, strain, or ordering change, this can remain an equivalent representation of the same ideal infinite crystal. Record the matrix and parent identity.
-
-A deformation creates a new physical model:
-
-```python
-from pymatgen.transformations.standard_transformations import DeformStructureTransformation
-
-strain_x = DeformStructureTransformation([
-    [1.02, 0, 0],
-    [0, 1.00, 0],
-    [0, 0, 1.00],
-])
-strained = strain_x.apply_transformation(parent)
-```
-
-The value `1.02` is a demonstration input, not a recommended strain or an elastic-regime guarantee. Record the deformation tensor, coordinate convention, and reason for imposing strain.
-
-A species replacement changes composition:
-
-```python
-from pymatgen.transformations.site_transformations import ReplaceSiteSpeciesTransformation
-
-substitute = ReplaceSiteSpeciesTransformation({0: "Na"})
-substituted = substitute.apply_transformation(parent)
-```
-
-Record the parent site identity and environment, replacement rule, resulting composition, and untested alternatives. Substitution alone does not define a dilute dopant calculation; supercell size, concentration, charge, reconstruction, and reservoirs remain separate decisions.
-
-## Preserve and check the lineage
-
-For each operation retain the parent checksum, module and class, parameters, software version, parent and child compositions, cell matrices, site counts, atom mapping, output checksum, and scientific interpretation.
-
-Accept a child only when the produced metrics match the intended operation and the parent remains unchanged. A class name is not provenance, and a generated child is not a ground state. Relaxation, energy comparison, finite-size convergence, and physical relevance remain later operations.
+After accepting the model object, [choose a compatible DFT method and setup](/DFT-Research-Workflow/operations/choose-dft-method-and-computational-setup/) and [test the numerical controls](/DFT-Research-Workflow/operations/test-numerical-convergence/) required by the target quantity.
 
 ## What this guide verifies
 
-The companion verifies the pinned distribution, transformation imports, declared supercell multiplier, deformation-induced lattice changes, substituted composition, parent immutability, and structured lineage output.
-
-It does not run DFT, validate the parent, relax any child, establish phase stability, or select a physically relevant descendant.
+The companion verifies pymatgen-core 2026.7.31 file writing and reading, the declared supercell, deformation, and substitution operations, reopened site and volume checks, parent immutability, file hashes, and structured lineage output. It does not validate the illustrative parent, run DFT, relax a child, establish phase stability, or select a physically relevant descendant.
 
 ## Common mistakes
 
-**Importing a class from the wrong module.** Check the current API rather than assuming every transformation is in `standard_transformations`.
+**Overwriting the parent.** A transformation record needs distinct source and child identities.
 
-**Overwriting the parent.** Preserve source and descendants as separate identities.
+**Treating every transformation as normalization.** Strain and substitution change the physical hypothesis.
 
-**Treating every transformation as normalization.** Deformation and substitution change the physical model.
-
-**Using a class name as provenance.** Module, version, parameters, parent checksum, and child identity are also required.
-
-**Accepting a generated child as a ground state.** A transformation creates a candidate, not energetic evidence.
+**Inspecting only the in-memory object.** The serialized and reopened file is the object passed to later tools.
 
 ## Official sources
 

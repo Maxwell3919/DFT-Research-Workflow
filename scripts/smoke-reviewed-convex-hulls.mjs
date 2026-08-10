@@ -34,7 +34,7 @@ async function inspect(page, width) {
     hasArticle: Boolean(document.querySelector('.article-content')),
     hasPlaceholder: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     hasContract: Boolean(document.querySelector('.operation-contract')),
-    scripts: document.querySelectorAll('script').length,
+    scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en' || result.title !== 'Compositional Phase Stability and Convex Hulls') throw new Error(`convex-hull identity mismatch: ${result.title}`);

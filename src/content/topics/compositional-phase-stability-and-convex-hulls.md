@@ -11,7 +11,7 @@ Rebuild or view the hull as an actual composition-energy plot, click or read the
 
 Use a compositional convex hull when the question is whether a represented phase can lower its thermodynamic potential by decomposing into other represented phases. The output must include the candidate ledger, hull vertices or facets, balanced decomposition coefficients, energy above hull, tolerance, and every phase-set decision.
 
-Use **Rebuild a Li-P Convex Hull from an OQMD Snapshot** to inspect a public-data post-processing path, then **Stress-Test a Hull Against a Missing Competitor** to test phase-set sensitivity.
+Begin with [Rebuild a Li-P Convex Hull from an OQMD Snapshot](/DFT-Research-Workflow/operations/compositional-phase-stability-and-convex-hulls/examples/rebuild-oqmd-li-p-convex-hull/) to inspect the attributed records, vertices, and decompositions. Then use [Stress-Test a Hull Against a Missing Competitor](/DFT-Research-Workflow/operations/compositional-phase-stability-and-convex-hulls/examples/stress-test-hull-phase-set/) to see which conclusion changes when one represented phase is withheld.
 
 ## Start from a candidate ledger
 
@@ -119,9 +119,9 @@ These distributions do not provide a universal energy-above-hull threshold that 
 
 Check missing endpoints, inconsistent reduction, duplicate phases, negative or non-normalized fractions, mixed correction schemes, incompatible magnetic states, and asymmetric thermal terms. Rebuild representative facets from the machine-readable table.
 
-## Inspect the public-data example
+## Inspect the public-data example before generalizing
 
-This is a real public DFT-data case, not a claim that this project reran the underlying calculations. The frozen OQMD Li-P result checks parsing, attribution, normalization, and convex geometry at source precision; it does not independently establish energy accuracy or phase-space completeness.
+This is a real public DFT-data case, not a claim that this project reran the underlying calculations. Reopen the OQMD identities behind the plotted vertices and the reported Li2P decomposition before citing the result. The frozen Li-P snapshot supports parsing, attribution, normalization, and convex geometry at source precision; it does not independently establish energy accuracy or phase-space completeness.
 
 ## Preserve the result and claim boundary
 

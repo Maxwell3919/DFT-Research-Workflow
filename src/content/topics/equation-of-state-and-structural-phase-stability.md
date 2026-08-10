@@ -13,11 +13,11 @@ Use an equation of state when you need an equilibrium volume, hydrostatic bulk m
 
 The attached guides form the operational path: **Design a Traceable Energy-Volume Series**, **Fit and Challenge an Equation of State**, and **Compare Phase Enthalpies at Common Pressure**.
 
-## What this topic establishes
+## Decide whether the series is ready to fit
 
-A smooth curve by itself is not evidence that a structure is mechanically, dynamically, thermally, or compositionally stable.
+Do not fit yet if the sampled minimum is not bracketed, a structure or magnetic state changes without a separate branch label, an endpoint controls the answer, or the energy and stress precision is inadequate for the intended derivative or crossing. Open the affected structures and outputs before changing the fit window.
 
-Each candidate needs an accepted structure and electronic state, a declared energy convention, and numerical convergence adequate for the intended derivative or crossing. One smooth-looking curve cannot repair an unverified parent.
+Only a state-consistent, numerically adequate point series may proceed to fitting. A smooth curve cannot repair an unverified parent and is not evidence that a structure is mechanically, dynamically, thermally, or compositionally stable.
 
 ## Begin with one structural or phase question
 
@@ -142,9 +142,9 @@ Stop and revisit the series when the lowest point is an endpoint, states switch,
 
 Separate pointwise numerical variation, fit uncertainty, fit-form sensitivity, phase-set incompleteness, and method bias. For a transition pressure, report the range from accepted settings and fits. If it matches the claimed resolution, the boundary is unresolved.
 
-## Preserve the curves and the decisions around them
+## Decide what the curves may support next
 
-Store every structure, state, point, exclusion, fit, residual, convergence table, enthalpy branch, crossing uncertainty, and parent artifact. The result can support bounded equilibrium volumes, hydrostatic moduli, or common-pressure ordering for declared branches. It does not establish full elastic or dynamical stability, cross-composition stability, a pathway or rate, finite-temperature equilibrium without required terms, or experimental phase identity.
+Store every structure, state, point, exclusion, fit, residual, convergence table, enthalpy branch, crossing uncertainty, and parent artifact. A stable minimum may continue to a bounded equilibrium-volume or hydrostatic-modulus statement; compatible phase branches may continue to a common-pressure enthalpy comparison. The result does not establish full elastic or dynamical stability, cross-composition stability, a pathway or rate, finite-temperature equilibrium without required terms, or experimental phase identity.
 
 ## Sources and methods
 

@@ -10,6 +10,8 @@ const guides = [
   {
     route: '/operations/test-numerical-convergence/guides/converge-basis-cutoffs-and-grids/',
     title: 'Converge Basis Cutoffs and Real-Space Grids',
+    listed: true,
+    mediaCount: 0,
     phrase: 'Numerical convergence is a comparison, not a single successful run.',
     requiredPhrases: [
       'for ecut in 30 40 50',
@@ -21,16 +23,22 @@ const guides = [
   {
     route: '/operations/test-numerical-convergence/guides/converge-k-points-and-smearing/',
     title: 'Converge k-Point Sampling and Smearing',
+    listed: true,
+    mediaCount: 0,
     phrase: 'A k-point and occupation study begins with the observable, reciprocal cell, electronic state, and intended integration method.',
   },
   {
     route: '/operations/test-numerical-convergence/guides/converge-finite-size-vacuum-and-images/',
     title: 'Converge Finite Size, Vacuum, and Image Interactions',
+    listed: false,
+    mediaCount: 0,
     phrase: 'Finite periodic models replace an isolated, dilute, semi-infinite, or macroscopic limit with a repeated cell. Begin by naming the intended limit and the residual interaction that the current model cannot yet exclude.',
   },
   {
     route: '/operations/test-numerical-convergence/guides/converge-q-meshes-and-response-grids/',
     title: 'Converge q-Meshes, Response Grids, and Interpolation',
+    listed: false,
+    mediaCount: 0,
     phrase: 'A converged solve at one q point does not establish a converged q mesh, force-constant range, interpolation, density of states, thermal integral, or electron-phonon quantity.',
   },
 ];
@@ -47,7 +55,10 @@ async function inspectGuide(page, guide, width) {
     toolTags: [...document.querySelectorAll('.tool-tag')].map((tag) => tag.textContent?.trim()),
     hasMeta: Boolean(document.querySelector('.guide-meta')),
     hasEvidence: Boolean(document.querySelector('.evidence-note')),
-    hasScript: Boolean(document.querySelector('script')),
+    copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
+    unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm').length,
+    copyButtons: document.querySelectorAll('.copy-code-button').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en') throw new Error(`${guide.route}: language is not English`);
@@ -62,9 +73,16 @@ async function inspectGuide(page, guide, width) {
   if (!result.toolTags.includes('python')) throw new Error(`${guide.route}: missing python tool tag`);
   if (!result.hasMeta || !result.hasEvidence) throw new Error(`${guide.route}: missing metadata or evidence boundary`);
   if (!/do(?:es)? not/i.test(result.text)) throw new Error(`${guide.route}: missing visible claim boundary`);
-  if (result.images.length < 1 || result.images.some((image) => !image.alt)) throw new Error(`${guide.route}: missing accessible declared media`);
+  if (result.images.length !== guide.mediaCount || result.images.some((image) => !image.alt)) {
+    throw new Error(`${guide.route}: expected ${guide.mediaCount} accessible declared media, found ${result.images.length}`);
+  }
   if (!result.links.some((link) => link.startsWith('https://'))) throw new Error(`${guide.route}: missing official or primary source links`);
-  if (result.hasScript) throw new Error(`${guide.route}: client-side script is present`);
+  if (result.copyEnhancements !== 1 || result.unexpectedScripts !== 0) {
+    throw new Error(`${guide.route}: expected one Copy enhancement and no other scripts`);
+  }
+  if (result.copyButtons !== result.copyableBlocks) {
+    throw new Error(`${guide.route}: renders ${result.copyButtons} Copy controls for ${result.copyableBlocks} copyable code blocks`);
+  }
   if (result.overflow) throw new Error(`${guide.route}: horizontal overflow at ${width}px`);
   return result;
 }
@@ -99,15 +117,22 @@ try {
     text: document.body.innerText,
     links: [...document.querySelectorAll('.practical-card-list a')].map((link) => link.href),
     cards: document.querySelectorAll('.practical-card-list li').length,
-    scripts: document.querySelectorAll('script').length,
+    copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
+    unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (!parent.text.includes('Practical resources') || !parent.text.includes('Practical Guides')) {
     throw new Error('convergence parent is missing practical resource groups');
   }
-  if (parent.cards !== 4) throw new Error(`convergence parent has ${parent.cards} practical cards instead of 4`);
-  for (const guide of guides) if (!parent.links.includes(`${base}${guide.route}`)) throw new Error(`convergence parent is missing ${guide.route}`);
-  if (parent.scripts !== 0 || parent.overflow) throw new Error('convergence parent interface is not static or overflows');
+  const listedGuides = guides.filter((guide) => guide.listed);
+  if (parent.cards !== listedGuides.length) throw new Error(`convergence parent has ${parent.cards} non-synthetic practical cards instead of ${listedGuides.length}`);
+  for (const guide of guides) {
+    const isLinked = parent.links.includes(`${base}${guide.route}`);
+    if (guide.listed !== isLinked) throw new Error(`convergence parent synthetic-evidence filter mismatch for ${guide.route}`);
+  }
+  if (parent.copyEnhancements !== 1 || parent.unexpectedScripts !== 0 || parent.overflow) {
+    throw new Error('convergence parent is missing the bounded Copy enhancement, exposes another script, or overflows');
+  }
 
   const desktopResults = [];
   for (const guide of guides) desktopResults.push(await inspectGuide(page, guide, 1440));
@@ -146,7 +171,7 @@ try {
     }, null, 2)}\n`);
   }
 
-  console.log('Convergence guide smoke passed: parent cards, 4 static guides, Python 3.12 metadata, primary sources, original media, 1440px/390px layout, and no-JavaScript reading.');
+  console.log('Convergence guide smoke passed: 2 non-synthetic parent cards, 4 directly readable static-first guides, Copy controls for every copyable code block, Python 3.12 metadata, primary sources, declared media counts, 1440px/390px layout, and no-JavaScript reading.');
 } finally {
   await browser.close();
 }

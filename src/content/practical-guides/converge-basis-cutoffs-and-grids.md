@@ -17,9 +17,7 @@ source_ids:
   - sssp-archive
   - pseudodojo-paper
   - cod-9013102
-media_ids:
-  - convergence-basis-grid-map
-  - silicon-qe-cutoff-matrix
+media_ids: []
 review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
@@ -32,7 +30,7 @@ The silicon files below are an illustrative series for learning the procedure. T
 
 ## Choose the method, data, and manual
 
-Start from the target observable and tolerance. Open the [method and input landscape](/DFT-Research-Workflow/operations/resource-landscape/#method-inputs), the exact code manual, and the provider record for the selected pseudopotential, PAW dataset, species defaults, or basis set. Inspect its family, functional, valence or all-electron treatment, relativity, test evidence, recommended starting controls, warnings, and licence before using it.
+Start from the target observable and tolerance. Open the [method and input landscape](/DFT-Research-Workflow/operations/resource-landscape/#method-inputs), the exact code manual, and a maintained, versioned provider record for the selected pseudopotential, PAW dataset, species defaults, or basis set. The ordinary pseudopotential route is download-first from a tested library release: inspect its family, functional, valence treatment, relativity, test evidence or accuracy tier, recommended starting controls, warnings, licence, and exact download receipt before using the file. A generated potential is an advanced branch only when no tested release supports the required feature; it needs preserved generator inputs plus atomic, transferability, and relevant solid-state tests before entering this convergence series.
 
 Identify the completeness controls used by the chosen representation. Plane waves, localized orbitals, real-space grids, LAPW/APW methods, and GPW/GAPW methods do not share one cutoff model. Quantum ESPRESSO and the committed Silicon matrix below provide one plane-wave pseudopotential implementation; other common implementations are indexed under [electronic-structure codes](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes).
 
@@ -46,12 +44,13 @@ Copy the reviewed input series into a new external runtime directory instead of 
 repo_root=$(pwd)
 case_root="$repo_root/examples/cases/silicon-ground-state-electronic-structure"
 runtime="$HOME/drw-runs/si-convergence"
+test ! -e "$runtime"
 mkdir -p "$runtime/inputs"
 
 for ecut in 30 40 50; do
   for kmesh in 6 8 10; do
-    name="si_e${{ecut}_k${{kmesh}"
-    cp "$case_root/input/${{name}.in" "$runtime/inputs/${{name}.in"
+    name="si_e${ecut}_k${kmesh}"
+    cp -- "$case_root/input/${name}.in" "$runtime/inputs/${name}.in"
   done
 done
 
@@ -76,28 +75,40 @@ If you generate a different series, preserve the generator or exact edited input
 
 ## Run each input in an isolated directory
 
-Point <code>PSEUDO_SOURCE</code> to the exact UPF already verified for this model:
+Point <code>PSEUDO_SOURCE</code> to the exact downloaded library file whose provider receipt, family release, licence, metadata, and checksum you already recorded for this model:
 
 ~~~bash
-: "${{PSEUDO_SOURCE:?Set PSEUDO_SOURCE to the verified UPF file}"
+: "${PSEUDO_SOURCE:?Set PSEUDO_SOURCE to the verified library UPF file}"
+test -f "$PSEUDO_SOURCE"
+sha256sum -- "$PSEUDO_SOURCE"
 
 for input in "$runtime"/inputs/*.in; do
   name=$(basename "$input" .in)
   run_dir="$runtime/convergence-$name"
+  test ! -e "$run_dir"
   mkdir -p "$run_dir/pseudo" "$run_dir/tmp"
-  cp "$input" "$run_dir/$name.in"
+  cp -- "$input" "$run_dir/$name.in"
 
   pseudo_name=$(awk '
     /ATOMIC_SPECIES/ {inside=1; next}
     inside && NF >= 3 {print $3; exit}
   ' "$run_dir/$name.in")
-  test "$(basename "$PSEUDO_SOURCE")" = "$pseudo_name"
-  ln -s "$PSEUDO_SOURCE" "$run_dir/pseudo/$pseudo_name"
+  test "$(basename -- "$PSEUDO_SOURCE")" = "$pseudo_name"
+  ln -s -- "$PSEUDO_SOURCE" "$run_dir/pseudo/$pseudo_name"
 
   (
     cd "$run_dir"
-    pw.x -in "$name.in" > "$name.out" 2> "$name.err"
-  )
+    if pw.x -in "$name.in" > "$name.out" 2> "$name.err"; then
+      pw_status=0
+    else
+      pw_status=$?
+    fi
+    printf '%s\n' "$pw_status" > "$name.exit-status"
+    exit "$pw_status"
+  ) || {
+    printf 'QE failed for %s; inspect its stdout, stderr, and exit-status.\n' "$name" >&2
+    continue
+  }
 done
 ~~~
 
@@ -107,15 +118,21 @@ Use this loop only on a workstation where direct execution is allowed or inside 
 
 ~~~bash
 for output in "$runtime"/convergence-*/si_e*_k*.out; do
+  run_dir=$(dirname -- "$output")
+  name=$(basename -- "$output" .out)
   printf '\n%s\n' "$output"
-  grep "JOB DONE" "$output"
-  grep "convergence has been achieved" "$output" | tail -n 1
-  grep "!    total energy" "$output" | tail -n 1
-  grep -Ei "warning|error|stopping" "$output" || true
+  cat -- "$run_dir/$name.exit-status"
+  test "$(grep -cF 'Program PWSCF v.' -- "$output")" -eq 1
+  test "$(grep -cF 'JOB DONE.' -- "$output")" -eq 1
+  grep -F 'convergence has been achieved' -- "$output" | tail -n 1
+  grep -F '!    total energy' -- "$output" | tail -n 1
+  tail -n 40 -- "$run_dir/$name.err"
+  grep -Ei 'warning|error in routine|stopping|not converged|no convergence' \
+    -- "$output" "$run_dir/$name.err" || true
 done
 ~~~
 
-<code>JOB DONE</code> checks normal termination. The SCF line checks the electronic solver condition reported for that run. The energy line supplies the compared scalar. None of them establishes convergence of the series.
+The recorded shell status, one coherent program banner, <code>JOB DONE.</code>, and separate stderr constrain execution completion. The SCF line checks the electronic solver condition reported for that run. The energy line supplies the compared scalar. None of them establishes convergence of the series.
 
 ## Inspect the table and plot
 

@@ -17,8 +17,7 @@ source_ids:
   - intermat-paper
   - intermat-nist-pdf
   - cc-by-3
-media_ids:
-  - surface-energy-ledger
+media_ids: []
 review: docs/reviews/2026-08-04-surface-energy-and-work-function.md
 reviewed_at: "2026-08-04"
 ---
@@ -27,7 +26,7 @@ reviewed_at: "2026-08-04"
 
 Open each facet as a slab, view it from the side and along the surface normal, and identify termination, surface-cell area, layer count, fixed atoms, vacuum, and whether the two faces are equivalent. Read the source Methods or database record to determine the bulk reference and unit convention, then place those definitions beside the energy table. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [structure and surface data](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
 
-**Reproduce this site's figure:** the companion script redraws attributed published silicon surface values and a separate synthetic bulk-drift diagnostic. The three source values are not a slab-thickness or vacuum-convergence series, and the schematic diagnostic is secondary rather than real slab evidence.
+**Start with attributed public data:** the first command audits three published silicon surface values. They are not a slab-thickness or vacuum-convergence series, so inspect their facet and method identities before comparing them. A separate synthetic bulk-drift exercise appears later and is not Si slab evidence.
 
 Start by auditing the attributed InterMat ledger:
 
@@ -51,13 +50,12 @@ $$
 
 Use the divisor $2A$ only for two equivalent faces. An asymmetric slab yields a sum of two surface excesses; a nonstoichiometric slab needs explicit chemical potentials.
 
-## Run the separate drift diagnostic
+## Optionally check the drift arithmetic
 
 The repository also retains an invented four-slab fixture for the specific failure pattern caused by an incompatible bulk slope:
 
 ```bash
-python3 examples/practical-guides/surface_energy_ledger.py \
-  --svg public/media/practical-guides/surface-energy-and-work-function/build-surface-energy-ledger/surface-energy-ledger.svg
+python3 examples/practical-guides/surface_energy_ledger.py
 ```
 
 It fits
@@ -66,7 +64,7 @@ $$
 E_{\mathrm{slab}}(N)=N e_{\mathrm{bulk}}^{\mathrm{fit}}+E_{\mathrm{excess}}
 $$
 
-for one invented slab family, then perturbs the slope by `0.003 eV/atom` to expose thickness drift. The script checks regression arithmetic, unit conversion, the two-face factor, and deterministic rendering. Its red line is a deliberately synthetic failure pattern, not Si data or a recommended tolerance.
+for one invented slab family, then perturbs the slope by `0.003 eV/atom` to expose thickness drift. The script checks regression arithmetic, unit conversion, and the two-face factor. The resulting records are a deliberately synthetic failure pattern, not Si data or a recommended tolerance.
 
 ## What this guide verifies
 

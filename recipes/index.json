@@ -29,15 +29,15 @@
           "case_root=examples/cases/silicon-ground-state-electronic-structure"
         ],
         "first_action": {
-          "label": "Prepare the exact Silicon model and pseudopotential outside the repository",
+          "label": "Open the Silicon source record before preparing a calculation",
           "cwd": "repository-root",
           "commands": [
-            "python3 -m venv .venv",
-            ".venv/bin/pip install -r requirements-practical.txt",
-            "prepared=/absolute/path/outside/the/repository/silicon-prepared",
-            ".venv/bin/python \"$case_root/prepare-replay.py\" --download-pseudopotential --output-dir \"$prepared\""
+            "case_root=examples/cases/silicon-ground-state-electronic-structure",
+            "sed -n '1,120p' \"$case_root/source/silicon-cod-9013102.cif\"",
+            "cat \"$case_root/source/silicon-cod-9013102.sanitization.json\"",
+            "cat \"$case_root/source/pseudopotentials.json\""
           ],
-          "boundary": "This action reconstructs and checks the declared representation and exact pseudopotential bytes. It does not launch QE, relax the structure, establish stability, or select converged numerical parameters."
+          "boundary": "This action exposes the downloaded structure, its representation receipt, and the pseudopotential identity record. It does not prepare or launch QE, accept the model, or establish numerical suitability."
         }
       },
       "execution_contexts": [
@@ -51,7 +51,7 @@
           "id": "slurm-allocation-or-batch",
           "label": "Slurm allocation or batch execution",
           "allowed_when": "Only inside an active compute allocation or a site-approved batch job.",
-          "boundary": "Use the site's documented launcher inside the allocation. QE_LAUNCHER is an interface, not permission to run on a login node or a universal mpirun prescription."
+          "boundary": "Use the site's documented launcher inside the allocation. Translate the displayed direct pw.x invocation into the reviewed site command; neither a shell variable nor an SSH login grants permission to compute on a login node."
         }
       ],
       "evidence_tracks": [
@@ -60,6 +60,7 @@
           "label": "Reconstruct the stored public evidence",
           "launches_dft": false,
           "commands": [
+            "case_root=examples/cases/silicon-ground-state-electronic-structure",
             "(cd \"$case_root\" && bash replay-derived.sh)",
             "(cd \"$case_root\" && bash extract.sh)",
             "(cd \"$case_root\" && bash check.sh)"
@@ -75,20 +76,35 @@
         },
         {
           "id": "fresh-runtime",
-          "label": "Create a new isolated runtime",
+          "label": "Run a fresh relaxation and static SCF, then stop",
           "launches_dft": true,
           "commands": [
-            "RUNTIME_DIR=/absolute/path/outside/the/repository/silicon-runtime; export RUNTIME_DIR",
-            "PSEUDO_DIR=\"$prepared/pseudo\" QE_PW=pw.x QE_BANDS=bands.x QE_DOS=dos.x QE_PH=ph.x bash \"$case_root/run.sh\"",
-            "relax_output=$(find \"$RUNTIME_DIR\" -type f -name \"si-relax.out\" -print -quit); test -f \"$relax_output\"",
-            "python3 examples/practical-guides/qe_manual_handoff.py prepare-reference --relax-output \"$relax_output\" --scf-template \"$case_root/input/scf.in\" --output-dir \"$RUNTIME_DIR/reference\"",
-            "mkdir -p \"$RUNTIME_DIR/reference/tmp\"; ln -s \"$prepared/pseudo\" \"$RUNTIME_DIR/reference/pseudo\"",
-            "(cd \"$RUNTIME_DIR/reference\" && pw.x -in static-scf.in > static-scf.out 2> static-scf.err)",
-            "python3 examples/practical-guides/qe_manual_handoff.py audit-scf --input \"$RUNTIME_DIR/reference/static-scf.in\" --stdout \"$RUNTIME_DIR/reference/static-scf.out\" --stderr \"$RUNTIME_DIR/reference/static-scf.err\" --report \"$RUNTIME_DIR/reference/static-scf-audit.json\"",
-            "bands_data=$(find \"$RUNTIME_DIR\" -type f -name \"si.bands.dat\" -print -quit); dos_data=$(find \"$RUNTIME_DIR\" -type f -name \"si.dos.dat\" -print -quit)",
-            "python3 examples/practical-guides/qe_manual_handoff.py extract-runtime --runtime-dir \"$RUNTIME_DIR\" --bands-data \"$bands_data\" --dos-data \"$dos_data\" --output-dir \"$RUNTIME_DIR/analysis\""
+            "set -euo pipefail",
+            "case_root=examples/cases/silicon-ground-state-electronic-structure",
+            "prepared=/absolute/path/outside/the/repository/silicon-prepared",
+            "runtime=/absolute/path/outside/the/repository/silicon-fresh-reference",
+            "QE_PW=${QE_PW:?Set QE_PW to the absolute path to pw.x}",
+            "test -x \"$QE_PW\"; test -s \"$prepared/pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF\"; test ! -e \"$runtime\"",
+            "printf '%s  %s\\n' 'ae3aefd0811f9499dbc4a72f1f9ae02ef4fc7f3568bf6f559b68668719c69e2b' \"$prepared/pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF\" | sha256sum --check -",
+            "mkdir -p \"$runtime/relax/out\" \"$runtime/relax/pseudo\"",
+            "cp \"$case_root/input/si-relax.in\" \"$runtime/relax/si-relax.in\"; cp \"$prepared/pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF\" \"$runtime/relax/pseudo/\"",
+            "(cd \"$runtime/relax\" && \"$QE_PW\" -in si-relax.in > si-relax.out 2> si-relax.err)",
+            "grep -Fqx '   JOB DONE.' \"$runtime/relax/si-relax.out\"; grep -F 'bfgs converged' \"$runtime/relax/si-relax.out\"",
+            "awk '/Forces acting on atoms/{block=$0 ORS; inside=1; next} inside{block=block $0 ORS} inside && /Total force =/{last=block; inside=0} END{if (last == \"\") exit 1; printf \"%s\", last}' \"$runtime/relax/si-relax.out\"",
+            "sed -n '/Begin final coordinates/,/End final coordinates/p' \"$runtime/relax/si-relax.out\"",
+            "ACCEPT_RELAX_GEOMETRY=${ACCEPT_RELAX_GEOMETRY:?After inspecting the final force block, criteria, constraints, and coordinates, set ACCEPT_RELAX_GEOMETRY=yes}",
+            "test \"$ACCEPT_RELAX_GEOMETRY\" = yes",
+            "mkdir -p \"$runtime/reference/out\" \"$runtime/reference/pseudo\"",
+            "awk '/^Begin final coordinates/{seen=1; next} seen && /^ATOMIC_POSITIONS/{print; getline; print; getline; print; exit}' \"$runtime/relax/si-relax.out\" > \"$runtime/reference/final-positions.inc\"",
+            "test \"$(wc -l < \"$runtime/reference/final-positions.inc\" | tr -d '[:space:]')\" = 3",
+            "awk 'FNR==NR {replacement[++n]=$0; next} /^ATOMIC_POSITIONS[[:space:]]/ {for (i=1; i<=n; i++) print replacement[i]; skip=2; next} skip {skip--; next} {print}' \"$runtime/reference/final-positions.inc\" \"$case_root/input/scf.in\" > \"$runtime/reference/static-scf.in\"",
+            "cp \"$prepared/pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF\" \"$runtime/reference/pseudo/\"",
+            "diff -u \"$case_root/input/scf.in\" \"$runtime/reference/static-scf.in\" || test \"$?\" = 1",
+            "(cd \"$runtime/reference\" && \"$QE_PW\" -in static-scf.in > static-scf.out 2> static-scf.err)",
+            "grep -Fqx '   JOB DONE.' \"$runtime/reference/static-scf.out\"; grep -F 'convergence has been achieved' \"$runtime/reference/static-scf.out\"; test -d \"$runtime/reference/out/si_cod9013102.save\"",
+            "printf '%s\\n' 'STOP: no fresh bands or DOS calculation is supplied here; inspect the stored branches separately.'"
           ],
-          "output_policy": "Use a new caller-selected external runtime directory; never overwrite or relabel committed output/, derived/, or figures/ as the new run.",
+          "output_policy": "Use one new caller-selected external directory for the fresh relax-to-static-SCF lineage; never overwrite committed evidence or reuse the older bands/DOS files as descendants.",
           "audit": [
             "Record the shell exit and inspect every stdout and stderr independently.",
             "Check program termination separately from electronic SCF convergence.",
@@ -97,8 +113,8 @@
             "Test the selected target observable with its own numerical convergence protocol.",
             "State the scientific claim only after the evidence supports it."
           ],
-          "parse_plot_boundary": "The helper parses only files produced in the named fresh runtime and writes source-hashed CSV plus light SVG. The public stored reconstruction remains separate. Parsing does not establish observable convergence or a scientific claim.",
-          "boundary": "This present-day route creates new external runtime evidence. The geometry handoff and new static run have explicit file ancestry; they do not change the assembled historical case, establish observable convergence, or reproduce a private replay."
+          "parse_plot_boundary": "No fresh bands or DOS parsing is attempted. The public stored bands, DOS, tables, and plots remain a separate historical evidence set.",
+          "boundary": "This present-day route creates a direct fresh relaxation-to-static-SCF lineage and stops there. The new static SCF is not the parent of the stored bands or DOS; a future compatible bands/NSCF/DOS branch must inherit this new prefix, outdir, and save tree and has not been prepared or run here."
         }
       ],
       "source_records": [
@@ -161,12 +177,15 @@
             "command_stages": [],
             "artifact_paths": [],
             "action": {
-              "label": "Prepare the source-bound replay inputs",
+              "label": "Inspect the downloaded CIF and its source receipt",
               "cwd": "repository-root",
               "commands": [
-                ".venv/bin/python \"$case_root/prepare-replay.py\" --download-pseudopotential --output-dir \"$prepared\""
+                "case_root=examples/cases/silicon-ground-state-electronic-structure",
+                "sed -n '1,120p' \"$case_root/source/silicon-cod-9013102.cif\"",
+                "cat \"$case_root/source/silicon-cod-9013102.sanitization.json\"",
+                "cat \"$case_root/source/seekpath.json\""
               ],
-              "boundary": "This prepares external model and pseudopotential files; it does not launch QE."
+              "boundary": "This inspection binds the starting record and recorded representation notes. It does not accept the transformed model or launch QE."
             },
             "boundary": "A database structure is a source record, not yet an accepted DFT model."
           },
@@ -186,6 +205,16 @@
             "execution_route_ids": [],
             "command_stages": [],
             "artifact_paths": [],
+            "action": {
+              "label": "Compare the source and two-site QE representations",
+              "cwd": "repository-root",
+              "commands": [
+                "case_root=examples/cases/silicon-ground-state-electronic-structure",
+                "cat \"$case_root/source/seekpath.json\"",
+                "sed -n '/CELL_PARAMETERS/,/K_POINTS/p' \"$case_root/input/scf.in\""
+              ],
+              "boundary": "The displayed transform is a model choice to inspect and record. It is not a relaxation, stability test, or model ranking."
+            },
             "boundary": "The representation is NOT_RANKED and is not a relaxation, stability result, or proof of method suitability."
           },
           {
@@ -203,6 +232,22 @@
             "execution_route_ids": [],
             "command_stages": [],
             "artifact_paths": [],
+            "action": {
+              "label": "Download and verify the declared Silicon potential",
+              "cwd": "repository-root",
+              "commands": [
+                "set -euo pipefail",
+                "case_root=examples/cases/silicon-ground-state-electronic-structure",
+                "prepared=/absolute/path/outside/the/repository/silicon-prepared",
+                "test ! -e \"$prepared\"",
+                "python3 -m venv .venv",
+                ".venv/bin/pip install -r requirements-practical.txt",
+                ".venv/bin/python \"$case_root/prepare-replay.py\" --download-pseudopotential --output-dir \"$prepared\"",
+                "cat \"$prepared/model/si-primitive-qe.inc\"",
+                "printf '%s  %s\\n' 'ae3aefd0811f9499dbc4a72f1f9ae02ef4fc7f3568bf6f559b68668719c69e2b' \"$prepared/pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF\" | sha256sum --check -"
+              ],
+              "boundary": "The case preparation script fails closed on the recorded CIF, archive, member, model, and pseudopotential identities. A successful identity check does not establish transferability or convergence."
+            },
             "boundary": "Exact bytes establish identity only, not transferability or numerical convergence."
           },
           {
@@ -227,16 +272,25 @@
             "execution_route_ids": [],
             "command_stages": [],
             "artifact_paths": [],
+            "action": {
+              "label": "Read the inputs before launching anything",
+              "cwd": "repository-root",
+              "commands": [
+                "case_root=examples/cases/silicon-ground-state-electronic-structure",
+                "for input in si-relax.in scf.in bands.in bands.x.in dos-nscf.in dos.x.in; do printf '\\n### %s\\n' \"$input\"; sed -n '1,180p' \"$case_root/input/$input\"; done"
+              ],
+              "boundary": "Confirm calculation type, geometry, prefix, outdir, pseudo_dir, cutoffs, occupations, and k sampling before execution. These recorded values are not universal recommendations."
+            },
             "boundary": "The stored PBE, cutoff, k-mesh, and sampling settings are case records, not transferable recommendations."
           },
           {
             "id": "run",
             "label": "Run the calculation",
-            "purpose": "Execute the present-day stage order into a new external runtime without rewriting the public history.",
+            "purpose": "Start a new fixed-cell relaxation in an empty external directory. The later reference-geometry and SCF stages continue this fresh lineage; the broad run.sh replay template remains a separate optional case record.",
             "topic_slugs": [
               "calculate-reference-ground-state"
             ],
-            "coverage": "template-only-for-fresh-runtime",
+            "coverage": "direct-fresh-relaxation-plus-recorded-template",
             "case_files": [
               "run.sh",
               "source/execution-provenance.json"
@@ -248,7 +302,24 @@
               "native replay template"
             ],
             "artifact_paths": [],
-            "boundary": "The replay template does not establish the historical launcher, a public fresh replay, or case-wide continuity."
+            "action": {
+              "label": "Run one fresh fixed-cell relaxation",
+              "cwd": "repository-root",
+              "commands": [
+                "set -euo pipefail",
+                "case_root=examples/cases/silicon-ground-state-electronic-structure",
+                "prepared=/absolute/path/outside/the/repository/silicon-prepared",
+                "runtime=/absolute/path/outside/the/repository/silicon-fresh-reference",
+                "QE_PW=${QE_PW:?Set QE_PW to the absolute path to pw.x}",
+                "test -x \"$QE_PW\"; test -s \"$prepared/pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF\"; test ! -e \"$runtime\"",
+                "printf '%s  %s\\n' 'ae3aefd0811f9499dbc4a72f1f9ae02ef4fc7f3568bf6f559b68668719c69e2b' \"$prepared/pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF\" | sha256sum --check -",
+                "mkdir -p \"$runtime/relax/out\" \"$runtime/relax/pseudo\"",
+                "cp \"$case_root/input/si-relax.in\" \"$runtime/relax/si-relax.in\"; cp \"$prepared/pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF\" \"$runtime/relax/pseudo/\"",
+                "(cd \"$runtime/relax\" && \"$QE_PW\" -in si-relax.in > si-relax.out 2> si-relax.err)"
+              ],
+              "boundary": "This launches only the fresh relaxation. It neither executes the case-wide replay template nor creates bands or DOS evidence."
+            },
+            "boundary": "The direct action creates a new relaxation record only. The replay template does not establish the historical launcher or case-wide continuity."
           },
           {
             "id": "checks",
@@ -274,6 +345,18 @@
               "derived/observables.json",
               "derived/full-zone-status.json"
             ],
+            "action": {
+              "label": "Inspect the fresh relaxation outcome",
+              "cwd": "repository-root",
+              "commands": [
+                "runtime=/absolute/path/outside/the/repository/silicon-fresh-reference",
+                "test -s \"$runtime/relax/si-relax.out\"; wc -c \"$runtime/relax/si-relax.err\"",
+                "grep -nE 'convergence has been achieved|bfgs converged|End of BFGS Geometry Optimization|JOB DONE|Error in routine' \"$runtime/relax/si-relax.out\"",
+                "sed -n '/Forces acting on atoms/,/Total force/p' \"$runtime/relax/si-relax.out\"",
+                "sed -n '/Begin final coordinates/,/End final coordinates/p' \"$runtime/relax/si-relax.out\""
+              ],
+              "boundary": "Inspect the final complete force block, declared ionic criteria, final coordinates, constraints, stderr, and termination separately. JOB DONE alone is insufficient."
+            },
             "boundary": "JOB DONE and parser success do not establish ionic convergence, target-observable convergence, or scientific support."
           },
           {
@@ -308,6 +391,16 @@
             ],
             "assessment": "No accepted observable-specific stable-tail result",
             "observable_convergence": "not tested",
+            "action": {
+              "label": "Read the stored convergence matrix before choosing settings",
+              "cwd": "repository-root",
+              "commands": [
+                "case_root=examples/cases/silicon-ground-state-electronic-structure",
+                "sed -n '1,40p' \"$case_root/derived/convergence.csv\"",
+                "cat \"$case_root/source/qe_plan.json\""
+              ],
+              "boundary": "This is an exploratory total-energy matrix. It supplies no accepted stable-tail result for bands, DOS, phonons, dielectric response, or another target observable."
+            },
             "boundary": "The 3 by 3 total-energy matrix is not a transferable cutoff/k-mesh recommendation and does not establish DOS, phonon, dielectric, or band convergence."
           },
           {
@@ -331,15 +424,25 @@
             "artifact_paths": [],
             "boundary": "The public bundle does not establish relax-output to static-SCF input lineage, accepted ionic convergence, stability, or the lowest relevant structure.",
             "action": {
-              "label": "Transfer the accepted fresh relaxation geometry",
+              "label": "Create a static input from the inspected final geometry",
               "cwd": "repository-root",
               "commands": [
-                "relax_output=$(find \"$RUNTIME_DIR\" -type f -name \"si-relax.out\" -print -quit); test -f \"$relax_output\"",
-                "python3 examples/practical-guides/qe_manual_handoff.py prepare-reference --relax-output \"$relax_output\" --scf-template \"$case_root/input/scf.in\" --output-dir \"$RUNTIME_DIR/reference\"",
-                "cat \"$RUNTIME_DIR/reference/geometry-handoff.json\"",
-                "diff -u \"$case_root/input/scf.in\" \"$RUNTIME_DIR/reference/static-scf.in\""
+                "set -euo pipefail",
+                "case_root=examples/cases/silicon-ground-state-electronic-structure",
+                "runtime=/absolute/path/outside/the/repository/silicon-fresh-reference",
+                "relax_output=\"$runtime/relax/si-relax.out\"; reference=\"$runtime/reference\"",
+                "test -s \"$relax_output\"; grep -Fqx '   JOB DONE.' \"$relax_output\"; grep -F 'bfgs converged' \"$relax_output\"; test ! -e \"$reference\"",
+                "ACCEPT_RELAX_GEOMETRY=${ACCEPT_RELAX_GEOMETRY:?After inspecting the final force block, criteria, constraints, and coordinates, set ACCEPT_RELAX_GEOMETRY=yes}",
+                "test \"$ACCEPT_RELAX_GEOMETRY\" = yes",
+                "mkdir -p \"$reference/out\" \"$reference/pseudo\"",
+                "awk '/^Begin final coordinates/{seen=1; next} seen && /^ATOMIC_POSITIONS/{print; getline; print; getline; print; exit}' \"$relax_output\" > \"$reference/final-positions.inc\"",
+                "test \"$(wc -l < \"$reference/final-positions.inc\" | tr -d '[:space:]')\" = 3",
+                "awk 'FNR==NR {replacement[++n]=$0; next} /^ATOMIC_POSITIONS[[:space:]]/ {for (i=1; i<=n; i++) print replacement[i]; skip=2; next} skip {skip--; next} {print}' \"$reference/final-positions.inc\" \"$case_root/input/scf.in\" > \"$reference/static-scf.in\"",
+                "cp \"$runtime/relax/pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF\" \"$reference/pseudo/\"",
+                "cat \"$reference/final-positions.inc\"",
+                "diff -u \"$case_root/input/scf.in\" \"$reference/static-scf.in\" || test \"$?\" = 1"
               ],
-              "boundary": "This creates a new explicit file handoff from the selected fresh relax output. It does not establish that the stored static output descended from the stored relaxation or that the geometry is scientifically accepted."
+              "boundary": "The direct transformation copies only the final two-site ATOMIC_POSITIONS block into a new static template and leaves the fixed cell unchanged. Inspect the displayed block and diff before proceeding; this does not establish scientific acceptance or historical stored lineage."
             }
           },
           {
@@ -367,13 +470,19 @@
             ],
             "boundary": "Electronic convergence in the named SCF outputs does not establish relax-to-SCF lineage, target-observable convergence, or scientific acceptance.",
             "action": {
-              "label": "Run and audit the new static SCF",
+              "label": "Run and inspect the new static SCF",
               "cwd": "new external reference directory",
               "commands": [
-                "(cd \"$RUNTIME_DIR/reference\" && pw.x -in static-scf.in > static-scf.out 2> static-scf.err)",
-                "python3 examples/practical-guides/qe_manual_handoff.py audit-scf --input \"$RUNTIME_DIR/reference/static-scf.in\" --stdout \"$RUNTIME_DIR/reference/static-scf.out\" --stderr \"$RUNTIME_DIR/reference/static-scf.err\" --report \"$RUNTIME_DIR/reference/static-scf-audit.json\""
+                "set -euo pipefail",
+                "runtime=/absolute/path/outside/the/repository/silicon-fresh-reference",
+                "QE_PW=${QE_PW:?Set QE_PW to the absolute path to pw.x}",
+                "test -x \"$QE_PW\"; test -s \"$runtime/reference/static-scf.in\"",
+                "(cd \"$runtime/reference\" && \"$QE_PW\" -in static-scf.in > static-scf.out 2> static-scf.err)",
+                "grep -Fqx '   JOB DONE.' \"$runtime/reference/static-scf.out\"",
+                "grep -F 'convergence has been achieved' \"$runtime/reference/static-scf.out\"",
+                "wc -c \"$runtime/reference/static-scf.err\"; test -d \"$runtime/reference/out/si_cod9013102.save\""
               ],
-              "boundary": "The audit checks this process and reported electronic convergence only. Geometry acceptance, numerical convergence, observable convergence, and scientific support remain separate."
+              "boundary": "These checks cover this process, its reported electronic convergence, stderr size, and the expected save tree only. Geometry acceptance, numerical convergence, observable convergence, and scientific support remain separate."
             }
           },
           {
@@ -415,7 +524,19 @@
               "derived/dos.csv"
             ],
             "observable_convergence": "not tested",
-            "boundary": "The line path retains solver warnings, and the nominal 8x8x8 route is a 260-point time-reversal-reduced sample. Neither branch establishes a converged fundamental gap or DOS."
+            "action": {
+              "label": "Inspect the stored bands and DOS as separate evidence",
+              "cwd": "repository-root",
+              "commands": [
+                "case_root=examples/cases/silicon-ground-state-electronic-structure",
+                "for output in bands-pw.out bandsx-main.out dos-nscf.out dosx.out; do test -s \"$case_root/output/$output\"; grep -nE 'JOB DONE|convergence has been achieved|c_bands|Error in routine' \"$case_root/output/$output\" || true; done",
+                "sed -n '1,20p' \"$case_root/derived/band-path.csv\"",
+                "sed -n '1,20p' \"$case_root/derived/dos.csv\"",
+                "printf '%s\\n' 'The fresh static SCF is not the parent of these stored files. Prepare new compatible bands and uniform-NSCF/DOS inputs against the fresh prefix/outdir/save tree before any fresh downstream run.'"
+              ],
+              "boundary": "This is stored-evidence inspection only. No fresh bands or DOS command is supplied, and the older data must not be relabelled as descendants of the new static SCF."
+            },
+            "boundary": "The line path retains solver warnings, and the nominal 8x8x8 route is a 260-point time-reversal-reduced sample. Neither branch establishes a converged fundamental gap or DOS. The fresh route stops after static SCF until compatible downstream inputs are prepared and reviewed."
           },
           {
             "id": "plot",
@@ -433,22 +554,22 @@
             "command_stages": [
               "rebuild derived artifacts from stored outputs"
             ],
-            "artifact_paths": [
-              "figures/convergence-matrix.png",
-              "figures/band-path.png",
-              "figures/full-zone-bands.png",
-              "figures/dos.png",
-              "figures/gamma-response.png"
+          "artifact_paths": [
+            "figures/band-path.png",
+            "figures/full-zone-bands.png",
+            "figures/dos.png"
             ],
             "boundary": "A reconstructed figure verifies the stored parser path, not a fresh execution or an independently converged observable.",
             "action": {
-              "label": "Parse and plot the fresh runtime",
+              "label": "Inspect the stored tables behind the teaching figures",
               "cwd": "repository-root",
               "commands": [
-                "bands_data=$(find \"$RUNTIME_DIR\" -type f -name \"si.bands.dat\" -print -quit); dos_data=$(find \"$RUNTIME_DIR\" -type f -name \"si.dos.dat\" -print -quit)",
-                "python3 examples/practical-guides/qe_manual_handoff.py extract-runtime --runtime-dir \"$RUNTIME_DIR\" --bands-data \"$bands_data\" --dos-data \"$dos_data\" --output-dir \"$RUNTIME_DIR/analysis\""
+                "case_root=examples/cases/silicon-ground-state-electronic-structure",
+                "sed -n '1,30p' \"$case_root/derived/convergence.csv\"",
+                "sed -n '1,20p' \"$case_root/derived/band-path.csv\"",
+                "sed -n '1,20p' \"$case_root/derived/dos.csv\""
               ],
-              "boundary": "Source-hashed CSV and light SVG reconstruct the named fresh files. They do not establish target-observable convergence or a scientific claim."
+              "boundary": "These tables feed the displayed stored-evidence figures. They are not outputs of the new static SCF and do not establish target-observable convergence or a scientific claim."
             }
           },
           {
@@ -472,6 +593,16 @@
               "derived/full-zone-status.json"
             ],
             "observable_convergence": "not tested",
+            "action": {
+              "label": "Read the stored result boundaries before writing a conclusion",
+              "cwd": "repository-root",
+              "commands": [
+                "case_root=examples/cases/silicon-ground-state-electronic-structure",
+                "cat \"$case_root/derived/observables.json\"",
+                "cat \"$case_root/derived/full-zone-status.json\""
+              ],
+              "boundary": "Retain every warning and NOT TESTED field. The next defensible action is to run the missing observable-specific convergence or physics test, not to strengthen the claim from the existing plots."
+            },
             "boundary": "The evidence does not support a converged gap, DOS, stability result, experimental agreement, or material-level conclusion."
           },
           {
@@ -505,13 +636,18 @@
             ],
             "boundary": "The public record preserves assembled evidence and claim boundaries, not one historical launcher, case-wide shell exits, cross-route save trees, or the private Maxwell replay.",
             "action": {
-              "label": "Package, restore, and regenerate the study",
+              "label": "Write a bounded record beside the fresh calculation",
               "cwd": "repository-root",
               "commands": [
-                "python3 examples/practical-guides/qe_manual_handoff.py package-study --study-dir \"$study\" --archive \"$archive\" --restore-dir \"$restored\" --run-regeneration-check",
-                "(cd \"$restored\" && sha256sum -c SHA256SUMS)"
+                "set -euo pipefail",
+                "runtime=/absolute/path/outside/the/repository/silicon-fresh-reference",
+                "record=\"$runtime/STUDY-NOTES.txt\"; sums=\"$runtime/SELECTED-SHA256SUMS\"",
+                "test -s \"$runtime/relax/si-relax.in\"; test -s \"$runtime/relax/si-relax.out\"; test -s \"$runtime/reference/static-scf.in\"; test -s \"$runtime/reference/static-scf.out\"; test ! -e \"$record\"; test ! -e \"$sums\"",
+                "printf '%s\\n' 'Question: inspect a fresh fixed-cell Si relaxation and its descendant static SCF.' 'Decision: retain the final geometry only after human force, criteria, constraint, and coordinate inspection.' 'Boundary: this fresh route stops after static SCF; no fresh bands or DOS were prepared or run.' > \"$record\"",
+                "sha256sum -- \"$runtime/relax/si-relax.in\" \"$runtime/relax/si-relax.out\" \"$runtime/reference/final-positions.inc\" \"$runtime/reference/static-scf.in\" \"$runtime/reference/static-scf.out\" > \"$sums\"",
+                "cat \"$record\"; cat \"$sums\""
               ],
-              "boundary": "Checksum and byte-for-byte regeneration checks establish artifact identity and deterministic reconstruction only, not scientific validity."
+              "boundary": "This preserves the question, decision, explicit stopping point, selected inputs/outputs, geometry handoff, and byte identities. It is not a universal package schema, a regeneration claim, or scientific validation."
             }
           }
         ]
@@ -548,6 +684,7 @@
           "label": "Inspect the explicit Aluminium model and exact pseudopotential receipt",
           "cwd": "repository-root",
           "commands": [
+            "case_root=examples/cases/aluminium-metallic-electronic-structure",
             "cat \"$case_root/source/fixture-metadata.json\"",
             "cat \"$case_root/source/pseudopotential-metadata.json\""
           ],
@@ -574,6 +711,7 @@
           "label": "Reconstruct the stored public evidence",
           "launches_dft": false,
           "commands": [
+            "case_root=examples/cases/aluminium-metallic-electronic-structure",
             "(cd \"$case_root\" && python3 parse.py)",
             "(cd \"$case_root\" && bash extract.sh)",
             "(cd \"$case_root\" && bash check.sh)"
@@ -590,13 +728,19 @@
         },
         {
           "id": "fresh-runtime",
-          "label": "Create a new isolated runtime",
+          "label": "Run the isolated Aluminium electronic route",
           "launches_dft": true,
           "commands": [
-            "RUNTIME_DIR=/absolute/path/outside/the/repository/aluminium-runtime; export RUNTIME_DIR",
-            "PSEUDO_DIR=\"$prepared/pseudo\" QE_PW=pw.x QE_DOS=dos.x bash \"$case_root/run.sh\"",
-            "dos_data=$(find \"$RUNTIME_DIR\" -type f -name \"al.dos\" -print -quit); test -f \"$dos_data\"",
-            "python3 examples/practical-guides/qe_manual_handoff.py extract-runtime --runtime-dir \"$RUNTIME_DIR\" --dos-data \"$dos_data\" --output-dir \"$RUNTIME_DIR/analysis\""
+            "set -euo pipefail",
+            "case_root=examples/cases/aluminium-metallic-electronic-structure",
+            "QE_PW=${QE_PW:?Set QE_PW to the absolute path to pw.x}",
+            "QE_DOS=${QE_DOS:?Set QE_DOS to the absolute path to dos.x}",
+            "QE_PSEUDO_DIR=/absolute/path/to/pseudos",
+            "RUN_OUTPUT_ROOT=/absolute/new/path/aluminium-electronic-route",
+            "test -x \"$QE_PW\"; test -x \"$QE_DOS\"; test -d \"$QE_PSEUDO_DIR\"; test ! -e \"$RUN_OUTPUT_ROOT\"",
+            "QE_PW=\"$QE_PW\" QE_DOS=\"$QE_DOS\" QE_PSEUDO_DIR=\"$QE_PSEUDO_DIR\" RUN_OUTPUT_ROOT=\"$RUN_OUTPUT_ROOT\" bash \"$case_root/run.sh\"",
+            "for output in scf.out nscf-full.out dos.out bands.out; do test -s \"$RUN_OUTPUT_ROOT/$output\"; grep -nE 'JOB DONE|convergence has been achieved|c_bands|Error in routine' \"$RUN_OUTPUT_ROOT/$output\" || true; done",
+            "test -s \"$RUN_OUTPUT_ROOT/al.dos\"; sed -n '1,12p' \"$RUN_OUTPUT_ROOT/al.dos\""
           ],
           "output_policy": "Use a new caller-selected external runtime directory; never overwrite or relabel committed output/, derived/, or figures/ as the new run.",
           "audit": [
@@ -607,8 +751,8 @@
             "Test DOS, band, or Fermi-surface observables with their own numerical convergence protocol.",
             "State the scientific claim only after the evidence supports it."
           ],
-          "parse_plot_boundary": "The fresh route reconstructs native dos.x data only. It does not add a relaxation, a fresh bands.x data product, observable convergence, or a material-level claim.",
-          "boundary": "This present-day route creates new external SCF, NSCF, dos.x, and path-bands process records, but only native dos.x data enter the fresh parser. No relaxation is part of the case, and no private replay or case-wide historical continuity is claimed."
+          "parse_plot_boundary": "The fresh route leaves the native al.dos table and solver outputs for direct inspection; no fresh plotting route is supplied. It does not add a relaxation, a bands.x data product, observable convergence, or a material-level claim.",
+          "boundary": "This present-day route creates new external SCF, full-zone NSCF, dos.x, and path-bands process records under the exact QE_PW, QE_DOS, QE_PSEUDO_DIR, and RUN_OUTPUT_ROOT contract. No relaxation is part of the case, and no private replay or case-wide historical continuity is claimed."
         }
       ],
       "source_records": [
@@ -678,6 +822,16 @@
             "artifact_paths": [
               "input/scf.in"
             ],
+            "action": {
+              "label": "Inspect the explicit Aluminium source record",
+              "cwd": "repository-root",
+              "commands": [
+                "case_root=examples/cases/aluminium-metallic-electronic-structure",
+                "cat \"$case_root/source/fixture-metadata.json\"",
+                "sed -n '1,160p' \"$case_root/input/scf.in\""
+              ],
+              "boundary": "The case begins from an explicit teaching model. There is no database or experimental source identity to infer."
+            },
             "boundary": "The structure is an explicit one-atom fcc teaching input, not a database or experimental identity."
           },
           {
@@ -698,6 +852,15 @@
               "input/nscf.in",
               "input/bands.in"
             ],
+            "action": {
+              "label": "Compare the cell and atomic model across route inputs",
+              "cwd": "repository-root",
+              "commands": [
+                "case_root=examples/cases/aluminium-metallic-electronic-structure",
+                "for input in scf.in nscf.in bands.in; do printf '\\n### %s\\n' \"$input\"; grep -nE 'ibrav|celldm|nat|ntyp|ATOMIC_SPECIES|ATOMIC_POSITIONS|K_POINTS' \"$case_root/input/$input\"; done"
+              ],
+              "boundary": "Matching recorded cell labels support route consistency only. The geometry was not relaxed or independently validated."
+            },
             "boundary": "celldm(1)=7.653 bohr is a recorded teaching geometry, not an independently optimized or universal value."
           },
           {
@@ -716,6 +879,23 @@
             "execution_route_ids": [],
             "command_stages": [],
             "artifact_paths": [],
+            "action": {
+              "label": "Download and verify the exact Aluminium potential",
+              "cwd": "repository-root",
+              "commands": [
+                "set -euo pipefail",
+                "case_root=examples/cases/aluminium-metallic-electronic-structure",
+                "QE_PSEUDO_DIR=/absolute/path/to/pseudos",
+                "upf=\"$QE_PSEUDO_DIR/Al.pbe-n-rrkjus_psl.1.0.0.UPF\"; partial=\"$upf.part\"",
+                "cat \"$case_root/source/pseudopotential-metadata.json\"; test ! -e \"$upf\"; test ! -e \"$partial\"",
+                "mkdir -p \"$QE_PSEUDO_DIR\"",
+                "curl --fail --location --proto '=https' --tlsv1.2 --output \"$partial\" 'https://pseudopotentials.quantum-espresso.org/upf_files/Al.pbe-n-rrkjus_psl.1.0.0.UPF'",
+                "test \"$(wc -c < \"$partial\" | tr -d '[:space:]')\" = '1500731'",
+                "printf '%s  %s\\n' 'cc4f5dc6afe09c8f482dc7645e6e7cca546a55f8d907c71c825c62bf85a38d3e' \"$partial\" | sha256sum --check -",
+                "mv \"$partial\" \"$upf\""
+              ],
+              "boundary": "The byte count and SHA-256 establish the acquired file identity only. Retain the stale qe_plan URL conflict; identity does not establish transferability or numerical suitability."
+            },
             "boundary": "Use the newer exact URL/bytes/hash receipt and retain the stale qe_plan conflict; file identity does not establish scientific suitability."
           },
           {
@@ -738,6 +918,15 @@
               "input/dos.in",
               "input/bands.in"
             ],
+            "action": {
+              "label": "Read the metallic inputs and ancestry before execution",
+              "cwd": "repository-root",
+              "commands": [
+                "case_root=examples/cases/aluminium-metallic-electronic-structure",
+                "for input in scf.in nscf.in dos.in bands.in; do printf '\\n### %s\\n' \"$input\"; sed -n '1,180p' \"$case_root/input/$input\"; done"
+              ],
+              "boundary": "Confirm prefix, outdir, calculation type, occupations, smearing, cutoffs, k sampling, and dos.x window. The displayed settings remain unaccepted teaching values."
+            },
             "boundary": "PBE, 30/240 Ry, Marzari-Vanderbilt smearing, degauss=0.02 Ry, and 8x8x8 are recorded settings, not converged prescriptions."
           },
           {
@@ -764,6 +953,21 @@
             "artifact_paths": [
               "output/recorded-commands.txt"
             ],
+            "action": {
+              "label": "Run SCF, full-zone NSCF, dos.x, and path bands",
+              "cwd": "repository-root",
+              "commands": [
+                "set -euo pipefail",
+                "case_root=examples/cases/aluminium-metallic-electronic-structure",
+                "QE_PW=${QE_PW:?Set QE_PW to the absolute path to pw.x}",
+                "QE_DOS=${QE_DOS:?Set QE_DOS to the absolute path to dos.x}",
+                "QE_PSEUDO_DIR=/absolute/path/to/pseudos",
+                "RUN_OUTPUT_ROOT=/absolute/new/path/aluminium-electronic-route",
+                "test -x \"$QE_PW\"; test -x \"$QE_DOS\"; test -d \"$QE_PSEUDO_DIR\"; test ! -e \"$RUN_OUTPUT_ROOT\"",
+                "QE_PW=\"$QE_PW\" QE_DOS=\"$QE_DOS\" QE_PSEUDO_DIR=\"$QE_PSEUDO_DIR\" RUN_OUTPUT_ROOT=\"$RUN_OUTPUT_ROOT\" bash \"$case_root/run.sh\""
+              ],
+              "boundary": "The runner refuses missing executables, a missing or wrong-hash UPF, an existing destination, or a destination inside committed case evidence. A new run creates new evidence."
+            },
             "boundary": "Only isolated-dos-route is continuous. The initial captured outputs and later screens are separate routes, and a new run creates new evidence."
           },
           {
@@ -795,6 +999,17 @@
             "artifact_paths": [
               "derived/captured-run-summary.json"
             ],
+            "action": {
+              "label": "Inspect the fresh process records and retained warnings",
+              "cwd": "repository-root",
+              "commands": [
+                "RUN_OUTPUT_ROOT=/absolute/new/path/aluminium-electronic-route",
+                "for output in scf.out nscf-full.out dos.out bands.out; do test -s \"$RUN_OUTPUT_ROOT/$output\"; printf '\\n### %s\\n' \"$output\"; grep -nE 'JOB DONE|convergence has been achieved|c_bands|Error in routine' \"$RUN_OUTPUT_ROOT/$output\" || true; done",
+                "for err in scf.err nscf-full.err dos.err bands.err; do wc -c \"$RUN_OUTPUT_ROOT/$err\"; done",
+                "test -s \"$RUN_OUTPUT_ROOT/al.dos\"; wc -l \"$RUN_OUTPUT_ROOT/al.dos\""
+              ],
+              "boundary": "Normal termination, electronic SCF convergence, retained c_bands warnings, stderr, and expected artifacts are separate observations. None establishes observable convergence."
+            },
             "boundary": "Normal exits and a DOS file do not erase c_bands warnings or establish observable convergence."
           },
           {
@@ -821,6 +1036,16 @@
             ],
             "assessment": "FAIL",
             "observable_convergence": "not tested",
+            "action": {
+              "label": "Read the adverse convergence result before proceeding",
+              "cwd": "repository-root",
+              "commands": [
+                "case_root=examples/cases/aluminium-metallic-electronic-structure",
+                "cat \"$case_root/derived/aluminium-convergence-assessment.json\"",
+                "sed -n '1,40p' \"$case_root/derived/aluminium-convergence-matrix.csv\""
+              ],
+              "boundary": "The next scientific action is to redesign and run a convergence study suited to the intended observable. Do not convert this FAIL into program failure, observable convergence, or scientific rejection."
+            },
             "boundary": "Five SCF programs completed, but the exploratory screen failed its own energy/Fermi thresholds. This is not a program failure, an observable-convergence result, or scientific rejection."
           },
           {
@@ -862,6 +1087,16 @@
               "output/dos-route/scf.out",
               "output/dos-route/scf.err"
             ],
+            "action": {
+              "label": "Inspect the fresh reference SCF",
+              "cwd": "repository-root",
+              "commands": [
+                "RUN_OUTPUT_ROOT=/absolute/new/path/aluminium-electronic-route",
+                "test -s \"$RUN_OUTPUT_ROOT/scf.out\"; wc -c \"$RUN_OUTPUT_ROOT/scf.err\"",
+                "grep -nE 'convergence has been achieved|JOB DONE|Error in routine' \"$RUN_OUTPUT_ROOT/scf.out\""
+              ],
+              "boundary": "This checks the fresh SCF process and reported electronic convergence only. The explicit geometry was not relaxed, and target observables remain unconverged."
+            },
             "boundary": "The isolated SCF reports electronic convergence, not structural relaxation, target-observable convergence, or scientific acceptance."
           },
           {
@@ -897,6 +1132,16 @@
               "derived/al-dos-x-metadata.json"
             ],
             "observable_convergence": "not tested",
+            "action": {
+              "label": "Inspect the fresh native DOS and path outputs",
+              "cwd": "repository-root",
+              "commands": [
+                "RUN_OUTPUT_ROOT=/absolute/new/path/aluminium-electronic-route",
+                "test -s \"$RUN_OUTPUT_ROOT/al.dos\"; sed -n '1,12p' \"$RUN_OUTPUT_ROOT/al.dos\"; tail -n 5 \"$RUN_OUTPUT_ROOT/al.dos\"",
+                "grep -nE 'c_bands|JOB DONE|Error in routine' \"$RUN_OUTPUT_ROOT/nscf-full.out\" \"$RUN_OUTPUT_ROOT/bands.out\" || true"
+              ],
+              "boundary": "The native table and path stdout are fresh artifacts from the declared route. One sampling choice, normal exit, and a nonempty table do not establish DOS, band, or Fermi-surface convergence."
+            },
             "boundary": "The save tree is not published, NSCF and bands warnings remain visible, and one 8x8x8 DOS sample does not establish a converged DOS or Fermi surface."
           },
           {
@@ -916,21 +1161,21 @@
               "later-exploratory-screens"
             ],
             "command_stages": [],
-            "artifact_paths": [
-              "figures/raw-nscf-band2-sampling.png",
-              "figures/al-dos-gaussian.png",
-              "figures/al-dos-x.png",
-              "figures/aluminium-eos-fit.png"
+          "artifact_paths": [
+            "figures/al-dos-x.png",
+            "figures/aluminium-eos-fit.png"
             ],
             "boundary": "The Gaussian representation, native dos.x plot, sampling histogram, and E(V) fit are distinct derived views; none is convergence evidence by itself.",
             "action": {
-              "label": "Parse and plot the fresh native DOS data",
+              "label": "Inspect the stored tables behind the retained figures",
               "cwd": "repository-root",
               "commands": [
-                "dos_data=$(find \"$RUNTIME_DIR\" -type f -name \"al.dos\" -print -quit); test -f \"$dos_data\"",
-                "python3 examples/practical-guides/qe_manual_handoff.py extract-runtime --runtime-dir \"$RUNTIME_DIR\" --dos-data \"$dos_data\" --output-dir \"$RUNTIME_DIR/analysis\""
+                "case_root=examples/cases/aluminium-metallic-electronic-structure",
+                "sed -n '1,20p' \"$case_root/derived/al-dos-x.csv\"",
+                "sed -n '1,30p' \"$case_root/derived/aluminium-convergence-matrix.csv\"",
+                "cat \"$case_root/derived/aluminium-eos-fit.json\""
               ],
-              "boundary": "This creates a fresh DOS CSV and light SVG only. It does not claim a fresh bands.x data product, a relaxation, observable convergence, or a material conclusion."
+              "boundary": "These are stored route-scoped tables and a bounded fit record, not plots derived from the new runtime. Inspect the fresh al.dos directly until a reviewed fresh plotting route is supplied."
             }
           },
           {
@@ -957,6 +1202,17 @@
             ],
             "assessment": "Exploratory convergence screen FAIL; bounded E(V) fit mathematical PASS only",
             "observable_convergence": "not tested",
+            "action": {
+              "label": "Write the conclusion from the adverse record",
+              "cwd": "repository-root",
+              "commands": [
+                "case_root=examples/cases/aluminium-metallic-electronic-structure",
+                "cat \"$case_root/derived/aluminium-convergence-assessment.json\"",
+                "cat \"$case_root/derived/aluminium-eos-fit.json\"",
+                "cat \"$case_root/derived/captured-run-summary.json\""
+              ],
+              "boundary": "Report the exploratory convergence screen as FAIL and observable convergence as not tested. The bounded E(V) fit is mathematical evidence only; the adverse screen is not scientific rejection."
+            },
             "boundary": "The case does not support a converged DOS, Fermi surface, EOS, elastic property, carrier density, transport result, universal parameter recommendation, or material conclusion."
           },
           {
@@ -985,6 +1241,20 @@
               "output/recorded-commands.txt",
               "output/compact-source-excerpt.txt"
             ],
+            "action": {
+              "label": "Write a bounded record beside the fresh route",
+              "cwd": "repository-root",
+              "commands": [
+                "set -euo pipefail",
+                "RUN_OUTPUT_ROOT=/absolute/new/path/aluminium-electronic-route",
+                "record=\"$RUN_OUTPUT_ROOT/STUDY-NOTES.txt\"; sums=\"$RUN_OUTPUT_ROOT/SELECTED-SHA256SUMS\"",
+                "test -s \"$RUN_OUTPUT_ROOT/scf.in\"; test -s \"$RUN_OUTPUT_ROOT/scf.out\"; test -s \"$RUN_OUTPUT_ROOT/nscf-full.out\"; test -s \"$RUN_OUTPUT_ROOT/al.dos\"; test -s \"$RUN_OUTPUT_ROOT/bands.out\"; test ! -e \"$record\"; test ! -e \"$sums\"",
+                "printf '%s\\n' 'Question: inspect one fresh fcc-Al SCF to full-zone NSCF to dos.x route plus path bands.' 'Boundary: no relaxation is included; DOS, bands, and Fermi-surface convergence are not tested.' 'Stored adverse result: the separate exploratory convergence screen is FAIL, not program failure or scientific rejection.' > \"$record\"",
+                "sha256sum -- \"$RUN_OUTPUT_ROOT/scf.in\" \"$RUN_OUTPUT_ROOT/scf.out\" \"$RUN_OUTPUT_ROOT/nscf-full.out\" \"$RUN_OUTPUT_ROOT/dos.in\" \"$RUN_OUTPUT_ROOT/dos.out\" \"$RUN_OUTPUT_ROOT/al.dos\" \"$RUN_OUTPUT_ROOT/bands.in\" \"$RUN_OUTPUT_ROOT/bands.out\" > \"$sums\"",
+                "cat \"$record\"; cat \"$sums\""
+              ],
+              "boundary": "This preserves selected fresh route inputs, outputs, the human-readable evidence boundary, and byte identities. It does not relabel the stored exploratory screen, create observable convergence, or validate a scientific conclusion."
+            },
             "boundary": "The public record preserves assembled route evidence and its conflict/non-claim boundaries, not one case-wide historical launcher or unpublished save-tree ancestry."
           }
         ]

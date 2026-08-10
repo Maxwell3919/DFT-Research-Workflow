@@ -12,11 +12,9 @@ tested_versions:
 execution_script: examples/practical-guides/li_p_convex_hull.py
 source_ids:
   - oqmd-api
-  - oqmd-download-license
   - oqmd-paper
   - pymatgen-phase-diagram-api
-media_ids:
-  - oqmd-li-p-convex-hull
+media_ids: []
 review: docs/reviews/2026-08-04-compositional-phase-stability-and-convex-hulls.md
 reviewed_at: "2026-08-04"
 ---
@@ -25,7 +23,7 @@ reviewed_at: "2026-08-04"
 
 Open the Li-P system in the public database interface, inspect entry identities, compositions, structures, and calculation metadata, and note the database snapshot or access date. Compare the exported rows with the plotted lower envelope; click or read each vertex and verify its adjacent tie line and decomposition products. Use [structure and data sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) to check phase-set completeness and independent context.
 
-**Reproduce this site's figure:** the companion script rebuilds the hull from a frozen, attributed 46-row OQMD snapshot. It does not prove that the snapshot contains every physical phase or that its energies are experimentally accurate.
+**Inspect an attributed public-data snapshot:** the companion script rebuilds the hull from a frozen 46-row OQMD response. Check the source receipt and exact entry IDs before the geometry; the rebuild does not prove that the snapshot contains every physical phase or that its energies are experimentally accurate.
 
 Use this worked example to reconstruct a binary hull from a frozen public-data table. It reads 46 OQMD Li-P rows representing 19 compositions and writes a JSON report plus a locally generated SVG. It does not rerun the source DFT calculations.
 
@@ -36,13 +34,13 @@ python3 examples/practical-guides/li_p_convex_hull.py \
   --svg public/media/practical-guides/compositional-phase-stability-and-convex-hulls/rebuild-oqmd-li-p-convex-hull/oqmd-li-p-convex-hull.svg
 ```
 
-Inspect the JSON report for row count, hull vertices, decomposition endpoints and weights, and reconstructed-versus-stored stability differences. Inspect the SVG only after those machine-readable checks.
+Inspect the JSON report for row count, hull vertices, decomposition endpoints and weights, and reconstructed-versus-stored stability differences. Then compare those records with the plotted lower envelope and return to any OQMD entry whose identity is ambiguous.
 
 ## Confirm the input receipt
 
 The frozen snapshot records query URL, retrieval time, API version, source timestamp, field order, and reuse terms. Every row retains `entry_id`, `calculation_label`, formula, structure metadata, formation energy, and database stability. Do not replace these identifiers with plot labels.
 
-The OQMD [REST API documentation](https://static.oqmd.org/static/docs/restful.html) defines the interface, its [download page](https://www.oqmd.org/download/) states current dataset licence terms, and the [OQMD paper](https://doi.org/10.1007/s11837-013-0755-4) describes the database. The committed snapshot, not the mutable live response, is the input to this fixture.
+The OQMD [REST API documentation](https://static.oqmd.org/static/docs/restful.html) defines the interface, and the [OQMD paper](https://doi.org/10.1007/s11837-013-0755-4) describes the database. The committed snapshot, not the mutable live response, is the input to this fixture.
 
 ## Check composition and normalization
 
@@ -75,6 +73,5 @@ This guide verifies frozen-data parsing, attribution, normalization, and binary 
 ## Official sources
 
 - [OQMD RESTful API documentation](https://static.oqmd.org/static/docs/restful.html)
-- [OQMD download page and current dataset licence terms](https://www.oqmd.org/download/)
 - [Kirklin and co-workers, the OQMD](https://doi.org/10.1007/s11837-013-0755-4)
 - [pymatgen phase-diagram analysis API](https://pymatgen.org/pymatgen.analysis.html#module-pymatgen.analysis.phase_diagram)

@@ -7,9 +7,9 @@ const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const parentRoute = '/operations/adsorption-energies/';
 const guides = [
-  { route: `${parentRoute}guides/build-adsorption-energy-ledger/`, title: 'Build an Adsorption-Energy and Free-Energy Ledger', phrase: 'Audit the attributed public reaction ledger first', boundary: 'It does not establish adsorption convergence, thermodynamic accuracy, a real site or coverage series, entropy, solvent, pressure, electrode conditions, catalytic ranking, or a material conclusion.' },
-  { route: `${parentRoute}guides/compare-adsorption-sites-and-coverage/`, title: 'Compare Adsorption Sites, Coverage, and Periodic Cells', phrase: 'Run the bounded synthetic grouping fixture', boundary: 'It does not establish a real site search, coverage convergence, slab convergence, lateral interaction, or global adsorption minimum.' },
-  { route: `${parentRoute}examples/replot-cmr-co-adsorption/`, title: 'Replot the CMR CO-on-fcc(111) Adsorption Benchmark', phrase: 'Rebuild the attributed plot from the frozen snapshot', boundary: 'Neither command independently establishes source convergence, method accuracy, low-coverage adsorption, an experimental site, catalytic activity, or a new material conclusion.' },
+  { route: `${parentRoute}guides/build-adsorption-energy-ledger/`, title: 'Build an Adsorption-Energy and Free-Energy Ledger', phrase: 'Audit the attributed public reaction ledger first', boundary: 'It does not establish adsorption convergence, thermodynamic accuracy, a real site or coverage series, entropy, solvent, pressure, electrode conditions, catalytic ranking, or a material conclusion.', mediaCount: 0, primary: true },
+  { route: `${parentRoute}guides/compare-adsorption-sites-and-coverage/`, title: 'Compare Adsorption Sites, Coverage, and Periodic Cells', phrase: 'Run the bounded synthetic grouping fixture', boundary: 'It does not establish a real site search, coverage convergence, slab convergence, lateral interaction, or global adsorption minimum.', mediaCount: 0, primary: false },
+  { route: `${parentRoute}examples/replot-cmr-co-adsorption/`, title: 'Replot the CMR CO-on-fcc(111) Adsorption Benchmark', phrase: 'Rebuild the attributed plot from the frozen snapshot', boundary: 'Neither command independently establishes source convergence, method accuracy, low-coverage adsorption, an experimental site, catalytic activity, or a new material conclusion.', mediaCount: 1, primary: true },
 ];
 
 async function loadMedia(page) {
@@ -25,12 +25,12 @@ async function loadMedia(page) {
 async function inspect(page, guide, width) {
   const response = await page.goto(`${base}${guide.route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`${guide.route} returned ${response?.status()}`);
-  await loadMedia(page);
-  const result = await page.evaluate(() => ({ language: document.documentElement.lang, title: document.querySelector('h1')?.textContent?.trim(), text: document.body.innerText, links: [...document.querySelectorAll('.article-content a')].map((link) => link.href), images: [...document.querySelectorAll('.guide-media img')].map((image) => ({ alt: image.alt, loaded: image.complete && image.naturalWidth > 0 })), tools: [...document.querySelectorAll('.tool-tag')].map((tag) => tag.textContent?.trim()), meta: Boolean(document.querySelector('.guide-meta')), evidence: Boolean(document.querySelector('.evidence-note')), scripts: document.querySelectorAll('script').length, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1 }));
+  if (guide.mediaCount > 0) await loadMedia(page);
+  const result = await page.evaluate(() => ({ language: document.documentElement.lang, title: document.querySelector('h1')?.textContent?.trim(), text: document.body.innerText, links: [...document.querySelectorAll('.article-content a')].map((link) => link.href), images: [...document.querySelectorAll('.guide-media img')].map((image) => ({ alt: image.alt, loaded: image.complete && image.naturalWidth > 0 })), tools: [...document.querySelectorAll('.tool-tag')].map((tag) => tag.textContent?.trim()), meta: Boolean(document.querySelector('.guide-meta')), evidence: Boolean(document.querySelector('.evidence-note')), scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1 }));
   if (result.language !== 'en' || result.title !== guide.title) throw new Error(`${guide.route}: identity mismatch`);
   if (!result.text.includes(guide.phrase) || !result.text.includes(guide.boundary)) throw new Error(`${guide.route}: missing claim or boundary`);
   if (!result.text.includes('Python 3.12') || !result.tools.includes('python')) throw new Error(`${guide.route}: pinned execution metadata missing`);
-  if (!result.meta || !result.evidence || result.images.length !== 1 || !result.images[0].alt || !result.images[0].loaded) throw new Error(`${guide.route}: metadata, evidence, or media missing`);
+  if (!result.meta || !result.evidence || result.images.length !== guide.mediaCount || result.images.some((image) => !image.alt || !image.loaded)) throw new Error(`${guide.route}: metadata, evidence, or declared media mismatch`);
   if (!result.links.some((link) => link.startsWith('https://')) || result.scripts !== 0 || result.overflow) throw new Error(`${guide.route}: sources, static boundary, or ${width}px layout failed`);
   return result;
 }
@@ -48,9 +48,12 @@ try {
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
   let response = await page.goto(`${base}${parentRoute}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`adsorption parent returned ${response?.status()}`);
-  const parent = await page.evaluate(() => ({ cards: document.querySelectorAll('.practical-card-list li').length, links: [...document.querySelectorAll('.practical-card-list a')].map((link) => link.href), scripts: document.querySelectorAll('script').length, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1 }));
-  if (parent.cards !== 3 || parent.scripts !== 0 || parent.overflow) throw new Error(`adsorption parent mismatch: ${JSON.stringify(parent)}`);
-  for (const guide of guides) if (!parent.links.includes(`${base}${guide.route}`)) throw new Error(`adsorption parent missing ${guide.route}`);
+  const parent = await page.evaluate(() => ({ cards: document.querySelectorAll('.practical-card-list li').length, links: [...document.querySelectorAll('.practical-card-list a')].map((link) => link.href), scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1 }));
+  if (parent.cards !== 2 || parent.scripts !== 0 || parent.overflow) throw new Error(`adsorption parent mismatch: ${JSON.stringify(parent)}`);
+  for (const guide of guides) {
+    if (guide.primary && !parent.links.includes(`${base}${guide.route}`)) throw new Error(`adsorption parent missing ${guide.route}`);
+    if (!guide.primary && parent.links.includes(`${base}${guide.route}`)) throw new Error(`adsorption parent promotes synthetic-only route ${guide.route}`);
+  }
   const desktop = [];
   for (const guide of guides) desktop.push(await inspect(page, guide, 1440));
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
@@ -73,7 +76,7 @@ try {
     await capture(page, join(artifactDirectory, 'adsorption-guide-cmr-co-desktop.png'));
     await writeFile(join(artifactDirectory, 'adsorption-guides-summary.json'), `${JSON.stringify({ site_url: base, parent_route: parentRoute, parent_cards: parent.cards, routes: guides.map((guide) => guide.route), source_links: desktop.reduce((sum, result) => sum + result.links.length, 0), media: desktop.reduce((sum, result) => sum + result.images.length, 0), real_public_data_plots: 1, synthetic_plots: 2, desktop_width: 1440, mobile_width: 390, no_javascript: true, dft_executed_by_project: false }, null, 2)}\n`);
   }
-  console.log('Adsorption-guide smoke passed: parent cards, 3 static guides, synthetic and real-public-data media, pinned Python metadata, 1440px/390px layout, and no-JavaScript reading.');
+  console.log('Adsorption-guide smoke passed: 2 non-synthetic parent cards, 3 directly readable static guides, no filler figures, retained attributed public-data media, pinned Python metadata, 1440px/390px layout, and no-JavaScript reading.');
 } finally {
   await browser.close();
 }

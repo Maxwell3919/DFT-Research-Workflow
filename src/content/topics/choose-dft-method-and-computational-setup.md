@@ -19,53 +19,64 @@ A browser portal, GUI, text editor, terminal, and HPC scheduler are all legitima
 
 ## Select core-valence data before handling the file
 
-Open the relevant [method and input resource landscape](/DFT-Research-Workflow/operations/resource-landscape/#method-inputs) and the dataset provider's browser interface. Select a coherent family, version, exchange-correlation treatment, accuracy tier, relativistic treatment, and file format. For every element, inspect the explicit valence and semicore partition, pseudopotential or PAW type, generator information, validation or test report, warnings, recommended starting cutoffs, licence, and compatibility with the chosen code and target feature.
+Open the relevant [method and input resource landscape](/DFT-Research-Workflow/operations/resource-landscape/#method-inputs) and begin with a maintained, versioned library that publishes validation or test evidence for a coherent dataset family. The ordinary route is download-first: select the family, release, exchange-correlation treatment, accuracy tier, relativistic treatment, and file format in the provider interface before handling a local file. For every element, inspect the explicit valence and semicore partition, pseudopotential or PAW type, generator information, validation or test report, warnings, recommended starting cutoffs, licence, and compatibility with the chosen code and target feature. A loose file copied from an old calculation is not an identified library source.
 
 A recommendation is prior evidence, not acceptance for this material or observable. If a field is absent, record it as unknown. Do not infer valence, relativity, or functional compatibility from a filename. All-electron implementations replace pseudopotential selection with their own basis, radial-grid, muffin-tin, species-default, or linearization choices; those controls still require an identified source and convergence evidence.
 
-Only after this inspection should you download or receive the exact dataset. Preserve the portal record or receipt, family and version, access date, licence boundary, and original filename. Then fix the local identity:
+Only after this inspection should you download or receive the exact dataset. Preserve the portal record or receipt, family and version, access date, licence boundary, expected checksum when the provider supplies one, and original filename. Then point <code>PSEUDO_SOURCE</code> to that exact downloaded file and fix the local identity:
 
 ~~~bash
+: "${PSEUDO_SOURCE:?Set PSEUDO_SOURCE to the exact library file you inspected}"
+pseudo_name=$(basename -- "$PSEUDO_SOURCE")
 mkdir -p method/pseudo
-cp selected.UPF method/pseudo/
-sha256sum method/pseudo/* > method/pseudopotentials.sha256
-head -n 80 method/pseudo/selected.UPF
-grep -Ei 'functional|valence|relativ|cutoff|wavefunction|density' method/pseudo/selected.UPF
+test ! -e "method/pseudo/$pseudo_name"
+cp -- "$PSEUDO_SOURCE" "method/pseudo/$pseudo_name"
+sha256sum -- "method/pseudo/$pseudo_name" > method/pseudopotentials.sha256
+head -n 80 -- "method/pseudo/$pseudo_name"
+grep -Ei 'functional|valence|relativ|cutoff|wavefunction|density' -- \
+  "method/pseudo/$pseudo_name"
 ~~~
 
-<code>sha256sum</code> fixes the downloaded file identity. <code>head</code> and <code>grep</code> expose metadata that this particular file makes readable; they do not replace the provider report or establish transferability or accuracy.
+<code>sha256sum</code> fixes the downloaded file identity. <code>head</code> and <code>grep</code> expose metadata that this particular file makes readable; they do not prove that the bytes came from the recorded URL, replace the provider report, or establish transferability or accuracy.
+
+Generating a pseudopotential is an advanced branch, not the default response to an unfamiliar element or filename. Enter that branch only when no tested library release supports the required functional, valence space, relativistic treatment, or implementation feature. Preserve the generator input and version, explain why existing tested datasets were unsuitable, and complete atomic reference, transferability, and relevant solid-state tests before using the generated file in a scientific comparison. Successful generation only creates a candidate dataset.
 
 ## Record the decision
 
-Keep a plain-text method sheet beside the inputs:
+Keep a plain-text method sheet beside the inputs. Write down:
 
-~~~text
-scientific question and target observable:
-model and reference comparison:
-software, version, access route, and required modules:
-electronic theory and exact functional:
-charge or electron-number condition:
-spin, magnetization, and relativistic treatment:
-pseudopotential, PAW, or all-electron dataset, source, valence, version, licence, checksum:
-basis or grid family:
-occupations and smearing interpretation:
-dispersion, Hubbard, field, solvent, or boundary treatment:
-parameters still requiring numerical convergence:
-relevant Methods or Supporting Information checked:
-known feature restrictions and unresolved choices:
-~~~
+- the scientific question, target observable, model, and reference comparison;
+- software version, access route, required modules, and exact electronic theory or functional;
+- charge or electron-number condition, spin, magnetization, and relativistic treatment;
+- pseudopotential, PAW, or all-electron dataset source, family, release, valence, licence, download receipt, and checksum;
+- basis or grid family, occupations, and the interpretation of any smearing;
+- dispersion, Hubbard, field, solvent, or boundary treatment;
+- parameters that still require numerical convergence;
+- relevant Methods or Supporting Information already checked; and
+- known feature restrictions and unresolved choices.
 
 ## Run one bounded implementation preflight
 
 Prepare one representative input and compare the program-reported setup with the sheet before launching a sweep. Quantum ESPRESSO is the demonstrated implementation below; it is not the definition of this research task.
 
 ~~~bash
-pw.x -in scf.in > scf.out
-grep -Ei 'program pwscf|exchange-correlation|pseudo|cutoff|k points|occupation|smearing|spin' scf.out
-grep "JOB DONE" scf.out
+test ! -e scf.out
+test ! -e scf.err
+if pw.x -in scf.in > scf.out 2> scf.err; then
+  pw_status=0
+else
+  pw_status=$?
+fi
+printf '%s\n' "$pw_status" > scf.exit-status
+tail -n 40 -- scf.out
+grep -Ei 'program pwscf|exchange-correlation|pseudo|cutoff|k points|occupation|smearing|spin' -- scf.out
+grep -F 'convergence has been achieved' -- scf.out | tail -n 1
+grep -F 'JOB DONE.' -- scf.out
+grep -Ei 'warning|error in routine|stopping|not converged|no convergence' -- scf.out scf.err || true
+test "$pw_status" -eq 0
 ~~~
 
-The first <code>grep</code> locates version-dependent setup summaries for human inspection. The second checks normal program termination only. A successful exit establishes neither methodological suitability nor numerical convergence. A researcher using another code should perform the equivalent comparison with that code's official manual, generated input, reported effective settings, warnings, and output artifacts.
+The setup <code>grep</code> locates version-dependent summaries for human inspection. The SCF marker, <code>JOB DONE.</code>, separate stderr, and shell exit status answer different questions and must remain separate records. A successful exit establishes neither methodological suitability nor numerical convergence. Even when all four records look normal, they do not establish observable-specific convergence. A researcher using another code should perform the equivalent comparison with that code's official manual, generated input, reported effective settings, warnings, and output artifacts.
 
 This task establishes a versioned method identity and a defensible starting setup. It does not accept cutoffs, k meshes, smearing widths, vacuum dimensions, or response grids; those require observable-specific tests.
 
@@ -89,7 +100,7 @@ A formally higher rung is not automatically better for every observable or mater
 
 ## Define the core and valence treatment
 
-Obtain the dataset from an identified source and preserve the exact file. Record its generating functional, explicit valence configuration, frozen-core partition, semicore choice, relativistic treatment, nonlinear core correction where present, format, version, checksum, and any recommended starting cutoffs.
+Download the dataset from the selected tested library release and preserve the exact receipt and file. Record its generating functional, explicit valence configuration, frozen-core partition, semicore choice, relativistic treatment, nonlinear core correction where present, format, version, checksum, and any recommended starting cutoffs. Treat a generated dataset as the separate advanced branch described above, with its additional validation record.
 
 A pseudopotential file being readable does not establish its accuracy or transferability. A library cutoff is a starting point, and two datasets for the same element cannot be exchanged silently when their valence spaces or generation choices differ.
 

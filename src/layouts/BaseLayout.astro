@@ -18,7 +18,7 @@ const navigation = [
   { id: 'home', label: 'Home', href: withBase() },
   { id: 'operations', label: 'Research Workflow', href: withBase('operations/') },
   { id: 'workflows', label: 'Worked Workflows', href: withBase('workflows/') },
-  { id: 'tools', label: 'Tools', href: withBase('tools/') },
+  { id: 'tools', label: 'Tools & Resources', href: withBase('tools/') },
 ] as const;
 ---
 
@@ -61,5 +61,63 @@ const navigation = [
     <footer>
       <p>A software-neutral guide to researcher-scale DFT tasks and scientific workflows.</p>
     </footer>
+    <script is:inline data-copy-enhancement>
+      (() => {
+        const copyableSelector = [
+          'pre[data-copyable] > code',
+          'pre[data-language="bash"] > code',
+          'pre[data-language="shell"] > code',
+          'pre[data-language="sh"] > code',
+          'pre[data-language="python"] > code',
+          'pre[data-language="qe"] > code',
+          'pre[data-language="slurm"] > code',
+          'pre > code.language-bash',
+          'pre > code.language-shell',
+          'pre > code.language-sh',
+          'pre > code.language-python',
+          'pre > code.language-qe',
+          'pre > code.language-slurm',
+        ].join(',');
+
+        for (const code of document.querySelectorAll(copyableSelector)) {
+          const pre = code.parentElement;
+          if (!pre || pre.dataset.copyReady === 'true') continue;
+          pre.dataset.copyReady = 'true';
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'copyable-code';
+          pre.parentNode?.insertBefore(wrapper, pre);
+          wrapper.appendChild(pre);
+
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'copy-code-button';
+          button.textContent = 'Copy';
+          button.setAttribute('aria-label', 'Copy code to clipboard');
+
+          const status = document.createElement('span');
+          status.className = 'copy-code-status';
+          status.setAttribute('role', 'status');
+          status.setAttribute('aria-live', 'polite');
+
+          button.addEventListener('click', async () => {
+            try {
+              await navigator.clipboard.writeText(code.textContent ?? '');
+              button.textContent = 'Copied';
+              status.textContent = 'Code copied to clipboard.';
+            } catch {
+              button.textContent = 'Copy failed';
+              status.textContent = 'Copy failed. Select the code and copy it manually.';
+            }
+            window.setTimeout(() => {
+              button.textContent = 'Copy';
+              status.textContent = '';
+            }, 1800);
+          });
+
+          wrapper.prepend(button, status);
+        }
+      })();
+    </script>
   </body>
 </html>

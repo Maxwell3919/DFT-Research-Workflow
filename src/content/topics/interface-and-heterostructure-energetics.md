@@ -15,7 +15,7 @@ Use an interface-energy calculation to compare explicitly defined contacts, not 
 
 Record each parent bulk reference, orientation, termination, lateral-cell transformation, strain tensor and its allocation, registry translation, layer count, composition, interface area and count, charge and spin, constraints, and electrostatic model. A coherent periodic match is one finite model; it does not represent misfit dislocations, steps, intermixing, or an incoherent experimental contact unless those features are included.
 
-Use the practical guides below in sequence. **Enumerate a Teaching Fixture of Lattice Matches and Registries** makes the bounded candidate search explicit. **Build an Interface-Energy and Separation Ledger** audits published per-cell Al/TiN quantities without turning them into area-normalized energies. **Replot Published Al/TiN Contact and Separation Data** then redraws the same bounded public table and preserves the source definitions.
+Start with **Build an Interface-Energy and Separation Ledger** to recover the definitions behind the published Al/TiN rows. Use **Replot Published Al/TiN Contact and Separation Data** only for the separate task of inspecting their axes and reported transfer labels. **Enumerate a Teaching Fixture of Lattice Matches and Registries** is optional arithmetic: it contains invented square lattices and no atomistic interface, termination, or relaxed registry.
 
 Generate a documented set of matched cells, terminations, and translations. Relax candidates under one stated policy, inspect the final contact, deduplicate equivalent outcomes, and retain metastable states. A low mismatch or a named registry is a starting object, not evidence that the final interface is stable or globally preferred.
 
@@ -53,7 +53,7 @@ Coherency stores elastic energy through the finite slabs. Because interface exce
 
 Build one ledger containing candidate ID, parent files, transformation matrices, imposed strain, registry before and after relaxation, final structure, area, interface count, atom counts, reservoirs or separated-fragment files, constraints, total energies, derived quantity, units, sign, and output hashes. Do not mix reservoir-referenced interface excess, constrained binding, per-cell interaction energy, and relaxed cleavage work in one ranking column.
 
-## Check execution, state, and observable separately
+## Decide whether the interface object is ready for comparison
 
 A normal program exit establishes only that the executable reached an exit path. SCF convergence is an inner condition; state identity and the requested observable require separate checks. Numerical convergence of the requested energy difference should be assessed only after the interface state, reference-energy cycle, electrostatic boundary treatment, and relaxation constraints are fixed. Then refine basis or cutoff, k-point sampling, thickness, lateral cell, vacuum where present, and constrained-layer count. Track the requested quantity and candidate ordering while inspecting final structures, charge distribution, and potential profiles for state switches or residual fields.
 

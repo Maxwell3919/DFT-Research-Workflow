@@ -78,9 +78,7 @@ const observableExampleSlugs = [
   'optimize-structure',
   'harmonic-phonons',
   'fermi-surface-and-full-brillouin-zone-analysis',
-  'density-of-states-and-projected-density-of-states',
   'electron-phonon-coupling',
-  'conventional-superconductivity',
 ];
 const prohibitedText = /View contract|Operation registry|Automation maturity|Candidate automation|Claim ledger|查看契约|验证门/i;
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -139,7 +137,7 @@ async function inspectPage(page, expectedStatus) {
   if (observation.overflow) throw new Error('page has horizontal overflow');
   if (observation.oldUi !== 0) throw new Error(`page exposes ${observation.oldUi} retired UI elements`);
   if (observation.fixedContracts !== 0) throw new Error('page exposes a fixed operation contract');
-  if (JSON.stringify(observation.nav) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools'])) throw new Error(`navigation mismatch: ${JSON.stringify(observation.nav)}`);
+  if (JSON.stringify(observation.nav) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools & Resources'])) throw new Error(`navigation mismatch: ${JSON.stringify(observation.nav)}`);
   if (observation.background !== 'rgb(255, 255, 255)') throw new Error(`background is not white: ${observation.background}`);
   if (!/Iowan Old Style|Palatino|Book Antiqua|Georgia|Times New Roman|serif/i.test(observation.fontFamily)) throw new Error(`serif reading stack missing: ${observation.fontFamily}`);
   if (expectedStatus === 404 && !observation.text.includes('Page Not Found')) throw new Error('custom 404 content missing');
@@ -237,11 +235,6 @@ const browser = await puppeteer.launch({ executablePath, headless: true, args: [
 
 try {
   const page = await browser.newPage();
-  await page.evaluateOnNewDocument(() => {
-    window.addEventListener('molstarViewerCreated', (event) => {
-      window.__smokeMolstarViewer = event.detail?.viewer;
-    });
-  });
   await page.setCacheEnabled(false);
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
 
@@ -307,15 +300,7 @@ try {
   }
 
   const cifAssetUrl = `${base}/examples/cif/silicon-cod-9013102-expanded.cif`;
-  // The hosted Mol* iframe cannot fetch a localhost preview asset. Keep its
-  // structure source on the public Pages origin while testing the same local
-  // bytes separately below.
   const canonicalViewerCifUrl = 'https://maxwell3919.github.io/DFT-Research-Workflow/examples/cif/silicon-cod-9013102-expanded.cif';
-  let viewerCifStatus = null;
-  const observeViewerCif = (response) => {
-    if (response.url().split('?')[0] === canonicalViewerCifUrl) viewerCifStatus = response.status();
-  };
-  page.on('response', observeViewerCif);
 
   await page.goto(`${base}/operations/obtain-material-structure/`, { waitUntil: 'load' });
   const reviewedArticle = await page.evaluate(() => ({
@@ -331,7 +316,7 @@ try {
     'Numerical and symmetry checks',
     'Optional automation: retrieve and preserve the CIF',
     'Decide whether to continue',
-    'COD 9013102',
+    'Silicon COD ID 9013102',
     'curl',
     'sha256sum',
     'Sources and standards',
@@ -350,45 +335,11 @@ try {
   if (!cifAssetText.includes('not the byte-for-byte COD download')) throw new Error('silicon teaching CIF provenance boundary missing');
   if ((cifAssetText.match(/^Si\d+\s+Si\s/gm) ?? []).length !== 8) throw new Error('silicon teaching CIF does not contain eight expanded Si sites');
 
-  const viewerElement = await page.waitForSelector('.cif-viewer > iframe', { timeout: 5000 });
-  await viewerElement.evaluate((element) => element.scrollIntoView({ block: 'center' }));
-  let molstarFrame = null;
-  for (let attempt = 0; attempt < 100; attempt += 1) {
-    molstarFrame = await viewerElement.contentFrame();
-    if (molstarFrame?.url().startsWith('https://molstar.org/viewer/')) break;
-    await delay(250);
-  }
-  if (!molstarFrame?.url().startsWith('https://molstar.org/viewer/')) throw new Error(`Mol* frame did not load: ${molstarFrame?.url() ?? 'no frame'}`);
-  const molstarUrl = new URL(molstarFrame.url());
+  const molstarHref = reviewedArticle.links.find((href) => href.startsWith('https://molstar.org/viewer/'));
+  if (!molstarHref) throw new Error('Obtain a Material Structure is missing its explicit Mol* browser route');
+  const molstarUrl = new URL(molstarHref);
   if (molstarUrl.searchParams.get('url-format') !== 'cifCore') throw new Error(`Mol* viewer format mismatch: ${molstarUrl.searchParams.get('url-format')}`);
   if (molstarUrl.searchParams.get('url') !== canonicalViewerCifUrl) throw new Error(`Mol* structure URL mismatch: ${molstarUrl.searchParams.get('url')}`);
-  await molstarFrame.waitForSelector('canvas', { timeout: 45000 });
-  await molstarFrame.waitForFunction(() => {
-    const structures = window.__smokeMolstarViewer?.plugin?.managers?.structure?.hierarchy?.current?.structures ?? [];
-    return structures.some((structure) => {
-      const elements = structure.cell?.obj?.data?.elementCount ?? 0;
-      const representations = structure.components?.reduce((sum, component) => sum + (component.representations?.length ?? 0), 0) ?? 0;
-      return elements >= 8 && representations >= 1;
-    });
-  }, { timeout: 45000 });
-  const molstarStructureState = await molstarFrame.evaluate(() => {
-    const structures = window.__smokeMolstarViewer?.plugin?.managers?.structure?.hierarchy?.current?.structures ?? [];
-    return structures.reduce((best, structure) => {
-      const elementCount = structure.cell?.obj?.data?.elementCount ?? 0;
-      const representationCount = structure.components?.reduce((sum, component) => sum + (component.representations?.length ?? 0), 0) ?? 0;
-      if (elementCount > best.elementCount) return { structureCount: structures.length, elementCount, representationCount };
-      return best;
-    }, { structureCount: structures.length, elementCount: 0, representationCount: 0 });
-  });
-  if (molstarStructureState.elementCount < 8) throw new Error(`Mol* parsed only ${molstarStructureState.elementCount}/8 expected Si sites`);
-  if (molstarStructureState.representationCount < 1) throw new Error('Mol* parsed the CIF but created no visible structure representation');
-  for (let attempt = 0; attempt < 180 && viewerCifStatus === null; attempt += 1) await delay(250);
-  page.off('response', observeViewerCif);
-  if (viewerCifStatus !== 200) throw new Error(`Mol* did not fetch the deployed CIF successfully: ${viewerCifStatus ?? 'no request observed'}`);
-  if (artifactDirectory) {
-    await mkdir(artifactDirectory, { recursive: true });
-    await viewerElement.screenshot({ path: join(artifactDirectory, 'molstar-silicon-viewer.png') });
-  }
 
   await page.goto(`${base}/workflows/`, { waitUntil: 'load' });
   const workflowLinks = await page.$$eval('.directory-list a', (links) => links.length);
@@ -407,12 +358,14 @@ try {
       const split = (value) => value ? value.split(',').map((item) => item.trim()).filter(Boolean) : [];
       return {
         text: document.body.innerText,
+        allText: document.body.textContent ?? '',
         figures: document.querySelectorAll('figure img[src^="data:image/png;base64,"]').length,
         commands: document.querySelectorAll('pre code').length,
         humanSteps: document.querySelectorAll('[data-human-workflow-step]').length,
         stageFigures: document.querySelectorAll('[data-reader-stage] [data-stage-figure]').length,
         evidenceDetails: document.querySelectorAll('[data-stage-evidence-details]').length,
         reproductionSections: document.querySelectorAll('[data-reproduction-section]').length,
+        reproducibilityAppendixClosed: document.querySelector('[data-reproducibility-appendix]')?.open === false,
         routeMarkers: [...document.querySelectorAll('[data-reader-route]')].map((element) => element.getAttribute('data-reader-route')),
         historyKinds: [...document.querySelectorAll('[data-history-kind]')].map((element) => element.getAttribute('data-history-kind')),
         stages: [...document.querySelectorAll('[data-reader-stage]')].map((element) => ({
@@ -438,17 +391,18 @@ try {
       || state.humanSteps !== expectedStages.length
       || state.evidenceDetails !== expectedStages.length
       || state.reproductionSections !== 1
+      || !state.reproducibilityAppendixClosed
       || !state.text.includes('Scientific objective and starting object')
       || !state.text.includes('Open the starting sources')
-      || !state.text.includes('Reproduce the exact published evidence')
+      || !state.text.includes('Follow the calculation')
+      || !state.text.includes('Continue when:')
+      || !state.text.includes('Reproducibility appendix')
       || !state.text.includes('Observable convergence')
-      || !state.text.includes('Not established by this case')
-      || !state.text.includes('Claim boundary')
-      || !state.text.includes('No material-level claim is made')
+      || !state.text.includes('Current claim boundary:')
     ) {
       throw new Error(`${mode} ${entry.slug}: incomplete human-first workflow rendering`);
     }
-    for (const boundary of [entry.evidence_boundary, entry.continuity_boundary, entry.claim_boundary]) if (!state.text.replace(/\s+/g, ' ').includes(boundary.replace(/\s+/g, ' '))) throw new Error(`${mode} ${entry.slug}: reviewed boundary text is missing`);
+    for (const boundary of [entry.evidence_boundary, entry.continuity_boundary, entry.claim_boundary]) if (!state.allText.replace(/\s+/g, ' ').includes(boundary.replace(/\s+/g, ' '))) throw new Error(`${mode} ${entry.slug}: reviewed boundary text is missing`);
     if (expectedWidth !== null && state.innerWidth !== expectedWidth) throw new Error(`${mode} ${entry.slug}: expected ${expectedWidth}px, rendered ${state.innerWidth}px`);
     if (expectedWidth !== null && state.overflow > 1) throw new Error(`${mode} ${entry.slug}: ${state.overflow}px document overflow`);
     if (expectedWidth !== null && state.invalidPreOverflow > 0) throw new Error(`${mode} ${entry.slug}: invalid pre overflow`);
@@ -559,15 +513,12 @@ try {
     responsive_document_overflow: 0,
     responsive_local_pre_overflows: responsiveLocalPreOverflows,
     cif_teaching_snapshot: true,
-    cif_viewer_loaded: true,
-    cif_viewer_source_fetch_status: viewerCifStatus,
-    cif_viewer_structure_count: molstarStructureState.structureCount,
-    cif_viewer_element_count: molstarStructureState.elementCount,
-    cif_viewer_representation_count: molstarStructureState.representationCount,
+    cif_viewer_link_verified: true,
+    cif_viewer_source: canonicalViewerCifUrl,
     public_language: 'en',
   };
   if (artifactDirectory) await writeFile(join(artifactDirectory, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`);
-  console.log(`Browser smoke passed: registry-driven A–E workflow, ${responsiveChecks} Home/Research Workflow responsive layout checks across ${responsiveWidths.join(', ')}px, two human-first Worked Workflows with exact evidence appendices, migration-safe old routes, keyboard navigation, no-JavaScript reading, deployed CIF teaching snapshot, Mol* parsed ${molstarStructureState.elementCount} structure elements with ${molstarStructureState.representationCount} representation(s), and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
+  console.log(`Browser smoke passed: registry-driven A–E workflow, ${responsiveChecks} Home/Research Workflow responsive layout checks across ${responsiveWidths.join(', ')}px, two human-first Worked Workflows with exact evidence appendices, migration-safe old routes, keyboard navigation, no-JavaScript reading, deployed CIF teaching snapshot, an explicit Mol* browser route, and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
 } finally {
   await browser.close();
 }

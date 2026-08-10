@@ -5,8 +5,13 @@ title: Build and Repeat Cells with ASE
 kind: implementation
 tools:
   - ase
+interfaces:
+  - Terminal
+  - ASE Python API
+  - ASE GUI or another crystal viewer
+  - Text editor
 status: reviewed
-summary: Use ASE to create integer supercells while keeping the parent cell, transformation, atom mapping, periodicity, and physical meaning explicit.
+summary: Write a declared parent structure, read it back, create two integer supercells, write and reopen the children, and compare their cells and periodic geometry without claiming finite-size convergence.
 tested_versions:
   - ASE 3.29.0
   - Python 3.12
@@ -16,106 +21,73 @@ source_ids:
   - ase-atoms
   - ase-build-tools
   - ase-pypi-3290
-media_ids:
-  - ase-cell-repetition-diagram
+media_ids: []
 review: docs/reviews/2026-08-03-practical-guides-model-building-pilot.md
 reviewed_at: 2026-08-03
 ---
 
-Use this guide when a declared integer transformation is needed before a defect, magnetic, alloy, phonon, or interface calculation. Start from a reconstructable parent object; the final supercell alone is not sufficient lineage.
+Use this guide when a declared integer transformation is needed before a defect, magnetic, alloy, phonon, or interface calculation. Begin with a checked parent file and a written reason for the larger cell. A final supercell without its parent and transformation is not sufficient lineage.
 
-## Manual route: define and inspect the repeat
+## Decide the repeat before opening Python
 
-Open the parent structure with its cell boundary visible. Identify which periodic directions must be repeated and why the larger cell is required for the intended defect, magnetic order, alloy arrangement, phonon displacement, or interface match. Write down the integer transformation before using a builder.
+Open the parent with its cell boundary visible. Identify which periodic directions must be repeated and why: a defect-image distance, a magnetic period, an ordering pattern, a displacement wavelength, or an interface match. Write down the integer matrix before using a builder.
 
-After construction, reopen parent and child side by side. Confirm the cell orientation, repeated motif, atom count, periodic directions, and absence of duplicated or colliding sites. A visually regular supercell is not proof that it is large enough for the target observable.
+The companion uses a generated two-atom diamond-Si fixture so that software behaviour is reproducible. Its lattice parameter is illustrative, not an experimental source or DFT result. For research, replace the fixture with the checked source-stage working file and keep that source unchanged.
 
-[Compare visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
+## Produce files that can be inspected
 
-## Optional automation: run the checked transformation
-
-From the repository root, run:
+Run from the repository root. `mktemp -d` provides an empty external work directory, and the script refuses to overwrite a nonempty one.
 
 ```bash
-python3 examples/practical-guides/ase_repeat_cells.py
+run_root="$(mktemp -d)"
+python3 examples/practical-guides/ase_repeat_cells.py --workdir "$run_root"
+python3 -m json.tool "$run_root/summary.json"
+ase info --files \
+  "$run_root/source/si-diamond-parent.extxyz" \
+  "$run_root/output/si-repeat-2x2x1.extxyz" \
+  "$run_root/output/si-general-supercell.extxyz"
 ```
 
-The companion creates a two-atom illustrative diamond-Si parent with ASE 3.29.0, builds diagonal and general integer supercells, and prints a structured transformation summary. The lattice parameter is a demonstration value, not an experimental reference or DFT result.
+The companion first writes `source/si-diamond-parent.extxyz`, reads that file, applies a diagonal repeat and a general integer matrix, writes two independent children, reopens all three files, and checks the reopened atom counts, cell matrices, periodic flags, and hashes. The retained `summary.json` reports only those bounded object checks.
 
-The script checks the pinned ASE version, parent and child atom counts, determinant-based multipliers, periodic-boundary flags, resulting cell matrices, and summary serialization. A successful exit verifies those declared software operations only.
-
-## Build from an explicit parent
-
-The example constructs its parent as code so its origin is reproducible:
+The diagonal child uses `repeat((2, 2, 1))`. The general child uses
 
 ```python
-from ase.build import bulk
-
-parent = bulk("Si", "diamond", a=5.43)
+P = [[2, 1, 0],
+     [0, 2, 0],
+     [0, 0, 1]]
 ```
 
-For a research model, replace this generated fixture with the checked structure artifact from the source stage. Retain its checksum, cell, periodicity, atom order, and the reason a larger cell is needed.
+Both transformations have an atom-count and volume multiplier of four for this parent, but their cell shapes differ. Preserve the full matrix rather than inferring it later from a filename.
 
-## Apply the intended integer transformation
+## Reopen parent and children side by side
 
-A diagonal repeat is:
+On a machine with a graphical session, open the exact written files:
 
-```python
-repeated = parent.repeat((2, 2, 1))
+```bash
+ase gui \
+  "$run_root/source/si-diamond-parent.extxyz" \
+  "$run_root/output/si-repeat-2x2x1.extxyz" \
+  "$run_root/output/si-general-supercell.extxyz"
 ```
 
-The tuple repeats the first cell vector twice, the second twice, and the third once. For a two-atom parent, the volume and atom-count multiplier is four.
+Show cell boundaries and compare orientation, repeated motif, atom count, periodic directions, and duplicate or colliding sites. Use these exact written objects for the comparison; a generic cell-repetition sketch cannot reveal their orientation, contacts, or serialization. Keep `run_root` until the manual comparison is recorded.
 
-Check the produced object:
-
-```python
-assert len(repeated) == 4 * len(parent)
-assert repeated.pbc.tolist() == parent.pbc.tolist()
-```
-
-When the cell shape must change, use a full integer matrix:
-
-```python
-import numpy as np
-from ase.build import make_supercell
-
-P = np.array([
-    [2, 1, 0],
-    [0, 2, 0],
-    [0, 0, 1],
-])
-
-general = make_supercell(parent, P)
-```
-
-Here $\det(P)=4$, so the expected volume and atom-count multiplier is four. Record $P$ itself, not only the final vectors, because cell shape controls periodic-image geometry.
-
-## Inspect and decide
-
-Combine the side-by-side visual check with numerical comparison of the transformation matrix, child cell, atom count, periodicity, and parent-to-child mapping. Neither check establishes defect-image, phonon, magnetic, or interface-size convergence; those remain target-specific tests.
-
-
-Before using the child, record the parent checksum, matrix, atom-count multiplier, parent-to-child mapping, periodicity, resulting cell, shortest relevant image separations, and intended purpose.
-
-Accept the transformation only when those objects agree with the declared model. Repeating an unchanged perfect crystal can preserve the same ideal periodic system. Introducing a defect, composition pattern, distortion, magnetic order, displacement, or interface afterward creates a different physical model and must be a separate recorded operation.
-
-The companion does not establish that the parent lattice is correct, the supercell is large enough, image interactions are negligible, or a later observable is converged. Test the relevant size or wavelength after the perturbation and target quantity are defined.
+Accept the transformation only when the written matrix, reopened cells, atom mapping, periodicity, shortest relevant image separations, and visual repeat all agree. A regular-looking cell does not show that defect, phonon, magnetic, alloy, or interface finite-size effects are converged.
 
 ## What this guide verifies
 
-The companion verifies the pinned ASE version, diagonal and general integer transformations, determinant and atom-count consistency, periodicity preservation, cell matrices, and structured output generation.
+The companion verifies ASE 3.29.0 file writing and reading, diagonal and general integer transformations, determinant and atom-count consistency, periodicity preservation, reopened cell matrices, and structured summary generation. It does not validate the illustrative parent, select a supercell size, run DFT, or establish convergence or stability.
 
-It does not run DFT, select a defect concentration or magnetic order, validate a parent material, or establish finite-size convergence.
+Next, [choose the DFT method and computational setup](/DFT-Research-Workflow/operations/choose-dft-method-and-computational-setup/) for the accepted model, then [test numerical convergence](/DFT-Research-Workflow/operations/test-numerical-convergence/) against the target observable, including the relevant finite-size control.
 
 ## Common mistakes
 
-**Using atom count as the only size measure.** Cell shape and shortest periodic-image distance can matter more.
+**Using atom count as the only size measure.** Cell shape and the relevant periodic-image distance can matter more.
 
-**Losing the transformation matrix.** Final coordinates do not reveal whether a cell was repeated, strained, reduced, or rebuilt.
+**Overwriting the parent.** Source and descendants need separate identities and hashes.
 
-**Calling every supercell a new material.** An unchanged repeat can be an equivalent representation; a later perturbation changes the model.
-
-**Assuming a large cell is sufficient.** Adequacy belongs to observable-specific convergence testing.
+**Calling a larger cell converged.** Adequacy belongs to an observable-specific series after the perturbation is defined.
 
 ## Official sources
 

@@ -1,43 +1,227 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getTools, toolRegistryMetadata } from '../../lib/tools';
 import { withBase } from '../../lib/paths';
+import {
+  getResourceTaskGroups,
+  getResources,
+  getResourcesForTopic,
+  toolRegistryMetadata,
+} from '../../lib/tools';
+import { getWorkflowTopics } from '../../lib/workflow';
+import landscapeCompatibility from '../../../workflow/resource-landscape.json';
 
-const tools = getTools();
-const categories = [...new Set(tools.map((tool) => tool.category))];
-const verifiedAt = new Intl.DateTimeFormat('en-GB', {
+interface Props {
+  compatibilityRoute?: boolean;
+}
+
+const { compatibilityRoute = false } = Astro.props;
+const resources = getResources();
+const taskGroups = getResourceTaskGroups();
+const workflowTopics = getWorkflowTopics();
+const detailedCount = resources.filter((resource) => resource.detail).length;
+const reviewedAt = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
   month: 'long',
   year: 'numeric',
   timeZone: 'UTC',
 }).format(new Date(`${toolRegistryMetadata.verifiedAt}T00:00:00Z`));
+const accessLabels = {
+  open: 'Open',
+  registration: 'Registration',
+  institutional: 'Institutional',
+  subscription: 'Subscription',
+  commercial: 'Commercial',
+  mixed: 'Mixed access',
+  restricted: 'Restricted licence',
+  'free-proprietary': 'Free proprietary',
+} as const;
+const aliasesByGroup = new Map<string, string[]>();
+for (const [alias, target] of Object.entries(landscapeCompatibility.anchor_aliases)) {
+  aliasesByGroup.set(target, [...(aliasesByGroup.get(target) ?? []), alias]);
+}
+const primaryResources = (groupId: string) => resources.filter((resource) => resource.task_groups[0] === groupId);
+const topicResources = new Map(workflowTopics.map((topic) => [topic.slug, getResourcesForTopic(topic.slug)]));
 ---
-<BaseLayout title="Tools" description="A human-first secondary index of tools connected to the scientific workflow." current="tools">
-  <h1>Tools</h1>
-  <p class="page-intro">
-    Start with the research task, then choose the browser, GUI, terminal program, library, or provenance tool that fits it.
-    The order follows a common human research sequence; it is not a ranking.
-  </p>
-  <p>
-    These 17 entries provide reviewed depth. For broader discovery across open, registered, institutional,
-    subscription, and commercial resources, <a data-resource-landscape-link href={withBase('operations/resource-landscape/')}>browse the Resource Landscape</a>.
-  </p>
-  <p>
-    Identities and entry points were reviewed on {verifiedAt}. Match capability, input semantics, access terms,
-    and version compatibility to the calculation you actually perform.
-  </p>
 
-  {categories.map((category) => (
-    <section class="tool-category">
-      <h2>{category}</h2>
-      <ul class="directory-list">
-        {tools.filter((tool) => tool.category === category).map((tool) => (
-          <li>
-            <a href={withBase(`tools/${tool.slug}/`)}>{tool.name}</a>
-            <span>{tool.role}</span>
-          </li>
+<BaseLayout
+  title="Tools & Resources"
+  description="A task-organized catalog of databases, viewers, codes, libraries, workflows, archives, manuals, tutorials, and communities used around the DFT research workflow."
+  current="tools"
+>
+  <article class="resource-directory" data-tools-resources>
+    <header class="directory-intro">
+      {compatibilityRoute && (
+        <p class="scope-note" data-resource-landscape-compatibility>
+          This legacy route uses the same registry and renderer. The canonical directory is
+          {' '}<a href={withBase('tools/')}>Tools & Resources</a>.
+        </p>
+      )}
+      <p class="operation-label">Secondary research index</p>
+      <h1>Tools & Resources</h1>
+      <p class="page-intro">
+        Browse by research task, or use <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>F</kbd>. Web, GUI, CLI, API,
+        Python, and HPC describe access; they do not rank the resources.
+      </p>
+      <p>
+        <strong>{resources.length}</strong> resources are listed; <strong>{detailedCount}</strong>{' '}
+        have deeper DRW pages. Entries are alphabetical within each task, not ranked.
+      </p>
+      <p class="scope-note">
+        Official entry points were reviewed on
+        {' '}<time datetime={toolRegistryMetadata.verifiedAt}>{reviewedAt}</time>. Check the current version,
+        access conditions, and compatibility before use; inclusion is not an endorsement or evidence that a result is valid.
+      </p>
+    </header>
+
+    <nav class="task-index" aria-label="Tools and resources by research task">
+      <p>Browse by research task:</p>
+      <ol>
+        {taskGroups.map((group) => (
+          <li><a href={`#${group.id}`}>{group.title}</a> <span>{primaryResources(group.id).length}</span></li>
         ))}
-      </ul>
-    </section>
-  ))}
+      </ol>
+    </nav>
+
+    <details class="workflow-topic-index" data-topic-resource-index>
+      <summary>Browse the resource links for all {workflowTopics.length} A–E workflow topics</summary>
+      <ol>
+        {workflowTopics.map((topic) => {
+          const related = topicResources.get(topic.slug) ?? [];
+          return (
+            <li data-topic-resource={topic.slug}>
+              <p>
+                <a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a>
+                <span>{related.length} resources</span>
+              </p>
+              <ul>
+                {related.map((resource) => (
+                  <li>
+                    <a href={`#resource-${resource.slug}`}>
+                      <span
+                        data-resource-title-reference={resource.slug}
+                        lang={resource.language}
+                      >{resource.name}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          );
+        })}
+      </ol>
+    </details>
+
+    {taskGroups.map((group) => {
+      const entries = primaryResources(group.id);
+      return (
+        <section id={group.id} class="resource-task" data-resource-task={group.id} aria-labelledby={`${group.id}-title`}>
+          {(aliasesByGroup.get(group.id) ?? []).map((alias) => <span class="anchor-alias" id={alias} aria-hidden="true"></span>)}
+          <h2 id={`${group.id}-title`}>{group.title}</h2>
+          <p>{group.intro}</p>
+          <ol class="resource-list">
+            {entries.map((resource) => (
+              <li id={`resource-${resource.slug}`} data-resource={resource.slug}>
+                <div class="resource-heading">
+                  <h3>
+                    {resource.detail ? (
+                      <a href={withBase(`tools/${resource.slug}/`)}>
+                        <span
+                          data-resource-title={resource.slug}
+                          lang={resource.language}
+                        >{resource.name}</span>
+                      </a>
+                    ) : (
+                      <span
+                        data-resource-title={resource.slug}
+                        lang={resource.language}
+                      >{resource.name}</span>
+                    )}
+                  </h3>
+                  <p>{resource.one_line}</p>
+                </div>
+
+                <p class="resource-tags" aria-label="Resource tags">
+                  {[...resource.kind_tags, ...resource.interface_tags, accessLabels[resource.access]].map((tag) => <span>{tag}</span>)}
+                </p>
+
+                <p class="resource-links">
+                  {resource.links.map((link, index) => (
+                    <>
+                      {index > 0 && <span aria-hidden="true"> · </span>}
+                      <a data-resource-link href={link.url} target="_blank" rel="noreferrer">{link.label}</a>
+                    </>
+                  ))}
+                </p>
+
+                <p class="resource-topics">
+                  <strong>Research tasks:</strong>{' '}
+                  {resource.topics.map((slug, index) => {
+                    const topic = workflowTopics.find((entry) => entry.slug === slug);
+                    if (!topic) throw new Error(`${resource.slug}: unresolved topic ${slug}`);
+                    return (
+                      <>
+                        {index > 0 && <span aria-hidden="true"> · </span>}
+                        <a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a>
+                      </>
+                    );
+                  })}
+                </p>
+
+                {resource.caveat && (
+                  <details class="resource-caveat">
+                    <summary>Before you rely on it</summary>
+                    <p>{resource.caveat}</p>
+                  </details>
+                )}
+              </li>
+            ))}
+          </ol>
+        </section>
+      );
+    })}
+  </article>
 </BaseLayout>
+
+<style>
+  .resource-directory {
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2.25rem) 5rem;
+  }
+  .directory-intro { max-width: 58rem; }
+  .scope-note { color: var(--muted); border-left: 2px solid var(--rule); padding-left: 1rem; }
+  .task-index { margin: 2.5rem 0; padding-block: 1rem; border-block: 1px solid var(--rule); }
+  .task-index > p { margin: 0 0 0.65rem; font-weight: 700; }
+  .task-index ol { columns: 2; column-gap: 2rem; margin: 0; padding-left: 1.25rem; }
+  .task-index li { break-inside: avoid; margin-bottom: 0.35rem; }
+  .task-index li span { color: var(--muted); font-size: 0.9rem; }
+  .workflow-topic-index { margin: 2rem 0 4rem; border-bottom: 1px solid var(--rule); padding-bottom: 1rem; }
+  .workflow-topic-index > summary { cursor: pointer; font-weight: 700; }
+  .workflow-topic-index > ol { margin: 1rem 0 0; padding-left: 1.4rem; }
+  .workflow-topic-index > ol > li { margin-bottom: 0.9rem; }
+  .workflow-topic-index p { margin: 0; }
+  .workflow-topic-index p span { color: var(--muted); font-size: 0.9rem; margin-left: 0.45rem; }
+  .workflow-topic-index ul { display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; margin: 0.3rem 0 0; padding-left: 1.2rem; }
+  .resource-task { position: relative; scroll-margin-top: 2rem; margin-top: clamp(3.5rem, 7vw, 6rem); }
+  .resource-task > p { max-width: 58rem; }
+  .anchor-alias { position: absolute; inset-block-start: -1rem; scroll-margin-top: 2rem; }
+  .resource-list { list-style: none; margin: 1.25rem 0 0; padding: 0; border-top: 1px solid var(--rule); }
+  .resource-list > li { scroll-margin-top: 1.5rem; padding: 1rem 0 1.1rem; border-bottom: 1px solid var(--rule); }
+  .resource-heading { display: grid; grid-template-columns: minmax(12rem, 0.3fr) minmax(0, 1fr); gap: 1rem 1.5rem; align-items: baseline; }
+  .resource-heading h3, .resource-heading p { margin: 0; }
+  .resource-heading p { color: var(--muted); }
+  .resource-tags, .resource-links, .resource-topics { margin: 0.55rem 0 0; overflow-wrap: anywhere; }
+  .resource-tags { display: flex; flex-wrap: wrap; gap: 0.3rem 0.45rem; }
+  .resource-tags span { color: var(--muted); font-size: 0.82rem; border: 1px solid var(--rule); border-radius: 999px; padding: 0.08rem 0.45rem; }
+  .resource-links, .resource-topics { font-size: 0.92rem; }
+  .resource-topics strong { color: var(--ink); }
+  .resource-caveat { margin-top: 0.6rem; color: var(--muted); font-size: 0.92rem; }
+  .resource-caveat summary { cursor: pointer; color: var(--ink); }
+  .resource-caveat p { margin: 0.4rem 0 0; max-width: 60rem; }
+  @media (max-width: 700px) {
+    .resource-directory { padding-inline: clamp(0.85rem, 4vw, 1.25rem); }
+    .task-index ol { columns: 1; }
+    .resource-heading { grid-template-columns: 1fr; gap: 0.3rem; }
+    .workflow-topic-index ul { display: block; }
+  }
+</style>

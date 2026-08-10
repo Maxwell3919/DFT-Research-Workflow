@@ -11,6 +11,8 @@ Decide whether the required output is $e$, $d$, or another constitutive tensor a
 
 Run compatible DFPT or signed finite-strain calculations, follow the polarization branch, and plot each requested tensor component against the applied perturbation before fitting it. Inspect symmetry, units, linearity, branch continuity, and conversion inputs. Converge every elastic or dielectric tensor used to obtain a different coefficient. The subordinate ledger is synthetic-only and demonstrates arithmetic with invented entries; it is not a piezoelectric workflow. Relevant response codes, GUI tools, and manuals are grouped under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
 
+In the working directory, pair every signed strain or field with its actual structure, polarization or stress output, internal-coordinate status, and tensor convention. View representative clamped and relaxed cells in [VESTA](/DFT-Research-Workflow/tools/vesta/), and read the full tensor from the version-matched [VASP](/DFT-Research-Workflow/tools/vasp/), [Quantum ESPRESSO](/DFT-Research-Workflow/tools/quantum-espresso/), or other response output before converting between $e$ and $d$. If a branch jump creates an anomalous slope, symmetry-related entries disagree, or the compliance conversion is ill-conditioned, stop and inspect the raw perturbation series and the separately converged elastic tensor; do not repair the table component by component.
+
 ## Decide which constitutive tensor answers the question
 
 The direct piezoelectric stress tensor is commonly written

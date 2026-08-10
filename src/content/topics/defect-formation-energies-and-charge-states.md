@@ -13,6 +13,8 @@ Use defect formation energies when atoms and electrons are exchanged between a d
 
 Start with **Build an Auditable Defect Formation-Energy Ledger** to assemble terms and signs. Use **Trace a Charge-State Envelope and Neutrality Root** only after the charge-state lines are trustworthy.
 
+The attached pages contain invented arithmetic, not a defect calculation. For a real study, stop before drawing any line until the relaxed structure, charge or spin localization, band-edge reference, correction diagnostics, and supercell sensitivity are all inspectable for that charge state.
+
 ## Prepare the parent calculations
 
 You need an accepted host reference, generated and relaxed defect candidates, compatible total energies, allowed atomic chemical potentials, method-consistent band edges, and a finite-size strategy appropriate to the cell and dimensionality.
@@ -146,9 +148,9 @@ Stop when charge is delocalized, host and defect occupations differ unintentiona
 
 Store host and defect structures, site mapping, final state, atom changes, reservoirs, raw energies, band edges, correction inputs and diagnostics, supercell convergence, localization, line intercepts and slopes, lower-envelope membership, transition levels, statistical assumptions, and neutrality output. Keep excluded states with reasons.
 
-## Claim boundary and next operation
+## Decide the claim and next calculation
 
-The result can support formation-energy ordering and thermodynamic transition levels for tested configurations, reservoirs, correction model, and numerical limits. It does not establish exhaustive search, isolated-defect convergence without size evidence, accurate band edges, populations from static energies alone, optical levels, migration rates, experimental identity, or dopability. Use phase stability for chemical-potential bounds and a separate migration calculation for motion.
+Accept a line only after its structure and electronic identity survive the relevant size, sampling, localization, and correction checks. The resulting envelope can support formation-energy ordering and thermodynamic transition levels for tested configurations, reservoirs, correction model, and numerical limits. It does not establish exhaustive search, isolated-defect convergence without size evidence, accurate band edges, populations from static energies alone, optical levels, migration rates, experimental identity, or dopability. Use phase stability for chemical-potential bounds and a separate migration calculation for motion.
 
 ## Sources and methods
 

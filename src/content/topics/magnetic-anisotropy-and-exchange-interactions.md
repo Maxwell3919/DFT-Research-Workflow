@@ -15,7 +15,7 @@ Calculate magnetic anisotropy or exchange only after a compatible magnetic refer
 
 The parent object must retain the magnetic cell, final moment map, structure, charge, Hamiltonian, Hubbard treatment, spinor/noncollinear mode, SOC-capable potential data, occupations, k sampling, symmetry treatment, and energy normalization. A spin-polarized solution or local moment alone is not sufficient.
 
-Start with [Fit an Anisotropy and Exchange Ledger](/DFT-Research-Workflow/operations/magnetic-anisotropy-and-exchange-interactions/guides/fit-anisotropy-and-exchange-ledger/) to inspect sign, normalization, and held-out reconstruction. That guide uses invented energies. It verifies ledger arithmetic only and does not run SOC or calculate a material parameter.
+[Fit an Anisotropy and Exchange Ledger](/DFT-Research-Workflow/operations/magnetic-anisotropy-and-exchange-interactions/guides/fit-anisotropy-and-exchange-ledger/) is an optional sign-convention exercise after the real workflow is understood. It uses invented energies and contains no structure, final moment map, SOC output, or material parameter. Do not use its built-in easy direction or fitted interaction as a starting value.
 
 ## Direction is a physical variable only when it is coupled to the lattice
 
@@ -57,7 +57,7 @@ Confirm normal program termination and electronic convergence first, then recons
 
 For exchange, also test whether fitted parameters change when candidate configurations or neighbor shells are added. Material changes indicate underdetermination or model inadequacy, not a reason to retain the smallest fit. For MAE, verify that the final magnetic texture remains the intended rotated state in every direction.
 
-## Read results at the scope they support
+## Decide what may continue
 
 An easy direction is conditional on the selected magnetic state, structure, Hamiltonian, SOC treatment, angular sampling, normalization, and numerical resolution. A fitted $J_{ij}$ set is conditional on the explicit effective model and mapping data.
 

@@ -19,6 +19,7 @@ import {
 import { getWorkflowTopics, type WorkflowTopic } from '../../lib/workflow';
 import { getContextualNavigation } from '../../lib/contextual-navigation';
 import { withBase } from '../../lib/paths';
+import evidenceDocument from '../../../workflow/practical-evidence.json';
 
 type TopicProps = {
   kind: 'topic';
@@ -44,6 +45,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const topicNarratives = await getCollection('topics');
   const topicNarrativeBySlug = new Map(topicNarratives.map((entry) => [entry.data.topic_slug, entry]));
   const practicalGuides = await getCollection('practicalGuides');
+  const syntheticOnlyGuides = new Set(
+    evidenceDocument.guides
+      .filter((record) => record.evidence_class === 'synthetic-only')
+      .map((record) => record.guide_slug),
+  );
   const topicPaths = getWorkflowTopics().map((topic) => ({
     params: { slug: topic.slug },
     props: {
@@ -51,7 +57,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       topic,
       narrative: topicNarrativeBySlug.get(topic.slug),
       practicalGuides: practicalGuides
-        .filter((entry) => entry.data.topic_slug === topic.slug)
+        .filter((entry) => entry.data.topic_slug === topic.slug && !syntheticOnlyGuides.has(entry.data.guide_slug))
         .sort((left, right) => left.data.title.localeCompare(right.data.title)),
     } satisfies TopicProps,
   }));

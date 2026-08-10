@@ -20,27 +20,27 @@ const requiredAnchors = [
   'scf-does-not-converge',
   'imaginary-phonon-frequencies',
 ];
-const expectedFields = [
-  'First check',
-  'Cause classes',
-  'Inspect',
-  'Safe next action',
+const expectedPrimaryActions = [
+  'Check this first',
+  'Inspect now',
+  'Then take one safe action',
+];
+const expectedSecondarySections = [
+  'Likely causes',
   'Preserve before retry',
-  'What not to conclude',
-  'Related DRW pages',
+  'Related Research Workflow pages',
   'Official sources',
 ];
 
-async function inspect(page, expectedWidth) {
-  const result = await page.evaluate((fieldLabels) => {
+async function inspect(page, expectedWidth, expectedDetailsOpen = false) {
+  const result = await page.evaluate(() => {
     const root = document.querySelector('[data-troubleshooting-index]');
     const records = [...document.querySelectorAll('[data-symptom-record]')];
     const indexLinks = [...document.querySelectorAll('.symptom-index a')];
-    const collisions = [];
     const escaping = [];
     const viewportWidth = document.documentElement.clientWidth;
 
-    for (const element of root?.querySelectorAll('section, nav, dl, dd, li, a') ?? []) {
+    for (const element of root?.querySelectorAll('section, nav, details, summary, aside, li, a') ?? []) {
       const rect = element.getBoundingClientRect();
       if (rect.width > 0 && (rect.left < -1 || rect.right > viewportWidth + 1)) {
         escaping.push(`${element.tagName.toLowerCase()}:${element.textContent?.trim().slice(0, 50)}`);
@@ -48,23 +48,20 @@ async function inspect(page, expectedWidth) {
     }
 
     const recordData = records.map((record) => {
-      for (const row of record.querySelectorAll('.record-details > div')) {
-        const terms = [...row.children].map((element) => {
-          const rect = element.getBoundingClientRect();
-          return { label: element.textContent?.trim().slice(0, 50), left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
-        });
-        if (terms.length === 2) {
-          const [first, second] = terms;
-          const overlapWidth = Math.min(first.right, second.right) - Math.max(first.left, second.left);
-          const overlapHeight = Math.min(first.bottom, second.bottom) - Math.max(first.top, second.top);
-          if (overlapWidth > 1 && overlapHeight > 1) collisions.push(`${record.id}: ${first.label} <> ${second.label}`);
-        }
-      }
       const rect = record.getBoundingClientRect();
+      const primary = record.querySelector('[data-primary-actions]');
+      const claim = record.querySelector('[data-claim-boundary]');
+      const secondary = record.querySelector('[data-secondary-evidence]');
       return {
         id: record.id,
         title: record.querySelector('h2')?.textContent?.trim(),
-        fields: [...record.querySelectorAll('dt')].map((term) => term.textContent?.trim()),
+        primaryActions: [...(primary?.querySelectorAll(':scope > .action-step > h3') ?? [])].map((heading) => heading.textContent?.trim()),
+        claimHeading: claim?.querySelector('h3')?.textContent?.trim(),
+        claimText: claim?.textContent?.replace(/\s+/g, ' ').trim(),
+        secondaryTag: secondary?.tagName,
+        secondaryOpen: secondary?.open,
+        secondarySections: [...(secondary?.querySelectorAll('.secondary-grid > section > h3') ?? [])].map((heading) => heading.textContent?.trim()),
+        actionBeforeSecondary: Boolean(primary && secondary && (primary.compareDocumentPosition(secondary) & Node.DOCUMENT_POSITION_FOLLOWING)),
         topicLinks: [...record.querySelectorAll('[data-related-topic]')].map((link) => ({ href: link.href, text: link.textContent?.trim() })),
         sourceLinks: [...record.querySelectorAll('[data-official-source]')].map((link) => ({ id: link.dataset.officialSource, href: link.href, text: link.textContent?.trim() })),
         insideViewport: rect.left >= -1 && rect.right <= viewportWidth + 1,
@@ -77,21 +74,18 @@ async function inspect(page, expectedWidth) {
       heading: root?.querySelector('h1')?.textContent?.trim(),
       recordData,
       indexTargets: indexLinks.map((link) => link.getAttribute('href')),
-      collisions,
       escaping,
       documentOverflow: document.documentElement.scrollWidth > viewportWidth + 1,
       hydrated: Boolean(root?.querySelector('astro-island')),
       terminalBlocks: root?.querySelectorAll('pre').length ?? 0,
       text: root?.textContent ?? '',
-      expectedFields: fieldLabels,
     };
-  }, expectedFields);
+  });
 
   if (result.language !== 'en') throw new Error('Troubleshooting route is not English');
   if (result.innerWidth !== expectedWidth) throw new Error(`Requested ${expectedWidth}px but browser rendered ${result.innerWidth}px`);
   if (result.heading !== 'Troubleshoot a calculation') throw new Error(`Troubleshooting heading mismatch: ${result.heading}`);
   if (result.documentOverflow || result.escaping.length > 0) throw new Error(`Troubleshooting overflows at ${expectedWidth}px: ${result.escaping.join('; ')}`);
-  if (result.collisions.length > 0) throw new Error(`Troubleshooting text collision at ${expectedWidth}px: ${result.collisions.join('; ')}`);
   if (result.hydrated) throw new Error('Troubleshooting route contains client hydration');
   if (result.terminalBlocks !== 0) throw new Error('Troubleshooting route contains terminal-like code blocks');
   if (JSON.stringify(result.recordData.map((record) => record.id)) !== JSON.stringify(expectedSlugs)) throw new Error('Troubleshooting record identity or order changed');
@@ -99,7 +93,11 @@ async function inspect(page, expectedWidth) {
 
   for (const record of result.recordData) {
     if (!record.title) throw new Error(`${record.id}: missing visible title`);
-    if (JSON.stringify(record.fields) !== JSON.stringify(expectedFields)) throw new Error(`${record.id}: incomplete field set ${JSON.stringify(record.fields)}`);
+    if (JSON.stringify(record.primaryActions) !== JSON.stringify(expectedPrimaryActions)) throw new Error(`${record.id}: action-first sequence changed ${JSON.stringify(record.primaryActions)}`);
+    if (record.claimHeading !== 'Before you interpret the result' || !record.claimText) throw new Error(`${record.id}: visible interpretation boundary is missing`);
+    if (record.secondaryTag !== 'DETAILS' || record.secondaryOpen !== expectedDetailsOpen) throw new Error(`${record.id}: secondary evidence disclosure state mismatch`);
+    if (JSON.stringify(record.secondarySections) !== JSON.stringify(expectedSecondarySections)) throw new Error(`${record.id}: secondary evidence sections changed ${JSON.stringify(record.secondarySections)}`);
+    if (!record.actionBeforeSecondary) throw new Error(`${record.id}: primary action is not before secondary evidence`);
     if (!record.insideViewport) throw new Error(`${record.id}: record escapes viewport at ${expectedWidth}px`);
     if (record.topicLinks.length < 1 || record.sourceLinks.length < 1) throw new Error(`${record.id}: missing related DRW or official-source links`);
     for (const link of record.topicLinks) {
@@ -132,6 +130,8 @@ try {
     const response = await page.goto(`${base}${route}`, { waitUntil: 'load' });
     if (response?.status() !== 200) throw new Error(`Troubleshooting route returned ${response?.status()} at ${viewport.width}px`);
     const result = await inspect(page, viewport.width);
+    await page.$$eval('[data-secondary-evidence]', (details) => details.forEach((element) => { element.open = true; }));
+    await inspect(page, viewport.width, true);
     if (viewport.width === 1440) desktop = result;
   }
 
@@ -157,7 +157,7 @@ try {
     if (!exists) throw new Error(`Troubleshooting stable anchor #${anchor} is missing without JavaScript`);
   }
 
-  console.log(`Troubleshooting smoke passed: ${expectedSlugs.length} static symptoms, ${topicTargets.length} related DRW targets, 1440/1024/768/430/390/360px no-overflow layouts, 390px no-JavaScript rendering, and ${requiredAnchors.length} stable anchors.`);
+  console.log(`Troubleshooting smoke passed: ${expectedSlugs.length} action-first symptoms, native secondary-evidence disclosures open and closed, ${topicTargets.length} related DRW targets, 1440/1024/768/430/390/360px no-overflow layouts, 390px no-JavaScript rendering, and ${requiredAnchors.length} stable anchors.`);
 } finally {
   await browser.close();
 }

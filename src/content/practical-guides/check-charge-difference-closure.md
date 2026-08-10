@@ -22,15 +22,15 @@ reviewed_at: "2026-08-04"
 
 For a real system, open the total and reference densities on the same grid in a volumetric viewer, then inspect signed difference-density isosurfaces and planar slices beside the atomic structure. Vary the isovalue and colour scale, integrate the full cell, and compare several sections; numerical closure complements visual inspection but cannot assign a unique chemical bond. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [specialist field-analysis tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
 
-**Audit the stored fixture:** the arrays are invented arithmetic, not a charge-density field or software output. No density image is published because four coloured cells would resemble scientific evidence without containing a real volumetric object.
+**Start with real volumetric objects:** export the combined and fragment densities, open them on the same grid, and inspect the signed field before interpreting it. This repository supplies no such output. The optional four-cell fixture below is invented arithmetic, not a charge-density field or software result.
 
-Run this fixture before interpreting a difference-density image. It checks the arithmetic distinction between local positive and negative cells and a closed complete-cell sum. It does not read a Quantum ESPRESSO or VASP density and does not perform an electronic-structure calculation.
+Do not use the fixture as a substitute for those exports. It checks only the arithmetic distinction between local positive and negative cells and a closed complete-cell sum; it does not read a Quantum ESPRESSO or VASP density or perform an electronic-structure calculation.
 
 For real work, the parent objects are the combined-system and fragment density fields generated in the same cell, on the same grid, with compatible geometry, density convention, spin/SOC state, occupations, and electron count. This fixture instead creates four invented combined and fragment values internally.
 
 ## Purpose
 
-From the repository root, run:
+If you want to test that arithmetic after inspecting the real grids, run from the repository root:
 
 ```bash
 python3 examples/practical-guides/charge_difference_closure.py

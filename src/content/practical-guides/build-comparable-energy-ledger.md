@@ -15,8 +15,7 @@ source_ids:
   - materials-project-energy-corrections
   - hohenberg-kohn
   - kohn-sham
-media_ids:
-  - comparable-energy-ledger
+media_ids: []
 review: docs/reviews/2026-08-03-relative-and-formation-energies.md
 reviewed_at: "2026-08-03"
 ---
@@ -25,38 +24,21 @@ reviewed_at: "2026-08-03"
 
 Open the input, output, accepted structure, and state record for every candidate. In a spreadsheet, mark composition, cell size, charge, magnetic identity, evaluator, energy convention, completion, and relevant convergence evidence; reject incomparable rows before ranking anything. Open structural outliers in a viewer and return to the original paper or Methods section when state identity is unclear. See [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for common inspection routes.
 
-**Audit the stored fixture:** the abstract A2B3 ledger and its figure are conceptual, synthetic teaching objects. The companion script demonstrates a comparability gate; it does not supply a real material ranking.
+**Optional arithmetic check:** the abstract A2B3 ledger is a synthetic teaching object. Use it only after inspecting the real calculation records above; it demonstrates a comparability gate and supplies no material ranking.
 
 Use this guide before subtracting total energies from different calculation records. The fixture contains two accepted abstract `A2B3` candidates and three deliberately incompatible rows.
 
-Inspect the report from the companion-script directory:
+From the repository root, print the complete report:
 
 ```bash
-cd examples/practical-guides
-python3 - <<'PY'
-from formation_energy_ledger import run
-
-report = run()
-print(report["accepted_entries"])
-print(report["excluded_entries"])
-print(report["comparison"])
-PY
+python3 examples/practical-guides/formation_energy_ledger.py
 ```
 
 The report is the output to inspect. It records accepted rows, rejected rows and reasons, normalized energies, and the bounded comparison. It does not run an electronic-structure program.
 
-## Purpose
+## What this guide verifies
 
-The fixture requires:
-
-```text
-composition: A2B3
-total charge: 0
-evaluator: fixture-method-v1
-energy field: electronic_energy
-calculation complete: true
-final state verified: true
-```
+Filter the rows before ranking. In this exercise, accept only neutral `A2B3` rows evaluated with `fixture-method-v1`, carrying `electronic_energy`, and marked both complete and final-state verified. A row that fails any one of those comparisons stays visible with its exclusion reason.
 
 For production data, add structure and state identifiers, method and potential identity, numerical settings, geometry status, correction scheme, software version, artifact hashes, and target-convergence evidence. A common unit is not enough to make two rows comparable.
 

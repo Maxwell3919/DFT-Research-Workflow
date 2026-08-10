@@ -1,87 +1,931 @@
 {
-  "schema_version": 2,
-  "authority": "secondary tool identity and workflow cross-index",
-  "scope_note": "Tools implement, inspect, or preserve parts of the A-E workflow. They are not research operations. This secondary index does not rank or endorse tools, guarantee compatibility, or substitute for scientific method selection.",
-  "verified_at": "2026-08-10",
+  "schema_version": 3,
+  "authority": "Canonical human-facing Tools & Resources registry for the existing A–E research workflow.",
+  "scope_note": "Resources support research tasks but are not research operations, rankings, endorsements, compatibility promises, or evidence that a calculation is converged or scientifically valid. Access, versions, and network availability can change.",
+  "reviewed_at": "2026-08-10",
+  "task_groups": [
+    {
+      "id": "find-data",
+      "title": "Find and qualify structures and data",
+      "intro": "Search structures, calculated properties, reference records, and reusable datasets; inspect provenance and access terms before reuse."
+    },
+    {
+      "id": "prepare-models",
+      "title": "Inspect, standardize, and build models",
+      "intro": "View structures, check symmetry, convert formats, and construct cells, defects, surfaces, interfaces, or molecular models."
+    },
+    {
+      "id": "methods-and-engines",
+      "title": "Choose methods, engines, pseudopotentials, and basis sets",
+      "intro": "Open the implementation and method data needed to define a calculation; software identity is not a convergence or validity result."
+    },
+    {
+      "id": "run-and-record",
+      "title": "Run, restart, scale, and record provenance",
+      "intro": "Manage calculations, schedulers, environments, workflow state, restart lineage, and reusable execution records."
+    },
+    {
+      "id": "ground-state-analysis",
+      "title": "Analyze energies and ground-state properties",
+      "intro": "Inspect energies, bands, densities, fields, bonding, magnetism, defects, surfaces, interfaces, and related ground-state evidence."
+    },
+    {
+      "id": "lattice-temperature-epc",
+      "title": "Study lattice, temperature, EPC, and superconductivity",
+      "intro": "Work with phonons, force constants, finite-temperature sampling, thermal transport, electron–phonon coupling, and superconductivity."
+    },
+    {
+      "id": "excited-state-topology-transport",
+      "title": "Study excited states, topology, and transport",
+      "intro": "Use optics, GW/BSE, Wannier, Berry, topology, electronic transport, and quantum-transport resources."
+    },
+    {
+      "id": "validate-and-preserve",
+      "title": "Validate, compare, preserve, and archive",
+      "intro": "Compare results, record uncertainty and provenance, package reusable objects, and deposit stable research records."
+    },
+    {
+      "id": "learn-and-connect",
+      "title": "Learn from manuals, tutorials, schools, books, and communities",
+      "intro": "Use primary documentation and maintained teaching routes; a tutorial example is not a universal parameter recommendation."
+    }
+  ],
+  "compatibility": {
+    "deprecated_tools_adapter": "The tools array contains slug-only adapters for contextual-navigation and software-bridge consumers. Resource metadata is canonical only in resources.",
+    "legacy_resource_landscape": "workflow/resource-landscape.json stores route and anchor compatibility only."
+  },
   "tools": [
+    {
+      "slug": "materials-project"
+    },
+    {
+      "slug": "vesta"
+    },
+    {
+      "slug": "ase"
+    },
+    {
+      "slug": "pymatgen"
+    },
+    {
+      "slug": "spglib"
+    },
+    {
+      "slug": "seekpath"
+    },
+    {
+      "slug": "quantum-espresso"
+    },
+    {
+      "slug": "vasp"
+    },
+    {
+      "slug": "abinit"
+    },
+    {
+      "slug": "cp2k"
+    },
+    {
+      "slug": "siesta"
+    },
+    {
+      "slug": "phonopy"
+    },
+    {
+      "slug": "phono3py"
+    },
+    {
+      "slug": "wannier90"
+    },
+    {
+      "slug": "epw"
+    },
+    {
+      "slug": "aiida"
+    },
+    {
+      "slug": "python"
+    },
+    {
+      "slug": "plumed"
+    }
+  ],
+  "resources": [
+    {
+      "slug": "2dmatpedia",
+      "name": "2DMatPedia",
+      "aliases": [],
+      "one_line": "Provides computed structures and properties for two-dimensional materials.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database",
+        "2d-materials"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://www.2dmatpedia.org/"
+        }
+      ],
+      "caveat": "The official endpoint timed out during the 2026-08-10 audit; retry before relying on availability.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "aflow",
+      "name": "AFLOW",
+      "aliases": [],
+      "one_line": "Use AFLOW for computed inorganic structures, properties, and high-throughput records.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web",
+        "API"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "AFLOW",
+          "url": "https://aflow.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "aflow-prototypes",
+      "name": "AFLOW Encyclopedia of Crystallographic Prototypes",
+      "aliases": [],
+      "one_line": "Use the AFLOW prototype encyclopedia for prototype cells, Strukturbericht relations, and reusable starting structures.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "AFLOW Encyclopedia of Crystallographic Prototypes",
+          "url": "https://aflowlib.org/p/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "alexandria",
+      "name": "Alexandria database",
+      "aliases": [],
+      "one_line": "Use Alexandria for large computed structure and property collections.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Alexandria database",
+          "url": "https://alexandria.icams.rub.de/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "amcsd",
+      "name": "American Mineralogist Crystal Structure Database",
+      "aliases": [],
+      "one_line": "Use AMCSD for published mineral structures linked to primary literature.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "American Mineralogist Crystal Structure Database",
+          "url": "https://rruff.info/AMS/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "bidb",
+      "name": "BiDB",
+      "aliases": [],
+      "one_line": "Provides bilayer structures and interface-related data for two-dimensional materials.",
+      "task_groups": [
+        "find-data",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "database",
+        "2d-materials"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "interface-and-heterostructure-energetics"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://www.2dhub.org/bidb/bidb.html"
+        }
+      ],
+      "caveat": "Access and record coverage should be rechecked at the time of use.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "csd",
+      "name": "Cambridge Structural Database",
+      "aliases": [],
+      "one_line": "Use CSD for curated organic, organometallic, and molecular crystal structures through institutional access.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web",
+        "GUI"
+      ],
+      "access": "subscription",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Cambridge Structural Database",
+          "url": "https://www.ccdc.cam.ac.uk/solutions/software/csd/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "catalysis-hub",
+      "name": "Catalysis-Hub",
+      "aliases": [],
+      "one_line": "Collects computational catalysis structures, adsorption data, and reaction records.",
+      "task_groups": [
+        "find-data",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "database",
+        "catalysis"
+      ],
+      "interface_tags": [
+        "Web",
+        "API"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "adsorption-energies",
+        "surface-energy-and-work-function"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://www.catalysis-hub.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "c2db",
+      "name": "Computational 2D Materials Database",
+      "aliases": [],
+      "one_line": "Use C2DB for computed monolayer candidates and documented two-dimensional properties.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Computational 2D Materials Database",
+          "url": "https://cmr.fysik.dtu.dk/c2db/c2db.html"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "cod",
+      "name": "Crystallography Open Database",
+      "aliases": [],
+      "one_line": "Use COD for openly downloadable experimental crystallographic records.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Crystallography Open Database",
+          "url": "https://www.crystallography.net/cod/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "icsd",
+      "name": "Inorganic Crystal Structure Database",
+      "aliases": [],
+      "one_line": "Use ICSD for curated experimental inorganic structures through institutional access.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web",
+        "GUI"
+      ],
+      "access": "institutional",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Inorganic Crystal Structure Database",
+          "url": "https://icsd.products.fiz-karlsruhe.de/en"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "iza-structures",
+      "name": "IZA Structure Database",
+      "aliases": [],
+      "one_line": "Provides zeolite framework structures, codes, and reference data.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database",
+        "zeolite"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://www.iza-structure.org/databases/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "jarvis",
+      "name": "JARVIS",
+      "aliases": [],
+      "one_line": "Use JARVIS for NIST-hosted computed structures, benchmark properties, and linked atomistic records.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web",
+        "API"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "JARVIS",
+          "url": "https://jarvis.nist.gov/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "mpds",
+      "name": "Materials Platform for Data Science",
+      "aliases": [],
+      "one_line": "Use MPDS for PAULING FILE-derived search with open, registered, and subscription-dependent coverage.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web",
+        "API"
+      ],
+      "access": "mixed",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Materials Platform for Data Science",
+          "url": "https://mpds.io/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
     {
       "slug": "materials-project",
       "name": "Materials Project",
       "aliases": [
         "MP"
       ],
-      "category": "Structures and materials data",
-      "interfaces": [
+      "one_line": "A materials-data service that can supply database records and structures when a query, fields, retrieval date, and provenance are recorded.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
         "Web",
         "API",
         "Python"
       ],
-      "access": "registration-required",
-      "access_note": "Browse and inspect records through the web interface. Authenticated API access is optional for repeated or high-throughput queries.",
-      "verified_version": "Materials Explorer and its official browser tutorial reviewed 2026-08-10.",
-      "role": "A materials-data service that can supply database records and structures when a query, fields, retrieval date, and provenance are recorded.",
-      "use_when": "Use Materials Project when candidate structures or database properties are needed with an explicit query, field selection, retrieval date, and database provenance.",
-      "first_action": "Open Materials Explorer in a browser, search by composition, formula, or material ID, filter candidates, inspect the record and structure, then export the intended cell while preserving identity and provenance.",
-      "input_objects": [
-        "A material identifier or narrow chemistry query and requested fields",
-        "An authorized API client or documented web export"
-      ],
-      "output_objects": [
-        "A candidate database document or source-structure export",
-        "Material ID, database version, query, requested fields, origin task, cell representation and retrieval provenance"
-      ],
-      "verify": "Verify the material ID, database version, exact query and fields, structure or property origin task, returned cell representation, retrieval date, composition and disorder; treat the download as a candidate source structure, not an accepted computational model.",
-      "primary_topic": "obtain-material-structure",
-      "homepage": "https://materialsproject.org/",
-      "documentation": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data",
-      "getting_started": {
-        "label": "Materials Explorer browser tutorial",
-        "url": "https://docs.materialsproject.org/apps/explorer-apps/materials-explorer/tutorial"
-      },
-      "source_repository": "https://github.com/materialsproject/api",
+      "access": "registration",
       "topics": [
         "obtain-material-structure",
-        "calculate-reference-ground-state",
         "analyze-and-compare-results",
+        "calculate-reference-ground-state",
         "document-and-preserve-study"
-      ]
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Materials Project",
+          "url": "https://docs.materialsproject.org/apps/explorer-apps/materials-explorer/tutorial"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://materialsproject.org/"
+        },
+        {
+          "role": "docs",
+          "label": "Documentation",
+          "url": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/materialsproject/api"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "caveat": "Browse and inspect records through the web interface. Authenticated API access is optional for repeated or high-throughput queries.",
+      "detail": true
     },
     {
-      "slug": "vesta",
-      "name": "VESTA",
+      "slug": "nims-matnavi",
+      "name": "NIMS MatNavi and AtomWork",
       "aliases": [],
-      "category": "Inspection, preparation, and symmetry",
-      "interfaces": [
-        "GUI"
+      "one_line": "Use NIMS MatNavi for structures, phase diagrams, properties, polymers, and related curated records.",
+      "task_groups": [
+        "find-data"
       ],
-      "access": "free-proprietary",
-      "access_note": "VESTA is free of charge under its published terms, but its distributed files are not to be redistributed without written permission; drawings require acknowledgement.",
-      "verified_version": "VESTA 3.5.8 download page and manual reviewed 2026-08-10.",
-      "role": "A desktop visualizer for crystal, volumetric, and morphology data; a rendered view documents display choices, not structure identity or a calculation result.",
-      "use_when": "Use VESTA when a researcher needs to inspect a crystal structure, periodic images, morphology, or a volumetric field interactively.",
-      "first_action": "Open the actual CIF or volumetric file in VESTA, verify the cell and species, rotate along meaningful directions, adjust periodic boundaries, measure suspicious distances or angles, and inspect vacuum or layer orientation before export.",
-      "input_objects": [
-        "A crystal-structure or volumetric-data file",
-        "Explicit display, boundary, periodic-image, and isosurface settings"
+      "kind_tags": [
+        "database"
       ],
-      "output_objects": [
-        "An inspected interactive view",
-        "An exported rendering with its display choices recorded"
+      "interface_tags": [
+        "Web"
       ],
-      "verify": "Verify the displayed cell, composition, periodic images, orientation, coordinate convention, boundary and isosurface settings against the source file; an exported rendering is display evidence only.",
-      "primary_topic": "obtain-material-structure",
-      "homepage": "https://jp-minerals.org/vesta/en/",
-      "documentation": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf",
-      "getting_started": {
-        "label": "VESTA manual",
-        "url": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf"
-      },
-      "source_repository": null,
+      "access": "mixed",
       "topics": [
         "obtain-material-structure",
-        "build-or-modify-computational-model",
         "analyze-and-compare-results"
-      ]
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "NIMS MatNavi and AtomWork",
+          "url": "https://mits.nims.go.jp/en/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "nomad",
+      "name": "NOMAD",
+      "aliases": [],
+      "one_line": "Use NOMAD for uploaded calculation records, normalized metadata, archived files, and cross-code materials data.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web",
+        "API",
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "NOMAD",
+          "url": "https://nomad-lab.eu/nomad-lab/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "oqmd",
+      "name": "Open Quantum Materials Database",
+      "aliases": [],
+      "one_line": "Use OQMD for computed structures, formation energies, competing phases, and phase-stability candidate sets.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web",
+        "API"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Open Quantum Materials Database",
+          "url": "https://oqmd.org/"
+        },
+        {
+          "role": "docs",
+          "label": "REST documentation",
+          "url": "https://static.oqmd.org/static/docs/restful.html"
+        }
+      ],
+      "caveat": "The official endpoint returned a service error during the 2026-08-10 audit; the official REST documentation remained reachable.",
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "optimade",
+      "name": "OPTIMADE providers",
+      "aliases": [],
+      "one_line": "Use OPTIMADE for federated structure discovery across providers using a common schema.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "standard",
+        "database"
+      ],
+      "interface_tags": [
+        "Web",
+        "API"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "OPTIMADE providers",
+          "url": "https://www.optimade.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "pauling-file",
+      "name": "PAULING FILE",
+      "aliases": [],
+      "one_line": "Use PAULING FILE for curated inorganic phase, structure, diffraction, and property information.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "subscription",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "PAULING FILE",
+          "url": "https://www.paulingfile.com/"
+        }
+      ],
+      "caveat": "The official endpoint returned a service error during the 2026-08-10 audit; retry before relying on availability.",
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "pearsons-crystal-data",
+      "name": "Pearson's Crystal Data",
+      "aliases": [],
+      "one_line": "Use Pearson's Crystal Data for licensed desktop search and comparison of inorganic structures.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "GUI"
+      ],
+      "access": "commercial",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Pearson's Crystal Data",
+          "url": "https://www.crystalimpact.com/pcd/Default.htm"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "pubchem",
+      "name": "PubChem",
+      "aliases": [],
+      "one_line": "Provides searchable molecular structures and chemical identifiers.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database",
+        "molecular"
+      ],
+      "interface_tags": [
+        "Web",
+        "API"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://pubchem.ncbi.nlm.nih.gov/docs/structures"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "qcarchive",
+      "name": "QCArchive",
+      "aliases": [],
+      "one_line": "Stores reusable quantum-chemistry records and datasets behind programmatic and browser interfaces.",
+      "task_groups": [
+        "find-data",
+        "validate-and-preserve"
+      ],
+      "kind_tags": [
+        "database",
+        "molecular"
+      ],
+      "interface_tags": [
+        "API",
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://docs.qcarchive.molssi.org/overview/index.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "qmof",
+      "name": "QMOF Database",
+      "aliases": [],
+      "one_line": "Publishes a primary dataset of computed metal–organic-framework properties.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "dataset",
+        "mof"
+      ],
+      "interface_tags": [
+        "Repository"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "source",
+          "label": "Official entry",
+          "url": "https://github.com/Andrew-S-Rosen/QMOF"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "rcsb-pdb",
+      "name": "RCSB PDB",
+      "aliases": [],
+      "one_line": "Provides macromolecular structures and associated experimental records.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database",
+        "molecular"
+      ],
+      "interface_tags": [
+        "Web",
+        "API"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://www.rcsb.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "springer-materials",
+      "name": "SpringerMaterials",
+      "aliases": [],
+      "one_line": "Use SpringerMaterials for curated structures, phase diagrams, physical-property tables, and source references.",
+      "task_groups": [
+        "find-data"
+      ],
+      "kind_tags": [
+        "database"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "subscription",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "SpringerMaterials",
+          "url": "https://materials.springer.com/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "tcod",
+      "name": "Theoretical Crystallography Open Database",
+      "aliases": [],
+      "one_line": "Archives theoretically calculated crystal structures in crystallographic formats.",
+      "task_groups": [
+        "find-data",
+        "validate-and-preserve"
+      ],
+      "kind_tags": [
+        "database",
+        "crystallography"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://www.crystallography.net/tcod/"
+        }
+      ],
+      "editorial_state": "catalog"
     },
     {
       "slug": "ase",
@@ -89,39 +933,627 @@
       "aliases": [
         "ASE"
       ],
-      "category": "Inspection, preparation, and symmetry",
-      "interfaces": [
+      "one_line": "Python components for representing atomistic structures, constructing models, connecting calculators, and analyzing bounded workflow steps.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "library"
+      ],
+      "interface_tags": [
         "Python",
         "CLI"
       ],
-      "access": "open-source",
-      "role": "Python components for representing atomistic structures, constructing models, connecting calculators, and analyzing bounded workflow steps.",
-      "use_when": "Use ASE when structures must be read, inspected, constructed, transformed, or passed through a documented calculator interface.",
-      "first_action": "Read one representative structure with an explicit format and frame or data-block selection, preserve the source file, and inspect composition, atom count, cell, positions, periodic boundaries and constraints before transforming it.",
-      "input_objects": [
-        "A source structure file with explicit format and frame or data-block selection",
-        "A declared geometry operation or calculator configuration"
-      ],
-      "output_objects": [
-        "An inspected or transformed Atoms object plus a recorded transformation",
-        "A written structure, trajectory, calculator input, or bounded analysis artifact"
-      ],
-      "verify": "Verify the selected frame or data block, composition, atom count, cell, periodic boundaries, constraints, units, and any metadata lost or changed when the structure is written to another format.",
-      "primary_topic": "build-or-modify-computational-model",
-      "homepage": "https://ase-lib.org/",
-      "documentation": "https://docs.ase-lib.org/index.html",
-      "getting_started": {
-        "label": "ASE documentation index",
-        "url": "https://docs.ase-lib.org/index.html"
-      },
-      "source_repository": "https://gitlab.com/ase/ase",
+      "access": "open",
       "topics": [
         "obtain-material-structure",
         "build-or-modify-computational-model",
-        "optimize-structure",
+        "equation-of-state-and-structural-phase-stability",
         "reaction-paths-and-transition-states",
+        "diffusion-barriers",
+        "ab-initio-molecular-dynamics",
+        "analyze-and-compare-results",
+        "optimize-structure"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Atomic Simulation Environment",
+          "url": "https://docs.ase-lib.org/"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://ase-lib.org/"
+        },
+        {
+          "role": "docs",
+          "label": "Documentation",
+          "url": "https://docs.ase-lib.org/index.html"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://gitlab.com/ase/ase"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "atomsk",
+      "name": "Atomsk",
+      "aliases": [],
+      "one_line": "Converts atomistic formats and constructs supercells, defects, and interfaces.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "builder",
+        "converter"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
+        "defect-formation-energies-and-charge-states",
+        "interface-and-heterostructure-energetics"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://atomsk.univ-lille.fr/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "avogadro",
+      "name": "Avogadro",
+      "aliases": [],
+      "one_line": "Use Avogadro to build and inspect finite molecular structures interactively.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "GUI"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "charge-density-and-charge-redistribution",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Avogadro",
+          "url": "https://avogadro.cc/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "bilbao",
+      "name": "Bilbao Crystallographic Server",
+      "aliases": [],
+      "one_line": "Use Bilbao for group-subgroup, representation, k-vector, and other crystallographic calculations.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "symmetry"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "choose-dft-method-and-computational-setup"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Bilbao Crystallographic Server",
+          "url": "https://cryst.ehu.es/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "catkit",
+      "name": "CatKit",
+      "aliases": [],
+      "one_line": "Provides catalysis-oriented structure and reaction utilities.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "surface",
+        "library"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
+        "surface-energy-and-work-function",
+        "adsorption-energies"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://catkit.readthedocs.io/en/latest/"
+        }
+      ],
+      "caveat": "Review current maintenance and release status before adoption.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "crystal-toolkit",
+      "name": "Crystal Toolkit",
+      "aliases": [],
+      "one_line": "Use Crystal Toolkit for browser-based structure viewing and transparent cell or slab transformations.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "Web",
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "charge-density-and-charge-redistribution",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Crystal Toolkit",
+          "url": "https://docs.materialsproject.org/apps/analysis-apps/crystal-toolkit/tutorial"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "crystalmaker",
+      "name": "CrystalMaker",
+      "aliases": [],
+      "one_line": "Use CrystalMaker for licensed interactive crystal visualization, measurement, and manipulation.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "GUI"
+      ],
+      "access": "mixed",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "charge-density-and-charge-redistribution",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "CrystalMaker",
+          "url": "https://www.crystalmaker.com/crystalmaker/index.html"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "dockonsurf",
+      "name": "DockOnSurf",
+      "aliases": [],
+      "one_line": "Generates and screens molecular adsorption configurations on surfaces.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "surface",
+        "builder"
+      ],
+      "interface_tags": [
+        "Python",
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
+        "adsorption-energies"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://dockonsurf.readthedocs.io/"
+        }
+      ],
+      "caveat": "Review current maintenance and release status before adoption.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "findsym",
+      "name": "FINDSYM",
+      "aliases": [],
+      "one_line": "Use FINDSYM for tolerance-dependent symmetry assignment and standardized descriptions.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "symmetry"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "choose-dft-method-and-computational-setup"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "FINDSYM",
+          "url": "https://iso.byu.edu/findsym.php"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "gemmi",
+      "name": "Gemmi",
+      "aliases": [],
+      "one_line": "Reads and manipulates crystallographic and structural biology file formats.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "converter",
+        "library"
+      ],
+      "interface_tags": [
+        "Python",
+        "Library"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://gemmi.readthedocs.io/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "checkcif",
+      "name": "IUCr checkCIF",
+      "aliases": [],
+      "one_line": "Use checkCIF for crystallographic syntax and consistency reports on experimental CIFs.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "validator",
+        "crystallography"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "choose-dft-method-and-computational-setup"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "IUCr checkCIF",
+          "url": "https://checkcif.iucr.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "jmol",
+      "name": "Jmol and JSmol",
+      "aliases": [],
+      "one_line": "Use Jmol/JSmol for lightweight interactive molecular and crystal viewing.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "Web",
+        "GUI"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "charge-density-and-charge-redistribution",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Jmol and JSmol",
+          "url": "https://jmol.sourceforge.net/docs/"
+        }
+      ],
+      "caveat": "The official site blocked automated access during the 2026-08-10 audit; open it manually and recheck current access.",
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "mercury",
+      "name": "Mercury",
+      "aliases": [],
+      "one_line": "Use Mercury for crystal packing, contacts, unit cells, and molecular-crystal inspection.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "GUI"
+      ],
+      "access": "mixed",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "charge-density-and-charge-redistribution",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Mercury",
+          "url": "https://www.ccdc.cam.ac.uk/solutions/software/mercury/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "molstar",
+      "name": "Mol*",
+      "aliases": [],
+      "one_line": "Provides browser-based molecular and crystal-structure visualization.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://molstar.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "ogreinterface",
+      "name": "OgreInterface",
+      "aliases": [],
+      "one_line": "Builds lattice-matched interfaces and surface models.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "interface",
+        "builder"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
+        "interface-and-heterostructure-energetics"
+      ],
+      "links": [
+        {
+          "role": "source",
+          "label": "Official entry",
+          "url": "https://github.com/DerekDardzinski/OgreInterface"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "open-babel",
+      "name": "Open Babel",
+      "aliases": [],
+      "one_line": "Converts chemical formats and manipulates molecular structures.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "converter",
+        "molecular"
+      ],
+      "interface_tags": [
+        "GUI",
+        "CLI",
+        "API"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://openbabel.org/docs/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "ovito",
+      "name": "OVITO",
+      "aliases": [],
+      "one_line": "Use OVITO to inspect atomistic trajectories, defects, local environments, and large snapshots.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "GUI",
+        "Python"
+      ],
+      "access": "mixed",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "charge-density-and-charge-redistribution",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "OVITO",
+          "url": "https://www.ovito.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "packmol",
+      "name": "Packmol",
+      "aliases": [],
+      "one_line": "Packs molecules into cells under geometric constraints.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "builder",
+        "molecular"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
         "ab-initio-molecular-dynamics"
-      ]
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://m3g.github.io/packmol/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "paraview",
+      "name": "ParaView",
+      "aliases": [],
+      "one_line": "Visualizes large volumetric, mesh, and trajectory datasets.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "GUI",
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "charge-density-and-charge-redistribution",
+        "ab-initio-molecular-dynamics",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://www.paraview.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "pycifrw",
+      "name": "PyCifRW",
+      "aliases": [],
+      "one_line": "Reads, writes, and validates CIF data in Python.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "converter",
+        "crystallography"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+        "url": "https://pypi.org/project/PyCifRW/"
+        }
+      ],
+      "editorial_state": "catalog"
     },
     {
       "slug": "pymatgen",
@@ -129,116 +1561,1435 @@
       "aliases": [
         "Python Materials Genomics"
       ],
-      "category": "Inspection, preparation, and symmetry",
-      "interfaces": [
+      "one_line": "Python data structures and analysis modules for materials representations, transformations, interfaces, phase diagrams, and related post-processing.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "library"
+      ],
+      "interface_tags": [
         "Python"
       ],
-      "access": "open-source",
-      "role": "Python data structures and analysis modules for materials representations, transformations, interfaces, phase diagrams, and related post-processing.",
-      "use_when": "Use pymatgen when a workflow needs typed materials structures, transformations, entries, phase diagrams, defects, or interface-analysis objects.",
-      "first_action": "Parse one representative structure or entry, preserve its source identifier, inspect composition, occupancies, lattice, site properties and charge or magnetic metadata, then apply one declared transformation to a copy.",
-      "input_objects": [
-        "CIF, POSCAR, database records, structures, or computed entries",
-        "Declared transformation or analysis parameters"
-      ],
-      "output_objects": [
-        "Typed source and transformed structure or entry objects",
-        "Analysis or serialized records with transformation parameters and before-and-after identity retained"
-      ],
-      "verify": "Verify the source identity, composition, occupancies, lattice, site properties, charge or magnetic metadata before and after each transformation, and retain the transformation parameters rather than only the final serialized object.",
-      "primary_topic": "build-or-modify-computational-model",
-      "homepage": "https://pymatgen.org/",
-      "documentation": "https://pymatgen.org/pymatgen.html",
-      "getting_started": {
-        "label": "pymatgen API documentation",
-        "url": "https://pymatgen.org/pymatgen.html"
-      },
-      "source_repository": "https://github.com/materialsproject/pymatgen",
+      "access": "open",
       "topics": [
         "obtain-material-structure",
         "build-or-modify-computational-model",
         "compositional-phase-stability-and-convex-hulls",
         "defect-formation-energies-and-charge-states",
-        "interface-and-heterostructure-energetics"
-      ]
+        "surface-energy-and-work-function",
+        "adsorption-energies",
+        "interface-and-heterostructure-energetics",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "pymatgen",
+          "url": "https://pymatgen.org/"
+        },
+        {
+          "role": "docs",
+          "label": "Documentation",
+          "url": "https://pymatgen.org/pymatgen.html"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/materialsproject/pymatgen"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
     },
     {
-      "slug": "spglib",
-      "name": "spglib",
+      "slug": "pymatgen-analysis-defects",
+      "name": "pymatgen-analysis-defects",
       "aliases": [],
-      "category": "Inspection, preparation, and symmetry",
-      "interfaces": [
-        "Library",
+      "one_line": "Provides defect generation and thermodynamic analysis modules.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "defect",
+        "library"
+      ],
+      "interface_tags": [
         "Python"
       ],
-      "access": "open-source",
-      "role": "A crystallographic symmetry library used to identify symmetry operations and standardized representations under declared tolerances.",
-      "use_when": "Use spglib when symmetry operations, a space-group assignment, or a standardized cell are needed under an explicit numerical tolerance.",
-      "first_action": "Build the lattice, fractional-position, and atomic-number tuple for one structure, choose a documented tolerance, and inspect the returned symmetry dataset before standardizing anything.",
-      "input_objects": [
-        "Lattice vectors, fractional positions, and atomic numbers",
-        "Explicit symmetry and angle tolerances"
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
+        "defect-formation-energies-and-charge-states"
       ],
-      "output_objects": [
-        "A symmetry dataset with setting, equivalent-atom mapping, transformations and origin shift",
-        "An optional standardized or primitive cell stored alongside the input cell"
+      "links": [
+        {
+          "role": "source",
+          "label": "Official entry",
+          "url": "https://github.com/materialsproject/pymatgen-analysis-defects"
+        }
       ],
-      "verify": "Verify that the symmetry assignment is stable over physically justified tolerances, and retain the tolerance, setting, equivalent-atom mapping, transformation matrix, origin shift, and both input and standardized cells.",
-      "primary_topic": "build-or-modify-computational-model",
-      "homepage": "https://spglib.github.io/spglib/",
-      "documentation": "https://spglib.readthedocs.io/en/stable/",
-      "getting_started": {
-        "label": "spglib stable documentation",
-        "url": "https://spglib.readthedocs.io/en/stable/"
-      },
-      "source_repository": "https://github.com/spglib/spglib",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "pyxtal",
+      "name": "PyXtal",
+      "aliases": [],
+      "one_line": "Generates symmetry-aware crystals and molecular crystals.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "builder",
+        "symmetry"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://pyxtal.readthedocs.io/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "rdkit",
+      "name": "RDKit",
+      "aliases": [],
+      "one_line": "Provides molecular cheminformatics and structure manipulation in Python.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "library",
+        "molecular"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
       "topics": [
         "obtain-material-structure",
-        "build-or-modify-computational-model",
-        "band-structure",
-        "harmonic-phonons"
-      ]
+        "build-or-modify-computational-model"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://www.rdkit.org/docs/"
+        }
+      ],
+      "editorial_state": "catalog"
     },
     {
       "slug": "seekpath",
       "name": "SeeK-path",
       "aliases": [
-        "SeeKpath"
+        "SeeKpath",
+        "seekpath-web"
       ],
-      "category": "Inspection, preparation, and symmetry",
-      "interfaces": [
+      "one_line": "A crystallographic path generator that standardizes a declared cell and returns labelled reciprocal-space paths for compatible band calculations.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "symmetry"
+      ],
+      "interface_tags": [
         "Web",
         "Python"
       ],
-      "access": "open-source",
-      "access_note": "The Python package is open source; its path is conditional on the supplied cell, symmetry settings, and convention.",
-      "verified_version": "SeeK-path 2.2.1 with spglib 2.7.0 executed for the Silicon teaching case on 2026-08-04",
-      "role": "A crystallographic path generator that standardizes a declared cell and returns labelled reciprocal-space paths for compatible band calculations.",
-      "use_when": "Use SeeK-path when a settled periodic model needs a convention-labelled reciprocal-space path generated from its actual crystallographic cell.",
-      "first_action": "Open the SeeK-path browser tool, upload the settled structure, inspect the standardized primitive cell, Brillouin zone, path, transformations, tolerances, and warnings, then copy the cell and path together. Use Python only to repeat the audited operation.",
-      "input_objects": [
-        "Lattice vectors, fractional positions and atomic numbers for the settled model",
-        "Explicit symmetry and angle tolerances, path recipe and time-reversal assumption"
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
+        "band-structure",
+        "harmonic-phonons",
+        "obtain-material-structure"
       ],
-      "output_objects": [
-        "Standardized primitive and conventional cells with transformation and volume mappings",
-        "Labelled reciprocal points, path segments, coordinates and warnings"
+      "links": [
+        {
+          "role": "homepage",
+          "label": "SeeK-path web tool",
+          "url": "https://www.materialscloud.org/work/tools/seekpath"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://seekpath.readthedocs.io/en/latest/"
+        },
+        {
+          "role": "docs",
+          "label": "Documentation",
+          "url": "https://seekpath.readthedocs.io/en/latest/maindoc.html"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/giovannipizzi/seekpath"
+        }
       ],
-      "verify": "Verify that the downstream calculation uses the exact cell associated with the returned path, and record the recipe, symmetry tolerances, time-reversal assumption, transformations and warnings; a high-symmetry path is not full-Brillouin-zone evidence.",
-      "primary_topic": "band-structure",
-      "homepage": "https://seekpath.readthedocs.io/en/latest/",
-      "documentation": "https://seekpath.readthedocs.io/en/latest/maindoc.html",
-      "getting_started": {
-        "label": "SeeK-path browser tool",
-        "url": "https://www.materialscloud.org/work/tools/seekpath"
-      },
-      "source_repository": "https://github.com/giovannipizzi/seekpath",
+      "editorial_state": "reviewed",
+      "caveat": "The Python package is open source; its path is conditional on the supplied cell, symmetry settings, and convention.",
+      "detail": true
+    },
+    {
+      "slug": "shakenbreak",
+      "name": "ShakeNBreak",
+      "aliases": [],
+      "one_line": "Generates symmetry-breaking defect distortions for structure searches.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "defect",
+        "library"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
+        "defect-formation-energies-and-charge-states"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://shakenbreak.readthedocs.io/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "spglib",
+      "name": "spglib",
+      "aliases": [],
+      "one_line": "A crystallographic symmetry library used to identify symmetry operations and standardized representations under declared tolerances.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "library"
+      ],
+      "interface_tags": [
+        "Library",
+        "Python"
+      ],
+      "access": "open",
       "topics": [
         "obtain-material-structure",
         "build-or-modify-computational-model",
         "band-structure",
         "harmonic-phonons"
-      ]
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "spglib",
+          "url": "https://spglib.readthedocs.io/en/stable/"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://spglib.github.io/spglib/"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/spglib/spglib"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "surfaxe",
+      "name": "Surfaxe",
+      "aliases": [],
+      "one_line": "Provides utilities for constructing and analyzing surface calculations.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "surface",
+        "library"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
+        "surface-energy-and-work-function"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://surfaxe.readthedocs.io/en/latest/introduction.html"
+        }
+      ],
+      "caveat": "Review current maintenance and release status before adoption.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "vesta",
+      "name": "VESTA",
+      "aliases": [],
+      "one_line": "A desktop visualizer for crystal, volumetric, and morphology data; a rendered view documents display choices, not structure identity or a calculation result.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "GUI"
+      ],
+      "access": "free-proprietary",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "charge-density-and-charge-redistribution",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "VESTA",
+          "url": "https://jp-minerals.org/vesta/en/"
+        },
+        {
+          "role": "docs",
+          "label": "Documentation",
+          "url": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "caveat": "VESTA is free of charge under its published terms, but its distributed files are not to be redistributed without written permission; drawings require acknowledgement.",
+      "detail": true
+    },
+    {
+      "slug": "vmd",
+      "name": "VMD",
+      "aliases": [],
+      "one_line": "Visualizes molecular structures, trajectories, and volumetric fields.",
+      "task_groups": [
+        "prepare-models",
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "GUI",
+        "CLI"
+      ],
+      "access": "mixed",
+      "topics": [
+        "build-or-modify-computational-model",
+        "charge-density-and-charge-redistribution",
+        "ab-initio-molecular-dynamics",
+        "finite-temperature-structural-sampling"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+        "url": "http://www.ks.uiuc.edu/Research/vmd/"
+        }
+      ],
+    "caveat": "The legacy official site is HTTP-only; downloads and account requirements may change.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "xcrysden",
+      "name": "XCrySDen",
+      "aliases": [],
+      "one_line": "Use XCrySDen for crystal, density, Brillouin-zone, k-path, and Fermi-surface views in supported formats.",
+      "task_groups": [
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "viewer"
+      ],
+      "interface_tags": [
+        "GUI"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "charge-density-and-charge-redistribution",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "XCrySDen",
+          "url": "http://www.xcrysden.org/Description.html"
+        }
+      ],
+      "caveat": "This legacy official endpoint is HTTP-only; do not send credentials or sensitive data.",
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "abacus",
+      "name": "ABACUS",
+      "aliases": [],
+      "one_line": "Runs periodic electronic-structure calculations with plane waves or numerical atomic orbitals.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://abacus.deepmodeling.com/en/latest/index.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "abinit",
+      "name": "ABINIT",
+      "aliases": [],
+      "one_line": "An electronic-structure suite with ground-state, response, phonon, and many-body perturbation workflows documented as separate capabilities.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "relative-and-formation-energies",
+        "equation-of-state-and-structural-phase-stability",
+        "band-structure",
+        "density-of-states-and-projected-density-of-states",
+        "elastic-constants-and-mechanical-properties",
+        "dielectric-response-and-born-effective-charges",
+        "polarization-and-ferroelectricity",
+        "piezoelectric-response",
+        "harmonic-phonons",
+        "electron-phonon-coupling",
+        "independent-particle-optical-properties",
+        "quasiparticle-corrections",
+        "excitons-and-bethe-salpeter-equation"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "ABINIT",
+          "url": "https://docs.abinit.org/"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://www.abinit.org/"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/abinit/abinit"
+        },
+        {
+          "role": "data",
+          "label": "ABINIT pseudopotential guidance",
+          "url": "https://docs.abinit.org/topics/PseudosPAW/"
+        },
+        {
+          "role": "tutorial",
+          "label": "ABINIT tutorials",
+          "url": "https://docs.abinit.org/tutorial/"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "ams-band",
+      "name": "AMS BAND",
+      "aliases": [],
+      "one_line": "Use AMS BAND for licensed periodic DFT through BAND and AMS tools.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "GUI",
+        "CLI",
+        "Python"
+      ],
+      "access": "commercial",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "AMS BAND manual",
+          "url": "https://www.scm.com/doc/BAND/index.html"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "basis-set-exchange",
+      "name": "Basis Set Exchange",
+      "aliases": [],
+      "one_line": "Provides basis-set metadata and downloads for molecular calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "basis"
+      ],
+      "interface_tags": [
+        "Web",
+        "API"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "Official entry",
+          "url": "https://www.basissetexchange.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "bigdft",
+      "name": "BigDFT",
+      "aliases": [],
+      "one_line": "Use BigDFT for wavelet-based and large-system electronic-structure work.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI",
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "BigDFT",
+          "url": "https://bigdft.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "materials-studio",
+      "name": "BIOVIA Materials Studio",
+      "aliases": [],
+      "one_line": "Use BIOVIA Materials Studio for licensed integrated materials modeling and electronic-structure work.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "GUI"
+      ],
+      "access": "commercial",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "BIOVIA Materials Studio",
+          "url": "https://www.3ds.com/products/biovia/materials-studio"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "castep",
+      "name": "CASTEP",
+      "aliases": [],
+      "one_line": "Use CASTEP for plane-wave materials calculations through an available licence or academic route.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI",
+        "GUI"
+      ],
+      "access": "mixed",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "CASTEP",
+          "url": "https://castep-docs.github.io/castep-docs/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "conquest",
+      "name": "CONQUEST",
+      "aliases": [],
+      "one_line": "Runs large-scale and linear-scaling electronic-structure calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://conquest.readthedocs.io/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "cp2k",
+      "name": "CP2K",
+      "aliases": [],
+      "one_line": "An atomistic simulation package spanning electronic-structure, molecular-dynamics, optimization, and mixed quantum/classical methods.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI",
+        "Library"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "relative-and-formation-energies",
+        "equation-of-state-and-structural-phase-stability",
+        "adsorption-energies",
+        "reaction-paths-and-transition-states",
+        "diffusion-barriers",
+        "ab-initio-molecular-dynamics"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "CP2K",
+          "url": "https://manual.cp2k.org/"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://www.cp2k.org/"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/cp2k/cp2k"
+        },
+        {
+          "role": "data",
+          "label": "CP2K basis and potential data",
+          "url": "https://github.com/cp2k/cp2k/tree/master/data"
+        },
+        {
+          "role": "tutorial",
+          "label": "CP2K exercises",
+          "url": "https://www.cp2k.org/exercises"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "crystal",
+      "name": "CRYSTAL",
+      "aliases": [],
+      "one_line": "Use CRYSTAL for periodic local Gaussian-basis calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "commercial",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "CRYSTAL",
+          "url": "https://www.crystal.unito.it/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "dft-fe",
+      "name": "DFT-FE",
+      "aliases": [],
+      "one_line": "Runs finite-element density-functional calculations on massively parallel systems.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "source",
+          "label": "Official entry",
+          "url": "https://github.com/dftfeDevelopers/dftfe"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "dftbplus",
+      "name": "DFTB+",
+      "aliases": [],
+      "one_line": "Use DFTB+ for scientifically justified approximate density-functional tight binding.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "DFTB+",
+          "url": "https://dftbplus.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "dftk",
+      "name": "DFTK",
+      "aliases": [],
+      "one_line": "Provides a Julia toolkit for plane-wave density-functional calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine",
+        "library"
+      ],
+      "interface_tags": [
+        "Julia"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "calculate-reference-ground-state",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://docs.dftk.org/stable/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "elk",
+      "name": "Elk",
+      "aliases": [],
+      "one_line": "Use Elk for open all-electron full-potential LAPW calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Elk",
+          "url": "https://elk.sourceforge.io/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "exciting",
+      "name": "exciting",
+      "aliases": [],
+      "one_line": "Use exciting for all-electron LAPW ground-state or excited-state calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "exciting",
+          "url": "https://www.exciting-code.org/"
+        },
+        {
+          "role": "tutorial",
+          "label": "exciting tutorials",
+          "url": "https://www.exciting-code.org/home/about/tutorials"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "fhi-aims",
+      "name": "FHI-aims",
+      "aliases": [],
+      "one_line": "Use FHI-aims for all-electron numeric atom-centered orbital calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "mixed",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "FHI-aims",
+          "url": "https://fhi-aims.org/uploads/manual/index.html"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "fleur",
+      "name": "FLEUR",
+      "aliases": [],
+      "one_line": "Use FLEUR for full-potential LAPW electronic or magnetic calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "FLEUR",
+          "url": "https://www.flapw.de/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "gbrv",
+      "name": "GBRV pseudopotential library",
+      "aliases": [],
+      "one_line": "Use GBRV pseudopotential library for published solid-state testing of ultrasoft pseudopotentials.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "pseudopotential"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "GBRV pseudopotential library",
+          "url": "https://www.physics.rutgers.edu/gbrv/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "gpaw",
+      "name": "GPAW",
+      "aliases": [],
+      "one_line": "Use GPAW for PAW calculations on real-space grids or plane waves with ASE integration.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "Python",
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "surface-energy-and-work-function",
+        "adsorption-energies",
+        "independent-particle-optical-properties",
+        "time-dependent-response-and-spectroscopy"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "GPAW",
+          "url": "https://gpaw.readthedocs.io/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "gpaw-setups",
+      "name": "GPAW setups",
+      "aliases": [],
+      "one_line": "Documents and distributes GPAW PAW setup data.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "pseudopotential"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "Official entry",
+          "url": "https://gpaw.readthedocs.io/setups/setups.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "jdftx",
+      "name": "JDFTx",
+      "aliases": [],
+      "one_line": "Runs plane-wave electronic-structure and joint density-functional calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "surface-energy-and-work-function"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://jdftx.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "jth-paw",
+      "name": "JTH PAW datasets",
+      "aliases": [],
+      "one_line": "Provides PAW atomic datasets for compatible ABINIT workflows.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "pseudopotential"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "Official entry",
+          "url": "https://www.abinit.org/atomic_data/paw/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "nwchem",
+      "name": "NWChem",
+      "aliases": [],
+      "one_line": "Runs scalable molecular and periodic electronic-structure calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine",
+        "molecular"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://nwchemgit.github.io/Getting-Started.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "octopus",
+      "name": "Octopus",
+      "aliases": [],
+      "one_line": "Use Octopus for real-space ground-state or time-dependent work.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "independent-particle-optical-properties",
+        "time-dependent-response-and-spectroscopy"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Octopus",
+          "url": "https://octopus-code.org/"
+        },
+        {
+          "role": "tutorial",
+          "label": "Octopus tutorials",
+          "url": "https://octopus-code.org/documentation/main/tutorial/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "onetep",
+      "name": "ONETEP",
+      "aliases": [],
+      "one_line": "Use ONETEP for linear-scaling DFT for large systems.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "mixed",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "ONETEP",
+          "url": "https://onetep.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "openmx",
+      "name": "OpenMX",
+      "aliases": [],
+      "one_line": "Use OpenMX for localized pseudoatomic-orbital electronic and transport-related work.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "OpenMX",
+          "url": "https://www.openmx-square.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "pseudo-dojo",
+      "name": "PseudoDojo",
+      "aliases": [],
+      "one_line": "Use PseudoDojo for norm-conserving pseudopotentials with selectable validation data.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "pseudopotential"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "PseudoDojo",
+          "url": "https://www.pseudo-dojo.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "psi4",
+      "name": "Psi4",
+      "aliases": [],
+      "one_line": "Runs open-source molecular electronic-structure calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine",
+        "molecular"
+      ],
+      "interface_tags": [
+        "CLI",
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://psicode.org/psi4manual/master/introduction.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "pslibrary",
+      "name": "PSLibrary",
+      "aliases": [],
+      "one_line": "Use PSLibrary for versioned PAW and ultrasoft pseudopotentials for QE.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "pseudopotential"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "PSLibrary",
+          "url": "https://dalcorso.github.io/pslibrary/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "pyscf",
+      "name": "PySCF",
+      "aliases": [],
+      "one_line": "Provides molecular and periodic electronic-structure methods through Python.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine",
+        "molecular"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "calculate-reference-ground-state",
+        "quasiparticle-corrections"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://pyscf.org/user/index.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "q-chem",
+      "name": "Q-Chem",
+      "aliases": [],
+      "one_line": "Runs licensed molecular electronic-structure calculations documented in the official manual.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine",
+        "molecular"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "commercial",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "calculate-reference-ground-state",
+        "time-dependent-response-and-spectroscopy"
+      ],
+      "links": [
+        {
+          "role": "manual",
+          "label": "Official entry",
+          "url": "https://manual.q-chem.com/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "qbox",
+      "name": "Qbox",
+      "aliases": [],
+      "one_line": "Runs parallel plane-wave electronic-structure and molecular-dynamics calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "ab-initio-molecular-dynamics"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+        "url": "https://qbox.re/docs"
+        }
+      ],
+      "editorial_state": "catalog"
     },
     {
       "slug": "quantum-espresso",
@@ -246,40 +2997,225 @@
       "aliases": [
         "QE"
       ],
-      "category": "Electronic-structure engines",
-      "interfaces": [
+      "one_line": "A plane-wave and pseudopotential electronic-structure suite with ground-state, response, phonon, molecular-dynamics, and post-processing executables.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
         "CLI"
       ],
-      "access": "open-source",
-      "role": "A plane-wave and pseudopotential electronic-structure suite with ground-state, response, phonon, molecular-dynamics, and post-processing executables.",
-      "use_when": "Use Quantum ESPRESSO when a declared plane-wave and pseudopotential model must be executed for a bounded ground-state, response, phonon, dynamics, or post-processing task.",
-      "first_action": "Match the executable version and exact pseudopotential identity, then prepare and inspect the smallest fixed-geometry input needed for the chosen scientific task before launching it.",
-      "input_objects": [
-        "A QE input file with structure, method, state, and numerical controls",
-        "Exact-identity pseudopotential files and any compatible parent state"
-      ],
-      "output_objects": [
-        "Program stdout and declared stderr",
-        "Restart data, structured results, and compatible post-processing parents"
-      ],
-      "verify": "Verify executable and pseudopotential identities, exact input and command, fatal and completion markers, SCF convergence, any ionic or cell stopping criterion, restart ancestry and target-observable convergence; for a relaxation, inspect every free Cartesian force component rather than only the printed Total force.",
-      "primary_topic": "choose-dft-method-and-computational-setup",
-      "homepage": "https://www.quantum-espresso.org/",
-      "documentation": "https://www.quantum-espresso.org/documentation/",
-      "getting_started": {
-        "label": "Quantum ESPRESSO documentation",
-        "url": "https://www.quantum-espresso.org/documentation/"
-      },
-      "source_repository": "https://gitlab.com/QEF/q-e",
+      "access": "open",
       "topics": [
         "choose-dft-method-and-computational-setup",
         "test-numerical-convergence",
+        "optimize-structure",
         "calculate-reference-ground-state",
+        "relative-and-formation-energies",
+        "equation-of-state-and-structural-phase-stability",
+        "surface-energy-and-work-function",
         "band-structure",
+        "density-of-states-and-projected-density-of-states",
+        "charge-density-and-charge-redistribution",
+        "magnetic-configuration-and-ground-state-comparison",
+        "elastic-constants-and-mechanical-properties",
+        "dielectric-response-and-born-effective-charges",
+        "polarization-and-ferroelectricity",
+        "piezoelectric-response",
         "harmonic-phonons",
         "electron-phonon-coupling",
-        "reaction-paths-and-transition-states"
-      ]
+        "reaction-paths-and-transition-states",
+        "ab-initio-molecular-dynamics"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Quantum ESPRESSO",
+          "url": "https://www.quantum-espresso.org/documentation/"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://www.quantum-espresso.org/"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://gitlab.com/QEF/q-e"
+        },
+        {
+          "role": "tutorial",
+          "label": "Quantum ESPRESSO Learn",
+          "url": "https://www.quantum-espresso.org/learn/"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "qe-pseudopotentials",
+      "name": "Quantum ESPRESSO pseudopotential portal",
+      "aliases": [],
+      "one_line": "Use Quantum ESPRESSO pseudopotential portal for browsing QE-oriented files and provenance.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "pseudopotential"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "Quantum ESPRESSO pseudopotential portal",
+          "url": "https://pseudopotentials.quantum-espresso.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "quantumatk",
+      "name": "QuantumATK",
+      "aliases": [],
+      "one_line": "Use QuantumATK for licensed integrated atomistic, electronic, and transport work.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "GUI",
+        "Python"
+      ],
+      "access": "commercial",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "QuantumATK",
+          "url": "https://www.synopsys.com/manufacturing/quantumatk.html"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "sg15",
+      "name": "SG15 ONCV potentials",
+      "aliases": [],
+      "one_line": "Provides optimized norm-conserving pseudopotentials.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "pseudopotential"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "Official entry",
+          "url": "http://www.quantum-simulation.org/potentials/sg15_oncv/"
+        }
+      ],
+      "caveat": "The official SG15 archive is HTTP-only; record the exact downloaded file and test it for the intended calculation.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "siesta",
+      "name": "SIESTA",
+      "aliases": [],
+      "one_line": "A localized-orbital electronic-structure package used for periodic calculations and as a parent engine for selected transport workflows.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "relative-and-formation-energies",
+        "surface-energy-and-work-function",
+        "adsorption-energies",
+        "band-structure",
+        "density-of-states-and-projected-density-of-states",
+        "quantum-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "SIESTA",
+          "url": "https://docs.siesta-project.org/projects/siesta/en/latest/"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://siesta-project.org/"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://gitlab.com/siesta-project/siesta"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "sssp",
+      "name": "Standard Solid State Pseudopotentials",
+      "aliases": [],
+      "one_line": "Use Standard Solid State Pseudopotentials for tested QE-compatible precision and efficiency tables.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "pseudopotential"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "Standard Solid State Pseudopotentials",
+          "url": "https://sssp.materialscloud.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
     },
     {
       "slug": "vasp",
@@ -287,370 +3223,2775 @@
       "aliases": [
         "Vienna Ab initio Simulation Package"
       ],
-      "category": "Electronic-structure engines",
-      "interfaces": [
+      "one_line": "A licensed electronic-structure package documented for periodic ground-state, response, dynamics, and post-processing calculations.",
+      "task_groups": [
+        "methods-and-engines"
+      ],
+      "kind_tags": [
+        "engine"
+      ],
+      "interface_tags": [
         "CLI"
       ],
-      "access": "restricted-license",
-      "role": "A licensed electronic-structure package documented for periodic ground-state, response, dynamics, and post-processing calculations.",
-      "use_when": "Use VASP when a licensed periodic electronic-structure calculation is selected and the required executable and potential access are already authorized.",
-      "first_action": "Confirm the installed version and licensed potential identity, then inspect a minimal POSCAR, INCAR, KPOINTS, and locally authorized POTCAR set for one bounded task.",
-      "input_objects": [
-        "POSCAR, INCAR, and KPOINTS files",
-        "A locally authorized licensed potential and any compatible restart state"
-      ],
-      "output_objects": [
-        "OUTCAR, vasprun.xml, and declared log files",
-        "Restart and derived artifacts retained under the applicable licence boundary"
-      ],
-      "verify": "Verify the executable and licensed potential identities, exact POSCAR, INCAR and KPOINTS, electronic and ionic stop reasons in OUTCAR or vasprun.xml, restart compatibility and target-observable convergence; the presence of CONTCAR, CHGCAR or WAVECAR is not a convergence result.",
-      "primary_topic": "choose-dft-method-and-computational-setup",
-      "homepage": "https://vasp.at/",
-      "documentation": "https://vasp.at/wiki/",
-      "getting_started": {
-        "label": "VASP Wiki",
-        "url": "https://vasp.at/wiki/"
-      },
-      "source_repository": null,
+      "access": "restricted",
       "topics": [
         "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
         "optimize-structure",
         "calculate-reference-ground-state",
+        "relative-and-formation-energies",
+        "equation-of-state-and-structural-phase-stability",
+        "defect-formation-energies-and-charge-states",
+        "surface-energy-and-work-function",
+        "adsorption-energies",
+        "interface-and-heterostructure-energetics",
+        "band-structure",
         "density-of-states-and-projected-density-of-states",
+        "charge-density-and-charge-redistribution",
+        "electrostatic-potential-and-band-alignment",
+        "magnetic-configuration-and-ground-state-comparison",
+        "magnetic-anisotropy-and-exchange-interactions",
         "elastic-constants-and-mechanical-properties",
-        "polarization-and-ferroelectricity"
-      ]
+        "dielectric-response-and-born-effective-charges",
+        "polarization-and-ferroelectricity",
+        "piezoelectric-response",
+        "harmonic-phonons",
+        "reaction-paths-and-transition-states",
+        "diffusion-barriers",
+        "ab-initio-molecular-dynamics",
+        "independent-particle-optical-properties"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "VASP",
+          "url": "https://vasp.at/wiki/"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://vasp.at/"
+        },
+        {
+          "role": "data",
+          "label": "VASP PAW dataset guidance",
+          "url": "https://vasp.at/wiki/Choosing_pseudopotentials"
+        },
+        {
+          "role": "tutorial",
+          "label": "VASP tutorials",
+          "url": "https://vasp.at/tutorials/latest/"
+        },
+        {
+          "role": "tutorial",
+          "label": "VASP workshop material",
+          "url": "https://vasp.at/wiki/VASP_workshop"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
     },
     {
-      "slug": "abinit",
-      "name": "ABINIT",
+      "slug": "wien2k",
+      "name": "WIEN2k",
       "aliases": [],
-      "category": "Electronic-structure engines",
-      "interfaces": [
-        "CLI"
+      "one_line": "Use WIEN2k for all-electron full-potential APW/LAPW calculations.",
+      "task_groups": [
+        "methods-and-engines"
       ],
-      "access": "open-source",
-      "role": "An electronic-structure suite with ground-state, response, phonon, and many-body perturbation workflows documented as separate capabilities.",
-      "use_when": "Use ABINIT when a periodic ground-state, response, phonon, or many-body workflow is selected under an explicit dataset and pseudopotential model.",
-      "first_action": "Follow the matching-version ground-state tutorial far enough to inspect one minimal input, structure, pseudopotential set, dataset flow, and requested outputs.",
-      "input_objects": [
-        "An ABINIT input with structure and dataset variables",
-        "Exact pseudopotentials and any compatible parent datasets"
+      "kind_tags": [
+        "engine"
       ],
-      "output_objects": [
-        "Text output and requested NetCDF datasets",
-        "Restart, wavefunction, density, response, or many-body artifacts"
+      "interface_tags": [
+        "CLI",
+        "GUI"
       ],
-      "verify": "Verify the executable and pseudopotential identities, dataset dependencies, WARN and ERROR messages, SCF or relaxation stopping criteria, produced ABO, GSR and HIST artifacts and restart lineage; a completed output file alone is insufficient.",
-      "primary_topic": "choose-dft-method-and-computational-setup",
-      "homepage": "https://www.abinit.org/",
-      "documentation": "https://docs.abinit.org/",
-      "getting_started": {
-        "label": "ABINIT documentation",
-        "url": "https://docs.abinit.org/"
-      },
-      "source_repository": "https://github.com/abinit/abinit",
+      "access": "commercial",
       "topics": [
         "choose-dft-method-and-computational-setup",
-        "harmonic-phonons",
-        "dielectric-response-and-born-effective-charges",
-        "quasiparticle-corrections",
-        "excitons-and-bethe-salpeter-equation"
-      ]
+        "test-numerical-convergence",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "WIEN2k",
+          "url": "http://susi.theochem.tuwien.ac.at/"
+        }
+      ],
+      "caveat": "This legacy official endpoint is HTTP-only; do not send credentials or sensitive data.",
+      "editorial_state": "reviewed"
     },
     {
-      "slug": "cp2k",
-      "name": "CP2K",
+      "slug": "aiida",
+      "name": "AiiDA",
       "aliases": [],
-      "category": "Electronic-structure engines",
-      "interfaces": [
+      "one_line": "A workflow and provenance infrastructure for automating calculations and retaining queryable data-process lineage.",
+      "task_groups": [
+        "run-and-record",
+        "validate-and-preserve"
+      ],
+      "kind_tags": [
+        "workflow",
+        "provenance"
+      ],
+      "interface_tags": [
+        "Python",
         "CLI",
-        "Library"
+        "Web"
       ],
-      "access": "open-source",
-      "role": "An atomistic simulation package spanning electronic-structure, molecular-dynamics, optimization, and mixed quantum/classical methods.",
-      "use_when": "Use CP2K when an atomistic electronic-structure, optimization, molecular-dynamics, or mixed quantum/classical route fits the declared model.",
-      "first_action": "Choose the relevant method section, then inspect one minimal input together with its coordinates, basis sets, potentials, units, and print controls.",
-      "input_objects": [
-        "A CP2K input and atomic coordinates",
-        "Declared basis sets, potentials, method settings, and optional restart state"
+      "access": "open",
+      "topics": [
+        "calculate-reference-ground-state",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions",
+        "document-and-preserve-study"
       ],
-      "output_objects": [
-        "Program stdout and selected printed data",
-        "Restart files, trajectories, forces, energies, or other requested artifacts"
+      "links": [
+        {
+          "role": "docs",
+          "label": "AiiDA",
+          "url": "https://aiida.readthedocs.io/projects/aiida-core/en/stable/"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://www.aiida.net/"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/aiidateam/aiida-core"
+        },
+        {
+          "role": "tutorial",
+          "label": "AiiDA tutorials",
+          "url": "https://aiida-tutorials.readthedocs.io/en/latest/"
+        }
       ],
-      "verify": "Verify the executable, basis and potential identities, units, cell and periodicity, intended RUN_TYPE, SCF or geometry convergence markers, requested print artifacts and restart or WFN lineage; file existence alone does not establish a compatible continuation.",
-      "primary_topic": "choose-dft-method-and-computational-setup",
-      "homepage": "https://www.cp2k.org/",
-      "documentation": "https://manual.cp2k.org/",
-      "getting_started": {
-        "label": "CP2K reference manual",
-        "url": "https://manual.cp2k.org/"
-      },
-      "source_repository": "https://github.com/cp2k/cp2k",
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "apptainer",
+      "name": "Apptainer",
+      "aliases": [],
+      "one_line": "Packages portable containers for HPC environments.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "hpc",
+        "container"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://apptainer.org/documentation/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "atomate2",
+      "name": "atomate2",
+      "aliases": [],
+      "one_line": "Defines materials simulation workflows on top of jobflow.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "workflow"
+      ],
+      "interface_tags": [
+        "Python",
+        "HPC"
+      ],
+      "access": "open",
       "topics": [
         "choose-dft-method-and-computational-setup",
         "optimize-structure",
         "calculate-reference-ground-state",
-        "ab-initio-molecular-dynamics"
-      ]
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://materialsproject.github.io/atomate2/"
+        }
+      ],
+      "editorial_state": "catalog"
     },
     {
-      "slug": "siesta",
-      "name": "SIESTA",
+      "slug": "asr",
+      "name": "Atomic Simulation Recipes",
       "aliases": [],
-      "category": "Electronic-structure engines",
-      "interfaces": [
-        "CLI"
+      "one_line": "Provides composable recipes for atomic-scale simulation tasks.",
+      "task_groups": [
+        "run-and-record"
       ],
-      "access": "open-source",
-      "role": "A localized-orbital electronic-structure package used for periodic calculations and as a parent engine for selected transport workflows.",
-      "use_when": "Use SIESTA when a localized-orbital periodic electronic-structure route is appropriate and its basis and pseudopotential choices can be declared explicitly.",
-      "first_action": "Inspect one minimal FDF input together with its structure, species labels, basis definition, pseudopotential identity, mesh cutoff, occupations, and output requests.",
-      "input_objects": [
-        "An FDF input and atomic structure",
-        "Declared basis definitions, pseudopotentials, and optional compatible parent state"
+      "kind_tags": [
+        "workflow"
       ],
-      "output_objects": [
-        "Program stdout and system-label data files",
-        "Densities, matrices, bands, DOS, restart, or transport-parent artifacts when requested"
+      "interface_tags": [
+        "Python"
       ],
-      "verify": "Verify the executable and pseudopotential identities, species-label mapping, basis definition, mesh and k-point sampling, occupations, system label, completion and convergence messages, and the lineage of restart or transport-parent files.",
-      "primary_topic": "choose-dft-method-and-computational-setup",
-      "homepage": "https://siesta-project.org/",
-      "documentation": "https://docs.siesta-project.org/projects/siesta/en/latest/",
-      "getting_started": {
-        "label": "SIESTA documentation",
-        "url": "https://docs.siesta-project.org/projects/siesta/en/latest/"
-      },
-      "source_repository": "https://gitlab.com/siesta-project/siesta",
+      "access": "open",
       "topics": [
         "choose-dft-method-and-computational-setup",
         "calculate-reference-ground-state",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://asr.readthedocs.io/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "custodian",
+      "name": "custodian",
+      "aliases": [],
+      "one_line": "Runs monitored jobs with explicit error handlers.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "workflow"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "calculate-reference-ground-state",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://materialsproject.github.io/custodian/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "easybuild",
+      "name": "EasyBuild",
+      "aliases": [],
+      "one_line": "Automates reproducible builds of scientific software stacks.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "hpc",
+        "package-manager"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://docs.easybuild.io/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "fireworks",
+      "name": "FireWorks",
+      "aliases": [],
+      "one_line": "Executes and records distributed computational workflows.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "workflow"
+      ],
+      "interface_tags": [
+        "Python",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "calculate-reference-ground-state",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://materialsproject.github.io/fireworks/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "jobflow",
+      "name": "jobflow",
+      "aliases": [],
+      "one_line": "Builds composable computational job graphs.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "workflow"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "calculate-reference-ground-state",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://materialsproject.github.io/jobflow/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "open-mpi",
+      "name": "Open MPI",
+      "aliases": [],
+      "one_line": "Provides an MPI runtime and programming interface for parallel applications.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "hpc",
+        "library"
+      ],
+      "interface_tags": [
+        "CLI",
+        "API"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://docs.open-mpi.org/en/main/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "openpbs",
+      "name": "OpenPBS",
+      "aliases": [],
+      "one_line": "Schedules batch jobs on supported HPC systems.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "scheduler",
+        "hpc"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "calculate-reference-ground-state",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "source",
+          "label": "Official OpenPBS repository",
+          "url": "https://github.com/openpbs/openpbs"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "parsl",
+      "name": "Parsl",
+      "aliases": [],
+      "one_line": "Executes Python workflows across laptops, clusters, and remote systems.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "workflow"
+      ],
+      "interface_tags": [
+        "Python",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "calculate-reference-ground-state",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://parsl-project.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "pyiron",
+      "name": "pyiron",
+      "aliases": [],
+      "one_line": "Provides an integrated environment for atomistic simulation workflows and data.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "workflow"
+      ],
+      "interface_tags": [
+        "Python",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
+        "choose-dft-method-and-computational-setup",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://pyiron.org/pyiron_core/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "signac",
+      "name": "signac",
+      "aliases": [],
+      "one_line": "Organizes file-based computational data spaces and workflows.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "workflow",
+        "provenance"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+        "url": "https://signac.readthedocs.io/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "slurm",
+      "name": "Slurm",
+      "aliases": [],
+      "one_line": "Schedules and inspects batch jobs on supported HPC systems.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "scheduler",
+        "hpc"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "calculate-reference-ground-state",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://slurm.schedmd.com/documentation.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "spack",
+      "name": "Spack",
+      "aliases": [],
+      "one_line": "Builds and manages scientific software stacks on HPC systems.",
+      "task_groups": [
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "hpc",
+        "package-manager"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://spack.readthedocs.io/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "abipy",
+      "name": "AbiPy",
+      "aliases": [],
+      "one_line": "Builds ABINIT inputs and workflows and analyzes ABINIT results.",
+      "task_groups": [
+        "ground-state-analysis",
+        "run-and-record"
+      ],
+      "kind_tags": [
+        "postprocess",
+        "workflow"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "band-structure",
+        "density-of-states-and-projected-density-of-states",
+        "harmonic-phonons",
+        "quasiparticle-corrections",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+        "url": "https://abinit.github.io/abipy/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "critic2",
+      "name": "Critic2",
+      "aliases": [],
+      "one_line": "Use Critic2 for critical-point, basin, and scalar-field topology analysis.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "bonding",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "charge-density-and-charge-redistribution",
+        "chemical-bonding-analysis"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Critic2",
+          "url": "https://aoterodelaroza.github.io/critic2/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "doped",
+      "name": "doped",
+      "aliases": [],
+      "one_line": "Generates point defects and analyzes defect formation energies and charge-state thermodynamics.",
+      "task_groups": [
+        "ground-state-analysis",
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "defect",
+        "library"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
+        "defect-formation-energies-and-charge-states"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://doped.readthedocs.io/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "fermisurfer",
+      "name": "FermiSurfer",
+      "aliases": [],
+      "one_line": "Visualizes Fermi surfaces from full-zone band-energy data.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "viewer",
+        "fermi-surface"
+      ],
+      "interface_tags": [
+        "GUI"
+      ],
+      "access": "open",
+      "topics": [
+        "fermi-surface-and-full-brillouin-zone-analysis"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://mitsuaki1987.github.io/fermisurfer/en/_build/html/index.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "bader",
+      "name": "Henkelman-group Bader analysis",
+      "aliases": [],
+      "one_line": "Use Henkelman-group Bader analysis for grid-based Bader partitioning.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "bonding",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "charge-density-and-charge-redistribution",
+        "chemical-bonding-analysis"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Henkelman-group Bader analysis",
+          "url": "https://theory.cm.utexas.edu/henkelman/code/bader/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "ifermi",
+      "name": "IFermi",
+      "aliases": [],
+      "one_line": "Generates and analyzes Fermi surfaces from electronic-structure data.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "postprocess",
+        "fermi-surface"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "fermi-surface-and-full-brillouin-zone-analysis"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://fermisurfaces.github.io/IFermi/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "lobster",
+      "name": "LOBSTER",
+      "aliases": [],
+      "one_line": "Use LOBSTER for projection-based chemical-bonding analysis.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "bonding",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "registration",
+      "topics": [
+        "chemical-bonding-analysis",
+        "density-of-states-and-projected-density-of-states"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "LOBSTER",
+          "url": "http://cohp.de/"
+        }
+      ],
+      "caveat": "This legacy official endpoint is HTTP-only; do not send credentials or sensitive data.",
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "py4vasp",
+      "name": "py4vasp",
+      "aliases": [],
+      "one_line": "Reads and visualizes VASP calculation results through the official Python interface.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "postprocess"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "restricted",
+      "topics": [
+        "band-structure",
+        "density-of-states-and-projected-density-of-states",
+        "charge-density-and-charge-redistribution",
+        "electrostatic-potential-and-band-alignment",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://www.vasp.at/py4vasp/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "pyprocar",
+      "name": "PyProcar",
+      "aliases": [],
+      "one_line": "Use PyProcar for projected bands, Fermi surfaces, and spin textures.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "postprocess"
+      ],
+      "interface_tags": [
+        "Python",
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "band-structure",
+        "density-of-states-and-projected-density-of-states",
+        "fermi-surface-and-full-brillouin-zone-analysis",
+        "magnetic-configuration-and-ground-state-comparison",
+        "magnetic-anisotropy-and-exchange-interactions"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "PyProcar",
+          "url": "https://pyprocar.readthedocs.io/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "sisl",
+      "name": "sisl",
+      "aliases": [],
+      "one_line": "Represents atomistic systems and reads or analyzes electronic-structure outputs.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "postprocess",
+        "library"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "build-or-modify-computational-model",
         "band-structure",
         "density-of-states-and-projected-density-of-states",
         "quantum-transport"
-      ]
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://sisl.readthedocs.io/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
     },
     {
-      "slug": "phonopy",
-      "name": "Phonopy",
+      "slug": "spinney",
+      "name": "Spinney",
       "aliases": [],
-      "category": "Target-property tools",
-      "interfaces": [
+      "one_line": "Analyzes point-defect thermodynamics and charge-state stability.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "defect",
+        "library"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "defect-formation-energies-and-charge-states"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://spinney.readthedocs.io/"
+        }
+      ],
+      "caveat": "Review current maintenance and release status before adoption.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "sumo",
+      "name": "sumo",
+      "aliases": [],
+      "one_line": "Use sumo for band, DOS, and optical plotting from supported codes.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "postprocess"
+      ],
+      "interface_tags": [
         "CLI",
         "Python"
       ],
-      "access": "open-source",
-      "role": "A harmonic lattice-dynamics package that constructs and analyzes force-constant models from external force calculations.",
-      "use_when": "Use Phonopy when harmonic force constants or phonon observables are needed from a declared reference cell and comparable external force calculations.",
-      "first_action": "From the exact trusted reference cell, declare the primitive or supercell relationship and calculator interface, generate a small displacement set, and inspect atom ordering and displacement-to-force provenance before calculating forces.",
-      "input_objects": [
-        "A reference unit cell and supercell matrix",
-        "Displacement settings and matched force outputs from an external calculator"
-      ],
-      "output_objects": [
-        "Displaced supercell structures and force datasets",
-        "Harmonic force constants, frequencies, eigenvectors, or thermodynamic tables"
-      ],
-      "verify": "Verify that every displaced supercell maps one-to-one to the correct force output with unchanged atom order and units, then audit electronic-force, supercell and applicable q-mesh convergence and distinguish numerical or acoustic artifacts from a physical imaginary mode.",
-      "primary_topic": "harmonic-phonons",
-      "homepage": "https://phonopy.github.io/phonopy/",
-      "documentation": "https://phonopy.github.io/phonopy/phonopy.html",
-      "getting_started": {
-        "label": "Phonopy command and API guide",
-        "url": "https://phonopy.github.io/phonopy/phonopy.html"
-      },
-      "source_repository": "https://github.com/phonopy/phonopy",
+      "access": "open",
       "topics": [
-        "harmonic-phonons",
-        "test-numerical-convergence"
-      ]
+        "band-structure",
+        "density-of-states-and-projected-density-of-states",
+        "independent-particle-optical-properties"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "sumo",
+          "url": "https://smtg-bham.github.io/sumo/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "vaspkit",
+      "name": "VASPKIT",
+      "aliases": [],
+      "one_line": "Use VASPKIT for documented VASP-centered pre/post-processing.",
+      "task_groups": [
+        "ground-state-analysis"
+      ],
+      "kind_tags": [
+        "postprocess"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "band-structure",
+        "density-of-states-and-projected-density-of-states",
+        "fermi-surface-and-full-brillouin-zone-analysis",
+        "electrostatic-potential-and-band-alignment"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official VASPKIT documentation source",
+          "url": "https://github.com/vaspkit/vaspkit.github.io"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "alamode",
+      "name": "ALAMODE",
+      "aliases": [],
+      "one_line": "Builds and analyzes anharmonic lattice-dynamical models.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "lattice-dynamics",
+        "anharmonic"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "anharmonic-phonons",
+        "lattice-thermal-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://alamode.readthedocs.io/en/latest/intro.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "almabte",
+      "name": "almaBTE",
+      "aliases": [],
+      "one_line": "Solves lattice thermal transport from anharmonic force-constant data.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "thermal-transport"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "lattice-thermal-transport"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+        "url": "http://www.almabte.eu/"
+        }
+      ],
+    "caveat": "The legacy official entry is HTTP-only; review current maintenance and release status before adoption.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "elphbolt",
+      "name": "elphbolt",
+      "aliases": [],
+      "one_line": "Solves coupled electron–phonon Boltzmann transport equations.",
+      "task_groups": [
+        "lattice-temperature-epc",
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "epc",
+        "transport"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "electron-phonon-coupling",
+        "electronic-transport"
+      ],
+      "links": [
+        {
+          "role": "source",
+          "label": "Official entry",
+          "url": "https://github.com/nakib/elphbolt"
+        }
+      ],
+      "caveat": "Review current maintenance and documentation before adoption.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "epiq",
+      "name": "EPIq",
+      "aliases": [],
+      "one_line": "Interpolates electron–phonon matrix elements and related observables.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "epc"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "electron-phonon-coupling",
+        "conventional-superconductivity"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://the-epiq-team.gitlab.io/epiq-site/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "epw",
+      "name": "EPW",
+      "aliases": [],
+      "one_line": "A Wannier-based code for electron-phonon coupling and related electronic, transport, and superconducting observables using compatible parent data.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "epc",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "electron-phonon-coupling",
+        "conventional-superconductivity",
+        "electronic-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "EPW",
+          "url": "https://docs.epw-code.org/"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://epw-code.org/"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://gitlab.com/QEF/q-e/-/tree/develop/EPW"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "hiphive",
+      "name": "hiPhive",
+      "aliases": [],
+      "one_line": "Fits higher-order force constants from atomistic force data.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "anharmonic",
+        "library"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "anharmonic-phonons",
+        "lattice-thermal-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://hiphive.materialsmodeling.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "kaldo",
+      "name": "kALDo",
+      "aliases": [],
+      "one_line": "Computes anharmonic phonon lifetimes and thermal conductivity.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "thermal-transport"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "anharmonic-phonons",
+        "lattice-thermal-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+        "url": "https://nanotheorygroup.github.io/kaldo/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "perturbo",
+      "name": "Perturbo",
+      "aliases": [],
+      "one_line": "Interpolates electron–phonon interactions for scattering and carrier-transport calculations.",
+      "task_groups": [
+        "lattice-temperature-epc",
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "epc",
+        "transport"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "electron-phonon-coupling",
+        "electronic-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://perturbo-code.github.io/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "phoebe",
+      "name": "Phoebe",
+      "aliases": [],
+      "one_line": "Solves phonon and electron Boltzmann transport equations.",
+      "task_groups": [
+        "lattice-temperature-epc",
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "transport"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "lattice-thermal-transport",
+        "electronic-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://phoebe.readthedocs.io/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
     },
     {
       "slug": "phono3py",
       "name": "Phono3py",
       "aliases": [],
-      "category": "Target-property tools",
-      "interfaces": [
+      "one_line": "An anharmonic lattice-dynamics package for third-order force constants, phonon interactions, and lattice-thermal-transport analysis.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "lattice-dynamics",
+        "postprocess"
+      ],
+      "interface_tags": [
         "CLI",
         "Python"
       ],
-      "access": "open-source",
-      "role": "An anharmonic lattice-dynamics package for third-order force constants, phonon interactions, and lattice-thermal-transport analysis.",
-      "use_when": "Use Phono3py when a stable harmonic protocol is being extended to third-order force constants, phonon interactions, or lattice thermal transport.",
-      "first_action": "Confirm the harmonic reference and force protocol first, then generate and count the declared second- and third-order displacement sets, inspect symmetry reduction and cutoffs, and plan their one-to-one force calculations.",
-      "input_objects": [
-        "A reference cell, supercell matrices, and displacement settings",
-        "Matched force datasets and optional Born-charge or dielectric data"
-      ],
-      "output_objects": [
-        "Second- and third-order force constants",
-        "Interaction, linewidth, lifetime, and lattice-transport datasets"
-      ],
-      "verify": "Verify a trusted harmonic baseline, complete displacement-to-force mapping, second- and third-order supercell and cutoff choices, q-mesh and observable convergence, and any isotope or non-analytical-correction settings; program completion is not a transport result.",
-      "primary_topic": "anharmonic-phonons",
-      "homepage": "https://phonopy.github.io/phono3py/",
-      "documentation": "https://phonopy.github.io/phono3py/workflow.html",
-      "getting_started": {
-        "label": "Phono3py workflow guide",
-        "url": "https://phonopy.github.io/phono3py/workflow.html"
-      },
-      "source_repository": "https://github.com/phonopy/phono3py",
+      "access": "open",
       "topics": [
         "anharmonic-phonons",
         "lattice-thermal-transport",
         "test-numerical-convergence"
-      ]
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Phono3py",
+          "url": "https://phonopy.github.io/phono3py/workflow.html"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://phonopy.github.io/phono3py/"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/phonopy/phono3py"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "phononwebsite",
+      "name": "phononwebsite",
+      "aliases": [],
+      "one_line": "Visualizes phonon modes, excitons, and structures from supported code formats.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "viewer",
+        "lattice-dynamics"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "harmonic-phonons",
+        "anharmonic-phonons",
+        "excitons-and-bethe-salpeter-equation"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://henriquemiranda.github.io/phononwebsite/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "phonopy",
+      "name": "Phonopy",
+      "aliases": [],
+      "one_line": "A harmonic lattice-dynamics package that constructs and analyzes force-constant models from external force calculations.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "lattice-dynamics",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "CLI",
+        "GUI",
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "harmonic-phonons",
+        "test-numerical-convergence"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Phonopy mode-animation guide",
+          "url": "https://phonopy.github.io/phonopy/animation.html"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://phonopy.github.io/phonopy/"
+        },
+        {
+          "role": "docs",
+          "label": "Documentation",
+          "url": "https://phonopy.github.io/phonopy/phonopy.html"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/phonopy/phonopy"
+        },
+        {
+          "role": "tutorial",
+          "label": "Phonopy examples",
+          "url": "https://phonopy.github.io/phonopy/examples.html"
+        }
+      ],
+      "caveat": "Mode animation supports diagnosis but does not establish whether an imaginary mode is physical.",
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "plumed",
+      "name": "PLUMED",
+      "aliases": [],
+      "one_line": "Adds collective variables and enhanced-sampling methods to supported molecular-dynamics engines.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "enhanced-sampling",
+        "library"
+      ],
+      "interface_tags": [
+        "CLI",
+        "Library"
+      ],
+      "access": "open",
+      "topics": [
+        "ab-initio-molecular-dynamics",
+        "finite-temperature-structural-sampling"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://www.plumed.org/doc"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "sctk",
+      "name": "SCTK",
+      "aliases": [],
+      "one_line": "Provides tools for superconducting density-functional calculations.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "superconductivity"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "conventional-superconductivity"
+      ],
+      "links": [
+        {
+          "role": "source",
+          "label": "Official entry",
+        "url": "https://mitsuaki1987.github.io/sctk/"
+        }
+      ],
+      "caveat": "Review current maintenance and documentation before adoption.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "shengbte",
+      "name": "ShengBTE",
+      "aliases": [],
+      "one_line": "Solves the phonon Boltzmann transport equation from anharmonic force constants.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "thermal-transport"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "anharmonic-phonons",
+        "lattice-thermal-transport"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://www.shengbte.org/home"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "sscha",
+      "name": "SSCHA",
+      "aliases": [],
+      "one_line": "Calculates anharmonic free energies and temperature-dependent lattice dynamics.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "anharmonic",
+        "lattice-dynamics"
+      ],
+      "interface_tags": [
+        "Python",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "anharmonic-phonons",
+        "finite-temperature-structural-sampling"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://sscha.eu/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "tdep",
+      "name": "TDEP",
+      "aliases": [],
+      "one_line": "Fits temperature-dependent effective potentials and derives finite-temperature lattice properties.",
+      "task_groups": [
+        "lattice-temperature-epc"
+      ],
+      "kind_tags": [
+        "lattice-dynamics",
+        "anharmonic"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "anharmonic-phonons",
+        "lattice-thermal-transport",
+        "finite-temperature-structural-sampling"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://tdep-developers.github.io/tdep/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "amset",
+      "name": "AMSET",
+      "aliases": [],
+      "one_line": "Computes carrier transport from compatible first-principles inputs.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "transport",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "electronic-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://hackingmaterials.lbl.gov/amset/"
+        }
+      ],
+      "caveat": "Check the current documentation for supported parent-code inputs before planning a workflow.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "berkeleygw",
+      "name": "BerkeleyGW",
+      "aliases": [],
+      "one_line": "Use BerkeleyGW for GW and Bethe-Salpeter calculations.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "gw-bse",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "quasiparticle-corrections",
+        "excitons-and-bethe-salpeter-equation"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "BerkeleyGW",
+          "url": "https://berkeleygw.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "boltztrap2",
+      "name": "BoltzTraP2",
+      "aliases": [],
+      "one_line": "Use BoltzTraP2 for semiclassical electronic transport interpolation.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "transport",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "Python",
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "electronic-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "BoltzTraP2",
+          "url": "https://gitlab.com/sousaw/BoltzTraP2"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "irrep",
+      "name": "IrRep",
+      "aliases": [],
+      "one_line": "Determines symmetry eigenvalues and band irreducible representations.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "symmetry",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "Python",
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "band-structure",
+        "topological-invariants-and-boundary-states"
+      ],
+      "links": [
+        {
+          "role": "source",
+          "label": "Official entry",
+          "url": "https://github.com/stepan-tsirkin/irrep"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "kwant",
+      "name": "Kwant",
+      "aliases": [],
+      "one_line": "Builds tight-binding systems and calculates coherent quantum transport.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "quantum-transport",
+        "library"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "quantum-transport"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://kwant-project.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "paoflow",
+      "name": "PAOFLOW",
+      "aliases": [],
+      "one_line": "Builds interpolated Hamiltonians and evaluates electronic response and transport.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "postprocess",
+        "transport"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "band-structure",
+        "berry-phase-and-berry-curvature",
+        "topological-invariants-and-boundary-states",
+        "electronic-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://paoflow.org/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "pythtb",
+      "name": "PythTB",
+      "aliases": [],
+      "one_line": "Builds tight-binding models and evaluates Berry-phase quantities.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "tight-binding",
+        "topology"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "wannier-function-construction",
+        "berry-phase-and-berry-curvature",
+        "topological-invariants-and-boundary-states"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://pythtb.readthedocs.io/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "qeirreps",
+      "name": "qeirreps",
+      "aliases": [],
+      "one_line": "Extracts band irreducible representations from compatible Quantum ESPRESSO outputs.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "symmetry",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "Python",
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "band-structure",
+        "topological-invariants-and-boundary-states"
+      ],
+      "links": [
+        {
+          "role": "source",
+          "label": "Official entry",
+        "url": "https://github.com/qeirreps/qeirreps"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "salmon",
+      "name": "SALMON",
+      "aliases": [],
+      "one_line": "Runs real-time TDDFT simulations of light–matter interaction.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "optics",
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "independent-particle-optical-properties",
+        "time-dependent-response-and-spectroscopy"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+          "url": "https://salmon-tddft.jp/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "spex",
+      "name": "SPEX",
+      "aliases": [],
+      "one_line": "Runs all-electron GW and response calculations.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "gw-bse",
+        "engine"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "quasiparticle-corrections",
+        "excitons-and-bethe-salpeter-equation"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://spex.readthedocs.io/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "spgrep",
+      "name": "spgrep",
+      "aliases": [],
+      "one_line": "Computes space-group representations for symmetry analysis.",
+      "task_groups": [
+        "excited-state-topology-transport",
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "symmetry",
+        "library"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "band-structure",
+        "topological-invariants-and-boundary-states"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://spglib.github.io/spgrep/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "tbmodels",
+      "name": "TBmodels",
+      "aliases": [],
+      "one_line": "Stores and manipulates Wannier tight-binding models.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "tight-binding",
+        "wannier"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "wannier-function-construction",
+        "topological-invariants-and-boundary-states"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://tbmodels.greschd.ch/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "transiesta-tbtrans",
+      "name": "TranSIESTA and TBtrans",
+      "aliases": [
+        "TranSIESTA",
+        "TBtrans"
+      ],
+      "one_line": "Provides NEGF electronic transport within the SIESTA ecosystem.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "quantum-transport"
+      ],
+      "interface_tags": [
+        "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "quantum-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://docs.siesta-project.org/projects/siesta/en/stable/reference/tbtrans.html"
+        }
+      ],
+      "editorial_state": "catalog"
     },
     {
       "slug": "wannier90",
       "name": "Wannier90",
       "aliases": [],
-      "category": "Target-property tools",
-      "interfaces": [
+      "one_line": "A code for constructing Wannier representations and using them for interpolation and selected Berry, topology, and transport analyses.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "wannier",
+        "topology"
+      ],
+      "interface_tags": [
         "CLI",
         "Library"
       ],
-      "access": "open-source",
-      "role": "A code for constructing Wannier representations and using them for interpolation and selected Berry, topology, and transport analyses.",
-      "use_when": "Use Wannier90 when compatible parent eigenstates must be represented by Wannier functions for interpolation, Berry, topology, Fermi-surface, or transport analysis.",
-      "first_action": "Declare trial projections, bands, energy windows, k mesh, and convergence controls in one win file, then run preprocessing and inspect the requested parent interfaces.",
-      "input_objects": [
-        "A win file and compatible parent eigenstate metadata",
-        "amn, mmn, eig, and related interface files from the parent calculation"
-      ],
-      "output_objects": [
-        "Wannier centres, spreads, matrices, and a checkpoint",
-        "Interpolated bands or downstream Berry, topology, surface, and transport inputs"
-      ],
-      "verify": "Verify the parent eigenstate and k-mesh identity, projections and frozen or disentanglement windows, interface-file completeness and localization convergence, then compare interpolated bands or observables with the ab-initio reference over the target region; a small spread alone is insufficient.",
-      "primary_topic": "wannier-function-construction",
-      "homepage": "https://wannier.org/",
-      "documentation": "https://wannier90.readthedocs.io/en/latest/",
-      "getting_started": {
-        "label": "Wannier90 documentation",
-        "url": "https://wannier90.readthedocs.io/en/latest/"
-      },
-      "source_repository": "https://github.com/wannier-developers/wannier90",
+      "access": "open",
       "topics": [
         "wannier-function-construction",
         "fermi-surface-and-full-brillouin-zone-analysis",
         "berry-phase-and-berry-curvature",
         "topological-invariants-and-boundary-states",
         "electronic-transport"
-      ]
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Wannier90",
+          "url": "https://wannier90.readthedocs.io/en/latest/"
+        },
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://wannier.org/"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/wannier-developers/wannier90"
+        },
+        {
+          "role": "tutorial",
+          "label": "Wannier90 tutorials",
+          "url": "https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_1/"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
     },
     {
-      "slug": "epw",
-      "name": "EPW",
+      "slug": "wannierberri",
+      "name": "WannierBerri",
       "aliases": [],
-      "category": "Target-property tools",
-      "interfaces": [
+      "one_line": "Interpolates Berry-phase, Fermi-surface, and transport quantities from Wannier models.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "wannier",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "wannier-function-construction",
+        "fermi-surface-and-full-brillouin-zone-analysis",
+        "berry-phase-and-berry-curvature",
+        "topological-invariants-and-boundary-states",
+        "electronic-transport"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://docs.wannier-berri.org/en/latest/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "wanniertools",
+      "name": "WannierTools",
+      "aliases": [],
+      "one_line": "Use WannierTools for topological and surface-state analysis from a validated tight-binding model.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "wannier",
+        "topology"
+      ],
+      "interface_tags": [
         "CLI"
       ],
-      "access": "open-source",
-      "role": "A Wannier-based code for electron-phonon coupling and related electronic, transport, and superconducting observables using compatible parent data.",
-      "use_when": "Use EPW when compatible coarse-grid electronic, phonon, and Wannier parent data are available for electron-phonon, transport, or superconducting observables.",
-      "first_action": "Audit the converged SCF and NSCF states, DFPT dynamical and perturbation data, QE save tree and Wannier files as one compatible parent lineage before preparing a bounded EPW interpolation task.",
-      "input_objects": [
-        "Compatible QE save data, dynamical matrices, perturbation data and Wannier interface files",
-        "An EPW input with declared coarse and fine grids, bands, windows and target observable"
-      ],
-      "output_objects": [
-        "Interpolated electron, phonon, and electron-phonon datasets",
-        "Observable-specific coupling, linewidth, transport, or superconducting tables and logs"
-      ],
-      "verify": "Verify exact SCF, NSCF, DFPT and Wannier parent ancestry and coarse-grid completeness, compare direct and interpolated bands, phonons and electron-phonon matrix elements, then converge fine k and q meshes, smearing and the target observable; an example lambda, mobility or Tc is not a production result.",
-      "primary_topic": "electron-phonon-coupling",
-      "homepage": "https://epw-code.org/",
-      "documentation": "https://docs.epw-code.org/",
-      "getting_started": {
-        "label": "EPW documentation",
-        "url": "https://docs.epw-code.org/"
-      },
-      "source_repository": "https://gitlab.com/QEF/q-e/-/tree/develop/EPW",
+      "access": "open",
       "topics": [
-        "electron-phonon-coupling",
-        "conventional-superconductivity",
-        "electronic-transport"
-      ]
+        "wannier-function-construction",
+        "berry-phase-and-berry-curvature",
+        "topological-invariants-and-boundary-states"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "WannierTools",
+          "url": "https://wannier-tools.readthedocs.io/"
+        }
+      ],
+      "editorial_state": "reviewed"
     },
     {
-      "slug": "aiida",
-      "name": "AiiDA",
+      "slug": "west",
+      "name": "WEST",
       "aliases": [],
-      "category": "Preservation and optional automation",
-      "interfaces": [
-        "Python",
+      "one_line": "Runs large-scale GW and related many-body perturbation calculations.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "gw-bse",
+        "engine"
+      ],
+      "interface_tags": [
         "CLI",
+        "HPC"
+      ],
+      "access": "open",
+      "topics": [
+        "quasiparticle-corrections",
+        "excitons-and-bethe-salpeter-equation"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://west-code.org/documentation/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "yambo",
+      "name": "Yambo",
+      "aliases": [],
+      "one_line": "Use Yambo for many-body perturbation and optical calculations.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "gw-bse",
+        "postprocess"
+      ],
+      "interface_tags": [
+        "CLI"
+      ],
+      "access": "open",
+      "topics": [
+        "quasiparticle-corrections",
+        "excitons-and-bethe-salpeter-equation",
+        "independent-particle-optical-properties"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Yambo",
+          "url": "https://www.yambo-code.eu/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "z2pack",
+      "name": "Z2Pack",
+      "aliases": [],
+      "one_line": "Computes topological invariants from hybrid Wannier charge-centre evolution.",
+      "task_groups": [
+        "excited-state-topology-transport"
+      ],
+      "kind_tags": [
+        "topology",
+        "library"
+      ],
+      "interface_tags": [
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "berry-phase-and-berry-curvature",
+        "topological-invariants-and-boundary-states"
+      ],
+      "links": [
+        {
+          "role": "docs",
+          "label": "Official entry",
+          "url": "https://z2pack.greschd.ch/"
+        }
+      ],
+      "caveat": "Check the current documentation for supported parent-code interfaces before planning a workflow.",
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "bagit",
+      "name": "BagIt",
+      "aliases": [],
+      "one_line": "Defines a file-packaging convention for transferable bags with manifests.",
+      "task_groups": [
+        "validate-and-preserve"
+      ],
+      "kind_tags": [
+        "standard",
+        "archive"
+      ],
+      "interface_tags": [
         "Web"
       ],
-      "access": "open-source",
-      "role": "A workflow and provenance infrastructure for automating calculations and retaining queryable data-process lineage.",
-      "use_when": "Use AiiDA as an optional implementation layer when repeated or dependent calculations need provenance-preserving execution and reuse; DRW remains manually executable without it.",
-      "first_action": "Configure a profile, computer and code, run one small process, then inspect its inputs, outputs, state, logs and provenance links together with a preserved failed process when available before building a larger workflow.",
-      "input_objects": [
-        "A process builder with typed data nodes",
-        "Configured profile, computer, code, resources, and optional parent nodes"
-      ],
-      "output_objects": [
-        "Process and data nodes with logs and execution state",
-        "A queryable provenance graph linking inputs, processes, outputs, and descendants"
-      ],
-      "verify": "Verify that each result traces to exact inputs, code and version, computer and resources, input and output files and parent or restart lineage, and retain failed process nodes and logs; provenance does not establish numerical convergence or scientific validity.",
-      "primary_topic": "document-and-preserve-study",
-      "homepage": "https://www.aiida.net/",
-      "documentation": "https://aiida.readthedocs.io/projects/aiida-core/en/stable/",
-      "getting_started": {
-        "label": "AiiDA stable documentation",
-        "url": "https://aiida.readthedocs.io/projects/aiida-core/en/stable/"
-      },
-      "source_repository": "https://github.com/aiidateam/aiida-core",
+      "access": "open",
       "topics": [
-        "calculate-reference-ground-state",
-        "analyze-and-compare-results",
-        "validate-results-and-scientific-conclusions",
         "document-and-preserve-study"
-      ]
+      ],
+      "links": [
+        {
+          "role": "standard",
+          "label": "RFC 8493",
+          "url": "https://datatracker.ietf.org/doc/rfc8493/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "datacite-schema",
+      "name": "DataCite Metadata Schema",
+      "aliases": [],
+      "one_line": "Defines metadata fields used to identify and cite research outputs.",
+      "task_groups": [
+        "validate-and-preserve"
+      ],
+      "kind_tags": [
+        "standard",
+        "metadata"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "standard",
+          "label": "Official entry",
+          "url": "https://schema.datacite.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "figshare",
+      "name": "Figshare",
+      "aliases": [],
+      "one_line": "Use Figshare for paper-linked and author-deposited supplementary structures or calculation data.",
+      "task_groups": [
+        "validate-and-preserve",
+        "find-data"
+      ],
+      "kind_tags": [
+        "archive"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "Figshare",
+          "url": "https://figshare.com/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "iochem-bd",
+      "name": "ioChem-BD",
+      "aliases": [],
+      "one_line": "Publishes and preserves computational chemistry data and provenance.",
+      "task_groups": [
+        "validate-and-preserve"
+      ],
+      "kind_tags": [
+        "archive",
+        "provenance"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Official entry",
+        "url": "https://docs.iochem-bd.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "iupac-gold-book",
+      "name": "IUPAC Gold Book",
+      "aliases": [],
+      "one_line": "Provides authoritative chemical terminology and definitions.",
+      "task_groups": [
+        "validate-and-preserve"
+      ],
+      "kind_tags": [
+        "reference",
+        "terminology"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "relative-and-formation-energies",
+        "equation-of-state-and-structural-phase-stability",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions"
+      ],
+      "links": [
+        {
+          "role": "manual",
+          "label": "Official Gold Book DOI",
+          "url": "https://doi.org/10.1351/goldbook"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "materials-cloud-archive",
+      "name": "Materials Cloud Archive",
+      "aliases": [],
+      "one_line": "Use Materials Cloud Archive for paper-linked datasets, inputs, outputs, provenance, and supplementary evidence.",
+      "task_groups": [
+        "validate-and-preserve",
+        "find-data"
+      ],
+      "kind_tags": [
+        "archive"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "Materials Cloud Archive",
+          "url": "https://archive.materialscloud.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "mdf",
+      "name": "Materials Data Facility",
+      "aliases": [],
+      "one_line": "Use MDF to discover and retrieve published materials datasets across participating repositories.",
+      "task_groups": [
+        "validate-and-preserve",
+        "find-data"
+      ],
+      "kind_tags": [
+        "archive"
+      ],
+      "interface_tags": [
+        "Web",
+        "API",
+        "Python"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "Materials Data Facility",
+          "url": "https://materialsdatafacility.org/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "nist-mdr",
+      "name": "NIST Materials Data Repository",
+      "aliases": [],
+      "one_line": "Use NIST MDR for citable public materials datasets and supporting research records.",
+      "task_groups": [
+        "validate-and-preserve",
+        "find-data"
+      ],
+      "kind_tags": [
+        "archive"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "NIST Materials Data Repository",
+          "url": "https://materialsdata.nist.gov/"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "nist-uncertainty",
+      "name": "NIST uncertainty guidance",
+      "aliases": [],
+      "one_line": "Provides a primary reference for evaluating and expressing measurement uncertainty.",
+      "task_groups": [
+        "validate-and-preserve"
+      ],
+      "kind_tags": [
+        "manual",
+        "reference"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions"
+      ],
+      "links": [
+        {
+          "role": "manual",
+          "label": "Official entry",
+          "url": "https://www.nist.gov/pml/nist-technical-note-1297"
+        }
+      ],
+      "editorial_state": "catalog"
     },
     {
       "slug": "python",
       "name": "Python",
       "aliases": [],
-      "category": "Scientific programming",
-      "interfaces": [
-        "Programming language",
+      "one_line": "A general programming language used here for transparent parsing, transformation, validation, and plotting companions.",
+      "task_groups": [
+        "validate-and-preserve",
+        "prepare-models"
+      ],
+      "kind_tags": [
+        "language",
+        "analysis"
+      ],
+      "interface_tags": [
+        "Language",
         "CLI"
       ],
-      "access": "open-source",
-      "role": "A general programming language used here for transparent parsing, transformation, validation, and plotting companions.",
-      "use_when": "Use Python when a bounded workflow step needs transparent parsing, transformation, validation, automation, or plotting that can be reviewed as source code.",
-      "first_action": "Open the smallest relevant script and one representative input, pin the interpreter and dependencies, then run that bounded example before scaling to a study.",
-      "input_objects": [
-        "Text, CSV, JSON, or other declared data files",
-        "Arrays, records, parameters, and a version-pinned script"
-      ],
-      "output_objects": [
-        "Parsed or transformed data tables",
-        "Validation results, figures, or other explicitly written artifacts"
-      ],
-      "verify": "Verify that the script, interpreter and dependency versions, exact inputs, parameters, exit status, and written artifacts are recorded, and compare a fresh rerun when the step is expected to be deterministic.",
-      "primary_topic": "analyze-and-compare-results",
-      "homepage": "https://www.python.org/",
-      "documentation": "https://docs.python.org/3/",
-      "getting_started": {
-        "label": "Python 3 documentation",
-        "url": "https://docs.python.org/3/"
-      },
-      "source_repository": "https://github.com/python/cpython",
+      "access": "open",
       "topics": [
         "build-or-modify-computational-model",
         "test-numerical-convergence",
         "analyze-and-compare-results",
         "validate-results-and-scientific-conclusions",
         "document-and-preserve-study"
-      ]
+      ],
+      "links": [
+        {
+          "role": "homepage",
+          "label": "Homepage",
+          "url": "https://www.python.org/"
+        },
+        {
+          "role": "docs",
+          "label": "Documentation",
+          "url": "https://docs.python.org/3/"
+        },
+        {
+          "role": "source",
+          "label": "Source repository",
+          "url": "https://github.com/python/cpython"
+        }
+      ],
+      "editorial_state": "reviewed",
+      "detail": true
+    },
+    {
+      "slug": "ro-crate",
+      "name": "RO-Crate",
+      "aliases": [],
+      "one_line": "Packages research objects with machine-readable metadata and linked files.",
+      "task_groups": [
+        "validate-and-preserve"
+      ],
+      "kind_tags": [
+        "standard",
+        "provenance"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "standard",
+          "label": "Official entry",
+          "url": "https://www.researchobject.org/ro-crate/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "zenodo",
+      "name": "Zenodo",
+      "aliases": [],
+      "one_line": "Use Zenodo when papers, authors, or projects deposit versioned structures, inputs, outputs, or analysis data.",
+      "task_groups": [
+        "validate-and-preserve",
+        "find-data"
+      ],
+      "kind_tags": [
+        "archive"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "obtain-material-structure",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "data",
+          "label": "Zenodo",
+          "url": "https://zenodo.org/"
+        }
+      ],
+      "caveat": "The official site blocked automated access during the 2026-08-10 audit; open it manually and recheck current access.",
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "cecam",
+      "name": "CECAM",
+      "aliases": [],
+      "one_line": "Hosts computational science workshops, schools, and community programmes.",
+      "task_groups": [
+        "learn-and-connect"
+      ],
+      "kind_tags": [
+        "community",
+        "school"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions"
+      ],
+      "links": [
+        {
+          "role": "community",
+          "label": "Official entry",
+          "url": "https://www.cecam.org/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "sholl-steckel-dft",
+      "name": "Density Functional Theory: A Practical Introduction",
+      "aliases": [],
+      "one_line": "Provides a practice-oriented introduction to density-functional calculations.",
+      "task_groups": [
+        "learn-and-connect"
+      ],
+      "kind_tags": [
+        "book"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "subscription",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "test-numerical-convergence",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "manual",
+          "label": "Publisher DOI",
+          "url": "https://doi.org/10.1002/9780470447710"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "esl-events",
+      "name": "Electronic Structure Library events",
+      "aliases": [],
+      "one_line": "Lists electronic-structure software workshops and schools.",
+      "task_groups": [
+        "learn-and-connect"
+      ],
+      "kind_tags": [
+        "community",
+        "school"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "analyze-and-compare-results"
+      ],
+      "links": [
+        {
+          "role": "community",
+          "label": "Official entry",
+          "url": "https://esl.cecam.org/en/events/index.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "martin-electronic-structure",
+      "name": "Electronic Structure: Basic Theory and Practical Methods",
+      "aliases": [],
+      "one_line": "Provides a broad textbook treatment of electronic-structure theory and methods.",
+      "task_groups": [
+        "learn-and-connect"
+      ],
+      "kind_tags": [
+        "book"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "subscription",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions"
+      ],
+      "links": [
+        {
+          "role": "manual",
+          "label": "Publisher DOI",
+          "url": "https://doi.org/10.1017/CBO9780511805769"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "materials-cloud-learn",
+      "name": "Materials Cloud Learn",
+      "aliases": [],
+      "one_line": "Use Materials Cloud Learn for recorded lectures and schools across QE, AiiDA, Wannier90, and related tools.",
+      "task_groups": [
+        "learn-and-connect"
+      ],
+      "kind_tags": [
+        "tutorial"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "tutorial",
+          "label": "Materials Cloud Learn",
+          "url": "https://www.materialscloud.org/learn"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "materiapps",
+      "name": "MateriApps",
+      "aliases": [],
+      "one_line": "Use MateriApps for a Japanese/English task-oriented computational-materials software concierge.",
+      "task_groups": [
+        "learn-and-connect"
+      ],
+      "kind_tags": [
+        "portal",
+        "community"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "tutorial",
+          "label": "MateriApps",
+          "url": "https://ma.issp.u-tokyo.ac.jp/en/app"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "materiapps-mp-qe-ja",
+      "name": "MateriApps Materials Project to QE hands-on guide",
+      "aliases": [],
+      "one_line": "Use MateriApps Materials Project to QE hands-on guide for a Japanese browser-to-structure-to-QE practical example.",
+      "task_groups": [
+        "learn-and-connect"
+      ],
+      "kind_tags": [
+        "tutorial"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "tutorial",
+          "label": "MateriApps Materials Project to QE hands-on guide",
+          "url": "https://ma.issp.u-tokyo.ac.jp/app-post/2522"
+        }
+      ],
+      "editorial_state": "reviewed"
+    },
+    {
+      "slug": "molssi-education",
+      "name": "MolSSI Education",
+      "aliases": [],
+      "one_line": "Collects maintained computational molecular-science lessons and workshops.",
+      "task_groups": [
+        "learn-and-connect"
+      ],
+      "kind_tags": [
+        "tutorial",
+        "course"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "analyze-and-compare-results",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "tutorial",
+          "label": "Official entry",
+          "url": "https://education.molssi.org/resources.html"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "psi-k",
+      "name": "Psi-k",
+      "aliases": [],
+      "one_line": "Connects the electronic-structure community through schools, workshops, and scientific meetings.",
+      "task_groups": [
+        "learn-and-connect"
+      ],
+      "kind_tags": [
+        "community",
+        "school"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "open",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions"
+      ],
+      "links": [
+        {
+          "role": "community",
+          "label": "Official entry",
+        "url": "https://psi-k.net/"
+        }
+      ],
+      "editorial_state": "catalog"
+    },
+    {
+      "slug": "whut-materials-simulation-cn",
+      "name": "材料模拟与计算 (Materials Simulation and Computing)",
+      "aliases": [],
+      "one_line": "Use this Chinese university course for materials-modeling and GUI-based first-principles practice.",
+      "task_groups": [
+        "learn-and-connect"
+      ],
+      "kind_tags": [
+        "book",
+        "course"
+      ],
+      "interface_tags": [
+        "Web"
+      ],
+      "access": "registration",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions",
+        "document-and-preserve-study"
+      ],
+      "links": [
+        {
+          "role": "tutorial",
+          "label": "Open course page",
+          "url": "https://www.icourse163.org/spoc/course/WHUT-1467664166"
+        }
+      ],
+      "language": "zh-CN",
+      "editorial_state": "reviewed"
     }
   ]
 }

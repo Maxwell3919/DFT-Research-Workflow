@@ -5,8 +5,13 @@ title: Build a Two-Dimensional Monolayer Model
 kind: worked-example
 tools:
   - ase
+interfaces:
+  - Primary paper or structure database
+  - Terminal
+  - ASE Python API
+  - ASE GUI or another structure viewer
 status: reviewed
-summary: Follow one generated MoS2 monolayer model from builder arguments to periodicity, cell, atomic extent, lineage, and the limits of an illustrative two-dimensional structure.
+summary: Write and reopen an illustrative 2H-MoS2 unit and repeated child, then compare top and side views, periodicity, atomic extent, empty-cell length, and the limits of a generated monolayer.
 tested_versions:
   - ASE 3.29.0
   - Python 3.12
@@ -16,96 +21,63 @@ source_ids:
   - ase-building
   - ase-atoms
   - ase-pypi-3290
-media_ids:
-  - monolayer-periodicity-diagram
+media_ids: []
 review: docs/reviews/2026-08-03-practical-guides-model-building-pilot.md
 reviewed_at: 2026-08-03
 ---
 
-This worked example creates one generated MoS2 monolayer object and checks what was actually built. It is not derived from an experimental CIF, does not contain a DFT-relaxed lattice, and supports no stability or property claim.
+This worked example writes one generated 2H-MoS2 unit, reads it back, repeats it in plane, writes the child, and reopens the exact file that a later tool would receive. It is not derived from an experimental CIF, does not contain a DFT-relaxed lattice, and supports no phase, stability, or property claim.
 
-## Manual route: identify and inspect the monolayer
+## Identify the layer before using a builder
 
-Establish the intended layer, polytype, composition, and orientation from a primary paper, supplementary structure, database record, or declared prototype. A generated monolayer is a model proposal, not a recovered experimental structure.
+Establish the intended material, polytype, composition, orientation, and relation to bulk or experiment from a primary paper, supplementary structure, database record, or explicitly declared prototype. A builder name is not source provenance, and one generated polytype is not a phase-selection result.
 
-Open the model in top and side views with the cell boundary visible. Identify the nonperiodic axis; inspect stoichiometry, coordination, layer planarity or buckling, and in-plane repetition; measure the atomic thickness, cell length, vacuum region, and closest periodic image. Verify that later input files preserve the intended periodic boundary treatment. Visual inspection catches a wrong orientation or image contact but does not establish vacuum, k-mesh, dipole, or structural convergence.
+Before automation, decide which axis is nonperiodic and which alternatives remain plausible: polytype, stacking, buckling, strain, defects, substrate relation, and termination or passivation where relevant.
 
-[Browse structure sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data) and [compare visual or symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
-
-## Optional automation: run the checked model construction
-
-From the repository root, run:
+## Keep an inspectable unit and child file
 
 ```bash
-python3 examples/practical-guides/ase_monolayer_model.py
+run_root="$(mktemp -d)"
+python3 examples/practical-guides/ase_monolayer_model.py --workdir "$run_root"
+python3 -m json.tool "$run_root/summary.json"
+ase info --files \
+  "$run_root/source/mos2-2h-unit.extxyz" \
+  "$run_root/output/mos2-2h-2x2.extxyz"
 ```
 
-The companion uses ASE 3.29.0, builds the declared object, and reports its formula, atom count, periodicity, cell, atomic z extent, total empty-cell length, and in-plane area. A successful exit verifies those object properties and summary generation only.
+The companion creates an illustrative one-by-one 2H-MoS2 unit with declared builder arguments, writes it, reads the file, repeats that exact object two-by-two in plane, writes the child, and reopens both files. The summary records formula, atom count, periodic flags, cell length, atomic z extent, empty-cell length, in-plane area, and hashes.
 
-Record the origin as `generated illustrative structure`, together with ASE version and every builder argument. Do not describe the result as an experimentally measured or DFT-relaxed monolayer.
+The demonstration values `a=3.18`, `thickness=3.19`, and `vacuum=8.0` are not certified experimental data, converged DFT settings, or recommendations for another material.
 
-## Build the object
+## Inspect top and side views together
 
-```python
-from ase.build import mx2
-
-monolayer = mx2(
-    "MoS2",
-    kind="2H",
-    a=3.18,
-    thickness=3.19,
-    size=(2, 2, 1),
-    vacuum=8.0,
-)
+```bash
+ase gui \
+  "$run_root/source/mos2-2h-unit.extxyz" \
+  "$run_root/output/mos2-2h-2x2.extxyz"
 ```
 
-The values are bounded demonstration inputs, not certified experimental data, converged DFT settings, or recommendations for another material.
+Show the cell boundary. In the top view, inspect the in-plane lattice, stoichiometry, repetition, and orientation. In the side view, inspect layer order, planarity or buckling, atomic thickness, total cell length, empty region, and closest repeated image. Use these exact written objects; a generic periodicity sketch cannot establish their geometry.
 
-The call specifies composition, requested layer type, in-plane lattice parameter, builder thickness, two-by-two lateral repetition, one layer along the third direction, and empty-cell length. Changing composition, polytype, strain, thickness, defect content, stacking, or periodicity changes the physical hypothesis.
+The ASE flags are `[True, True, False]`, but a later electronic-structure program may still solve a three-dimensionally periodic electrostatic problem. Record and implement the intended boundary treatment in the solver input; do not assume the coordinate file decides it.
 
-## Check the produced object
+## Decide whether the candidate can continue
 
-Review the top and side views together with the numerical cell, composition, periodicity, thickness, vacuum, and nearest-image report. The visual and numerical checks should describe the same object; neither proves that the model is the stable monolayer or that its finite-size errors are converged.
+Keep the source identity or declared generated origin, builder and version, every argument, parent and child hashes, periodicity, and visual observations. For a research model, also require a defensible material source, phase rationale, relation to experiment or bulk, and convergence evidence for the target observable.
 
-
-```python
-assert monolayer.pbc.tolist() == [True, True, False]
-assert len(monolayer) == 12
-assert monolayer.get_chemical_symbols().count("Mo") == 4
-assert monolayer.get_chemical_symbols().count("S") == 8
-```
-
-Also inspect the full cell matrix, minimum and maximum atomic z coordinates, atomic z extent, total empty-cell length, and in-plane area. Reporting only the `vacuum` argument hides the actual object position and cell geometry.
-
-The ASE periodic flags express the intended two-dimensional object. A later electronic-structure program may still solve a three-dimensional periodic problem and require explicit electrostatic treatment. Preserve the boundary intention outside the coordinate file.
-
-## Preserve model identity and decide
-
-Keep the origin, builder and version, formula and layer type, every argument, periodicity, output checksum, execution script, and structured result. For a production model, also require a defensible material source, relation to bulk or experiment, model-selection rationale, convergence evidence, and versioned electronic method.
-
-Accept this object only as a reconstructable starting candidate. It does not establish that 2H is the relevant phase, that the lattice or thickness is accurate, that vacuum is converged, that the isolated layer represents an experiment, or that the monolayer is dynamically or thermodynamically stable.
-
-The next operation is to choose the method and boundary treatment, then converge the relevant cell, sampling, and target observable. A generated coordinate file is not yet a validated calculation input or result.
+Continue by [choosing the method and boundary treatment](/DFT-Research-Workflow/operations/choose-dft-method-and-computational-setup/), then [testing the relevant cell, vacuum, sampling, and observable convergence](/DFT-Research-Workflow/operations/test-numerical-convergence/).
 
 ## What this example does not establish
 
-This example does not establish that the chosen polytype is the relevant phase, that the lattice or thickness values are accurate, that the cell or vacuum is converged, that the monolayer is dynamically or thermodynamically stable, or that a substrate-free isolated layer represents an experiment. It establishes no electronic, optical, vibrational, transport, or superconducting property.
-
-## What this guide verifies
-
-The companion verifies the pinned ASE version, builder execution, composition, atom count, periodicity, cell and extent metrics, and structured summary generation.
-
-It does not run DFT, validate a material phase, converge vacuum or sampling, relax the object, or establish any electronic, optical, vibrational, transport, or superconducting property.
+The companion verifies ASE 3.29.0 builder execution, file writing and reopening, the two-by-two repeat, composition, atom count, periodicity, cell and extent metrics, hashes, and structured summary generation. It does not establish that 2H is the relevant phase, that the lattice or thickness is accurate, that vacuum or sampling is converged, that the isolated layer represents an experiment, or that the monolayer is dynamically or thermodynamically stable.
 
 ## Common mistakes
 
-**Calling a generated object experimental.** Preserve the builder origin and arguments.
+**Calling a generated object experimental.** Preserve the generator origin and every argument.
 
-**Reporting only the vacuum argument.** Inspect the actual cell length and atomic extent.
+**Reporting only the vacuum argument.** Inspect the actual cell length, atomic extent, and image geometry.
 
-**Assuming ASE periodic flags define the later solver boundary.** Record and implement the electronic boundary treatment explicitly.
-
-**Treating one generated polytype as selected.** Phase identity and stability require separate evidence.
+**Showing only a top view.** A top view cannot reveal layer order, buckling, thickness, or empty-cell length.
 
 ## Official sources
 

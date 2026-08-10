@@ -29,31 +29,31 @@ reviewed_at: "2026-08-10"
 
 ## Start with the database record, not a detached file
 
-Open [COD entry 9013102](https://www.crystallography.net/cod/9013102.html). Confirm the entry number, formula, common name, unit-cell parameters, space group, publication record, and version history before downloading anything. These fields identify what the database says the record represents; they do not prove that it is the correct model for your calculation.
+Open [COD entry 9013102](https://www.crystallography.net/cod/9013102.html). Confirm the entry number, formula, common name, unit-cell parameters, space group, publication record, and version history before downloading anything. These fields identify what the database says the record represents; they do not prove that it is the correct phase or model for a calculation.
 
-Use the **Coordinates** link labelled `9013102.cif` to download the CIF. Preserve the record URL, access date, original filename, and publication identity beside the file. A later `sha256sum 9013102.cif` can fix the downloaded byte identity, but a hash cannot establish the structure's scientific suitability.
+Use the **Coordinates** link labelled `9013102.cif`. Keep that download unchanged, and record the page URL, access date, original filename, publication identity, and any experimental conditions or disorder information. A checksum fixes the downloaded bytes; it does not establish phase identity or scientific suitability.
 
-## Read the CIF before converting it
+The Visual reference section on this page includes an actual capture of the public COD record. Use it to locate identity, coordinates, structure preview, and publication metadata. The capture proves only what the interface displayed on 2026-08-10.
 
-Open the downloaded text in an editor. Locate the data block, cell lengths and angles, space-group fields, atom-site loop, fractional coordinates, occupancies, and any disorder or uncertainty fields. Compare them with the browser record. Stop if the formula, cell, symmetry, or site population disagree in a way you cannot explain.
+## Read the exact CIF before converting it
 
-The COD screenshot below is an actual public record state captured on 2026-08-10. It shows where the record identity, coordinate download, embedded structure preview, and publication metadata appear. It proves only that this interface and record were displayed at capture time.
+Open the downloaded CIF in a text editor. Locate the data block, cell lengths and angles, space-group fields, atom-site loop, fractional coordinates, occupancies, and uncertainty or disorder fields. A terminal reader can use `head -n 40 9013102.cif`, `grep -n -E '^data_|^loop_|^_cell_|^_space_group_|^_symmetry_' 9013102.cif`, and `grep -n -E '^_atom_site_(label|type_symbol|fract_[xyz]|occupancy)' 9013102.cif`. These commands expose records; they do not validate the geometry.
 
-## Rotate the structure and inspect periodic geometry
+Compare the text with the browser record. Stop if formula, cell, symmetry, or site population disagree in a way you cannot explain. Preserve any converted, standardized, primitive, conventional, or symmetry-expanded descendant under a new filename so that it cannot be mistaken for the download.
 
-The second screenshot is an actual Mol* browser session loading this repository's expanded eight-site teaching snapshot derived from COD 9013102. The captured object is `public/examples/cif/silicon-cod-9013102-expanded.cif`, SHA-256 `c41b61624bccbf1a86b930d049aeabd2bfaa815c16bffa78c32183aab9f203bc`. Rotate the cell, turn the unit-cell outline on, inspect periodicity, and compare the visible atom count and arrangement with the text object you intended to load. The viewer state tree identifies the loaded object and representation.
+## Open the same object in a crystallographic viewer
 
-This Mol* object is **not** the byte-for-byte raw COD download. It is the repository's expanded teaching snapshot, so use it to inspect the represented cell and to catch obvious geometry or conversion mistakes, not to claim raw-file identity. [Mol* documents the viewer URL/query interface](https://molstar.org/viewer-docs/query-parameters/).
+For the desktop route, open the exact downloaded CIF in VESTA with **File > Open**. Show the unit-cell boundary, rotate along each lattice direction, inspect periodic images and coordination, and measure suspiciously short contacts. For a slab or layered object, view along the surface normal and confirm which axis contains the intended vacuum. The [VESTA documentation](https://jp-minerals.org/vesta/en/doc.html) describes these controls. No VESTA screenshot or local VESTA execution is claimed here.
 
-For a desktop manual route, open the exact downloaded CIF in VESTA with **File > Open**. Show the unit-cell boundary, rotate along each lattice direction, inspect periodic images and coordination, and use the distance tool on suspiciously short contacts. For a slab or layered model, confirm which axis contains vacuum and view along the surface normal. The [VESTA documentation](https://jp-minerals.org/vesta/en/doc.html) describes these controls. No VESTA screenshot or local VESTA execution is claimed in this walkthrough.
+The browser-viewer capture in the Visual reference section loads this site's expanded eight-site Silicon teaching snapshot, not the byte-for-byte COD download. Rotate it, inspect the object identity in the state tree, and compare the visible arrangement with the object you expected. [Mol* documents the viewer URL/query interface](https://molstar.org/viewer-docs/query-parameters/). Because this object is a derived `P 1` representation, it can demonstrate browser interaction and reveal an obvious display or conversion problem, but it cannot prove raw-file identity.
 
-Viewer bonds are display heuristics. Visual inspection can reveal a wrong cell, missing atom, unexpected contact, orientation error, or failed conversion; it does not replace symmetry checks, distance tables, occupancy review, or numerical model validation.
+Viewer bonds are display heuristics. A plausible picture does not replace occupancy review, periodic distance checks, parser warnings, or tolerance-dependent symmetry analysis. If text and picture disagree, resolve the data block, symmetry expansion, disorder model, or conversion before continuing.
 
 ## Return with an inspected source object
 
-Keep the raw CIF unchanged. Record any standardized, primitive, conventional, repeated, strained, or edited descendant as a new object with its transformation and software version. Reopen the descendant after conversion and compare it with the source view before preparing a DFT input.
+Bring back the unchanged CIF, stable record identity, retrieval information, checksum, publication and conditions, notes from the text inspection, notes from the exact-file visual inspection, and any unresolved ambiguity. Reopen every derived file and compare it with the source before treating it as a model parent.
 
-Optional ASE or pymatgen parsing is useful after these human checks, especially for repeated transformations. It is not a substitute for reading the source record or looking at the resulting geometry.
+Continue with [Build or Modify a Computational Model](/DFT-Research-Workflow/operations/build-or-modify-computational-model/) only after the record, raw text, and represented geometry are mutually understandable. Model choices such as vacuum, supercell, defect, ordering, charge, or constraints belong to that next task.
 
 ## What this example does not establish
 

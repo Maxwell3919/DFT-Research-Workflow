@@ -7,20 +7,21 @@ const guides = [
   {
     route: `${topicRoute}guides/build-reciprocal-path-ledger/`,
     title: 'Build a Reciprocal-Path Ledger Before Plotting Bands',
-    phrase: 'Reproduce this site’s figure: the companion script replays the recorded COD, SeeK-path, and Quantum ESPRESSO 7.5 evidence.',
+    phrase: 'Inspect the committed execution evidence',
     requiredPhrases: [
-      'It verifies the path and input hashes, labels the special points, and preserves the U | K route break rather than drawing the unintended raw connector as valid evidence.',
+      'It verifies path and input hashes, labels the special points, and preserves the U | K route break rather than presenting the unintended raw connector as valid evidence.',
       'The figure therefore supports a traceable corrected-display path dataset, not a converged Silicon band gap, full-zone metallicity claim, or material conclusion.',
     ],
+    mediaCount: 1,
   },
-  { route: `${topicRoute}guides/compare-band-path-and-full-zone-extrema/`, title: 'Compare a Band Path with a Full-Zone Extremum Search', phrase: 'Execution verifies reconstruction of two declared real-output samples' },
+  { route: `${topicRoute}guides/compare-band-path-and-full-zone-extrema/`, title: 'Compare a Band Path with a Full-Zone Extremum Search', phrase: 'Execution verifies reconstruction of two declared real-output samples', mediaCount: 0 },
 ];
 const topicPhrases = [
   'A path is a visual cut, not a full-zone search',
   'Choose an energy reference that survives comparison',
   'Interpolation is an approximation with a validation task',
   'Gap labels require their own definitions',
-  'What this topic establishes',
+  'Decide what may be read from the path',
 ];
 
 async function loadMedia(page) {
@@ -43,7 +44,7 @@ async function inspectTopic(page, width) {
     cards: document.querySelectorAll('.practical-card-list li').length,
     links: [...document.querySelectorAll('.practical-card-list a')].map((link) => link.href),
     headings: document.querySelectorAll('.article-content h2').length,
-    scripts: document.querySelectorAll('script').length,
+    scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en' || result.title !== 'Band Structure') throw new Error(`band-structure identity mismatch: ${result.title}`);
@@ -55,23 +56,20 @@ async function inspectTopic(page, width) {
 async function inspectGuide(page, guide, width) {
   const response = await page.goto(`${base}${guide.route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`${guide.route} returned ${response?.status()}`);
-  await loadMedia(page);
+  if (guide.mediaCount > 0) await loadMedia(page);
   const result = await page.evaluate(() => ({
     language: document.documentElement.lang,
     title: document.querySelector('h1')?.textContent?.trim(),
     text: document.body.innerText,
-    image: (() => {
-      const image = document.querySelector('.guide-media img');
-      return image ? { alt: image.alt, complete: image.complete, naturalWidth: image.naturalWidth } : null;
-    })(),
-    scripts: document.querySelectorAll('script').length,
+    images: [...document.querySelectorAll('.guide-media img')].map((image) => ({ alt: image.alt, complete: image.complete, naturalWidth: image.naturalWidth })),
+    scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en' || result.title !== guide.title || !result.text.includes(guide.phrase)) throw new Error(`${guide.route} content mismatch`);
   for (const phrase of guide.requiredPhrases ?? []) {
     if (!result.text.includes(phrase)) throw new Error(`${guide.route} missing path or full-zone claim boundary: ${phrase}`);
   }
-  if (!result.image?.alt || !result.image.complete || !result.image.naturalWidth || result.scripts !== 0 || result.overflow) throw new Error(`${guide.route} media, static boundary, or ${width}px layout failed`);
+  if (result.images.length !== guide.mediaCount || result.images.some((image) => !image.alt || !image.complete || !image.naturalWidth) || result.scripts !== 0 || result.overflow) throw new Error(`${guide.route} media, static boundary, or ${width}px layout failed`);
 }
 
 const browser = await puppeteer.launch({ executablePath, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
@@ -91,7 +89,7 @@ try {
   const response = await noJs.goto(`${base}${topicRoute}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`band-structure no-JavaScript returned ${response?.status()}`);
   const text = await noJs.$eval('body', (body) => body.innerText);
-  for (const phrase of ['A path is a visual cut, not a full-zone search', 'Gap labels require their own definitions', 'What this topic establishes']) if (!text.includes(phrase)) throw new Error(`band-structure no-JavaScript missing ${phrase}`);
+  for (const phrase of ['A path is a visual cut, not a full-zone search', 'Gap labels require their own definitions', 'Decide what may be read from the path']) if (!text.includes(phrase)) throw new Error(`band-structure no-JavaScript missing ${phrase}`);
   console.log('Reviewed band-structure smoke passed: topic and 2 guides, source-linked original media, 1440px/390px no-overflow, and no-JavaScript reading.');
 } finally {
   await browser.close();

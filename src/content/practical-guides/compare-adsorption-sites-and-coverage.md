@@ -15,8 +15,7 @@ source_ids:
   - ase-surface
   - pymatgen-adsorption-api
   - cmr-adsorption-paper
-media_ids:
-  - adsorption-state-grid
+media_ids: []
 review: docs/reviews/2026-08-04-adsorption-energies.md
 reviewed_at: "2026-08-04"
 ---
@@ -25,20 +24,19 @@ reviewed_at: "2026-08-04"
 
 Open every relaxed adsorption structure in the same orientation, first from above and then from the side. Relabel migrated states by their final geometry; record coverage, lateral cell, adsorbate count, reconstruction, spin state, and key distances. Place thumbnails or saved views beside the energy table so a human can distinguish a physical coverage effect from a periodic-cell or identity change. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [specialist adsorption tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools) for common routes.
 
-**Audit the stored fixture:** the state grid and its companion script are conceptual, synthetic classification aids. They contain no relaxed atomistic structures and therefore cannot establish a preferred adsorption site or coverage trend.
+**Optional grouping check:** the state grid is a synthetic classification aid. Use it only after inspecting real relaxed structures; it contains no atomistic geometry and cannot establish a preferred site or coverage trend.
 
 Run the bounded synthetic grouping fixture:
 
 ```bash
-python3 examples/practical-guides/adsorption_state_grid.py \
-  --svg public/media/practical-guides/adsorption-energies/compare-adsorption-sites-and-coverage/adsorption-state-grid.svg
+python3 examples/practical-guides/adsorption_state_grid.py
 ```
 
-The command retains every invented row, ranks states only inside matched groups, records a start-to-final site change, compares two cells at one declared coverage, and writes the SVG. It does not read DFT outputs or perform an adsorption search.
+The command retains every invented row, ranks states only inside matched groups, records a start-to-final site change, and compares two cells at one declared coverage. It does not read DFT outputs or perform an adsorption search.
 
-## Purpose
+## What this guide verifies
 
-Generate starting structures with the [ASE surface builder](https://docs.ase-lib.org/ase/build/surface.html), the [pymatgen adsorption API](https://pymatgen.org/pymatgen.core.html#pymatgen.core.adsorption.AdsorbateSiteFinder), or another documented builder. For molecules, vary anchoring atom, orientation, conformer, dissociation state, and initial height when they can reach different basins. These tools create candidates; they do not identify the final minimum.
+Generate candidates, then relabel final states. Use the [ASE surface builder](https://docs.ase-lib.org/ase/build/surface.html), the [pymatgen adsorption API](https://pymatgen.org/pymatgen.core.html#pymatgen.core.adsorption.AdsorbateSiteFinder), or another documented builder. For molecules, vary anchoring atom, orientation, conformer, dissociation state, and initial height when they can reach different basins. These tools create candidates; they do not identify the final minimum.
 
 After relaxation, inspect the saved geometry and assign a final-state label. One fixture row starts at a top site and ends at a bridge site; keeping the starting label would corrupt the ranking. Deduplicate equivalent final structures but retain distinct metastable states and the path from each start.
 

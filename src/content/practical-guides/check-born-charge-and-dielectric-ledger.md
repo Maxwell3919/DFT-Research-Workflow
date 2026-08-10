@@ -17,13 +17,14 @@ source_ids:
   - vasp-born-effective-charges
   - vasp-electric-field-dfpt
   - cod-9013102
-media_ids:
-  - silicon-qe-dielectric
+media_ids: []
 review: docs/reviews/2026-08-04-dielectric-response-and-born-effective-charges.md
 reviewed_at: "2026-08-04"
 ---
 
 This is a bounded real-execution case for the same CC0 COD 9013102 Silicon structure used by the other Silicon pages. Quantum ESPRESSO 7.5 `pw.x` first converged an 8×8×8 fixed-geometry SCF state; `ph.x` then ran at Γ with `epsil = .true.` using the same `prefix`/`outdir` lineage. The committed output contains the electronic/ion-clamped dielectric tensor, raw and acoustic-sum-rule-adjusted Born effective-charge diagnostics, the response input, and the dynamical matrix.
+
+First read the actual calculation objects, not the regenerated SVG. Open `examples/practical-guides/data/silicon-qe/dielectric/si-epsilon-scf.in`, `si-epsilon-scf.out`, and `si-epsilon-scf.err` beside the matching `si-epsilon-ph.in`, `si-epsilon-ph.out`, `si-epsilon-ph.err`, and `si_epsilon.dyn`. Check that the `prefix`/`outdir` lineage, structure, q point, executable version, and tensor axes agree. The [Silicon workflow](/DFT-Research-Workflow/workflows/silicon-ground-state-electronic-structure/) explains the bounded native-replay route; a rerun additionally requires the separately obtained hash-matched UPF and an isolated runtime directory.
 
 ## Read the physical object before replaying the parser
 
@@ -41,11 +42,12 @@ grep -A 16 -F "Effective charges (d Force / dE)" examples/cases/silicon-ground-s
 
 The first and third commands check normal program termination only. The SCF marker checks the electronic solver condition reported by that stored `pw.x` run. The tensor and effective-charge blocks identify the one-Gamma response that the parser reconstructs. None of them establishes k-mesh, cutoff, response, q-mesh, LO--TO, or observable convergence.
 
-![Silicon QE 7.5 Gamma-point dielectric tensor and Born-charge diagnostic.](/DFT-Research-Workflow/media/practical-guides/dielectric-response-and-born-effective-charges/check-born-charge-and-dielectric-ledger/silicon-qe-dielectric.svg)
+If `ph.x` has no completion marker, the response block is incomplete, the acoustic-sum residual is unexpected, or tensor axes cannot be mapped to the cell, preserve the input, stdout, stderr, and dynamical matrix and return to the parent SCF/response settings. Do not run the parser to manufacture a complete ledger from a failed or partial response.
 
-## Optional automation: reconstruct the response ledger
 
-```text
+## Optional reconstruction after inspecting the raw response
+
+```bash
 python3 examples/practical-guides/silicon_qe_dielectric.py \
   --svg public/media/practical-guides/dielectric-response-and-born-effective-charges/check-born-charge-and-dielectric-ledger/silicon-qe-dielectric.svg
 ```

@@ -15,8 +15,7 @@ source_ids:
   - murnaghan-eos
   - vasp-volume-relaxation
   - ase-equation-of-state
-media_ids:
-  - traceable-energy-volume-series
+media_ids: []
 review: docs/reviews/2026-08-03-equation-of-state-and-structural-phase-stability.md
 reviewed_at: "2026-08-03"
 ---
@@ -25,37 +24,21 @@ reviewed_at: "2026-08-03"
 
 Open the structures at the smallest, central, and largest sampled volumes, then spot-check the rest. Confirm which lattice ratios, internal coordinates, magnetic state, and symmetry constraints were held or relaxed. Maintain a table linking each visible structure to its input, output, volume, energy, stress, convergence evidence, and method identity; plot raw points before fitting. [Visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) help identify unintended transitions and defensible sampling ranges.
 
-**Audit the stored fixture:** the displayed series is a conceptual, synthetic traceability example. Its companion script validates record completeness, not a real energy-volume calculation or equation of state.
+**Optional ledger check:** the abstract series is a synthetic traceability example. Use it after inspecting a real set of deformed structures; it validates record completeness, not an energy-volume calculation or equation of state.
 
 Use this guide before fitting an EOS. It filters an abstract A2B2 point ledger so only one structural and electronic branch reaches the fit.
 
-Inspect the accepted points and their order from the companion-script directory:
+From the repository root, print the full accepted and excluded ledger:
 
 ```bash
-cd examples/practical-guides
-python3 - <<'PY'
-from eos_sampling_protocol import run
-
-report = run()
-print(report["accepted_ids"])
-print(report["accepted_volumes_angstrom3_per_cell"])
-PY
+python3 examples/practical-guides/eos_sampling_protocol.py
 ```
 
 The output is a filtered, ordered ledger. It is not an EOS fit or a DFT result.
 
-## Purpose
+## What this guide verifies
 
-The fixture accepts only:
-
-```text
-composition: A2B2
-atom count: 4
-charge: 0
-evaluator: fixture-method-v1
-relaxation policy: fixed-volume shape and internal relaxation
-electronic state: state-A
-```
+Define one branch before accepting points. In this exercise, retain only neutral four-atom `A2B2` cells evaluated with `fixture-method-v1`, relaxed under the same fixed-volume shape-and-internal-coordinate policy, and ending in `state-A`. Keep every rejected point and its reason beside the accepted series.
 
 For a production series, also record the source structure, full cell and strain mapping, allowed degrees of freedom, final coordinates, forces and stress, method and potential identity, numerical settings, software version, state diagnostics, and input/output hashes.
 

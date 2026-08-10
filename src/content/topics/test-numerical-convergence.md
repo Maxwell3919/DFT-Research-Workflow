@@ -11,25 +11,9 @@ Before generating a sweep, inspect the [method and input resources](/DFT-Researc
 
 Use the interface natural to the task. A researcher may edit inputs in a text editor or GUI, submit them through an HPC scheduler, collect results in a spreadsheet or notebook, and inspect plots manually. Complete and inspect at least one row end to end before automating the series. Automation should reproduce a understood comparison, not hide the model, state, or acceptance rule. Relevant code families and learning routes are indexed under [electronic-structure codes](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) and [manuals, workshops, and courses](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
 
-Prepare this worksheet first:
+Before generating inputs, write down the target observable and units, the scientific comparison, the predeclared tolerance, the controls and planned values to vary, and the model, method, geometry, state, and solver controls that must remain fixed. Also name the state-identity checks, exact output and extraction rule, stopping rule, stricter confirmation point, and known exclusions.
 
-~~~text
-target observable and units:
-scientific comparison or decision:
-predeclared tolerance:
-varied controls and planned values:
-fixed model, method, geometry, state, and solver controls:
-state-identity checks:
-output file and extraction rule:
-stopping rule and stricter confirmation:
-known exclusions:
-~~~
-
-For each run, retain a row such as:
-
-~~~text
-run_id | varied values | fixed-settings hash | completion | solver | state | observable | delta | cost
-~~~
+For each run, retain its identifier, varied values, fixed-settings hash, separate completion and solver statuses, state identity, extracted observable, change from the declared reference, and cost. Keep the failed and excluded rows visible rather than compacting the series into one selected parameter.
 
 Use one reference point only as a comparison device. For an observable $O$ and declared tolerance $\tau_O$, report
 
@@ -54,15 +38,13 @@ The boundaries are direct:
 
 ## Separate completion, solver convergence, and observable convergence
 
-Check each layer separately:
+Check each layer separately, in this order:
 
-~~~text
-program completed
-internal solver criterion satisfied
-observable stable against tested numerical controls
-result robust to physical-model or method changes
-scientific claim supported
-~~~
+1. Did the program complete without a blocking runtime diagnostic?
+2. Did the internal solver criterion pass?
+3. Is the observable stable against the tested numerical controls?
+4. Is the result robust to the physical-model or method changes relevant to the claim?
+5. Does the complete evidence support the bounded scientific claim?
 
 A normal exit checks the executable path. An SCF or response residual checks one internal solver condition. Neither result alone establishes that the target observable is stable against basis, grid, k-point, smearing, cell-size, q-mesh, interpolation, or integration refinements. Only the third line is numerical convergence.
 
@@ -104,14 +86,7 @@ Changing Coulomb truncation, dipole correction, neutralization, dielectric model
 
 ## Converge response grids and interpolation separately
 
-Separate four layers:
-
-~~~text
-reference electronic state and k mesh
-response solver at each q point or perturbation
-coarse response grid used to construct the interpolant
-fine integration or interpolation grid used for the reported quantity
-~~~
+Separate the accepted reference electronic state and k mesh from the response solve at each q point or perturbation. Then distinguish the coarse response grid used to construct an interpolant from the fine integration or interpolation grid used for the reported quantity. Each layer needs its own completion, ancestry, and convergence evidence.
 
 An apparently smooth interpolated curve is not evidence that the underlying coarse grid is sufficient. Compare selected direct and interpolated points, inspect sum rules and symmetry diagnostics, and converge the final observable over both coarse and fine grids.
 

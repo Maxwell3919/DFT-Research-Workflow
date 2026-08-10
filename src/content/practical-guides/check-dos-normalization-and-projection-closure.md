@@ -17,8 +17,7 @@ source_ids:
   - vasp-doscar
   - vasp-lorbit
   - cod-9013102
-media_ids:
-  - silicon-qe-dos
+media_ids: []
 review: docs/reviews/2026-08-04-density-of-states-and-projected-density-of-states.md
 reviewed_at: "2026-08-04"
 ---
@@ -27,13 +26,13 @@ reviewed_at: "2026-08-04"
 
 Open the stored silicon total-DOS data in a plotting program and show the energy reference, ordinate scale, broadening, and sampling used. Inspect the occupied and unoccupied spectrum, integrate where the method permits, and compare total and projected weights only after verifying compatible projections. Repeat the visual comparison for denser meshes or different broadening before accepting fine features. Use [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist projection tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
 
-**Reproduce this site's figure:** the companion script redraws stored Quantum ESPRESSO 7.5 SCF, uniform-NSCF, and dos.x evidence. It does not perform the electron-count or projected-weight closure tests and does not by itself prove observable convergence.
+**Inspect the committed total-DOS output:** the companion script redraws stored Quantum ESPRESSO 7.5 SCF, uniform-NSCF, and `dos.x` evidence. The presence of an integrated-DOS column is not an electron-count PASS, and this example contains no projected-DOS output.
 
 This bounded real-execution example reconstructs a total DOS for the two-site primitive Silicon cell derived from CC0 COD entry 9013102. Quantum ESPRESSO 7.5 completed SCF, a 12 x 12 x 12 uniform NSCF calculation, and `dos.x`; the stored `si.dos.dat` contains 481 energy rows. The example does not contain projected-DOS output and does not claim an electron-count or projection-closure PASS.
 
 ## Purpose
 
-The recorded calculation used this program sequence in a prepared QE work directory. The inputs must share the accepted structure, pseudopotential, basis, charge, spin/SOC treatment, `prefix`, and accessible `outdir`; the NSCF step must be a compatible uniform-zone calculation, not a band path.
+The recorded calculation used this program sequence in a prepared QE work directory. Do not paste these filenames at the repository root. The inputs must share the accepted structure, pseudopotential, basis, charge, spin/SOC treatment, `prefix`, and accessible `outdir`; the NSCF step must be a compatible uniform-zone calculation, not a band path.
 
 ```bash
 pw.x -in scf.in > scf.out
@@ -50,14 +49,25 @@ dos.x -in dos.x.in > dosx.out
 grep -F "JOB DONE." dosx.out
 ```
 
-The NSCF command produces the uniform-zone eigenvalue parent. `dos.x` integrates that state and writes `si.dos.dat` through its `fildos` setting. These checks show program completion, not cutoff, mesh, broadening, energy-grid, band-count, or total-DOS convergence.
+The NSCF command produces the uniform-zone eigenvalue parent. `dos.x` integrates that state and writes `si.dos.dat` through its `fildos` setting. These checks show program completion, not cutoff, mesh, broadening, energy-grid, band-count, or total-DOS convergence. Return to the repository root for the stored-output check:
 
 ```bash
-head -n 5 si.dos.dat
-wc -l si.dos.dat
+head -n 5 examples/practical-guides/data/silicon-qe/si.dos.dat
+wc -l examples/practical-guides/data/silicon-qe/si.dos.dat
 ```
 
 `head` exposes the header and first energy rows for a format/reference check. `wc -l` checks file shape only; neither validates normalization or electron count.
+
+The committed output begins:
+
+```text
+#  E (eV)   dos(E)     Int dos(E) EFermi =    6.655 eV
+ -12.000  0.0000E+00  0.0000E+00
+ -11.950  0.0000E+00  0.0000E+00
+ -11.900  0.0000E+00  0.0000E+00
+```
+
+This is a literal format excerpt from the stored file. `Int dos(E)` merely names the cumulative column written by `dos.x`; this guide has not compared its occupied-window value with an expected electron count.
 
 ## Reconstruct the committed output
 
@@ -66,7 +76,7 @@ python3 examples/practical-guides/dos_projection_closure.py \
   --svg public/media/practical-guides/density-of-states-and-projected-density-of-states/check-dos-normalization-and-projection-closure/silicon-qe-dos.svg
 ```
 
-The companion does not rerun QE. Execution verifies the stored-output hash for `si.dos.dat`, reads the stored Fermi reference and 481 energy rows, and regenerates the SVG. The committed `dos-nscf.in`, `dos.x.in`, compact outputs, and pseudopotential identity preserve the recorded lineage. This verifies artifact identity, parsing, and rendering within that evidence boundary.
+The companion does not rerun QE. After it finishes, open the redrawn DOS and compare its Fermi marker and curve with the stored `si.dos.dat`; confirm that the report reads 481 rows. This checks that the retained output was read consistently. It does not validate electron count, projection closure, or DOS convergence.
 
 ## Treat normalization and projection closure as tests to perform
 

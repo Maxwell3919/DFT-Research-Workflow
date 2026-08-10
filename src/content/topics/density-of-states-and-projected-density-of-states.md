@@ -9,7 +9,7 @@ Open the total and projected DOS as quantitative plots with energy reference, or
 
 A visually plausible peak is not sufficient evidence of orbital identity, electron count, or metallicity. Check projection completeness and compare the full-zone sampling with any band-path view. Common plotting and projection routes are listed under [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools); use [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for experimental or independent computational comparison.
 
-Calculate a density of states (DOS) when the question concerns how many electronic states occur in an energy interval across the Brillouin zone. A DOS needs an accepted structure and reference electronic state followed by a sufficiently dense, compatible uniform-zone calculation; a high-symmetry band path is not a DOS parent. [Reconstruct a Stored Total DOS and Define Closure Tests](/DFT-Research-Workflow/operations/density-of-states-and-projected-density-of-states/guides/check-dos-normalization-and-projection-closure/) reconstructs a real QE 7.5 total-DOS result and states explicitly which diagnostics were not validated.
+Calculate a density of states (DOS) when the question concerns how many electronic states occur in an energy interval across the Brillouin zone. A DOS needs an accepted structure and reference electronic state followed by a sufficiently dense, compatible uniform-zone calculation; a high-symmetry band path is not a DOS parent. [Reconstruct a Stored Total DOS and Define Closure Tests](/DFT-Research-Workflow/operations/density-of-states-and-projected-density-of-states/guides/check-dos-normalization-and-projection-closure/) reconstructs a real QE 7.5 total-DOS result. It does not perform an electron-count closure or contain projected DOS, so those remain explicit next actions rather than passed checks.
 
 ## Run a total DOS from a uniform-zone state
 
@@ -91,9 +91,9 @@ A DOS integrates full-zone weight but does not locate a band edge or pocket. A l
 
 Photoemission, tunnelling, and optical spectra include matrix elements, resolution, temperature, surface sensitivity, excitations, and possibly many-body self-energy. Numerical DOS broadening is not a calculated lifetime, and visual agreement with an experimental peak is not observable-level validation.
 
-## What this topic establishes
+## Decide what the spectrum may support
 
-A converged and normalized DOS can support energy-resolved state counts for the declared model and integration procedure. A declared projection can support a basis-dependent decomposition with a reported closure diagnostic. It does not establish a band-edge location, reciprocal-space pocket, fundamental or experimental gap, chemical bond, charge transfer, oxidation state, magnetic mechanism, quasiparticle spectrum, transport coefficient, material stability, or device performance. Preserve total and projected arrays, inputs, parent-state identity, integration settings, diagnostics, convergence series, plotting transforms, and source hashes.
+A converged and normalized DOS can support energy-resolved state counts for the declared model and integration procedure. A declared projection can support a basis-dependent decomposition only after its residual has actually been evaluated. If electron-count or projection closure has not been performed, label the page as a reconstruction and stop before orbital-population claims. It does not establish a band-edge location, reciprocal-space pocket, fundamental or experimental gap, chemical bond, charge transfer, oxidation state, magnetic mechanism, quasiparticle spectrum, transport coefficient, material stability, or device performance. Preserve total and projected arrays, inputs, parent-state identity, integration settings, diagnostics, convergence series, plotting transforms, and source hashes.
 
 ## Sources and methods
 

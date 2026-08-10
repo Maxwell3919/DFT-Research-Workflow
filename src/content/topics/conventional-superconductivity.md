@@ -15,6 +15,8 @@ Declare the Coulomb model and $\mu^*$ sensitivity, then choose an approximate fo
 
 $\lambda$ convergence is not $T_c$ convergence. If an Allen--Dynes implementation reports an undefined result because its denominator or inputs fall outside the meaningful model, preserve it as undefined; do not rewrite it as $T_c=0$. A numerical transition in the pairing model is not evidence of an experimentally realized superconducting phase.
 
+For an [EPW](/DFT-Research-Workflow/tools/epw/) start, open the accepted normal-state, phonon, Wannier, and EPC parent records before editing the superconductivity input. Retain the input and separate stdout/stderr, the raw $\alpha^2F(\omega)$ table, cumulative $\lambda(\omega)$, $\omega_{\log}$ record, every declared $\mu^*$ value, and any isotropic or anisotropic gap/solver history. Plot the spectrum and cumulative integral before copying a scalar $T_c$ into a table. If the normal state is not metallic on a qualified full-zone sample, phonons remain imaginary, low-frequency weight changes with sampling, the gap solver fails to bracket a transition, or an approximate formula is undefined, stop the positive superconductivity claim and return to that parent gate.
+
 ## From an Eliashberg spectrum to a pairing model
 
 For an isotropic phonon-mediated model, the Eliashberg spectral function $\alpha^2F(\omega)$ organizes the Fermi-surface-weighted interaction by phonon frequency. Two commonly reported moments are

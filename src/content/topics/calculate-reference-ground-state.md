@@ -19,15 +19,7 @@ Compare accepted candidates in one table and, where useful, in aligned plots or 
 
 Begin with one exact accepted geometry. Prepare a fixed-geometry input with the final method and numerical settings, run a fresh static self-consistent calculation, and inspect the output before reusing its density, potential, or wavefunctions. If competing charge, spin, occupation, symmetry, or relativistic branches are plausible, evaluate them under one comparable protocol and retain every excluded or failed candidate with its reason.
 
-```text
-accepted geometry
-→ fixed-geometry static calculation
-→ termination and SCF checks
-→ charge, occupations, moments, symmetry, forces, stress, and warnings
-→ comparable candidate-state ledger
-→ selected reference candidate and claim boundary
-→ versioned parent artifacts for the required target calculation
-```
+The common route starts from an accepted geometry, performs a distinct fixed-geometry static calculation, and checks termination and SCF evidence separately. The researcher then inspects charge, occupations, moments, symmetry, forces, stress, and warnings; compares accepted candidates in one compatible ledger; selects a bounded reference candidate; and preserves versioned parent artifacts for the required target calculation. A failed or incomparable candidate remains in the record rather than disappearing from this route.
 
 The optimization-to-static route is common, not universal. A fixed experimental geometry, imposed strain, constrained state, or deliberately metastable model can enter directly when that choice answers the research question. The reference is scientifically appropriate only if its geometry, state, method, and boundary conditions match the quantity and claim that follow.
 

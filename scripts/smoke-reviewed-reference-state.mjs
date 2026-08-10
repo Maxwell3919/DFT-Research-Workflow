@@ -63,7 +63,10 @@ async function inspect(page, expectedWidth) {
     hasArticle: Boolean(document.querySelector('.article-content')),
     hasPlaceholder: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     hasContract: Boolean(document.querySelector('.operation-contract')),
-    hasScript: Boolean(document.querySelector('script')),
+    copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
+    unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm').length,
+    copyButtons: document.querySelectorAll('.copy-code-button').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
 
@@ -71,12 +74,17 @@ async function inspect(page, expectedWidth) {
   if (result.title !== 'Calculate the Reference Ground State') throw new Error(`reference-state title mismatch: ${result.title}`);
   if (!result.hasArticle || result.hasPlaceholder) throw new Error('reviewed reference-state narrative was not rendered');
   if (result.hasContract) throw new Error('reference-state overview exposes a fixed contract');
-  if (result.hasScript) throw new Error('reference-state overview contains client-side script');
+  if (result.copyEnhancements !== 1 || result.unexpectedScripts !== 0) {
+    throw new Error(`reference-state overview exposes ${result.copyEnhancements} copy enhancements and ${result.unexpectedScripts} unexpected scripts`);
+  }
+  if (result.copyButtons !== result.copyableBlocks) {
+    throw new Error(`reference-state overview renders ${result.copyButtons} Copy controls for ${result.copyableBlocks} copyable code blocks`);
+  }
   if (result.overflow) throw new Error(`reference-state overview overflows at ${expectedWidth}px`);
   for (const heading of requiredHeadings) {
     if (!result.headings.includes(heading)) throw new Error(`reference-state overview is missing semantic section ${heading}`);
   }
-  if (result.cards !== 4) throw new Error(`reference-state overview exposes ${result.cards} practical cards instead of 4`);
+  if (result.cards !== 3) throw new Error(`reference-state overview exposes ${result.cards} non-synthetic practical cards instead of 3`);
   for (const phrase of requiredPhrases) {
     if (!result.text.includes(phrase)) throw new Error(`reference-state overview is missing ${phrase}`);
   }
@@ -147,7 +155,7 @@ try {
       site_url: base,
       route,
       natural_sections: desktop.headings.length,
-      practical_cards: desktop.cards,
+      non_synthetic_practical_cards: desktop.cards,
       source_links: desktop.links.length,
       desktop_width: 1440,
       mobile_width: 390,
@@ -158,7 +166,7 @@ try {
     }, null, 2)}\n`);
   }
 
-  console.log(`Reviewed reference-state smoke passed: common-not-universal fixed-geometry route and four distinct gates, ${desktop.headings.length} natural sections, 4 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and bounded candidate-state language.`);
+  console.log(`Reviewed reference-state smoke passed: common-not-universal fixed-geometry route and four distinct gates, ${desktop.headings.length} natural sections, 3 non-synthetic practical cards, rendered sources, bounded Copy enhancement, 1440px/390px no-overflow, no-JavaScript reading, and bounded candidate-state language.`);
 } finally {
   await browser.close();
 }

@@ -15,8 +15,7 @@ source_ids:
   - vasp-structure-optimization
   - fire-paper
   - basin-hopping-paper
-media_ids:
-  - optimization-multiple-basin-map
+media_ids: []
 review: docs/reviews/2026-08-03-optimize-structure.md
 reviewed_at: "2026-08-03"
 ---
@@ -31,7 +30,23 @@ Run the candidates independently with the same declared numerical setup unless a
 
 Build a comparison table only from scientifically comparable and numerically accepted endpoints. Include state identity and geometry descriptors as well as energy; retain distinct stationary candidates rather than silently discarding higher-energy branches. Force, stress, displacement, and solver criteria can support an accepted stationary candidate, but they do not establish positive curvature. Call an endpoint a local minimum only when a Hessian, phonon, vibrational, or other appropriate curvature test supports that classification in the active subspace. A lower printed energy does not repair a wrong model, an incompatible state, or an unconverged trajectory.
 
-The double-well script below is a bounded synthetic teaching fixture for bookkeeping. It is optional automation, not a real material calculation and not evidence that a chosen set of starts is complete. Consult the [learning resources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) and the original literature to identify physically motivated candidates before automating a larger search.
+Before using the synthetic helper, inspect the candidate directories that belong to the real study. This read-only shell pass inventories inputs, trajectories, outputs, and endpoint structures without ranking them:
+
+```bash
+: "${CANDIDATE_ROOT:?Set CANDIDATE_ROOT to the directory containing independent starts}"
+find "$CANDIDATE_ROOT" -mindepth 1 -maxdepth 2 -type f \
+  \( -name '*.in' -o -name '*.out' -o -name '*.traj' -o -name '*.xyz' -o -name '*.cif' \) \
+  -printf '%12s %p\n' | sort
+find "$CANDIDATE_ROOT" -mindepth 1 -maxdepth 2 -type f -size 0 -print
+for output in "$CANDIDATE_ROOT"/*/*.out; do
+  printf '\n%s\n' "$output"
+  head -n 20 -- "$output"
+  tail -n 40 -- "$output"
+  grep -niE 'warning|error|stopping|not converged|no convergence' -- "$output" || true
+done
+```
+
+Open each retained endpoint and trajectory beside this inventory, then build the comparable candidate ledger described above. The double-well script below is a bounded synthetic teaching fixture for bookkeeping. It is optional automation, not a real material calculation and not evidence that a chosen set of starts is complete. Consult the [learning resources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) and the original literature to identify physically motivated candidates before automating a larger search.
 
 ## Run the bounded basin exercise
 
@@ -60,18 +75,7 @@ Generate candidates from scientific hypotheses, symmetry, enumeration, perturbat
 
 ## Keep each start and state lineage independent
 
-Assign every initial candidate a stable identity and preserve:
-
-```text
-parent model and transformation
-initial geometry and cell checksum
-initial electronic or magnetic state
-constraints and symmetry treatment
-optimizer and evaluator identity
-complete trajectory
-final structure and state
-termination and verification result
-```
+Assign every initial candidate a stable identity and preserve its parent model and transformation, initial geometry and cell checksum, initial electronic or magnetic state, constraints and symmetry treatment, optimizer and evaluator identity, complete trajectory, final structure and state, and separate termination and verification result.
 
 Do not reuse one candidate's wavefunction or optimizer Hessian in another branch unless the scientific intent and compatibility are explicit. Such reuse can bias nominally independent starts toward the same metastable state.
 
@@ -80,6 +84,9 @@ Do not reuse one candidate's wavefunction or optimizer Hessian in another branch
 The companion script minimizes a one-dimensional tilted double-well from four initial coordinates:
 
 ```python
+import sys
+
+sys.path.insert(0, "examples/practical-guides")
 from optimization_multiple_starts import run
 
 report = run()

@@ -13,9 +13,17 @@ Look for behaviour that a parser threshold may not express: a convergence series
 
 Before comparing with another calculation or experiment, open the primary paper and its Methods or Supplementary Information. Record the structure, temperature, pressure, composition, sample condition, functional, core treatment, numerical setup, and analysis convention actually used. A literature value without those conditions is not yet a comparable datum.
 
-## Bind the comparison to exact source files
+## Define the comparison before ranking values
 
-After defining what will be compared, create one row per result with these fields:
+A valid comparison specifies the object, observable, thermodynamic and boundary conditions, reference state, normalization, method, and numerical quality required to place results on the same scale. Two numbers with the same label may still answer different questions. Formation energies built from different elemental references, band gaps sampled on different k domains, surface energies for different terminations, and conductivities under different scattering models cannot be ranked without reconciling those differences.
+
+Create a comparison table whose rows are physical cases and whose columns carry both the observable and its identity metadata. At minimum, retain structure and composition, charge and spin state, geometry treatment, functional and corrections, basis/core treatment, cell or area normalization, temperature or pressure, sampling domain, reference definition, units, convergence evidence, and source artifact. Missing metadata should remain missing; it must not be filled by assuming that two workflows used the same convention.
+
+For each row, state its bounded use, such as ranking two structures at one declared method or checking a numerical tolerance. Do not pool rows whose observable, unit, normalization, reference, geometry/state, or method differs without an explicit transformation model. If the conditions do not match, the next action is to reconcile them, make a controlled transformation, or keep the results in separate comparison groups.
+
+## Bind the comparison table to exact source files
+
+After deciding which rows are scientifically comparable, retain these fields for each result:
 
 `case_id, observable, value, unit, normalization, reference, geometry_and_state, method, numerical_evidence, source_output_sha256, extraction_command, claim_use`
 
@@ -26,15 +34,7 @@ output=${output:?Set output to the exact source output}
 sha256sum -- "$output"
 ```
 
-The hash fixes the bytes used for the row; it does not prove that the program, model, or result is valid. Store the literal command or versioned parser that produced `value`, preserve its stdout and stderr, and retain rejected or excluded rows with the reason for exclusion. The ledger supports the human comparison; it does not replace looking at the data.
-
-Use `claim_use` to state the bounded role of each row, such as ranking two structures at one declared method or checking a numerical tolerance. Do not pool rows whose observable, unit, normalization, reference, geometry/state, or method differs without an explicit transformation model.
-
-## Define the comparison before ranking values
-
-A valid comparison specifies the object, observable, thermodynamic and boundary conditions, reference state, normalization, method, and numerical quality required to place results on the same scale. Two numbers with the same label may still answer different questions. Formation energies built from different elemental references, band gaps sampled on different k domains, surface energies for different terminations, and conductivities under different scattering models cannot be ranked without reconciling those differences.
-
-Create a comparison table whose rows are physical cases and whose columns carry both the observable and its identity metadata. At minimum, retain structure and composition, charge and spin state, geometry treatment, functional and corrections, basis/core treatment, cell or area normalization, temperature or pressure, sampling domain, reference definition, units, convergence evidence, and source artifact. Missing metadata should remain missing; it must not be filled by assuming that two workflows used the same convention.
+The hash fixes the bytes used for the row; it does not prove that the program, model, or result is valid. Store the literal command or versioned parser that produced `value`, preserve its stdout and stderr, and retain rejected or excluded rows with the reason for exclusion. This record supports the human comparison; it does not replace looking at the data.
 
 ## Transform raw outputs with an explicit measurement model
 
@@ -98,7 +98,7 @@ For each proposed finding, link the derived value to source artifacts, transform
 This topic organizes and quantifies results. **Validate Results and Scientific Conclusions** asks whether those results survive numerical, physical, methodological, and external challenges and what claim they support. **Document and Preserve the Study** packages the lineage for independent reuse. Analysis cannot promote a calculated observable into a scientific conclusion without those later steps.
 
 
-The evidence table is the reader-facing projection of the comparison ledger: every displayed value must remain traceable to its source hash and extraction command, and every conclusion must stay within the recorded `claim_use`. The [Silicon and Aluminium Worked Workflows](/DFT-Research-Workflow/workflows/) contain real tables and figures that can be inspected before their exact reconstruction records. Use [Python](/DFT-Research-Workflow/tools/python/) or another plotting environment only when it helps expose the comparison; it is not a substitute for scientific judgment.
+The evidence table is the human-readable comparison record: every displayed value must remain traceable to its source file and extraction method, and every conclusion must stay within the recorded `claim_use`. Hashes are supporting identity evidence, not the organizing idea. The [Silicon and Aluminium Worked Workflows](/DFT-Research-Workflow/workflows/) contain real tables and figures that can be inspected before their exact reconstruction records. Use [Python](/DFT-Research-Workflow/tools/python/) or another plotting environment only when it helps expose the comparison; it is not a substitute for scientific judgment.
 
 ## Sources and methods
 

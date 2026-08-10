@@ -16,8 +16,7 @@ source_ids:
   - imperfections-not-zero-k
   - py-sc-fermi
   - doped-thermodynamics
-media_ids:
-  - defect-charge-state-envelope
+media_ids: []
 review: docs/reviews/2026-08-04-defect-formation-energies-and-charge-states.md
 reviewed_at: "2026-08-04"
 ---
@@ -26,37 +25,23 @@ reviewed_at: "2026-08-04"
 
 For a real defect, open the relaxed structure and charge or spin density for each charge state, check that the same defect configuration persists, and mark the host band edges and allowed Fermi-level range. Plot the formation-energy lines with chemical-potential and correction conventions stated, then inspect the lower envelope and any skipped state manually. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist defect tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
 
-**Audit the stored fixture:** the envelope, transition levels, and self-consistent Fermi-level example are deliberately synthetic. The companion script checks the toy ledger and crossing logic; it contains no real defect geometry, localization evidence, or material transition level.
+**Optional envelope check:** the transition levels and self-consistent Fermi-level example are deliberately synthetic. Use the script only after real charge-state structures and corrections have passed inspection; it contains no defect geometry, localization evidence, or material transition level.
 
 Use this example only after charge-state intercepts and slopes have been assembled and checked. It separates three operations: draw every line, select the thermodynamic lower envelope, and solve one declared charge-neutrality model. All inputs describe an invented defect in an abstract 3 eV gap.
 
 From the repository root, run:
 
 ```bash
-python3 examples/practical-guides/defect_charge_state_envelope.py \
-  --svg public/media/practical-guides/defect-formation-energies-and-charge-states/trace-charge-state-envelope/defect-charge-state-envelope.svg
+python3 examples/practical-guides/defect_charge_state_envelope.py
 ```
 
-Inspect the report for transition levels, lower-envelope membership, and neutrality-root bracketing. The SVG is a view of those stored results.
+Inspect the report for transition levels, lower-envelope membership, and neutrality-root bracketing.
 
 ## Select only lower-envelope crossings
 
 The four fixture lines have slopes $+2$, $+1$, $0$, and $-1$. The $+2$ and neutral states cross at $0.6\ \mathrm{eV}$ above the VBM; the neutral and $-1$ states cross at $1.7\ \mathrm{eV}$. The `+1` line intersects other lines but never reaches the lower envelope.
 
-Confirm this directly:
-
-```bash
-cd examples/practical-guides
-python3 - <<'PY'
-from defect_charge_state_envelope import run
-
-report = run()
-print(report["thermodynamic_transition_levels_eV_above_vbm"])
-print(report["charge_state_plus1_on_lower_envelope"])
-PY
-```
-
-A pairwise intersection above a lower third state is not a thermodynamic transition. The skipped `+1` state demonstrates negative-$U$ envelope geometry in the fixture; it is not evidence for a physical negative-$U$ centre without calculated structures, localization, relaxations, and converged corrections.
+Confirm both `thermodynamic_transition_levels_eV_above_vbm` and `charge_state_plus1_on_lower_envelope` in the printed report. A pairwise intersection above a lower third state is not a thermodynamic transition. The skipped `+1` state demonstrates negative-$U$ envelope geometry in the fixture; it is not evidence for a physical negative-$U$ centre without calculated structures, localization, relaxations, and converged corrections.
 
 ## Solve neutrality as a separate operation
 

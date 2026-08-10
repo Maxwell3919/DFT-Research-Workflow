@@ -172,7 +172,7 @@ for (const [pageIndex, page] of (navigation.pages ?? []).entries()) {
 for (const key of expected.keys()) if (!seenSources.has(key)) errors.push(`missing contextual source ${key}`);
 
 const sourceContracts = [
-  [componentSource, ['data-contextual-navigation', 'data-contextual-source', 'data-contextual-link', 'hasTargetBranches', 'Choose the calculation branch', 'Continue from here', 'navigation.boundary']],
+  [componentSource, ['data-contextual-navigation', 'data-contextual-source', 'data-contextual-link', 'hasTargetBranches', 'Choose the calculation branch', 'Continue from here']],
   [resolverSource, ['getContextualNavigation', 'boundary: definition.boundary', 'operations/troubleshooting/', 'operations/software-bridge/']],
   [topicRouteSource, ['ContextualLinks', 'getContextualNavigation', "page.kind === 'topic'", 'AuthoritativeReferences']],
   [practicalRouteSource, ['ContextualLinks', 'getContextualNavigation', 'guide.data.guide_slug']],
@@ -184,6 +184,7 @@ for (const forbidden of ['client:load', 'client:idle', 'client:visible', 'client
   if (componentSource.includes(forbidden)) errors.push(`contextual renderer must remain static and contains ${forbidden}`);
 }
 if (/card/i.test(componentSource)) errors.push('contextual renderer must remain prose/list navigation, not a card component');
+if (componentSource.includes('navigation.boundary') || componentSource.includes('contextual-boundary')) errors.push('contextual renderer repeats the internal taxonomy-governance boundary');
 for (const anchor of supportTargets.get('troubleshooting')) {
   if (!troubleshootingSource.includes(`'${anchor}'`)) errors.push(`Troubleshooting source is missing stable anchor ${anchor}`);
 }
@@ -223,6 +224,7 @@ if (validateBuilt) {
     const linkCount = (block.match(/data-contextual-link/g) ?? []).length;
     if (linkCount !== page.links.length || linkCount > 3) errors.push(`${key}: built link count is ${linkCount}, expected ${page.links.length}`);
     if (/<script|astro-island/i.test(block)) errors.push(`${key}: built block contains client behaviour`);
+    if (block.includes(navigation.boundary)) errors.push(`${key}: built block repeats the internal taxonomy-governance boundary`);
     for (const link of page.links) {
       const href = `${siteBase}${targetPath(link.target)}`;
       if (!block.includes(`href="${href}"`)) errors.push(`${key}: built block is missing ${href}`);

@@ -80,6 +80,44 @@ grep -En '"exit_code"|"status"|"claim_boundary"' \
 
 This locates the recorded checks and claim boundary. It does not verify their arithmetic or internal consistency.
 
+Inspect the four raw input/output/stderr triplets before invoking the companion. The commands below keep the input geometry, every Cartesian force component, the aggregate force, all three stress rows with printed units, SCF history, state diagnostics, and warnings visible:
+
+```bash
+attempt="$case_root/output/attempt-02-pmix"
+cat -- "$attempt/run-status.json"
+for stage in fm-k8 fm-k10 fm-k12 nm-k12; do
+  input="$case_root/input/$stage.scf.in"
+  out="$attempt/$stage.out"
+  err="$attempt/$stage.err"
+  printf '\n%s\n' "$stage"
+  sed -n '/^ATOMIC_POSITIONS/,/^K_POINTS/p' "$input"
+  test "$(grep -cF 'Program PWSCF v.' -- "$out")" -eq 1
+  test "$(grep -cF 'JOB DONE.' -- "$out")" -eq 1
+  grep -F 'convergence has been achieved' -- "$out" | tail -n 1
+  grep -E '!.*total energy|the Fermi energy is|total magnetization|absolute magnetization' \
+    -- "$out" | tail -n 8
+
+  awk '
+    /Forces acting on atoms/ {block=$0 ORS; inside=1; next}
+    inside {block=block $0 ORS}
+    inside && /Total force =/ {last=block; inside=0}
+    END {if (last == "") exit 1; printf "%s", last}
+  ' "$out"
+
+  awk '
+    /total[[:space:]]+stress/ {block=$0 ORS; rows=3; next}
+    rows > 0 {block=block $0 ORS; rows--; if (rows == 0) last=block}
+    END {if (last == "") exit 1; printf "%s", last}
+  ' "$out"
+
+  tail -n 40 -- "$err"
+  grep -niE 'warning|error in routine|stopping|not converged|no convergence|segmentation|out of memory|killed' \
+    -- "$out" "$err" || true
+done
+```
+
+These fixed-geometry inputs have no `if_pos` columns and do not request ionic motion. Their Cartesian force and 3 x 3 stress values are diagnostics of the declared cell, not an ionic or pressure-convergence gate. The aggregate `Total force` is printed separately and never substitutes for component inspection.
+
 ## Optional reproducibility audit
 
 After inspecting the human-readable inputs, outputs, table, and failed criterion, execute the read-only audit:
@@ -131,7 +169,7 @@ This arithmetic supports a bounded difference between two declared candidates un
 
 ### Forces, stress, and coordinates
 
-All four inputs request forces and stress. They use one Fe atom at fractional coordinates `(0, 0, 0)` in an `ibrav = 3` primitive cell with `celldm(1) = 5.4169` bohr. The audit parses the input coordinate unit and atom record, the final total-force line, and the presence of the stress block for each output.
+All four inputs request forces and stress. They use one Fe atom at fractional coordinates `(0, 0, 0)` in an `ibrav = 3` primitive cell with `celldm(1) = 5.4169` bohr. The companion parses the input coordinate unit and atom record, the final aggregate total-force line, and stress-block presence. The manual block above supplies the required component-level force and 3 x 3 stress-value inspection that the companion does not automate.
 
 This verifies consistency between the audited input objects and the printed fixed-geometry diagnostics. A zero total force on this one-atom symmetry position does not prove a relaxed lattice, a global minimum, or dynamical stability. The stress is a diagnostic of this fixed cell, not an instruction to change the cell and not a pressure-convergence study.
 
@@ -149,13 +187,7 @@ No total-energy, force, stress, magnetic-moment, or SCF marker can substitute fo
 
 ### Numerical convergence and claim boundary
 
-The predeclared FM adjacent energy changes are:
-
-```text
-8 x 8 x 8 to 10 x 10 x 10: 0.0010951900000009118 Ry
-10 x 10 x 10 to 12 x 12 x 12: 0.00009699999998247222 Ry
-tolerance:                            0.0005 Ry
-```
+The predeclared FM adjacent energy changes are 0.0010951900000009118 Ry from the 8 x 8 x 8 mesh to 10 x 10 x 10 and 0.00009699999998247222 Ry from 10 x 10 x 10 to 12 x 12 x 12, against a tolerance of 0.0005 Ry.
 
 The first change exceeds the tolerance, so the declared k-mesh total-energy convergence test fails. Artifact-identity, recorded-exit, SCF-marker, and expected-record checks pass within their stated scope; they do not override the failed numerical test. No broader material conclusion is claimed.
 

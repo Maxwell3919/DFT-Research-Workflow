@@ -44,7 +44,7 @@ await Promise.all(workflows.map(assertPublishedCase));
 <BaseLayout title="Worked Workflows" description="Real DFT cases organized around what a researcher opens, runs, inspects, decides, and preserves." current="workflows">
   <h1>Worked Workflows</h1>
   <p class="page-intro">
-    Start with the material and scientific question. Each case shows the source object, the browser, viewer, editor, terminal, or HPC actions a researcher would use, the real outputs and figures to inspect, and the decision that follows. Exact commands, hashes, manifests, and replay records remain available as supporting reproducibility evidence. Historical continuity is claimed only for routes identified explicitly; no case is a universal replacement for the A–E research workflow.
+    Choose a case by its material and scientific question, then open it. Each case follows the browser, viewer, editor, terminal, or HPC actions a researcher would take, the outputs and figures to inspect, and the next decision. Reproducibility evidence remains available inside the case. A case documents only its stated route; it does not replace the A–E Research Workflow or support conclusions beyond the checks shown.
   </p>
   <ol class="directory-list" data-workflow-directory>
     {workflows.map((workflow) => (

@@ -27,7 +27,7 @@ reviewed_at: "2026-08-04"
 
 Inspect both tensor-component curves with their axes, temperature range, fixed chemical-potential coordinate, and units visible. Ask whether the plotted quantity is absolute or divided by a relaxation time, where the Seebeck sign changes, whether the sampling is dense enough to resolve that feature, and what parent band or scattering information is absent. The figure supports human comparison of two stored trends; it does not show the CoSb3 Fermi surface, k-resolved transport contributions, interpolation error, or a scattering mechanism. See the [electronic-transport resources](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) for those routes.
 
-### Optional automation: rebuild the bounded artifact
+### Optional replay after inspecting the published output
 
 ```bash
 python3 examples/practical-guides/boltztrap_cosb3_transport.py \
@@ -35,6 +35,8 @@ python3 examples/practical-guides/boltztrap_cosb3_transport.py \
 ```
 
 The script reads `examples/practical-guides/data/boltztrap-cosb3-condtens-20260804.json`, checks the frozen source hashes, row and temperature ordering, selected values and sign-change bracket, then writes the SVG. It does not run WIEN2k, BoltzTraP, BoltzTraP2, or a transport convergence study.
+
+Before replaying it, compare the stored JSON header, row count, temperature grid, chemical-potential coordinate, and selected tensor columns with the attributed `CoSb3.condtens` source. A hash, row, unit, or column mismatch is a provenance failure and should stop the redraw. A mechanism, absolute conductivity, or convergence claim additionally requires the full-zone electronic parent, interpolation record, carrier convention, and compatible scattering or relaxation-time model; this post-processing artifact cannot repair their absence.
 
 ## Trace the source before interpreting the curves
 

@@ -17,7 +17,7 @@ const phrases = [
   'Metastability and hysteresis are not equilibrium boundaries',
   'Hydrostatic curvature does not prove structural stability',
   'Temperature changes the potential being minimized',
-  'What this topic establishes',
+  'Decide what the curves may support next',
   'Sources and methods',
 ];
 const domains = ['doi.org', 'docs.ase-lib.org', 'vasp.at', 'phonopy.github.io', 'goldbook.iupac.org'];
@@ -33,13 +33,13 @@ async function inspect(page, width) {
     hasArticle: Boolean(document.querySelector('.article-content')),
     hasPlaceholder: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     hasContract: Boolean(document.querySelector('.operation-contract')),
-    scripts: document.querySelectorAll('script').length,
+    scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en' || result.title !== 'Equation of State and Structural Phase Stability') throw new Error(`EOS identity mismatch: ${result.title}`);
   if (!result.hasArticle || result.hasPlaceholder || result.hasContract) throw new Error('reviewed EOS narrative was not rendered naturally');
   if (result.scripts !== 0 || result.overflow) throw new Error(`EOS page is not static or overflows at ${width}px`);
-  if (result.headings < 12 || result.headings > 24 || result.cards !== 3) throw new Error(`EOS counts mismatch: ${result.headings} sections, ${result.cards} cards`);
+  if (result.headings < 12 || result.headings > 24 || result.cards !== 0) throw new Error(`EOS counts mismatch: ${result.headings} sections, ${result.cards} synthetic-only cards`);
   for (const phrase of phrases) if (!result.text.includes(phrase)) throw new Error(`EOS page is missing ${phrase}`);
   for (const domain of domains) if (!result.links.some((link) => link.includes(domain))) throw new Error(`EOS page is missing ${domain}`);
   return result;
@@ -79,7 +79,7 @@ try {
     await capture(page, join(artifactDirectory, 'topic-equation-of-state-desktop.png'));
     await writeFile(join(artifactDirectory, 'reviewed-eos-summary.json'), `${JSON.stringify({ site_url: base, route, natural_sections: desktop.headings, practical_cards: desktop.cards, source_links: desktop.links.length, desktop_width: 1440, mobile_width: 390, no_javascript: true, fixed_contract: false, common_pressure_boundary: true, hydrostatic_stability_boundary: true }, null, 2)}\n`);
   }
-  console.log(`Reviewed EOS smoke passed: ${desktop.headings} natural sections, 3 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and common-pressure/stability boundaries.`);
+  console.log(`Reviewed EOS smoke passed: ${desktop.headings} natural sections, no synthetic-only primary cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and common-pressure/stability boundaries.`);
 } finally {
   await browser.close();
 }

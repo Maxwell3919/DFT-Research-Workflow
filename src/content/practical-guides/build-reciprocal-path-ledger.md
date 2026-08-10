@@ -30,13 +30,13 @@ reviewed_at: "2026-08-04"
 
 Open the accepted silicon structure, submit it to the SeeK-path web interface or inspect the stored SeeK-path result, and compare the standardized cell, reciprocal basis, Brillouin-zone drawing, labels, and ordered segments. After the QE run, view the band plot with those labels and an explicit energy reference; check path discontinuities and band count before interpreting dispersion. Use [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for the human-facing route.
 
-**Reproduce this site's figure:** the companion script replays the recorded COD, SeeK-path, and Quantum ESPRESSO 7.5 evidence. It verifies the path and input hashes, labels the special points, and preserves the `U | K` route break rather than drawing the unintended raw connector as valid evidence.
+**Inspect the committed execution evidence:** the companion script replays recorded COD, SeeK-path, and Quantum ESPRESSO 7.5 artifacts. It verifies path and input hashes, labels the special points, and preserves the `U | K` route break rather than presenting the unintended raw connector as valid evidence.
 
 This bounded real-execution example starts from the two-site primitive cell derived from CC0 COD entry 9013102. SeeK-path 2.2.1 supplies the `cF` segments `Gamma-X-U | K-Gamma-L-W-X`. The stored QE input instead listed all eight anchors sequentially, so its 141-point raw dataset contains an unintended `U-K` connector. The raw artifact remains preserved; the figure omits its 19 interior connector points and shows the discontinuity explicitly.
 
 ## Purpose
 
-The recorded run used the following program sequence in a prepared QE work directory. The identified pseudopotential must be present at the input's `pseudo_dir`, and the SCF and path steps must share the declared `prefix` and accessible `outdir`.
+The recorded run used the following program sequence in a prepared QE work directory. Do not paste it at the repository root. The identified pseudopotential must be present at the input's `pseudo_dir`, and the SCF and path steps must share the declared `prefix` and accessible `outdir`.
 
 ```bash
 pw.x -in scf.in > scf.out
@@ -57,15 +57,16 @@ The first command diagonalizes the accepted state at the ordered points under `K
 
 The committed ledger in `examples/practical-guides/data/silicon-qe/seekpath.json` binds the conventional CIF hash, `symprec=1e-5`, primitive and reciprocal bases, labels, and segments `Gamma-X`, `X-U`, `K-Gamma`, `Gamma-L`, `L-W`, and `W-X`. The QE path uses those same labelled fractional coordinates; the labels are not inferred later from the plotted image.
 
-## Reconstruct and inspect the public evidence
+## Inspect the stored run without rerunning QE
+
+After understanding the prepared-work-directory route above, inspect this repository's retained example:
 
 ```bash
 python3 examples/practical-guides/silicon_qe_bands.py
 ```
 
-This command does not rerun QE. It verifies the stored output, SeeK-path ledger, and QE input hashes; parses all 141 raw k points and eight eigenvalues; preserves all raw rows in the CSV; and regenerates a labelled SVG with 122 displayed points across the two intended continuous branches. The omitted 19 points are adverse input evidence, not discarded source data.
+Open the labelled plot and check the ordered labels, band count, energy reference, and visible `U | K` break. Then inspect the raw CSV rows around that break and confirm that the 19 connector points remain retained even though they are not drawn as a valid segment. The command does not rerun QE.
 
-<img src="/DFT-Research-Workflow/media/practical-guides/band-structure/build-reciprocal-path-ledger/silicon-qe-bands.svg" alt="Eight Silicon band branches labelled Gamma, X, U, K, Gamma, L, W, and X, with a visible U to K route break and a dashed zero-energy reference." />
 
 Inspect the path coordinate order, special-point labels, number of k points and bands, units, energy reference, warnings, and raw versus reordered eigenvalues before interpreting a crossing or extremum. Preserve the input and output hashes, CIF identity, pseudopotential filename and SHA-256, QE version, and ledger with the figure. The pseudopotential body is not redistributed.
 

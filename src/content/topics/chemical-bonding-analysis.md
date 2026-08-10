@@ -15,13 +15,13 @@ Choose the indicator before choosing the plotting tool. COHP/COOP, electron loca
 
 ## A bonding indicator is a projection, partition, or topology—not the total energy
 
-No executed practical guide currently accompanies this topic. Use the official documentation for the explicitly selected implementation, because required wavefunction formats, projection bases, filenames, and quality diagnostics vary by software and version.
+No executed practical guide or real bonding output currently accompanies this topic. Choose exactly one indicator that answers the stated question, then use the official documentation for that implementation; required wavefunction formats, projection bases, filenames, and quality diagnostics vary by software and version.
 
 - For COHP or COOP, pass the parent wavefunctions and structure through the selected projection implementation. Preserve its projection-quality or charge-spilling report, pair list, spin channels, energy grid, and raw pair-resolved output before plotting or integrating.
 - For ELF, use the parent code's documented postprocessor to write the volumetric ELF field. Retain the cell, grid, spin treatment, and exact isovalue or slice used in every image.
 - For density topology, provide the declared density field to the chosen topology tool and retain its basin or critical-point table, integration residuals, and algorithm version.
 
-Do not invent a generic conversion command between incompatible packages. The operational route is valid only when the selected tool documents the parent object it reads and the output object it produces.
+Do not invent a generic conversion command between incompatible packages or run all three analyses by default. Proceed only when the selected tool documents the parent object it reads, the output object it produces, and the diagnostic used to judge reconstruction or integration quality.
 
 ## Orbital-pair curves need a faithful reconstruction of the calculated state
 

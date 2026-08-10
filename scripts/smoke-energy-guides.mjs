@@ -33,7 +33,7 @@ async function inspectGuide(page, guide, width) {
     toolTags: [...document.querySelectorAll('.tool-tag')].map((tag) => tag.textContent?.trim()),
     hasMeta: Boolean(document.querySelector('.guide-meta')),
     hasEvidence: Boolean(document.querySelector('.evidence-note')),
-    hasScript: Boolean(document.querySelector('script')),
+    hasScript: Boolean(document.querySelector('script:not([data-copy-enhancement])')),
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en') throw new Error(`${guide.route}: language is not English`);
@@ -42,7 +42,7 @@ async function inspectGuide(page, guide, width) {
   if (!result.text.includes('Python 3.12') || !result.toolTags.includes('python')) throw new Error(`${guide.route}: missing pinned Python metadata`);
   if (!result.hasMeta || !result.hasEvidence) throw new Error(`${guide.route}: missing metadata or evidence boundary`);
   if (!result.text.includes(guide.boundary)) throw new Error(`${guide.route}: missing execution boundary`);
-  if (result.images.length !== 1 || !result.images[0].alt) throw new Error(`${guide.route}: missing one accessible original diagram`);
+  if (result.images.length !== 0) throw new Error(`${guide.route}: synthetic arithmetic figure returned to the reader-facing route`);
   if (!result.links.some((link) => link.startsWith('https://'))) throw new Error(`${guide.route}: missing official or primary source links`);
   if (result.hasScript) throw new Error(`${guide.route}: client-side script is present`);
   if (result.overflow) throw new Error(`${guide.route}: horizontal overflow at ${width}px`);
@@ -70,11 +70,11 @@ try {
     text: document.body.innerText,
     links: [...document.querySelectorAll('.practical-card-list a')].map((link) => link.href),
     cards: document.querySelectorAll('.practical-card-list li').length,
-    scripts: document.querySelectorAll('script').length,
+    scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
-  if (!parent.text.includes('Practical resources') || parent.cards !== 2) throw new Error(`energy parent practical-card mismatch: ${parent.cards}`);
-  for (const guide of guides) if (!parent.links.includes(`${base}${guide.route}`)) throw new Error(`energy parent is missing ${guide.route}`);
+  if (parent.cards !== 0 || parent.text.includes('Practical resources')) throw new Error(`energy parent exposes synthetic-only practical cards: ${parent.cards}`);
+  for (const guide of guides) if (parent.links.includes(`${base}${guide.route}`)) throw new Error(`energy parent promotes synthetic-only route ${guide.route}`);
   if (parent.scripts !== 0 || parent.overflow) throw new Error('energy parent interface is not static or overflows');
 
   const desktopResults = [];
@@ -110,7 +110,7 @@ try {
       deterministic_arithmetic_fixtures_only: true,
     }, null, 2)}\n`);
   }
-  console.log('Energy guide smoke passed: parent cards, 2 static guides, pinned Python metadata, sources, original media, 1440px/390px layout, and no-JavaScript reading.');
+  console.log('Energy guide smoke passed: synthetic-only routes remain directly readable but are absent from the primary parent list, have no filler figures, retain pinned Python metadata and sources, and pass 1440px/390px plus no-JavaScript checks.');
 } finally {
   await browser.close();
 }

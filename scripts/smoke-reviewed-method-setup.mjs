@@ -24,9 +24,11 @@ const requiredContracts = [
   {
     name: 'pseudopotential identity and compatibility',
     phrases: [
-      'sha256sum method/pseudo/* > method/pseudopotentials.sha256',
-      'head -n 80 method/pseudo/selected.UPF',
+      'sha256sum -- "method/pseudo/$pseudo_name" > method/pseudopotentials.sha256',
+      'head -n 80 -- "method/pseudo/$pseudo_name"',
       'sha256sum fixes the downloaded file identity.',
+      'The ordinary route is download-first',
+      'Generating a pseudopotential is an advanced branch',
       'Record its generating functional, explicit valence configuration, frozen-core partition, semicore choice, relativistic treatment, nonlinear core correction where present, format, version, checksum, and any recommended starting cutoffs.',
       'Check that the selected functional and requested feature are compatible with the dataset and implementation.',
     ],
@@ -34,10 +36,10 @@ const requiredContracts = [
   {
     name: 'representative execution and output inspection',
     phrases: [
-      'pw.x -in scf.in > scf.out',
-      "grep -Ei 'program pwscf|exchange-correlation|pseudo|cutoff|k points|occupation|smearing|spin' scf.out",
-      'The first grep locates version-dependent setup summaries for human inspection.',
-      'The second checks normal program termination only.',
+      'pw.x -in scf.in > scf.out 2> scf.err',
+      "grep -Ei 'program pwscf|exchange-correlation|pseudo|cutoff|k points|occupation|smearing|spin' -- scf.out",
+      'The setup grep locates version-dependent summaries for human inspection.',
+      'The SCF marker, JOB DONE., separate stderr, and shell exit status answer different questions',
       'A successful exit establishes neither methodological suitability nor numerical convergence.',
     ],
   },
@@ -69,6 +71,10 @@ async function inspect(page, expectedWidth) {
     hasArticle: Boolean(document.querySelector('.article-content')),
     hasPlaceholder: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     hasContract: Boolean(document.querySelector('.operation-contract')),
+    copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
+    unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm').length,
+    copyButtons: document.querySelectorAll('.copy-code-button').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
 
@@ -76,6 +82,12 @@ async function inspect(page, expectedWidth) {
   if (result.title !== 'Choose the DFT Method and Computational Setup') throw new Error(`DFT method article title mismatch: ${result.title}`);
   if (!result.hasArticle || result.hasPlaceholder) throw new Error('reviewed DFT method narrative was not rendered');
   if (result.hasContract) throw new Error('reviewed DFT method article exposes a fixed contract');
+  if (result.copyEnhancements !== 1 || result.unexpectedScripts !== 0) {
+    throw new Error(`DFT method article exposes ${result.copyEnhancements} copy enhancements and ${result.unexpectedScripts} unexpected scripts`);
+  }
+  if (result.copyableBlocks < 1 || result.copyButtons !== result.copyableBlocks) {
+    throw new Error(`DFT method article renders ${result.copyButtons} Copy controls for ${result.copyableBlocks} copyable code blocks`);
+  }
   if (result.overflow) throw new Error(`DFT method article overflows at ${expectedWidth}px`);
   if (result.headings.length < 14) throw new Error(`DFT method article has only ${result.headings.length} natural topic sections`);
   for (const contract of requiredContracts) {
@@ -132,8 +144,9 @@ try {
   for (const phrase of [
     'This task produces a versioned baseline method identity. Every later record should inherit that baseline or name an explicit method or model branch.',
     'Unrelated target branches need not share one site-wide identity, but calculations combined in one comparison, thermodynamic cycle, or reference cycle must remain method-compatible unless the comparison is explicitly testing method sensitivity.',
-    'sha256sum method/pseudo/* > method/pseudopotentials.sha256',
-    'pw.x -in scf.in > scf.out',
+    'sha256sum -- "method/pseudo/$pseudo_name" > method/pseudopotentials.sha256',
+    'Generating a pseudopotential is an advanced branch',
+    'pw.x -in scf.in > scf.out 2> scf.err',
     'It does not accept cutoffs, k meshes, smearing widths, vacuum dimensions, or response grids; those require observable-specific tests.',
     'Sources and methods',
   ]) {

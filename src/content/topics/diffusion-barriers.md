@@ -11,6 +11,8 @@ Open relaxed initial and final structures together and mark the migrating atom o
 
 Plot image energies and projected forces, inspect saddle connectivity and forward/reverse references, and compare distinct routes rather than assuming one hop coordinate is exhaustive. Converge the static barrier before adding vibrational free energies, prefactors, event networks, or diffusion coefficients. Common NEB, trajectory-viewing, and specialist routes are indexed under [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). A completed path is evidence for one declared hop, not for exhaustive transport.
 
+Store a site-labelled initial cell, final cell, and every numbered path image, plus a table that records the mobile object, periodic image, energy, projected force, and electronic-state status for each row. Open the sequence in [ASE](/DFT-Research-Workflow/tools/ase/) and verify the hop before reading the barrier from a [Quantum ESPRESSO](/DFT-Research-Workflow/tools/quantum-espresso/) `neb.x` or another NEB output. When two mechanisms are plausible, keep two independent image chains rather than overwriting one with the lower barrier. If periodic wrapping creates a discontinuity, a host atom exchanges identity, the saddle has more than one unstable direction, or forward and reverse references do not close, stop at the elementary-hop model; do not proceed to a jump rate or diffusion coefficient.
+
 ## A hop is defined by sites, state, and multiplicity
 
 Start from relaxed initial and final site states under one compatible model. Record which atom or defect moves, its periodic image, the site labels after relaxation, and the degeneracy of symmetry-equivalent hops. A path calculation then gives a forward static barrier

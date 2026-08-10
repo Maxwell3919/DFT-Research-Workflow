@@ -19,8 +19,7 @@ source_ids:
   - vasp-isif
   - cp2k-geometry-cell-opt
   - cod-9013102
-media_ids:
-  - optimization-degrees-constraint-map
+media_ids: []
 review: docs/reviews/2026-08-03-optimize-structure.md
 reviewed_at: "2026-08-03"
 ---
@@ -39,29 +38,45 @@ The stored script later on reconstructs a bounded QE example and is optional aut
 
 ## Start with the stored Silicon input and output
 
-The bounded case reads these exact objects:
+The bounded case reads the exact input `examples/practical-guides/data/silicon-qe/relax/si-relax.in` and output `examples/practical-guides/data/silicon-qe/relax/si-relax.out`. Inspect those objects before running the companion:
 
-```text
-examples/practical-guides/data/silicon-qe/relax/si-relax.in
-examples/practical-guides/data/silicon-qe/relax/si-relax.out
+```bash
+relax_in=examples/practical-guides/data/silicon-qe/relax/si-relax.in
+relax_out=examples/practical-guides/data/silicon-qe/relax/si-relax.out
+test -f "$relax_in"
+test -f "$relax_out"
+
+grep -En 'calculation|forc_conv_thr|nstep|ion_dynamics' -- "$relax_in"
+sed -n '/^ATOMIC_POSITIONS/,/^K_POINTS/p' "$relax_in"
+test "$(grep -cF 'Program PWSCF v.' -- "$relax_out")" -eq 1
+test "$(grep -cF 'JOB DONE.' -- "$relax_out")" -eq 1
+grep -cF 'convergence has been achieved' -- "$relax_out"
+grep -F 'End of BFGS Geometry Optimization' -- "$relax_out"
+
+awk '
+  /Forces acting on atoms/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /Total force =/ {last=block; inside=0}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$relax_out"
+
+awk '
+  /Begin final coordinates/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /End final coordinates/ {last=block; inside=0}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$relax_out"
 ```
 
-Run the companion reconstruction:
+The input has no explicit `if_pos` columns, so verify the documented default and treat all printed Cartesian components as active for this bounded case. The final complete force block exposes every component; its aggregate `Total force` remains a separate diagnostic. This fixed-cell input does not request a cell move and the output contains no stress history, so it cannot support a stress or variable-cell gate.
+
+`JOB DONE.` checks normal program termination only. The literal electronic-convergence marker occurs five times, but the manual count does not claim a one-to-one mapping between those markers and ionic force evaluations. The BFGS marker records the optimizer's stopping condition; it does not establish that the active subspace was scientifically appropriate or that another start could not reach a lower state.
+
+After the input, final geometry, and final complete force block are intelligible, run the optional companion reconstruction:
 
 ```bash
 python3 examples/practical-guides/silicon_qe_relax.py
 ```
-
-Inspect the stored output directly:
-
-```bash
-grep -F "JOB DONE" examples/practical-guides/data/silicon-qe/relax/si-relax.out
-grep -cF "convergence has been achieved" examples/practical-guides/data/silicon-qe/relax/si-relax.out
-grep -F "End of BFGS Geometry Optimization" examples/practical-guides/data/silicon-qe/relax/si-relax.out
-grep -F "Total force =" examples/practical-guides/data/silicon-qe/relax/si-relax.out
-```
-
-`JOB DONE` checks normal program termination only. The literal electronic-convergence marker occurs five times, but the parser does not claim a one-to-one mapping between those markers and the five parsed ionic energy/force rows. The BFGS marker records the optimizer's stopping condition; it does not establish that the active subspace was scientifically appropriate or that another start could not reach a lower state.
 
 Use the input to decide which variables were active, then compare the initial and final cell and coordinates. If the executed motion differs from the declared subspace, reject the run as the wrong model. If it agrees, continue to force/state diagnosis rather than declaring the structure accepted from the marker alone.
 
@@ -76,18 +91,7 @@ declared active subspace.
 
 ## Map the active subspace before execution
 
-Write a short degree-of-freedom record before generating code-specific input:
-
-```text
-atomic positions: all / selected atoms / selected Cartesian components
-cell volume: fixed / active
-cell shape: fixed / active / restricted
-cell angles: fixed / active
-external pressure or stress: declared value and convention
-symmetry: detected / imposed / released
-constraints: stable atom and component identities
-nonperiodic directions: fixed by boundary model
-```
+Before generating code-specific input, write down whether all atoms or only selected atoms and Cartesian components may move; whether cell volume, shape, and angles are fixed, active, or restricted; the external pressure or stress target and convention; whether symmetry is detected, imposed, or released; the stable identities of constrained atoms and components; and which nonperiodic directions the boundary model keeps fixed.
 
 This record should agree with the actual code input. A selective-dynamics flag, fixed-atom list, cell filter, or symmetry option that is absent from the record is an undeclared model assumption.
 

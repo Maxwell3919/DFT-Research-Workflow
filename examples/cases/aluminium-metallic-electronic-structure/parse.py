@@ -114,7 +114,7 @@ def write_csv(relative: str, rows: list[dict[str, object]]) -> None:
         writer.writerows(rows)
 
 
-def derive_gaussian(mesh: list[dict[str, float | int]], fermi: float) -> tuple[list[dict[str, float]], dict[str, object]]:
+def derive_gaussian(mesh: list[dict[str, float | int]], fermi: float) -> tuple[list[dict[str, str]], dict[str, object]]:
     energy, weight = [], []
     for row in mesh:
         for band in range(1, 5):
@@ -127,7 +127,17 @@ def derive_gaussian(mesh: list[dict[str, float | int]], fermi: float) -> tuple[l
     expected = float(np.sum(weight_a))
     integral = float(np.sum((dos[:-1] + dos[1:]) * 0.5 * GRID_STEP_EV))
     need(np.isfinite(dos).all() and np.all(dos >= 0.0) and abs(integral - expected) <= 1.0e-5, "Gaussian representation fails finite/nonnegative/integral checks")
-    rows = [{"energy_relative_fermi_ev": float(x), "energy_absolute_ev": float(x + fermi), "dos_states_per_ev_per_cell": float(y)} for x, y in zip(grid, dos)]
+    # Explicit decimal formatting keeps the public CSV byte-stable across
+    # supported NumPy builds.  Default float repr can differ in the final
+    # insignificant digits even when the numerical array is equivalent.
+    rows = [
+        {
+            "energy_relative_fermi_ev": f"{float(x):.8f}",
+            "energy_absolute_ev": f"{float(x + fermi):.8f}",
+            "dos_states_per_ev_per_cell": f"{float(y):.12e}",
+        }
+        for x, y in zip(grid, dos)
+    ]
     meta = {"source_output": "output/dos-route/nscf-full.out", "source_output_sha256": sha("output/dos-route/nscf-full.out"), "source_k_point_count": 512, "source_band_count_per_k_point": 4, "source_printed_k_weight_sum": float(sum(float(row["k_weight_qe_printed"]) for row in mesh)), "source_printed_weighted_state_sum": expected, "energy_reference": "epsilon_nk minus Fermi energy printed by rerun nscf-full.out", "fermi_energy_ev": fermi, "formula": "D(E)=sum_{n,k} w_k*[sigma*sqrt(2*pi)]^-1*exp(-0.5*((E-(epsilon_nk-E_F))/sigma)^2)", "weight_convention": "QE-printed weights are used without renormalization; their 512-point sum is approximately 2 because the non-spin-polarized output carries spin-degenerate weighting.", "gaussian_sigma_ev": GAUSSIAN_SIGMA_EV, "energy_grid_start_relative_fermi_ev": GRID_START_EV, "energy_grid_stop_relative_fermi_ev": GRID_STOP_EV, "energy_grid_step_ev": GRID_STEP_EV, "energy_grid_points": len(rows), "trapezoidal_integral_states_per_cell": integral, "dos_at_fermi_states_per_ev_per_cell": float(dos[np.argmin(np.abs(grid))]), "claim_boundary": "A Gaussian-broadened representation of one printed 8x8x8 NSCF eigenvalue sample only; it is distinct from the separate dos.x table and establishes no numerical convergence."}
     return rows, meta
 

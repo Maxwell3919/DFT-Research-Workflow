@@ -14,21 +14,22 @@ source_ids:
   - vasp-electric-field-dfpt
   - vasp-linear-response
   - qe-ph-75
-media_ids:
-  - piezoelectric-tensor-ledger
+media_ids: []
 review: docs/reviews/2026-08-04-piezoelectric-response.md
 reviewed_at: "2026-08-04"
 ---
 
 **Evidence class: synthetic-only.** This deterministic ledger uses invented piezoelectric entries in a declared local Voigt convention. It verifies the arithmetic $e=e^{\mathrm{clamped}}+e^{\mathrm{internal}}$ and then applies an explicitly invented compliance factor to show why a converted $d$ coefficient requires a separately declared elastic input. No number is a material property.
 
-## Use this only as an arithmetic fixture
+Do not use this ledger as the first action for a material. First open the crystal with labelled axes in [VESTA](/DFT-Research-Workflow/tools/vesta/) or another structure viewer; save positive and negative strain or field inputs, their clamped-ion and internally relaxed outputs, the polarization-branch record, and the separately qualified elastic compliance. Tabulate every response component with units, tensor convention, sign, and source file before doing the arithmetic below.
 
-There is no crystal structure, tensor orientation, deformation series, polarization branch, or real software output in this page. For a material calculation, first open the structure with its axes visible, inspect positive and negative strains, compare clamped and internally relaxed geometries, and plot the real response components before converting between $e$ and $d$. The [electronic-property resource landscape](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) lists actual response routes.
+## Optional toy after the real tensor series exists
 
-### Optional automation: run the invented ledger
+This page contains no real response series. Plot the real clamped and relaxed components before converting between $e$ and $d$; the [electronic-property resource landscape](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) lists calculation routes.
 
-```text
+### Optional replay of the invented ledger
+
+```bash
 python3 examples/practical-guides/piezoelectric_tensor_ledger.py \
   --svg public/media/practical-guides/piezoelectric-response/check-piezoelectric-tensor-ledger/piezoelectric-tensor-ledger.svg
 ```
@@ -36,6 +37,8 @@ python3 examples/practical-guides/piezoelectric_tensor_ledger.py \
 ## What this guide verifies
 
 Execution verifies invented componentwise arithmetic, a locally named Voigt convention, invented compliance conversion, and original SVG rendering. It does not calculate a piezoelectric tensor, elastic compliance, polarization branch, response convergence, material response, or device coefficient.
+
+If this script fails, repair only the local fixture or its declared convention. In a real response series, a branch jump, inconsistent relaxed geometry, broken positive/negative symmetry, axis mismatch, or unqualified compliance is a parent-evidence failure; do not conceal it with tensor conversion or component averaging.
 
 ## Official sources
 

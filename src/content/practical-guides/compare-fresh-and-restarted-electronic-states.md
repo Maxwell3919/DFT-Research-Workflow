@@ -18,8 +18,7 @@ source_ids:
   - cp2k-scf
   - cp2k-dft
   - cod-9013102
-media_ids:
-  - fresh-restart-state-map
+media_ids: []
 review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
 reviewed_at: "2026-08-03"
 ---
@@ -34,7 +33,40 @@ Run both branches with the same declared evaluator. Read every SCF iteration, no
 
 Accept equivalence only when both branches meet their electronic criteria and retain the intended physical state within the declared tolerances. Equal terminal energies alone do not prove identical states, valid restart ancestry, or observable convergence. A faster restarted branch does not show that the fresh route is wrong; a fresh branch changing state may reveal trapping or an incompatible parent.
 
-The stored Silicon comparison script below is optional automation for its bounded artifacts. It can reproduce the declared energy and marker comparison, but it cannot establish a general restart policy or prove state identity beyond the recorded evidence.
+Inspect the bounded Silicon inputs and outputs before running its helper:
+
+```bash
+restart_root=examples/practical-guides/data/silicon-qe/restart
+fresh_in="$restart_root/fresh.in"
+restart_in="$restart_root/restart.in"
+fresh_out="$restart_root/fresh.out"
+restart_out="$restart_root/restart.out"
+
+sha256sum -- "$fresh_in" "$restart_in" "$fresh_out" "$restart_out"
+grep -En 'calculation|restart_mode|prefix|outdir|pseudo_dir|ecutwfc|ecutrho|occupations|K_POINTS' \
+  -- "$fresh_in" "$restart_in"
+if diff -u -- "$fresh_in" "$restart_in"; then
+  printf '%s\n' 'The two inputs are byte-for-byte identical.'
+else
+  diff_status=$?
+  case "$diff_status" in
+    1) printf '%s\n' 'Inputs differ; inspect the unified diff above.' ;;
+    *) exit "$diff_status" ;;
+  esac
+fi
+for output in "$fresh_out" "$restart_out"; do
+  printf '\n%s\n' "$output"
+  test "$(grep -cF 'Program PWSCF v.' -- "$output")" -eq 1
+  test "$(grep -cF 'JOB DONE.' -- "$output")" -eq 1
+  grep -F 'convergence has been achieved' -- "$output" | tail -n 1
+  grep -F '!    total energy' -- "$output" | tail -n 1
+  grep -niE 'warning|error in routine|stopping|not converged|no convergence|magnetization|occupation' \
+    -- "$output" || true
+done
+find "$restart_root" -maxdepth 2 -type f -printf '%12s %p\n' | sort
+```
+
+The diff and inventory show what is present in this checkout. They do not verify a saved-density or wavefunction parent, and the stored bundle has no separate shell-exit or stderr artifacts. Those evidence fields remain unavailable rather than being inferred from `JOB DONE.`. The stored Silicon comparison script below is optional automation for its bounded artifacts. It can reproduce the declared energy and marker comparison, but it cannot establish a general restart policy or prove state identity beyond the recorded evidence.
 
 ## Run the bounded comparison
 
@@ -68,6 +100,9 @@ reaches `FM-A`, a compatible restart that reaches the same state, and another
 restart that reaches `AFM-B`. It is not executed by the declared companion:
 
 ```python
+import sys
+
+sys.path.insert(0, "examples/practical-guides")
 from reference_state_fresh_restart import run
 
 report = run()

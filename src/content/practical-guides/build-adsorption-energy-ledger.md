@@ -19,8 +19,7 @@ source_ids:
   - cmr-adsorption-page
   - cmr-adsorption-db
   - cmr-data-license
-media_ids:
-  - adsorption-energy-ledger
+media_ids: []
 review: docs/reviews/2026-08-04-adsorption-energies.md
 reviewed_at: "2026-08-04"
 ---
@@ -29,7 +28,7 @@ reviewed_at: "2026-08-04"
 
 Open the clean slab, gas-phase or molecular reference, and relaxed adsorbate structure. View the final structure from above and from the side, identify the actual site and coverage, and measure relevant distances before entering its energy in a spreadsheet or notebook. Compare the reaction convention with the source Methods or supporting information; the energy ledger cannot reveal migration, dissociation, or reconstruction. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist surface tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for this human route.
 
-**Audit the stored fixture:** the companion script checks the attributed ledger and its synthetic bookkeeping extensions. The schematic ledger is secondary evidence and must not be read as an atomistic adsorption configuration or a new calculation.
+**Start with attributed public data:** the companion script checks a frozen CMR ledger. Inspect its reaction, coverage, site, row identities, and source hash before comparing energies. The later invented bookkeeping examples are optional arithmetic checks, not atomistic configurations or new calculations.
 
 Audit the attributed public reaction ledger first:
 
@@ -55,6 +54,8 @@ $$
 E_{\mathrm{ads}}
 =E_{\mathrm{slab}+A}-E_{\mathrm{slab}}-E_{A,\mathrm{ref}}.
 $$
+
+## Optionally test reaction normalization
 
 The retained synthetic explanation separately evaluates $\mathrm{CO(g)}+*\rightarrow\mathrm{CO*}$ and $\mathrm{H_2(g)}+2*\rightarrow2\mathrm{H*}$. It divides by two only after balancing the second reaction. Those invented totals demonstrate normalization; they are not source data or reusable reference energies.
 

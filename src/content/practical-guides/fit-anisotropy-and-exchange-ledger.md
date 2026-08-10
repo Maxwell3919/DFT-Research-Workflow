@@ -23,9 +23,9 @@ reviewed_at: "2026-08-04"
 
 For a real material, open the structure with the tested magnetization directions or spin pairs labelled, and inspect final site moments or spin density for every run. Plot directional energies or configuration energies with error scale and fit residuals, keeping the sign, cell, pair counting, and spin normalization visible. Compare with symmetry and published conventions through [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist magnetic tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
 
-**Audit the stored fixture:** the ledger is deliberately invented teaching arithmetic. No bar chart is published because empty synthetic bars would not show a magnetic structure, spin density, real spin-orbit result, or measured exchange interaction.
+**Start with real magnetic states:** inspect the final moment vectors or spin density and retained high-precision energies for every direction or configuration. This repository supplies no real SOC or configuration series here. The optional ledger below is invented sign-convention arithmetic, not a magnetic result.
 
-Use this fixture to check ledger arithmetic before processing real magnetic energies. It separates two operations: ranking invented SOC directional energies for one fixed magnetic texture, and fitting invented two-site energies to the convention
+Use this fixture only to check ledger arithmetic after defining the real parent states. It separates two operations: ranking invented directional-energy rows for one fixed texture, and fitting invented two-site energies to the convention
 
 $$
 H=-J\,\mathbf e_1\cdot\mathbf e_2.
@@ -37,7 +37,7 @@ For a real calculation, the parent object must contain compatible total energies
 
 ## Purpose
 
-From the repository root, run:
+If you want to check the written sign convention, run from the repository root:
 
 ```bash
 python3 examples/practical-guides/anisotropy_exchange_ledger.py

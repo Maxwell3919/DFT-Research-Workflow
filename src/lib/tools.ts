@@ -1,58 +1,105 @@
 import toolsDocument from '../../workflow/tools.json';
-import { getWorkflowTopic } from './workflow';
+import { getWorkflowTopic, getWorkflowTopics } from './workflow';
 
-export interface ToolGettingStarted {
+export type ResourceAccess =
+  | 'open'
+  | 'registration'
+  | 'institutional'
+  | 'subscription'
+  | 'commercial'
+  | 'mixed'
+  | 'restricted'
+  | 'free-proprietary';
+
+export type ResourceLinkRole =
+  | 'homepage'
+  | 'docs'
+  | 'tutorial'
+  | 'source'
+  | 'download'
+  | 'data'
+  | 'manual'
+  | 'standard'
+  | 'community';
+
+export interface ResourceLink {
+  role: ResourceLinkRole;
   label: string;
   url: string;
 }
 
-export type ToolAccess =
-  | 'open-source'
-  | 'restricted-license'
-  | 'registration-required'
-  | 'free-proprietary'
-  | 'institutional'
-  | 'subscription'
-  | 'commercial'
-  | 'mixed';
-
-export interface ToolRecord {
+export interface ResourceRecord {
   slug: string;
   name: string;
   aliases: string[];
-  category: string;
-  interfaces: string[];
-  access: ToolAccess;
-  access_note?: string;
-  verified_version?: string;
-  role: string;
-  use_when: string;
-  first_action: string;
-  input_objects: string[];
-  output_objects: string[];
-  verify: string;
-  primary_topic: string;
-  homepage: string;
-  documentation: string;
-  getting_started: ToolGettingStarted;
-  source_repository: string | null;
+  one_line: string;
+  task_groups: string[];
+  kind_tags: string[];
+  interface_tags: string[];
+  access: ResourceAccess;
   topics: string[];
+  links: ResourceLink[];
+  detail?: boolean;
+  caveat?: string;
+  language?: string;
+  editorial_state: 'reviewed' | 'catalog' | 'candidate';
 }
 
-const tools = toolsDocument.tools as ToolRecord[];
+export interface ResourceTaskGroup {
+  id: string;
+  title: string;
+  intro: string;
+}
+
+/** Compatibility type for existing contextual-navigation consumers. */
+export type ToolRecord = ResourceRecord;
+
+const resources = toolsDocument.resources as ResourceRecord[];
+const taskGroups = toolsDocument.task_groups as ResourceTaskGroup[];
+const detailSlugs = new Set(toolsDocument.tools.map((entry) => entry.slug));
+const resourceBySlug = new Map(resources.map((resource) => [resource.slug, resource]));
+const topicSlugs = new Set(getWorkflowTopics().map((topic) => topic.slug));
 
 export const toolRegistryMetadata = {
   authority: toolsDocument.authority,
   scopeNote: toolsDocument.scope_note,
-  verifiedAt: toolsDocument.verified_at,
+  verifiedAt: toolsDocument.reviewed_at,
+  taskGroups: [...taskGroups],
 } as const;
 
-export const getTools = () => [...tools];
+export const getResources = () => [...resources];
 
-export function getTool(slug: string) {
-  const tool = tools.find((entry) => entry.slug === slug);
-  if (!tool) throw Error(`Unknown tool: ${slug}`);
-  return tool;
+export const getResourceTaskGroups = () => [...taskGroups];
+
+export function getResource(slug: string) {
+  const resource = resourceBySlug.get(slug);
+  if (!resource) throw Error(`Unknown resource: ${slug}`);
+  return resource;
 }
 
-export const getToolTopics = (tool: ToolRecord) => tool.topics.map(getWorkflowTopic);
+export const getDetailedResources = () => resources.filter((resource) => detailSlugs.has(resource.slug));
+
+/** Compatibility lookup for existing detail-page consumers. */
+export const getTools = getDetailedResources;
+
+/** Compatibility lookup for existing detail-page consumers. */
+export function getTool(slug: string) {
+  const resource = getResource(slug);
+  if (!detailSlugs.has(slug)) throw Error(`Resource has no detail page: ${slug}`);
+  return resource;
+}
+
+export const getResourceTopics = (resource: ResourceRecord) => resource.topics.map(getWorkflowTopic);
+
+/** Compatibility lookup for existing detail-page consumers. */
+export const getToolTopics = getResourceTopics;
+
+export function getResourcesForTopic(topicSlug: string) {
+  if (!topicSlugs.has(topicSlug)) throw Error(`Unknown workflow topic: ${topicSlug}`);
+  return resources.filter((resource) => resource.topics.includes(topicSlug));
+}
+
+export function getResourcesForTaskGroup(taskGroupId: string) {
+  if (!taskGroups.some((group) => group.id === taskGroupId)) throw Error(`Unknown resource task group: ${taskGroupId}`);
+  return resources.filter((resource) => resource.task_groups.includes(taskGroupId));
+}

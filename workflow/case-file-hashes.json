@@ -140,8 +140,8 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/derived/al-dos-gaussian.csv",
-      "sha256": "9cff2ec93554d6c12c654746f69d1c48224f44acc63e57b35a0ad1329a735b2a",
-      "bytes": 160718
+      "sha256": "4b36c0539ea778dec4277bafcda220b79963b15035c074273d9aa1acf05bf116",
+      "bytes": 118716
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/derived/al-dos-x-metadata.json",
@@ -280,7 +280,7 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/manifest.json",
-      "sha256": "e90f6b5aa9f1caaadac171baf3b371fd726f6c4219c53e51894962f5fcc1b28d",
+      "sha256": "3c05f3c846d70175f8487194242ab2cb2768552a0672d9a8f67bab70f27d6350",
       "bytes": 27997
     },
     {
@@ -520,8 +520,8 @@
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/parse.py",
-      "sha256": "bd1b465b622d05aa1d1d258752f00c09a6bd3727df184f27f0cf63fed8156cb2",
-      "bytes": 32994
+      "sha256": "aae0d04af1d1caa75de3e062b66341dc55764827b709169214b7b3c98632329a",
+      "bytes": 33309
     },
     {
       "path": "examples/cases/aluminium-metallic-electronic-structure/qe_plan.json",

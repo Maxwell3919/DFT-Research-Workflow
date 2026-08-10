@@ -12,7 +12,6 @@ const legacyDocument = JSON.parse(await readFile(new URL('ontology/legacy-operat
 const recipesDocument = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8'));
 const toolsDocument = JSON.parse(await readFile(new URL('workflow/tools.json', root), 'utf8'));
 const practicalEvidence = JSON.parse(await readFile(new URL('workflow/practical-evidence.json', root), 'utf8'));
-const resourceLandscapeDocument = JSON.parse(await readFile(new URL('workflow/resource-landscape.json', root), 'utf8'));
 const workflowTopics = workflowDocument.sections.flatMap((section) =>
   section.groups.flatMap((group) => group.topics.map((topic) => ({
     ...topic,
@@ -57,13 +56,13 @@ const retiredPracticalRedirects = [
   ['operations/chemical-bonding-analysis/guides/integrate-a-declared-cohp-energy-window', 'operations/chemical-bonding-analysis/'],
   ['operations/magnetic-configuration-and-ground-state-comparison/guides/compare-enumerated-magnetic-candidates', 'operations/magnetic-configuration-and-ground-state-comparison/'],
 ];
-const resourceLandscapeResources = resourceLandscapeDocument.categories.flatMap((category) => category.resources);
+const resourceLandscapeResources = toolsDocument.resources;
 const expectedNonEnglishResourceTitleIds = ['whut-materials-simulation-cn'];
 const nonEnglishResourceTitles = resourceLandscapeResources.filter((resource) => /[\u3400-\u9fff]/u.test(resource.name));
-if (JSON.stringify(nonEnglishResourceTitles.map((resource) => resource.id)) !== JSON.stringify(expectedNonEnglishResourceTitleIds)) {
-  errors.push(`non-English resource title inventory changed: ${JSON.stringify(nonEnglishResourceTitles.map((resource) => resource.id))}`);
+if (JSON.stringify(nonEnglishResourceTitles.map((resource) => resource.slug)) !== JSON.stringify(expectedNonEnglishResourceTitleIds)) {
+  errors.push(`non-English resource title inventory changed: ${JSON.stringify(nonEnglishResourceTitles.map((resource) => resource.slug))}`);
 }
-const nonEnglishResourceTitleById = new Map(nonEnglishResourceTitles.map((resource) => [resource.id, resource.name]));
+const nonEnglishResourceTitleById = new Map(nonEnglishResourceTitles.map((resource) => [resource.slug, resource.name]));
 
 function parseFrontmatter(source) {
   const match = source.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
@@ -151,7 +150,7 @@ function outputPath(href) {
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
 const supportingOperationRoutes = ['troubleshooting', 'software-bridge', 'resource-landscape'];
-const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.tools.length + 2 + workedWorkflows.length + 1 + retiredPracticalRedirects.length + supportingOperationRoutes.length;
+const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.resources.filter((resource) => resource.detail).length + 2 + workedWorkflows.length + 1 + retiredPracticalRedirects.length + supportingOperationRoutes.length;
 if (htmlFiles.length !== expectedHtmlCount) errors.push(`generated HTML route set mismatch: expected ${expectedHtmlCount}, found ${htmlFiles.length}`);
 
 const htmlByPath = new Map();
@@ -163,7 +162,13 @@ for (const path of htmlFiles) {
   const isStaticRedirect = /<meta http-equiv="refresh"/i.test(html);
   if (!isStaticRedirect && !/<html lang="en">/.test(html)) errors.push(`${path}: html language must be English`);
   if (/[\u3400-\u9fff]/u.test(cjkAuditText)) errors.push(`${path}: public HTML contains undeclared CJK text`);
-  if (/<script(?:\s|>)/i.test(html)) errors.push(`${path}: client-side script is not allowed`);
+  const scripts = [...html.matchAll(/<script\b[\s\S]*?<\/script>/gi)].map((match) => match[0]);
+  const validScriptBoundary = isStaticRedirect
+    ? scripts.length === 0 || (scripts.length === 1 && /\bdata-copy-enhancement(?:\s|>)/i.test(scripts[0]))
+    : scripts.length === 1 && /\bdata-copy-enhancement(?:\s|>)/i.test(scripts[0]);
+  if (!validScriptBoundary) {
+    errors.push(`${path}: only the single Copy progressive-enhancement script is allowed`);
+  }
   if (/class="operation-contract"/.test(html)) errors.push(`${path}: fixed operation contract is not allowed`);
   for (const phrase of prohibitedText) if (text.toLowerCase().includes(phrase.toLowerCase())) errors.push(`${path}: prohibited public phrase ${JSON.stringify(phrase)}`);
   for (const href of [...html.matchAll(/href="([^"]+)"/g)].map((match) => match[1])) {
@@ -199,6 +204,9 @@ for (const slug of supportingOperationRoutes) {
 const expectedWorkedWorkflowSlugs = ['silicon-ground-state-electronic-structure', 'aluminium-metallic-electronic-structure'];
 if (JSON.stringify(workedWorkflows.map((entry) => entry.slug)) !== JSON.stringify(expectedWorkedWorkflowSlugs)) errors.push(`Worked Workflow routes do not match the frozen Silicon/Aluminium order: ${JSON.stringify(workedWorkflows.map((entry) => entry.slug))}`);
 const workflowsDirectoryHtml = htmlByPath.get(join(distPath, 'workflows', 'index.html')) ?? '';
+const workflowsDirectoryText = stripMarkup(workflowsDirectoryHtml);
+if (!workflowsDirectoryText.includes('Choose a case by its material and scientific question, then open it.')) errors.push('Worked Workflows directory is missing its direct first action');
+if (/Exact commands, hashes, manifests, and replay records/i.test(workflowsDirectoryText)) errors.push('Worked Workflows directory exposes internal reproducibility packaging as its introduction');
 for (const entry of workedWorkflows) {
   const html = htmlByPath.get(join(distPath, 'workflows', entry.slug, 'index.html')) ?? '';
   const text = stripMarkup(html);
@@ -239,7 +247,7 @@ const home = htmlByPath.get(join(distPath, 'index.html')) ?? '';
 const homeText = stripMarkup(home);
 const homeNav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
 const navLabels = [...homeNav.matchAll(/<a[^>]*>([^<]+)<\/a>/g)].map((match) => match[1].trim());
-if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
+if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools &amp; Resources'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
 for (const phrase of [
   'Scientific Question',
   'Required Observable',
@@ -253,6 +261,7 @@ for (const phrase of [
 ]) {
   if (!homeText.includes(phrase)) errors.push(`Home is missing ${phrase}`);
 }
+if (home.indexOf('class="manual-entries"') > home.indexOf('class="question-chain"')) errors.push('Home must offer a direct starting action before the workflow map');
 for (const section of workflowDocument.sections) {
   const escapedTitle = section.title.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
   if (!home.includes(`aria-label="${section.id}, ${escapedTitle}"`)) errors.push(`Home is missing ${section.id}, ${section.title}`);
@@ -283,9 +292,7 @@ for (const slug of [
   'optimize-structure',
   'harmonic-phonons',
   'fermi-surface-and-full-brillouin-zone-analysis',
-  'density-of-states-and-projected-density-of-states',
   'electron-phonon-coupling',
-  'conventional-superconductivity',
 ]) {
   if (!observableExampleSlugs.includes(slug)) errors.push(`Research Workflow observable examples are missing ${slug}`);
 }
@@ -325,19 +332,19 @@ for (const guide of practicalGuides) {
   }
   if (!text.includes(guide.title)) errors.push(`${guide.guide_slug}: practical title mismatch`);
   const evidenceRecord = practicalEvidence.guides.find((record) => record.guide_slug === guide.guide_slug);
-  const hasExecutionBoundary = text.includes('Execution checks confirm only the bounded software or analysis assertions made by this page.');
+  const hasExecutionBoundary = text.includes('It tests only the bounded software or analysis behaviour described here; it does not establish numerical convergence, model validity, or a material property.');
   const hasInterfaceBoundary = evidenceRecord?.evidence_class === 'real-interface-walkthrough'
     && text.includes('This walkthrough establishes an actual browser route to a declared COD record and an actual browser viewer state for a declared expanded teaching object.');
   if (!hasExecutionBoundary && !hasInterfaceBoundary) {
     errors.push(`${guide.guide_slug}: missing execution evidence boundary`);
   }
-  if (!html.includes('class="guide-meta"')) errors.push(`${guide.guide_slug}: missing guide metadata`);
+  if (!/class="[^"]*\bguide-meta\b[^"]*"/.test(html)) errors.push(`${guide.guide_slug}: missing lightweight guide metadata`);
   if ((evidenceRecord?.media_ids?.length ?? 0) > 0 && !html.includes('class="guide-media"')) errors.push(`${guide.guide_slug}: missing declared media`);
   if (evidenceRecord?.evidence_class === 'real-execution') {
-    if (!evidenceRecord.case_id || !text.includes('Evidence scope.') || !text.includes(evidenceRecord.case_id)) {
-      errors.push(`${guide.guide_slug}: real-execution page is not visibly bound to its file-backed case`);
+    if (evidenceRecord.case_id && (!text.includes('Open the exact case record') || !html.includes(evidenceRecord.case_id))) {
+      errors.push(`${guide.guide_slug}: declared file-backed case is not available from the reproducibility note`);
     }
-    if (!text.includes('Claim ceiling.')) errors.push(`${guide.guide_slug}: natural-language claim ceiling is not rendered`);
+    if (!text.includes('does not establish numerical convergence, model validity, or a material property')) errors.push(`${guide.guide_slug}: natural-language scientific limit is not rendered`);
   }
   const parentHref = `${base}operations/${guide.topic_slug}/`;
   if (!html.includes(parentHref)) errors.push(`${guide.guide_slug}: missing parent-topic link`);
@@ -348,8 +355,12 @@ for (const parentSlug of practicalParentPaths) {
   const path = join(distPath, 'operations', parentSlug, 'index.html');
   const html = htmlByPath.get(path) ?? '';
   const text = stripMarkup(html);
+  const childGuides = practicalGuides.filter((guide) => {
+    const evidence = practicalEvidence.guides.find((record) => record.guide_slug === guide.guide_slug);
+    return guide.topic_slug === parentSlug && evidence?.evidence_class !== 'synthetic-only';
+  });
+  if (childGuides.length === 0) continue;
   if (!text.includes('Practical resources')) errors.push(`${parentSlug}: missing practical resource section`);
-  const childGuides = practicalGuides.filter((guide) => guide.topic_slug === parentSlug);
   for (const guide of childGuides) {
     const href = `${base}operations/${guide.topic_slug}/${guide.segment}/${guide.guide_slug}/`;
     if (!html.includes(href)) errors.push(`${parentSlug}: missing practical child link ${guide.guide_slug}`);
@@ -426,7 +437,12 @@ for (const legacy of legacyOperations) {
   if (html.includes('legacy-mapping')) errors.push(`${legacy.slug}: migration page exposes the old mapping taxonomy`);
 }
 
-if (!htmlByPath.has(join(distPath, '404.html'))) errors.push('custom English 404 page was not generated');
+const notFoundHtml = htmlByPath.get(join(distPath, '404.html')) ?? '';
+if (!notFoundHtml) errors.push('custom English 404 page was not generated');
+else {
+  if (!notFoundHtml.includes(`href="${base}"`) || !notFoundHtml.includes(`href="${base}operations/"`)) errors.push('custom 404 page does not offer Home and Research Workflow recovery actions');
+  if (stripMarkup(notFoundHtml).includes('Browse the Operations directory')) errors.push('custom 404 page uses the retired Operations-directory label');
+}
 
 // DRW_MANUAL_HANDOFF_ACCEPTANCE
 {
@@ -464,8 +480,8 @@ if (!htmlByPath.has(join(distPath, '404.html'))) errors.push('custom English 404
     if (/>\s*(obtain-material-structure|test-numerical-convergence|calculate-reference-ground-state)\s*<\/a>/.test(siliconHtml)) {
       errors.push('worked workflow exposes raw topic slugs as link labels');
     }
-    for (const token of ['prepare-reference', 'audit-scf', 'extract-runtime', 'package-study']) {
-      if (!siliconHtml.includes(token)) errors.push('built Silicon route is missing ' + token);
+    for (const retiredToken of ['qe_manual_handoff.py', 'prepare-reference', 'audit-scf', 'extract-runtime', 'package-study']) {
+      if (siliconHtml.includes(retiredToken)) errors.push('built Silicon reader route exposes retired helper token ' + retiredToken);
     }
 
     const guideRoutes = [
@@ -475,11 +491,11 @@ if (!htmlByPath.has(join(distPath, '404.html'))) errors.push('custom English 404
       ],
       [
         'operations/test-numerical-convergence/guides/converge-basis-cutoffs-and-grids',
-        'extract-runtime',
+        'convergence has been achieved',
       ],
       [
         'operations/calculate-reference-ground-state/guides/package-reusable-reference-state-lineage',
-        'sha256sum -c',
+        'sha256sum',
       ],
     ];
     for (const [route, token] of guideRoutes) {

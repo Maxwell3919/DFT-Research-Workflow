@@ -111,7 +111,7 @@ for (const source of definition.sources) {
 >
   <article class="troubleshooting-manual" data-troubleshooting-index>
     <header class="page-lede">
-      <p class="section-label">Supporting reference</p>
+      <p class="section-label">Start with the evidence you have</p>
       <h1>{definition.public_heading}</h1>
       <p class="page-intro">{definition.intro}</p>
       <p class="page-boundary">{definition.boundary}</p>
@@ -134,50 +134,53 @@ for (const source of definition.sources) {
             <p>{record.symptom}</p>
           </header>
 
-          <dl class="record-details">
-            <div>
-              <dt>First check</dt>
-              <dd>{record.first_check}</dd>
-            </div>
-            <div>
-              <dt>Cause classes</dt>
-              <dd><ul>{record.cause_classes.map((item) => <li>{item}</li>)}</ul></dd>
-            </div>
-            <div>
-              <dt>Inspect</dt>
-              <dd><ul>{record.inspect.map((item) => <li>{item}</li>)}</ul></dd>
-            </div>
-            <div>
-              <dt>Safe next action</dt>
-              <dd><ul>{record.safe_next_action.map((item) => <li>{item}</li>)}</ul></dd>
-            </div>
-            <div>
-              <dt>Preserve before retry</dt>
-              <dd><ul>{record.preserve_before_retry.map((item) => <li>{item}</li>)}</ul></dd>
-            </div>
-            <div class="claim-boundary">
-              <dt>What not to conclude</dt>
-              <dd>{record.do_not_conclude}</dd>
-            </div>
-            <div>
-              <dt>Related DRW pages</dt>
-              <dd>
+          <div class="primary-actions" data-primary-actions>
+            <section class="action-step">
+              <h3>Check this first</h3>
+              <p>{record.first_check}</p>
+            </section>
+            <section class="action-step">
+              <h3>Inspect now</h3>
+              <ul>{record.inspect.map((item) => <li>{item}</li>)}</ul>
+            </section>
+            <section class="action-step">
+              <h3>Then take one safe action</h3>
+              <ul>{record.safe_next_action.map((item) => <li>{item}</li>)}</ul>
+            </section>
+          </div>
+
+          <aside class="claim-boundary" data-claim-boundary>
+            <h3>Before you interpret the result</h3>
+            <p>{record.do_not_conclude}</p>
+          </aside>
+
+          <details class="secondary-evidence" data-secondary-evidence>
+            <summary>Show likely causes, evidence to preserve, and references</summary>
+            <div class="secondary-grid">
+              <section>
+                <h3>Likely causes</h3>
+                <ul>{record.cause_classes.map((item) => <li>{item}</li>)}</ul>
+              </section>
+              <section>
+                <h3>Preserve before retry</h3>
+                <ul>{record.preserve_before_retry.map((item) => <li>{item}</li>)}</ul>
+              </section>
+              <section>
+                <h3>Related Research Workflow pages</h3>
                 <ul class="link-list">
                   {record.relatedTopics.map((topic) => <li><a data-related-topic={topic.slug} href={topic.href}>{topic.title}</a></li>)}
                 </ul>
-              </dd>
-            </div>
-            <div>
-              <dt>Official sources</dt>
-              <dd>
+              </section>
+              <section>
+                <h3>Official sources</h3>
                 <ul class="link-list">
                   {record.officialSources.map((source) => (
                     <li><a data-official-source={source.id} href={source.url} rel="noreferrer">{source.organization}: {source.title}</a></li>
                   ))}
                 </ul>
-              </dd>
+              </section>
             </div>
-          </dl>
+          </details>
         </section>
       ))}
     </div>
@@ -303,45 +306,89 @@ for (const source of definition.sources) {
     max-width: 47em;
   }
 
-  .record-details {
+  .primary-actions {
     border-bottom: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     margin: 2.2rem 0 0;
   }
 
-  .record-details > div {
-    border-top: 1px solid var(--rule);
-    display: grid;
-    gap: 0.8rem 2.2rem;
-    grid-template-columns: minmax(9.5rem, 0.42fr) minmax(0, 1.58fr);
-    padding: 1rem 0 1.1rem;
+  .action-step {
+    min-width: 0;
+    padding: 1rem clamp(1rem, 2.5vw, 1.7rem) 1.2rem 0;
   }
 
-  .record-details dt {
+  .action-step + .action-step {
+    border-left: 1px solid var(--rule);
+    padding-left: clamp(1rem, 2.5vw, 1.7rem);
+  }
+
+  .action-step h3,
+  .claim-boundary h3,
+  .secondary-grid h3 {
     font-size: 0.92rem;
     font-weight: 700;
     line-height: 1.48;
+    margin: 0;
   }
 
-  .record-details dd {
+  .action-step p,
+  .action-step ul,
+  .claim-boundary p,
+  .secondary-grid ul {
     color: var(--muted);
     line-height: 1.58;
-    margin: 0;
-    min-width: 0;
+    margin: 0.55rem 0 0;
     overflow-wrap: anywhere;
   }
 
-  .record-details ul {
-    margin: 0;
+  .action-step ul,
+  .secondary-grid ul {
     padding-left: 1.2rem;
   }
 
-  .record-details li + li {
+  .action-step li + li,
+  .secondary-grid li + li {
     margin-top: 0.4rem;
   }
 
-  .claim-boundary dt,
-  .claim-boundary dd {
+  .claim-boundary {
+    border-left: 2px solid var(--accent);
+    margin: 1.35rem 0 0;
+    max-width: 55rem;
+    padding-left: 1rem;
+  }
+
+  .claim-boundary p {
     color: var(--ink);
+  }
+
+  .secondary-evidence {
+    border-bottom: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
+    margin-top: 1.6rem;
+    padding: 0.9rem 0;
+  }
+
+  .secondary-evidence summary {
+    cursor: pointer;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .secondary-evidence[open] summary {
+    margin-bottom: 1.1rem;
+  }
+
+  .secondary-grid {
+    display: grid;
+    gap: 1.35rem clamp(1.5rem, 4vw, 3rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .secondary-grid > section {
+    min-width: 0;
   }
 
   .link-list {
@@ -368,8 +415,19 @@ for (const source of definition.sources) {
       grid-template-columns: minmax(0, 1fr);
     }
 
-    .record-details > div {
+    .primary-actions,
+    .secondary-grid {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .action-step {
+      padding: 1rem 0 1.1rem;
+    }
+
+    .action-step + .action-step {
+      border-left: 0;
+      border-top: 1px solid var(--rule);
+      padding-left: 0;
     }
   }
 </style>

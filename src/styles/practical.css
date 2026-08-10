@@ -104,6 +104,41 @@
 
 .evidence-note p:last-child { margin-bottom: 0; }
 
+.guide-ways {
+  margin: 2.4rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid #dedede;
+  color: #545454;
+  font-size: 0.92rem;
+}
+
+.reproducibility-note {
+  margin: 1rem 0 2.4rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #dedede;
+  background: #fafafa;
+}
+
+.reproducibility-note summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.reproducibility-note p:last-child { margin-bottom: 0; }
+
+.workflow-reproducibility {
+  margin: 3rem 0 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid #d8d8d8;
+  background: #fafafa;
+}
+
+.workflow-reproducibility > summary {
+  cursor: pointer;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
 .article-content pre {
   max-width: 100%;
   overflow-x: auto;
@@ -112,6 +147,47 @@
   background: #f7f7f7;
   font-size: 0.86rem;
   line-height: 1.5;
+}
+
+.copyable-code {
+  position: relative;
+  margin: 1rem 0;
+}
+
+.copyable-code > pre {
+  margin: 0;
+  padding-top: 2.8rem;
+}
+
+.copy-code-button {
+  position: absolute;
+  z-index: 1;
+  top: 0.55rem;
+  right: 0.55rem;
+  min-height: 2rem;
+  padding: 0.28rem 0.65rem;
+  border: 1px solid #b9b9b9;
+  border-radius: 0.25rem;
+  background: #ffffff;
+  color: #242424;
+  font: 600 0.78rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.copy-code-button:hover,
+.copy-code-button:focus-visible {
+  border-color: #383838;
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #3b6794;
+}
+
+.copy-code-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .article-content code,
