@@ -9,6 +9,7 @@ tools:
 status: reviewed
 summary: Convert an accepted optimization result into a fixed-geometry reference protocol while preserving model and Hamiltonian identity and recording every numerical refinement.
 tested_versions:
+  - Quantum ESPRESSO 7.5
   - Python 3.12
 execution_script: examples/practical-guides/qe_manual_handoff.py
 source_ids:
@@ -25,6 +26,85 @@ reviewed_at: "2026-08-03"
 ## Purpose
 
 A fixed-cell relaxation and a static SCF calculation are separate runs. The accepted geometry must be copied explicitly; sharing a prefix or scratch directory is not a geometry handoff.
+
+This page is also the daily QE 7.5 SCF route for an already accepted fixed geometry. If the scientific question intentionally uses an experimental, constrained, or scanned structure, record that decision instead of pretending the object was relaxed.
+
+## Write one complete `scf.in`
+
+Create a new directory and keep this run independent of the relaxation scratch tree:
+
+```bash
+run="$HOME/drw-runs/si-final-scf"
+test ! -e "$run"
+mkdir -p "$run"/{pseudo,tmp}
+cd "$run"
+```
+
+Create `scf.in` in a text editor. This complete QE 7.5 example uses the final coordinates printed by the real Silicon fixed-cell relaxation used elsewhere in this site. Its structure, pseudopotential filename, 40/320 Ry cutoffs, 8×8×8 mesh, and thresholds belong to that teaching case; none is transferable without the B-stage tests required by another model and observable.
+
+```qe
+&CONTROL
+  calculation = 'scf',
+  prefix = 'si_final',
+  outdir = './tmp',
+  pseudo_dir = './pseudo',
+  tprnfor = .true.,
+  tstress = .true.,
+/
+&SYSTEM
+  ibrav = 0,
+  nat = 2,
+  ntyp = 1,
+  ecutwfc = 40.0,
+  ecutrho = 320.0,
+  occupations = 'fixed',
+/
+&ELECTRONS
+  conv_thr = 1.0d-10,
+/
+ATOMIC_SPECIES
+Si 28.0855 Si.pbe-n-rrkjus_psl.1.0.0.UPF
+CELL_PARAMETERS angstrom
+0.0000000000 2.7152000000 2.7152000000
+2.7152000000 0.0000000000 2.7152000000
+2.7152000000 2.7152000000 0.0000000000
+ATOMIC_POSITIONS crystal
+Si 0.0100077351 -0.0000020877 -0.0000020877
+Si 0.2599922649  0.2500020877  0.2500020877
+K_POINTS automatic
+8 8 8 0 0 0
+```
+
+Choose each field from a named upstream decision:
+
+| Field or object | Required source |
+| --- | --- |
+| `CELL_PARAMETERS`, `ATOMIC_POSITIONS`, species and atom order | the accepted geometry or an explicitly justified fixed structure |
+| UPF filename, source, release, XC and relativistic metadata, hash | the B-stage pseudopotential decision |
+| `ecutwfc`, `ecutrho`, k mesh and occupations | observable-relevant B-stage convergence studies |
+| charge, `nspin`/noncollinear/SOC, Hubbard and dispersion settings | the declared Hamiltonian and candidate state |
+| `conv_thr` and diagonalization/mixing changes | an electronic protocol shown adequate for the quantities inspected |
+| `prefix`, `outdir`, `pseudo_dir` | a unique, writable run identity with no concurrent writer |
+
+For a metal, replace the occupation fields only with the tested metallic protocol and inspect the reported Fermi level. For a magnetic calculation, carry the exact spin treatment and initialization, then inspect the attained total/local moments and occupations. A copied `starting_magnetization` is a search seed, not the final state label.
+
+Before launch, inspect the complete input and exact pseudopotential object:
+
+```bash
+: "${PSEUDO_SOURCE:?Set PSEUDO_SOURCE to the verified Silicon UPF}"
+test -f "$PSEUDO_SOURCE"
+test "$(basename -- "$PSEUDO_SOURCE")" = 'Si.pbe-n-rrkjus_psl.1.0.0.UPF'
+sha256sum -- "$PSEUDO_SOURCE"
+ln -s -- "$PSEUDO_SOURCE" "pseudo/$(basename -- "$PSEUDO_SOURCE")"
+
+command -v pw.x
+grep -En 'calculation|prefix|outdir|pseudo_dir|tprnfor|tstress|ecutwfc|ecutrho|occupations|conv_thr' scf.in
+sed -n '/^ATOMIC_SPECIES/,$p' scf.in
+test -r pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF
+test -w tmp
+```
+
+The QE version printed in `scf.out` after launch identifies the executable that actually ran. Input readability does not establish pseudopotential suitability, numerical convergence, or a trustworthy reference state.
 
 
 ## Inspect the handoff before running the static state
@@ -138,13 +218,68 @@ Run locally only where direct MPI execution is permitted, or run the same comman
 
 Do not run a long calculation on a login node. The scheduler guide shows how to put this command inside <code>sbatch</code>; <code>squeue</code> reports scheduler state, not QE convergence.
 
+For a direct daily `scf.in`, the same command is:
+
+```bash
+if pw.x -in scf.in > scf.out 2> scf.err; then
+  pw_status=0
+else
+  pw_status=$?
+fi
+printf '%s\n' "$pw_status" > scf.exit-status
+test "$pw_status" -eq 0
+```
+
+At a Slurm site, create `run-scf.slurm`. Replace the module, resources, allocation, and launcher with the site's documented QE build; this is a site-specific template, not a universal parallel command:
+
+```bash
+#!/usr/bin/env bash
+#SBATCH --job-name=qe-scf
+#SBATCH --nodes=1
+#SBATCH --ntasks=4
+#SBATCH --cpus-per-task=1
+#SBATCH --time=00:30:00
+#SBATCH --mem=8G
+#SBATCH --output=slurm-%j.out
+#SBATCH --error=slurm-%j.err
+
+set -euo pipefail
+module purge
+module load quantum-espresso/7.5  # replace with the site's documented module
+export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-1}"
+
+if srun pw.x -in scf.in > scf.out 2> scf.err; then
+  pw_status=0
+else
+  pw_status=$?
+fi
+printf '%s\n' "$pw_status" > scf.exit-status
+exit "$pw_status"
+```
+
+```bash
+job_id=$(sbatch --parsable run-scf.slurm)
+printf '%s\n' "$job_id" | tee scf.job-id
+squeue -j "$job_id"
+```
+
+Monitor scheduler and QE state separately. A `RUNNING` job has not necessarily completed one SCF iteration, and a vanished queue entry needs an exit/status check:
+
+```bash
+tail -n 60 scf.out
+tail -n 40 scf.err
+grep -nE 'iteration #|estimated scf accuracy|convergence has been achieved|total energy|Fermi energy|highest occupied|magnetization|warning|Error in routine|JOB DONE' scf.out | tail -n 100
+```
+
+Do not parse a partially written last block as the terminal result. Preserve `scf.in`, the pseudopotential receipt/hash, stdout, stderr, exit status, job script, job ID, scheduler exit/resource record, and the `tmp/si_final.save/` identity. The save tree contains native parent data for downstream QE stages; its existence does not prove completion or correct ancestry.
+
 Audit the files produced by this exact invocation manually before using the optional parser:
 
 ~~~bash
 cat -- "$reference/static-scf.exit-status"
 test "$(grep -cF 'Program PWSCF v.' -- "$reference/static-scf.out")" -eq 1
 test "$(grep -cF 'JOB DONE.' -- "$reference/static-scf.out")" -eq 1
-grep -F 'convergence has been achieved' -- "$reference/static-scf.out" | tail -n 1
+grep -E '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$reference/static-scf.out" | tail -n 1
 grep -F '!    total energy' -- "$reference/static-scf.out" | tail -n 1
 sed -n '/^ATOMIC_POSITIONS/,/^K_POINTS/p' "$reference/static-scf.in"
 
@@ -171,6 +306,35 @@ grep -niE 'warning|error in routine|stopping|not converged|no convergence|magnet
 
 The shell status, coherent banner, `JOB DONE.`, stderr, and fatal-text scan constrain program completion. The SCF marker constrains one electronic solve. The final complete force and stress blocks are fixed-geometry diagnostics; neither substitutes for the earlier ionic acceptance gate. Neither proves geometry acceptance, cutoff or k-point convergence, observable convergence, model correctness, or a scientific conclusion.
 
+For an ordinary run named `scf.out`, the copy-ready first pass is:
+
+```bash
+OUT=scf.out
+ERR=scf.err
+
+cat scf.exit-status
+test "$(grep -cF 'Program PWSCF v.' -- "$OUT")" -eq 1
+test "$(grep -cF 'JOB DONE.' -- "$OUT")" -eq 1
+grep -E '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$OUT" | tail -n 1
+grep -F '!    total energy' -- "$OUT" | tail -n 1
+grep -Ei 'the Fermi energy|highest occupied|lowest unoccupied|total magnetization|absolute magnetization' -- "$OUT" || true
+grep -niE 'warning|error in routine|stopping|not converged|no convergence' -- "$OUT" "$ERR" || true
+tail -n 40 -- "$ERR"
+```
+
+Interpret the result with separate gates:
+
+| Gate | Pass evidence | A fail means |
+| --- | --- | --- |
+| launch/runtime | expected banner, zero process/scheduler exit, coherent stdout/stderr, no fatal marker | diagnose environment, input, PP, memory, I/O, MPI, or program failure before SCF interpretation |
+| electronic solve | QE reports its SCF condition, the residual history is usable, and no state-changing warning invalidates it | preserve the full history and diagnose model/state/occupations/sampling before changing one solver control |
+| attained state | charge, occupations, Fermi level where relevant, magnetization/state labels and symmetry match the intended candidate | retain it as a different or unresolved candidate; do not relabel it from the input seed |
+| fixed geometry diagnostics | requested forces/stress are complete and compatible with the accepted geometry decision | return to the geometry/constraint gate; a static SCF does not silently repair it |
+| numerical support | the basis, mesh, occupations and electronic threshold are converged for the downstream observable and tolerance | the run may be technically complete but is not a reusable numerical reference |
+| scientific acceptance | the candidate set, model checks and claim-specific validation are sufficient | retain `not assessed` or `blocked`; no stronger conclusion follows |
+
+If any required gate is absent, do not substitute the repository's stored output. Preserve the failed branch and follow the matching symptom in [Troubleshoot a Calculation](/DFT-Research-Workflow/operations/troubleshooting/).
+
 After this manual inspection, the repository helper can reproduce its bounded audit report:
 
 ~~~bash
@@ -192,6 +356,14 @@ Keep <code>static-scf.in</code>, stdout, stderr, and the audit report together. 
 ## Next
 
 Use this new static run as the explicit parent of downstream calculations. Record its input/output hashes and carry its prefix, charge, spin, pseudopotentials, numerical setup, and accepted geometry into the bands or DOS branch.
+
+## Bridge the same operation to other codes
+
+- **VASP:** the analogous fixed-geometry object is built from `POSCAR`, `POTCAR`, `INCAR`, and `KPOINTS`; use the official electronic-minimization reference linked below and retain the same pseudopotential, state, convergence, output, and candidate-comparison boundaries.
+- **ABINIT:** start from the official basic ground-state tutorial linked below, then map the accepted geometry, pseudopotential identity, plane-wave cutoff, k sampling, occupations, SCF tolerance, and produced density explicitly.
+- **CP2K:** use the official SCF input reference linked below and preserve the basis/potential, periodic cell, k-point, spin, SCF, force/stress, and restart ancestry appropriate to that implementation.
+
+These bridges identify official starting points; they do not claim keyword equivalence, numerical equivalence, or that QE settings can be translated line by line.
 
 ## Official sources
 

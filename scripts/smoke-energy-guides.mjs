@@ -39,7 +39,7 @@ async function inspectGuide(page, guide, width) {
   if (result.language !== 'en') throw new Error(`${guide.route}: language is not English`);
   if (result.title !== guide.title) throw new Error(`${guide.route}: title mismatch ${result.title}`);
   if (!result.text.includes(guide.phrase)) throw new Error(`${guide.route}: missing scientific phrase`);
-  if (!result.text.includes('Python 3.12') || !result.toolTags.includes('python')) throw new Error(`${guide.route}: missing pinned Python metadata`);
+  if (!result.text.includes('Python 3.12') || !result.toolTags.includes('Python')) throw new Error(`${guide.route}: missing pinned Python metadata`);
   if (!result.hasMeta || !result.hasEvidence) throw new Error(`${guide.route}: missing metadata or evidence boundary`);
   if (!result.text.includes(guide.boundary)) throw new Error(`${guide.route}: missing execution boundary`);
   if (result.images.length !== 0) throw new Error(`${guide.route}: synthetic arithmetic figure returned to the reader-facing route`);

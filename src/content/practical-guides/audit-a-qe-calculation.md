@@ -93,7 +93,7 @@ for stage in fm-k8 fm-k10 fm-k12 nm-k12; do
   sed -n '/^ATOMIC_POSITIONS/,/^K_POINTS/p' "$input"
   test "$(grep -cF 'Program PWSCF v.' -- "$out")" -eq 1
   test "$(grep -cF 'JOB DONE.' -- "$out")" -eq 1
-  grep -F 'convergence has been achieved' -- "$out" | tail -n 1
+  grep -E '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$out" | tail -n 1
   grep -E '!.*total energy|the Fermi energy is|total magnetization|absolute magnetization' \
     -- "$out" | tail -n 8
 

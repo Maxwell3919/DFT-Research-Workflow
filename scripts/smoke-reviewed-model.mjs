@@ -18,30 +18,27 @@ const requiredOperationalSections = [
 ];
 const requiredOperationalContract = {
   checkedSource: [
-    'Preserve the unchanged database or publication download outside the model directory.',
-    'record its checksum, and never overwrite it',
-    'open the parent with its cell boundary and periodic images visible',
+    'Keep the source unchanged.',
+    'record its identifier, checksum, composition, cell, atom order',
+    'Open the parent with cell boundaries and periodic images visible',
   ],
   declaredTransformation: [
-    'candidate identifier and purpose',
-    'parent identifier, path, and checksum',
-    'script or manual operation and command',
-    'transformation parameters and matrix',
+    'For every candidate preserve: parent identifier and checksum; tool and version; operation or script; transformation parameters and site mapping',
+    'Write each child to a new file, reopen that file',
   ],
   childObject: [
-    'child filename and checksum',
-    'write the child, and then reopen the written file',
-    'Open parent and child side by side with cell boundaries visible.',
+    'exported filename and checksum',
+    'visual/numerical observations',
+    'Record atom mapping and the exact transformation',
   ],
   identityAndGeometryChecks: [
-    'composition, atom count, atom order, occupancies, and site mapping',
-    'cell vectors, volume, periodic directions, and relevant image separations',
+    'Inspect composition, cell, periodicity, orientation, replication, vacuum direction',
     'A generated candidate is not a predicted ground state',
   ],
   decisionAndNext: [
-    'Promote a candidate only when this lineage, its reopened geometry, and its unresolved alternatives are explicit.',
-    'Next, choose the exchange–correlation treatment, electron–ion data, spin, relativistic, boundary, and software setup.',
-    'Then test the numerical controls against the quantity that will be used.',
+    'Promote only reopened files with explicit lineage',
+    'choose the DFT method and setup',
+    'test numerical convergence',
   ],
 };
 const requiredToolDomains = [

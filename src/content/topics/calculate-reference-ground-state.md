@@ -3,226 +3,52 @@ topic_slug: calculate-reference-ground-state
 status: reviewed
 ---
 
-A reference ground-state calculation establishes the fixed-geometry electronic state, energy reference, and reusable parent data used by later calculations. The phrase “ground state” must be used with care. A self-consistent calculation normally finds one stationary electronic solution compatible with the chosen model, method, boundary conditions, occupations, and initialization. The durable result is therefore a verified reference-state candidate and a record of the competing states that were actually tested.
-
-## Compare states as physical and numerical objects
-
-Place the accepted geometry, the fixed-geometry input, and the structure viewer side by side. Confirm cell vectors, atom order, units, charge, spin treatment, occupations, constraints, and any intended symmetry before launching a static calculation. For competing magnetic, charge, constrained, or metastable candidates, create a human-readable state label and a separate directory for each candidate. Consult the original paper or supporting information when it determines the cell, ordering pattern, charge convention, or physically relevant competitors.
-
-Use the [electronic-structure code and official-manual index](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) to locate the implementation's SCF, restart, occupation, and spin definitions. Use [visualization and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) to inspect the shared geometry and any state-dependent density or magnetization object that the code can export. The [learning resource index](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) points to hands-on routes when an unfamiliar code or state construction needs a worked introduction.
-
-Run every candidate with the same declared evaluator unless the scientific question requires a different branch. Read the full SCF iteration history rather than only the last energy: identify oscillation, slow residual decay, occupation changes, state switching, warnings, and the actual electronic stop condition. Then inspect the final total and local moments where available, occupations, charge or spin-density evidence, symmetry, forces and stress as diagnostics, and restart ancestry. A restarted result should be compared with a genuinely fresh start when state trapping matters.
-
-Compare accepted candidates in one table and, where useful, in aligned plots or density views. Exclude incomparable or unconverged rows before ranking energy. The lowest printed energy is not automatically the lowest relevant state, and neither a visually reasonable density nor an SCF marker proves model validity. Record why a state was accepted, rejected, or retained as metastable; package scripts only after this manual state comparison is intelligible.
+A reference-state calculation establishes the fixed-geometry electronic state, energy anchor, and reusable parent data for later work. The durable result is a verified candidate among the states actually tested, not an unqualified claim of global ground-state identity.
 
 ## Build and audit the reference state
 
-Begin with one exact accepted geometry. Prepare a fixed-geometry input with the final method and numerical settings, run a fresh static self-consistent calculation, and inspect the output before reusing its density, potential, or wavefunctions. If competing charge, spin, occupation, symmetry, or relativistic branches are plausible, evaluate them under one comparable protocol and retain every excluded or failed candidate with its reason.
+Begin with one exact accepted geometry. Prepare a fresh static input with the final method and numerical settings, run it, inspect termination and SCF history, identify the state reached, compare plausible competitors, and preserve the accepted density/wavefunction lineage. The optimization-to-static route is common, not universal. A fixed experimental, strained, constrained, or deliberately metastable geometry may be the intended object.
 
-The common route starts from an accepted geometry, performs a distinct fixed-geometry static calculation, and checks termination and SCF evidence separately. The researcher then inspects charge, occupations, moments, symmetry, forces, stress, and warnings; compares accepted candidates in one compatible ledger; selects a bounded reference candidate; and preserves versioned parent artifacts for the required target calculation. A failed or incomparable candidate remains in the record rather than disappearing from this route.
-
-The optimization-to-static route is common, not universal. A fixed experimental geometry, imposed strain, constrained state, or deliberately metastable model can enter directly when that choice answers the research question. The reference is scientifically appropriate only if its geometry, state, method, and boundary conditions match the quantity and claim that follow.
-
-Read four gates separately:
-
-- Normal program termination does not establish SCF convergence.
-- SCF convergence does not establish ionic optimization convergence.
-- Ionic optimization convergence does not identify the lowest relevant state.
-- The lowest identified state is not automatically the scientifically appropriate reference state.
-
-A static calculation does not rerun the ionic optimization. It audits the accepted coordinates under the reference evaluator, identifies the electronic state actually reached, and supplies the reusable parent object for later work.
+Four gates remain separate. Normal program termination does not establish SCF convergence. SCF convergence does not establish ionic optimization convergence. Ionic optimization convergence does not identify the lowest relevant state. The lowest identified state is not automatically the scientifically appropriate reference state.
 
 ## Define the reference state operationally
 
-For fixed nuclei and a declared electronic Hamiltonian, the task is to obtain a reproducible self-consistent state that can serve as the common parent for later energies and properties. Define its identity before execution:
-
-- exact structure and atom ordering;
-- charge, spin, magnetization, and relativistic treatment;
-- exchange–correlation method and any corrective parameters;
-- potentials, basis or grids, Brillouin-zone sampling, and occupations;
-- boundary conditions and external fields;
-- software version and restart policy;
-- normalization and reference-energy convention.
-
-A successful SCF solution is not automatically the global electronic ground state. Distinct magnetic orders, charge-localized solutions, occupations, broken symmetries, or spin directions may all satisfy the internal equations. Within this workflow, “reference ground state” means the lowest verified comparable candidate among the explicitly prepared and tested states, with the search boundary retained.
-
-
-Begin from the exact accepted geometry produced by **Optimize the Structure** or another declared source. Preserve its checksum, cell, atom order, constraints that remain physically relevant, and the optimization lineage. The reference calculation is fixed-geometry: it may report forces and stress, but it does not silently continue moving atoms or changing the cell.
-
-optimization → fixed-geometry reference is a common lineage edge, not a universal workflow law. An experimental, constrained, high-symmetry, or deliberately scanned geometry may enter this task directly when the question is explicitly fixed-geometry. Conversely, geometry–state coupling cannot be hidden inside one electronic ranking.
-
-Carry forward the scientific method identity. Functional, dispersion treatment, Hubbard parameters, pseudopotential or all-electron setup, relativistic treatment, charge state, electrostatic boundary, and other Hamiltonian-defining choices should not drift between optimization and reference preparation without a new, explicit method branch.
-
-Numerical settings may be refined for the final calculation. Record each refinement and verify that it does not change the intended electronic branch or invalidate comparisons with other candidates.
-
-
-The reference calculation should evaluate the final structure independently of optimizer-internal extrapolation or a loosely converged last ionic step. Request the outputs needed to verify and reuse the state: total energy or free-energy quantity, occupations, Fermi level where applicable, charge and magnetization diagnostics, forces, stress, charge density, wavefunctions when justified, and relevant warnings.
-
-This calculation is not simply “the last SCF in the relaxation.” It has a stable calculation identity, declared final numerical settings, and its own completion evidence. Downstream calculations should point to this object or to an explicitly derived replacement.
+The reference calculation is fixed-geometry and binds the exact cell/atom order, charge, spin/SOC, XC and corrections, datasets, basis/grids, Brillouin-zone sampling, occupations, electrostatic boundary, code/version, and convergence criteria. This calculation is not simply “the last SCF in the relaxation.” Use [Prepare a Fixed-Geometry Reference Calculation](/DFT-Research-Workflow/operations/calculate-reference-ground-state/guides/prepare-fixed-geometry-reference-calculation/) for exact QE input, local/HPC commands, monitoring, output checks, and next steps. Optional theory is in [Atlas Self-Consistent Field Methods](/Electronic-Structure-Learning/theory/self-consistent-field-methods/).
 
 ## Enumerate candidate electronic states
 
-Prepare candidate states when the system can support more than one self-consistent solution. Relevant branches may include:
+A successful SCF solution is not automatically the global electronic ground state. List plausible spin, magnetic order, SOC direction, charge, occupation, symmetry, and constrained branches before ranking. One arbitrary initialization is not a search strategy. Initial moments guide the solver toward candidate magnetic states; they do not define the final state by themselves. Use [Compare charge, spin, and magnetic candidates](/DFT-Research-Workflow/operations/calculate-reference-ground-state/guides/compare-charge-spin-and-magnetic-candidates/) for the candidate ledger.
 
-- nonmagnetic, ferromagnetic, ferrimagnetic, and antiferromagnetic initializations;
-- alternative local-moment patterns or spin directions;
-- different charge-localization or orbital-occupation seeds;
-- symmetry-preserving and symmetry-broken starts;
-- distinct total charges or constrained electronic states, when they answer different declared questions;
-- scalar-relativistic and spin–orbit branches when both are scientifically compared.
-
-The candidate inventory should be motivated by chemistry, symmetry, prior evidence, or the research question. One arbitrary initialization is not a search strategy.
-
-
-A charge density or wavefunction from optimization can accelerate a final calculation and help preserve state continuity. It also carries memory of the preceding path. Label a run as a continuation when it reuses electronic objects, and record the exact parent and compatibility conditions.
-
-A fresh start initializes the same declared state without using the previous electronic solution. It is valuable for detecting path dependence, unintended metastability, and corrupted or incompatible restart data. Fresh and restarted calculations are comparable only when their structure, Hamiltonian, boundary conditions, numerical representation, and state target are aligned.
-
-Restart success means that a compatible stored state was accepted and the calculation completed. It does not prove that the reused state is the lowest candidate.
-
-
-Occupations are part of the reference-state definition. Insulators, metals, small-gap systems, and finite-temperature electronic calculations may require different integration or occupation treatments. Record the occupation method, smearing or electronic temperature, number of bands, and the energy quantity being compared.
-
-For smeared calculations, distinguish the reported band-energy, entropy, free-energy, and extrapolated energy conventions used by the implementation. Candidate-state comparisons must use one consistent quantity and one consistent occupation protocol unless the difference itself is the subject of study.
-
-A smearing width chosen for Brillouin-zone integration is not automatically a physical temperature. Changing it can alter magnetic moments, charge localization, Fermi-surface sampling, and energy ordering.
-
-
-Total charge, compensating backgrounds, Coulomb truncation, dipole corrections, dielectric environments, gates, external fields, and electrostatic reference choices belong to the model identity. A charged periodic cell and a neutral cell are different physical calculations even when the nuclear geometry is identical.
-
-Record electron count and charge convention explicitly. Verify that the final electronic number matches the intended state and that any correction or background treatment is compatible with the geometry and periodic dimensionality.
-
-Energy values from different charges or electrostatic references are not directly ranked without the appropriate thermodynamic and alignment framework. Those comparisons belong to later target calculations such as defect formation energies.
-
-At fixed electron number, candidate ranking is restricted to one charge branch. Across charges, stability depends on a declared reservoir or chemical potential, electrostatic corrections, and reference alignment; no raw total-energy minimum defines one absolute charged ground state.
-
-
-Initial moments guide the solver toward candidate magnetic states; they do not define the final state by themselves. After convergence, inspect total and local moments, spin density, symmetry, occupation pattern, and—where relevant—spin direction and orbital moment.
-
-For noncollinear or spin–orbit calculations, record the quantization convention, magnetization direction, symmetry treatment, and relativistic potential compatibility. Rotating the magnetization or enabling spin–orbit coupling changes the Hamiltonian branch and can require new convergence and candidate comparisons.
-
-Do not label a state “nonmagnetic” merely because a spin-polarized run collapsed to a small net moment. Compensated local moments and antiferromagnetic order require local diagnostics.
+A smearing width chosen for Brillouin-zone integration is not automatically a physical temperature. Energy values from different charges or electrostatic references are not directly ranked without a declared thermodynamic/reference construction.
 
 ## Distinguish internal SCF convergence from state verification
 
-SCF convergence means that the implemented residual or energy criterion was satisfied for one iterative solve. Reference-state verification additionally asks whether:
-
-- electron count and occupations are correct;
-- energy and residual histories are stable;
-- the intended charge, magnetic, symmetry, and relativistic branch survived;
-- warnings and numerical pathologies are absent or understood;
-- independent starts reproduce the same state where required;
-- the result is comparable to the other candidate states.
-
-A small final residual does not identify which self-consistent basin was reached. A stable state label with an unconverged residual is also insufficient.
-
-
-SCF histories can oscillate, alternate between occupation patterns, stagnate above the target, or terminate because an iteration limit was reached. Metals, large cells, vacuum regions, charge inhomogeneity, and competing magnetic states can make mixing difficult.
-
-Inspect residual, energy, electron count, Fermi level, occupations, magnetic diagnostics, and any preconditioner or mixing changes. When a recovery changes the solver, mixing, smearing, number of bands, or initialization, preserve a new traceable segment.
-
-Increasing the iteration limit does not repair an unstable state evaluator. A solver that reports completion after switching to a different state has solved a different branch.
+Read the full residual/energy history, warnings, occupations, charge, moments, and state changes. A small final residual does not identify which self-consistent basin was reached. Increasing the iteration limit does not repair an unstable state evaluator. Restart success means that a compatible stored state was accepted and the calculation completed. Compare a critical restart with a genuinely fresh initialization using [Fresh and file-initialized states](/DFT-Research-Workflow/operations/calculate-reference-ground-state/guides/compare-fresh-and-restarted-electronic-states/).
 
 ## Compare candidate energies under one common evaluator
 
-Rank candidate electronic states only after they are evaluated at the same fixed geometry with compatible Hamiltonian and numerical settings. Use the same energy or free-energy convention, normalization, k-point sampling logic, occupation treatment, potentials, and correction terms.
+Exclude failed, unconverged, or method-incompatible candidates before ranking. The lowest accepted candidate among the tested inventory is the current reference. That is not a universal workflow law or proof of exhaustive minimality. This same-geometry ranking answers a fixed-nuclei electronic question. For magnetostructural ordering, competing state branches may require their own relaxations before a scientifically relevant comparison.
 
-Exclude incomplete, internally unconverged, or state-ambiguous candidates from a definitive ranking. Retain them in the evidence package with their failure reason.
-
-The lowest accepted candidate among the tested inventory is the current reference. This statement remains bounded by the candidate set, method, geometry, and numerical accuracy. It is not proof that no untested electronic state lies lower.
-
-This same-geometry ranking answers a fixed-nuclei, or vertical, electronic question. It does not rank magnetostructural states after each state changes the geometry.
-
-For magnetostructural ordering, give each electronic or magnetic candidate its own traceable relaxation with compatible method identity and force/stress convergence, then compare fixed-geometry evaluations at the state-specific accepted geometries. Preserve any state switch as workflow feedback. A common-geometry ranking may seed that search; it cannot replace it.
-
-
-Although atoms and cell are fixed, final forces and stress remain useful diagnostics. They reveal whether stricter electronic and numerical settings materially change the stationary character established during optimization, whether a state switch changed the gradient, and whether residual stress is relevant to the declared boundary condition.
-
-Do not resume optimization automatically because one component changed. First determine whether the difference comes from tighter numerics, a changed Hamiltonian, a different electronic state, or an inconsistent force/stress convention. A new relaxation is a separate workflow branch with its own lineage.
-
-Force and stress verification does not establish vibrational, dynamical, thermal, or thermodynamic stability.
-
-
-State identity should be checked from outputs, not inferred from input labels. Preserve the quantities needed to distinguish candidates: local and total moments, symmetry, charge localization, occupation signatures, band or density features, spin direction, and any constrained variable.
-
-Where a state is delicate, repeat the same fixed geometry from independent initializations. Compare final diagnostics and electronic-object hashes or summaries. Equivalent energies with different state identities should not be silently merged.
-
-A reproducible state label is part of the reference object. Downstream calculations must declare whether they preserve it.
-
-
-Store the exact quantity called the reference energy and its units. Record whether it is per cell, per formula unit, per atom, per area, or another normalization. Preserve the cell, composition, electron count, occupation convention, and any entropy or correction term associated with it.
-
-Absolute total energies from different codes, potentials, basis families, charges, compositions, or Hamiltonians are generally not interchangeable. Later formation, adsorption, interface, and defect energies must construct compatible thermodynamic differences rather than treating one raw total energy as universal.
-
-The reference energy is a provenance anchor for one state, not a standalone physical observable.
+Force and stress verification does not establish vibrational, dynamical, thermal, or thermodynamic stability. State identity should be checked from outputs, not inferred from input labels. The reference energy is a provenance anchor for one state, not a standalone physical observable.
 
 ## Repeat critical states from independent initializations
 
-For conclusions sensitive to electronic-state ordering, repeat leading candidates from controlled fresh densities, alternative magnetic seeds, or other scientifically justified initializations. Reproduction provides evidence that the same basin is reachable without dependence on one restart path.
-
-A repeated calculation should preserve method identity while varying only the declared initialization. Report whether it reaches the same state, a different state, or fails. Repeated convergence to one state strengthens operational robustness but still does not prove exhaustive global minimality.
-
-The number and diversity of starts are research-design choices. This workflow does not prescribe one universal count.
+Repeat close or claim-critical candidates from independent moments, densities, occupation patterns, symmetry choices, or fresh/restart paths. Repeated convergence to one state strengthens operational robustness but still does not prove exhaustive global minimality.
 
 ## Package charge density and wavefunction lineage
 
-Later NSCF, band, DOS, phonon, response, Wannier, and electron–phonon calculations may reuse charge density, potential, wavefunctions, or other state files. Treat each as a versioned artifact linked to:
-
-- the exact structure checksum;
-- method, potentials, charge, and state identity;
-- numerical settings and software build;
-- parent calculation and completion record;
-- file hashes and retention policy;
-- known compatible downstream uses.
-
-A file being readable is not evidence that it is scientifically compatible. If a downstream calculation changes the Hamiltonian, charge, relativistic treatment, basis identity, or another state-defining choice, prepare a new parent state.
-
-
-The reference state closes the common C-stage backbone and opens the D-stage branching library. Each target calculation should state which reference artifacts it consumes and which settings it changes.
-
-A bands path, denser DOS mesh, phonon perturbation, dielectric response, Wannier construction, or EPC calculation may require additional states, bands, grids, or interpolation objects. Those are derived calculations, not silent mutations of the reference record.
-
-Preserve the reference calculation as immutable evidence. Corrections create a new version and an explicit supersession link.
+Preserve exact parent input, software/version, datasets and hashes, scratch/restart compatibility, produced density/potential/wavefunction artifacts, and downstream reader requirements. A file being readable is not evidence that it is scientifically compatible. Use [Package reusable lineage](/DFT-Research-Workflow/operations/calculate-reference-ground-state/guides/package-reusable-reference-state-lineage/) before branching.
 
 ## Preserve a reference-state evidence package
 
-A durable package should contain:
-
-- optimized or otherwise selected fixed structure and checksum;
-- model and method identity;
-- candidate-state inventory and initialization rules;
-- fresh and restart lineage;
-- final inputs, software version, potentials or basis identity, and environment record;
-- SCF histories, warnings, occupations, charge, and magnetic diagnostics;
-- comparable energy table with exclusions and normalization;
-- final forces and stress;
-- charge-density and wavefunction hashes or retention references;
-- repeated-start results;
-- downstream compatibility declarations;
-- unresolved alternatives and the exact claim boundary.
-
-Retain enough raw output or provenance links to reconstruct every accepted state and every ranking decision. A single “SCF converged” line is not a reference-state record.
+Keep geometry checksum; method identity; candidate inventory and initialization rules; fresh/restart lineage; final inputs/outputs; SCF histories and warnings; charge, occupation, moment, force, and stress diagnostics; comparable energy table with exclusions; artifact hashes or retention locations; repeated-start results; and unresolved alternatives. A single “SCF converged” line is not a reference-state record.
 
 ## What this task does not establish
 
-This task establishes a reproducible fixed-geometry electronic reference among a declared set of candidate states. It does not establish exhaustive global electronic minimality, the lowest structural phase, dynamical or thermodynamic stability, experimental realizability, finite-temperature equilibrium, excited-state accuracy, method accuracy, or support for a scientific conclusion.
-
-It also does not perform the later D-section target calculations. Band structures, DOS, Fermi surfaces, phonons, dielectric response, EPC, defects, transport, and other observables require their own settings, convergence evidence, and interpretation.
+This task does not establish exhaustive global minimality, the lowest structural phase, physical stability, experimental realization, finite-temperature equilibrium, excited-state accuracy, method accuracy, or a scientific conclusion. The reference state closes the common C-stage backbone and opens the D-stage branching library. Each later observable needs its own execution and convergence evidence.
 
 ## Sources and methods
 
-- [Quantum ESPRESSO `pw.x` input description](https://www.quantum-espresso.org/Doc/INPUT_PW.html)
-- [VASP electronic minimization](https://vasp.at/wiki/Electronic_minimization)
-- [VASP electronic ground-state properties](https://vasp.at/wiki/Electronic_ground-state_properties)
-- [VASP `ISTART`](https://vasp.at/wiki/ISTART)
-- [VASP `ICHARG`](https://vasp.at/wiki/ICHARG)
-- [VASP `MAGMOM`](https://vasp.at/wiki/MAGMOM)
-- [VASP `LCHARG`](https://vasp.at/wiki/LCHARG)
-- [VASP `LWAVE`](https://vasp.at/wiki/LWAVE)
-- [CP2K SCF section](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html)
-- [CP2K DFT section](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT.html)
-- [ABINIT basic ground-state tutorial](https://docs.abinit.org/tutorial/base1/)
-- [Hohenberg and Kohn, inhomogeneous electron gas](https://doi.org/10.1103/PhysRev.136.B864)
-- [Kohn and Sham, self-consistent equations](https://doi.org/10.1103/PhysRev.140.A1133)
-- [Mermin, finite-temperature density-functional theory](https://doi.org/10.1103/PhysRev.137.A1441)
-- [Woods, Payne, and Hasnip, SCF methods and implementation](https://doi.org/10.1088/1361-648X/ab31c0)
+- [Quantum ESPRESSO `pw.x`](https://www.quantum-espresso.org/Doc/INPUT_PW.html); VASP [electronic minimization](https://vasp.at/wiki/Electronic_minimization), [ground-state properties](https://vasp.at/wiki/Electronic_ground-state_properties), [`ISTART`](https://vasp.at/wiki/ISTART), [`ICHARG`](https://vasp.at/wiki/ICHARG), [`MAGMOM`](https://vasp.at/wiki/MAGMOM), [`LCHARG`](https://vasp.at/wiki/LCHARG), and [`LWAVE`](https://vasp.at/wiki/LWAVE).
+- CP2K [SCF](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT/SCF.html) and [DFT](https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/DFT.html); [ABINIT ground-state tutorial](https://docs.abinit.org/tutorial/base1/).
+- [Hohenberg–Kohn](https://doi.org/10.1103/PhysRev.136.B864), [Kohn–Sham](https://doi.org/10.1103/PhysRev.140.A1133), [Mermin](https://doi.org/10.1103/PhysRev.137.A1441), and [SCF methods](https://doi.org/10.1088/1361-648X/ab31c0).

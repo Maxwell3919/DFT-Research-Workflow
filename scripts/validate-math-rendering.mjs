@@ -84,6 +84,18 @@ const inlineCodeExceptions = [{
   file: 'src/content/topics/harmonic-phonons.md',
   tokens: new Set(['v_sim']),
   reason: 'v_sim is the executable named by the official Phonopy mode-animation workflow, not algebraic notation.',
+}, {
+  file: 'src/content/practical-guides/build-reciprocal-path-ledger.md',
+  tokens: new Set(['c_bands']),
+  reason: 'c_bands is literal Quantum ESPRESSO warning text, not algebraic notation.',
+}, {
+  file: 'src/content/practical-guides/compare-full-zone-isovalue-and-band-path.md',
+  tokens: new Set(['c_bands', 'c_bands: 1 eigenvalues not converged']),
+  reason: 'These are literal Quantum ESPRESSO warning strings, not algebraic notation.',
+}, {
+  file: 'src/content/practical-guides/two-dimensional-monolayer-model.md',
+  tokens: new Set(['c']),
+  reason: 'c is the literal crystallographic cell-axis label in this inspection instruction.',
 }];
 
 function isExplicitInlineException(file, token) {
@@ -142,7 +154,7 @@ function formulaLikeFence(content) {
     || /^\s*[A-Za-z][A-Za-z0-9 _(),.+\-]*\s*=\s*\S/m.test(content);
 }
 function explicitFenceException(language, content) {
-  const codeLanguages = new Set(['bash', 'sh', 'shell', 'python', 'py', 'json', 'yaml', 'toml', 'qe', 'pw', 'fortran', 'text-output', 'output']);
+  const codeLanguages = new Set(['bash', 'sh', 'shell', 'python', 'py', 'json', 'yaml', 'toml', 'qe', 'pw', 'fortran', 'gnuplot', 'plaintext', 'text-output', 'output']);
   if (codeLanguages.has(language)) return 'declared executable, input, structured data, or raw output';
   if (language === 'text' && /(?:Program PWSCF|JOB DONE|total energy|convergence has been achieved|^\s*\{[\s\S]*\}\s*$)/m.test(content)) return 'literal program or machine-readable output';
   return null;

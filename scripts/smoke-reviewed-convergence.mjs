@@ -16,11 +16,8 @@ const requiredHeadings = [
   'Sources and methods',
 ];
 const requiredPhrases = [
-  'Numerical convergence is an operation: declare a target, run a controlled series, extract the same quantity from every run, and decide against a tolerance written before inspecting the result.',
-  'Energy convergence does not establish force convergence.',
-  'Force convergence does not establish DOS convergence.',
-  'DOS convergence does not establish phonon convergence.',
-  'Phonon convergence does not establish EPC convergence.',
+  'Numerical convergence is a statement about one named observable under a declared model, method, implementation, and set of controls.',
+  'Test differences and derivatives directly',
   'Separate completion, solver convergence, and observable convergence',
   'Only the third line is numerical convergence.',
   'Do not average over state switches and call the result converged.',
@@ -52,7 +49,7 @@ async function inspect(page, expectedWidth) {
     hasContract: Boolean(document.querySelector('.operation-contract')),
     copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
     unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
-    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm').length,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre[data-language="json"] > code, pre[data-language="plaintext"] > code, pre[data-language="gnuplot"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm, pre > code.language-json, pre > code.language-plaintext, pre > code.language-gnuplot').length,
     copyButtons: document.querySelectorAll('.copy-code-button').length,
     mathDisplays: document.querySelectorAll('.article-content .katex-display').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
@@ -73,7 +70,6 @@ async function inspect(page, expectedWidth) {
     if (!result.headings.includes(heading)) throw new Error(`convergence overview is missing semantic section ${heading}`);
   }
   if (result.cards !== 2) throw new Error(`convergence overview exposes ${result.cards} non-synthetic practical cards instead of 2`);
-  if (result.mathDisplays < 1) throw new Error('convergence overview did not render its convergence equation');
   for (const phrase of requiredPhrases) {
     if (!result.text.includes(phrase)) throw new Error(`convergence overview is missing ${phrase}`);
   }
@@ -123,11 +119,8 @@ try {
   if (response?.status() !== 200) throw new Error(`convergence overview no-JavaScript route returned ${response?.status()}`);
   const noJsText = await noJsPage.$eval('body', (body) => body.innerText);
   for (const phrase of [
-    'Numerical convergence is an operation: declare a target, run a controlled series, extract the same quantity from every run, and decide against a tolerance written before inspecting the result.',
-    'Energy convergence does not establish force convergence.',
-    'Force convergence does not establish DOS convergence.',
-    'DOS convergence does not establish phonon convergence.',
-    'Phonon convergence does not establish EPC convergence.',
+    'Numerical convergence is a statement about one named observable under a declared model, method, implementation, and set of controls.',
+    'Test differences and derivatives directly',
     'Only the third line is numerical convergence.',
     'Sources and methods',
   ]) {
@@ -152,7 +145,7 @@ try {
     }, null, 2)}\n`);
   }
 
-  console.log(`Reviewed convergence smoke passed: operation-first convergence equation and four observable inequalities, ${desktop.headings.length} natural sections, 2 non-synthetic practical cards, rendered sources, bounded Copy enhancement, 1440px/390px no-overflow, and no-JavaScript reading.`);
+  console.log(`Reviewed convergence smoke passed: concise observable-specific overview, ${desktop.headings.length} natural sections, 2 non-synthetic practical cards, rendered sources, bounded Copy enhancement, 1440px/390px no-overflow, and no-JavaScript reading.`);
 } finally {
   await browser.close();
 }

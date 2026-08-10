@@ -5,6 +5,7 @@ import { join } from 'node:path';
 const root = new URL('../', import.meta.url);
 const distPath = new URL('dist/', root).pathname;
 const base = '/DFT-Research-Workflow/';
+const siblingPagesBases = ['/Electronic-Structure-Learning/'];
 const errors = [];
 const workflowDocument = JSON.parse(await readFile(new URL('workflow/topics.json', root), 'utf8'));
 const operationsDocument = JSON.parse(await readFile(new URL('ontology/operations.json', root), 'utf8'));
@@ -150,7 +151,8 @@ function outputPath(href) {
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
 const supportingOperationRoutes = ['troubleshooting', 'software-bridge', 'resource-landscape'];
-const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.resources.filter((resource) => resource.detail).length + 2 + workedWorkflows.length + 1 + retiredPracticalRedirects.length + supportingOperationRoutes.length;
+const standaloneSupportRoutes = ['quick-reference'];
+const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.resources.filter((resource) => resource.detail).length + 2 + workedWorkflows.length + 1 + retiredPracticalRedirects.length + supportingOperationRoutes.length + standaloneSupportRoutes.length;
 if (htmlFiles.length !== expectedHtmlCount) errors.push(`generated HTML route set mismatch: expected ${expectedHtmlCount}, found ${htmlFiles.length}`);
 
 const htmlByPath = new Map();
@@ -173,6 +175,7 @@ for (const path of htmlFiles) {
   for (const phrase of prohibitedText) if (text.toLowerCase().includes(phrase.toLowerCase())) errors.push(`${path}: prohibited public phrase ${JSON.stringify(phrase)}`);
   for (const href of [...html.matchAll(/href="([^"]+)"/g)].map((match) => match[1])) {
     if (/^(?:https?:|mailto:|#)/.test(href)) continue;
+    if (siblingPagesBases.some((siblingBase) => href.startsWith(siblingBase))) continue;
     if (!href.startsWith(base)) {
       errors.push(`${path}: internal link misses project base: ${href}`);
       continue;

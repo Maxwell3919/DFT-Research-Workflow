@@ -77,6 +77,10 @@ export function getResource(slug: string) {
   return resource;
 }
 
+export function getResourcePath(resource: ResourceRecord) {
+  return resource.detail ? `tools/${resource.slug}/` : `tools/#resource-${resource.slug}`;
+}
+
 export const getDetailedResources = () => resources.filter((resource) => detailSlugs.has(resource.slug));
 
 /** Compatibility lookup for existing detail-page consumers. */

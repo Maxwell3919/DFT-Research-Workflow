@@ -349,7 +349,7 @@ if (!Array.isArray(workedWorkflows)) {
     ],
     [
       'src/content/practical-guides/converge-basis-cutoffs-and-grids.md',
-      ['for ecut in 30 40 50', 'for kmesh in 6 8 10', 'pw.x -in', 'Energy convergence does not imply'],
+      ['for ecut in 30 40 50', 'for rho_ratio in 4 8 12', 'pw.x -in', 'Energy convergence does not establish'],
     ],
     [
       'src/content/practical-guides/package-reusable-reference-state-lineage.md',

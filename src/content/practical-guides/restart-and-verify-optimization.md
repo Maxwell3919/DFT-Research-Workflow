@@ -9,6 +9,7 @@ tools:
 status: reviewed
 summary: Continue an interrupted relaxation without erasing its lineage, then perform a fresh final energy-and-gradient check on the exact accepted structure.
 tested_versions:
+  - Quantum ESPRESSO 7.5
   - ASE 3.29.0
   - Python 3.12
 execution_script: examples/practical-guides/silicon_qe_restarts.py
@@ -22,7 +23,13 @@ review: docs/reviews/2026-08-03-optimize-structure.md
 reviewed_at: "2026-08-03"
 ---
 
-A restart is a continuation of a traceable optimization problem, not permission to overwrite an unfinished calculation. Geometry, optimizer state, constraints, electronic restart data, software identity, and the reason for continuation must remain connected.
+A restart is a continuation of a traceable interrupted optimization problem, not permission to overwrite an unfinished calculation or reuse arbitrary scratch. Geometry, optimizer state, constraints, electronic restart data, software identity, parallel layout, and the reason for continuation must remain connected.
+
+## Separate an interrupted-run restart from a new initialization
+
+QE 7.5 gives `restart_mode='restart'` a narrow meaning. It is for continuing a run that stopped cleanly after `max_seconds` or a `prefix.EXIT` request. The official input description says to keep the same number of processors and parallelization, and not to use this mode to start a new calculation or an NSCF calculation.
+
+This differs from starting a new fixed-geometry SCF from an existing density or wavefunction. That separate operation keeps `restart_mode='from_scratch'` and, after compatibility checks, uses `startingpot='file'` and optionally `startingwfc='file'`. It is a file-initialized new solve, not an interrupted-run restart. [Compare Fresh and File-Initialized Electronic States](/DFT-Research-Workflow/operations/calculate-reference-ground-state/guides/compare-fresh-and-restarted-electronic-states/) now keeps these two operations distinct.
 
 ## Resume from a known physical state
 
@@ -33,6 +40,86 @@ Inventory the restart objects separately: geometry, charge density, wavefunction
 Write continuation output to a new file or directory and submit it through the normal executable or scheduler. Once it starts, compare the first accepted continuation frame and electronic state with the preserved parent boundary. Inspect the full new SCF, force, stress, displacement, warning, and state histories; a continuous-looking energy is not enough. Reopen the combined trajectory to look for a jump at the segment boundary.
 
 After the optimizer reports its condition, run the required fresh fixed-geometry energy-and-gradient verification and compare it with the accepted endpoint. The companion reconstruction below is optional automation for the stored case. It cannot make an incompatible restart valid, and VASP `CONTCAR` or any other endpoint file being present does not prove convergence.
+
+## Prepare a documented clean stop before wall time
+
+For a new QE 7.5 relaxation that may exceed one batch allocation, first use the complete `relax.in` from [Choose Relaxed Degrees of Freedom and Constraints](/DFT-Research-Workflow/operations/optimize-structure/guides/choose-relaxed-degrees-and-constraints/). Set `max_seconds` shorter than the scheduler wall time so QE has time to write a clean checkpoint:
+
+```qe
+&CONTROL
+  calculation = 'relax',
+  restart_mode = 'from_scratch',
+  prefix = 'si_relax',
+  outdir = './tmp',
+  pseudo_dir = './pseudo',
+  max_seconds = 3000.0,
+  tprnfor = .true.,
+  tstress = .true.,
+  etot_conv_thr = 1.0d-4,
+  forc_conv_thr = 1.0d-4,
+  nstep = 100,
+/
+```
+
+The displayed time and thresholds are teaching values, not site or scientific recommendations. QE documents `max_seconds` as CPU time; do not assume it maps one-to-one to a site's requested wall time. Choose it from a measured run and checkpoint-write time under the actual build and scheduler limit, leaving enough margin for QE to stop and write the save tree.
+
+Alternatively, request a clean stop while the run is active by creating `prefix.EXIT` in the working directory or `outdir`. For the input above:
+
+```bash
+touch tmp/si_relax.EXIT
+```
+
+Do not kill the process immediately after the request. Wait for QE to stop, then preserve the first segment's stdout, stderr, exit/scheduler record, input, save-tree inventory, and last complete accepted structural step. A file named `si_relax.EXIT` requests a stop; it is not itself evidence that the checkpoint completed.
+
+Before restarting, verify the exact QE version/build, input, pseudopotential identity, `prefix`, `outdir`, atom order, cell, active constraints, save tree, task count, pools and other parallelization choices from the parent segment. If the stop used `prefix.EXIT`, move the request out of `outdir` so it cannot immediately stop the continuation:
+
+```bash
+if test -f tmp/si_relax.EXIT; then
+  mv tmp/si_relax.EXIT segment-01.stop-request.EXIT
+fi
+test -d tmp/si_relax.save
+find tmp/si_relax.save -maxdepth 2 -type f -printf '%12s %p\n' | sort
+```
+
+Create `relax-restart.in` by copying the exact parent input and changing only the controls justified for continuation:
+
+```qe
+&CONTROL
+  calculation = 'relax',
+  restart_mode = 'restart',
+  prefix = 'si_relax',
+  outdir = './tmp',
+  pseudo_dir = './pseudo',
+  max_seconds = 3000.0,
+  tprnfor = .true.,
+  tstress = .true.,
+  etot_conv_thr = 1.0d-4,
+  forc_conv_thr = 1.0d-4,
+  nstep = 100,
+/
+```
+
+Retain the complete unchanged `&SYSTEM`, `&ELECTRONS`, `&IONS`, structure, species, and k-point sections beneath this control block. Review the diff and stop if any model, representation, active degree, or parallel-layout field changed:
+
+```bash
+diff -u relax.in relax-restart.in || true
+test ! -e relax-segment-02.out
+test ! -e relax-segment-02.err
+```
+
+Run the continuation with the same processor count and parallelization used by the cleanly stopped segment. The exact launcher remains site-specific:
+
+```bash
+if srun --ntasks=4 pw.x -in relax-restart.in > relax-segment-02.out 2> relax-segment-02.err; then
+  pw_status=0
+else
+  pw_status=$?
+fi
+printf '%s\n' "$pw_status" > relax-segment-02.exit-status
+test "$pw_status" -eq 0
+```
+
+Do not copy `--ntasks=4` until it matches the recorded parent and current allocation. Preserve segment 01 and segment 02 separately. At the boundary, compare the last accepted parent frame with the first accepted continuation frame, electronic state, constraints, force, stress, cell, and warnings. A readable checkpoint or continuous-looking energy does not prove compatible ancestry.
 
 ## Run, inspect, decide, then continue
 
@@ -99,7 +186,10 @@ cell, a two-step QE 7.5 `relax` segment, and a second input with the same prefix
 and outdir plus `restart_mode='restart'`. The companion does not read or hash
 those inputs or any restart object. It verifies the two output hashes, completion
 markers, the first segment's maximum-step message, and the second segment's BFGS
-marker. This is bounded stored-output reconstruction, not a restart guarantee.
+marker. The first segment ended through `nstep=2`, not the documented
+`max_seconds` or `prefix.EXIT` clean-interruption route. The stored continuation
+did execute, but it is historical bounded evidence, not the general QE 7.5
+restart recipe. Do not copy its `restart_mode` transition into a new workflow.
 
 ## Distinguish restartable objects
 

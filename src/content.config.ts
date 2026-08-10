@@ -60,7 +60,7 @@ const practicalGuides = defineCollection({
     status: z.enum(['draft', 'reviewed']),
     summary: z.string().min(20),
     tested_versions: z.array(z.string().min(3)).min(1),
-    execution_script: z.string().regex(/^examples\/practical-guides\/[a-z0-9_]+\.py$/).optional(),
+    execution_script: z.string().regex(/^examples\/(?:practical-guides\/[a-z0-9_]+|cases\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9_]+)\.py$/).optional(),
     source_ids: z.array(slug).min(1),
     media_ids: z.array(slug).default([]),
     review: z.string().regex(/^docs\/reviews\/[a-z0-9-]+\.md$/),

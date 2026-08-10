@@ -151,3 +151,19 @@ scientific claim.
 Repository validation can establish source coverage, route generation, media provenance, analysis-script execution, and rendered behaviour. External audits can establish time-bounded reachability. Browser smoke can establish that the reviewed overview and child pages are publicly readable and responsive.
 
 None of those checks establishes numerical convergence, physical robustness, method accuracy, transferability, or scientific support for any real DFT study.
+
+## Operation-depth addendum (2026-08-11)
+
+The cutoff and k-point guides now put a transparent manual route before optional
+helpers: a working directory, complete QE templates, deterministic input
+generation, local execution, site-placeholder Slurm arrays, fail-first output
+inspection, CSV extraction, plotting, and a declared decision rule. These are
+documented procedures; no new QE calculation is claimed.
+
+The stored Silicon evidence still contains only the existing nine fixed-
+occupation SCF outputs. Its charge-density cutoff remains paired at eight times
+the wavefunction cutoff, so it does not independently converge `ecutrho`. The
+stored Aluminium screen contains five cross-shaped k-mesh/smearing samples and
+its predeclared exploratory assessment is `FAIL`; it is not a completed
+two-dimensional metallic convergence matrix. These limits remain visible in
+the guides and cannot be upgraded by build, parser, or browser success.

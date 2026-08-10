@@ -2,13 +2,17 @@
 
 ## Scope
 
-This review covers only the public topic:
+This review covers the public topic:
 
 > B · Calculation Preparation → Choose the DFT Method and Computational Setup
 
 The reviewed narrative is
 `src/content/topics/choose-dft-method-and-computational-setup.md`.
-The decision is **reviewed within the declared educational scope**.
+It also covers the subordinate implementation guide
+`src/content/practical-guides/select-download-and-record-pseudopotentials.md`.
+The topic decision remains **reviewed within the declared educational scope**.
+The practical-page addendum is **reviewed within the declared educational,
+file-identity, and execution scope**.
 
 This status means that the article has a coherent method-selection boundary,
 uses suitable official or primary sources, and does not conflict with the current
@@ -241,3 +245,26 @@ run time. Browser smoke establishes rendered-link presence and page behaviour;
 it does not establish external destination availability. None of these checks
 validates a real computational setup, a production calculation, a numerical
 result, or a scientific conclusion.
+
+## Pseudopotential practical-depth addendum (2026-08-11)
+
+The new subordinate guide records a trusted library, exact file, XC treatment,
+valence, relativity, provider starting cutoffs, source, release, licence, and
+SHA-256 identity. The manual browser and shell route is complete before the
+optional companion is introduced.
+
+`examples/practical-guides/pseudopotential_receipt.py` reads a user-written
+receipt and optionally one local file. It checks required field shape, date and
+URL syntax, SHA-256 syntax, and optional local filename/hash identity. It does
+not download a pseudopotential or establish provider authenticity,
+transferability, numerical convergence, or scientific validity.
+
+Pseudopotential generation remains an advanced branch requiring preserved
+generator identity and inputs, atomic tests, transferability tests, solid-state
+tests, and a justified reference comparison. Normal generator termination does
+not accept a new dataset.
+
+Quantum ESPRESSO is a reference implementation, not the definition of DFT.
+Alternative software objects and access restrictions remain governed by their
+current official manuals and licences. No pseudopotential payload or licensed
+dataset is added to the repository by this guide.

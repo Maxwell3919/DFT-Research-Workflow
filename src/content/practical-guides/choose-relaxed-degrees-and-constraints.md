@@ -9,6 +9,7 @@ tools:
 status: reviewed
 summary: Define which atomic and cell variables may change, express constraints explicitly, and verify that the executed optimization respects the intended active subspace.
 tested_versions:
+  - Quantum ESPRESSO 7.5
   - ASE 3.29.0
   - Python 3.12
 execution_script: examples/practical-guides/silicon_qe_relax.py
@@ -36,6 +37,263 @@ During the production run, compare start, intermediate accepted frames, and the 
 
 The stored script later on reconstructs a bounded QE example and is optional automation after this manual map has been checked. It does not demonstrate a universal constraint choice or a variable-cell acceptance rule. For other implementations, use the [code and manual index](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) to open the authoritative constraint and cell-optimization reference.
 
+## Create a fixed-cell QE relaxation from the starting geometry
+
+Use a new directory for the run. Do not reuse an SCF, convergence-test, or another relaxation scratch tree merely because its files appear compatible:
+
+```bash
+run="$HOME/drw-runs/si-relax"
+test ! -e "$run"
+mkdir -p "$run"/{pseudo,tmp}
+cd "$run"
+```
+
+Create `relax.in` in a text editor. This complete QE 7.5 input reproduces the model and numerical settings of the stored Silicon teaching case, with explicit force and stress printing added for inspection. The displaced second site is intentional. The cutoffs, mesh, thresholds, and Silicon model are case values, not recommendations for another material.
+
+```qe
+&CONTROL
+  calculation = 'relax',
+  prefix = 'si_relax',
+  outdir = './tmp',
+  pseudo_dir = './pseudo',
+  tprnfor = .true.,
+  tstress = .true.,
+  etot_conv_thr = 1.0d-4,
+  forc_conv_thr = 1.0d-4,
+  nstep = 30,
+/
+&SYSTEM
+  ibrav = 0,
+  nat = 2,
+  ntyp = 1,
+  ecutwfc = 40.0,
+  ecutrho = 320.0,
+  occupations = 'fixed',
+/
+&ELECTRONS
+  conv_thr = 1.0d-10,
+/
+&IONS
+  ion_dynamics = 'bfgs',
+/
+ATOMIC_SPECIES
+Si 28.0855 Si.pbe-n-rrkjus_psl.1.0.0.UPF
+CELL_PARAMETERS angstrom
+0.0000000000 2.7152000000 2.7152000000
+2.7152000000 0.0000000000 2.7152000000
+2.7152000000 2.7152000000 0.0000000000
+ATOMIC_POSITIONS crystal
+Si 0.0000000000 0.0000000000 0.0000000000
+Si 0.2700000000 0.2500000000 0.2500000000
+K_POINTS automatic
+8 8 8 0 0 0
+```
+
+Replace values by provenance, not intuition:
+
+| Input object | Where it comes from |
+| --- | --- |
+| cell, species, positions, periodicity | the accepted A-stage computational model |
+| pseudopotential filename and XC/relativistic identity | the exact B-stage library receipt and file hash |
+| `ecutwfc`, `ecutrho`, k mesh, occupations | the B-stage tests for forces, stress, energy differences, and the intended state |
+| charge, spin, SOC, Hubbard, dispersion settings | the declared Hamiltonian and candidate-state protocol |
+| `conv_thr` | an electronic threshold shown to make the forces and stress reliable for this run |
+| `etot_conv_thr`, `forc_conv_thr`, `nstep`, active atoms/cell | the declared geometry-acceptance and recovery protocol; QE requires both ionic energy and force criteria for this minimization |
+
+Stage the exact pseudopotential required by `ATOMIC_SPECIES`. Preserve its provider, release, URL, licence, and expected hash separately; a matching filename is not identity evidence:
+
+```bash
+: "${PSEUDO_SOURCE:?Set PSEUDO_SOURCE to the verified Silicon UPF}"
+test -f "$PSEUDO_SOURCE"
+test "$(basename -- "$PSEUDO_SOURCE")" = 'Si.pbe-n-rrkjus_psl.1.0.0.UPF'
+sha256sum -- "$PSEUDO_SOURCE"
+ln -s -- "$PSEUDO_SOURCE" "pseudo/$(basename -- "$PSEUDO_SOURCE")"
+```
+
+Review the executable objects before spending compute time:
+
+```bash
+command -v pw.x
+grep -En 'calculation|prefix|outdir|pseudo_dir|etot_conv_thr|forc_conv_thr|nstep|ecutwfc|ecutrho|conv_thr|ion_dynamics' relax.in
+sed -n '/^ATOMIC_SPECIES/,$p' relax.in
+test -r pseudo/Si.pbe-n-rrkjus_psl.1.0.0.UPF
+test -w tmp
+```
+
+The normal output is the authority for the executable version actually used. Stop if the structure, pseudopotential identity, method, state, active variables, or converged numerical setup is still unresolved.
+
+## Run locally or through a site-specific Slurm job
+
+For a small authorized local run, keep stdout, stderr, and shell status separate:
+
+```bash
+if pw.x -in relax.in > relax.out 2> relax.err; then
+  pw_status=0
+else
+  pw_status=$?
+fi
+printf '%s\n' "$pw_status" > relax.exit-status
+test "$pw_status" -eq 0
+```
+
+Do not run a production calculation on a login node. At a Slurm site, create `run-relax.slurm` and replace the module, allocation, time, memory, task count, and launcher with values documented for that site and QE build. `srun` below is a site-specific template, not a universal QE launcher:
+
+```bash
+#!/usr/bin/env bash
+#SBATCH --job-name=qe-relax
+#SBATCH --nodes=1
+#SBATCH --ntasks=4
+#SBATCH --cpus-per-task=1
+#SBATCH --time=01:00:00
+#SBATCH --mem=8G
+#SBATCH --output=slurm-%j.out
+#SBATCH --error=slurm-%j.err
+
+set -euo pipefail
+module purge
+module load quantum-espresso/7.5  # replace with the site's documented module
+export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-1}"
+
+if srun pw.x -in relax.in > relax.out 2> relax.err; then
+  pw_status=0
+else
+  pw_status=$?
+fi
+printf '%s\n' "$pw_status" > relax.exit-status
+exit "$pw_status"
+```
+
+Submit and record the job identity:
+
+```bash
+job_id=$(sbatch --parsable run-relax.slurm)
+printf '%s\n' "$job_id" | tee relax.job-id
+squeue -j "$job_id"
+```
+
+`squeue` reports scheduler state, not QE or ionic convergence. While the job is active, inspect only complete text already flushed to disk; do not treat a partial last block as an accepted step:
+
+```bash
+tail -n 60 relax.out
+tail -n 40 relax.err
+grep -nE 'iteration #|convergence has been achieved|Forces acting on atoms|Total force =|total[[:space:]]+stress|Begin final coordinates|bfgs|maximum number of steps|JOB DONE' relax.out | tail -n 80
+```
+
+Preserve `relax.in`, the pseudopotential receipt/hash, `relax.out`, `relax.err`, `relax.exit-status`, job script, job ID, scheduler exit/resource record, and the `tmp/si_relax.save/` identity needed for a documented restart. Scratch wavefunctions may belong in controlled host storage rather than Git.
+
+## Inspect termination, SCF, forces, stress, and final positions separately
+
+After the process or batch job ends, use one reusable output variable:
+
+```bash
+OUT=relax.out
+ERR=relax.err
+
+cat relax.exit-status
+test "$(grep -cF 'Program PWSCF v.' -- "$OUT")" -eq 1
+test "$(grep -cF 'JOB DONE.' -- "$OUT")" -eq 1
+grep -E '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$OUT"
+grep -E 'bfgs converged|End of BFGS Geometry Optimization|maximum number of steps' -- "$OUT"
+grep -niE 'warning|error in routine|stopping|not converged|no convergence' -- "$OUT" "$ERR" || true
+
+awk '
+  /Forces acting on atoms/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /Total force =/ {last=block; inside=0}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$OUT"
+
+awk '
+  /total[[:space:]]+stress/ {block=$0 ORS; rows=3; next}
+  rows > 0 {block=block $0 ORS; rows--; if (rows == 0) last=block}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$OUT"
+
+awk '
+  /Begin final coordinates/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /End final coordinates/ {last=block; inside=0}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$OUT"
+```
+
+For this unconstrained input, QE 7.5 documents the omitted `if_pos` values as `1`, so every printed Cartesian force component is active. Compare every component with `forc_conv_thr`; keep the printed aggregate `Total force` separate. QE's ionic convergence also uses its energy criterion, so confirm the optimizer's actual termination rather than constructing a component-only substitute. The stress printed in this fixed-cell run is a diagnostic; the cell was not optimized and no stress threshold is a fixed-cell stop condition.
+
+Accept the geometry only when the shell/scheduler and QE termination are normal, every accepted ionic step has a usable electronic state, the optimizer satisfied the declared criteria, every active free-force component passes, the constraints and state remained intended, and the final structure is physically inspectable. A maximum-step message, a decreasing force, or `JOB DONE.` is a fail for geometry acceptance until the missing gate is resolved.
+
+Copy the last complete final-coordinate block into a copy of the reviewed input named `final-geometry.in`. Reopen the starting and final files with identical display settings, for example with an installed ASE viewer:
+
+```bash
+ase gui -f espresso-in relax.in final-geometry.in
+```
+
+Check periodic images, atom mapping, coordination, cell, vacuum, and every declared constraint. A plausible picture is diagnostic only. Continue with [Prepare a Fixed-Geometry Reference Calculation](/DFT-Research-Workflow/operations/calculate-reference-ground-state/guides/prepare-fixed-geometry-reference-calculation/) to create and run a fresh static SCF on the accepted coordinates.
+
+## Use `if_pos` only after defining the constrained model
+
+QE 7.5 documents three optional integer flags after each atomic position. Each flag must be `0` or `1`; it multiplies the corresponding force component, and its default is `1`. This documented example fixes the first Silicon atom and lets the second move:
+
+```qe
+ATOMIC_POSITIONS crystal
+Si 0.0000000000 0.0000000000 0.0000000000  0 0 0
+Si 0.2700000000 0.2500000000 0.2500000000  1 1 1
+```
+
+This repository has not executed that constrained input. Before production, run a bounded pilot, verify that fixed coordinates remain unchanged, inspect reaction forces where scientifically relevant, and judge convergence only in the active subspace. The real stored Silicon case below omits `if_pos`; it is not constraint evidence.
+
+## Document a bulk `vc-relax` without claiming it was executed
+
+For a bulk equilibrium-cell question, a QE 7.5 variable-cell input adds `calculation='vc-relax'` and `&CELL`. The complete example below has been checked against the current official input grammar but has not been executed or numerically validated by this repository:
+
+```qe
+&CONTROL
+  calculation = 'vc-relax',
+  prefix = 'si_vc_relax',
+  outdir = './tmp',
+  pseudo_dir = './pseudo',
+  tprnfor = .true.,
+  tstress = .true.,
+  etot_conv_thr = 1.0d-4,
+  forc_conv_thr = 1.0d-4,
+  nstep = 30,
+/
+&SYSTEM
+  ibrav = 0,
+  nat = 2,
+  ntyp = 1,
+  ecutwfc = 40.0,
+  ecutrho = 320.0,
+  occupations = 'fixed',
+/
+&ELECTRONS
+  conv_thr = 1.0d-10,
+/
+&IONS
+  ion_dynamics = 'bfgs',
+/
+&CELL
+  cell_dynamics = 'bfgs',
+  press = 0.0,
+  press_conv_thr = 0.5,
+  cell_dofree = 'all',
+/
+ATOMIC_SPECIES
+Si 28.0855 Si.pbe-n-rrkjus_psl.1.0.0.UPF
+CELL_PARAMETERS angstrom
+0.0000000000 2.7152000000 2.7152000000
+2.7152000000 0.0000000000 2.7152000000
+2.7152000000 2.7152000000 0.0000000000
+ATOMIC_POSITIONS crystal
+Si 0.0000000000 0.0000000000 0.0000000000
+Si 0.2500000000 0.2500000000 0.2500000000
+K_POINTS automatic
+8 8 8 0 0 0
+```
+
+The displayed `press`, `press_conv_thr`, cutoffs, thresholds, and `cell_dofree='all'` are teaching values for a bulk syntax example, not scientific recommendations. QE 7.5 documents `press` in kbar and `press_conv_thr` as a pressure criterion for `vc-relax` while the ionic criteria still apply. It documents `cell_dofree='all'` as moving all axes and angles. Do not use that setting for a slab, a vacuum direction, epitaxial strain, or a restricted interface model. Select a documented restricted `cell_dofree` only after defining the active strain subspace and checking lattice compatibility.
+
+Run and monitor `vc-relax.in` with the same stdout/stderr/status discipline as fixed-cell relaxation. Inspect every active force component, the complete stress tensor and printed units, pressure relative to the declared target, cell history, and the final complete `CELL_PARAMETERS` plus `ATOMIC_POSITIONS`. A scalar pressure pass cannot replace active anisotropic stress inspection. Transfer both the accepted cell and positions into the fresh static SCF. Until a real run, output, convergence study, and physical review exist, this subsection supports documented input preparation only—not a `vc-relax` success claim.
+
 ## Start with the stored Silicon input and output
 
 The bounded case reads the exact input `examples/practical-guides/data/silicon-qe/relax/si-relax.in` and output `examples/practical-guides/data/silicon-qe/relax/si-relax.out`. Inspect those objects before running the companion:
@@ -50,7 +308,7 @@ grep -En 'calculation|forc_conv_thr|nstep|ion_dynamics' -- "$relax_in"
 sed -n '/^ATOMIC_POSITIONS/,/^K_POINTS/p' "$relax_in"
 test "$(grep -cF 'Program PWSCF v.' -- "$relax_out")" -eq 1
 test "$(grep -cF 'JOB DONE.' -- "$relax_out")" -eq 1
-grep -cF 'convergence has been achieved' -- "$relax_out"
+grep -cE '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$relax_out"
 grep -F 'End of BFGS Geometry Optimization' -- "$relax_out"
 
 awk '

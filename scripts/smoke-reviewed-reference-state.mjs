@@ -19,7 +19,7 @@ const requiredHeadings = [
   'Sources and methods',
 ];
 const requiredPhrases = [
-  'A reference ground-state calculation establishes the fixed-geometry electronic state',
+  'A reference-state calculation establishes the fixed-geometry electronic state',
   'Begin with one exact accepted geometry.',
   'The optimization-to-static route is common, not universal.',
   'Normal program termination does not establish SCF convergence.',
@@ -28,10 +28,10 @@ const requiredPhrases = [
   'The lowest identified state is not automatically the scientifically appropriate reference state.',
   'Define the reference state operationally',
   'A successful SCF solution is not automatically the global electronic ground state.',
-  'Begin from the exact accepted geometry produced by Optimize the Structure or another declared source.',
+  'Begin with one exact accepted geometry.',
   'This calculation is not simply “the last SCF in the relaxation.”',
   'Enumerate candidate electronic states',
-  'A fresh start initializes the same declared state without using the previous electronic solution.',
+  'Compare a critical restart with a genuinely fresh initialization',
   'A smearing width chosen for Brillouin-zone integration is not automatically a physical temperature.',
   'Initial moments guide the solver toward candidate magnetic states; they do not define the final state by themselves.',
   'A small final residual does not identify which self-consistent basin was reached.',
@@ -65,7 +65,7 @@ async function inspect(page, expectedWidth) {
     hasContract: Boolean(document.querySelector('.operation-contract')),
     copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
     unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
-    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm').length,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre[data-language="json"] > code, pre[data-language="plaintext"] > code, pre[data-language="gnuplot"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm, pre > code.language-json, pre > code.language-plaintext, pre > code.language-gnuplot').length,
     copyButtons: document.querySelectorAll('.copy-code-button').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
@@ -134,7 +134,7 @@ try {
   if (response?.status() !== 200) throw new Error(`reference-state no-JavaScript route returned ${response?.status()}`);
   const noJsText = await noJsPage.$eval('body', (body) => body.innerText);
   for (const phrase of [
-    'A reference ground-state calculation establishes the fixed-geometry electronic state',
+    'A reference-state calculation establishes the fixed-geometry electronic state',
     'The optimization-to-static route is common, not universal.',
     'Normal program termination does not establish SCF convergence.',
     'SCF convergence does not establish ionic optimization convergence.',

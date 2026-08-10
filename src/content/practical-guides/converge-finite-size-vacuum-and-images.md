@@ -74,7 +74,7 @@ for run_dir in finite-size/runs/*; do
   cat -- "$run_dir/$name.exit-status"
   test "$(grep -cF 'Program PWSCF v.' -- "$out")" -eq 1
   test "$(grep -cF 'JOB DONE.' -- "$out")" -eq 1
-  grep -F 'convergence has been achieved' -- "$out" | tail -n 1
+  grep -E '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$out" | tail -n 1
   tail -n 40 -- "$out"
   tail -n 40 -- "$err"
   grep -Ei 'warning|error in routine|stopping|not converged|no convergence' \

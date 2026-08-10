@@ -316,16 +316,38 @@ try {
     'Numerical and symmetry checks',
     'Optional automation: retrieve and preserve the CIF',
     'Decide whether to continue',
-    'Silicon COD ID 9013102',
-    'curl',
-    'sha256sum',
+    'COD Silicon worked guide',
     'Sources and standards',
   ]) {
     if (!reviewedArticle.text.includes(phrase)) throw new Error(`Obtain a Material Structure is missing ${phrase}`);
   }
   if (reviewedArticle.headingCount < 8) throw new Error('Obtain a Material Structure lost its operation-first sections');
+  if (!reviewedArticle.links.some((link) => link.includes('/operations/obtain-material-structure/examples/inspect-cod-silicon-record/'))) {
+    throw new Error('Obtain a Material Structure lost its concrete COD practical route');
+  }
   for (const domain of ['iucr.org', 'docs.materialsproject.org', 'crystallography.net', 'molstar.org', 'spglib.readthedocs.io']) {
     if (!reviewedArticle.links.some((link) => link.includes(domain))) throw new Error(`Obtain a Material Structure is missing source domain ${domain}`);
+  }
+
+  await page.goto(`${base}/operations/obtain-material-structure/examples/inspect-cod-silicon-record/`, { waitUntil: 'load' });
+  const codGuide = await page.evaluate(() => ({
+    text: document.body.innerText,
+    codeBlocks: document.querySelectorAll('.article-content pre').length,
+    commandBlocks: document.querySelectorAll('.article-content pre[data-language="bash"]').length,
+    copyButtons: document.querySelectorAll('.article-content .copy-code-button').length,
+  }));
+  for (const phrase of [
+    'Record ID: COD 9013102',
+    'mkdir -p structures/si-cod-9013102',
+    'sha256sum source/9013102.cif',
+    'ase convert -i cif -o extxyz',
+    'Decide pass, stop, or rebuild',
+    'Optional automation: replay the recorded COD case',
+  ]) {
+    if (!codGuide.text.includes(phrase)) throw new Error(`COD Silicon practical guide is missing ${phrase}`);
+  }
+  if (codGuide.codeBlocks < 5 || codGuide.commandBlocks < 4 || codGuide.copyButtons !== codGuide.commandBlocks) {
+    throw new Error('COD Silicon practical guide lost copy-ready terminal or record blocks');
   }
 
   const cifAssetResponse = await fetch(`${cifAssetUrl}?smoke=${Date.now()}`, { cache: 'no-store' });

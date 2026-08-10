@@ -28,7 +28,7 @@ Open the silicon Brillouin-zone path and band plot, then inspect a separate unif
 
 **Inspect two stored real-output samples:** the companion script compares an actual QE path dataset with a 260-point time-reversal-reduced sample of the nominal mesh. Check each extremum's coordinate and dataset before the scalar separation; neither finite sample establishes a converged fundamental gap.
 
-Use this real, hash-bound Silicon comparison when a band-path extremum appears to support a gap or valley statement. It shows the next required operation: calculate a separate full-zone sample from the same accepted state and keep the two datasets distinct. Neither dataset in this teaching example is an observable-convergence study.
+Use this real Silicon comparison when a band-path extremum appears to support a gap or valley statement. It shows the next required operation: calculate a separate full-zone sample from a declared compatible parent and keep the two datasets distinct. The retained outputs have separately recorded hashes, but the public artifacts do not independently prove one uninterrupted historical save-tree ancestry. Neither dataset is an observable-convergence study.
 
 From the repository root, reconstruct the committed comparison first:
 
@@ -44,29 +44,59 @@ For a new calculation, first establish the compatible SCF parent inside its prep
 
 ```bash
 pw.x -in scf.in > scf.out
-grep -F "convergence has been achieved" scf.out
+grep -E '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' scf.out
 grep -F "JOB DONE." scf.out
 ```
 
 The first check asks whether QE reported electronic convergence; the second checks program termination only.
 
-Run the SeeK-path line input and its `bands.x` post-processing as described in the reciprocal-path guide. Then run the separate declared mesh input from the compatible parent state:
+Run the SeeK-path line input and its `bands.x` post-processing as described in the reciprocal-path guide. Then create a separate uniform-zone `full-zone.in`. Use `calculation='nscf'`, the same cell, structure, pseudopotential, cutoffs, charge, spin/SOC state and `prefix`, and enough bands for the target energy window. This new NSCF stage reads compatible parent SCF data through the matching `prefix` and `outdir`, but it is not an interrupted-run continuation; QE 7.5 explicitly excludes NSCF calculations from `restart_mode='restart'`.
 
-```bash
-pw.x -in bands.in > full-zone.out
-grep -F "JOB DONE." full-zone.out
-bands.x -in bands.x.in > full-zone-bandsx.out
-grep -F "JOB DONE." full-zone-bandsx.out
+The retained historical full-zone input used `restart_mode='restart'` and produced the real warning-bearing output audited later on this page. Preserve that artifact as execution evidence, not as the current recipe. The corrected reusable input below keeps the retained model values but has not been claimed as a rerun:
+
+```qe
+&CONTROL
+  calculation = 'nscf', restart_mode = 'from_scratch',
+  prefix = 'si_cod9013102', outdir = './out', pseudo_dir = './pseudo',
+/
+&SYSTEM
+  ibrav = 0, nat = 2, ntyp = 1,
+  ecutwfc = 40.0, ecutrho = 320.0,
+  occupations = 'fixed', nbnd = 8,
+  nosym = .true.,
+/
+&ELECTRONS
+  conv_thr = 1.0d-10,
+/
+ATOMIC_SPECIES
+Si 28.0855 Si.pbe-n-rrkjus_psl.1.0.0.UPF
+CELL_PARAMETERS angstrom
+0.0000000000 2.7152000000 2.7152000000
+2.7152000000 0.0000000000 2.7152000000
+2.7152000000 2.7152000000 0.0000000000
+ATOMIC_POSITIONS crystal
+Si 0.0000000000 0.0000000000 0.0000000000
+Si 0.2500000000 0.2500000000 0.2500000000
+K_POINTS automatic
+8 8 8 0 0 0
 ```
 
-In the stored full-zone case, `bands.in` uses `nosym=.true.` on an 8 x 8 x 8 grid and writes 260 time-reversal-reduced k points with eight bands. `bands.x` exposes those eigenvalues for parsing. The completion markers confirm the recorded programs ended normally; they do not make this grid dense enough for a fundamental-gap claim.
+`nosym` is useful when every retained mesh coordinate is required by the downstream extremum search, but it is not a convergence parameter or universal requirement. Give each refinement its own archived input/output and, when concurrent, its own `outdir`. Run the full-zone state with separate logs:
+
+```bash
+pw.x -in full-zone.in > full-zone.out 2> full-zone.err; printf '%s\n' "$?" > full-zone.exit
+grep -F "JOB DONE." full-zone.out
+grep -Ei "warning|error|stopping|not converged|c_bands" full-zone.out full-zone.err || true
+```
+
+In the stored full-zone case, the mesh route retained 260 time-reversal-reduced k points with eight bands. The completion marker confirms only that the program ended normally; warning review and eigenvalue completeness must pass separately. For a new run, use a parser compatible with the exact QE output or a documented exporter rather than assuming a `bands.x` path file is the required full-zone representation.
 
 ## Inspect the sampled extrema
 
 The two-site structure comes from the CC0 [COD 9013102 Silicon record](https://www.crystallography.net/cod/9013102.html). The 141-point SeeK-path line sample has a `0.574 eV` separation between its sampled fourth- and fifth-band extrema. The separate mesh sample gives `0.617 eV`. The mesh value need not be lower because both are finite, different samples; neither result is a converged full-zone gap.
 
 
-The stored `full-zone-extrema.json` binds structure identity, program versions, input/output SHA-256 values, coordinates written by `bands.x`, and the two derived extrema. The conceptual drawing below demonstrates only the possibility of an off-path extremum; it is not Silicon data.
+The stored `full-zone-extrema.json` records structure identity, program versions, input/output SHA-256 values, retained coordinates, and the two derived extrema. The conceptual drawing below demonstrates only the possibility of an off-path extremum; it is not Silicon data.
 
 
 ## Reconstruct the actual-output comparison
@@ -75,7 +105,9 @@ The companion command above does not launch QE. Execution verifies reconstructio
 
 ## Decide what remains untested
 
-Before assigning a fundamental gap, refine a compatible full-zone search and test cutoffs, parent sampling, number of bands, occupations, structural and magnetic state, SOC treatment, and extremum-search resolution. A high-symmetry path cannot prove full-zone metallicity, gap directness, or the absence of an off-path pocket. This example does not establish a converged gap, carrier valley, quasiparticle or optical gap, experimental agreement, or Silicon material conclusion.
+Before assigning a fundamental gap, repeat the uniform-zone calculation with denser meshes while holding the accepted model fixed. Tabulate the valence maximum and conduction minimum energies, fractional coordinates, band indices, indirect separation, direct separation at each sampled k point, and warnings for every mesh. Refine around candidate extrema or use a validated interpolation/search route, then retest the reported separation. Also test cutoffs, parent sampling, number of bands, occupations, structural and magnetic state, and SOC treatment where they affect the claim.
+
+Success requires warning-free electronic solutions and stable extrema under the declared search refinement; it is not defined by `JOB DONE.` or one scalar gap. If an extremum moves off the path, the path was incomplete evidence. If its coordinate or energy keeps moving with mesh density, continue the full-zone search. If occupied and unoccupied states overlap anywhere, follow the DOS/Fermi-surface route rather than reporting a path gap. A high-symmetry path cannot prove full-zone metallicity, gap directness, or the absence of an off-path pocket. This example does not establish a converged gap, carrier valley, quasiparticle or optical gap, experimental agreement, or Silicon material conclusion.
 
 ## Official sources
 

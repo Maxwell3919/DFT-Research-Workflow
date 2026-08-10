@@ -6,17 +6,24 @@ const validateBuilt = process.argv.includes('--built');
 const data = JSON.parse(await readFile(new URL('workflow/troubleshooting.json', root), 'utf8'));
 const workflow = JSON.parse(await readFile(new URL('workflow/topics.json', root), 'utf8'));
 const routeSource = await readFile(new URL('src/pages/operations/troubleshooting.astro', root), 'utf8');
+const quickReferenceSource = await readFile(new URL('src/pages/quick-reference.astro', root), 'utf8');
 const topics = workflow.sections.flatMap((section) => section.groups.flatMap((group) => group.topics));
 const topicSlugs = new Set(topics.map((topic) => topic.slug));
 const expectedRecordSlugs = [
+  'job-does-not-start',
   'job-stops-before-completion',
   'input-or-method-rejected',
   'scf-does-not-converge',
+  'scf-becomes-very-slow',
   'eigensolver-or-fermi-level-error',
   'restart-or-parent-artifact-rejected',
+  'expected-output-artifact-is-missing',
+  'bands-and-dos-look-inconsistent',
   'io-memory-or-parallel-failure',
   'geometry-looks-physically-wrong',
   'geometry-optimization-stalls',
+  'forces-remain-large',
+  'stress-remains-large',
   'symmetry-or-kq-mapping-mismatch',
   'imaginary-phonon-frequencies',
 ];
@@ -30,7 +37,26 @@ const expectedSourceIds = [
   'abinit-dfpt-faq',
   'gpaw-convergence-issues',
   'cp2k-scf-convergence-guide',
+  'slurm-squeue-docs',
+  'slurm-sacct-docs',
+  'qe-bands-docs',
+  'qe-dos-docs',
+  'qe-projwfc-docs',
 ];
+const expectedQuickReferenceAnchors = [
+  'qe-scf-check',
+  'qe-relax-check',
+  'job-check',
+  'artifact-check',
+  'bands-dos-check',
+  'phonon-check',
+];
+const expectedAccessDateBySource = new Map(expectedSourceIds.map((id) => [
+  id,
+  ['slurm-squeue-docs', 'slurm-sacct-docs', 'qe-bands-docs', 'qe-dos-docs', 'qe-projwfc-docs'].includes(id)
+    ? '2026-08-11'
+    : '2026-08-10',
+]));
 const requiredRecordFields = [
   'slug',
   'title',
@@ -53,6 +79,7 @@ const allowedHosts = new Set([
   'docs.abinit.org',
   'gpaw.readthedocs.io',
   'manual.cp2k.org',
+  'slurm.schedmd.com',
 ]);
 
 function nonemptyString(value) {
@@ -97,7 +124,7 @@ for (const source of data.sources ?? []) {
   } catch {
     errors.push(`${source.id}: invalid URL ${source.url}`);
   }
-  if (source.accessed_at !== '2026-08-10') errors.push(`${source.id}: accessed_at must preserve the reviewed 2026-08-10 check date`);
+  if (source.accessed_at !== expectedAccessDateBySource.get(source.id)) errors.push(`${source.id}: accessed_at differs from its reviewed source date`);
 }
 
 if (JSON.stringify((data.records ?? []).map((record) => record.slug)) !== JSON.stringify(expectedRecordSlugs)) {
@@ -137,26 +164,43 @@ if (!scfBoundary.includes('does not establish the lowest relevant state')) error
 if (!phononRecord?.symptom?.includes('dynamical-matrix eigenvalues are negative') || !phononRecord?.symptom?.includes('corresponding to imaginary phonon frequencies')) errors.push('imaginary-frequency symptom must distinguish negative dynamical-matrix eigenvalues from the corresponding imaginary frequencies');
 if (!phononBoundary.includes('alone does not prove a physical instability')) errors.push('imaginary-frequency boundary must reject automatic instability claims');
 
-for (const marker of ['data-troubleshooting-index', 'data-symptom-record', 'data-primary-actions', 'data-claim-boundary', 'data-secondary-evidence', 'workflowSections', 'withBase', 'troubleshootingData']) {
+for (const marker of ['data-troubleshooting-index', 'data-symptom-record', 'data-primary-actions', 'data-quick-reference', 'data-claim-boundary', 'data-secondary-evidence', 'quickReferenceAnchors', 'workflowSections', 'withBase', 'troubleshootingData']) {
   if (!routeSource.includes(marker)) errors.push(`route source is missing fail-closed static marker ${marker}`);
 }
 for (const forbidden of ['client:load', 'client:idle', 'client:visible', 'client:only', '<script']) {
   if (routeSource.includes(forbidden)) errors.push(`route must remain static and contains ${forbidden}`);
 }
 
+for (const anchor of expectedQuickReferenceAnchors) {
+  if (!quickReferenceSource.includes(`id="${anchor}"`)) errors.push(`Quick Reference is missing #${anchor}`);
+}
+if ((quickReferenceSource.match(/<section id="[^"]+" data-quick-check>/g) ?? []).length !== expectedQuickReferenceAnchors.length) errors.push('Quick Reference must contain exactly six copy-ready check sections');
+if (quickReferenceSource.includes("grep -F 'convergence has been achieved'")) errors.push('Quick Reference contains an unanchored positive SCF marker');
+if (!quickReferenceSource.includes("^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$")) errors.push('Quick Reference positive SCF marker is not anchored to the complete line');
+for (const marker of ['convergence NOT achieved', 'No convergence has been achieved']) {
+  if (!quickReferenceSource.includes(marker)) errors.push(`Quick Reference is missing separate negative marker ${marker}`);
+}
+
 if (validateBuilt) {
   let html = '';
+  let quickHtml = '';
   try {
     html = await readFile(new URL('dist/operations/troubleshooting/index.html', root), 'utf8');
   } catch (error) {
     errors.push(`built troubleshooting route is missing: ${error.message}`);
   }
+  try {
+    quickHtml = await readFile(new URL('dist/quick-reference/index.html', root), 'utf8');
+  } catch (error) {
+    errors.push(`built Quick Reference route is missing: ${error.message}`);
+  }
   if (html) {
     if (!/<html[^>]+lang="en"/i.test(html)) errors.push('built route does not declare English');
     if (!html.includes('Troubleshoot a calculation')) errors.push('built route is missing its public heading');
-    if ((html.match(/data-symptom-record=/g) ?? []).length !== 10) errors.push('built route does not contain exactly ten symptom records');
-    if ((html.match(/data-primary-actions/g) ?? []).length !== 10) errors.push('built route does not expose one primary-action sequence per symptom');
-    if ((html.match(/data-secondary-evidence/g) ?? []).length !== 10) errors.push('built route does not contain one secondary-evidence disclosure per symptom');
+    if ((html.match(/data-symptom-record=/g) ?? []).length !== expectedRecordSlugs.length) errors.push(`built route does not contain exactly ${expectedRecordSlugs.length} symptom records`);
+    if ((html.match(/data-primary-actions/g) ?? []).length !== expectedRecordSlugs.length) errors.push('built route does not expose one primary-action sequence per symptom');
+    if ((html.match(/data-quick-reference/g) ?? []).length !== expectedRecordSlugs.length) errors.push('built route does not expose one Quick Reference link per symptom');
+    if ((html.match(/data-secondary-evidence/g) ?? []).length !== expectedRecordSlugs.length) errors.push('built route does not contain one secondary-evidence disclosure per symptom');
     for (const slug of expectedRecordSlugs) {
       if (!html.includes(`id="${slug}"`)) errors.push(`built route is missing anchor #${slug}`);
     }
@@ -169,6 +213,16 @@ if (validateBuilt) {
     }
     if (html.includes('<astro-island')) errors.push('built route contains client hydration');
   }
+  if (quickHtml) {
+    if (!/<html[^>]+lang="en"/i.test(quickHtml)) errors.push('built Quick Reference does not declare English');
+    if (!/<h1[^>]*>Quick Reference<\/h1>/.test(quickHtml)) errors.push('built Quick Reference is missing its public heading');
+    if ((quickHtml.match(/<section id="[^"]+" data-quick-check/g) ?? []).length !== expectedQuickReferenceAnchors.length) errors.push('built Quick Reference does not contain exactly six check sections');
+    for (const anchor of expectedQuickReferenceAnchors) {
+      if (!quickHtml.includes(`id="${anchor}"`)) errors.push(`built Quick Reference is missing #${anchor}`);
+    }
+    if ((quickHtml.match(/<pre data-language="bash"/g) ?? []).length !== expectedQuickReferenceAnchors.length) errors.push('built Quick Reference does not contain exactly six bash blocks');
+    if (quickHtml.includes('<astro-island')) errors.push('built Quick Reference contains client hydration');
+  }
 }
 
 if (errors.length > 0) {
@@ -177,4 +231,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Troubleshooting validation passed: ${expectedRecordSlugs.length} symptom records, ${expectedSourceIds.length} official sources, ${topics.length}-topic fail-closed resolution${validateBuilt ? ', and static built route' : ''}.`);
+console.log(`Troubleshooting validation passed: ${expectedRecordSlugs.length} symptom records, ${expectedSourceIds.length} official sources, ${expectedQuickReferenceAnchors.length} copy-ready checks, ${topics.length}-topic fail-closed resolution${validateBuilt ? ', and static built routes' : ''}.`);

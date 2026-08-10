@@ -67,6 +67,8 @@ An adequately converged harmonic spectrum supports a conditional local-curvature
 - [Togo and Tanaka, first-principles phonon calculation review](https://doi.org/10.1016/j.scriptamat.2015.07.021)
 - [Baroni et al., DFPT review](https://doi.org/10.1103/RevModPhys.73.515)
 - [Quantum ESPRESSO `ph.x` input description](https://www.quantum-espresso.org/Doc/INPUT_PH.html)
+- [Quantum ESPRESSO `q2r.x` input description](https://www.quantum-espresso.org/Doc/INPUT_Q2R.html)
+- [Quantum ESPRESSO `matdyn.x` input description](https://www.quantum-espresso.org/Doc/INPUT_MATDYN.html)
 - [Quantum ESPRESSO `dynmat.x` input description](https://quantum-espresso.org/Doc/INPUT_DYNMAT.html)
 - [Quantum ESPRESSO single-q phonon guide](https://www.quantum-espresso.org/Doc/ph_user_guide/node8.html)
 - [Phonopy command and force-constant workflow](https://phonopy.github.io/phonopy/phonopy.html)

@@ -15,6 +15,9 @@ HASHES = {
     RELAX / "segment1.out": "8ad09cca7e20d1872c0ef3d4c1e018dae65e4cc1c60052d70d812373dd24204b",
     RELAX / "segment2-restart.out": "8c294032f4dc59db136957c90cb665f8ad376be5c3b4c4590257ec6ad1b7c421",
 }
+SCF_CONVERGENCE = re.compile(
+    r"(?im)^\s+convergence has been achieved in\s+\d+\s+iterations\s*$"
+)
 
 
 def _energy(text: str) -> float:
@@ -25,7 +28,7 @@ def run() -> dict[str, object]:
     texts = {path.name: path.read_text(encoding="utf8") for path in HASHES}
     for path, expected in HASHES.items():
         assert hashlib.sha256(path.read_bytes()).hexdigest() == expected
-        assert "convergence has been achieved" in texts[path.name] and "JOB DONE" in texts[path.name]
+        assert SCF_CONVERGENCE.search(texts[path.name]) and "JOB DONE" in texts[path.name]
     fresh, restart = texts["fresh.out"], texts["restart.out"]
     e_fresh, e_restart = _energy(fresh), _energy(restart)
     assert e_fresh == e_restart

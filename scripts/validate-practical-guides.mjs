@@ -1,4 +1,6 @@
 import { access, readFile, readdir } from 'node:fs/promises';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const root = new URL('../', import.meta.url);
 const practicalEvidenceDocument = JSON.parse(await readFile(new URL('workflow/practical-evidence.json', root), 'utf8'));
@@ -21,6 +23,7 @@ const requiredGuideSlugs = new Set([
   'ase-surfaces-vacuum-adsorbates',
   'pymatgen-structure-transformations',
   'two-dimensional-monolayer-model',
+  'select-download-and-record-pseudopotentials',
   'converge-basis-cutoffs-and-grids',
   'converge-k-points-and-smearing',
   'converge-finite-size-vacuum-and-images',
@@ -53,6 +56,7 @@ const requiredGuideSlugs = new Set([
 ]);
 const requiredParentMinimum = new Map([
   ['build-or-modify-computational-model', 4],
+  ['choose-dft-method-and-computational-setup', 1],
   ['test-numerical-convergence', 4],
   ['optimize-structure', 4],
   ['calculate-reference-ground-state', 4],
@@ -65,13 +69,21 @@ const requiredParentMinimum = new Map([
   ['validate-results-and-scientific-conclusions', 2],
 ]);
 const reviewRequirements = new Map([
+  ['docs/reviews/2026-08-03-choose-dft-method-and-setup.md', [
+    'reviewed within the declared educational, file-identity, and execution scope',
+    'records a trusted library, exact file, XC treatment, valence, relativity, provider starting cutoffs, source, release, licence, and SHA-256 identity',
+    'does not download a pseudopotential or establish provider authenticity, transferability, numerical convergence, or scientific validity',
+    'Pseudopotential generation remains an advanced branch',
+    'Quantum ESPRESSO is a reference implementation, not the definition of DFT',
+  ]],
   ['docs/reviews/2026-08-10-cod-silicon-interface-walkthrough.md', [
-    'reviewed within the declared browser and GUI teaching scope',
+    'reviewed within the declared browser, GUI, and bounded terminal teaching scope',
     'The COD and Mol* screenshots show actual public interfaces and actual declared objects',
     'No VESTA screenshot or local VESTA execution is claimed',
     'The Mol* view uses the repository expanded teaching snapshot rather than the byte-for-byte COD download',
     'Interface rendering and visual inspection do not establish structure validity, numerical convergence, or a scientific conclusion',
-    'No terminal execution script is required because this page makes no terminal execution claim',
+    'Browser screenshots and parser execution are independent evidence',
+    'The parser does not prove the interface state; the screenshots do not prove parser execution',
   ]],
   ['docs/reviews/2026-08-09-qe-terminal-inspection-and-audit.md', [
     'Internal manifest codes are not taught as a reader-facing taxonomy.',
@@ -240,9 +252,10 @@ const reviewRequirements = new Map([
   ]],
   ['docs/reviews/2026-08-04-harmonic-phonons.md', [
     'reviewed within the declared educational and execution scope',
-    'The companion script uses invented dynamical-matrix eigenvalues',
-    'Execution success is not a force calculation',
-    'The media are an original diagram generated from invented values',
+    'The bound case contains a real QE 7.5 Silicon SCF followed by one Γ-point `ph.x` execution',
+    'That evidence supports only the stated one-q-point transcription',
+    'The complete QE q-grid, fresh dispersion/DOS plotting, and Phonopy 4.4 finite-displacement routes are implementation instructions checked against current official syntax',
+    'Their small helper self-tests validate parsers and SVG generation with synthetic fixtures',
   ]],
   ['docs/reviews/2026-08-04-anharmonic-phonons.md', [
     'reviewed within the declared educational and execution scope',
@@ -413,6 +426,37 @@ for (const file of files) {
     } catch {
       errors.push(`${file}: missing execution script ${data.execution_script}`);
     }
+
+    const caseScript = data.execution_script.match(
+      /^examples\/cases\/([a-z0-9]+(?:-[a-z0-9]+)*)\/[a-z0-9_]+\.py$/,
+    );
+    if (caseScript) {
+      const caseId = caseScript[1];
+      const evidence = practicalEvidenceByGuide.get(data.guide_slug);
+      if (evidence?.case_id !== caseId) {
+        errors.push(`${file}: case-local execution script does not match its evidence case_id`);
+      } else {
+        const scriptPath = fileURLToPath(new URL(data.execution_script, root));
+        const syntax = spawnSync(
+          'python3',
+          [
+            '-c',
+            "import pathlib, sys; path = pathlib.Path(sys.argv[1]); compile(path.read_text(encoding='utf-8'), str(path), 'exec')",
+            scriptPath,
+          ],
+          { encoding: 'utf8' },
+        );
+        if (syntax.status !== 0) {
+          errors.push(`${file}: case-local execution script failed Python syntax validation (${syntax.stderr.trim()})`);
+        }
+
+        const checkPath = fileURLToPath(new URL(`examples/cases/${caseId}/check.sh`, root));
+        const caseCheck = spawnSync('bash', [checkPath], { encoding: 'utf8' });
+        if (caseCheck.status !== 0) {
+          errors.push(`${file}: bound case validator failed (${caseCheck.stderr.trim() || caseCheck.stdout.trim()})`);
+        }
+      }
+    }
   }
   try {
     await access(new URL(data.review, root));
@@ -489,10 +533,52 @@ for (const reviewPath of reviewPaths) {
   }
 }
 
+const pseudopotentialReceiptSelfTest = spawnSync(
+  'python3',
+  [fileURLToPath(new URL('examples/practical-guides/pseudopotential_receipt.py', root)), 'self-test'],
+  { cwd: fileURLToPath(root), encoding: 'utf8', env: { ...process.env, LC_ALL: 'C.UTF-8' } },
+);
+if (pseudopotentialReceiptSelfTest.status !== 0) {
+  errors.push(
+    'pseudopotential receipt companion self-test failed: ' +
+      (pseudopotentialReceiptSelfTest.stderr.trim() || `exit ${pseudopotentialReceiptSelfTest.status}`),
+  );
+} else {
+  try {
+    const report = JSON.parse(pseudopotentialReceiptSelfTest.stdout);
+    if (report.status !== 'PASS' || report.mode !== 'self-test' || !/Schema fixture only/.test(report.boundary ?? '')) {
+      errors.push('pseudopotential receipt companion self-test returned an unexpected claim boundary');
+    }
+  } catch {
+    errors.push('pseudopotential receipt companion self-test did not return JSON');
+  }
+}
+
+for (const [label, relativePath] of [
+  ['fresh bands plot', 'examples/practical-guides/silicon_qe_bands.py'],
+  ['fresh phonon plots', 'examples/practical-guides/silicon_gamma_phonon.py'],
+]) {
+  const selfTest = spawnSync(
+    'python3',
+    [fileURLToPath(new URL(relativePath, root)), 'self-test-fresh'],
+    { cwd: fileURLToPath(root), encoding: 'utf8', env: { ...process.env, LC_ALL: 'C.UTF-8' } },
+  );
+  if (selfTest.status !== 0) {
+    errors.push(`${label} companion self-test failed: ${selfTest.stderr.trim() || `exit ${selfTest.status}`}`);
+    continue;
+  }
+  try {
+    const report = JSON.parse(selfTest.stdout);
+    if (report.status !== 'PASS') errors.push(`${label} companion self-test did not report PASS`);
+  } catch {
+    errors.push(`${label} companion self-test did not return JSON`);
+  }
+}
+
 if (errors.length > 0) {
   console.error(`Practical-guide validation failed (${errors.length}):`);
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
 
-console.log(`Practical guides valid: ${guides.length} reviewed pages across ${guideCountsByParent.size} parent topics with execution scripts where executable claims are made, exact official or primary sources, original-media provenance, and review-specific claim boundaries.`);
+console.log(`Practical guides valid: ${guides.length} reviewed pages across ${guideCountsByParent.size} parent topics with execution scripts where executable claims are made, exact official or primary sources, original-media provenance, review-specific claim boundaries, and executed receipt/bands/phonon helper self-tests.`);

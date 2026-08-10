@@ -13,6 +13,9 @@ ATTEMPT_01 = CASE / "output/attempt-01-slurm-launch-failure"
 ATTEMPT_02 = CASE / "output/attempt-02-pmix"
 ENERGY = re.compile(r"!\s+total energy\s+=\s+([-+0-9.Ee]+)\s+Ry")
 FERMI = re.compile(r"the Fermi energy is\s+([-+0-9.Ee]+)\s+ev", re.IGNORECASE)
+SCF_CONVERGENCE = re.compile(
+    r"(?im)^\s+convergence has been achieved in\s+\d+\s+iterations\s*$"
+)
 WARNING_OR_FATAL = re.compile(
     r"\bwarning\b|error in routine|convergence NOT achieved|no convergence has been achieved|"
     r"segmentation fault|out of memory|oom-kill|killed by signal",
@@ -56,7 +59,7 @@ def _stage_log(run_id: str) -> dict[str, object]:
     flagged = [line.strip() for line in text.splitlines() if WARNING_OR_FATAL.search(line)]
     assert text.count("Program PWSCF v.7.5") == 1, f"unexpected QE banner count: {run_id}"
     assert text.count("JOB DONE.") == 1, f"unexpected JOB DONE count: {run_id}"
-    assert "convergence has been achieved" in text, f"missing SCF marker: {run_id}"
+    assert SCF_CONVERGENCE.search(text), f"missing anchored SCF marker: {run_id}"
     assert energies and fermi_energies, f"missing final observable text: {run_id}"
     return {
         "run_id": run_id,
