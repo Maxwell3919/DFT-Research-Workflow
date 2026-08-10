@@ -6,6 +6,8 @@ const route = '/operations/';
 const expectedFields = [
   'Required observable',
   'Go to',
+  'Common human route',
+  'What to inspect',
   'Before starting',
   'First practical action',
   'Validate',
@@ -91,7 +93,7 @@ async function inspect(page, expectedWidth) {
 
   const noGuideRows = result.rowData.filter((row) => row.noGuide);
   if (noGuideRows.length !== 1 || noGuideRows[0].id !== 'conventional-superconductivity') throw new Error('EPC must be the only no-guide row');
-  if (!noGuideRows[0].noGuide.includes('No executable practical guide is published')) throw new Error('EPC no-guide state is not explicit');
+  if (!noGuideRows[0].noGuide.includes('No reviewed hands-on practical guide is published')) throw new Error('EPC no-guide state is not explicit');
   if (!result.text.includes('A high-symmetry band path alone is not full-Brillouin-zone evidence of metallicity')) throw new Error('Metallicity full-zone boundary is missing');
   if (!result.text.includes('one real Silicon Gamma-point mode ledger only')) throw new Error('Phonon Gamma-only guide boundary is missing');
   if (!result.text.includes('A negative formation energy does not establish convex-hull stability')) throw new Error('Formation-versus-hull boundary is missing');

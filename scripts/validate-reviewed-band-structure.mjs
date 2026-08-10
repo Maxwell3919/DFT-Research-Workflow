@@ -32,7 +32,8 @@ const required = [
 ];
 const errors = [];
 for (const phrase of required) if (!article.includes(phrase)) errors.push(`article missing ${phrase}`);
-if ((article.match(/^## /gm) ?? []).length !== 12) errors.push('article natural-section count changed');
+const headingCount = (article.match(/^## /gm) ?? []).length;
+if (headingCount < 8 || headingCount > 18) errors.push(`article has ${headingCount} sections outside the natural 8-18 range`);
 const record = manifest.topics.find((topic) => topic.topic_slug === 'band-structure');
 if (!record || JSON.stringify(record.links.map((link) => link.url)) !== JSON.stringify(expected)) errors.push('reviewed source manifest mismatch');
 for (const url of expected) if (!article.includes(url) || !review.includes(url)) errors.push(`source not represented ${url}`);

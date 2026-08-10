@@ -71,7 +71,7 @@ async function compareReplay(caseId, originalDirectory, replayDirectory) {
 if (execute) {
   const interpreter = runResult(root, casePythonCommand, ['--version'], executionEnvironment);
   if (interpreter.status !== 0) {
-    console.error(`Terminal-first case validation failed: CASE_PYTHON ${casePythonCommand} is unavailable${interpreter.error ? ` (${interpreter.error.message})` : ''}.`);
+    console.error(`File-backed case validation failed: CASE_PYTHON ${casePythonCommand} is unavailable${interpreter.error ? ` (${interpreter.error.message})` : ''}.`);
     process.exit(1);
   }
 }
@@ -90,7 +90,7 @@ try {
   caseEntries = [];
 }
 
-if (caseEntries.length === 0) errors.push('examples/cases must contain at least one terminal-first case');
+if (caseEntries.length === 0) errors.push('examples/cases must contain at least one file-backed case');
 
 try {
   const ledger = JSON.parse(await readFile(fileLedgerPath, 'utf8'));
@@ -237,9 +237,9 @@ for (const entry of caseEntries) {
 }
 
 if (errors.length > 0) {
-  console.error(`Terminal-first case validation failed (${errors.length}):`);
+  console.error(`File-backed case validation failed (${errors.length}):`);
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
 
-console.log(`Terminal-first cases valid: ${caseEntries.length} case(s); complete case-file ledger, required trees, shell syntax, manifests, hashes, gates, claim boundaries and privacy checks${execute ? ', plus extract/parser/check execution' : ''}.`);
+console.log(`File-backed cases valid: ${caseEntries.length} case(s); complete case-file ledger, required trees, shell syntax, manifests, hashes, gates, claim boundaries and privacy checks${execute ? ', plus extract/parser/check execution' : ''}.`);

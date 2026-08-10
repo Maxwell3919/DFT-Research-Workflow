@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate every terminal-first manifest against the public JSON Schema."""
+"""Validate every file-backed manifest against the public JSON Schema."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ def main() -> int:
     validator = Draft202012Validator(schema, format_checker=FormatChecker())
     manifests = sorted(CASES_ROOT.glob("*/manifest.json"))
     if not manifests:
-        raise SystemExit("FAIL no terminal-first case manifests found")
+        raise SystemExit("FAIL no file-backed case manifests found")
 
     failures: list[str] = []
     for path in manifests:
@@ -29,8 +29,8 @@ def main() -> int:
             failures.append(f"{path.parent.name}:{location}: {error.message}")
 
     if failures:
-        raise SystemExit("FAIL terminal-first case schema\n" + "\n".join(failures))
-    print(f"Terminal-first case schema valid: {len(manifests)} manifest(s).")
+        raise SystemExit("FAIL file-backed case schema\n" + "\n".join(failures))
+    print(f"File-backed case schema valid: {len(manifests)} manifest(s).")
     return 0
 
 

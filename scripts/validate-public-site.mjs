@@ -13,7 +13,13 @@ const recipesDocument = JSON.parse(await readFile(new URL('recipes/index.json', 
 const toolsDocument = JSON.parse(await readFile(new URL('workflow/tools.json', root), 'utf8'));
 const practicalEvidence = JSON.parse(await readFile(new URL('workflow/practical-evidence.json', root), 'utf8'));
 const workflowTopics = workflowDocument.sections.flatMap((section) =>
-  section.groups.flatMap((group) => group.topics.map((topic) => ({ ...topic, section: section.id, group: group.id }))),
+  section.groups.flatMap((group) => group.topics.map((topic) => ({
+    ...topic,
+    section: section.id,
+    sectionTitle: section.title,
+    group: group.id,
+    groupTitle: group.title,
+  }))),
 );
 const topicSlugs = workflowTopics.map((topic) => topic.slug);
 const transitionalOperations = operationsDocument.operations;
@@ -119,7 +125,7 @@ function outputPath(href) {
 }
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
-const supportingOperationRoutes = ['troubleshooting', 'software-bridge'];
+const supportingOperationRoutes = ['troubleshooting', 'software-bridge', 'resource-landscape'];
 const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.tools.length + 2 + workedWorkflows.length + 1 + retiredPracticalRedirects.length + supportingOperationRoutes.length;
 if (htmlFiles.length !== expectedHtmlCount) errors.push(`generated HTML route set mismatch: expected ${expectedHtmlCount}, found ${htmlFiles.length}`);
 
@@ -130,7 +136,8 @@ for (const path of htmlFiles) {
   const text = stripMarkup(html);
   const isStaticRedirect = /<meta http-equiv="refresh"/i.test(html);
   if (!isStaticRedirect && !/<html lang="en">/.test(html)) errors.push(`${path}: html language must be English`);
-  if (/[\u3400-\u9fff]/u.test(text)) errors.push(`${path}: public HTML contains CJK text`);
+  const isResourceLandscape = path.endsWith('/operations/resource-landscape/index.html');
+  if (!isResourceLandscape && /[\u3400-\u9fff]/u.test(text)) errors.push(`${path}: public HTML contains CJK text`);
   if (/<script(?:\s|>)/i.test(html)) errors.push(`${path}: client-side script is not allowed`);
   if (/class="operation-contract"/.test(html)) errors.push(`${path}: fixed operation contract is not allowed`);
   for (const phrase of prohibitedText) if (text.toLowerCase().includes(phrase.toLowerCase())) errors.push(`${path}: prohibited public phrase ${JSON.stringify(phrase)}`);
@@ -267,7 +274,13 @@ for (const topic of workflowTopics) {
     continue;
   }
   if (!text.includes(topic.title)) errors.push(`${topic.slug}: topic title mismatch`);
-  if (!text.includes(`${topic.group} ·`)) errors.push(`${topic.slug}: topic group label missing`);
+  const operationLabel = stripMarkup(html.match(/<p class="operation-label">[\s\S]*?<\/p>/)?.[0] ?? '');
+  const expectedOperationLabel = topic.section === 'D'
+    ? `${topic.group} · ${topic.groupTitle}`
+    : `${topic.section} · ${topic.sectionTitle}`;
+  if (operationLabel !== expectedOperationLabel) {
+    errors.push(`${topic.slug}: expected operation label ${JSON.stringify(expectedOperationLabel)}, found ${JSON.stringify(operationLabel)}`);
+  }
   if (text.includes('Transitional route')) errors.push(`${topic.slug}: current topic is rendered as a transitional route`);
   if (/Inputs|Outputs|Requirement|Repeatability|Alternative implementations|Exclusions/.test(text)) errors.push(`${topic.slug}: topic restores a fixed page contract`);
 }
@@ -286,15 +299,18 @@ for (const guide of practicalGuides) {
     continue;
   }
   if (!text.includes(guide.title)) errors.push(`${guide.guide_slug}: practical title mismatch`);
-  if (!text.includes('Execution checks confirm only the bounded software or analysis assertions made by this page.')) {
+  const evidenceRecord = practicalEvidence.guides.find((record) => record.guide_slug === guide.guide_slug);
+  const hasExecutionBoundary = text.includes('Execution checks confirm only the bounded software or analysis assertions made by this page.');
+  const hasInterfaceBoundary = evidenceRecord?.evidence_class === 'real-interface-walkthrough'
+    && text.includes('This walkthrough establishes an actual browser route to a declared COD record and an actual browser viewer state for a declared expanded teaching object.');
+  if (!hasExecutionBoundary && !hasInterfaceBoundary) {
     errors.push(`${guide.guide_slug}: missing execution evidence boundary`);
   }
   if (!html.includes('class="guide-meta"')) errors.push(`${guide.guide_slug}: missing guide metadata`);
-  const evidenceRecord = practicalEvidence.guides.find((record) => record.guide_slug === guide.guide_slug);
   if ((evidenceRecord?.media_ids?.length ?? 0) > 0 && !html.includes('class="guide-media"')) errors.push(`${guide.guide_slug}: missing declared media`);
   if (evidenceRecord?.evidence_class === 'real-execution') {
     if (!evidenceRecord.case_id || !text.includes('Evidence scope.') || !text.includes(evidenceRecord.case_id)) {
-      errors.push(`${guide.guide_slug}: real-execution page is not visibly bound to its terminal-first case`);
+      errors.push(`${guide.guide_slug}: real-execution page is not visibly bound to its file-backed case`);
     }
     if (!text.includes('Claim ceiling.')) errors.push(`${guide.guide_slug}: natural-language claim ceiling is not rendered`);
   }
@@ -332,8 +348,8 @@ for (const workflow of workedWorkflows) {
   if (!html) errors.push(`missing Worked Workflow route: ${workflow.slug}`);
   if (!workflowDirectory.includes(`${base}workflows/${workflow.slug}/`)) errors.push(`Worked Workflows directory is missing ${workflow.slug}`);
   if (!text.includes(workflow.title)) errors.push(`${workflow.slug}: workflow title mismatch`);
-  for (const phrase of ['Recorded execution evidence', 'Complete artifact appendix', 'What this case supports', 'What this case does not support']) {
-    if (!text.includes(phrase)) errors.push(`${workflow.slug}: missing terminal-first section ${phrase}`);
+  for (const phrase of ['Open the starting sources', 'Follow the calculation', 'Reproduce the exact published evidence', 'Complete artifact appendix', 'What this case supports', 'What this case does not support']) {
+    if (!text.includes(phrase)) errors.push(`${workflow.slug}: missing human-first workflow section ${phrase}`);
   }
   if (!html.includes('data:image/png;base64,')) errors.push(`${workflow.slug}: no case-derived PNG is rendered`);
   for (const phrase of ['Inputs and identity', 'Program completion', 'Electronic solver and ionic or structural checks', 'Artifacts and stage ancestry', 'Observable convergence', 'Claim boundary', 'No material-level claim is made']) {
@@ -403,11 +419,11 @@ if (!htmlByPath.has(join(distPath, '404.html'))) errors.push('custom English 404
       builtRoot + '/workflows/silicon-ground-state-electronic-structure/index.html',
       'utf8'
     );
-    const startIndex = siliconHtml.indexOf('Start here');
+    const sourceIndex = siliconHtml.indexOf('Open the starting sources');
     const routeIndex = siliconHtml.indexOf('Follow the calculation');
-    const evidenceIndex = siliconHtml.indexOf('Stored evidence and fresh execution');
-    if (!(startIndex >= 0 && routeIndex > startIndex && evidenceIndex > routeIndex)) {
-      errors.push('worked workflow must render Start here, then reader route, then evidence tracks');
+    const evidenceIndex = siliconHtml.indexOf('Reproduce the exact published evidence');
+    if (!(sourceIndex >= 0 && routeIndex > sourceIndex && evidenceIndex > routeIndex)) {
+      errors.push('worked workflow must render starting sources, then the calculation route, then exact evidence');
     }
     for (const visibleInternal of [
       '>History kind<',
@@ -459,4 +475,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Generated site valid: registry-driven A–E directory, ${practicalGuides.length} practical subpages, two terminal-first Worked Workflows, and migration-safe Framework/recipe/numbered URLs.`);
+console.log(`Generated site valid: registry-driven A–E directory, ${practicalGuides.length} practical subpages, two human-first Worked Workflows with bounded evidence appendices, and migration-safe Framework/recipe/numbered URLs.`);

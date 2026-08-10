@@ -108,8 +108,12 @@ async function inspect(page, route, width) {
     throw new Error(`${route}: unlisted route renders contextual navigation`);
   }
   if (route === '/operations/') {
-    const expectedSupport = [`${base}/operations/troubleshooting/`, `${base}/operations/software-bridge/`];
-    if (JSON.stringify(state.supportLinks) !== JSON.stringify(expectedSupport)) throw new Error('Research Workflow support sentence does not expose both support routes');
+    const expectedSupport = [
+      `${base}/operations/troubleshooting/`,
+      `${base}/operations/software-bridge/`,
+      `${base}/operations/resource-landscape/`,
+    ];
+    if (JSON.stringify(state.supportLinks) !== JSON.stringify(expectedSupport)) throw new Error('Research Workflow support sentence does not expose all three support routes');
   }
 }
 

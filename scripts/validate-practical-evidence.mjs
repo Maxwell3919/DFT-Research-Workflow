@@ -16,8 +16,8 @@ for (const file of files) {
   const script = frontmatter.match(/^execution_script:\s*([^\n]+)$/m)?.[1]?.trim();
   const mediaBlock = frontmatter.match(/^media_ids:\n((?:\s+-\s+[^\n]+\n?)*)/m)?.[1] ?? '';
   const media = [...mediaBlock.matchAll(/^\s+-\s+([^\n]+)$/gm)].map((match) => match[1].trim());
-  if (!slug || !topic || !script) errors.push(`${file}: unresolvable practical frontmatter`);
-  else guides.set(slug, { topic, script, media });
+  if (!slug || !topic) errors.push(`${file}: unresolvable practical frontmatter`);
+  else guides.set(slug, { topic, script: script ?? null, media });
 }
 if (evidence.schema_version !== 2 || !Array.isArray(evidence.guides)) errors.push('invalid evidence manifest envelope');
 const seen = new Set();
@@ -41,8 +41,10 @@ for (const record of evidence.guides ?? []) {
   if (record.evidence_class === 'synthetic-only' && record.blocker && record.upgrade_readiness !== 'blocked') errors.push(`${record.guide_slug}: blocker must be marked blocked`);
   if (record.evidence_class === 'synthetic-only' && (record.real_result || record.interface || record.traceable_data)) errors.push(`${record.guide_slug}: synthetic record overclaims real evidence`);
   if (record.evidence_class === 'real-interface-walkthrough' && !record.interface) errors.push(`${record.guide_slug}: interface walkthrough requires interface=true`);
+  if (record.evidence_class === 'real-interface-walkthrough' && record.execution_script !== null) errors.push(`${record.guide_slug}: interface-only walkthrough must not claim a terminal execution script`);
+  if (record.evidence_class !== 'real-interface-walkthrough' && (typeof record.execution_script !== 'string' || !record.execution_script)) errors.push(`${record.guide_slug}: executable evidence requires an execution script`);
   if (record.evidence_class === 'derived-public-data' && !record.traceable_data) errors.push(`${record.guide_slug}: public-data record requires traceable_data=true`);
-  if (record.evidence_class !== 'real-execution' && 'case_id' in record) errors.push(`${record.guide_slug}: only real-execution records may bind a terminal-first case`);
+  if (record.evidence_class !== 'real-execution' && 'case_id' in record) errors.push(`${record.guide_slug}: only real-execution records may bind a file-backed case`);
   if (record.evidence_class === 'real-execution') {
     if (typeof record.case_id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(record.case_id)) {
       errors.push(`${record.guide_slug}: real-execution evidence requires a valid case_id`);

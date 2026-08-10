@@ -22,6 +22,7 @@ function stateMatchesRegistry(state) {
   if (state.title !== 'Software Bridge' || state.taskCount !== 6 || state.rowCount !== 24) return false;
   if (state.scripts !== 0 || state.astroIslands !== 0 || state.documentOverflow || state.elementOverflow) return false;
   if (state.primaryNavBridgeLinks !== 0) return false;
+  if (state.ecosystemHref !== `${base}/${bridge.resource_landscape_path}` || !state.ecosystemText.includes(bridge.ecosystem_note)) return false;
   if (JSON.stringify(state.taskIds) !== JSON.stringify(bridge.tasks.map((task) => task.id))) return false;
 
   for (let taskIndex = 0; taskIndex < bridge.tasks.length; taskIndex += 1) {
@@ -65,6 +66,8 @@ async function inspect(page) {
         const rect = element.getBoundingClientRect();
         return rect.left < -1 || rect.right > window.innerWidth + 1;
       }),
+      ecosystemHref: document.querySelector('[data-ecosystem-link]')?.href,
+      ecosystemText: document.querySelector('[data-ecosystem-link]')?.parentElement?.textContent?.replace(/\s+/g, ' ').trim() ?? '',
       primaryNavBridgeLinks: [...(document.querySelector('header nav')?.querySelectorAll('a') ?? [])]
         .filter((link) => link.getAttribute('href')?.includes('/operations/software-bridge/')).length,
       tasks: taskElements.map((task) => ({
@@ -112,7 +115,7 @@ try {
     await page.close();
   }
 
-  console.log('Software Bridge browser smoke passed: exact 6-task/24-row registry rendering, local tool and parent links, official task starts, scientific boundaries, no top-navigation entry, 1440/1024/768/430/390/360px containment, and full no-JavaScript parity.');
+  console.log('Software Bridge browser smoke passed: exact 6-task/24-row rendering, broader-ecosystem route, scientific boundaries, six responsive widths, and no-JavaScript parity.');
 } finally {
   await browser.close();
 }

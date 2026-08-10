@@ -21,17 +21,17 @@ const guides = [
   {
     route: '/operations/test-numerical-convergence/guides/converge-k-points-and-smearing/',
     title: 'Converge k-Point Sampling and Smearing',
-    phrase: 'A k-point label is meaningful only together with the reciprocal cell',
+    phrase: 'A k-point and occupation study begins with the observable, reciprocal cell, electronic state, and intended integration method.',
   },
   {
     route: '/operations/test-numerical-convergence/guides/converge-finite-size-vacuum-and-images/',
     title: 'Converge Finite Size, Vacuum, and Image Interactions',
-    phrase: 'Finite periodic models replace an isolated, dilute, semi-infinite, or macroscopic limit',
+    phrase: 'Finite periodic models replace an isolated, dilute, semi-infinite, or macroscopic limit with a repeated cell. Begin by naming the intended limit and the residual interaction that the current model cannot yet exclude.',
   },
   {
     route: '/operations/test-numerical-convergence/guides/converge-q-meshes-and-response-grids/',
     title: 'Converge q-Meshes, Response Grids, and Interpolation',
-    phrase: 'A converged linear-response solve at one q point does not establish a converged q mesh',
+    phrase: 'A converged solve at one q point does not establish a converged q mesh, force-constant range, interpolation, density of states, thermal integral, or electron-phonon quantity.',
   },
 ];
 

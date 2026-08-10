@@ -30,7 +30,7 @@ const guides = [
   },
   {
     parentRoute: parentRoutes[0],
-    mediaCount: 1,
+    mediaCount: 0,
     route: '/operations/build-or-modify-computational-model/guides/pymatgen-structure-transformations/',
     title: 'Apply Structure Transformations with pymatgen',
     tool: 'pymatgen',

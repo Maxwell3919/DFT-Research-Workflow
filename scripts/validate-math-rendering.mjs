@@ -80,6 +80,10 @@ const inlineCodeExceptions = [{
   file: 'src/content/practical-guides/balance-reference-reactions-and-normalization.md',
   tokens: new Set(['A']),
   reason: 'A is a literal synthetic species identifier here, not an algebraic variable.',
+}, {
+  file: 'src/content/topics/harmonic-phonons.md',
+  tokens: new Set(['v_sim']),
+  reason: 'v_sim is the executable named by the official Phonopy mode-animation workflow, not algebraic notation.',
 }];
 
 function isExplicitInlineException(file, token) {

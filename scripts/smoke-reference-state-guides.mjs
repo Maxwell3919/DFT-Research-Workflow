@@ -13,6 +13,7 @@ const guides = [
     tool: 'python',
     version: 'Python 3.12',
     phrase: 'A fixed-cell relaxation and a static SCF calculation are separate runs.',
+    mediaCount: 0,
     requiredPhrases: [
       'last complete',
       'accepted-geometry.inc',
@@ -31,6 +32,7 @@ const guides = [
     version: 'Python 3.12',
     phrase: 'A restart continues from stored electronic data.',
     boundary: 'It does not run a DFT code',
+    mediaCount: 1,
   },
   {
     route: '/operations/calculate-reference-ground-state/guides/compare-charge-spin-and-magnetic-candidates/',
@@ -39,6 +41,7 @@ const guides = [
     version: 'Python 3.12',
     phrase: 'A ground-state statement is bounded by the electronic states',
     boundary: 'It does not run a DFT code',
+    mediaCount: 1,
   },
   {
     route: '/operations/calculate-reference-ground-state/guides/package-reusable-reference-state-lineage/',
@@ -47,6 +50,7 @@ const guides = [
     version: 'Python 3.12',
     phrase: 'A reusable calculation is a directory that can be identified, restored, checked, and regenerated',
     boundary: 'It does not run a DFT code',
+    mediaCount: 0,
   },
 ];
 
@@ -80,7 +84,9 @@ async function inspectGuide(page, guide, width) {
   if (!result.toolTags.includes(guide.tool)) throw new Error(`${guide.route}: missing tool tag ${guide.tool}`);
   if (!result.hasMeta || !result.hasEvidence) throw new Error(`${guide.route}: missing metadata or evidence boundary`);
   if (!/do(?:es)? not/i.test(result.text)) throw new Error(`${guide.route}: missing visible claim boundary`);
-  if (result.images.length < 1 || result.images.some((image) => !image.alt)) throw new Error(`${guide.route}: missing accessible declared media`);
+  if (result.images.length !== guide.mediaCount || result.images.some((image) => !image.alt)) {
+    throw new Error(`${guide.route}: expected ${guide.mediaCount} accessible declared media, found ${result.images.length}`);
+  }
   if (!result.links.some((link) => link.startsWith('https://'))) throw new Error(`${guide.route}: missing official or primary source links`);
   if (result.hasScript) throw new Error(`${guide.route}: client-side script is present`);
   if (result.overflow) throw new Error(`${guide.route}: horizontal overflow at ${width}px`);

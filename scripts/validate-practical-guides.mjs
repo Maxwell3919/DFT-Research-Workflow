@@ -63,6 +63,14 @@ const requiredParentMinimum = new Map([
   ['validate-results-and-scientific-conclusions', 2],
 ]);
 const reviewRequirements = new Map([
+  ['docs/reviews/2026-08-10-cod-silicon-interface-walkthrough.md', [
+    'reviewed within the declared browser and GUI teaching scope',
+    'The COD and Mol* screenshots show actual public interfaces and actual declared objects',
+    'No VESTA screenshot or local VESTA execution is claimed',
+    'The Mol* view uses the repository expanded teaching snapshot rather than the byte-for-byte COD download',
+    'Interface rendering and visual inspection do not establish structure validity, numerical convergence, or a scientific conclusion',
+    'No terminal execution script is required because this page makes no terminal execution claim',
+  ]],
   ['docs/reviews/2026-08-09-qe-terminal-inspection-and-audit.md', [
     'Internal manifest codes are not taught as a reader-facing taxonomy.',
     'They do not write files, call QE or Slurm, submit or cancel work, or access a private host.',
@@ -369,6 +377,8 @@ for (const file of files) {
   if (!allowedKinds.has(data.kind)) errors.push(`${file}: invalid kind ${data.kind}`);
   if (data.status !== 'reviewed') errors.push(`${file}: practical page must be reviewed`);
   if (!Array.isArray(data.tools) || data.tools.length === 0) errors.push(`${file}: missing tools`);
+  if (data.interfaces !== undefined && !Array.isArray(data.interfaces)) errors.push(`${file}: interfaces must be an array`);
+  if (!data.execution_script && (!Array.isArray(data.interfaces) || data.interfaces.length === 0)) errors.push(`${file}: non-script walkthrough missing interfaces`);
   if (!Array.isArray(data.tested_versions) || data.tested_versions.length === 0) errors.push(`${file}: missing tested_versions`);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(data.reviewed_at ?? '')) errors.push(`${file}: invalid reviewed_at`);
   if (!data.summary || data.summary.length < 20) errors.push(`${file}: summary is too short`);
@@ -385,10 +395,12 @@ for (const file of files) {
   }
   if (/universal recommended|universally sufficient/i.test(body)) errors.push(`${file}: suggests a universal parameter rule`);
 
-  try {
-    await access(new URL(data.execution_script, root));
-  } catch {
-    errors.push(`${file}: missing execution script ${data.execution_script}`);
+  if (data.execution_script) {
+    try {
+      await access(new URL(data.execution_script, root));
+    } catch {
+      errors.push(`${file}: missing execution script ${data.execution_script}`);
+    }
   }
   try {
     await access(new URL(data.review, root));
@@ -471,4 +483,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Practical guides valid: ${guides.length} reviewed pages across ${guideCountsByParent.size} parent topics with execution scripts, exact official or primary sources, original-media provenance, and review-specific claim boundaries.`);
+console.log(`Practical guides valid: ${guides.length} reviewed pages across ${guideCountsByParent.size} parent topics with execution scripts where executable claims are made, exact official or primary sources, original-media provenance, and review-specific claim boundaries.`);

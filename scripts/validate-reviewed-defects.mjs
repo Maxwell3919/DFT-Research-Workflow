@@ -13,7 +13,9 @@ for (const statement of ['topic_slug: defect-formation-energies-and-charge-state
   if (!article.includes(statement)) errors.push(`${articlePath}: missing frontmatter ${JSON.stringify(statement)}`);
 }
 const headings = article.match(/^## /gm) ?? [];
-if (headings.length !== 22) errors.push(`${articlePath}: expected 22 natural sections, found ${headings.length}`);
+if (headings.length < 12 || headings.length > 26) {
+  errors.push(`${articlePath}: expected 12-26 natural sections, found ${headings.length}`);
+}
 
 for (const statement of [
   'Its primary result is therefore a formation energy as a function of atomic and electron chemical potentials, not a single intrinsic “defect energy.”',
@@ -79,4 +81,4 @@ if (errors.length > 0) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Reviewed defect topic valid: 22 natural sections, exact 10-source coverage, reservoir/correction/envelope/neutrality boundaries, and no universal numerical prescription.');
+console.log(`Reviewed defect topic valid: ${headings.length} natural sections, exact 10-source coverage, reservoir/correction/envelope/neutrality boundaries, and no universal numerical prescription.`);

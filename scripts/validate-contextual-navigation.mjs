@@ -172,7 +172,7 @@ for (const [pageIndex, page] of (navigation.pages ?? []).entries()) {
 for (const key of expected.keys()) if (!seenSources.has(key)) errors.push(`missing contextual source ${key}`);
 
 const sourceContracts = [
-  [componentSource, ['data-contextual-navigation', 'data-contextual-source', 'data-contextual-link', 'Continue from here', 'navigation.boundary']],
+  [componentSource, ['data-contextual-navigation', 'data-contextual-source', 'data-contextual-link', 'hasTargetBranches', 'Choose the calculation branch', 'Continue from here', 'navigation.boundary']],
   [resolverSource, ['getContextualNavigation', 'boundary: definition.boundary', 'operations/troubleshooting/', 'operations/software-bridge/']],
   [topicRouteSource, ['ContextualLinks', 'getContextualNavigation', "page.kind === 'topic'", 'AuthoritativeReferences']],
   [practicalRouteSource, ['ContextualLinks', 'getContextualNavigation', 'guide.data.guide_slug']],

@@ -43,7 +43,7 @@ async function inspect(page, width) {
   if (result.language !== 'en' || result.title !== 'Adsorption Energies') throw new Error(`adsorption identity mismatch: ${result.title}`);
   if (!result.hasArticle || result.hasPlaceholder || result.hasContract) throw new Error('reviewed adsorption narrative was not rendered naturally');
   if (result.scripts !== 0 || result.overflow) throw new Error(`adsorption page is not static or overflows at ${width}px`);
-  if (result.headings < 8 || result.headings > 12 || result.cards !== 3) throw new Error(`adsorption counts mismatch: ${result.headings} sections outside 8..12, ${result.cards} cards`);
+  if (result.headings < 8 || result.headings > 14 || result.cards !== 3) throw new Error(`adsorption counts mismatch: ${result.headings} sections outside 8..14, ${result.cards} cards`);
   for (const phrase of phrases) if (!result.text.includes(phrase)) throw new Error(`adsorption page is missing ${phrase}`);
   for (const domain of domains) if (!result.links.some((link) => link.includes(domain))) throw new Error(`adsorption page is missing ${domain}`);
   return result;

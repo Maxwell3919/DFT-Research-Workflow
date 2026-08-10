@@ -324,11 +324,12 @@ try {
     headingCount: document.querySelectorAll('.article-content h2').length,
   }));
   for (const phrase of [
-    'Start with a source record',
-    'Download and preserve the CIF',
-    'Read the CIF as text',
-    'Visualize the same object',
-    'Parse, check symmetry, and inspect geometry',
+    'Begin with the human source search',
+    'Compare source records',
+    'Manual route: download and inspect the CIF as text',
+    'Manual route: inspect the structure visually',
+    'Numerical and symmetry checks',
+    'Optional automation: retrieve and preserve the CIF',
     'Decide whether to continue',
     'COD 9013102',
     'curl',
@@ -408,6 +409,10 @@ try {
         text: document.body.innerText,
         figures: document.querySelectorAll('figure img[src^="data:image/png;base64,"]').length,
         commands: document.querySelectorAll('pre code').length,
+        humanSteps: document.querySelectorAll('[data-human-workflow-step]').length,
+        stageFigures: document.querySelectorAll('[data-reader-stage] [data-stage-figure]').length,
+        evidenceDetails: document.querySelectorAll('[data-stage-evidence-details]').length,
+        reproductionSections: document.querySelectorAll('[data-reproduction-section]').length,
         routeMarkers: [...document.querySelectorAll('[data-reader-route]')].map((element) => element.getAttribute('data-reader-route')),
         historyKinds: [...document.querySelectorAll('[data-history-kind]')].map((element) => element.getAttribute('data-history-kind')),
         stages: [...document.querySelectorAll('[data-reader-stage]')].map((element) => ({
@@ -430,12 +435,18 @@ try {
     if (
       state.figures < 1
       || state.commands < 2
+      || state.humanSteps !== expectedStages.length
+      || state.evidenceDetails !== expectedStages.length
+      || state.reproductionSections !== 1
+      || !state.text.includes('Scientific objective and starting object')
+      || !state.text.includes('Open the starting sources')
+      || !state.text.includes('Reproduce the exact published evidence')
       || !state.text.includes('Observable convergence')
       || !state.text.includes('Not established by this case')
       || !state.text.includes('Claim boundary')
       || !state.text.includes('No material-level claim is made')
     ) {
-      throw new Error(`${mode} ${entry.slug}: incomplete terminal-first workflow rendering`);
+      throw new Error(`${mode} ${entry.slug}: incomplete human-first workflow rendering`);
     }
     for (const boundary of [entry.evidence_boundary, entry.continuity_boundary, entry.claim_boundary]) if (!state.text.replace(/\s+/g, ' ').includes(boundary.replace(/\s+/g, ' '))) throw new Error(`${mode} ${entry.slug}: reviewed boundary text is missing`);
     if (expectedWidth !== null && state.innerWidth !== expectedWidth) throw new Error(`${mode} ${entry.slug}: expected ${expectedWidth}px, rendered ${state.innerWidth}px`);
@@ -556,7 +567,7 @@ try {
     public_language: 'en',
   };
   if (artifactDirectory) await writeFile(join(artifactDirectory, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`);
-  console.log(`Browser smoke passed: registry-driven A–E workflow, ${responsiveChecks} Home/Research Workflow responsive layout checks across ${responsiveWidths.join(', ')}px, two terminal-first Worked Workflows, migration-safe old routes, keyboard navigation, no-JavaScript reading, deployed CIF teaching snapshot, Mol* parsed ${molstarStructureState.elementCount} structure elements with ${molstarStructureState.representationCount} representation(s), and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
+  console.log(`Browser smoke passed: registry-driven A–E workflow, ${responsiveChecks} Home/Research Workflow responsive layout checks across ${responsiveWidths.join(', ')}px, two human-first Worked Workflows with exact evidence appendices, migration-safe old routes, keyboard navigation, no-JavaScript reading, deployed CIF teaching snapshot, Mol* parsed ${molstarStructureState.elementCount} structure elements with ${molstarStructureState.representationCount} representation(s), and English-only output${deploymentManifest ? `, manifest ${deploymentManifest.sha}` : ''}.`);
 } finally {
   await browser.close();
 }

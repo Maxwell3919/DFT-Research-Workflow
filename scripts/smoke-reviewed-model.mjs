@@ -8,7 +8,7 @@ const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/build-or-modify-computational-model/';
 const requiredOperationalSections = [
   'Start from the question and the checked source',
-  'Record every transformation',
+    'Optional automation: preserve and compare repeated transformations',
   'Distinguish representation changes from model changes',
   'Check the child object before calculation',
   'Match the model family to the unresolved alternatives',

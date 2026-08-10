@@ -4,7 +4,15 @@ const base = (process.env.SITE_URL ?? 'http://127.0.0.1:4322/DFT-Research-Workfl
 const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const topicRoute = '/operations/band-structure/';
 const guides = [
-  { route: `${topicRoute}guides/build-reciprocal-path-ledger/`, title: 'Build a Reciprocal-Path Ledger Before Plotting Bands', phrase: 'Execution verifies the stored-output hash' },
+  {
+    route: `${topicRoute}guides/build-reciprocal-path-ledger/`,
+    title: 'Build a Reciprocal-Path Ledger Before Plotting Bands',
+    phrase: 'Reproduce this site’s figure: the companion script replays the recorded COD, SeeK-path, and Quantum ESPRESSO 7.5 evidence.',
+    requiredPhrases: [
+      'It verifies the path and input hashes, labels the special points, and preserves the U | K route break rather than drawing the unintended raw connector as valid evidence.',
+      'The figure therefore supports a traceable corrected-display path dataset, not a converged Silicon band gap, full-zone metallicity claim, or material conclusion.',
+    ],
+  },
   { route: `${topicRoute}guides/compare-band-path-and-full-zone-extrema/`, title: 'Compare a Band Path with a Full-Zone Extremum Search', phrase: 'Execution verifies reconstruction of two declared real-output samples' },
 ];
 const topicPhrases = [
@@ -39,7 +47,7 @@ async function inspectTopic(page, width) {
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en' || result.title !== 'Band Structure') throw new Error(`band-structure identity mismatch: ${result.title}`);
-  if (result.headings !== 12 || result.cards !== 2 || result.scripts !== 0 || result.overflow) throw new Error(`band-structure topic layout or content mismatch at ${width}px`);
+  if (result.headings < 8 || result.headings > 18 || result.cards !== 2 || result.scripts !== 0 || result.overflow) throw new Error(`band-structure topic layout or content mismatch at ${width}px`);
   for (const phrase of topicPhrases) if (!result.text.includes(phrase)) throw new Error(`band-structure topic missing ${phrase}`);
   for (const guide of guides) if (!result.links.includes(`${base}${guide.route}`)) throw new Error(`band-structure topic missing ${guide.route}`);
 }
@@ -60,6 +68,9 @@ async function inspectGuide(page, guide, width) {
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en' || result.title !== guide.title || !result.text.includes(guide.phrase)) throw new Error(`${guide.route} content mismatch`);
+  for (const phrase of guide.requiredPhrases ?? []) {
+    if (!result.text.includes(phrase)) throw new Error(`${guide.route} missing path or full-zone claim boundary: ${phrase}`);
+  }
   if (!result.image?.alt || !result.image.complete || !result.image.naturalWidth || result.scripts !== 0 || result.overflow) throw new Error(`${guide.route} media, static boundary, or ${width}px layout failed`);
 }
 

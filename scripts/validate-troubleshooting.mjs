@@ -15,6 +15,7 @@ const expectedRecordSlugs = [
   'eigensolver-or-fermi-level-error',
   'restart-or-parent-artifact-rejected',
   'io-memory-or-parallel-failure',
+  'geometry-looks-physically-wrong',
   'geometry-optimization-stalls',
   'symmetry-or-kq-mapping-mismatch',
   'imaginary-phonon-frequencies',
@@ -100,7 +101,7 @@ for (const source of data.sources ?? []) {
 }
 
 if (JSON.stringify((data.records ?? []).map((record) => record.slug)) !== JSON.stringify(expectedRecordSlugs)) {
-  errors.push('symptom identity or order differs from the reviewed nine-record contract');
+  errors.push('symptom identity or order differs from the reviewed ten-record contract');
 }
 const usedSourceIds = new Set();
 for (const record of data.records ?? []) {
@@ -129,9 +130,11 @@ for (const id of sourceById.keys()) if (!usedSourceIds.has(id)) errors.push(`${i
 
 const jobBoundary = data.records?.find((record) => record.slug === 'job-stops-before-completion')?.do_not_conclude ?? '';
 const scfBoundary = data.records?.find((record) => record.slug === 'scf-does-not-converge')?.do_not_conclude ?? '';
-const phononBoundary = data.records?.find((record) => record.slug === 'imaginary-phonon-frequencies')?.do_not_conclude ?? '';
+const phononRecord = data.records?.find((record) => record.slug === 'imaginary-phonon-frequencies');
+const phononBoundary = phononRecord?.do_not_conclude ?? '';
 if (!jobBoundary.includes('no usable DFT evidence')) errors.push('job-stop boundary must state that no usable DFT evidence may exist');
 if (!scfBoundary.includes('does not establish the lowest relevant state')) errors.push('SCF boundary must separate solver convergence from reference-state acceptance');
+if (!phononRecord?.symptom?.includes('dynamical-matrix eigenvalues are negative') || !phononRecord?.symptom?.includes('corresponding to imaginary phonon frequencies')) errors.push('imaginary-frequency symptom must distinguish negative dynamical-matrix eigenvalues from the corresponding imaginary frequencies');
 if (!phononBoundary.includes('alone does not prove a physical instability')) errors.push('imaginary-frequency boundary must reject automatic instability claims');
 
 for (const marker of ['data-troubleshooting-index', 'data-symptom-record', 'workflowSections', 'withBase', 'troubleshootingData']) {
@@ -151,7 +154,7 @@ if (validateBuilt) {
   if (html) {
     if (!/<html[^>]+lang="en"/i.test(html)) errors.push('built route does not declare English');
     if (!html.includes('Troubleshoot a calculation')) errors.push('built route is missing its public heading');
-    if ((html.match(/data-symptom-record=/g) ?? []).length !== 9) errors.push('built route does not contain exactly nine symptom records');
+    if ((html.match(/data-symptom-record=/g) ?? []).length !== 10) errors.push('built route does not contain exactly ten symptom records');
     for (const slug of expectedRecordSlugs) {
       if (!html.includes(`id="${slug}"`)) errors.push(`built route is missing anchor #${slug}`);
     }
@@ -172,4 +175,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Troubleshooting validation passed: 9 symptom records, 9 official sources, 46-topic fail-closed resolution${validateBuilt ? ', and static built route' : ''}.`);
+console.log(`Troubleshooting validation passed: ${expectedRecordSlugs.length} symptom records, ${expectedSourceIds.length} official sources, ${topics.length}-topic fail-closed resolution${validateBuilt ? ', and static built route' : ''}.`);
