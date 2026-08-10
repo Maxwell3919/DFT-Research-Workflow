@@ -26,6 +26,21 @@ const expectedIds = [
   'charge-redistribution',
 ];
 
+async function fetchTarget(href) {
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      const response = await fetch(href, { signal: AbortSignal.timeout(10_000) });
+      return { href, status: response.status };
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 300));
+    }
+  }
+  const detail = lastError instanceof Error ? lastError.message : String(lastError);
+  throw new Error(`Navigator click target transport failed after 3 attempts: ${href}: ${detail}`);
+}
+
 async function inspect(page, expectedWidth) {
   const result = await page.evaluate((fieldLabels) => {
     const navigator = document.querySelector('[data-research-question-navigator]');
@@ -119,10 +134,8 @@ try {
   }
 
   const uniqueTargets = [...new Set(desktop.rowData.flatMap((row) => row.links.map((link) => link.href)))];
-  const targetResults = await Promise.all(uniqueTargets.map(async (href) => {
-    const response = await fetch(href);
-    return { href, status: response.status };
-  }));
+  const targetResults = [];
+  for (const href of uniqueTargets) targetResults.push(await fetchTarget(href));
   const failedTargets = targetResults.filter((target) => target.status !== 200);
   if (failedTargets.length > 0) throw new Error(`Navigator click targets failed: ${JSON.stringify(failedTargets)}`);
 
