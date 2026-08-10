@@ -51,13 +51,17 @@ Machine-readable provenance may remain more granular than the teaching site.
 The public information architecture does not need to match an execution engine
 or provenance graph.
 
-## Terminal-first execution cases
+## Human-first, terminal-capable execution cases
 
-A practical page marked `real-execution` binds to one directory under
-`examples/cases/<case-id>/`. That directory is the source for displayed input,
-commands, raw or deterministically excerpted output, parsed data, figures,
-hashes, and G0–G5 claims. The web page may select and explain those records, but
-it must not maintain a second handwritten result.
+A practical page should lead with the way a careful researcher performs and
+inspects the task: browser, GUI, manual comparison, terminal, HPC, plotting, or
+an appropriate combination. When a page is marked `real-execution`, it also
+binds to one directory under `examples/cases/<case-id>/`. That directory is the
+authority for displayed input, commands, raw or deterministically excerpted
+output, parsed data, figures, hashes, and gate claims. The web page may select
+and explain those records, but it must not maintain a second handwritten
+result. Machine reproducibility supports the human narrative; it does not
+replace it.
 
 The gates deliberately separate artifact identity (G0), program completion
 (G1), solver/optimizer thresholds (G2), downstream artifacts (G3),
@@ -1135,9 +1139,9 @@ validate a DFT protocol, numerical result, physical interpretation, learning
 effectiveness, software capability, external-source semantics, or scientific
 claim.
 
-## Talos handoff
+## Maintenance handoff
 
-Talos should continue in bounded stages:
+Maintainers should continue in bounded stages:
 
 1. read the current project and Research-Ops `main` commits;
 2. verify the exact-SHA Pages deployment for each merged batch;

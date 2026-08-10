@@ -18,8 +18,7 @@ source_ids:
   - vasp-lwave
   - cp2k-dft
   - cod-9013102
-media_ids:
-  - reference-state-lineage
+media_ids: []
 review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
 reviewed_at: "2026-08-03"
 ---
@@ -28,6 +27,14 @@ reviewed_at: "2026-08-03"
 
 A reusable calculation is a directory that can be identified, restored, checked, and regenerated without relying on shell history or memory. Packaging does not make the calculation scientifically valid; it preserves the evidence needed to evaluate it.
 
+
+## Lay out what another researcher must inspect
+
+Before creating hashes or an archive, arrange the record in the order a collaborator will actually use it: source identity and acquisition notes; accepted geometry; visual inspection notes; exact inputs and pseudopotentials by identity rather than licensed contents; launch commands and scheduler context; raw outputs; parsed tables; figures; failed or rejected branches; literature and manual decisions; and the claim boundary. A short human-readable README should say what was calculated, which state was accepted, what remains untested, and how the next calculation consumes the reference state.
+
+Open the accepted structure, principal output, convergence table, and key figure once as a reader would. Check that paths are portable, captions identify the object, candidate labels agree across files, and a failed branch has not been silently replaced. The [visual and symmetry index](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [code and manual index](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes), and [learning resources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) should be linked where they explain how to inspect or reproduce a step; they are not substitutes for preserving the local record.
+
+Only then run the packaging helper and checksum commands below as optional integrity automation. Hashes support byte-identity checks, not scientific acceptance. Do not package credentials, private host details, licensed potential contents, copyrighted PDFs, or large restart data that belong in controlled storage; record their authorized location and identity instead. Reopen the packaged README and a representative input, output, table, and figure before handing the lineage to another person.
 ## Verify the packaging tool
 
 From the repository root:

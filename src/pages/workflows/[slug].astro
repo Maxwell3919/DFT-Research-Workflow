@@ -153,6 +153,7 @@ type CaseManifest = {
 
 type Figure = { path: string; role: string; sha256: string; alt: string; caption?: string; dataUrl: string };
 type Props = { workflow: Workflow; manifest: CaseManifest; excerpt: string; figures: Figure[] };
+type HumanGuidance = { interface: string; open: string; inspect: string; decide: string };
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const workflows = workflowsDocument.workflows as Workflow[];
@@ -308,6 +309,99 @@ const commandAnchor = (stage: string) => {
   const index = commandIndexByStage.get(stage);
   return index === undefined ? 'commands-heading' : `recorded-command-${index + 1}`;
 };
+const casePurposeBySlug: Record<string, string> = {
+  'silicon-ground-state-electronic-structure': 'Follow a real COD Silicon structure through model inspection, numerical setup, a reference state, bands, DOS, plots, and a bounded scientific interpretation.',
+  'aluminium-metallic-electronic-structure': 'Follow an explicit fcc Aluminium teaching model through metallic numerical choices, SCF and full-zone branches, DOS, real convergence and E(V) screens, and a bounded interpretation.',
+};
+const humanGuidanceByStage: Record<string, HumanGuidance> = {
+  source: {
+    interface: 'Browser, text editor, and structure viewer.',
+    open: 'Open the declared database, paper, or teaching record. Read its composition, cell, provenance, revision, conditions, and access boundary before downloading or converting anything.',
+    inspect: 'Read the source structure as text and visualize it. Check periodicity, cell choice, occupancies, missing or disordered sites, short contacts, orientation, and whether the object matches the intended material.',
+    decide: 'Accept the source identity for model construction, or return to the database, paper, Supplementary Information, or another source class.',
+  },
+  model: {
+    interface: 'Structure viewer plus a text editor or structure library.',
+    open: 'Open both the source structure and the exact computational cell.',
+    inspect: 'Compare composition, atom count, lattice, orientation, periodicity, symmetry, vacuum where relevant, and the mapping between conventional, primitive, or modified cells.',
+    decide: 'Proceed only when the transformed model still represents the intended physical system and every deliberate modification is recorded.',
+  },
+  pseudopotential: {
+    interface: 'Official library page, metadata, and the exact potential file.',
+    open: 'Open the library or file record before using a download command. Read the family, exchange–correlation compatibility, valence configuration, relativistic treatment, provenance, and recommended cutoff information.',
+    inspect: 'Compare those choices with the physical method and elements in the model; then retain the exact file identity.',
+    decide: 'Choose a compatible family for a controlled convergence study. A matching hash establishes identity, not suitability.',
+  },
+  inputs: {
+    interface: 'Text editor and the official input reference.',
+    open: 'Read every input that will be submitted, including the structure, calculation type, physical method, numerical settings, prefix, scratch path, and parent artifacts.',
+    inspect: 'Identify which choices came from the scientific model, which are numerical parameters to test, and which paths or defaults are site-specific.',
+    decide: 'Submit only an input whose choices and expected outputs you can explain and audit.',
+  },
+  run: {
+    interface: 'Terminal, SSH session, and site scheduler.',
+    open: 'Read the launcher or job script, working directory, resource request, output paths, and site policy before submission.',
+    inspect: 'Watch scheduler state and the complete stdout/stderr without mistaking new text, a queue state, or a termination marker for scientific convergence.',
+    decide: 'Continue, diagnose, or stop only from the identified job, output, ownership, and failure layer.',
+  },
+  checks: {
+    interface: 'Complete raw output, stderr, scheduler record, and expected downstream files.',
+    open: 'Open the complete stage, not only a grep result or final line.',
+    inspect: 'Read iteration behaviour, warnings, termination context, forces or stress where applicable, and whether the intended artifacts were actually written.',
+    decide: 'Classify program completion, solver convergence, optimization convergence, and artifact completeness separately.',
+  },
+  convergence: {
+    interface: 'Numerical table and convergence plot.',
+    open: 'Open the calculated series and its predeclared comparison quantity before reading the pass/fail summary.',
+    inspect: 'Look for a stable tail, oscillation, state changes, outliers, and whether only one parameter varied while the physical model stayed fixed.',
+    decide: 'Accept only the tested observable and tolerance; otherwise extend or redesign the series without erasing the adverse points.',
+  },
+  'relaxation-reference-geometry': {
+    interface: 'Relaxation output, coordinate/force table, and structure viewer.',
+    open: 'Open the starting and final structures side by side with the final force, stress, constraint, and optimizer records.',
+    inspect: 'Look for unexpected reconstruction, broken symmetry, short contacts, cell distortion, or a visually plausible structure that still fails a numerical criterion.',
+    decide: 'Accept the geometry only within the declared optimization conditions; visual plausibility alone is not convergence or stability.',
+  },
+  scf: {
+    interface: 'Reference input, complete SCF output, and iteration history.',
+    open: 'Open the state, occupations, spin treatment, energy, residual history, warnings, and parent geometry together.',
+    inspect: 'Look for slow or oscillatory convergence, state changes, inconsistent occupations, and whether the output belongs to the accepted model.',
+    decide: 'Use the state as a parent only when the electronic criterion and reference-state logic are both adequate.',
+  },
+  'bands-dos': {
+    interface: 'Official post-processing tools, k-space/path record, plots, and underlying tables.',
+    open: 'Open the parent SCF/NSCF state, path or full-zone sampling record, energy reference, number of bands, and the resulting bands or DOS data.',
+    inspect: 'Check path labels, Fermi reference, crossings or gaps, full-zone limitations, DOS normalization, broadening, warnings, and sampling density.',
+    decide: 'Use only the observable supported by the sampled domain and its own convergence evidence; a high-symmetry path is not a full-zone proof.',
+  },
+  plot: {
+    interface: 'Plotting program, notebook, or spreadsheet together with the source table.',
+    open: 'Open each real figure beside its underlying calculated values.',
+    inspect: 'Check axes, units, reference zeros, calculated points, fits or smoothing, warnings, and features that change with representation.',
+    decide: 'Retain figures that expose the scientific evidence and its limitations; a regenerated image is not an independently validated result.',
+  },
+  interpret: {
+    interface: 'Figures, tables, raw anomalies, primary literature, Supplementary Information, and experimental records.',
+    open: 'Compare the calculated object with independent calculations or measurements only after matching structure, state, conditions, and observable definition.',
+    inspect: 'Look for contradictions, method sensitivity, missing alternatives, and conclusions controlled by an unconverged or untested stage.',
+    decide: 'State the narrowest supported claim and the evidence that would change it.',
+  },
+  preserve: {
+    interface: 'Research notebook, files, browser receipts, GUI exports, archive, and reproducibility record.',
+    open: 'Collect the human decision history together with sources, inputs, outputs, tables, figures, warnings, failed attempts, and software context.',
+    inspect: 'Confirm that another researcher can identify what was done, what was viewed, what was excluded, and which steps can or cannot be reconstructed.',
+    decide: 'Freeze a versioned study object while keeping hashes and manifests as supporting identity evidence rather than the scientific narrative.',
+  },
+};
+const humanGuidanceForStage = (stageId: string): HumanGuidance => humanGuidanceByStage[stageId] ?? {
+  interface: 'The human interface appropriate to this scientific object.',
+  open: 'Open the exact source object and the record that identifies it.',
+  inspect: 'Inspect the object, its warnings, and the evidence relevant to this stage.',
+  decide: 'Proceed only when the stage supports the next scientific action within its stated boundary.',
+};
+const sourceHumanAction = (role: string) => role === 'structure'
+  ? 'Open the record in a browser when one is declared, read its metadata and source publication, download the structure, inspect the text, and visualize the cell before conversion.'
+  : 'Open the official library or file record, inspect method compatibility and metadata, then acquire and preserve the exact file used.';
 ---
 
 <BaseLayout title={workflow.title} description={workflow.summary} current="workflows">
@@ -321,28 +415,41 @@ const commandAnchor = (stage: string) => {
     data-claim-boundary={workflow.claim_boundary}
   >
     <p class="breadcrumb"><a href={withBase('workflows/')}>Worked Workflows</a></p>
-    <p class="operation-label">Published terminal-first case</p>
+    <p class="operation-label">Worked research case</p>
     <h1>{workflow.title}</h1>
     <p class="operation-summary">{workflow.summary}</p>
 
-
-
-    <section class="article-content" aria-labelledby="start-here-heading" data-start-here>
-      <h2 id="start-here-heading">Start here</h2>
+    <section class="article-content" aria-labelledby="research-objective-heading" data-research-objective>
+      <h2 id="research-objective-heading">Scientific objective and starting object</h2>
+      <p>{casePurposeBySlug[workflow.slug] ?? workflow.summary}</p>
+      <p><strong>Current claim boundary:</strong> {workflow.claim_boundary}</p>
       <p>
-        <strong>Repository:</strong>{' '}
-        <a href={substituteSourceRevision(workflow.start_here.repository_url)}>
-          {substituteSourceRevision(workflow.start_here.repository_url)}
-        </a>
+        Work across the interface that fits the task: use a browser for source records and manuals,
+        <a href={withBase('tools/vesta/')}> VESTA or another structure viewer</a> for visual inspection,
+        a text editor for inputs, and the terminal or scheduler for execution. The
+        <a href={withBase('operations/software-bridge/')}> Software Bridge</a> points users of other codes to their native artifacts.
       </p>
-      <p><strong>Source revision:</strong> <code>{sourceRevision}</code></p>
-      <p><strong>Working directory:</strong> <code>{workflow.start_here.working_directory}</code></p>
-      <p><strong>Case root:</strong> <code>{workflow.start_here.case_root}</code></p>
-      <pre><code>{commandBlock(workflow.start_here.acquisition_commands)}</code></pre>
-      <h3>{workflow.start_here.first_action.label}</h3>
-      <p><strong>Run from:</strong> <code>{substituteSourceRevision(workflow.start_here.first_action.cwd)}</code></p>
-      <pre><code>{commandBlock(workflow.start_here.first_action.commands)}</code></pre>
-      <p><strong>Boundary:</strong> {substituteSourceRevision(workflow.start_here.first_action.boundary)}</p>
+    </section>
+
+    <section class="article-content" aria-labelledby="source-records-heading" data-source-records>
+      <h2 id="source-records-heading">Open the starting sources</h2>
+      <p>Automated download is optional. First identify what the source represents, what metadata must return with it, and what still requires human inspection.</p>
+      {workflow.source_records.map((source) => (
+        <div id={`source-record-${source.id}`} data-source-record={source.id}>
+          <h3>{source.url ? <a href={source.url}>{source.label}</a> : source.label}</h3>
+          <p>{source.role}</p>
+          <p><strong>Human action:</strong> {sourceHumanAction(source.role)}</p>
+          {!source.url && <p><strong>No external record is declared:</strong> treat this as an explicit teaching model and do not infer database or experimental provenance.</p>}
+          <details>
+            <summary>Exact source identity and case files</summary>
+            {source.case_files.length > 0 && (
+              <ul>{source.case_files.map((path) => <li><a href={caseFileUrl(path)}><code>{path}</code></a></li>)}</ul>
+            )}
+            {source.identity && source.identity.length > 0 && <ul>{source.identity.map((item) => <li>{item}</li>)}</ul>}
+          </details>
+          <p><strong>Boundary:</strong> {source.boundary}</p>
+        </div>
+      ))}
     </section>
 
 <section
@@ -353,7 +460,7 @@ const commandAnchor = (stage: string) => {
     >
       <h2 id="reader-route-heading">Follow the calculation</h2>
       <p>
-        Follow this case-specific order for reading or replay, and return to an earlier stage whenever a model, method, reference state, target calculation, or validation check fails. The stage order is not a universal DFT sequence and does not establish historical continuity beyond the routes declared above.
+        At each stage, open the real object, inspect what a researcher would actually look at, make the bounded decision, and then use a command where the terminal is the natural interface. Return to an earlier stage whenever a model, method, reference state, target calculation, or validation check fails. This case order is not a universal DFT sequence.
       </p>
       <ol>
         {readerStages.map((stage, index) => (
@@ -369,83 +476,37 @@ const commandAnchor = (stage: string) => {
             <h3 id={`reader-stage-${stage.id}`}>{stage.label}</h3>
             <p>{stage.purpose}</p>
 
-            {stage.topic_slugs.length > 0 && (
-              <>
-                <p><strong>Research Workflow topics</strong></p>
-                <ul>
-                  {stage.topic_slugs.map((topicSlug) => (
-                    <li data-topic-reference={topicSlug}>
-                      <a href={withBase(`operations/${topicSlug}/`)}>{topicTitleBySlug.get(topicSlug) ?? "Research Workflow topic"}</a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
+            <div data-human-workflow-step>
+              <p><strong>Interface:</strong> {humanGuidanceForStage(stage.id).interface}</p>
+              <p><strong>Open:</strong> {humanGuidanceForStage(stage.id).open}</p>
+              <p><strong>Inspect:</strong> {humanGuidanceForStage(stage.id).inspect}</p>
+              <p><strong>Decide:</strong> {humanGuidanceForStage(stage.id).decide}</p>
+            </div>
 
-            {stage.case_files.length > 0 && (
-              <>
-                <p><strong>Case files</strong></p>
-                <ul>
-                  {stage.case_files.map((path) => (
-                    <li data-case-file-reference={path}>
-                      <a href={caseFileUrl(path)}><code>{path}</code></a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
+            {figures.filter((figure) => stage.artifact_paths.includes(figure.path)).map((figure) => (
+              <figure data-stage-figure={figure.path}>
+                <img src={figure.dataUrl} alt={figure.alt} loading="lazy" />
+                <figcaption>{figure.caption ?? figure.role}. Read it together with the source table and the stage boundary below.</figcaption>
+              </figure>
+            ))}
 
             {stage.action && (
               <div data-reader-stage-action>
-                <h4>{stage.action.label}</h4>
+                <h4>Terminal-capable route: {stage.action.label}</h4>
                 <p><strong>Run from:</strong> <code>{substituteSourceRevision(stage.action.cwd)}</code></p>
                 <pre><code>{commandBlock(stage.action.commands)}</code></pre>
                 <p><strong>Boundary:</strong> {substituteSourceRevision(stage.action.boundary)}</p>
               </div>
             )}
 
-            {stage.execution_route_ids.length > 0 && (
-              <>
-                <p><strong>Recorded execution routes</strong></p>
-                <ul>
-                  {stage.execution_route_ids.map((routeId) => (
-                    <li data-execution-route-reference={routeId}>
-                      <a href={`#execution-route-${routeId}`}>
-                        {executionRouteById.get(routeId)?.label ?? "Recorded execution route"}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {stage.command_stages.length > 0 && (
-              <>
-                <p><strong>Recorded commands</strong></p>
-                <ul>
-                  {stage.command_stages.map((commandStage) => (
-                    <li data-command-stage-reference={commandStage}>
-                      <a href={`#${commandAnchor(commandStage)}`}><code>{commandStage}</code></a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {stage.artifact_paths.length > 0 && (
-              <>
-                <p><strong>Critical artifacts for this stage</strong></p>
-                <ul>
-                  {stage.artifact_paths.map((path) => (
-                    <li data-artifact-reference={path}>
-                      <a href={caseFileUrl(path)}><code>{path}</code></a>
-                      {' — '}{artifactByPath.get(path)?.role ?? 'manifest artifact'}; SHA-256{' '}
-                      <code>{artifactByPath.get(path)?.sha256 ?? 'not declared'}</code>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
+            <details data-stage-evidence-details>
+              <summary>Exact files and recorded evidence for this stage</summary>
+              {stage.topic_slugs.length > 0 && <ul>{stage.topic_slugs.map((topicSlug) => <li data-topic-reference={topicSlug}><a href={withBase(`operations/${topicSlug}/`)}>{topicTitleBySlug.get(topicSlug) ?? "Research Workflow topic"}</a></li>)}</ul>}
+              {stage.case_files.length > 0 && <ul>{stage.case_files.map((path) => <li data-case-file-reference={path}><a href={caseFileUrl(path)}><code>{path}</code></a></li>)}</ul>}
+              {stage.execution_route_ids.length > 0 && <ul>{stage.execution_route_ids.map((routeId) => <li data-execution-route-reference={routeId}><a href={`#execution-route-${routeId}`}>{executionRouteById.get(routeId)?.label ?? "Recorded execution route"}</a></li>)}</ul>}
+              {stage.command_stages.length > 0 && <ul>{stage.command_stages.map((commandStage) => <li data-command-stage-reference={commandStage}><a href={`#${commandAnchor(commandStage)}`}><code>{commandStage}</code></a></li>)}</ul>}
+              {stage.artifact_paths.length > 0 && <ul>{stage.artifact_paths.map((path) => <li data-artifact-reference={path}><a href={caseFileUrl(path)}><code>{path}</code></a>{' — '}{artifactByPath.get(path)?.role ?? 'manifest artifact'}; SHA-256 <code>{artifactByPath.get(path)?.sha256 ?? 'not declared'}</code></li>)}</ul>}
+            </details>
 
             {stage.assessment && <p data-stage-assessment><strong>Assessment:</strong> {stage.assessment}</p>}
             {stage.observable_convergence && <p data-observable-convergence><strong>Observable convergence:</strong> {stage.observable_convergence}</p>}
@@ -497,7 +558,7 @@ const commandAnchor = (stage: string) => {
     </section>
 
     <section class="article-content" aria-labelledby="evidence-tracks-heading" data-evidence-tracks>
-      <h2 id="evidence-tracks-heading">Stored evidence and fresh execution</h2>
+      <h2 id="evidence-tracks-heading">Inspect stored evidence or run a fresh calculation</h2>
       {evidenceTrackGroups.map((group) => group.tracks.length > 0 && (
         <section aria-labelledby={`evidence-track-group-${group.id}`} data-evidence-track-group={group.id}>
           <h3 id={`evidence-track-group-${group.id}`}>{group.label}</h3>
@@ -518,29 +579,6 @@ const commandAnchor = (stage: string) => {
             </div>
           ))}
         </section>
-      ))}
-    </section>
-
-    <section class="article-content" aria-labelledby="source-records-heading" data-source-records>
-      <h2 id="source-records-heading">Declared sources and identities</h2>
-      {workflow.source_records.map((source) => (
-        <div id={`source-record-${source.id}`} data-source-record={source.id}>
-          <h3>{source.url ? <a href={source.url}>{source.label}</a> : source.label}</h3>
-          <p>{source.role}</p>
-          {source.case_files.length > 0 && (
-            <ul>
-              {source.case_files.map((path) => (
-                <li data-source-case-file-reference={path}>
-                  <a href={caseFileUrl(path)}><code>{path}</code></a>
-                </li>
-              ))}
-            </ul>
-          )}
-          {source.identity && source.identity.length > 0 && (
-            <ul>{source.identity.map((item) => <li>{item}</li>)}</ul>
-          )}
-          <p><strong>Boundary:</strong> {source.boundary}</p>
-        </div>
       ))}
     </section>
 
@@ -566,11 +604,22 @@ const commandAnchor = (stage: string) => {
         ))}
       </section>
     )}
-
-
+    <section class="article-content" aria-labelledby="start-here-heading" data-start-here data-reproduction-section>
+      <h2 id="start-here-heading">Reproduce the exact published evidence</h2>
+      <p>Use this section after understanding the scientific route. It retrieves the exact reviewed checkout and keeps new runtime evidence separate from the published case.</p>
+      <p><strong>Repository:</strong>{' '}<a href={substituteSourceRevision(workflow.start_here.repository_url)}>{substituteSourceRevision(workflow.start_here.repository_url)}</a></p>
+      <p><strong>Source revision:</strong> <code>{sourceRevision}</code></p>
+      <p><strong>Working directory:</strong> <code>{workflow.start_here.working_directory}</code></p>
+      <p><strong>Case root:</strong> <code>{workflow.start_here.case_root}</code></p>
+      <pre><code>{commandBlock(workflow.start_here.acquisition_commands)}</code></pre>
+      <h3>{workflow.start_here.first_action.label}</h3>
+      <p><strong>Run from:</strong> <code>{substituteSourceRevision(workflow.start_here.first_action.cwd)}</code></p>
+      <pre><code>{commandBlock(workflow.start_here.first_action.commands)}</code></pre>
+      <p><strong>Boundary:</strong> {substituteSourceRevision(workflow.start_here.first_action.boundary)}</p>
+    </section>
 
     <section class="article-content" aria-labelledby="case-bundle-heading">
-      <h2 id="case-bundle-heading">Case bundle</h2>
+      <h2 id="case-bundle-heading">Exact case bundle files</h2>
       <p>
         This page is a reader-facing entry point for the case directory. Inspect the files themselves for the exact source record, input, command scope, raw or sanitized output, checks, extraction, parser, derived data, and figure lineage.
       </p>
@@ -585,7 +634,7 @@ const commandAnchor = (stage: string) => {
     </section>
 
     <section class="article-content" aria-labelledby="commands-heading">
-      <h2 id="commands-heading">Recorded execution evidence</h2>
+      <h2 id="commands-heading">Recorded commands and outputs</h2>
       <p>
         These records distinguish captured output, replay instructions, and unavailable historical shell details. Records may belong to different declared routes; adjacency on this page does not establish one continuous run. An exit is shown only when the manifest scopes where that value came from, and a QE terminal marker is not silently converted into a shell exit code.
       </p>
@@ -626,20 +675,17 @@ const commandAnchor = (stage: string) => {
       <p>
         Stage-scoped lists above identify only the artifacts critical for reading each stage. This appendix retains every artifact declared by the case manifest, including supporting inputs, outputs, checks, tables, and figures.
       </p>
-      <ul>
-        {artifacts.map((artifact) => (
-          <li data-artifact-path={artifact.path}>
-            <a href={caseFileUrl(artifact.path ?? '')}>{artifact.path}</a>
-            {' — '}{artifact.role ?? 'declared artifact'}; SHA-256 <code>{artifact.sha256 ?? 'not declared'}</code>
-          </li>
-        ))}
-      </ul>
-      {figures.map((figure) => (
-        <figure>
-          <img src={figure.dataUrl} alt={figure.alt} loading="lazy" />
-          <figcaption>{figure.caption ?? figure.role} · {figure.path} · SHA-256 <code>{figure.sha256}</code></figcaption>
-        </figure>
-      ))}
+      <details>
+        <summary>Show every manifest-bound artifact and checksum</summary>
+        <ul>
+          {artifacts.map((artifact) => (
+            <li data-artifact-path={artifact.path}>
+              <a href={caseFileUrl(artifact.path ?? '')}>{artifact.path}</a>
+              {' — '}{artifact.role ?? 'declared artifact'}; SHA-256 <code>{artifact.sha256 ?? 'not declared'}</code>
+            </li>
+          ))}
+        </ul>
+      </details>
     </section>
 
     <section class="article-content" aria-labelledby="evidence-heading">

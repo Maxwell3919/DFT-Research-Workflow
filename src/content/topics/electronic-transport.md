@@ -7,9 +7,11 @@ Electronic transport connects an electronic structure to the charge and heat cur
 
 This topic concerns diffusive or semiclassical transport in an extended material. A nanoscale conductor whose contacts, finite scattering region, transmission channels, and bias profile are explicit belongs to **Quantum Transport**. The distinction matters: a bulk conductivity has units per length and depends on scattering, whereas a ballistic conductance is a contact-to-contact property and can remain finite without a bulk relaxation time.
 
-## Build the full-zone transport object
+## Inspect the full-zone carriers and transport maps
 
-Start from a qualified electronic parent and calculate or interpolate energies and velocities over the full Brillouin zone; a high-symmetry line path is not transport sampling. Choose the temperature and chemical-potential or carrier-density domain, dimensional normalization, and scattering model before solving for $\sigma$, $S$, or $\kappa_e$. Validate interpolation on withheld points, inspect tensor symmetry, carrier-count closure, units, and sensitivity to k mesh, bands, energy integration, smearing, derivatives, and every scattering input. The CoSb3 guide reprocesses derived public data only; it does not run the parent electronic or transport calculation.
+Start from a qualified electronic parent and calculate or interpolate energies and velocities over the full Brillouin zone; a high-symmetry line path is not transport sampling. View the Fermi surface or relevant isoenergy surfaces and inspect band velocities, valleys, and anisotropy before reducing them to tensors. For state-dependent scattering, inspect energy-, band-, or k-resolved lifetimes and transport contributions; for constant-$\tau$ work, keep $\sigma/\tau$ visibly distinct from an absolute conductivity.
+
+Choose the temperature and chemical-potential or carrier-density domain, dimensional normalization, and scattering model before solving for $\sigma$, $S$, or $\kappa_e$. Plot tensor components and carrier-count mapping together, validate interpolation on withheld points, and test k mesh, bands, integration, derivatives, and scattering inputs. Boltzmann, EPC-based, Wannier, and visualization routes are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). The CoSb3 guide reprocesses derived public data only; it does not run the parent electronic or transport calculation.
 
 ## The response starts from a distribution, not a band plot
 

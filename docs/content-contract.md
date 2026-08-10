@@ -18,7 +18,7 @@ article.
 - Public narrative pages explain individual researcher-scale tasks, target
   calculations, or complete research workflows.
 - `examples/cases/<case-id>/manifest.json` is the authority for the commands,
-  artifacts, hashes, gates, and claim boundary displayed by a terminal-first
+  artifacts, hashes, gates, and claim boundary displayed by a file-backed
   worked execution.
 - Machine-readable records may support routes, search, relationships, and
   migration, but they do not determine the visible article outline.
@@ -93,14 +93,16 @@ feedback in the Research Workflow introduction, method context in setup,
 evidence boundaries in results validation, and provenance in study
 preservation. `/framework/*` pages are migration surfaces only.
 
-### Terminal-first practical page
+### Human-first practical page with real execution evidence
 
-A page labelled `real-execution` must name its `case_id` and render or link the
-case's actual input, launcher, raw output or hash-bound excerpt, quick check,
-strict parser, derived data, figure lineage, G0–G5 statuses, and two-sided claim
-boundary. `JOB DONE`, an SCF marker, a plot, or a successful build cannot stand
-in for a higher gate. A guide without this bundle must use a lower evidence
-class and say what remains unverified.
+A practical page leads with the researcher's natural actions and inspection
+objects, whether those occur in a browser, GUI, terminal, scheduler, plot, or
+manual comparison. A page labelled `real-execution` must also name its
+`case_id` and render or link the case's actual input, launcher, raw output or
+hash-bound excerpt, quick check, strict parser, derived data, figure lineage,
+gate statuses, and two-sided claim boundary. `JOB DONE`, an SCF marker, a plot,
+or a successful build cannot stand in for a higher gate. A guide without this
+bundle must use a lower evidence class and say what remains unverified.
 
 ### Migration page
 

@@ -21,6 +21,12 @@ review: docs/reviews/2026-08-04-compositional-phase-stability-and-convex-hulls.m
 reviewed_at: "2026-08-04"
 ---
 
+## Remove a phase only after inspecting what it represents
+
+Open the withheld entry and its neighbouring hull phases in the database interface, inspect their compositions, structures, identities, and source metadata, then compare the complete and reduced phase diagrams side by side. Follow how the tie line and decomposition products change rather than reading only a changed scalar distance. Use [structure and data sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) to ask whether the phase set is physically and historically complete.
+
+**Reproduce this site's figure:** the companion script performs a controlled omission on the same frozen OQMD snapshot. It demonstrates phase-set sensitivity; it does not show that LiP should be excluded or establish a new Li-P hull.
+
 Use this example after rebuilding the full frozen Li-P hull. It removes one represented competitor without changing any energy, then shows which hull membership and decomposition claims change.
 
 From the companion-script directory, run the comparison:

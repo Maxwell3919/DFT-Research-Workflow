@@ -19,6 +19,12 @@ review: docs/reviews/2026-08-04-interface-and-heterostructure-energetics.md
 reviewed_at: "2026-08-04"
 ---
 
+## Inspect the Al/TiN interface rows as structures and definitions
+
+Return to the attributed publication, identify the cell, termination, registry, layer count, separation coordinate, and per-cell energy definition behind each row, and open an atomistic structure if the source supplies one. Plot energy against separation and keep per-cell adhesion or interaction values separate from area-normalized interface energies. The source table supports only its stated geometries and method; it does not establish a generally preferred registry. Browse [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist interface tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for the missing human-visible context.
+
+**Reproduce this site's figure:** the companion script redraws the frozen, attributed table and audits the arithmetic. It does not reconstruct or relax the interface geometry.
+
 Reconstruct the published seven-row ledger:
 
 ```bash

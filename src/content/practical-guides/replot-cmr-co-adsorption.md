@@ -21,6 +21,12 @@ review: docs/reviews/2026-08-04-adsorption-energies.md
 reviewed_at: "2026-08-04"
 ---
 
+## Read the adsorption table with the missing geometries in view
+
+Open the CMR record and source publication, inspect the four methods, metal surfaces, adsorption definition, and any supplied structures or supporting information. Compare methods only when site, coverage, slab, molecular reference, and sign convention match; view the final adsorption geometries if they are available. Use [structure and data sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
+
+**Reproduce this site's figure:** the companion script redraws a frozen, hash-bound public dataset. It does not supply the atomistic geometries or rerun the calculations, and the plot supports only the attributed comparison.
+
 Rebuild the attributed plot from the frozen snapshot:
 
 ```bash

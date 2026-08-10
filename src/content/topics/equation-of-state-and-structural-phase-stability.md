@@ -3,6 +3,12 @@ topic_slug: equation-of-state-and-structural-phase-stability
 status: reviewed
 ---
 
+## Inspect structures and the full energy-volume record
+
+Open each candidate structure in a crystal viewer before fitting an equation of state. Compare symmetry, coordination, magnetic state, and the degrees of freedom allowed to relax at every volume. The raw object to inspect is the complete energy-volume table together with its structures, not only the fitted minimum.
+
+Plot the points, fitted curves, and residuals in a notebook, spreadsheet, or plotting program. Vary the fit window and model, then decide whether the sampled range actually brackets a smooth minimum and whether competing phases were compared at a common pressure and method. [Visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) support the structural inspection; [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) provide common analysis routes and published comparison data.
+
 Use an equation of state when you need an equilibrium volume, hydrostatic bulk modulus, pressure-volume relation, or a common-pressure comparison between named structural branches. The deliverables are a state-labelled point table, accepted fit ensemble and residuals, and, when needed, enthalpy branches evaluated at the same pressure.
 
 The attached guides form the operational path: **Design a Traceable Energy-Volume Series**, **Fit and Challenge an Equation of State**, and **Compare Phase Enthalpies at Common Pressure**.

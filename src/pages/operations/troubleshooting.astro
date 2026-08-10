@@ -49,6 +49,7 @@ const expectedSlugs = [
   'eigensolver-or-fermi-level-error',
   'restart-or-parent-artifact-rejected',
   'io-memory-or-parallel-failure',
+  'geometry-looks-physically-wrong',
   'geometry-optimization-stalls',
   'symmetry-or-kq-mapping-mismatch',
   'imaginary-phonon-frequencies',
@@ -70,7 +71,7 @@ if (definition.schema_version !== 1 || definition.role !== 'symptom-first-static
   throw new Error('Troubleshooting: unsupported schema or route role');
 }
 if (JSON.stringify(definition.records.map((record) => record.slug)) !== JSON.stringify(expectedSlugs)) {
-  throw new Error('Troubleshooting: symptom identity or order differs from the reviewed nine-record contract');
+  throw new Error('Troubleshooting: symptom identity or order differs from the reviewed ten-record contract');
 }
 
 const sourceById = new Map<string, OfficialSource>();

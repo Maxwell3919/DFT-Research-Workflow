@@ -3,12 +3,19 @@ topic_slug: analyze-and-compare-results
 status: reviewed
 ---
 
-Analysis begins when raw program outputs are transformed into quantities that answer the scientific question. That transformation is part of the method: selecting a reference energy, integrating a spectrum, fitting an equation of state, identifying an extremum, or averaging a trajectory can change the object being compared. A plot is therefore not the result by itself. The result is a value or distribution with a defined physical meaning, lineage, normalization, and uncertainty boundary.
+Analysis begins when a researcher opens the actual objects being compared: the structures, raw outputs, tables, and figures. Read them together before reducing the study to one preferred number. Selecting a reference energy, integrating a spectrum, fitting an equation of state, identifying an extremum, or averaging a trajectory changes the object being compared. A plot is therefore not the result by itself. The result is a value or distribution with a defined physical meaning, lineage, normalization, and uncertainty boundary.
 
+## Start with the figure, table, and raw evidence
 
-## Build a comparison ledger from exact files
+Open the plotted figure beside its underlying table and the output from which the table was extracted. Check the axes, units, energy zero, normalization, calculated points, interpolation or fit, smoothing, exclusions, and any warning attached to the parent calculation. Use a plotting program, notebook, or spreadsheet that lets you inspect individual values; the interface matters less than retaining the exact table and the decisions made while viewing it.
 
-Before ranking values, create one row per compared result with these fields:
+Look for behaviour that a parser threshold may not express: a convergence series that oscillates instead of approaching a stable tail, one candidate that changes state, a fit controlled by one endpoint, a DOS feature that disappears with broadening, or an apparently smooth band plot with a solver warning. Visual inspection complements numerical tests. It cannot replace them.
+
+Before comparing with another calculation or experiment, open the primary paper and its Methods or Supplementary Information. Record the structure, temperature, pressure, composition, sample condition, functional, core treatment, numerical setup, and analysis convention actually used. A literature value without those conditions is not yet a comparable datum.
+
+## Bind the comparison to exact source files
+
+After defining what will be compared, create one row per result with these fields:
 
 `case_id, observable, value, unit, normalization, reference, geometry_and_state, method, numerical_evidence, source_output_sha256, extraction_command, claim_use`
 
@@ -19,7 +26,7 @@ output=${output:?Set output to the exact source output}
 sha256sum -- "$output"
 ```
 
-The hash fixes the bytes used for the row; it does not prove that the program, model, or result is valid. Store the literal command or versioned parser that produced `value`, preserve its stdout and stderr, and retain rejected or excluded rows with the reason for exclusion. A comparison cannot be reconstructed from a plotted value alone.
+The hash fixes the bytes used for the row; it does not prove that the program, model, or result is valid. Store the literal command or versioned parser that produced `value`, preserve its stdout and stderr, and retain rejected or excluded rows with the reason for exclusion. The ledger supports the human comparison; it does not replace looking at the data.
 
 Use `claim_use` to state the bounded role of each row, such as ranking two structures at one declared method or checking a numerical tolerance. Do not pool rows whose observable, unit, normalization, reference, geometry/state, or method differs without an explicit transformation model.
 
@@ -57,6 +64,8 @@ A useful decomposition compares controlled pairs. A fixed-geometry method compar
 
 Cross-code agreement is strongest when structures, physical approximations, core treatment, basis completeness targets, sampling, and analysis definitions are deliberately aligned. Agreement under one benchmark demonstrates reproducibility within that scope. It does not prove accuracy for a different chemistry or observable, and disagreement does not identify which implementation is correct until the comparison is decomposed.
 
+When reading a published comparison, inspect the original input description, convergence evidence, reference definitions, and plotted data rather than relying only on an abstract or database summary. Details that change comparability are often confined to Methods, captions, or Supplementary Information.
+
 ## Uncertainty must correspond to a declared source
 
 An uncertainty statement should say what varies, how it was estimated, and what coverage it represents. Replicate calculations can measure stochastic or sampling variability; convergence tests constrain selected numerical approximations; fit covariance describes uncertainty under a fitted model; an ensemble of functionals samples chosen model variation; and comparison with experiment mixes computational and experimental uncertainty with possible model discrepancy. These are not interchangeable.
@@ -89,7 +98,7 @@ For each proposed finding, link the derived value to source artifacts, transform
 This topic organizes and quantifies results. **Validate Results and Scientific Conclusions** asks whether those results survive numerical, physical, methodological, and external challenges and what claim they support. **Document and Preserve the Study** packages the lineage for independent reuse. Analysis cannot promote a calculated observable into a scientific conclusion without those later steps.
 
 
-The evidence table is the reader-facing projection of the comparison ledger: every displayed value must remain traceable to its source hash and extraction command, and every conclusion must stay within the recorded `claim_use`.
+The evidence table is the reader-facing projection of the comparison ledger: every displayed value must remain traceable to its source hash and extraction command, and every conclusion must stay within the recorded `claim_use`. The [Silicon and Aluminium Worked Workflows](/DFT-Research-Workflow/workflows/) contain real tables and figures that can be inspected before their exact reconstruction records. Use [Python](/DFT-Research-Workflow/tools/python/) or another plotting environment only when it helps expose the comparison; it is not a substitute for scientific judgment.
 
 ## Sources and methods
 

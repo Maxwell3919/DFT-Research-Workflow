@@ -17,8 +17,7 @@ source_ids:
   - cp2k-scf
   - abinit-basic1
   - cod-9013102
-media_ids:
-  - reference-protocol-continuity
+media_ids: []
 review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
 reviewed_at: "2026-08-03"
 ---
@@ -27,6 +26,16 @@ reviewed_at: "2026-08-03"
 
 A fixed-cell relaxation and a static SCF calculation are separate runs. The accepted geometry must be copied explicitly; sharing a prefix or scratch directory is not a geometry handoff.
 
+
+## Inspect the handoff before running the static state
+
+Open the accepted relaxation geometry and the proposed fixed-geometry input side by side in a text editor and a structure viewer. Compare lattice vectors, units, atom order, species labels, coordinates, constraints, charge, and spin settings. Reopen the source and relaxed endpoints with identical display settings to catch a unit, wrapping, vacuum, or atom-mapping error. A shared prefix or restart directory does not transfer geometry unless the implementation explicitly reads that geometry object.
+
+Read the relaxation's complete electronic, free-force, stress, displacement, warning, and stop histories before accepting the handoff. Copy only the accepted geometry into a new, inspectable static input and use a text diff to review the change. Open the relevant SCF and restart definitions through the [electronic-structure code and manual index](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes); use the [viewer and symmetry index](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) for the structural comparison.
+
+Run the fixed-geometry calculation in its own directory through the normal executable or scheduler. Inspect its full SCF iteration history, occupations, state diagnostics, warnings, final energy, and force or stress diagnostics where relevant. `JOB DONE` checks normal termination only. The electronic convergence marker checks the solver condition reported by that run; neither establishes a trustworthy reference state.
+
+Decide whether the static result preserves the intended state and is suitable as the parent of the target calculation. The self-test and helper commands below are optional conveniences for reconstructing the stored Silicon handoff. The stored relaxation and SCF artifacts are not presented as a proven parent-child calculation lineage.
 ## Verify the handoff tool
 
 From the repository root, run:

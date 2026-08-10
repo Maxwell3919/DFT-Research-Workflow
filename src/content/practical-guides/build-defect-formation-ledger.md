@@ -22,6 +22,12 @@ review: docs/reviews/2026-08-04-defect-formation-energies-and-charge-states.md
 reviewed_at: "2026-08-04"
 ---
 
+## Inspect the pristine and defect supercells first
+
+Open both structures side by side, centre the defect, and inspect local relaxation, coordination, periodic-image separation, cell vectors, and the location of any added or removed atom. Then build the host, defect, atomic-reservoir, electron-reservoir, and correction ledger in a spreadsheet, retaining each sign convention and source. Where available, view charge or spin density to test the assumed electronic state. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist defect tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for the real workflow.
+
+**Audit the stored fixture:** the companion script and displayed ledger are synthetic bookkeeping aids. They do not depict a real defect structure, localization pattern, correction convergence, or transition level.
+
 Use this guide to assemble host, defect, atomic-reservoir, electron-reservoir, and correction terms before plotting charge-state lines. The four charge states and all energies are invented teaching fixtures for an abstract B vacancy.
 
 From the repository root, run:

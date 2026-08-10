@@ -5,6 +5,16 @@ status: reviewed
 
 Structure optimization searches for a stationary structure of the declared energy or enthalpy model by updating selected atomic and cell degrees of freedom from one or more starting configurations. Its scientific output is not merely a final coordinate file. It is a traceable statement about which variables were allowed to change, which state evaluator supplied energies, forces, and stress, which constraints were imposed, how the optimization behaved, and what was verified after it stopped.
 
+## Inspect the structural path as you run it
+
+Open the source structure and the actual starting model in the same viewer before changing optimizer settings. Use identical cell, periodic-image, and orientation settings; compare composition, coordination, cell shape, vacuum direction, interfaces, defects, and every intended constraint. The [visualization and symmetry resource index](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) lists GUI, browser, and library routes. A viewer is for recognizing model mistakes and following structural change; it does not validate forces or stress.
+
+Keep the rendered structure beside the input in a text editor. Mark which atomic components and cell variables may move, which are fixed, and which symmetry or boundary conditions remain active. Then submit the relaxation with the code's normal executable or HPC scheduler. Use the [electronic-structure code and manual index](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) to find the authoritative input and restart definitions for the implementation in use.
+
+During the run, inspect both the text output and the trajectory. Compare the start, selected accepted intermediate frames, and the last accepted or final frame. Look for collisions, discontinuous cell changes, vacuum collapse, unexpected reconstruction, atom swaps, and motion that contradicts the constraint map. If the geometry looks wrong, preserve the branch and follow [The geometry looks physically wrong](/DFT-Research-Workflow/operations/troubleshooting/#geometry-looks-physically-wrong) before reusing it.
+
+A decision requires the complete history: electronic convergence at every accepted ionic step, every free Cartesian force component, stress components when the cell is active, displacement and energy or enthalpy changes, state diagnostics, warnings, and the optimizer's actual stop condition. A plausible picture does not establish numerical convergence; a printed stop marker does not establish a plausible or relevant minimum. Reopen and compare the accepted endpoint, run a fresh fixed-geometry energy-and-gradient check when required, and only then automate repeated extraction or screening.
+
 ## Follow the common route from model to accepted geometry
 
 Start with a named computational model and one or more physically motivated structures. Declare which atomic coordinates and cell components may move, which constraints remain active, and which electronic or magnetic state the optimizer should follow. Run the relaxation, inspect the electronic and ionic history together, and accept a geometry only after a fresh energy-and-gradient evaluation on the exact final coordinates.

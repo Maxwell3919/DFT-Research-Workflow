@@ -3,6 +3,12 @@ topic_slug: adsorption-energies
 status: reviewed
 ---
 
+## Compare the actual adsorption geometries
+
+Open the clean slab, isolated reference, starting adsorption geometry, and relaxed final geometry. Inspect each candidate from the top and side, label the site and coverage, measure key distances, and note migration, dissociation, reconstruction, or interaction with periodic images. A site label attached only to the starting structure is not the identity of the final state.
+
+Place structures next to the matched energy ledger and compare sites, coverages, spin states, and reference conventions. Plotting energies helps reveal trends, but the decision also depends on whether the final geometries represent the same intended reaction. [Visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [specialist surface and adsorption tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools) list common human and scripted routes.
+
 Use an adsorption calculation when the question is the energetic change for moving a specified species from declared reservoirs into a specified surface state. Begin with an accepted clean slab, explicit adsorbate references, and a candidate set. A relaxed adsorbate-slab energy by itself does not define the reaction, sign, coverage, or comparison.
 
 ## Prepare the state and follow the practical sequence

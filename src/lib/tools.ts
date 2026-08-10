@@ -6,13 +6,23 @@ export interface ToolGettingStarted {
   url: string;
 }
 
+export type ToolAccess =
+  | 'open-source'
+  | 'restricted-license'
+  | 'registration-required'
+  | 'free-proprietary'
+  | 'institutional'
+  | 'subscription'
+  | 'commercial'
+  | 'mixed';
+
 export interface ToolRecord {
   slug: string;
   name: string;
   aliases: string[];
   category: string;
   interfaces: string[];
-  access: 'open-source' | 'restricted-license' | 'registration-required' | 'free-proprietary';
+  access: ToolAccess;
   access_note?: string;
   verified_version?: string;
   role: string;

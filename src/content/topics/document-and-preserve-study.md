@@ -7,15 +7,30 @@ A completed calculation tree is not yet a preserved study. Scratch directories c
 
 Preservation turns that working history into an identifiable research object. Another researcher should be able to discover what was studied, recover the evidence behind a result, reconstruct the transformation from inputs to claims, and understand what cannot be redistributed or rerun.
 
+## Preserve the human research record first
+
+Start with the record a researcher needs to understand the work. Keep the scientific question, candidate models, decisions, rejected alternatives, acceptance criteria, unresolved anomalies, and the reason for each return to A, B, C, or D. A laboratory notebook, dated text record, or electronic notebook is suitable when it identifies the objects and decisions rather than merely stating that a calculation was run.
+
+Preserve operations that happened outside the terminal:
+
+- database record URLs, identifiers, access dates, downloaded files, and the metadata inspected before selection;
+- the original paper, Methods or Supplementary Information citation, and a note identifying which parameters or experimental conditions were compared;
+- structure-viewer or plotting-program exports, measurement notes, selected views, and settings needed to understand what was inspected;
+- spreadsheet or notebook tables together with formulas, filters, exclusions, and the unmodified source data;
+- screenshots only when they show where an action occurred, what state was inspected, or what failure was observed, with source, date, and reuse boundary;
+- failed attempts and manual observations that affected the next scientific decision.
+
+For structure work, the [VESTA tool page](/DFT-Research-Workflow/tools/vesta/) identifies the object to open and what visual inspection can and cannot establish. For provenance automation, [AiiDA](/DFT-Research-Workflow/tools/aiida/) is an optional implementation; a manual calculation remains preservable when its interfaces, objects, decisions, and lineage are recorded.
+
 
 ## Preserve a minimum usable study
 
 A minimum usable release preserves functional roles, not a mandatory directory name:
 
-- `README`: question, observable, model, method, branch order, acceptance criteria, claim boundary, and the first recovery command;
-- `source/`: structure or public-data origin, access record, license/reuse boundary, and any conversion step;
+- `README`: question, observable, model, method, human workflow, branch order, acceptance criteria, claim boundary, and the first recovery action;
+- `source/`: structure or public-data origin, browser/database receipt, access record, license/reuse boundary, and any manual or automated conversion step;
 - `input/`: every human-authored input, pseudopotential identifier and hash where redistribution is restricted, and scheduler script;
-- `commands/`: exact launch, extraction, plotting, and validation commands with working directories and exit status;
+- `commands/`: exact launch, extraction, plotting, and validation commands with working directories and exit status, without pretending that unrecorded GUI or manual actions were commands;
 - `output/`: retained raw stdout, stderr, and the smallest downstream artifacts needed to inspect or regenerate the result;
 - `parsed/`: versioned machine-readable values with units, normalization, source-file hash, and parser identity;
 - `figures/`: published figures together with the exact plotted tables and plotting command;
@@ -37,11 +52,11 @@ study=${study:?Set study to the exact release directory}
 
 This command covers only the named paths and fails if one is absent. A checksum fixes bytes; it does not authenticate the depositor, validate the scientific model, or prove that omitted files were unnecessary.
 
-Before publication, restore the package into a new directory, recreate the documented environment, rerun the documented parsers and plot commands, and compare regenerated tables and figures with the preserved identities. If that recovery fails, the study is not yet preserved even if the archive can be downloaded.
+Before publication, restore the package into a new directory, recreate the documented environment, rerun the documented parsers and plot commands, reopen portable GUI/browser exports where relevant, and compare regenerated tables and figures with the preserved identities. If that recovery fails, the study is not yet preserved even if the archive can be downloaded.
 
 ## Treat provenance as a working connection, not a separate appendix
 
-Provenance connects the A–E workflow whenever a structure is transformed, an input is prepared, a calculation is restarted, an output is parsed, or a figure is derived. Capture the source identity and transformation at the point of work, then preserve the resulting lineage at study completion. This makes later diagnosis possible without pretending that a registry or archive validates the scientific result.
+Provenance connects the A–E workflow whenever a browser record is selected, a structure is inspected or transformed, a GUI export is made, an input is prepared, a calculation is restarted, an output is parsed, a literature value is compared, or a figure is derived. Capture the source identity, human observation, and transformation at the point of work, then preserve the resulting lineage at study completion. This makes later diagnosis possible without pretending that a registry or archive validates the scientific result.
 
 Reproducibility has layers. A checksum can establish byte-level fixity, an executable reconstruction can establish a bounded rerun path, and an independently prepared comparison can test a result more strongly. None of these alone establishes numerical convergence, physical validity, or a broader scientific conclusion.
 

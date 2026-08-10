@@ -24,6 +24,12 @@ review: docs/reviews/2026-08-04-band-structure.md
 reviewed_at: "2026-08-04"
 ---
 
+## Compare the labelled path with the full-zone sample
+
+Open the silicon Brillouin-zone path and band plot, then inspect a separate uniform-mesh view or table of the extrema. Identify where each reported valence maximum and conduction minimum occurs and whether it lies on the selected path; if a three-dimensional viewer is available, use it to locate off-path regions rather than relying on a sorted list alone. Use [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties).
+
+**Reproduce this site's figure:** the companion script compares actual stored QE path data with a 260-point time-reversal-reduced sample of the nominal mesh. The auxiliary comparison graphic is secondary, and neither finite sample establishes a converged fundamental gap.
+
 Use this real, hash-bound Silicon comparison when a band-path extremum appears to support a gap or valley statement. It shows the next required operation: calculate a separate full-zone sample from the same accepted state and keep the two datasets distinct. Neither dataset in this teaching example is an observable-convergence study.
 
 ## Purpose

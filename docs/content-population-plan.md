@@ -11,7 +11,7 @@ and migration boundaries; it does not define a mandatory visible template.
 
 ## Current implementation state
 
-The architecture migration and first terminal-first release slice are complete
+The architecture migration and first file-backed evidence slice are complete
 at the repository level:
 
 1. **A–E architecture and presentation** — the public directory uses A–E,
@@ -24,7 +24,7 @@ at the repository level:
 3. **Navigation migration** — Framework content has moved into the relevant A–E
    narratives, `/framework/*` and `/recipes/*` are continuity surfaces, and the
    primary route for complete examples is `/workflows/`.
-4. **Terminal-first evidence** — practical pages marked `real-execution` bind
+4. **File-backed execution evidence** — practical pages marked `real-execution` bind
    to hash-checked case directories. Silicon and aluminium are the initial
    public continuous Worked Workflows.
 
@@ -135,13 +135,14 @@ responsive-layout, and no-JavaScript checks pass.
 
 ## Worked Workflow pages
 
-Worked Workflow pages show how A–E topics combine around a continuous real
-execution lineage. The initial public set is Silicon Ground-State and
+Worked Workflow pages show how A–E topics combine around a scientific objective,
+human actions, and explicitly bounded file-backed evidence routes. The initial public set is Silicon Ground-State and
 Electronic-Structure Workflow and Aluminium Metallic Electronic-Structure
 Workflow. Former recipe pages are migration sources, not publishable
 placeholders; a candidate is added to `/workflows/` only when its case directory
 has the actual commands, outputs, checks, parsers, hashes, gates, and claim
-boundary needed by the page.
+boundary needed by the page. Each case must state whether its stages form one
+continuous lineage or an assembled set of separately recorded routes.
 
 Their old O01–O24 coverage arrays are not the final reader-facing workflow
 model. A mature workflow should show relevant dependencies, branches, repeated

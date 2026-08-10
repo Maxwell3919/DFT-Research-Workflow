@@ -3,6 +3,12 @@ topic_slug: interface-and-heterostructure-energetics
 status: reviewed
 ---
 
+## Inspect registry, strain, and separation as atomistic objects
+
+Open both parent structures and every shortlisted matched supercell. View the interface along the normal and in plane; identify termination, registry, imposed strain, layer count, vacuum if present, shortest contacts, and any reconstruction after relaxation. A lattice-mismatch dot plot cannot substitute for this atomistic inspection.
+
+Compare an annotated structure with the area-normalized energy ledger and, when available, a separation or adhesion curve. The decision is whether the same geometry and reference convention support a specific interface claim, not simply whether one enumerated match has the smallest scalar mismatch. Use [structure sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), and [specialist interface tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools) as complementary routes.
+
 Use an interface-energy calculation to compare explicitly defined contacts, not chemical formula pairs. Start from accepted parent structures for both materials, choose the contact plane and terminations, and preserve the imposed strain, lateral registry, stoichiometry, thickness, boundary condition, and relaxation policy. Those choices define the quantity more strongly than the label “A/B interface.”
 
 ## Build candidates before evaluating energies

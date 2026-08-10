@@ -5,9 +5,11 @@ status: reviewed
 
 Dielectric response asks how the polarization or displacement field of a specified state changes under a specified electric perturbation. Born effective charges ask how macroscopic polarization changes when a sublattice is displaced, or equivalently how a force changes under an electric field. These are linear-response derivatives, not fixed ionic valences and not a generic optical spectrum. Their meaning depends on frequency, electrical boundary condition, ionic freedom, crystal state, and the macroscopic-field convention used for a periodic solid.
 
-## Obtain and audit the requested response tensor
+## Read the response in the crystal axes
 
-Start from an accepted insulating reference state. Decide whether the target is the ion-clamped dielectric tensor, a static response including lattice motion, or Born effective charges, then choose a compatible DFPT or signed finite-difference route. Inspect every tensor component, units, symmetry, solver warnings, the Born-charge acoustic sum, and any non-analytic phonon data that consume the result. Converge the tensor itself against the electronic representation, k sampling, perturbation settings, and response solver. The Silicon guide checks one real QE 7.5 Gamma response only; one Gamma calculation and one setup do not establish dielectric or phonon convergence.
+Open the accepted insulating structure and establish how its crystallographic directions map onto the Cartesian tensor printed by the software. Decide whether the target is the ion-clamped dielectric tensor, a static response including lattice motion, or Born effective charges. Choose DFPT or a compatible signed finite-field/displacement route, then read the complete tensor table rather than only its diagonal or a scalar average. For Born charges, compare atoms related by the actual symmetry, inspect the acoustic-sum residual, and view the displacement direction or polar phonon mode that will consume the tensor.
+
+Converge the tensor itself against the electronic representation, k sampling, perturbation settings, and response solver. For polar phonons, inspect the dispersion and LO--TO behaviour with compatible dielectric and charge tensors; a table alone does not show the mode character. The Silicon guide checks one real QE 7.5 Gamma response only, so its plot is a transcription aid rather than a complete response workflow. See the [electronic-property resources](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [lattice-dynamics routes](/DFT-Research-Workflow/operations/resource-landscape/#lattice-dynamics) for major implementations and visual tools.
 
 ## Separate the response functions before comparing numbers
 

@@ -19,10 +19,15 @@ source_ids:
   - qe-pw-75
 media_ids:
   - al-qe-full-zone
-  - fermi-surface-isovalue-fixture
 review: docs/reviews/2026-08-04-fermi-surface-and-full-brillouin-zone-analysis.md
 reviewed_at: "2026-08-05"
 ---
+
+## Inspect a three-dimensional Fermi-level isosurface when making a Fermi-surface claim
+
+Load the dense aluminium mesh into FermiSurfer, XCrySDen, PyProcar, or another suitable viewer, display the Brillouin-zone boundary, and rotate the surface to look for sheets, necks, and pockets. Compare that object with the labelled band path, then change mesh or interpolation settings to see whether features persist. Use [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), and [specialist post-processing tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
+
+**Reproduce this site's figure:** the companion script reconstructs real stored QE aluminium mesh and path evidence. The left panel uses unconnected points deliberately: it is a two-dimensional projection of samples near the Fermi level, not band connectivity or a real three-dimensional Fermi surface.
 
 Use this real aluminium example when a band-path crossing suggests metallicity or a Fermi-surface feature. It compares an explicit uniform full-zone eigenvalue sample with a separate path from the same accepted state. The stored point counts and crossings are execution evidence, not a converged isosurface or pocket count.
 
@@ -70,7 +75,7 @@ The SCF reports a Fermi energy of `7.8018 eV`. For selected QE band 2, this run 
 
 An equal-energy rendering needs reciprocal coordinates, eigenvalues, band/state identity, and the isovalue from one compatible calculation. [Wannier90 documents Fermi-surface output on a regular interpolated grid](https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/parameters/), and its [copper tutorial](https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_6/) distinguishes interpolation from direct bands. The present result uses direct `pw.x` eigenvalues, not Wannier interpolation.
 
-Refine the mesh and perturb the isovalue before naming a pocket, neck, touching, or topology. If interpolation is introduced, compare it with direct eigenvalues near every feature used in the claim. The auxiliary invented SVG only explains how a line can miss an equal-energy contour; it is not aluminium evidence.
+Refine the mesh and perturb the isovalue before naming a pocket, neck, touching, or topology. If interpolation is introduced, compare it with direct eigenvalues near every feature used in the claim. The displayed unconnected scatter preserves the sampled-data boundary; it does not substitute for an isosurface viewer.
 
 ## Decide what the example supports
 

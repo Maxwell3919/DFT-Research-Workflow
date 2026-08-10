@@ -5,6 +5,14 @@ status: reviewed
 
 Validation asks whether a result is credible for the scientific use assigned to it and whether the proposed conclusion is no stronger than the evidence. It is not a final checkbox after plotting. It is a structured attempt to make the result fail through numerical, physical, methodological, and external challenges.
 
+## Begin with what the researcher can see
+
+Open the accepted structure, the complete output, the convergence table, and the figure used for the claim at the same time. Inspect unexpected geometry changes, short contacts, discontinuities, oscillatory solver behaviour, warnings, outliers, missing symmetry, suspiciously smooth interpolation, and sensitivity hidden by an axis range. If a visual anomaly cannot be explained, preserve it and return to the calculation before applying a pass label.
+
+Then open the primary literature or experimental record used for comparison. Check whether the calculation and the external result describe the same composition, phase, temperature, pressure, defect population, surface, magnetic state, and measured quantity. A database value or abstract is an entry point; Methods, Supplementary Information, and the underlying experimental conditions determine comparability.
+
+Visual inspection and literature review are scientific operations. They complement solver markers, numerical tests, and independent calculations; they do not replace them.
+
 
 ## Audit from program start to scientific claim
 
@@ -19,7 +27,7 @@ For each calculation branch, answer these questions in order with **yes**, **no*
 7. Is the result physically consistent and robust to reasonable changes in the model or theoretical method?
 8. What exact claim is supported, and which stronger claims remain untested?
 
-The [terminal inspection guide](/DFT-Research-Workflow/operations/validate-results-and-scientific-conclusions/guides/inspect-qe-hpc-calculations-from-the-terminal/) supplies bounded shell checks. The [calculation audit](/DFT-Research-Workflow/operations/validate-results-and-scientific-conclusions/examples/audit-a-qe-calculation/) shows how to assemble them into one fail-closed case readback. A failed answer sends the study back to **A** for the physical model, **B** for the method or numerical setup, **C** for the reference state, or **D** for the target branch. Validation is therefore part of the research loop, not paperwork after a run.
+The [terminal inspection guide](/DFT-Research-Workflow/operations/validate-results-and-scientific-conclusions/guides/inspect-qe-hpc-calculations-from-the-terminal/) supplies bounded shell checks for the parts naturally inspected on an HPC system. The [calculation audit](/DFT-Research-Workflow/operations/validate-results-and-scientific-conclusions/examples/audit-a-qe-calculation/) combines a real adverse calculation record with a fail-closed scientific decision. If a symptom appears, use [Troubleshooting](/DFT-Research-Workflow/operations/troubleshooting/) before changing parameters; if the calculation uses another code, use the [Software Bridge](/DFT-Research-Workflow/operations/software-bridge/) to reach its official terminology and artifacts. A failed answer sends the study back to **A** for the physical model, **B** for the method or numerical setup, **C** for the reference state, or **D** for the target branch.
 
 ## Keep evidence boundaries visible throughout the workflow
 
@@ -86,6 +94,8 @@ If the sign, ordering, phase assignment, or mechanism changes under a plausible 
 
 Before comparing with experiment or another calculation, align the physical objects. Temperature, pressure, composition, defects, surfaces, domains, sample history, instrument response, and data reduction may differ from the idealized model.
 
+Read the original paper, caption, Methods, and Supplementary Information. Record which calculated quantity was compared with which measured observable, whether a correction or fit was applied, and whether the displayed agreement was used to choose the method. For a cross-code check, open both native outputs and compare the actual models and approximations before comparing derived numbers.
+
 Separate calibration from withheld external tests. A fitted datum is calibration, not independent validation. Stronger tests use withheld conditions, independent observables, or systems not used to choose the model. A discrepancy should be separated into numerical uncertainty, model discrepancy, experimental uncertainty, and mismatch of the compared object rather than assigned automatically to either theory or experiment.
 
 Agreement with one value is not sufficient when other features that the model should also reproduce are absent or incorrect.
@@ -100,7 +110,7 @@ For each test, record its scope, result, and consequence for the claim. A useful
 - contradicted by a reliable check;
 - outside the method's capability.
 
-Absence of a detected failure is not proof that none exists. State which alternatives were tested, which were not, and what new evidence would change the conclusion. Preserve negative and null results when their omission would make the evidence base misleading.
+Absence of a detected failure is not proof that none exists. State which alternatives were tested, which were not, and what new evidence would change the conclusion. Preserve negative and null results, screenshots or notes that document a real interface state, and manual anomaly assessments when their omission would make the evidence base misleading. A screenshot establishes only what was visible; it is not numerical validation.
 
 The final conclusion should match the weakest essential link. **Analyze and Compare Results** constructs comparable observables and uncertainty statements. **Document and Preserve the Study** keeps the evidence and its limits recoverable. Neither reproducibility nor archival completeness alone proves that the physical conclusion is correct. This page does not validate a project result; it defines the evidence needed to do so.
 

@@ -5,9 +5,11 @@ status: reviewed
 
 Reaction-path calculations ask for the lowest-energy connected route between two declared states under one potential-energy model. They do not merely compare the endpoints. The output is a path in configuration space and, when it contains an appropriate first-order saddle point, a barrier relative to a stated reactant basin. It is not automatically a finite-temperature rate, a mechanism proved in experiment, or a guarantee that every alternative route has been found.
 
-## Build, run, and verify a path
+## Open the image chain before trusting the barrier
 
-Start with separately verified endpoint minima under one compatible model. Generate more than one physically plausible interpolation when mechanisms can differ, run the path optimization, and inspect every image's state identity, energy, projected force, spacing, and geometry. Refine the high-energy region and validate a candidate transition state by its local curvature and connectivity to the intended basins. Converge the barrier against path initialization, image resolution, electronic settings, finite-size model, and saddle verification. This overview does not claim an executed NEB path.
+Start with separately verified endpoint minima under one compatible model. Open both endpoints together, identify the atoms and periodic images that correspond, and generate more than one physically plausible interpolation when mechanisms can differ. Load the complete image chain in a structure or trajectory viewer and scrub through it before and during optimization. Look for atom swaps, close contacts, broken molecules, discontinuous boundary crossings, changing spin/charge identity, or a collective motion that the interpolation omitted.
+
+Plot energy and projected force for every image, not only the fitted barrier. Refine the high-energy region and validate a candidate transition state by local curvature and connectivity to the intended basins. Converge the barrier against path initialization, image resolution, electronic settings, finite-size model, and saddle verification. ASE GUI, OVITO, code-specific NEB routes, and manuals are grouped under [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). Visual continuity is necessary evidence but does not prove a first-order saddle. This overview does not claim an executed NEB path.
 
 ## Endpoints define the question before a path can answer it
 

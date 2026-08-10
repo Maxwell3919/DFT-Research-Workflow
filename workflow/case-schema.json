@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://maxwell3919.github.io/DFT-Research-Workflow/schemas/case-manifest-1.0.json",
-  "title": "DFT Research Workflow terminal-first case manifest",
+  "title": "DFT Research Workflow file-backed case manifest",
   "type": "object",
   "additionalProperties": false,
   "required": [

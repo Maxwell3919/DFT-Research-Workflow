@@ -3,6 +3,12 @@ topic_slug: magnetic-configuration-and-ground-state-comparison
 status: reviewed
 ---
 
+## Inspect the initialized and final magnetic states
+
+Use symmetry, chemical knowledge, and prior literature to enumerate plausible collinear or noncollinear arrangements. Open the structure with moment arrows or spin-density isosurfaces when available, preserve the initialized pattern, and compare it with the final site-resolved moments and total magnetization. A converged run that collapsed to another state must be relabelled rather than kept under its starting name.
+
+Place those state identities beside a comparable-energy ledger and inspect structural changes as well as magnetic observables. A bar chart of invented energies is not magnetic-state evidence. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist magnetic post-processing](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) to build and audit the candidate set.
+
 Perform a magnetic-candidate comparison before a downstream calculation needs a magnetic reference state. The parent object is a declared structure and numerical method; the output is a ledger of compatible final spin states, total energies, moment maps, and normalization. One converged ferromagnetic, antiferromagnetic, ferrimagnetic, or nominally nonmagnetic SCF solution is only one candidate.
 
 No executed practical guide currently accompanies this topic. The bounded route is to enumerate representable candidates, prepare one calculation object per candidate with the selected code, run them under compatible conditions, extract final energies and moment maps, and compare them in an auditable ledger. Quantum ESPRESSO documents the relevant `pw.x` magnetic inputs, and VASP documents `MAGMOM`; exact initialization and noncollinear syntax depend on the code and version.

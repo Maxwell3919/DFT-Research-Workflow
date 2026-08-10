@@ -4,6 +4,7 @@ guide_slug: converge-q-meshes-and-response-grids
 title: Converge q-Meshes, Response Grids, and Interpolation
 kind: implementation
 tools:
+  - quantum-espresso
   - python
 status: reviewed
 summary: Separate convergence of each response solve, the coarse q grid or perturbation grid, the interpolated representation, and the final integrated observable.
@@ -20,16 +21,9 @@ review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
 
-Run the declared companion first:
+Begin with the response quantity that controls the scientific decision. Choose a documented route such as density-functional perturbation theory or finite displacement, then open the exact code or specialist-tool manual and comparable Methods or Supporting Information. The [method and input landscape](/DFT-Research-Workflow/operations/resource-landscape/#method-inputs), [electronic-structure code landscape](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes), and [learning resources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) show common human entry points without implying that one implementation is universal.
 
-~~~bash
-python3 examples/practical-guides/convergence_response_grids.py > response-grid-analysis.json
-less response-grid-analysis.json
-~~~
-
-It analyses a hard-coded synthetic matrix of coarse-q and fine-integration labels, applies illustrative tolerances, checks one direct-versus-interpolated error field, and requires stricter coarse and fine confirmations. It does not run a response calculation.
-
-A converged linear-response solve at one q point does not establish a converged q mesh, force-constant range, interpolation, density of states, thermal integral, or electron–phonon coupling parameter.
+Inspect the reference structure and electronic state before preparing response inputs. Visualize the coarse q grid or displacement supercell where the tool permits it, and decide which direct off-grid points, modes, symmetry diagnostics, acoustic behavior, dispersion regions, or final integrals must be inspected. A converged solve at one q point does not establish a converged q mesh, force-constant range, interpolation, density of states, thermal integral, or electron-phonon quantity. The QE sequence below is one implementation example.
 
 ## Prepare four linked convergence layers
 
@@ -82,6 +76,8 @@ tail -n 40 matdyn-q4-fine24.out
 
 ## Compare direct and interpolated quantities
 
+Plot the directly calculated and interpolated values together at the selected q points. For phonons, also inspect the dispersion and relevant eigenvectors or mode animations when available. Look for branch swaps, localized anomalies, acoustic artifacts, symmetry inconsistencies, and errors hidden by a smooth path. Visual inspection helps identify where the interpolation fails; it does not replace the numerical tolerance.
+
 Select off-grid or intermediate q points and calculate them directly. Compare the direct value $O_{\mathrm{direct}}$ with its interpolation:
 
 $$
@@ -98,6 +94,17 @@ At each adequate coarse mesh, refine the fine integration grid and extract the r
 Phonon convergence does not establish EPC convergence. EPC additionally depends on electronic k sampling, q sampling, band count, matrix-element interpolation, broadening or delta-function treatment, and convergence of $\alpha^2F(\omega)$, $\lambda$, and $\omega_{\log}$ where those are the targets.
 
 Accept a pair only when response solves pass, direct-versus-interpolated checks meet tolerance, the final observable is stable against stricter coarse and fine grids, and the physical state remains comparable.
+
+## Optional synthetic replay
+
+After the real response layers and expected artifacts are understood, run the companion as a bounded decision-rule exercise:
+
+~~~bash
+python3 examples/practical-guides/convergence_response_grids.py > response-grid-analysis.json
+less response-grid-analysis.json
+~~~
+
+It analyses a hard-coded synthetic matrix of coarse-q and fine-integration labels, applies illustrative tolerances, checks one direct-versus-interpolated field, and requires stricter coarse and fine confirmations. It does not run a response calculation, produce a phonon mode, or establish a real q mesh.
 
 ## What this guide verifies
 

@@ -19,13 +19,23 @@ source_ids:
   - nielsen-martin-stress
   - cod-9013102
 media_ids:
-  - optimization-history-diagnostics
   - silicon-qe-relax-force
+  - silicon-qe-relax-scf-history
 review: docs/reviews/2026-08-03-optimize-structure.md
 reviewed_at: "2026-08-03"
 ---
 
 An optimization trajectory is a sequence of coupled electronic and structural calculations. A final “converged” line is interpretable only when the forces or stress are trustworthy, the active stopping conditions are satisfied, and the calculations remain on the intended electronic and magnetic branch.
+
+## Look at the trajectory and the histories together
+
+Open the initial structure, several accepted intermediate frames, the first suspicious frame, and the final or last accepted frame in the same viewer. Keep cell display, periodic images, atom radii, and orientation fixed so that apparent motion is not a rendering change. Look for collisions, broken coordination, vacuum collapse, a sudden cell jump, layer inversion, atom swapping, reconstruction, or motion inconsistent with declared constraints. The [visualization and symmetry index](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) gives suitable GUI and library routes.
+
+Next, align that visual trajectory with the text history. For every accepted ionic step, inspect the electronic iteration history, every free Cartesian force component, stress components when the cell is active, displacement, energy or enthalpy, state diagnostics, warnings, and the optimizer decision. Do not infer a component-force pass from QE's printed aggregate `Total force`. Do not infer structural convergence from an SCF marker or program termination.
+
+If the structure looks implausible, preserve the source, start, suspect frame, last accepted frame, full trajectory, inputs, and outputs, then use [The geometry looks physically wrong](/DFT-Research-Workflow/operations/troubleshooting/#geometry-looks-physically-wrong). Visual inspection is a diagnostic observation. It neither proves numerical failure nor proves a physical instability; numerical checks and model review remain separate.
+
+Only after this alignment should a parser make tables or plots for repeated comparison. The stored Silicon companion below parses every active Cartesian component, reports QE's aggregate `Total force` separately, and maps each ordered SCF completion record to its following force evaluation. Use the [official code manuals](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) to interpret implementation-specific force, stress, trajectory, and stop records.
 
 ## Run the stored-output diagnosis first
 
@@ -36,7 +46,7 @@ grep -F "Total force =" examples/practical-guides/data/silicon-qe/relax/si-relax
 grep -cF "convergence has been achieved" examples/practical-guides/data/silicon-qe/relax/si-relax.out
 ```
 
-The Python report reconstructs five stored energy/total-force rows and regenerates the declared force figure. The energy and force lines show what the parser consumes. The electronic marker count is `5`, but it is only a literal count; it is not evidence that each marker maps to one accepted ionic step.
+The Python report reconstructs five stored energy, component-force, aggregate-force, SCF-iteration, and final-residual rows. It regenerates two figures from the hash-bound output. Ordered parsing maps each of the five electronic completion records to the force evaluation that follows it; that mapping still does not make SCF convergence an ionic convergence test.
 
 Next inspect `JOB DONE`, the BFGS termination marker, warnings, the final coordinates, and every state diagnostic required by the model. Accept the geometry only when the intended active force/stress conditions and state identity are satisfied under a fresh final evaluation. A decreasing total-force trace alone is not a stopping test.
 
@@ -64,14 +74,13 @@ Keep rejected line-search points or failed electronic steps distinguishable from
 
 An electronic threshold controls the state evaluator within one geometry. An ionic threshold controls the gradient or step across geometries. Reaching the first does not imply the second, and a noisy electronic solve can make the second unreliable.
 
-A conceptual history rule can require every accepted step to carry an electronic
-label, active-force value, stress diagnostic, and consistent state identity. That
-claim-check is not executed by the declared companion. The companion instead
-parses five energy and total-force rows from one stored QE 7.5 Silicon output,
-checks its input/output hashes, counts five literal electronic-convergence markers,
-checks the program and BFGS markers, and confirms only that the last reported total
-force is lower than the first. It does not map the five electronic markers to the
-five ionic rows.
+The companion checks one input hash and one output hash, parses every force component
+for all five ionic evaluations, preserves QE's printed aggregate force separately,
+maps the five ordered electronic convergence records to their following force blocks,
+and checks the BFGS and program-completion markers. The final maximum absolute free
+component is below the declared $10^{-4}$ Ry/bohr threshold for this fixed-cell run.
+There is no stress history because the cell was not active; the result cannot support
+a cell-relaxation or stress-convergence claim.
 
 ## Examine force and stress in the active subspace
 
@@ -85,7 +94,7 @@ Force and stress thresholds are downstream-use decisions. This page does not def
 
 A smooth geometry path can cross between electronic solutions. Track magnetic order, total and local moments, occupation pattern, charge localization, spin direction, symmetry, and any constraints that identify the intended branch.
 
-The synthetic history includes a second series that changes its state label partway through. The analysis rejects a single convergence interpretation for that series even though its last force value is small. A discontinuity cannot be repaired by averaging adjacent points or fitting a smooth tail.
+If a history changes state label partway through, reject a single-branch convergence interpretation even when its last force value is small. A discontinuity cannot be repaired by averaging adjacent points or fitting a smooth tail.
 
 Useful recovery tests include:
 
@@ -133,10 +142,11 @@ A plot may display the segments together, but it should not conceal their differ
 ## What this guide verifies
 
 The declared companion verifies one input hash, one output hash, `JOB DONE` and
-BFGS markers, five literal electronic-convergence markers, five parsed energies and
-total-force rows, and a lower final than initial total force. It does not establish
-a per-step marker mapping, stress, displacement, constraints, state continuity, a
-stopping threshold, or a local/global minimum.
+BFGS markers, five ordered electronic-convergence records, five energy rows, every
+atomic Cartesian force component, and five separately reported aggregate forces.
+It confirms the final component gate only for this fixed-cell run. It does not
+establish stress or cell convergence, state continuity, a local/global minimum,
+observable convergence, or material-model validity.
 
 ## Common mistakes
 

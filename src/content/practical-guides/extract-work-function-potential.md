@@ -20,6 +20,12 @@ review: docs/reviews/2026-08-04-surface-energy-and-work-function.md
 reviewed_at: "2026-08-04"
 ---
 
+## Inspect the potential curve beside the slab
+
+Open the slab in side view and identify its vacuum direction, inequivalent surfaces, and dipole orientation. Plot the planar or macroscopic potential on the same spatial coordinate, zoom into each vacuum region, and manually decide whether a field-free plateau exists. Read the Fermi energy from a compatible reference calculation and record the side of the slab to which each value belongs. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), and [specialist post-processing](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
+
+**Audit the stored fixture:** the potential profile is synthetic and conceptual. Its companion script demonstrates plateau selection and subtraction; it is not a real electrostatic output, slab, or converged work-function result.
+
 Run the analytic plateau fixture:
 
 ```bash

@@ -5,9 +5,11 @@ status: reviewed
 
 Anharmonic phonon calculations ask how the harmonic normal modes of one declared reference state interact, shift, and acquire finite lifetimes. They are needed when a harmonic spectrum alone cannot represent temperature-dependent frequencies, linewidths, thermal expansion, or a strongly unstable parent structure. They do not turn a finite-temperature calculation into proof that a phase is synthesizable, nor do they by themselves calculate lattice thermal conductivity; transport is the neighbouring topic.
 
-## Choose the anharmonic observable and construct its force model
+## Inspect the configurations and the temperature-dependent spectrum
 
-Begin with a qualified harmonic parent and name the target: a renormalized frequency, linewidth, spectral function, free-energy difference, or transport input. Choose perturbative or self-consistent treatment, generate the required displaced configurations or response data, calculate forces with one compatible method, fit the declared force-constant order and range, and validate the fit against data not used to determine it. Then converge the target against supercell or q coverage, displacement amplitude, force accuracy, integration treatment, temperature sampling, and included interaction order. This remains an overview; it does not claim that an anharmonic run was executed.
+Begin with a qualified harmonic parent and name the target: a renormalized frequency, linewidth, spectral function, free-energy difference, or transport input. Choose a perturbative force-constant route, a temperature-dependent effective-potential route, or a self-consistent/stochastic route according to that target. Open representative displaced structures or sampled configurations before fitting; check atom mapping, displacement amplitudes, symmetry, collisions, and whether the set actually explores the degrees of freedom claimed by the model.
+
+Calculate forces with one compatible method, fit the declared order and range, and compare predicted forces with configurations withheld from the fit. Then inspect temperature-dependent dispersions, spectral functions, linewidths, and their mode character rather than accepting one scalar residual or a smooth curve. Converge the target against supercell or q coverage, displacement amplitude, force accuracy, integration treatment, temperature sampling, and included interaction order. Routes through Phono3py, ALAMODE, TDEP, and self-consistent methods are indexed under [lattice dynamics](/DFT-Research-Workflow/operations/resource-landscape/#lattice-dynamics); this overview does not claim an executed anharmonic run.
 
 ## The quantity beyond the harmonic model
 

@@ -3,6 +3,12 @@ topic_slug: fermi-surface-and-full-brillouin-zone-analysis
 status: reviewed
 ---
 
+## Rotate the full-zone object
+
+Load dense-mesh eigenvalues into a Fermi-surface viewer such as FermiSurfer, XCrySDen, PyProcar, or an equivalent code-specific tool. Display the Brillouin-zone boundary, rotate the isosurface, identify sheets and pockets, and inspect whether apparent crossings survive changes in mesh and interpolation. Keep the exact energy reference and band selection visible.
+
+A connected line through unrelated mesh points is not a Fermi surface, and a high-symmetry band path cannot exclude an off-path pocket. Find suitable [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), and [specialist post-processing routes](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools) before making a topology or metallicity claim.
+
 Use a full-Brillouin-zone calculation when the question depends on where a band reaches a chosen energy: a possible Fermi-surface sheet, pocket, neck, off-path crossing, or extremum. Start from an accepted structure and electronic reference state, then create a compatible uniform-zone eigenvalue field. [Compare a Full-Zone Isovalue with a Band-Path Crossing](/DFT-Research-Workflow/operations/fermi-surface-and-full-brillouin-zone-analysis/guides/compare-full-zone-isovalue-and-band-path/) reconstructs a real QE 7.5 aluminium mesh and path while keeping sampled crossings separate from a converged Fermi-surface claim.
 
 ## Produce the full-zone state

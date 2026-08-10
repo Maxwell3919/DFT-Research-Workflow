@@ -29,6 +29,10 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
         different codes produce interchangeable results. Official pages were checked on {verifiedAt}; match them
         to the version you actually run.
       </p>
+      <p class="scope">
+        {bridge.ecosystem_note}
+        <a data-ecosystem-link href={`${base}/${bridge.resource_landscape_path}`}>{bridge.resource_landscape_label}</a>.
+      </p>
     </header>
 
     <nav class="task-index" aria-label="Software Bridge tasks">

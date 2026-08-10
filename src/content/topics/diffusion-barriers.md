@@ -5,9 +5,11 @@ status: reviewed
 
 A diffusion-barrier calculation asks how a specified mobile object moves between specified sites in a declared host and what energy or free-energy cost it encounters along that elementary hop. A vacancy hop, adatom hop, interstitial jump, ionic migration event, and collective exchange are different physical pathways even when their endpoint displacement is similar. The result is conditional on the defect charge, concentration model, host state, cell, composition, magnetic state, boundary conditions, and Hamiltonian; it is not a universal material diffusivity.
 
-## Define the hop before calculating its barrier
+## Identify the sites and watch the hop
 
-Prepare relaxed initial and final sites with the same host, charge, cell, and state, record the migrating object and periodic image, then construct and optimize multiple plausible paths. Inspect image geometry, electronic convergence, force projection, saddle connectivity, forward/reverse references, and finite-size sensitivity. Converge the static barrier before adding vibrational free energies, prefactors, event networks, or diffusion coefficients. A completed path is evidence for one declared hop, not for exhaustive transport.
+Open relaxed initial and final structures together and mark the migrating atom or defect, its periodic image, the occupied and vacant sites, and symmetry-equivalent alternatives. Construct multiple plausible paths, then load each image chain in a viewer. Step through it to check atom correspondence, periodic wrapping, host relaxation, concerted motion, and unexpected short contacts; a low numerical barrier from an unphysical interpolation is not useful evidence.
+
+Plot image energies and projected forces, inspect saddle connectivity and forward/reverse references, and compare distinct routes rather than assuming one hop coordinate is exhaustive. Converge the static barrier before adding vibrational free energies, prefactors, event networks, or diffusion coefficients. Common NEB, trajectory-viewing, and specialist routes are indexed under [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). A completed path is evidence for one declared hop, not for exhaustive transport.
 
 ## A hop is defined by sites, state, and multiplicity
 

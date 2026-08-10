@@ -5,9 +5,21 @@ status: reviewed
 
 Harmonic phonons describe the local curvature of the Born--Oppenheimer potential-energy surface around one declared reference structure. They answer how small collective displacements vibrate in that model; they do not by themselves establish finite-temperature stability, a phase transition, thermal conductivity, electron--phonon coupling, or an experimentally observed spectrum.
 
-## Build the spectrum required by the question
+## Build the dispersion and watch the modes
 
-Start from an accepted reference state whose forces, stress, electronic convergence, k sampling, and occupations are trustworthy for force response. Choose DFPT or finite displacement. A Gamma calculation yields Gamma modes only; a dispersion requires a converged q mesh or supercell force-constant range, interpolation, and checks away from Gamma. Inspect frequencies, eigenvectors, acoustic consistency, non-analytic corrections where required, and the sensitivity of every imaginary mode to the reference state, q/supercell sampling, and interpolation. Converge the dispersion, phonon DOS, or downstream phonon quantity actually used. The Silicon guide is a real one-Gamma case, not a stability or dispersion workflow.
+Start from an accepted reference state whose forces, stress, electronic convergence, k sampling, and occupations are trustworthy for force response. Choose DFPT when the code provides the required perturbations, or finite displacement when a supercell force route is more appropriate; neither route is intrinsically the universal default. A Gamma calculation yields Gamma modes only. A dispersion requires a converged q mesh or supercell force-constant range, interpolation, and checks away from Gamma.
+
+Open the dispersion and phonon DOS, select important or imaginary points, and animate their eigenvectors in a phonon viewer. Check which atoms move, the direction and phase of the displacement, whether an apparent acoustic problem is translational, and whether a soft mode suggests a plausible lower-symmetry distortion. Visual inspection can expose a wrong cell or mode interpretation, but it does not replace q/supercell, force, electronic, acoustic-sum, or non-analytic-correction tests. Converge the dispersion, DOS, or downstream quantity actually used. The Silicon guide is a real one-Gamma frequency ledger with no dispersion or mode animation. Major DFPT, finite-displacement, and viewer routes are collected under [lattice dynamics](/DFT-Research-Workflow/operations/resource-landscape/#lattice-dynamics).
+
+One documented Phonopy 4.4.0 route is to set `ANIME` to the selected q point and run Phonopy to produce `anime.ascii`.
+
+Open that file for manual mode playback:
+
+```bash
+v_sim anime.ascii
+```
+
+This opens `anime.ascii` in the `v_sim` executable for manual mode playback. In the `v_sim` GUI, open the **Phonons** tab, select the mode, and press play. For a q point away from $\Gamma$, expand the displayed nodes under **Box and symmetry** so that the longer-period modulation is visible. Record the q point, branch or frequency, expansion, and what moves. This visual inspection complements numerical diagnosis; it does not prove that an imaginary mode is a physical instability.
 
 ## From force constants to normal modes
 

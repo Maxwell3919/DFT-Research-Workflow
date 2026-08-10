@@ -29,6 +29,8 @@ type ResearchQuestion = {
   topic_slug: string;
   related_topics?: RelatedTopic[];
   prerequisites: string;
+  common_human_route: string;
+  what_to_inspect: string;
   first_action: GuideAction | NoGuideAction;
   validation_requirement: string;
   claim_limitation: string;
@@ -163,6 +165,14 @@ const resolvedQuestions: ResolvedQuestion[] = navigatorDefinition.questions.map(
                   </dd>
                 </div>
                 <div>
+                  <dt>Common human route</dt>
+                  <dd>{question.common_human_route}</dd>
+                </div>
+                <div>
+                  <dt>What to inspect</dt>
+                  <dd>{question.what_to_inspect}</dd>
+                </div>
+                <div>
                   <dt>Before starting</dt>
                   <dd>{question.prerequisites}</dd>
                 </div>
@@ -196,8 +206,9 @@ const resolvedQuestions: ResolvedQuestion[] = navigatorDefinition.questions.map(
 
     <p class="workflow-support-links" data-workflow-support-links>
       If a calculation fails or you need to translate the same scientific task into another code, start with
-      {' '}<a href={withBase('operations/troubleshooting/')}>Troubleshooting</a> or the
-      {' '}<a href={withBase('operations/software-bridge/')}>Software Bridge</a>.
+      {' '}<a href={withBase('operations/troubleshooting/')}>Troubleshooting</a>, the
+      {' '}<a href={withBase('operations/software-bridge/')}>Software Bridge</a>, or the
+      {' '}<a href={withBase('operations/resource-landscape/')}>Resource Landscape</a>.
     </p>
 
     <section class="topic-directory" aria-labelledby="directory-heading">

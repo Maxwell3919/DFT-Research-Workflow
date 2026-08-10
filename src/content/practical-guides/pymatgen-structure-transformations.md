@@ -15,15 +15,22 @@ source_ids:
   - pymatgen-transformations
   - pymatgen-core-docs
   - pymatgen-core-pypi-2026-7-31
-media_ids:
-  - pymatgen-transformation-lineage-diagram
+media_ids: []
 review: docs/reviews/2026-08-03-practical-guides-model-building-pilot.md
 reviewed_at: "2026-08-03"
 ---
 
 Use a transformation object when the parent, operation, parameters, and child must remain reconstructable. The class executes a structural change; it does not decide whether that change preserves the physical model.
 
-## Run the checked transformations
+## Manual route: choose and inspect each transformation
+
+State the physical change before selecting a transformation object: representation change, integer repetition, strain, substitution, site removal, or another model change. Open the parent first, preserve an unchanged copy, and make one scientifically meaningful change at a time.
+
+After each change, compare parent and child in a viewer with cell boundaries visible. Check orientation, composition, coordination, site identity, periodic images, and any strain or displacement that the operation introduced. A successful library call proves only that an object was produced; visual plausibility and numerical lineage checks are both still required.
+
+[Compare visual, symmetry, and model-building tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
+
+## Optional automation: run the checked transformations
 
 From the repository root, run:
 
@@ -50,6 +57,9 @@ parent = Structure(
 For research use, replace this fixture with the parsed, checked working structure and retain its source checksum, data block, atom mapping, and parser version.
 
 ## Apply one operation and inspect its meaning
+
+Read the operation as a scientific model change, not merely as an API call. Inspect the resulting object visually, then compare composition, cell, coordinates, site mapping, symmetry, and nearest periodic contacts numerically. If either view contradicts the intended change, stop before generating a DFT input.
+
 
 An integer supercell is generated with:
 

@@ -7,7 +7,7 @@ tools:
   - python
   - quantum-espresso
 status: reviewed
-summary: Audit the committed bcc Fe QE adverse case from artifact identity through termination, SCF evidence, observables, numerical gates, and claim limits.
+summary: Inspect the committed bcc Fe QE adverse case from its scientific question and visible numerical evidence through execution, convergence, provenance, and claim limits.
 tested_versions:
   - Python 3.12
   - Quantum ESPRESSO 7.5 committed-output format
@@ -20,6 +20,12 @@ review: docs/reviews/2026-08-09-qe-terminal-inspection-and-audit.md
 reviewed_at: "2026-08-09"
 ---
 
+
+## Start with the scientific question and visible evidence
+
+This case asks whether a small fixed-geometry set of bcc Fe electronic calculations is sufficient to support a magnetic-state conclusion. Open the input, complete outputs, candidate table, and k-mesh decision together. Look at the SCF iteration history and warnings in the raw outputs, compare the FM energy sequence rather than only its last point, and check whether the candidate set represents the states required by the claim.
+
+The visible result is adverse: the programs and electronic solvers completed, but the declared FM k-mesh energy screen fails and the magnetic candidate set is incomplete. The manifest and hashes bind the reviewed bytes only after that scientific result has been understood.
 
 ## Audit the current case in scientific language
 
@@ -49,7 +55,7 @@ This worked example audits a real adverse record rather than turning a successfu
 
 The audit asks what each layer can support and stops at the first unresolved gate. It does not repair, rerun, or reinterpret the calculation.
 
-## Prepare
+## Open the record
 
 Work from the repository root and anchor the exact case:
 
@@ -74,9 +80,9 @@ grep -En '"exit_code"|"status"|"claim_boundary"' \
 
 This locates the recorded checks and claim boundary. It does not verify their arithmetic or internal consistency.
 
-## Run
+## Optional reproducibility audit
 
-Execute the read-only audit:
+After inspecting the human-readable inputs, outputs, table, and failed criterion, execute the read-only audit:
 
 ```bash
 python3 examples/practical-guides/qe_calculation_audit.py
@@ -84,7 +90,7 @@ python3 examples/practical-guides/qe_calculation_audit.py
 
 The script reads the manifest, input files, both attempt records, four Attempt 02 stdout/stderr pairs, the derived candidate summary, and the FM mesh screen. It does not write a report file, regenerate a figure, invoke QE, contact Slurm, or alter the case.
 
-## Check
+## Inspect and decide
 
 ### Artifact identity
 
@@ -153,6 +159,8 @@ tolerance:                            0.0005 Ry
 
 The first change exceeds the tolerance, so the declared k-mesh total-energy convergence test fails. Artifact-identity, recorded-exit, SCF-marker, and expected-record checks pass within their stated scope; they do not override the failed numerical test. No broader material conclusion is claimed.
 
+Do not read this series as a pass/fail number alone. Plot or tabulate the three FM energies against mesh density, look for monotonic or oscillatory behaviour, and ask whether the tested interval contains a stable tail under a predeclared observable-specific tolerance. The stored series does not establish that condition.
+
 ## Read
 
 The strongest supported statement is narrow: four declared QE 7.5 SCF stages completed and provide hash-bound energies, Fermi levels, forces, stresses, and FM moments for a fixed bcc Fe model; the stored FM/NM difference is reproducible from those records.
@@ -172,7 +180,7 @@ If an observable-specific gate fails, preserve the adverse series and decide whe
 
 ## Next
 
-Return to B and predeclare a controlled extension of the same fixed-geometry FM k-mesh series, holding the method, cutoff, smearing, and SCF settings fixed; then apply the same adjacent-change criterion to the extended series. Until that test passes, retain the completed executions as evidence of a failed numerical screen and make no magnetic-ground-state claim.
+Return to B and predeclare a controlled extension of the same fixed-geometry FM k-mesh series, holding the method, cutoff, smearing, and SCF settings fixed; then apply the same adjacent-change criterion to the extended series. If the iteration history itself is abnormal, start from [Troubleshooting: SCF does not converge](/DFT-Research-Workflow/operations/troubleshooting/#scf-does-not-converge). A VASP, ABINIT, or CP2K user can use the [Software Bridge](/DFT-Research-Workflow/operations/software-bridge/) to locate equivalent native outputs without treating parameter names as interchangeable. Until the test passes, retain the completed executions as evidence of a failed numerical screen and make no magnetic-ground-state claim.
 
 ## Official sources
 

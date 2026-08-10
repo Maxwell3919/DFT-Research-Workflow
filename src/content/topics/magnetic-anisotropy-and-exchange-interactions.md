@@ -3,6 +3,12 @@ topic_slug: magnetic-anisotropy-and-exchange-interactions
 status: reviewed
 ---
 
+## View the axes, spin arrangements, and fitted energy response
+
+Open the crystallographic structure with the tested magnetization axes or spin pairs marked. Inspect the final moment directions and magnitudes for every constrained or spin-orbit calculation, then plot energy against direction or relative spin arrangement with the numerical noise floor visible. The fitted anisotropy or exchange model must name its sign and normalization convention.
+
+A small energy difference is useful only after basis, k mesh, SCF threshold, spin-orbit setup, and state identity are tighter than the effect being interpreted. Compare several directions or configurations and inspect fit residuals rather than reading one pairwise subtraction. Use [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), [specialist magnetic tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for implementation-specific routes.
+
 Calculate magnetic anisotropy or exchange only after a compatible magnetic reference state has been selected. They are different target quantities. Anisotropy compares the same magnetic texture rotated relative to the lattice, normally with spin--orbit coupling (SOC). Exchange maps relative changes among local-moment configurations to a declared effective Hamiltonian.
 
 ## Establish a compatible SOC reference before subtracting micro-energy differences

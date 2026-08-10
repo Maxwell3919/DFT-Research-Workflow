@@ -514,7 +514,7 @@
         {
           "tool_slug": "cp2k",
           "software": "CP2K",
-          "terminology": "EXT_RESTART for selected saved run state",
+          "terminology": "EXT_RESTART for restart-relevant fields read from an external CP2K restart/input file",
           "first_official_start": "EXT_RESTART input reference",
           "official_url": "https://manual.cp2k.org/trunk/CP2K_INPUT/EXT_RESTART.html",
           "required_inputs": [
@@ -527,10 +527,13 @@
             "new generated .restart input",
             "new state artifacts requested by the continued calculation"
           ],
-          "first_inspection": "Verify parent ancestry, every state component selected by EXT_RESTART, and that each restored artifact belongs to the declared parent run.",
-          "boundary": "EXT_RESTART restores only selected saved state; omitted, incompatible, or unintended components can change the continuation, and a restart artifact is not proof of convergence."
+          "first_inspection": "Verify parent ancestry, the external restart/input file, every field selected by EXT_RESTART, and that any separately reused artifact belongs to the declared parent run.",
+          "boundary": "EXT_RESTART reads only the selected restart-relevant fields from the declared external restart/input file; omitted, incompatible, or unintended fields can change the continuation, and a restart artifact is not proof of convergence."
         }
       ]
     }
-  ]
+  ],
+  "ecosystem_note": "The four implementations below are deeply audited translation examples, not a complete software list, recommendation, ranking, or equivalence claim. Researchers also use all-electron, localized-orbital, real-space, tight-binding, and integrated commercial environments.",
+  "resource_landscape_path": "operations/resource-landscape/",
+  "resource_landscape_label": "Browse the broader electronic-structure ecosystem"
 }

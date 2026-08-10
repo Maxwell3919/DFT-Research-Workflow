@@ -41,10 +41,10 @@ async function assertPublishedCase(workflow: Workflow) {
 await Promise.all(workflows.map(assertPublishedCase));
 ---
 
-<BaseLayout title="Worked Workflows" description="Published terminal-first DFT case bundles with declared provenance and claim boundaries." current="workflows">
+<BaseLayout title="Worked Workflows" description="Real DFT cases organized around what a researcher opens, runs, inspects, decides, and preserves." current="workflows">
   <h1>Worked Workflows</h1>
   <p class="page-intro">
-    A worked workflow is published only when its case bundle contains declared sources, inputs, recorded commands, outputs, checks, parsers, derived data, and an explicit claim boundary. Each page presents a case-specific reader route. Historical continuity is claimed only for execution routes that the recipe and manifest identify explicitly; no case route is a universal replacement for the A–E research workflow.
+    Start with the material and scientific question. Each case shows the source object, the browser, viewer, editor, terminal, or HPC actions a researcher would use, the real outputs and figures to inspect, and the decision that follows. Exact commands, hashes, manifests, and replay records remain available as supporting reproducibility evidence. Historical continuity is claimed only for routes identified explicitly; no case is a universal replacement for the A–E research workflow.
   </p>
   <ol class="directory-list" data-workflow-directory>
     {workflows.map((workflow) => (

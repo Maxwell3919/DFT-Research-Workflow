@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/paths';
+import landscape from '../../../workflow/resource-landscape.json';
+import sourceManifest from '../../../sources/resource-landscape-links.json';
+
+const sourceById = new Map(sourceManifest.sources.map((source) => [source.id, source]));
+const categories = landscape.categories.map((category) => ({
+  ...category,
+  resources: category.resources.map((resource) => {
+    const source = sourceById.get(resource.source_id);
+    if (!source) throw new Error(`${resource.id}: missing resource-landscape source`);
+    return { ...resource, source };
+  }),
+}));
+const reviewedAt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+}).format(new Date(`${landscape.reviewed_at}T00:00:00Z`));
+const anchorAliases = new Map([
+  ['electronic-properties', ['electronic-structure-codes']],
+  ['specialist-tools', ['lattice-dynamics']],
+  ['pseudopotentials-basis', ['method-inputs']],
+]);
+---
+<BaseLayout
+  title="Resource Landscape"
+  description="A classified human-first index of databases, GUIs, codes, specialist tools, potential libraries, manuals, tutorials, and courses used in DFT research."
+  current="operations"
+>
+  <article class="landscape" data-resource-landscape>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={withBase('operations/')}>Research Workflow</a> / Resource Landscape
+    </nav>
+
+    <header class="landscape-intro">
+      <h1>Resource Landscape</h1>
+      <p class="page-intro">
+        Use this index when the next correct step happens outside DRW: search a database, inspect a structure in a GUI,
+        choose a code, open a specialist tool, compare potential libraries, or learn a workflow from its maintainers.
+      </p>
+      <p>
+        The route remains human-first: open the resource, inspect the real object and its provenance, bring the result
+        back to the calculation, then apply the numerical and scientific checks required by the question. APIs and
+        automation are optional conveniences after the manual route is understood.
+      </p>
+      <p class="scope-note">{landscape.scope_note} Sources were semantically reviewed on <time datetime={landscape.reviewed_at}>{reviewedAt}</time>.</p>
+    </header>
+
+    <nav class="landscape-index" aria-label="Resource categories">
+      <p>Go to:</p>
+      <ol>{categories.map((category) => <li><a href={`#${category.id}`}>{category.title}</a></li>)}</ol>
+    </nav>
+
+    {categories.map((category) => {
+      const subcategories = [...new Set(category.resources.map((resource) => resource.subcategory))];
+      return (
+        <section id={category.id} class="landscape-category" data-landscape-category={category.id} aria-labelledby={`${category.id}-title`}>
+          {(anchorAliases.get(category.id) ?? []).map((alias) => <span class="anchor-alias" id={alias} aria-hidden="true"></span>)}
+          <h2 id={`${category.id}-title`}>{category.title}</h2>
+          <p>{category.intro}</p>
+          {subcategories.map((subcategory) => (
+            <section class="resource-group" aria-labelledby={`${category.id}-${subcategory.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`}>
+              <h3 id={`${category.id}-${subcategory.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`}>{subcategory}</h3>
+              <ol class="resource-list">
+                {category.resources.filter((resource) => resource.subcategory === subcategory).map((resource) => (
+                  <li data-resource={resource.id}>
+                    <details>
+                      <summary>
+                        <span class="resource-name">{resource.name}</span>
+                        <span class="resource-meta">{resource.access} · {resource.interfaces.join(', ')} · {resource.authority}</span>
+                      </summary>
+                      <div class="resource-body">
+                        <dl>
+                          <div><dt>Use when</dt><dd>{resource.use_when}</dd></div>
+                          <div><dt>First human action</dt><dd>{resource.first_human_action}</dd></div>
+                          <div><dt>Inspect</dt><dd>{resource.inspect}</dd></div>
+                          <div><dt>Bring back</dt><dd>{resource.bring_back}</dd></div>
+                          <div><dt>Boundary</dt><dd>{resource.boundary}</dd></div>
+                        </dl>
+                        <p>
+                          <strong>Language:</strong> {resource.languages.join(', ')}.
+                          {' '}<a data-resource-link href={resource.source.url} target="_blank" rel="noreferrer">{resource.link_label}</a>.
+                        </p>
+                      </div>
+                    </details>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          ))}
+        </section>
+      );
+    })}
+
+    <footer class="landscape-next">
+      <h2>Return to the calculation</h2>
+      <p>
+        Use <a href={withBase('tools/')}>Tools</a> for the 17 reviewed depth pages,
+        <a href={withBase('operations/software-bridge/')}>Software Bridge</a> to translate six common tasks,
+        and <a href={withBase('operations/troubleshooting/')}>Troubleshooting</a> when execution or post-processing fails.
+      </p>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .landscape { max-width: 72rem; margin: 0 auto; padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2.25rem) 5rem; }
+  .landscape-intro, .landscape-next { max-width: 54rem; }
+  .landscape-intro h1 { margin-bottom: 1rem; }
+  .scope-note { color: var(--muted); border-left: 2px solid var(--rule); padding-left: 1rem; }
+  .landscape-index { margin: 2.5rem 0 0; padding: 1rem 0; border-block: 1px solid var(--rule); }
+  .landscape-index p { margin: 0 0 0.5rem; font-weight: 700; }
+  .landscape-index ol { display: flex; flex-wrap: wrap; gap: 0.45rem 1.5rem; margin: 0; padding-left: 1.25rem; }
+  .landscape-category { scroll-margin-top: 2rem; margin-top: clamp(3.5rem, 7vw, 6rem); }
+  .anchor-alias { display: block; scroll-margin-top: 2rem; }
+  .landscape-category > h2 { margin-bottom: 0.7rem; }
+  .landscape-category > p { max-width: 54rem; }
+  .resource-group { margin-top: 2.25rem; }
+  .resource-group h3 { margin-bottom: 0.65rem; }
+  .resource-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  .resource-list > li { border-bottom: 1px solid var(--rule); }
+  details { padding: 0.8rem 0; }
+  summary { cursor: pointer; display: grid; grid-template-columns: minmax(12rem, 0.42fr) minmax(0, 1fr); gap: 1rem; align-items: baseline; overflow-wrap: anywhere; }
+  .resource-name { color: var(--ink); font-weight: 700; }
+  .resource-meta { color: var(--muted); font-size: 0.92rem; }
+  .resource-body { max-width: 60rem; padding: 1rem 0 0 1.4rem; }
+  .resource-body dl { margin: 0; }
+  .resource-body dl > div { display: grid; grid-template-columns: minmax(8rem, 0.23fr) minmax(0, 1fr); gap: 0.8rem 1.2rem; padding: 0.55rem 0; }
+  .resource-body dl > div + div { border-top: 1px solid color-mix(in srgb, var(--rule) 68%, transparent); }
+  .resource-body dt { font-weight: 700; }
+  .resource-body dd { margin: 0; color: var(--muted); overflow-wrap: anywhere; }
+  .resource-body p { margin: 0.8rem 0 0; }
+  .landscape-next { margin-top: 5rem; padding-top: 1.5rem; border-top: 2px solid var(--ink); }
+  @media (max-width: 600px) {
+    .landscape { padding-inline: clamp(0.85rem, 4vw, 1.25rem); }
+    .landscape-index ol { display: block; }
+    .landscape-index li + li { margin-top: 0.35rem; }
+    summary, .resource-body dl > div { grid-template-columns: 1fr; gap: 0.25rem; }
+    .resource-body { padding-left: 0.5rem; }
+  }
+</style>

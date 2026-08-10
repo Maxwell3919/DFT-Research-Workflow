@@ -62,6 +62,7 @@ const publishedWorkflow = workflowsDocument.workflows.find((workflow) => workflo
 const caseRoot = evidence.case_id ? `examples/cases/${evidence.case_id}/` : undefined;
 const caseUrl = caseRoot ? `https://github.com/Maxwell3919/DFT-Research-Workflow/tree/main/${caseRoot}` : undefined;
 const caseManifestUrl = caseRoot ? `https://github.com/Maxwell3919/DFT-Research-Workflow/blob/main/${caseRoot}manifest.json` : undefined;
+const isInterfaceWalkthrough = evidence.evidence_class === 'real-interface-walkthrough';
 const gateRecords = Object.values(caseGates ?? {});
 const recordedStatuses = gateRecords
   .map((record) => record.status?.trim().toUpperCase())
@@ -105,20 +106,30 @@ const contextualNavigation = getContextualNavigation({ kind: 'practical', guide_
           {guide.data.tools.map((tool) => <span class="tool-tag">{tool}</span>)}
         </dd>
       </div>
+      {guide.data.interfaces.length > 0 && (
+        <div>
+          <dt>Interfaces</dt>
+          <dd>{guide.data.interfaces.join('; ')}</dd>
+        </div>
+      )}
       <div>
-        <dt>Executed with</dt>
+        <dt>{isInterfaceWalkthrough ? 'Observed with' : 'Executed with'}</dt>
         <dd>{guide.data.tested_versions.join('; ')}</dd>
       </div>
       <div>
-        <dt>Execution evidence</dt>
-        <dd><code>{guide.data.execution_script}</code></dd>
+        <dt>{isInterfaceWalkthrough ? 'Interface evidence' : 'Execution evidence'}</dt>
+        <dd>
+          {guide.data.execution_script
+            ? <code>{guide.data.execution_script}</code>
+            : 'Actual browser walkthrough; no terminal execution script is claimed.'}
+        </dd>
       </div>
     </dl>
 
     <div class="evidence-note">
-      <p>
-        Execution checks confirm only the bounded software or analysis assertions made by this page. They do not establish numerical convergence, energetic stability, or transferability to another system.
-      </p>
+      {isInterfaceWalkthrough
+        ? <p>The captured interface state establishes only that the public record, viewer, and declared object were displayed at the recorded time. It does not validate the structure or any DFT result.</p>
+        : <p>Execution checks confirm only the bounded software or analysis assertions made by this page. They do not establish numerical convergence, energetic stability, or transferability to another system.</p>}
     </div>
 
     {evidence.case_id && (

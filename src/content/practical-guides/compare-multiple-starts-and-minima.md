@@ -1,12 +1,12 @@
 ---
 topic_slug: optimize-structure
 guide_slug: compare-multiple-starts-and-minima
-title: Compare Multiple Starts and Metastable Minima
+title: Compare Multiple Starts and Stationary Candidates
 kind: implementation
 tools:
   - python
 status: reviewed
-summary: Use multiple physically motivated starting structures to expose distinct local minima, preserve every basin, and avoid calling one local relaxation a global search.
+summary: Use multiple physically motivated starting structures to expose distinct stationary candidates, preserve every basin, and avoid calling an accepted relaxation endpoint a verified minimum without curvature evidence.
 tested_versions:
   - Python 3.12
 execution_script: examples/practical-guides/optimization_multiple_starts.py
@@ -23,6 +23,16 @@ reviewed_at: "2026-08-03"
 
 A local optimizer answers a basin-dependent question: which stationary structure is reached from this starting point under this state evaluator and active subspace? It does not generally search the full configurational landscape.
 
+## Compare real starts and endpoints before ranking candidates
+
+Open every credible starting structure side by side with the same cell, orientation, and periodic-image settings. Compare coordination, symmetry, stacking or registry, defect environment, cell volume, and any magnetic or charge label. Record where each candidate came from: database record, experiment, literature structure, prototype, previous calculation, or an intentional distortion. Use [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) for the comparison, and keep one clearly named directory per candidate.
+
+Run the candidates independently with the same declared numerical setup unless a documented physical reason requires otherwise. During each run, inspect its trajectory rather than waiting only for the final energy. Reopen the start, representative intermediate frames, and endpoint; note reconstruction, state changes, constraint violations, or optimizer stalls. Then inspect complete SCF, free-force, stress, displacement, and warning histories.
+
+Build a comparison table only from scientifically comparable and numerically accepted endpoints. Include state identity and geometry descriptors as well as energy; retain distinct stationary candidates rather than silently discarding higher-energy branches. Force, stress, displacement, and solver criteria can support an accepted stationary candidate, but they do not establish positive curvature. Call an endpoint a local minimum only when a Hessian, phonon, vibrational, or other appropriate curvature test supports that classification in the active subspace. A lower printed energy does not repair a wrong model, an incompatible state, or an unconverged trajectory.
+
+The double-well script below is a bounded synthetic teaching fixture for bookkeeping. It is optional automation, not a real material calculation and not evidence that a chosen set of starts is complete. Consult the [learning resources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) and the original literature to identify physically motivated candidates before automating a larger search.
+
 ## Run the bounded basin exercise
 
 ```bash
@@ -31,7 +41,7 @@ python3 examples/practical-guides/optimization_multiple_starts.py
 
 The script starts the same deterministic local minimizer from four coordinates, reports which of two synthetic basins each start reaches, and retains both minima. It does not run DFT or prove that the lower fixture basin is globally lowest.
 
-For a material study, prepare one directory and stable candidate ID per physically motivated start. Preserve each input, trajectory, final geometry, final state, termination evidence, and fresh final energy-and-gradient check. Deduplicate only after structure, cell, atom mapping, state identity, and numerical tolerances agree. Send every distinct verified minimum to the same fixed-geometry reference-state protocol; do not rank raw last-step relaxation energies.
+For a material study, prepare one directory and stable candidate ID per physically motivated start. Preserve each input, trajectory, final geometry, final state, termination evidence, and fresh final energy-and-gradient check. Deduplicate only after structure, cell, atom mapping, state identity, and numerical tolerances agree. Send every distinct accepted stationary candidate to the same fixed-geometry reference-state protocol; do not rank raw last-step relaxation energies. Record which candidates have separate curvature evidence before describing them as minima.
 
 ## Identify why multiple minima are plausible
 
@@ -95,15 +105,16 @@ A deduplication record may use:
 
 Preserve the mapping and tolerance used. Do not delete the original branches after clustering them.
 
-## Treat distinct minima as results
+## Classify stationary candidates before calling them minima
 
-When multiple verified minima remain, compare them with a consistent reference-state protocol. The lowest computed energy under one method may be the leading zero-temperature candidate, but higher minima can remain scientifically relevant as metastable phases, reconstructed defects, stackings, conformers, or kinetic intermediates.
+When multiple accepted stationary candidates remain, compare them with a consistent reference-state protocol. A candidate becomes a supported local minimum only after an appropriate curvature test excludes unstable directions within the declared active subspace. The lowest computed energy under one method may be the leading zero-temperature candidate, but higher stationary candidates can remain scientifically relevant; classify them as metastable phases, reconstructed defects, stackings, conformers, or kinetic intermediates only when the additional evidence required by that label is present.
 
 Do not relabel all non-leading minima as “unconverged.” Distinguish:
 
 - optimization failure;
 - a stopped but unverified path;
-- a verified local minimum candidate;
+- a stationary candidate satisfying the declared optimization criteria;
+- a local minimum supported by a separate curvature test;
 - a candidate that is higher in a declared energy comparison;
 - a candidate rejected by a separate physical or experimental criterion.
 
@@ -121,7 +132,7 @@ Turning off all symmetry without constructing relevant candidates may increase c
 
 ## Rank only after comparable final verification
 
-Before comparing energies of different minima, ensure that each candidate uses a compatible model, method, numerical setup, state definition, and final verification. Cell sizes, formula units, charge states, magnetic branches, and constraints may require normalization or separate reference terms.
+Before comparing energies of different stationary candidates or supported minima, ensure that each candidate uses a compatible model, method, numerical setup, state definition, and final verification. Cell sizes, formula units, charge states, magnetic branches, and constraints may require normalization or separate reference terms.
 
 Energy ranking is a later reference-state or target-calculation task. This guide establishes candidate and basin lineage; it does not define formation energies, phase stability, or finite-temperature populations.
 
@@ -137,7 +148,7 @@ It does not run DFT, validate any material, prove global optimality, prescribe a
 
 **Using only random noise around one structure.** Cover known polymorph, registry, magnetic, and reconstruction hypotheses.
 
-**Deleting higher local minima.** Preserve metastable candidates and rejection reasons.
+**Deleting higher stationary candidates.** Preserve candidate lineage, curvature status, and rejection reasons.
 
 **Deduplicating by energy alone.** Compare structure, cell, mapping, and state identity.
 

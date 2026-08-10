@@ -23,6 +23,12 @@ review: docs/reviews/2026-08-03-equation-of-state-and-structural-phase-stability
 reviewed_at: "2026-08-03"
 ---
 
+## View the sampled structures and challenge the curve visually
+
+Before fitting, open structures across the sampled volume range and check for symmetry changes, magnetic-state changes, or unintended internal-coordinate behaviour. Plot the raw energies, all fitted curves, and residuals; then change the fit window and compare predicted minima and bulk moduli. A spreadsheet or notebook is appropriate for this human comparison, while [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) provide structural and reference context.
+
+**Audit the stored fixture:** the energy-volume points and fitted figure are synthetic teaching data. The companion script tests model and window sensitivity only; no material equation of state or phase stability follows.
+
 Use this fixture after a traceable energy-volume table has passed branch and convergence checks. It fits one invented table with several forms and windows so model spread remains visible.
 
 Inspect the report from the companion-script directory:

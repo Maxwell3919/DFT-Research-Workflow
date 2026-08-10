@@ -21,6 +21,12 @@ review: docs/reviews/2026-08-04-compositional-phase-stability-and-convex-hulls.m
 reviewed_at: "2026-08-04"
 ---
 
+## Inspect the OQMD records and the hull as a phase diagram
+
+Open the Li-P system in the public database interface, inspect entry identities, compositions, structures, and calculation metadata, and note the database snapshot or access date. Compare the exported rows with the plotted lower envelope; click or read each vertex and verify its adjacent tie line and decomposition products. Use [structure and data sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) to check phase-set completeness and independent context.
+
+**Reproduce this site's figure:** the companion script rebuilds the hull from a frozen, attributed 46-row OQMD snapshot. It does not prove that the snapshot contains every physical phase or that its energies are experimentally accurate.
+
 Use this worked example to reconstruct a binary hull from a frozen public-data table. It reads 46 OQMD Li-P rows representing 19 compositions and writes a JSON report plus a locally generated SVG. It does not rerun the source DFT calculations.
 
 From the repository root, run:

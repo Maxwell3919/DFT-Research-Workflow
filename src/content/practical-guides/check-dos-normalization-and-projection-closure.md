@@ -23,6 +23,12 @@ review: docs/reviews/2026-08-04-density-of-states-and-projected-density-of-state
 reviewed_at: "2026-08-04"
 ---
 
+## Read the real DOS as a quantitative spectrum
+
+Open the stored silicon total-DOS data in a plotting program and show the energy reference, ordinate scale, broadening, and sampling used. Inspect the occupied and unoccupied spectrum, integrate where the method permits, and compare total and projected weights only after verifying compatible projections. Repeat the visual comparison for denser meshes or different broadening before accepting fine features. Use [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist projection tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
+
+**Reproduce this site's figure:** the companion script redraws stored Quantum ESPRESSO 7.5 SCF, uniform-NSCF, and dos.x evidence. It does not perform the electron-count or projected-weight closure tests and does not by itself prove observable convergence.
+
 This bounded real-execution example reconstructs a total DOS for the two-site primitive Silicon cell derived from CC0 COD entry 9013102. Quantum ESPRESSO 7.5 completed SCF, a 12 x 12 x 12 uniform NSCF calculation, and `dos.x`; the stored `si.dos.dat` contains 481 energy rows. The example does not contain projected-DOS output and does not claim an electron-count or projection-closure PASS.
 
 ## Purpose

@@ -23,7 +23,11 @@ reviewed_at: "2026-08-04"
 
 **Evidence class: derived-public-data.** This example adds a real material transport figure without presenting public output as a calculation performed by this repository. It traces all 14 rows of `CoSb3.condtens` from the BoltzTraP2 public source archive, stores only the five columns needed here, and generates an original two-panel SVG.
 
-## Rebuild the bounded artifact
+## Read the displayed transport object first
+
+Inspect both tensor-component curves with their axes, temperature range, fixed chemical-potential coordinate, and units visible. Ask whether the plotted quantity is absolute or divided by a relaxation time, where the Seebeck sign changes, whether the sampling is dense enough to resolve that feature, and what parent band or scattering information is absent. The figure supports human comparison of two stored trends; it does not show the CoSb3 Fermi surface, k-resolved transport contributions, interpolation error, or a scattering mechanism. See the [electronic-transport resources](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) for those routes.
+
+### Optional automation: rebuild the bounded artifact
 
 ```bash
 python3 examples/practical-guides/boltztrap_cosb3_transport.py \
@@ -38,7 +42,7 @@ The [BoltzTraP2 public repository](https://gitlab.com/sousaw/BoltzTraP2/-/tree/p
 
 The compact snapshot retains every row and records the source header. The plotted fields are temperature, the diagonal `xx` conductivity divided by the relaxation time, and the diagonal `xx` Seebeck coefficient at the output's fixed chemical-potential coordinate. The [original BoltzTraP paper](https://arxiv.org/abs/cond-mat/0602203) defines the transport approach, while the [BoltzTraP2 paper](https://arxiv.org/abs/1712.07946) documents the later interpolation and Onsager implementation.
 
-## Read both panels with their assumptions attached
+## Interpret both panels with their assumptions attached
 
 The source stores `sigma_xx/tau`, not an absolute conductivity. Its rise or fall cannot be converted to resistivity without a relaxation time that is compatible with the same state, temperature, direction, and scattering model. The Seebeck component is stored in volts per kelvin; the redraw multiplies it by `10^6` and labels microvolts per kelvin.
 

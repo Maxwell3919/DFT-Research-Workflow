@@ -3,6 +3,12 @@ topic_slug: relative-and-formation-energies
 status: reviewed
 ---
 
+## Begin with the comparison, not the formula
+
+Open the calculation records and the Methods or supporting information that define every candidate and reference. Build a table with composition, charge, cell size, structural or magnetic state, functional, pseudopotential family, numerical settings, and energy convention before subtracting any values. A spreadsheet is often the fastest manual check; a script becomes useful only after the rows are demonstrably comparable.
+
+Plot the normalized differences and inspect outliers against the corresponding structures and source records. The decision is whether a stated reaction or ranking is supported by like-for-like calculations, not whether an arithmetic expression returned a number. Use the [literature and learning sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) to find reported reference conventions and the [specialist analysis tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools) when repeated ledgers need automation.
+
 Use relative or formation energies when the scientific question is a comparison: which named candidate is lower, what is the energy change for a balanced reaction, or how a target compares with declared reservoirs. The required output is not one total energy. It is a ledger plus a reproducible subtraction, its normalization, exclusions, convergence evidence, and claim boundary.
 
 Start with the attached **Build a Comparable Energy Ledger** guide when several calculations must be filtered and normalized. Use **Balance Reference Reactions and Normalization** when the result is defined by a reaction.

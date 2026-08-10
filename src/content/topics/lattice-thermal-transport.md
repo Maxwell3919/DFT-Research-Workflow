@@ -5,9 +5,11 @@ status: reviewed
 
 Lattice thermal transport asks how vibrational degrees of freedom carry heat in one declared material model and environment. In a crystalline phonon picture, the result is a thermal-conductivity tensor, not a single material label: it depends on temperature, structure, dimensionality, isotopes, defects, boundaries, scattering model, and the transport equation. A harmonic dispersion or an anharmonic linewidth is an input to this question, not its answer.
 
-## Solve for the transport tensor, then challenge it
+## Read the heat-carrying modes, not only $\kappa(T)$
 
-Start with mutually compatible harmonic and anharmonic force constants and a stable or explicitly temperature-renormalized phonon parent. Choose RTA, direct LBTE, or an inter-band/Wigner treatment according to the target. Compute the tensor over the required temperature range, then inspect symmetry, dimensional normalization, mesh trends, mode contributions, solver convergence, and sensitivity to isotope, boundary, defect, electron, and omitted higher-order scattering. Converge the reported tensor component or cumulative quantity, not a visually smooth curve. This overview does not claim an executed transport calculation.
+Start with mutually compatible harmonic and anharmonic force constants and a stable or explicitly temperature-renormalized phonon parent. Choose RTA, direct LBTE, or an inter-band/Wigner treatment according to the target. Before reducing the result to one tensor, inspect the phonon dispersion, group velocities, lifetimes, and scattering phase space. Plot $\kappa(T)$ together with mode- or branch-resolved contributions and a cumulative mean-free-path or frequency view when it informs the question; these views show which modes carry the reported heat current and whether a mesh trend is physically credible.
+
+Inspect tensor symmetry, dimensional normalization, q-mesh trends, collision-solver convergence, and sensitivity to isotope, boundary, defect, electron, and omitted higher-order scattering. Visual plateaus complement but do not replace numerical convergence. Converge the reported tensor component or cumulative quantity, not a visually smooth curve. Major particle-like, direct-LBTE, and specialist implementations are indexed under [lattice dynamics](/DFT-Research-Workflow/operations/resource-landscape/#lattice-dynamics) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). This overview does not claim an executed transport calculation.
 
 ## From modes to a heat-current response
 

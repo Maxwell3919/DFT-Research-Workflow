@@ -20,6 +20,12 @@ review: docs/reviews/2026-08-04-surface-energy-and-work-function.md
 reviewed_at: "2026-08-04"
 ---
 
+## Read the public table with the facet geometry in mind
+
+Open the attributed InterMat record or paper, inspect the stated method and facet definitions, and view representative silicon slabs when structures are available. Check facet indices, termination, unit convention, and whether experimental values are directly comparable before reading the plotted ordering. Use [structure and data sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) to supply this context.
+
+**Reproduce this site's figure:** the companion script redraws a frozen, hash-bound public-data snapshot. It does not rerun the surface calculations, show their slab geometries, or prove convergence beyond the source record.
+
 Rebuild the attributed comparison directly:
 
 ```bash

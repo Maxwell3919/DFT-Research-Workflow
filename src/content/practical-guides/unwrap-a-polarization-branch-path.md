@@ -21,7 +21,11 @@ reviewed_at: "2026-08-04"
 
 **Evidence class: synthetic-only.** This deterministic fixture takes five invented polarization representatives and an invented polarization quantum. It chooses, at every path point, the branch nearest to the preceding point. The exercise makes a continuous reported difference; it does not calculate a Berry phase, a gap, an energy barrier, or a material polarization.
 
-## Run the fixture
+## Use this only as a branch-arithmetic fixture
+
+This page contains no endpoint structures or actual Berry-phase output. In a material workflow, open the nonpolar and polar structures together, inspect atom correspondence and the distortion direction, step through every path image, and plot polarization representative, unwrapped branch, energy, and insulating gap on the same path coordinate. Only then does branch arithmetic support a physical path decision. Actual polarization and structure routes are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties).
+
+### Optional automation: run the invented fixture
 
 ```text
 python3 examples/practical-guides/polarization_branch_path.py \

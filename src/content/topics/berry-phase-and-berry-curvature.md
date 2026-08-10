@@ -5,9 +5,11 @@ status: reviewed
 
 Berry phase and Berry curvature describe the geometry of a chosen electronic-state bundle over a parameter space, most often the Brillouin zone. They connect compatible wave functions to polarization changes, orbital and Hall responses, and later topological tests. They do not follow from eigenvalues alone: a band plot can be smooth while the wave-function gauge, band subspace, or Brillouin-zone sampling needed for a geometric quantity is wrong.
 
-## Define the loop or full-zone integral before calculating it
+## Inspect the reciprocal-space object with its domain visible
 
-Start from an identified occupied or target subspace and specify the reciprocal basis, loop or integration domain, orientation, occupations, SOC/magnetic state, operator, and gauge-compatible representation. Calculate overlaps or matrix elements, inspect subspace continuity and near-degeneracies, and converge the phase, curvature integral, or response against mesh, windows, smearing, and model choices. A line or plane colour map is not a full-zone result. This overview does not claim an executed Berry calculation.
+Start from an identified occupied or target subspace and specify the reciprocal basis, loop or integration domain, orientation, occupations, SOC/magnetic state, operator, and gauge-compatible representation. Plot Wilson-loop or hybrid-centre phases against the loop parameter, or plot Berry curvature with the sampled Brillouin-zone plane and sign scale visible. Inspect continuity, partner switching, sharp hot spots, near-degeneracies, clipping, and whether the plotted domain actually covers the integral used in the claim.
+
+Calculate overlaps or matrix elements and converge the phase, curvature integral, or response against mesh, windows, smearing, and model choices. A smooth WCC flow still needs subspace and mesh checks; a line or plane colour map is not a full-zone result. Wannier, Berry, browser, and topology tools are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). This overview does not claim an executed Berry calculation.
 
 ## A phase around a closed loop
 

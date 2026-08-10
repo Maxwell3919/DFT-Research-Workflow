@@ -21,6 +21,10 @@ const accessLabels = {
   'restricted-license': 'Restricted licence',
   'registration-required': 'Registration required',
   'free-proprietary': 'Free proprietary licence',
+  institutional: 'Institutional access',
+  subscription: 'Subscription',
+  commercial: 'Commercial',
+  mixed: 'Mixed access',
 } as const;
 const access = accessLabels[tool.access];
 const verifiedAtLabel = new Intl.DateTimeFormat('en-GB', {
@@ -82,13 +86,13 @@ const contextualNavigation = getContextualNavigation({ kind: 'tool', slug: tool.
       })}
     </ul>
   ) : (
-    <p>No reviewed practical page currently makes an executable claim for this tool. Consult the connected scientific topics before choosing an implementation.</p>
+    <p>No reviewed hands-on walkthrough currently demonstrates this tool. Use the connected scientific topics and official start to choose and inspect an appropriate human route.</p>
   )}
 
   {contextualNavigation && <ContextualLinks navigation={contextualNavigation} />}
 
   <h2>Start here</h2>
-  <p>After choosing a bounded task, open the curated official entry point: <a data-tool-start href={tool.getting_started.url}>{tool.getting_started.label}</a>.</p>
+  <p>After choosing a bounded task, open the curated human entry point: <a data-tool-start href={tool.getting_started.url}>{tool.getting_started.label}</a>.</p>
 
   <h2>Official documentation</h2>
   <ul>

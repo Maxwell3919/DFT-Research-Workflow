@@ -5,9 +5,11 @@ status: reviewed
 
 Wannier construction changes the representation of a declared Bloch-state subspace. It is useful when localized orbitals and a real-space Hamiltonian make interpolation, Berry-response, surface, tight-binding, or transport analysis tractable. It is not an energy correction, a substitute for a converged parent electronic calculation, or a guarantee that a selected orbital picture is physically unique.
 
-## Construct and validate the required subspace
+## View the orbitals and compare the interpolated subspace
 
-Start from a qualified full-zone electronic parent. Choose the target bands, number of Wannier functions, projections, outer and frozen windows, spin/SOC representation, and symmetry treatment. Run disentanglement and localization, inspect spread history and centres, then compare interpolated energies, characters, degeneracies, and operator matrix elements with direct parent data over the full domain needed downstream. Converge the downstream observable as well as the representation. This overview does not claim an executed Wannier construction.
+Start from a qualified full-zone electronic parent. Choose the target bands, number of Wannier functions, trial projections, outer and frozen windows, spin/SOC representation, and symmetry treatment. Run disentanglement and localization, then inspect spread history and centres. Export representative Wannier functions to an XSF or volumetric format and open their signed isosurfaces in XCrySDen, VESTA, or another compatible viewer; unexpected centre positions, missing lobes, or symmetry breaking can reveal a poor subspace that a final spread alone hides.
+
+Overlay interpolated and direct parent bands over the full energy and k domain needed downstream, and compare character, degeneracies, and operator matrix elements where relevant. A visually localized orbital is not proof of a faithful Hamiltonian, and a smooth interpolation along one path is not a full-zone validation. Converge the downstream observable as well as the representation. Wannier, visualization, and specialist routes are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). This overview does not claim an executed Wannier construction.
 
 ## A gauge choice over a periodic subspace
 

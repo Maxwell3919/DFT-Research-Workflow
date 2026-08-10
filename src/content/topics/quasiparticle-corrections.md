@@ -7,9 +7,11 @@ Quasiparticle calculations address the energy required to add or remove an elect
 
 A GW result is not automatically an optical spectrum or an experimental band gap. It is a one-particle excitation result whose meaning depends on the starting state, screening model, self-energy approximation, numerical representation, boundary conditions, and comparison target.
 
-## Converge the quasiparticle quantity directly
+## Compare state-resolved quasiparticle corrections
 
-Start from an identified mean-field parent and specify the quasiparticle energies, gap, ordering, or dispersion needed. Construct the screening and self-energy with declared empty-state or completeness treatment, dielectric cutoff, k sampling, $q\rightarrow0$ handling, frequency model, Coulomb boundary, and self-consistency level. Inspect root selection, state character, off-diagonal or mixing risks, and starting-point sensitivity. Converge the requested quasiparticle output; a converged SCF parent does not establish any of these response-space limits. This overview does not claim an executed GW calculation.
+Start from an identified mean-field parent and specify the quasiparticle energies, gap, ordering, or dispersion needed. Plot parent and quasiparticle energies for the actual bands and k points in the claim, and plot the correction by state rather than replacing it immediately with one scissor value. Inspect root selection, state character, discontinuities, near-degenerate mixing, and starting-point sensitivity; a scalar gap can conceal a reordered valley or strongly non-rigid correction.
+
+Construct the screening and self-energy with declared empty-state or completeness treatment, dielectric cutoff, k sampling, $q\rightarrow0$ handling, frequency model, Coulomb boundary, and self-consistency level. Keep convergence plots for the specific states or gap, not only program residuals. Major GW codes, tutorials, and analysis routes are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [literature and learning](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning). A converged SCF parent establishes none of these response-space limits; this overview does not claim an executed GW calculation.
 
 ## From Kohn--Sham levels to a quasiparticle equation
 

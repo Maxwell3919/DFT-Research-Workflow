@@ -26,7 +26,13 @@ review: docs/reviews/2026-08-04-band-structure.md
 reviewed_at: "2026-08-04"
 ---
 
-This bounded real-execution example starts from the two-site primitive cell derived from CC0 COD entry 9013102. SeeK-path 2.2.1 supplies the ordered `cF` line path, Quantum ESPRESSO 7.5 runs the SCF and compatible path calculation, and `bands.x` writes the stored 141-k-point, eight-band dataset. Use it when you need to see exactly which structure, path coordinates, commands, output, and checks sit behind a band plot.
+## Inspect the structure, Brillouin zone, and labelled band plot first
+
+Open the accepted silicon structure, submit it to the SeeK-path web interface or inspect the stored SeeK-path result, and compare the standardized cell, reciprocal basis, Brillouin-zone drawing, labels, and ordered segments. After the QE run, view the band plot with those labels and an explicit energy reference; check path discontinuities and band count before interpreting dispersion. Use [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for the human-facing route.
+
+**Reproduce this site's figure:** the companion script replays the recorded COD, SeeK-path, and Quantum ESPRESSO 7.5 evidence. It verifies the path and input hashes, labels the special points, and preserves the `U | K` route break rather than drawing the unintended raw connector as valid evidence.
+
+This bounded real-execution example starts from the two-site primitive cell derived from CC0 COD entry 9013102. SeeK-path 2.2.1 supplies the `cF` segments `Gamma-X-U | K-Gamma-L-W-X`. The stored QE input instead listed all eight anchors sequentially, so its 141-point raw dataset contains an unintended `U-K` connector. The raw artifact remains preserved; the figure omits its 19 interior connector points and shows the discontinuity explicitly.
 
 ## Purpose
 
@@ -57,15 +63,15 @@ The committed ledger in `examples/practical-guides/data/silicon-qe/seekpath.json
 python3 examples/practical-guides/silicon_qe_bands.py
 ```
 
-This command does not rerun QE. Execution verifies the stored-output hash, parses all 141 k points and eight eigenvalues, writes the CSV, and regenerates the SVG. That checks artifact identity, parsing, cumulative path coordinate, and rendering against the committed output.
+This command does not rerun QE. It verifies the stored output, SeeK-path ledger, and QE input hashes; parses all 141 raw k points and eight eigenvalues; preserves all raw rows in the CSV; and regenerates a labelled SVG with 122 displayed points across the two intended continuous branches. The omitted 19 points are adverse input evidence, not discarded source data.
 
-<img src="/DFT-Research-Workflow/media/practical-guides/band-structure/build-reciprocal-path-ledger/silicon-qe-bands.svg" alt="Eight blue Silicon band branches across a cumulative high-symmetry path coordinate, with a dashed zero-energy reference line." />
+<img src="/DFT-Research-Workflow/media/practical-guides/band-structure/build-reciprocal-path-ledger/silicon-qe-bands.svg" alt="Eight Silicon band branches labelled Gamma, X, U, K, Gamma, L, W, and X, with a visible U to K route break and a dashed zero-energy reference." />
 
 Inspect the path coordinate order, special-point labels, number of k points and bands, units, energy reference, warnings, and raw versus reordered eigenvalues before interpreting a crossing or extremum. Preserve the input and output hashes, CIF identity, pseudopotential filename and SHA-256, QE version, and ledger with the figure. The pseudopotential body is not redistributed.
 
 ## Decide what the example supports
 
-The stored SCF reports electronic convergence in nine iterations and `JOB DONE.`; the path and `bands.x` stages also completed. This establishes the recorded software route and reconstruction checks. No cutoff series, k-mesh series, structural relaxation, spin-orbit test, full-zone extremum convergence, quasiparticle correction, or experimental validation is part of this example. The figure therefore supports a traceable path dataset, not a converged Silicon band gap, full-zone metallicity claim, or material conclusion.
+The stored SCF reports electronic convergence in nine iterations and `JOB DONE.`; the path and `bands.x` stages also completed. This establishes the recorded software route and reconstruction checks, while the `U-K` input defect remains visible in the evidence ledger. No cutoff series, k-mesh series, structural relaxation, spin-orbit test, full-zone extremum convergence, quasiparticle correction, or experimental validation is part of this example. The figure therefore supports a traceable corrected-display path dataset, not a converged Silicon band gap, full-zone metallicity claim, or material conclusion.
 
 ## Official sources
 

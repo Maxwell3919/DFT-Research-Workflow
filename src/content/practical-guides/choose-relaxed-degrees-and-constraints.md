@@ -27,6 +27,16 @@ reviewed_at: "2026-08-03"
 
 A relaxation protocol begins with a declaration of active variables. “Relax the structure” is ambiguous until the atomic coordinates, cell components, constraints, symmetry treatment, and external stress condition are specified.
 
+## Mark the movable model before choosing the run mode
+
+Open the source structure and the computational model in a GUI viewer from the [visualization and symmetry resource index](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry). Rotate the cell, show periodic images, and identify vacuum, surfaces, interfaces, defect neighborhoods, and any atoms that represent a fixed support. Measure suspicious short contacts. Write down, atom by atom and cell component by cell component, what may move and what must remain fixed.
+
+Open the actual input beside the viewer. Match every atom and lattice vector to the intended constraint map; verify units, atom order, coordinate convention, symmetry, and boundary conditions. Decide whether the question requires fixed-cell relaxation, variable-cell relaxation, or a deliberately restricted subspace. Then run one bounded step or short pilot through the normal executable or scheduler and reopen the produced structure. Check that the observed displacement and cell change match the declared degrees of freedom before committing expensive resources.
+
+During the production run, compare start, intermediate accepted frames, and the endpoint with the same display settings. Audit every free Cartesian force component and every active stress component, not only an aggregate norm or a final marker. A visually stationary atom can still carry an unacceptable free force; a visually attractive endpoint can still violate the numerical criterion or the scientific model.
+
+The stored script later on reconstructs a bounded QE example and is optional automation after this manual map has been checked. It does not demonstrate a universal constraint choice or a variable-cell acceptance rule. For other implementations, use the [code and manual index](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) to open the authoritative constraint and cell-optimization reference.
+
 ## Start with the stored Silicon input and output
 
 The bounded case reads these exact objects:

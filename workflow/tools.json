@@ -2,44 +2,85 @@
   "schema_version": 2,
   "authority": "secondary tool identity and workflow cross-index",
   "scope_note": "Tools implement, inspect, or preserve parts of the A-E workflow. They are not research operations. This secondary index does not rank or endorse tools, guarantee compatibility, or substitute for scientific method selection.",
-  "verified_at": "2026-08-04",
+  "verified_at": "2026-08-10",
   "tools": [
     {
-      "slug": "python",
-      "name": "Python",
-      "aliases": [],
-      "category": "Scientific programming",
-      "interfaces": [
-        "language",
-        "command-line"
+      "slug": "materials-project",
+      "name": "Materials Project",
+      "aliases": [
+        "MP"
       ],
-      "access": "open-source",
-      "role": "A general programming language used here for transparent parsing, transformation, validation, and plotting companions.",
-      "use_when": "Use Python when a bounded workflow step needs transparent parsing, transformation, validation, automation, or plotting that can be reviewed as source code.",
-      "first_action": "Open the smallest relevant script and one representative input, pin the interpreter and dependencies, then run that bounded example before scaling to a study.",
+      "category": "Structures and materials data",
+      "interfaces": [
+        "Web",
+        "API",
+        "Python"
+      ],
+      "access": "registration-required",
+      "access_note": "Browse and inspect records through the web interface. Authenticated API access is optional for repeated or high-throughput queries.",
+      "verified_version": "Materials Explorer and its official browser tutorial reviewed 2026-08-10.",
+      "role": "A materials-data service that can supply database records and structures when a query, fields, retrieval date, and provenance are recorded.",
+      "use_when": "Use Materials Project when candidate structures or database properties are needed with an explicit query, field selection, retrieval date, and database provenance.",
+      "first_action": "Open Materials Explorer in a browser, search by composition, formula, or material ID, filter candidates, inspect the record and structure, then export the intended cell while preserving identity and provenance.",
       "input_objects": [
-        "Text, CSV, JSON, or other declared data files",
-        "Arrays, records, parameters, and a version-pinned script"
+        "A material identifier or narrow chemistry query and requested fields",
+        "An authorized API client or documented web export"
       ],
       "output_objects": [
-        "Parsed or transformed data tables",
-        "Validation results, figures, or other explicitly written artifacts"
+        "A candidate database document or source-structure export",
+        "Material ID, database version, query, requested fields, origin task, cell representation and retrieval provenance"
       ],
-      "verify": "Verify that the script, interpreter and dependency versions, exact inputs, parameters, exit status, and written artifacts are recorded, and compare a fresh rerun when the step is expected to be deterministic.",
-      "primary_topic": "analyze-and-compare-results",
-      "homepage": "https://www.python.org/",
-      "documentation": "https://docs.python.org/3/",
+      "verify": "Verify the material ID, database version, exact query and fields, structure or property origin task, returned cell representation, retrieval date, composition and disorder; treat the download as a candidate source structure, not an accepted computational model.",
+      "primary_topic": "obtain-material-structure",
+      "homepage": "https://materialsproject.org/",
+      "documentation": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data",
       "getting_started": {
-        "label": "Python 3 documentation",
-        "url": "https://docs.python.org/3/"
+        "label": "Materials Explorer browser tutorial",
+        "url": "https://docs.materialsproject.org/apps/explorer-apps/materials-explorer/tutorial"
       },
-      "source_repository": "https://github.com/python/cpython",
+      "source_repository": "https://github.com/materialsproject/api",
       "topics": [
-        "build-or-modify-computational-model",
-        "test-numerical-convergence",
+        "obtain-material-structure",
+        "calculate-reference-ground-state",
         "analyze-and-compare-results",
-        "validate-results-and-scientific-conclusions",
         "document-and-preserve-study"
+      ]
+    },
+    {
+      "slug": "vesta",
+      "name": "VESTA",
+      "aliases": [],
+      "category": "Inspection, preparation, and symmetry",
+      "interfaces": [
+        "GUI"
+      ],
+      "access": "free-proprietary",
+      "access_note": "VESTA is free of charge under its published terms, but its distributed files are not to be redistributed without written permission; drawings require acknowledgement.",
+      "verified_version": "VESTA 3.5.8 download page and manual reviewed 2026-08-10.",
+      "role": "A desktop visualizer for crystal, volumetric, and morphology data; a rendered view documents display choices, not structure identity or a calculation result.",
+      "use_when": "Use VESTA when a researcher needs to inspect a crystal structure, periodic images, morphology, or a volumetric field interactively.",
+      "first_action": "Open the actual CIF or volumetric file in VESTA, verify the cell and species, rotate along meaningful directions, adjust periodic boundaries, measure suspicious distances or angles, and inspect vacuum or layer orientation before export.",
+      "input_objects": [
+        "A crystal-structure or volumetric-data file",
+        "Explicit display, boundary, periodic-image, and isosurface settings"
+      ],
+      "output_objects": [
+        "An inspected interactive view",
+        "An exported rendering with its display choices recorded"
+      ],
+      "verify": "Verify the displayed cell, composition, periodic images, orientation, coordinate convention, boundary and isosurface settings against the source file; an exported rendering is display evidence only.",
+      "primary_topic": "obtain-material-structure",
+      "homepage": "https://jp-minerals.org/vesta/en/",
+      "documentation": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf",
+      "getting_started": {
+        "label": "VESTA manual",
+        "url": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf"
+      },
+      "source_repository": null,
+      "topics": [
+        "obtain-material-structure",
+        "build-or-modify-computational-model",
+        "analyze-and-compare-results"
       ]
     },
     {
@@ -48,10 +89,10 @@
       "aliases": [
         "ASE"
       ],
-      "category": "Structure and workflow libraries",
+      "category": "Inspection, preparation, and symmetry",
       "interfaces": [
-        "python-api",
-        "command-line"
+        "Python",
+        "CLI"
       ],
       "access": "open-source",
       "role": "Python components for representing atomistic structures, constructing models, connecting calculators, and analyzing bounded workflow steps.",
@@ -88,9 +129,9 @@
       "aliases": [
         "Python Materials Genomics"
       ],
-      "category": "Structure and workflow libraries",
+      "category": "Inspection, preparation, and symmetry",
       "interfaces": [
-        "python-api"
+        "Python"
       ],
       "access": "open-source",
       "role": "Python data structures and analysis modules for materials representations, transformations, interfaces, phase diagrams, and related post-processing.",
@@ -125,10 +166,10 @@
       "slug": "spglib",
       "name": "spglib",
       "aliases": [],
-      "category": "Symmetry and reciprocal space",
+      "category": "Inspection, preparation, and symmetry",
       "interfaces": [
-        "library",
-        "python-api"
+        "Library",
+        "Python"
       ],
       "access": "open-source",
       "role": "A crystallographic symmetry library used to identify symmetry operations and standardized representations under declared tolerances.",
@@ -159,99 +200,22 @@
       ]
     },
     {
-      "slug": "materials-project",
-      "name": "Materials Project",
-      "aliases": [
-        "MP"
-      ],
-      "category": "Materials data services",
-      "interfaces": [
-        "web-services",
-        "python-api"
-      ],
-      "access": "registration-required",
-      "access_note": "The public documentation is readable without a key; the official mp-api client requires an account API key for data retrieval.",
-      "verified_version": "mp-api access method reviewed 2026-08-04; no API key was available in this environment",
-      "role": "A materials-data service that can supply database records and structures when a query, fields, retrieval date, and provenance are recorded.",
-      "use_when": "Use Materials Project when candidate structures or database properties are needed with an explicit query, field selection, retrieval date, and database provenance.",
-      "first_action": "Search one material identifier or narrow chemistry query, inspect one candidate record, request or export only the needed fields and structure, and retain the database version, origin task, returned-cell representation and retrieval metadata.",
-      "input_objects": [
-        "A material identifier or narrow chemistry query and requested fields",
-        "An authorized API client or documented web export"
-      ],
-      "output_objects": [
-        "A candidate database document or source-structure export",
-        "Material ID, database version, query, requested fields, origin task, cell representation and retrieval provenance"
-      ],
-      "verify": "Verify the material ID, database version, exact query and fields, structure or property origin task, returned cell representation, retrieval date, composition and disorder; treat the download as a candidate source structure, not an accepted computational model.",
-      "primary_topic": "obtain-material-structure",
-      "homepage": "https://materialsproject.org/",
-      "documentation": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data",
-      "getting_started": {
-        "label": "Materials Project API query guide",
-        "url": "https://docs.materialsproject.org/downloading-data/using-the-api/querying-data"
-      },
-      "source_repository": "https://github.com/materialsproject/api",
-      "topics": [
-        "obtain-material-structure",
-        "calculate-reference-ground-state",
-        "analyze-and-compare-results",
-        "document-and-preserve-study"
-      ]
-    },
-    {
-      "slug": "vesta",
-      "name": "VESTA",
-      "aliases": [],
-      "category": "Structure visualization",
-      "interfaces": [
-        "graphical-desktop"
-      ],
-      "access": "free-proprietary",
-      "access_note": "VESTA is free of charge under its published terms, but its distributed files are not to be redistributed without written permission; drawings require acknowledgement.",
-      "verified_version": "Official Linux archive 3.5.8 inspected 2026-08-04; GUI execution is blocked on Talos by the unavailable virtual-display dependency",
-      "role": "A desktop visualizer for crystal, volumetric, and morphology data; a rendered view documents display choices, not structure identity or a calculation result.",
-      "use_when": "Use VESTA when a researcher needs to inspect a crystal structure, periodic images, morphology, or a volumetric field interactively.",
-      "first_action": "Open one structure or volumetric file, then verify the displayed cell, species, periodicity, coordinate convention, and any isosurface settings before exporting an image.",
-      "input_objects": [
-        "A crystal-structure or volumetric-data file",
-        "Explicit display, boundary, periodic-image, and isosurface settings"
-      ],
-      "output_objects": [
-        "An inspected interactive view",
-        "An exported rendering with its display choices recorded"
-      ],
-      "verify": "Verify the displayed cell, composition, periodic images, orientation, coordinate convention, boundary and isosurface settings against the source file; an exported rendering is display evidence only.",
-      "primary_topic": "obtain-material-structure",
-      "homepage": "https://jp-minerals.org/vesta/en/",
-      "documentation": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf",
-      "getting_started": {
-        "label": "VESTA manual",
-        "url": "https://jp-minerals.org/vesta/archives/VESTA_Manual.pdf"
-      },
-      "source_repository": null,
-      "topics": [
-        "obtain-material-structure",
-        "build-or-modify-computational-model",
-        "analyze-and-compare-results"
-      ]
-    },
-    {
       "slug": "seekpath",
       "name": "SeeK-path",
       "aliases": [
         "SeeKpath"
       ],
-      "category": "Symmetry and reciprocal space",
+      "category": "Inspection, preparation, and symmetry",
       "interfaces": [
-        "python-api"
+        "Web",
+        "Python"
       ],
       "access": "open-source",
       "access_note": "The Python package is open source; its path is conditional on the supplied cell, symmetry settings, and convention.",
       "verified_version": "SeeK-path 2.2.1 with spglib 2.7.0 executed for the Silicon teaching case on 2026-08-04",
       "role": "A crystallographic path generator that standardizes a declared cell and returns labelled reciprocal-space paths for compatible band calculations.",
       "use_when": "Use SeeK-path when a settled periodic model needs a convention-labelled reciprocal-space path generated from its actual crystallographic cell.",
-      "first_action": "Submit the settled lattice, fractional positions and species with explicit symmetry tolerances and time-reversal assumption, then save the returned standardized primitive cell together with its labelled path, transformations and warnings before writing a band input.",
+      "first_action": "Open the SeeK-path browser tool, upload the settled structure, inspect the standardized primitive cell, Brillouin zone, path, transformations, tolerances, and warnings, then copy the cell and path together. Use Python only to repeat the audited operation.",
       "input_objects": [
         "Lattice vectors, fractional positions and atomic numbers for the settled model",
         "Explicit symmetry and angle tolerances, path recipe and time-reversal assumption"
@@ -265,8 +229,8 @@
       "homepage": "https://seekpath.readthedocs.io/en/latest/",
       "documentation": "https://seekpath.readthedocs.io/en/latest/maindoc.html",
       "getting_started": {
-        "label": "SeeK-path main documentation",
-        "url": "https://seekpath.readthedocs.io/en/latest/maindoc.html"
+        "label": "SeeK-path browser tool",
+        "url": "https://www.materialscloud.org/work/tools/seekpath"
       },
       "source_repository": "https://github.com/giovannipizzi/seekpath",
       "topics": [
@@ -284,7 +248,7 @@
       ],
       "category": "Electronic-structure engines",
       "interfaces": [
-        "command-line"
+        "CLI"
       ],
       "access": "open-source",
       "role": "A plane-wave and pseudopotential electronic-structure suite with ground-state, response, phonon, molecular-dynamics, and post-processing executables.",
@@ -325,7 +289,7 @@
       ],
       "category": "Electronic-structure engines",
       "interfaces": [
-        "command-line"
+        "CLI"
       ],
       "access": "restricted-license",
       "role": "A licensed electronic-structure package documented for periodic ground-state, response, dynamics, and post-processing calculations.",
@@ -358,49 +322,12 @@
       ]
     },
     {
-      "slug": "cp2k",
-      "name": "CP2K",
-      "aliases": [],
-      "category": "Electronic-structure engines",
-      "interfaces": [
-        "command-line",
-        "library"
-      ],
-      "access": "open-source",
-      "role": "An atomistic simulation package spanning electronic-structure, molecular-dynamics, optimization, and mixed quantum/classical methods.",
-      "use_when": "Use CP2K when an atomistic electronic-structure, optimization, molecular-dynamics, or mixed quantum/classical route fits the declared model.",
-      "first_action": "Choose the relevant method section, then inspect one minimal input together with its coordinates, basis sets, potentials, units, and print controls.",
-      "input_objects": [
-        "A CP2K input and atomic coordinates",
-        "Declared basis sets, potentials, method settings, and optional restart state"
-      ],
-      "output_objects": [
-        "Program stdout and selected printed data",
-        "Restart files, trajectories, forces, energies, or other requested artifacts"
-      ],
-      "verify": "Verify the executable, basis and potential identities, units, cell and periodicity, intended RUN_TYPE, SCF or geometry convergence markers, requested print artifacts and restart or WFN lineage; file existence alone does not establish a compatible continuation.",
-      "primary_topic": "choose-dft-method-and-computational-setup",
-      "homepage": "https://www.cp2k.org/",
-      "documentation": "https://manual.cp2k.org/",
-      "getting_started": {
-        "label": "CP2K reference manual",
-        "url": "https://manual.cp2k.org/"
-      },
-      "source_repository": "https://github.com/cp2k/cp2k",
-      "topics": [
-        "choose-dft-method-and-computational-setup",
-        "optimize-structure",
-        "calculate-reference-ground-state",
-        "ab-initio-molecular-dynamics"
-      ]
-    },
-    {
       "slug": "abinit",
       "name": "ABINIT",
       "aliases": [],
       "category": "Electronic-structure engines",
       "interfaces": [
-        "command-line"
+        "CLI"
       ],
       "access": "open-source",
       "role": "An electronic-structure suite with ground-state, response, phonon, and many-body perturbation workflows documented as separate capabilities.",
@@ -432,12 +359,49 @@
       ]
     },
     {
+      "slug": "cp2k",
+      "name": "CP2K",
+      "aliases": [],
+      "category": "Electronic-structure engines",
+      "interfaces": [
+        "CLI",
+        "Library"
+      ],
+      "access": "open-source",
+      "role": "An atomistic simulation package spanning electronic-structure, molecular-dynamics, optimization, and mixed quantum/classical methods.",
+      "use_when": "Use CP2K when an atomistic electronic-structure, optimization, molecular-dynamics, or mixed quantum/classical route fits the declared model.",
+      "first_action": "Choose the relevant method section, then inspect one minimal input together with its coordinates, basis sets, potentials, units, and print controls.",
+      "input_objects": [
+        "A CP2K input and atomic coordinates",
+        "Declared basis sets, potentials, method settings, and optional restart state"
+      ],
+      "output_objects": [
+        "Program stdout and selected printed data",
+        "Restart files, trajectories, forces, energies, or other requested artifacts"
+      ],
+      "verify": "Verify the executable, basis and potential identities, units, cell and periodicity, intended RUN_TYPE, SCF or geometry convergence markers, requested print artifacts and restart or WFN lineage; file existence alone does not establish a compatible continuation.",
+      "primary_topic": "choose-dft-method-and-computational-setup",
+      "homepage": "https://www.cp2k.org/",
+      "documentation": "https://manual.cp2k.org/",
+      "getting_started": {
+        "label": "CP2K reference manual",
+        "url": "https://manual.cp2k.org/"
+      },
+      "source_repository": "https://github.com/cp2k/cp2k",
+      "topics": [
+        "choose-dft-method-and-computational-setup",
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "ab-initio-molecular-dynamics"
+      ]
+    },
+    {
       "slug": "siesta",
       "name": "SIESTA",
       "aliases": [],
       "category": "Electronic-structure engines",
       "interfaces": [
-        "command-line"
+        "CLI"
       ],
       "access": "open-source",
       "role": "A localized-orbital electronic-structure package used for periodic calculations and as a parent engine for selected transport workflows.",
@@ -472,10 +436,10 @@
       "slug": "phonopy",
       "name": "Phonopy",
       "aliases": [],
-      "category": "Lattice dynamics",
+      "category": "Target-property tools",
       "interfaces": [
-        "command-line",
-        "python-api"
+        "CLI",
+        "Python"
       ],
       "access": "open-source",
       "role": "A harmonic lattice-dynamics package that constructs and analyzes force-constant models from external force calculations.",
@@ -507,10 +471,10 @@
       "slug": "phono3py",
       "name": "Phono3py",
       "aliases": [],
-      "category": "Lattice dynamics",
+      "category": "Target-property tools",
       "interfaces": [
-        "command-line",
-        "python-api"
+        "CLI",
+        "Python"
       ],
       "access": "open-source",
       "role": "An anharmonic lattice-dynamics package for third-order force constants, phonon interactions, and lattice-thermal-transport analysis.",
@@ -543,10 +507,10 @@
       "slug": "wannier90",
       "name": "Wannier90",
       "aliases": [],
-      "category": "Interpolation and topology",
+      "category": "Target-property tools",
       "interfaces": [
-        "command-line",
-        "library"
+        "CLI",
+        "Library"
       ],
       "access": "open-source",
       "role": "A code for constructing Wannier representations and using them for interpolation and selected Berry, topology, and transport analyses.",
@@ -581,9 +545,9 @@
       "slug": "epw",
       "name": "EPW",
       "aliases": [],
-      "category": "Electron-phonon and transport",
+      "category": "Target-property tools",
       "interfaces": [
-        "command-line"
+        "CLI"
       ],
       "access": "open-source",
       "role": "A Wannier-based code for electron-phonon coupling and related electronic, transport, and superconducting observables using compatible parent data.",
@@ -616,11 +580,11 @@
       "slug": "aiida",
       "name": "AiiDA",
       "aliases": [],
-      "category": "Workflow and provenance",
+      "category": "Preservation and optional automation",
       "interfaces": [
-        "python-api",
-        "command-line",
-        "web-services"
+        "Python",
+        "CLI",
+        "Web"
       ],
       "access": "open-source",
       "role": "A workflow and provenance infrastructure for automating calculations and retaining queryable data-process lineage.",
@@ -645,6 +609,44 @@
       "source_repository": "https://github.com/aiidateam/aiida-core",
       "topics": [
         "calculate-reference-ground-state",
+        "analyze-and-compare-results",
+        "validate-results-and-scientific-conclusions",
+        "document-and-preserve-study"
+      ]
+    },
+    {
+      "slug": "python",
+      "name": "Python",
+      "aliases": [],
+      "category": "Scientific programming",
+      "interfaces": [
+        "Programming language",
+        "CLI"
+      ],
+      "access": "open-source",
+      "role": "A general programming language used here for transparent parsing, transformation, validation, and plotting companions.",
+      "use_when": "Use Python when a bounded workflow step needs transparent parsing, transformation, validation, automation, or plotting that can be reviewed as source code.",
+      "first_action": "Open the smallest relevant script and one representative input, pin the interpreter and dependencies, then run that bounded example before scaling to a study.",
+      "input_objects": [
+        "Text, CSV, JSON, or other declared data files",
+        "Arrays, records, parameters, and a version-pinned script"
+      ],
+      "output_objects": [
+        "Parsed or transformed data tables",
+        "Validation results, figures, or other explicitly written artifacts"
+      ],
+      "verify": "Verify that the script, interpreter and dependency versions, exact inputs, parameters, exit status, and written artifacts are recorded, and compare a fresh rerun when the step is expected to be deterministic.",
+      "primary_topic": "analyze-and-compare-results",
+      "homepage": "https://www.python.org/",
+      "documentation": "https://docs.python.org/3/",
+      "getting_started": {
+        "label": "Python 3 documentation",
+        "url": "https://docs.python.org/3/"
+      },
+      "source_repository": "https://github.com/python/cpython",
+      "topics": [
+        "build-or-modify-computational-model",
+        "test-numerical-convergence",
         "analyze-and-compare-results",
         "validate-results-and-scientific-conclusions",
         "document-and-preserve-study"

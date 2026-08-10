@@ -5,9 +5,11 @@ status: reviewed
 
 Ab initio molecular dynamics (AIMD) propagates nuclei through time while electronic forces are evaluated from a declared electronic-structure model. It asks how a specified finite model samples a specified statistical ensemble over a finite observation window. A successful run is a trajectory, not an equilibrium distribution, a free-energy surface, a diffusion coefficient, or a finite-temperature material property by itself.
 
-## Prepare and diagnose the trajectory as data
+## Watch the trajectory and read its diagnostics together
 
-Choose the ensemble, integrator, time step, thermostat or barostat, initial velocities, constraints, equilibration rule, production interval, and observables before execution. During the run inspect electronic convergence, force quality, temperature and controlled quantities, conserved-quantity drift where applicable, structural events, and restart continuity. Afterward separate equilibration from production, estimate correlation and uncertainty, and converge the claimed observable against time step, cell, k sampling, trajectory length, and independent starts. This overview does not claim an executed AIMD trajectory.
+Choose the ensemble, integrator, time step, thermostat or barostat, initial velocities, constraints, equilibration rule, production interval, and observables before execution. Open the initial structure and then the growing trajectory in a viewer. Watch for periodic jumps, bond breaking or reconstruction, atom overlap, cell deformation, evaporation, and rare events; save the frame numbers of anomalies so they can be compared with the electronic and thermodynamic records.
+
+Plot temperature and controlled quantities, conserved-quantity drift where applicable, SCF/force quality, and restart boundaries on the same time axis used for structural inspection. Afterward separate equilibration from production, inspect representative frames, estimate correlation and uncertainty, and converge the claimed observable against time step, cell, k sampling, trajectory length, and independent starts. ASE GUI, OVITO, MD codes, and analysis routes are indexed under [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). A plausible movie complements numerical and statistical tests; it does not establish equilibrium. This overview does not claim an executed AIMD trajectory.
 
 ## The trajectory has a physical model and a numerical model
 

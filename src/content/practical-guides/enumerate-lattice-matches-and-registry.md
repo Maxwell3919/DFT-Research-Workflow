@@ -19,6 +19,12 @@ review: docs/reviews/2026-08-04-interface-and-heterostructure-energetics.md
 reviewed_at: "2026-08-04"
 ---
 
+## Open candidate interfaces before choosing a match
+
+Inspect both parent lattices and each shortlisted supercell in a viewer. Compare in-plane axes, strain partition, rotation, atom count, termination, registry, shortest contacts, thickness, and vacuum from top and side views. A human should reject geometrically nonsensical candidates before any expensive relaxation and should preserve an image or structure file for each retained match. Use [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [specialist interface tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
+
+**Audit the stored fixture:** the current mismatch map is an invented, secondary enumeration diagram. Its dots do not show atoms, termination, registry, separation, or a relaxed interface, so the companion script supports only the bounded integer-matching demonstration.
+
 Run the bounded teaching enumeration:
 
 ```bash

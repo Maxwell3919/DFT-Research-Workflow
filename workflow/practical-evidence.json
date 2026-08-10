@@ -57,9 +57,7 @@
       "blocker": null,
       "priority": 2,
       "execution_script": "examples/practical-guides/pymatgen_structure_transformations.py",
-      "media_ids": [
-        "pymatgen-transformation-lineage-diagram"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "structure-silicon-cell-lineage"
     },
@@ -191,8 +189,8 @@
       "real_result": true,
       "interface": false,
       "traceable_data": true,
-      "upgrade": "completed Silicon QE 7.5 reconstruction",
-      "blocker": "Materials Project API and VESTA GUI remain unavailable",
+      "upgrade": "completed hash-bound Silicon QE and SeeK-path reconstruction with explicit U-K discontinuity",
+      "blocker": "The preserved raw sequential QE input includes an unintended U-K connector; 19 interior connector points are omitted only from the intended-route display. No full-zone or converged-gap claim is supported.",
       "priority": 1,
       "execution_script": "examples/practical-guides/silicon_qe_bands.py",
       "media_ids": [
@@ -333,13 +331,12 @@
       "real_result": true,
       "interface": false,
       "traceable_data": true,
-      "upgrade": "completed bounded Al QE full-zone/path reconstruction",
+      "upgrade": "completed bounded Al QE full-zone/path reconstruction with unconnected mesh projection",
       "blocker": "The 8x8x8 teaching mesh and one direct path do not establish a converged Fermi-surface topology, carrier density, or transport result.",
       "priority": 3,
       "execution_script": "examples/practical-guides/al_qe_full_zone.py",
       "media_ids": [
-        "al-qe-full-zone",
-        "fermi-surface-isovalue-fixture"
+        "al-qe-full-zone"
       ],
       "upgrade_readiness": "completed",
       "case_id": "aluminium-metallic-electronic-structure"
@@ -356,9 +353,7 @@
       "blocker": "source selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/charge_difference_closure.py",
-      "media_ids": [
-        "charge-difference-closure"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -373,9 +368,7 @@
       "blocker": "source selection pending",
       "priority": 4,
       "execution_script": "examples/practical-guides/anisotropy_exchange_ledger.py",
-      "media_ids": [
-        "anisotropy-exchange-ledger"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -697,13 +690,13 @@
       "real_result": true,
       "interface": false,
       "traceable_data": true,
-      "upgrade": "completed hash-bound Silicon QE force trace",
-      "blocker": "no stress path, independent electronic-state branch, force-threshold convergence or minimum proof",
+      "upgrade": "completed hash-bound Silicon QE component-force and SCF-history reconstruction",
+      "blocker": "The fixed-cell output has no stress path or cell optimization and does not establish state continuity, an independent minimum, observable convergence, or model validity.",
       "priority": 1,
       "execution_script": "examples/practical-guides/silicon_qe_relax.py",
       "media_ids": [
-        "optimization-history-diagnostics",
-        "silicon-qe-relax-force"
+        "silicon-qe-relax-force",
+        "silicon-qe-relax-scf-history"
       ],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
@@ -773,9 +766,7 @@
       "blocker": "no geometry optimization, candidate comparison, or ground-state proof",
       "priority": 1,
       "execution_script": "examples/practical-guides/qe_manual_handoff.py",
-      "media_ids": [
-        "reference-protocol-continuity"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -826,9 +817,7 @@
       "blocker": "no public charge density/wavefunctions or code-specific restart validation",
       "priority": 1,
       "execution_script": "examples/practical-guides/qe_manual_handoff.py",
-      "media_ids": [
-        "reference-state-lineage"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -863,6 +852,24 @@
       "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "bcc-fe-spin-qe"
+    },
+    {
+      "guide_slug": "inspect-cod-silicon-record",
+      "parent_topic": "obtain-material-structure",
+      "evidence_class": "real-interface-walkthrough",
+      "material": "COD 9013102 Silicon public record and repository expanded teaching snapshot",
+      "real_result": true,
+      "interface": true,
+      "traceable_data": true,
+      "upgrade": "completed actual COD record and Mol* object-state walkthrough",
+      "blocker": "No VESTA GUI state is claimed; the Mol* view loads an expanded teaching snapshot, not the byte-for-byte COD download.",
+      "priority": 1,
+      "execution_script": null,
+      "media_ids": [
+        "cod-9013102-browser-record",
+        "silicon-molstar-browser-viewer"
+      ],
+      "upgrade_readiness": "completed"
     }
   ]
 }

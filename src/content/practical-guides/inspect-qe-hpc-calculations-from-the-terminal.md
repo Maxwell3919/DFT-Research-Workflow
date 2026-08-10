@@ -38,6 +38,8 @@ Those observations are not interchangeable. A Slurm `COMPLETED` state does not p
 
 The commands below are read-only unless a side effect is explicitly identified. They use the committed `bcc-fe-spin-qe` case when a concrete file is needed, so they can be run from the repository root without inventing a calculation result.
 
+This is the terminal part of a larger human workflow. Before accepting the calculation, also open the structure in an appropriate viewer, inspect convergence tables and plots, and compare the physical result with the intended model and relevant literature. Terminal evidence can locate and classify a problem; it cannot replace those visual and scientific checks.
+
 ## Prepare
 
 Anchor the inspection before reading a log:
@@ -355,6 +357,8 @@ For `diff`, exit 0 means identical inputs, exit 1 means a real difference, and a
 
 **Artifacts.** Match inputs, stdout, stderr, derived tables, figures, restart objects, and manifests by path, size, hash, and lineage. Artifact integrity can prove that reviewed bytes were retained. It cannot upgrade a failed numerical check or validate a scientific interpretation.
 
+Keep the complete output open in `less` while reading any extracted table or plot. Inspect the iteration sequence around an apparent oscillation or warning instead of relying on the last matching line. For a relaxation, compare the final coordinates with the starting structure in a viewer and look for unexpected reconstruction or short contacts. For bands, DOS, and phonons, open the actual figure and underlying table; visual plausibility complements, but never replaces, observable-specific convergence.
+
 ## If it fails
 
 First classify the layer that failed. A pending allocation is not a QE failure. A launcher/MPI error before the program banner is not SCF nonconvergence. A nonzero wrapper exit can coexist with successful child stages. `JOB DONE.` can coexist with an observable-specific convergence failure.
@@ -373,7 +377,7 @@ python3 examples/practical-guides/qe_hpc_terminal_inspection.py
 
 It checks the sizes and SHA-256 values declared by the committed case manifest, the preserved launch failure, the four recorded Attempt 02 exit codes, QE/SCF markers, selected energies and Fermi levels, and the failed numerical-convergence record. It does not call Slurm, inspect a live process, submit or cancel a job, or modify a file.
 
-After terminal triage, use the worked audit to decide which scientific check failed. Do not proceed to a stronger claim until that check has new, traceable evidence under a predeclared criterion.
+After terminal triage, use the worked audit to decide which scientific check failed. Continue with [symptom-first Troubleshooting](/DFT-Research-Workflow/operations/troubleshooting/) or return to the relevant A–D topic; do not proceed to a stronger claim until that check has new, traceable evidence under a predeclared criterion.
 
 ## Official sources
 

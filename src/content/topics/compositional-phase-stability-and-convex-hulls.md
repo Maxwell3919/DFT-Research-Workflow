@@ -3,6 +3,12 @@ topic_slug: compositional-phase-stability-and-convex-hulls
 status: reviewed
 ---
 
+## Start from the phase set a researcher can inspect
+
+Open a phase-diagram or database interface, select the chemical system, and inspect the records that define the competing phase set. Check composition, calculation method, correction or reference-energy scheme, database version, and entry identity before exporting a table. Open suspicious structures rather than trusting labels alone.
+
+Rebuild or view the hull as an actual composition-energy plot, click or read the vertices and tie lines, and compare the decomposition products with the original records. The decision is conditional on the included phases and compatible energy scheme. Browse [structure and thermochemical data sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), [electronic-property and phase tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) before treating a database hull as exhaustive.
+
 Use a compositional convex hull when the question is whether a represented phase can lower its thermodynamic potential by decomposing into other represented phases. The output must include the candidate ledger, hull vertices or facets, balanced decomposition coefficients, energy above hull, tolerance, and every phase-set decision.
 
 Use **Rebuild a Li-P Convex Hull from an OQMD Snapshot** to inspect a public-data post-processing path, then **Stress-Test a Hull Against a Missing Competitor** to test phase-set sensitivity.
