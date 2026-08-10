@@ -12,6 +12,7 @@ const legacyDocument = JSON.parse(await readFile(new URL('ontology/legacy-operat
 const recipesDocument = JSON.parse(await readFile(new URL('recipes/index.json', root), 'utf8'));
 const toolsDocument = JSON.parse(await readFile(new URL('workflow/tools.json', root), 'utf8'));
 const practicalEvidence = JSON.parse(await readFile(new URL('workflow/practical-evidence.json', root), 'utf8'));
+const resourceLandscapeDocument = JSON.parse(await readFile(new URL('workflow/resource-landscape.json', root), 'utf8'));
 const workflowTopics = workflowDocument.sections.flatMap((section) =>
   section.groups.flatMap((group) => group.topics.map((topic) => ({
     ...topic,
@@ -56,6 +57,13 @@ const retiredPracticalRedirects = [
   ['operations/chemical-bonding-analysis/guides/integrate-a-declared-cohp-energy-window', 'operations/chemical-bonding-analysis/'],
   ['operations/magnetic-configuration-and-ground-state-comparison/guides/compare-enumerated-magnetic-candidates', 'operations/magnetic-configuration-and-ground-state-comparison/'],
 ];
+const resourceLandscapeResources = resourceLandscapeDocument.categories.flatMap((category) => category.resources);
+const expectedNonEnglishResourceTitleIds = ['whut-materials-simulation-cn'];
+const nonEnglishResourceTitles = resourceLandscapeResources.filter((resource) => /[\u3400-\u9fff]/u.test(resource.name));
+if (JSON.stringify(nonEnglishResourceTitles.map((resource) => resource.id)) !== JSON.stringify(expectedNonEnglishResourceTitleIds)) {
+  errors.push(`non-English resource title inventory changed: ${JSON.stringify(nonEnglishResourceTitles.map((resource) => resource.id))}`);
+}
+const nonEnglishResourceTitleById = new Map(nonEnglishResourceTitles.map((resource) => [resource.id, resource.name]));
 
 function parseFrontmatter(source) {
   const match = source.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
@@ -107,6 +115,23 @@ function stripMarkup(html) {
     .trim();
 }
 
+function stripDeclaredNonEnglishResourceTitles(html, path) {
+  let cjkAuditHtml = html;
+  for (const match of html.matchAll(/<span\b[^>]*\bdata-resource-title(?:-reference)?="([^"]+)"[^>]*>[\s\S]*?<\/span>/gi)) {
+    const [element, resourceId] = match;
+    const title = stripMarkup(element);
+    if (!/[\u3400-\u9fff]/u.test(title)) continue;
+    const expectedTitle = nonEnglishResourceTitleById.get(resourceId);
+    const language = element.match(/\blang="([^"]+)"/i)?.[1] ?? '';
+    if (!expectedTitle || normalizedText(title) !== normalizedText(expectedTitle) || language !== 'zh-CN') {
+      errors.push(`${path}: undeclared or incorrectly marked non-English resource title ${resourceId}`);
+      continue;
+    }
+    cjkAuditHtml = cjkAuditHtml.replace(element, ' ');
+  }
+  return cjkAuditHtml;
+}
+
 function dataList(tag, attribute) {
   const value = tag.match(new RegExp(`\\b${attribute}="([^"]*)"`, 'i'))?.[1] ?? '';
   return value === '' ? [] : value.split(',').map((entry) => entry.trim()).filter(Boolean);
@@ -134,10 +159,10 @@ for (const path of htmlFiles) {
   const html = await readFile(path, 'utf8');
   htmlByPath.set(path, html);
   const text = stripMarkup(html);
+  const cjkAuditText = stripMarkup(stripDeclaredNonEnglishResourceTitles(html, path));
   const isStaticRedirect = /<meta http-equiv="refresh"/i.test(html);
   if (!isStaticRedirect && !/<html lang="en">/.test(html)) errors.push(`${path}: html language must be English`);
-  const isResourceLandscape = path.endsWith('/operations/resource-landscape/index.html');
-  if (!isResourceLandscape && /[\u3400-\u9fff]/u.test(text)) errors.push(`${path}: public HTML contains CJK text`);
+  if (/[\u3400-\u9fff]/u.test(cjkAuditText)) errors.push(`${path}: public HTML contains undeclared CJK text`);
   if (/<script(?:\s|>)/i.test(html)) errors.push(`${path}: client-side script is not allowed`);
   if (/class="operation-contract"/.test(html)) errors.push(`${path}: fixed operation contract is not allowed`);
   for (const phrase of prohibitedText) if (text.toLowerCase().includes(phrase.toLowerCase())) errors.push(`${path}: prohibited public phrase ${JSON.stringify(phrase)}`);

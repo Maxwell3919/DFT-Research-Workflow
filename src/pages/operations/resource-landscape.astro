@@ -69,12 +69,22 @@ const anchorAliases = new Map([
                   <li data-resource={resource.id}>
                     <details>
                       <summary>
-                        <span class="resource-name">{resource.name}</span>
+                        <span
+                          class="resource-name"
+                          data-resource-title={resource.id}
+                          lang={resource.id === 'whut-materials-simulation-cn' ? 'zh-CN' : undefined}
+                        >{resource.name}</span>
                         <span class="resource-meta">{resource.access} · {resource.interfaces.join(', ')} · {resource.authority}</span>
                       </summary>
                       <div class="resource-body">
                         <dl>
-                          <div><dt>Use when</dt><dd>{resource.use_when}</dd></div>
+                          <div><dt>Use when</dt><dd>{resource.id === 'whut-materials-simulation-cn' ? (
+                            <>
+                              {resource.use_when.slice(0, resource.use_when.indexOf(resource.name))}
+                              <span data-resource-title-reference={resource.id} lang="zh-CN">{resource.name}</span>
+                              {resource.use_when.slice(resource.use_when.indexOf(resource.name) + resource.name.length)}
+                            </>
+                          ) : resource.use_when}</dd></div>
                           <div><dt>First human action</dt><dd>{resource.first_human_action}</dd></div>
                           <div><dt>Inspect</dt><dd>{resource.inspect}</dd></div>
                           <div><dt>Bring back</dt><dd>{resource.bring_back}</dd></div>

@@ -29,6 +29,7 @@ for (const tool of registry.tools ?? []) {
   if (!accessKinds.has(tool.access)) errors.push(`${tool.slug}: access`);
   if (!Array.isArray(tool.interfaces) || !tool.interfaces.length || tool.interfaces.some((item) => !interfaceKinds.has(item))) errors.push(`${tool.slug}: interfaces`);
   for (const key of ['role','use_when','first_action','verify']) if (typeof tool[key] !== 'string' || !tool[key].trim()) errors.push(`${tool.slug}: ${key}`);
+  if (typeof tool.getting_started?.label !== 'string' || !tool.getting_started.label.trim()) errors.push(`${tool.slug}: getting_started.label`);
   if (checks.has(tool.verify)) errors.push(`${tool.slug}: duplicate verify`); else checks.add(tool.verify);
   for (const key of ['input_objects','output_objects']) if (!Array.isArray(tool[key]) || !tool[key].length || tool[key].some((item) => typeof item !== 'string' || !item.trim())) errors.push(`${tool.slug}: ${key}`);
   if (!Array.isArray(tool.topics) || !tool.topics.length) errors.push(`${tool.slug}: topics`);

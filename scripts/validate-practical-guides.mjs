@@ -1,6 +1,8 @@
 import { access, readFile, readdir } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
+const practicalEvidenceDocument = JSON.parse(await readFile(new URL('workflow/practical-evidence.json', root), 'utf8'));
+const practicalEvidenceByGuide = new Map((practicalEvidenceDocument.guides ?? []).map((entry) => [entry.guide_slug, entry]));
 const errors = [];
 const workflow = JSON.parse(await readFile(new URL('workflow/topics.json', root), 'utf8'));
 const sourceManifest = JSON.parse(await readFile(new URL('sources/practical-guide-links.json', root), 'utf8'));
@@ -378,7 +380,17 @@ for (const file of files) {
   if (data.status !== 'reviewed') errors.push(`${file}: practical page must be reviewed`);
   if (!Array.isArray(data.tools) || data.tools.length === 0) errors.push(`${file}: missing tools`);
   if (data.interfaces !== undefined && !Array.isArray(data.interfaces)) errors.push(`${file}: interfaces must be an array`);
-  if (!data.execution_script && (!Array.isArray(data.interfaces) || data.interfaces.length === 0)) errors.push(`${file}: non-script walkthrough missing interfaces`);
+  if (!data.execution_script) {
+    const evidence = practicalEvidenceByGuide.get(data.guide_slug);
+    if (evidence?.evidence_class !== 'real-interface-walkthrough' || evidence?.interface !== true || evidence?.execution_script !== null) {
+      errors.push(`${file}: execution-script exception requires declared real-interface-walkthrough evidence`);
+    }
+    if (!Array.isArray(data.interfaces) || data.interfaces.length === 0) errors.push(`${file}: interface walkthrough missing interfaces`);
+    if ((data.interfaces ?? []).some((entry) => /\b(?:CLI|terminal|shell|command line|HPC|scheduler|API|Python)\b/i.test(entry))) {
+      errors.push(`${file}: interface-only walkthrough declares a command-oriented interface`);
+    }
+    if (/```/.test(body)) errors.push(`${file}: interface-only walkthrough contains a fenced executable claim`);
+  }
   if (!Array.isArray(data.tested_versions) || data.tested_versions.length === 0) errors.push(`${file}: missing tested_versions`);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(data.reviewed_at ?? '')) errors.push(`${file}: invalid reviewed_at`);
   if (!data.summary || data.summary.length < 20) errors.push(`${file}: summary is too short`);
