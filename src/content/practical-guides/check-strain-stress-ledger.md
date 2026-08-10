@@ -14,24 +14,27 @@ source_ids:
   - nielsen-martin-stress
   - mouhat-elastic-stability
   - vasp-phonons-finite-differences
-media_ids:
-  - strain-stress-ledger
+media_ids: []
 review: docs/reviews/2026-08-04-elastic-constants-and-mechanical-properties.md
 reviewed_at: "2026-08-04"
 ---
 
 **Evidence class: synthetic-only.** This fixture uses invented signed uniaxial strain and stress rows in one declared component convention. It verifies a least-squares slope, signed-strain symmetry, and the cubic stability inequalities for the invented matrix. It does not calculate a stress tensor or infer a material response.
 
-## Use this only as an arithmetic fixture
+Do not use this page as the first step of an elastic calculation. Start with a real reference cell, inspect named positive and negative strained structures in [VESTA](/DFT-Research-Workflow/tools/vesta/) or [ASE](/DFT-Research-Workflow/tools/ase/), and read energies, all stress components, residual forces, and internal-relaxation status from the selected calculator output. Return here only if the remaining problem is understanding the arithmetic of a signed fit.
 
-There is no reference crystal, deformed structure, stress output, or material-specific symmetry decision in this page. A real workflow opens the reference and representative signed-strain cells, confirms the axes and Voigt convention, inspects internal relaxation, and plots energy and stress against strain before fitting. The [electronic-property and response resources](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) provide routes for real calculations.
+## Optional toy after inspecting real strained cells
 
-### Optional automation: run the invented ledger
+This page has no reference crystal, stress output, or material-specific symmetry decision. Plot the real energy and stress series before fitting; the [electronic-property and response resources](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) provide routes for producing those objects.
 
-```text
+### Optional replay of the invented ledger
+
+```bash
 python3 examples/practical-guides/strain_stress_ledger.py \
   --svg public/media/practical-guides/elastic-constants-and-mechanical-properties/check-strain-stress-ledger/strain-stress-ledger.svg
 ```
+
+If the synthetic positive and negative rows fail to close, inspect the printed row table and units in the terminal; that diagnoses this toy only. In a material workflow, asymmetry or a poor residual sends the researcher back to the corresponding real deformed structure and stress output, not to this script.
 
 [Nielsen and Martin](https://doi.org/10.1103/PhysRevB.32.3780) provide the stress formalism. [Mouhat and Coudert](https://doi.org/10.1103/PhysRevB.90.224104) summarize symmetry-specific elastic-stability conditions, and [VASP's finite-difference documentation](https://vasp.at/wiki/Phonons_from_finite_differences) distinguishes clamped and ion-relaxed moduli.
 

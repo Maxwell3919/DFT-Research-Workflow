@@ -17,9 +17,7 @@ source_ids:
   - methfessel-paxton
   - blochl-tetrahedron
   - cod-9013102
-media_ids:
-  - convergence-k-smearing-matrix
-  - silicon-qe-kmesh-matrix
+media_ids: []
 review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
@@ -30,44 +28,61 @@ Inspect the reciprocal lattice, symmetry, dimensionality, offsets, and irreducib
 
 ## Design a metallic mesh-by-smearing study
 
-For a metallic calculation, predeclare:
-
-~~~text
-target observable and units:
-tolerance:
-reciprocal-resolution series and offsets:
-smearing kernels:
-smearing widths and units:
-energy or free-energy convention:
-fixed structure, method, pseudopotential, cutoff, bands, symmetry, charge, and spin state:
-state checks, including Fermi level and magnetization:
-~~~
+For a metallic calculation, predeclare the target observable and units, tolerance, reciprocal-resolution series and offsets, smearing kernels, widths and units, and energy or free-energy convention. State which structure, method, pseudopotential, cutoff, band count, symmetry, charge, and spin branch remain fixed, and how Fermi level, magnetization, occupations, and other state diagnostics will be checked.
 
 Use at least several mesh densities and several widths that span the material's integration regime. The values are study parameters, not universal defaults. Generate the complete input matrix before inspecting results.
 
 Run the reader's prepared QE inputs with one naming rule:
 
 ~~~bash
-mkdir -p metallic-convergence/outputs
+mkdir -p metallic-convergence/runs
 for input in metallic-convergence/inputs/*.in; do
-  name=$(basename "$input" .in)
-  pw.x -in "$input" > "metallic-convergence/outputs/$name.out"
+  test -f "$input"
+  name=$(basename -- "$input" .in)
+  run_dir="metallic-convergence/runs/$name"
+  test ! -e "$run_dir"
+  mkdir -p "$run_dir"
+  cp -- "$input" "$run_dir/$name.in"
+  grep -Ei 'prefix|outdir|pseudo_dir' -- "$run_dir/$name.in"
+  (
+    cd "$run_dir"
+    if pw.x -in "$name.in" > "$name.out" 2> "$name.err"; then
+      pw_status=0
+    else
+      pw_status=$?
+    fi
+    printf '%s\n' "$pw_status" > "$name.exit-status"
+    exit "$pw_status"
+  ) || printf 'QE failed for %s; retain and inspect that run.\n' "$name" >&2
 done
 ~~~
 
 This is a protocol for a new metallic study. No such smearing outputs are supplied or claimed by the Silicon companion.
+
+Before launch, inspect the displayed `prefix`, `outdir`, and `pseudo_dir` for every copied input. Stage the exact tested-library pseudopotential files and an isolated scratch path for that run, or use reviewed absolute paths. A loop that silently shares another row's save tree is not a valid mesh-by-smearing comparison.
 
 ## Check, extract, and compare
 
 Start with:
 
 ~~~bash
-grep -H "JOB DONE" metallic-convergence/outputs/*.out
-grep -H "convergence has been achieved" metallic-convergence/outputs/*.out
-grep -HiE "total energy|fermi energy|smearing" metallic-convergence/outputs/*.out
+for run_dir in metallic-convergence/runs/*; do
+  name=$(basename -- "$run_dir")
+  out="$run_dir/$name.out"
+  err="$run_dir/$name.err"
+  printf '\n%s\n' "$run_dir"
+  cat -- "$run_dir/$name.exit-status"
+  test "$(grep -cF 'Program PWSCF v.' -- "$out")" -eq 1
+  test "$(grep -cF 'JOB DONE.' -- "$out")" -eq 1
+  grep -F 'convergence has been achieved' -- "$out" | tail -n 1
+  grep -iE 'total energy|fermi energy|smearing' -- "$out" | tail -n 12
+  tail -n 40 -- "$err"
+  grep -Ei 'warning|error in routine|stopping|not converged|no convergence' \
+    -- "$out" "$err" || true
+done
 ~~~
 
-The first command checks termination only. The second checks the electronic solver marker reported by QE. The third locates version-dependent energy, Fermi-level, and smearing lines for inspection; define a parser for the exact quantity used in the decision.
+The shell status, coherent banner, <code>JOB DONE.</code>, stderr, and fatal-text scan constrain program completion. The SCF marker checks one electronic solver condition reported by QE. The remaining lines locate version-dependent energy, Fermi-level, and smearing records for inspection; define a parser for the exact quantity used in the decision.
 
 Forces, energy differences, DOS near $E_F$, Fermi-surface geometry, and electron–phonon integrals require their own extraction and tolerance. Force convergence does not establish DOS convergence, and DOS convergence does not establish phonon convergence.
 

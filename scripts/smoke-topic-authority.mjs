@@ -47,6 +47,7 @@ const inspect = async (page, slug, width, label) => {
       heading: footer.querySelector('h2')?.textContent?.trim(),
       itemCount: footer.querySelectorAll(':scope > ul > li').length,
       linkCount: footer.querySelectorAll('a[href^="http"]').length,
+      roleLabels: [...footer.querySelectorAll(':scope > ul > li > strong')].map((label) => label.textContent?.trim()),
       hasCardUi: Boolean(footer.querySelector('.card, .status, [role="tab"], progress')),
       internalKey: /\b(?:martin|sholl-steckel|giustino)\b/.test(text)
         || [...footer.attributes].some((attribute) => /textbook|authority-key/i.test(attribute.name)),
@@ -59,6 +60,8 @@ const inspect = async (page, slug, width, label) => {
   if (result.itemCount < 2 || result.itemCount > 3) failures.push(`${label}/${slug}: expected 2-3 items, found ${result.itemCount}`);
   if (result.linkCount < 1 || result.linkCount > 2) failures.push(`${label}/${slug}: expected 1-2 external links, found ${result.linkCount}`);
   if (result.hasCardUi) failures.push(`${label}/${slug}: prohibited card/status/tab/progress UI found`);
+  const allowedRoleLabels = new Set(['Official method or implementation source.', 'Method or specialist reference.', 'Deeper theory.', 'Why these sources.']);
+  if (result.roleLabels?.some((roleLabel) => !allowedRoleLabels.has(roleLabel))) failures.push(`${label}/${slug}: reader-facing reference role is unclear: ${JSON.stringify(result.roleLabels)}`);
   if (result.internalKey) failures.push(`${label}/${slug}: internal textbook key is reader-visible`);
   if (result.overflows) failures.push(`${label}/${slug}: footer or page overflows at ${width}px`);
   if (slug === 'document-and-preserve-study' && !result.text?.includes('data and metadata standards')) {

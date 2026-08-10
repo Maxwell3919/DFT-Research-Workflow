@@ -15,7 +15,7 @@ Use an adsorption calculation when the question is the energetic change for movi
 
 Record parent bulk and surface lineage, facet, termination, reconstruction, defects, lateral cell, slab and vacuum thickness, constraints, charge and spin, adsorbate composition, starting site and orientation, coverage definition, and environment. Assign a persistent candidate ID before running any relaxation.
 
-Use **Build an Adsorption-Energy and Free-Energy Ledger** to audit a public CMR reaction and separate it from synthetic arithmetic. Then use **Compare Adsorption Sites, Coverage, and Periodic Cells** for matched grouping and final-state relabelling. **Replot the CMR CO-on-fcc(111) Adsorption Benchmark** closes the sequence with a bounded public-data audit.
+Begin with **Replot the CMR CO-on-fcc(111) Adsorption Benchmark** to inspect the attributed public rows, sign convention, and missing-geometry boundary. Use **Build an Adsorption-Energy and Free-Energy Ledger** to connect that reaction to a private calculation ledger. **Compare Adsorption Sites, Coverage, and Periodic Cells** is an optional grouping exercise; it contains no relaxed structures and cannot rank real sites.
 
 ## Write a balanced energy ledger
 
@@ -111,7 +111,7 @@ Use explicit $\mu_i(T,p_i,\ldots)$ terms for gas or other reservoirs. Surface gr
 
 The computational hydrogen electrode transforms a proton-electron chemical potential under a stated potential scale. It does not make a neutral vacuum slab a constant-potential electrochemical interface. Declare electron number or charge, electrode-potential reference, solvent, field, pH convention, and double-layer model as required by the question.
 
-## Audit the benchmark and bound kinetic claims
+## Inspect the benchmark, then stop before kinetic claims
 
 The subordinate example freezes selected CMR $\mathrm{CO}+\mathrm{slab}\rightarrow\mathrm{CO/slab}$ rows for Cu, Pd, Pt, and Au and redraws four method fields. It is attributed real published data; this repository did not rerun the calculations. The method spread is descriptive, not an accuracy proof or catalytic ranking.
 

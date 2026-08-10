@@ -16,8 +16,7 @@ source_ids:
   - jain-formation-enthalpies
   - stevanovic-fere
   - bartel-decomposition-reactions
-media_ids:
-  - balanced-reference-reactions
+media_ids: []
 review: docs/reviews/2026-08-03-relative-and-formation-energies.md
 reviewed_at: "2026-08-03"
 ---
@@ -26,24 +25,17 @@ reviewed_at: "2026-08-03"
 
 A researcher normally begins with the candidate and reservoir structures, the calculation records that produced their energies, and the paper or database metadata defining the reference convention. Put stoichiometries and per-cell energies in a spreadsheet, balance the reaction by hand, and inspect whether charge, composition, method, and state identity are compatible before converting to a per-atom or per-formula-unit value. Use [structure and data sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data) and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) to recover missing reference definitions.
 
-**Audit the stored fixture:** the displayed abstract reaction is a conceptual, deterministic teaching fixture. Its companion script checks rational stoichiometry and normalization; it is not a real material reaction or formation-energy result.
+**Optional arithmetic check:** the abstract reaction is a deterministic teaching fixture. Use it after writing the real reaction and inspecting its source records; it checks rational stoichiometry and normalization, not a material reaction or formation energy.
 
 Use this fixture when you need to check reaction balance, coefficient signs, and reporting normalization before inserting calculated energies. It uses invented energies for abstract species `A`, `B2`, `AB`, and `A2B3`; none denotes a real material.
 
-From the companion-script directory, inspect the returned report with:
+From the repository root, print the complete report:
 
 ```bash
-cd examples/practical-guides
-python3 - <<'PY'
-from formation_energy_reactions import run
-
-report = run()
-print(report["elemental_formation_reaction"])
-print(report["compound_reservoir_reaction"])
-PY
+python3 examples/practical-guides/formation_energy_reactions.py
 ```
 
-This calls the reviewed `run()` object. It does not execute DFT.
+Inspect both named reaction records, their signed coefficients, exact balances, and both normalizations. The command does not execute DFT.
 
 ## Enter the reactions exactly
 
@@ -63,12 +55,12 @@ $$
 
 Both conserve two A atoms and three B atoms. The first is formation from declared elemental references; the second starts from an AB precursor and a B2 reservoir. They answer different questions.
 
-Keep coefficients exact in the input object:
+Keep the coefficients exact when copying the written reactions into a ledger:
 
-```python
-elemental = {"A": Fraction(-2), "B2": Fraction(-3, 2), "A2B3": Fraction(1)}
-compound = {"AB": Fraction(-2), "B2": Fraction(-1, 2), "A2B3": Fraction(1)}
-```
+| Reaction | A | B2 | AB | A2B3 |
+| --- | ---: | ---: | ---: | ---: |
+| Elemental references | $-2$ | $-3/2$ | — | $+1$ |
+| Compound reservoir | — | $-1/2$ | $-2$ | $+1$ |
 
 Reactants are negative and products positive. The first check is the net amount of every element and charge. Do not calculate an energy until each balance is zero.
 

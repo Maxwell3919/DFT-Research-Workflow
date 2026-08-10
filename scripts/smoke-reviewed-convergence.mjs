@@ -50,7 +50,10 @@ async function inspect(page, expectedWidth) {
     hasArticle: Boolean(document.querySelector('.article-content')),
     hasPlaceholder: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     hasContract: Boolean(document.querySelector('.operation-contract')),
-    hasScript: Boolean(document.querySelector('script')),
+    copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
+    unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm').length,
+    copyButtons: document.querySelectorAll('.copy-code-button').length,
     mathDisplays: document.querySelectorAll('.article-content .katex-display').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
@@ -59,12 +62,17 @@ async function inspect(page, expectedWidth) {
   if (result.title !== 'Test Numerical Convergence') throw new Error(`convergence overview title mismatch: ${result.title}`);
   if (!result.hasArticle || result.hasPlaceholder) throw new Error('reviewed convergence narrative was not rendered');
   if (result.hasContract) throw new Error('convergence overview exposes a fixed contract');
-  if (result.hasScript) throw new Error('convergence overview contains client-side script');
+  if (result.copyEnhancements !== 1 || result.unexpectedScripts !== 0) {
+    throw new Error(`convergence overview exposes ${result.copyEnhancements} copy enhancements and ${result.unexpectedScripts} unexpected scripts`);
+  }
+  if (result.copyButtons !== result.copyableBlocks) {
+    throw new Error(`convergence overview renders ${result.copyButtons} Copy controls for ${result.copyableBlocks} copyable code blocks`);
+  }
   if (result.overflow) throw new Error(`convergence overview overflows at ${expectedWidth}px`);
   for (const heading of requiredHeadings) {
     if (!result.headings.includes(heading)) throw new Error(`convergence overview is missing semantic section ${heading}`);
   }
-  if (result.cards !== 4) throw new Error(`convergence overview exposes ${result.cards} practical cards instead of 4`);
+  if (result.cards !== 2) throw new Error(`convergence overview exposes ${result.cards} non-synthetic practical cards instead of 2`);
   if (result.mathDisplays < 1) throw new Error('convergence overview did not render its convergence equation');
   for (const phrase of requiredPhrases) {
     if (!result.text.includes(phrase)) throw new Error(`convergence overview is missing ${phrase}`);
@@ -135,7 +143,7 @@ try {
       site_url: base,
       route,
       natural_sections: desktop.headings.length,
-      practical_cards: desktop.cards,
+      non_synthetic_practical_cards: desktop.cards,
       source_links: desktop.links.length,
       desktop_width: 1440,
       mobile_width: 390,
@@ -144,7 +152,7 @@ try {
     }, null, 2)}\n`);
   }
 
-  console.log(`Reviewed convergence smoke passed: operation-first convergence equation and four observable inequalities, ${desktop.headings.length} natural sections, 4 practical cards, rendered sources, 1440px/390px no-overflow, and no-JavaScript reading.`);
+  console.log(`Reviewed convergence smoke passed: operation-first convergence equation and four observable inequalities, ${desktop.headings.length} natural sections, 2 non-synthetic practical cards, rendered sources, bounded Copy enhancement, 1440px/390px no-overflow, and no-JavaScript reading.`);
 } finally {
   await browser.close();
 }

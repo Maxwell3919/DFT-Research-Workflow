@@ -40,7 +40,7 @@ try {
         return {
           title: document.querySelector('h1')?.textContent?.trim(),
           text: document.body.innerText,
-          scripts: document.scripts.length,
+          scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
           overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
           images: [...document.images].map((item) => ({ src: item.src, complete: item.complete, width: item.naturalWidth })),
         };

@@ -6,8 +6,13 @@ kind: worked-example
 tools:
   - ase
   - pymatgen
+interfaces:
+  - Primary paper or structure source
+  - Terminal
+  - VESTA, OVITO, XCrySDen, or ASE GUI
+  - Text editor
 status: reviewed
-summary: Rebuild one unrelaxed Silicon one-site-deletion candidate without an encoded charge state and one imposed-common-cell graphene/h-BN bilayer, then check their lineage before any DFT calculation.
+summary: Inspect parent structures, rebuild one unrelaxed Silicon one-site-deletion candidate and one imposed-common-cell graphene/h-BN bilayer, reopen their exported files, and keep defect-site and interface-registry limits explicit.
 tested_versions:
   - ASE 3.29.0
   - pymatgen-core 2026.7.31
@@ -22,83 +27,59 @@ review: docs/reviews/2026-08-05-structure-candidate-construction.md
 reviewed_at: "2026-08-05"
 ---
 
-A useful structure-operation record combines human inspection with reconstructable lineage: the parent, explicit transformation, exported calculation structures, before/after metrics, visual observations, and a claim boundary. A screenshot alone is insufficient, but omitting the visual comparison can hide a wrong defect site, cell, layer orientation, or interface registry. This worked example keeps those records for two candidate-building operations.
+A useful candidate record starts with the scientific alternatives and actual parent objects, not the automation directory. This example keeps two generated constructions deliberately narrow: one unrelaxed Silicon one-site deletion with no encoded charge state, and one graphene/h-BN bilayer whose common in-plane cell is imposed rather than predicted.
 
-## Manual route: inspect the two candidate families
+## Choose the candidate family before deleting or joining atoms
 
-For the vacancy candidate, open pristine and defective cells side by side, show the periodic boundaries, identify the removed site, and inspect the remaining coordination and nearest periodic images. For the graphene/h-BN candidate, inspect top and side views, verify layer order and orientation, compare plausible registries, and measure the initial layer separation and repeated-image spacing.
+For a defect, identify the accepted pristine parent, symmetry-distinct sites, supercell choices, stoichiometry, possible charge states, and local configurations that must remain separate. Deleting one atom creates a geometry; it does not define a neutral or charged defect calculation.
 
-Record what each view supports. It can show that the intended candidate was constructed; it cannot show that the vacancy, registry, separation, or interface is relaxed, stable, lowest in energy, or sufficiently isolated.
+For an interface, inspect both parents and choose orientation, termination, strain allocation, lateral match, layer order, separation, registry, and vacuum as explicit variables. A common cell or a small scalar mismatch does not identify the stable interface. The related [lattice-match and registry guide](/DFT-Research-Workflow/operations/interface-and-heterostructure-energetics/guides/enumerate-lattice-matches-and-registry/) explains why matching and registry remain separate decisions.
 
-[Choose a viewer or symmetry service for these comparisons](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
+## Rebuild the bounded files outside the repository
 
-## Start from the recorded case directory
-
-```text
-examples/cases/structure-defect-interface-candidates/
-├── source/
-├── input/
-├── output/
-├── derived/
-├── figures/
-├── run.sh
-├── check.sh
-├── extract.sh
-├── parse.py
-└── manifest.json
-```
-
-The Silicon branch begins with an eight-atom conventional diamond cell, repeats it to a 64-atom `2×2×2` parent, and removes the explicitly recorded site at fractional coordinate `[0, 0, 0]`. The resulting 63-atom file is an unrelaxed one-site-deletion vacancy *candidate* with no encoded charge state. The geometry alone does not define a charged or neutral defect model.
-
-The interface branch creates eight C atoms and an eight-atom alternating B/N layer in one imposed in-plane cell. The layers are separated by `3.35 Å` and use `pbc = [true, true, false]`. The reported `0.0%` in-plane mismatch is a construction constraint caused by assigning both layers the same coordinates; it is not a lattice-match prediction.
-
-## Optional automation: rebuild outside the repository
-
-Use a new empty directory so the committed evidence is never overwritten:
+Run from the repository root. The case copies itself into an empty external directory before generating files, so the committed evidence is not overwritten.
 
 ```bash
-mkdir /tmp/structure-candidate-run
-CASE_RUN_ROOT=/tmp/structure-candidate-run \
-  PYTHON=python3 \
+run_root="$(mktemp -d)"
+CASE_RUN_ROOT="$run_root" PYTHON=python3 \
   bash examples/cases/structure-defect-interface-candidates/run.sh
+bash "$run_root/check.sh"
+python3 -m json.tool "$run_root/derived/structure-candidates-report.json"
 ```
 
-The recorded stdout is intentionally short and machine-readable:
+The Silicon branch writes an eight-atom conventional diamond parent, repeats it to a 64-atom `2×2×2` object, removes the recorded site at fractional coordinate `[0, 0, 0]`, and exports a 63-atom unrelaxed candidate. The interface branch exports eight C atoms and eight alternating B/N atoms in one imposed in-plane cell with an initial separation of `3.35 Å` and `pbc = [true, true, false]`.
 
-```text
-{"imposed_inplane_mismatch_percent": 0.0, "interface_candidate_atoms": 16, "interlayer_separation_ang": 3.35, "status": "PASS", "vacancy_candidate_atoms": 63, "vacancy_parent_atoms": 64}
-```
+The reported `0.0%` in-plane mismatch is a construction constraint caused by assigning both layers the same in-plane coordinates. It is not a lattice-match prediction, strain assessment, or relaxed epitaxial result.
 
-Inspect the structures and metrics as text before looking at the rendered projection:
+## Inspect the exported parents and children
+
+Read the headers and the structured report before opening a viewer:
 
 ```bash
-sed -n '1,12p' examples/cases/structure-defect-interface-candidates/output/si-2x2x2-vacancy.xyz
-sed -n '1,12p' examples/cases/structure-defect-interface-candidates/output/graphene-hbn-bilayer.xyz
-python3 -m json.tool examples/cases/structure-defect-interface-candidates/derived/structure-candidates-report.json
+sed -n '1,12p' "$run_root/source/si-diamond-conventional.xyz"
+sed -n '1,12p' "$run_root/output/si-2x2x2-vacancy.xyz"
+sed -n '1,12p' "$run_root/output/graphene-hbn-bilayer.xyz"
+ase info --files \
+  "$run_root/source/si-diamond-conventional.xyz" \
+  "$run_root/output/si-2x2x2-vacancy.xyz" \
+  "$run_root/output/graphene-hbn-bilayer.xyz"
 ```
 
-## Run the two acceptance layers
+Then open the actual files in VESTA, OVITO, XCrySDen, ASE GUI, or another viewer that shows the cell and periodic images. For the vacancy, compare pristine and defective cells, identify the removed site, and inspect remaining coordination and nearest images. For the bilayer, use both top and side views to inspect orientation, registry, layer order, separation, vacuum, and contacts. The stored x-z projection is only a quick geometric reference; it cannot display the vacancy site or lateral registry adequately.
 
-The automated checks audit reconstructability and declared geometry metrics. Review their output together with the manual parent/child and top/side comparisons; passing one layer does not substitute for the other.
-
-
-The case-level check verifies required files, the 64→63 deletion, the 16-atom bilayer, periodicity, separation, and the independent pymatgen materialization:
-
-```bash
-bash examples/cases/structure-defect-interface-candidates/check.sh
-```
-
-The page companion independently re-hashes every manifest artifact and rechecks the recorded metrics without regenerating public evidence:
+## Keep the program check separate from the manual decision
 
 ```bash
 python3 examples/practical-guides/structure_defect_interface_candidates.py
 ```
 
-The construction and checking scripts complete and the expected manifest-bound artifacts and recorded metrics are present. This establishes bounded program-level script completion and artifact identity for the exported candidates. It does not assess DFT numerical convergence because no electronic solver or structural optimizer was run. It does not establish physical stability, and it supports no material-level claim. The PNG is only a projection of the exported structures.
+The companion re-hashes the committed manifest artifacts and checks their recorded atom counts, periodicity, separation, and imposed mismatch. It does not replace inspection of the regenerated files, and it does not construct a new candidate family.
+
+Keep each alternative under a distinct identifier with its parents, transformations, site or registry choice, strain, separation, periodicity, constraints, exported file, and rejection or continuation reason. Before running DFT, [choose compatible method and boundary settings](/DFT-Research-Workflow/operations/choose-dft-method-and-computational-setup/) and [declare the defect-size, interface-size, vacuum, and target-observable convergence tests](/DFT-Research-Workflow/operations/test-numerical-convergence/).
 
 ## What this example does not establish
 
-This example does not establish a vacancy formation energy, charge state, concentration, relaxed defect geometry, interface adhesion, stable registry, strain accommodation, band alignment, or any material-level conclusion. The [ASE build documentation](https://docs.ase-lib.org/ase/build/build.html) and [pymatgen core documentation](https://pymatgen.org/pymatgen.core.html) define the software interfaces used here; they do not validate this candidate geometry.
+The construction and checks establish bounded program-level completion, artifact identity, atom counts, one explicit site deletion, one imposed-common-cell placement, and declared geometry metrics. They do not establish a vacancy formation energy, charge state, concentration, relaxed defect geometry, interface adhesion, stable registry, strain accommodation, band alignment, convergence, or any material-level conclusion. The [ASE build documentation](https://docs.ase-lib.org/ase/build/build.html) and [pymatgen core documentation](https://pymatgen.org/pymatgen.core.html) define the software interfaces; they do not validate these candidate geometries.
 
 ## Official sources
 

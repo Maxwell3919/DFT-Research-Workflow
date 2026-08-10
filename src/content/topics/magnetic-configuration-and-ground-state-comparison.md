@@ -11,7 +11,7 @@ Place those state identities beside a comparable-energy ledger and inspect struc
 
 Perform a magnetic-candidate comparison before a downstream calculation needs a magnetic reference state. The parent object is a declared structure and numerical method; the output is a ledger of compatible final spin states, total energies, moment maps, and normalization. One converged ferromagnetic, antiferromagnetic, ferrimagnetic, or nominally nonmagnetic SCF solution is only one candidate.
 
-No executed practical guide currently accompanies this topic. The bounded route is to enumerate representable candidates, prepare one calculation object per candidate with the selected code, run them under compatible conditions, extract final energies and moment maps, and compare them in an auditable ledger. Quantum ESPRESSO documents the relevant `pw.x` magnetic inputs, and VASP documents `MAGMOM`; exact initialization and noncollinear syntax depend on the code and version.
+No executed practical guide or real candidate ledger currently accompanies this topic. For a selected code and version, first draw the representable spin pattern on the actual magnetic cell. Prepare one calculation object per candidate, run them under compatible conditions, reopen the final structure and site-resolved moments, relabel collapsed states, and only then compare normalized energies. Quantum ESPRESSO documents the relevant `pw.x` magnetic inputs, and VASP documents `MAGMOM`; exact initialization and noncollinear syntax depend on the code and version.
 
 ## Magnetic order belongs to the calculation object
 

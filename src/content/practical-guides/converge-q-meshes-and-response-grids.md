@@ -15,8 +15,7 @@ source_ids:
   - qe-ph-75
   - baroni-dfpt
   - giustino-epc-review
-media_ids:
-  - convergence-response-grid-chain
+media_ids: []
 review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
@@ -27,52 +26,77 @@ Inspect the reference structure and electronic state before preparing response i
 
 ## Prepare four linked convergence layers
 
-Record:
+Record the target observable, units, tolerance, accepted reference electronic state and k mesh, response threshold and perturbations, coarse q-mesh series, interpolation method and direct checkpoints, and fine integration-grid series. Name the fixed basis, pseudopotential, band count, symmetry, occupations, and broadening, together with state and mode checks.
 
-~~~text
-target observable, units, and tolerance:
-accepted reference electronic state and k mesh:
-response solver threshold and perturbations:
-coarse q-mesh series:
-interpolation method and direct check points:
-fine integration-grid series:
-fixed basis, pseudopotential, bands, symmetry, occupations, and broadening:
-state and mode checks:
-~~~
-
-Treat the layers separately:
-
-~~~text
-reference electronic state
-response solve at each q point
-coarse response grid used to construct the interpolant
-fine grid used for the reported integral or spectrum
-~~~
+Treat four layers separately: the accepted reference electronic state; each response solve; the complete coarse response grid used to construct the interpolant; and the fine grid used for the reported integral or spectrum. Each layer retains its own input, stdout, stderr, exit status, artifacts, and parent identity.
 
 A fine mesh cannot repair unconverged response solves or an inadequate coarse grid.
 
 ## Run and preserve the lineage
 
-For a QE phonon route, a study may use a sequence such as:
+For a QE phonon route, first bind the response calculation to the exact accepted parent. Run <code>ph.x</code> in a new directory and inspect it before any transformation:
 
 ~~~bash
-ph.x -in ph-q4.in > ph-q4.out
-q2r.x -in q2r-q4.in > q2r-q4.out
-matdyn.x -in matdyn-q4-fine24.in > matdyn-q4-fine24.out
+: "${QE_PREFIX:?Set QE_PREFIX to the accepted pw.x prefix}"
+: "${QE_OUTDIR:?Set QE_OUTDIR to the accepted pw.x outdir}"
+test -d "$QE_OUTDIR/$QE_PREFIX.save"
+test ! -e ph-q4.out
+test ! -e ph-q4.err
+grep -Ei 'prefix|outdir|ldisp|nq1|nq2|nq3|fildyn' -- ph-q4.in
+if ph.x -in ph-q4.in > ph-q4.out 2> ph-q4.err; then
+  ph_status=0
+else
+  ph_status=$?
+fi
+printf '%s\n' "$ph_status" > ph-q4.exit-status
+tail -n 40 -- ph-q4.out ph-q4.err
+grep -Ei 'warning|error in routine|stopping|not converged|no convergence' \
+  -- ph-q4.out ph-q4.err || true
+test "$ph_status" -eq 0
 ~~~
 
-These filenames illustrate a traceable production protocol. They are not files supplied or executions performed by the synthetic companion. Prepare a series of coarse q meshes and, for each viable coarse mesh, more than one fine interpolation or integration grid.
+These filenames illustrate a traceable production protocol. They are not files supplied or executions performed by the synthetic companion. Before continuing, verify that every required q point or irreducible perturbation for this declared mesh completed, that the dynamical-matrix inventory is nonempty and compatible, and that the parent <code>prefix</code>/<code>outdir</code> match the accepted reference. Do not copy the next block while q coverage is incomplete:
+
+~~~bash
+test ! -e q2r-q4.out
+test ! -e q2r-q4.err
+if q2r.x -in q2r-q4.in > q2r-q4.out 2> q2r-q4.err; then
+  q2r_status=0
+else
+  q2r_status=$?
+fi
+printf '%s\n' "$q2r_status" > q2r-q4.exit-status
+tail -n 40 -- q2r-q4.out q2r-q4.err
+test "$q2r_status" -eq 0
+
+test ! -e matdyn-q4-fine24.out
+test ! -e matdyn-q4-fine24.err
+if matdyn.x -in matdyn-q4-fine24.in > matdyn-q4-fine24.out 2> matdyn-q4-fine24.err; then
+  matdyn_status=0
+else
+  matdyn_status=$?
+fi
+printf '%s\n' "$matdyn_status" > matdyn-q4-fine24.exit-status
+tail -n 40 -- matdyn-q4-fine24.out matdyn-q4-fine24.err
+test "$matdyn_status" -eq 0
+~~~
+
+Prepare a series of coarse q meshes and, for each viable coarse mesh, more than one fine interpolation or integration grid.
 
 Check each program separately:
 
 ~~~bash
-grep "JOB DONE" ph-q4.out q2r-q4.out matdyn-q4-fine24.out
-tail -n 40 ph-q4.out
-tail -n 40 q2r-q4.out
-tail -n 40 matdyn-q4-fine24.out
+for stage in ph-q4 q2r-q4 matdyn-q4-fine24; do
+  printf '\n%s\n' "$stage"
+  cat -- "$stage.exit-status"
+  test "$(grep -cF 'JOB DONE.' -- "$stage.out")" -eq 1
+  tail -n 40 -- "$stage.out" "$stage.err"
+  grep -Ei 'warning|error in routine|stopping|not converged|no convergence' \
+    -- "$stage.out" "$stage.err" || true
+done
 ~~~
 
-<code>JOB DONE</code> checks normal termination only. The <code>tail</code> commands expose final diagnostics for inspection; use the code's documented response residual, artifact checks, and frequency or observable parser to decide whether each layer is usable.
+The shell status, <code>JOB DONE.</code>, stderr, and fatal-text scan constrain completion separately for each executable. The <code>tail</code> commands expose final diagnostics for inspection; use the code's documented response residual, complete q-coverage and artifact checks, and frequency or observable parser to decide whether each layer is usable.
 
 ## Compare direct and interpolated quantities
 

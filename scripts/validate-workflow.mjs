@@ -1,4 +1,4 @@
-import { existsSync as existsForManualAcceptance, readFileSync as readFileForManualAcceptance } from 'node:fs';
+import { readFileSync as readFileForManualAcceptance } from 'node:fs';
 import { access, readFile, readdir } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
@@ -250,13 +250,8 @@ if (!Array.isArray(workedWorkflows)) {
   }
 }
 
-// DRW_MANUAL_HANDOFF_ACCEPTANCE
+// DRW_HUMAN_ROUTE_ACCEPTANCE
 {
-  const manualHelper = 'examples/practical-guides/qe_manual_handoff.py';
-  if (!existsForManualAcceptance(manualHelper)) {
-    errors.push('manual handoff helper is missing');
-  }
-
   const manualRecipes = JSON.parse(readFileForManualAcceptance('recipes/index.json', 'utf8'));
   const manualWorkflow = (slug) => manualRecipes.workflows.find((item) => item.slug === slug);
   const siliconManual = manualWorkflow('silicon-ground-state-electronic-structure');
@@ -265,38 +260,84 @@ if (!Array.isArray(workedWorkflows)) {
     errors.push('manual acceptance requires Silicon and Aluminium worked workflows');
   } else {
     const freshTrack = (workflow) => workflow.evidence_tracks.find((track) => track.id === 'fresh-runtime');
+    const storedTrack = (workflow) => workflow.evidence_tracks.find((track) => track.id === 'stored-reconstruction');
     const siliconFresh = freshTrack(siliconManual);
     const aluminiumFresh = freshTrack(aluminiumManual);
     const siliconCommands = siliconFresh?.commands.join('\n') ?? '';
     const aluminiumCommands = aluminiumFresh?.commands.join('\n') ?? '';
-    for (const token of ['prepare-reference', 'static-scf.in', 'audit-scf', 'extract-runtime']) {
+    for (const workflow of [siliconManual, aluminiumManual]) {
+      const startCommands = workflow.start_here?.first_action?.commands?.join('\n') ?? '';
+      const storedCommands = storedTrack(workflow)?.commands?.join('\n') ?? '';
+      if (!startCommands.includes(`case_root=${workflow.start_here.case_root}`)) errors.push(`${workflow.slug}: first action must define its own case_root`);
+      if (!storedCommands.includes(`case_root=${workflow.start_here.case_root}`)) errors.push(`${workflow.slug}: stored track must define its own case_root`);
+    }
+    for (const token of ['si-relax.in', 'Begin final coordinates', 'ACCEPT_RELAX_GEOMETRY', 'final-positions.inc', 'static-scf.in', 'JOB DONE', 'si_cod9013102.save']) {
       if (!siliconCommands.includes(token)) {
         errors.push('Silicon fresh-runtime is missing ' + token);
       }
     }
-    if (!/separate|does not change|not.*historical/i.test(siliconFresh?.boundary ?? '')) {
-      errors.push('Silicon fresh-runtime must remain separate from assembled historical lineage');
+    for (const token of ['qe_manual_handoff.py', 'prepare-reference', 'audit-scf', 'extract-runtime', 'package-study', 'QE_BANDS', 'QE_DOS', 'run.sh']) {
+      if (siliconCommands.includes(token)) errors.push('Silicon fresh-runtime must not expose the old helper/full-replay route: ' + token);
     }
-    if (!aluminiumCommands.includes('extract-runtime') || !aluminiumCommands.includes('--dos-data')) {
-      errors.push('Aluminium fresh-runtime must expose native DOS extraction');
+    if (!/new static SCF is not the parent of the stored bands or DOS/i.test(siliconFresh?.boundary ?? '') || !/future compatible bands\/NSCF\/DOS branch/i.test(siliconFresh?.boundary ?? '')) {
+      errors.push('Silicon fresh-runtime must stop after static SCF and reject ancestry to stored bands/DOS');
     }
-    if (aluminiumCommands.includes('prepare-reference')) {
-      errors.push('Aluminium fresh-runtime must not add a relaxation handoff');
+    if (!/No fresh bands or DOS parsing is attempted/i.test(siliconFresh?.parse_plot_boundary ?? '')) {
+      errors.push('Silicon fresh-runtime must not imply fresh downstream parsing');
+    }
+
+    for (const token of ['QE_PW', 'QE_DOS', 'QE_PSEUDO_DIR', 'RUN_OUTPUT_ROOT', 'run.sh', 'al.dos']) {
+      if (!aluminiumCommands.includes(token)) errors.push('Aluminium fresh-runtime is missing runner contract token ' + token);
+    }
+    for (const token of ['qe_manual_handoff.py', 'extract-runtime', '$prepared']) {
+      if (aluminiumCommands.includes(token)) errors.push('Aluminium fresh-runtime must not expose the old helper/undefined-variable route: ' + token);
+    }
+    if (/(^|\s)PSEUDO_DIR=/.test(aluminiumCommands) || /(^|\s)RUNTIME_DIR=/.test(aluminiumCommands)) {
+      errors.push('Aluminium fresh-runtime must use QE_PSEUDO_DIR and RUN_OUTPUT_ROOT, not the Silicon runner contract');
+    }
+    if (!/test -x.*QE_PW/.test(aluminiumCommands) || !/test -x.*QE_DOS/.test(aluminiumCommands)) {
+      errors.push('Aluminium fresh-runtime must check the supplied executable paths before launch');
     }
     if (!/no relaxation/i.test(aluminiumFresh?.boundary ?? '')) {
       errors.push('Aluminium fresh-runtime must state that no relaxation is included');
     }
 
     const stage = (workflow, id) => workflow.reader_route.stages.find((item) => item.id === id);
-    for (const [id, token] of [
-      ['relaxation-reference-geometry', 'prepare-reference'],
-      ['scf', 'audit-scf'],
-      ['plot', 'extract-runtime'],
-      ['preserve', 'package-study'],
+    const actionCommands = (workflow, id) => stage(workflow, id)?.action?.commands?.join('\n') ?? '';
+    const allPublicActionCommands = (workflow) => [workflow.start_here?.first_action, ...(workflow.reader_route?.stages ?? []).map((item) => item.action)]
+      .filter(Boolean)
+      .flatMap((action) => action.commands ?? [])
+      .join('\n');
+
+    const siliconSource = actionCommands(siliconManual, 'source');
+    if (!siliconSource.includes('silicon-cod-9013102.cif') || siliconSource.includes('$prepared')) errors.push('Silicon source action must inspect the source record without an undefined prepared path');
+    const siliconPseudo = actionCommands(siliconManual, 'pseudopotential');
+    for (const token of ['prepare-replay.py', '--download-pseudopotential', 'sha256sum --check']) if (!siliconPseudo.includes(token)) errors.push('Silicon pseudopotential action is missing ' + token);
+    const siliconRelax = actionCommands(siliconManual, 'relaxation-reference-geometry');
+    for (const token of ['Begin final coordinates', 'ACCEPT_RELAX_GEOMETRY', 'final-positions.inc', 'static-scf.in', 'diff -u']) if (!siliconRelax.includes(token)) errors.push('Silicon geometry handoff action is missing ' + token);
+    const siliconScf = actionCommands(siliconManual, 'scf');
+    for (const token of ['QE_PW', 'JOB DONE', 'si_cod9013102.save']) if (!siliconScf.includes(token)) errors.push('Silicon SCF action is missing ' + token);
+    const siliconBands = stage(siliconManual, 'bands-dos');
+    if (!/not the parent/i.test(actionCommands(siliconManual, 'bands-dos')) || !/fresh route stops after static SCF/i.test(siliconBands?.boundary ?? '')) errors.push('Silicon bands/DOS stage must keep stored data separate and state the fresh stopping point');
+    const siliconPreserve = actionCommands(siliconManual, 'preserve');
+    for (const token of ['runtime=', 'record=', 'sums=', 'stops after static SCF']) if (!siliconPreserve.includes(token)) errors.push('Silicon preservation action is missing the direct bounded record token ' + token);
+
+    const aluminiumPseudo = actionCommands(aluminiumManual, 'pseudopotential');
+    for (const token of ['curl --fail', '1500731', 'sha256sum --check']) if (!aluminiumPseudo.includes(token)) errors.push('Aluminium pseudopotential action is missing ' + token);
+    const aluminiumRun = actionCommands(aluminiumManual, 'run');
+    for (const token of ['QE_PW', 'QE_DOS', 'QE_PSEUDO_DIR', 'RUN_OUTPUT_ROOT', 'run.sh']) if (!aluminiumRun.includes(token)) errors.push('Aluminium run action is missing ' + token);
+    const aluminiumConvergence = stage(aluminiumManual, 'convergence');
+    if (aluminiumConvergence?.assessment !== 'FAIL' || !normalized(aluminiumConvergence?.observable_convergence).includes('not-tested')) errors.push('Aluminium convergence stage must retain FAIL and observable convergence not tested');
+    if (!/not a program failure/i.test(aluminiumConvergence?.boundary ?? '') || !/scientific rejection/i.test(aluminiumConvergence?.boundary ?? '')) errors.push('Aluminium convergence FAIL must retain its non-rejection boundary');
+    const aluminiumInterpret = stage(aluminiumManual, 'interpret');
+    if (!/FAIL/.test(aluminiumInterpret?.assessment ?? '') || !normalized(aluminiumInterpret?.observable_convergence).includes('not-tested')) errors.push('Aluminium interpretation must retain the adverse screen and NOT TESTED observable boundary');
+
+    for (const [workflowName, commands] of [
+      ['Silicon', allPublicActionCommands(siliconManual)],
+      ['Aluminium', allPublicActionCommands(aluminiumManual)],
     ]) {
-      const commands = stage(siliconManual, id)?.action?.commands?.join('\n') ?? '';
-      if (!commands.includes(token)) {
-        errors.push('Silicon reader stage ' + id + ' is missing action ' + token);
+      for (const token of ['qe_manual_handoff.py', 'prepare-reference', 'audit-scf', 'extract-runtime', 'package-study']) {
+        if (commands.includes(token)) errors.push(`${workflowName} reader actions must not expose internal helper route ${token}`);
       }
     }
   }
@@ -304,15 +345,15 @@ if (!Array.isArray(workedWorkflows)) {
   const guideChecks = [
     [
       'src/content/practical-guides/prepare-fixed-geometry-reference-calculation.md',
-      ['last complete', 'accepted-geometry.inc', 'static-scf.in', 'audit-scf'],
+      ['last complete', 'static-scf.in', 'diff -u', 'JOB DONE', 'Use this new static run as the explicit parent'],
     ],
     [
       'src/content/practical-guides/converge-basis-cutoffs-and-grids.md',
-      ['for ecut in 30 40 50', 'for kmesh in 6 8 10', 'extract-runtime', 'Energy convergence does not imply'],
+      ['for ecut in 30 40 50', 'for kmesh in 6 8 10', 'pw.x -in', 'Energy convergence does not imply'],
     ],
     [
       'src/content/practical-guides/package-reusable-reference-state-lineage.md',
-      ['manifest.json', 'INVENTORY.tsv', 'SHA256SUMS', 'sha256sum -c', '--run-regeneration-check'],
+      ['test ! -e "$study"', 'README.md', 'SHA256SUMS', 'sha256sum -c', 'It does not prove'],
     ],
   ];
   for (const [path, tokens] of guideChecks) {
@@ -322,6 +363,9 @@ if (!Array.isArray(workedWorkflows)) {
     }
     if (/\bG[0-5]\b/.test(text)) {
       errors.push(path + ' exposes an internal evidence gate code');
+    }
+    if (/package-study|--run-regeneration-check/.test(text)) {
+      errors.push(path + ' exposes the retired internal packaging helper route');
     }
   }
 }

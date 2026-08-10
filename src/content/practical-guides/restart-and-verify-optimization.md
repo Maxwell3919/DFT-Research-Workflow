@@ -17,8 +17,7 @@ source_ids:
   - qe-pw-75
   - cp2k-geometry-cell-opt
   - cod-9013102
-media_ids:
-  - optimization-restart-verification-chain
+media_ids: []
 review: docs/reviews/2026-08-03-optimize-structure.md
 reviewed_at: "2026-08-03"
 ---
@@ -37,7 +36,51 @@ After the optimizer reports its condition, run the required fresh fixed-geometry
 
 ## Run, inspect, decide, then continue
 
-Run the bounded stored-output checker:
+Inspect the stored segment boundary before running the helper:
+
+```bash
+segment_root=examples/practical-guides/data/silicon-qe/relax-restart
+first_in="$segment_root/segment1.in"
+first_out="$segment_root/segment1.out"
+continued_in="$segment_root/segment2-restart.in"
+continued_out="$segment_root/segment2-restart.out"
+
+grep -En 'calculation|restart_mode|prefix|outdir|forc_conv_thr|nstep' \
+  -- "$first_in" "$continued_in"
+if diff -u -- "$first_in" "$continued_in"; then
+  printf '%s\n' 'The two inputs are byte-for-byte identical.'
+else
+  diff_status=$?
+  case "$diff_status" in
+    1) printf '%s\n' 'Inputs differ; inspect the unified diff above.' ;;
+    *) exit "$diff_status" ;;
+  esac
+fi
+grep -En 'maximum number of steps|End of BFGS Geometry Optimization|JOB DONE.' \
+  -- "$first_out" "$continued_out"
+tail -n 60 -- "$first_out" "$continued_out"
+
+awk '
+  /Forces acting on atoms/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /Total force =/ {last=block; inside=0}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$continued_out"
+
+awk '
+  /Begin final coordinates/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /End final coordinates/ {last=block; inside=0}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$continued_out"
+
+grep -niE 'warning|error in routine|stopping|not converged|no convergence' \
+  -- "$first_out" "$continued_out" || true
+```
+
+The diff exposes every changed input line; it is not a compatibility decision. The last complete force block must be interpreted component by component using the input's `if_pos` mask or documented defaults, with aggregate `Total force` separate. The final coordinate block establishes which endpoint was printed. This stored fixed-cell case has no stress history, so it cannot support a stress or cell-convergence gate.
+
+After the manual boundary is intelligible, run the optional bounded stored-output checker:
 
 ```bash
 python3 examples/practical-guides/silicon_qe_restarts.py
@@ -49,7 +92,7 @@ Before continuing your own run, identify the last accepted geometry, the parent 
 
 After the continuation stops, run a fresh fixed-geometry energy-and-gradient calculation on the accepted coordinates. If fresh and restarted paths disagree in state, energy, forces, or warnings, keep them as separate branches and resolve the discrepancy before using either as the reference state.
 
-## Actual bounded QE continuation
+## Stored bounded QE segment record
 
 The published inputs describe an intentionally displaced COD 9013102 Silicon
 cell, a two-step QE 7.5 `relax` segment, and a second input with the same prefix
@@ -60,16 +103,7 @@ marker. This is bounded stored-output reconstruction, not a restart guarantee.
 
 ## Distinguish restartable objects
 
-Several objects may be reused, and they have different compatibility requirements:
-
-```text
-last accepted structure and cell
-atom ordering and constraint mapping
-electronic density or wavefunction
-optimizer Hessian or limited-memory history
-trajectory and accepted-step log
-scheduler or workflow checkpoint
-```
+Several objects may be reused, and they have different compatibility requirements: the last accepted structure and cell; atom ordering and constraint mapping; electronic density or wavefunctions; optimizer Hessian or limited-memory history; trajectory and accepted-step log; and scheduler or workflow checkpoint.
 
 The last structure can often seed a new calculation even when optimizer history is incompatible. An electronic restart may become invalid after a large cell, basis, symmetry, or method change. A quasi-Newton Hessian belongs to a particular coordinate representation and active subspace.
 
@@ -92,7 +126,13 @@ The new segment should point to the last accepted parent frame and state why the
 ASE optimizers can store a trajectory and an optimizer-specific restart object:
 
 ```python
+from ase.build import bulk
+from ase.calculators.emt import EMT
 from ase.optimize import BFGS
+
+atoms = bulk("Cu", "fcc", a=3.6, cubic=True)
+atoms.positions[1] += [0.18, -0.12, 0.08]
+atoms.calc = EMT()
 
 first = BFGS(
     atoms,

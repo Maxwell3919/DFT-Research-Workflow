@@ -15,12 +15,12 @@ Decide the reference construction before plotting. A periodic potential has an a
 
 ## A periodic potential needs a reference before it can align energies
 
-No executed practical guide currently accompanies this topic. The bounded implementation route is therefore code-specific:
+No executed practical guide or real potential profile currently accompanies this topic. Choose the electronic-structure code and installed version first, then identify the exact field written by that parent state before selecting an averaging tool:
 
 - With Quantum ESPRESSO, start from the compatible parent state and use the documented `pp.x` potential selector to write a volumetric potential. The available field definitions and selector values depend on the installed release; use the linked `INPUT_PP` and post-processing guide rather than assuming a remembered value.
 - With VASP, retain `LOCPOT` from the declared parent calculation and verify from the linked documentation which local-potential components were written for that setup.
 
-Hartree, ionic-plus-Hartree local, total local Kohn--Sham, PAW-reconstructed, and spin-dependent potentials are not interchangeable. Preserve the exact field definition, pseudopotential or PAW convention, grid, units, corrections, and parent-state identity. The downstream plane-averaging tool may be a code utility or a transparent analysis script, but its input field, direction, origin, and integration weights must remain inspectable.
+Hartree, ionic-plus-Hartree local, total local Kohn--Sham, PAW-reconstructed, and spin-dependent potentials are not interchangeable. Preserve the exact field definition, pseudopotential or PAW convention, grid, units, corrections, and parent-state identity. The downstream plane-averaging tool may be a code utility or a transparent analysis script, but its input field, direction, origin, and integration weights must remain inspectable. Stop if the field definition, energy gauge, averaging direction, or parent-state identity cannot be recovered; a smooth generic profile would not repair that missing object.
 
 ## Find a real reference region
 

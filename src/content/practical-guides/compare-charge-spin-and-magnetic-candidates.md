@@ -18,8 +18,7 @@ source_ids:
   - kohn-sham
   - mermin-dft
   - woods-scf-review
-media_ids:
-  - candidate-state-comparison
+media_ids: []
 review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
 reviewed_at: "2026-08-03"
 ---
@@ -34,7 +33,24 @@ Create one directory and one human-readable state sheet per candidate. Keep geom
 
 Read the full SCF history and inspect the final total and local moments where the code reports them, occupations, charge and spin-density outputs, symmetry, warnings, forces, stress, and any state switching. Use tables and aligned density or moment views to compare accepted candidates. Exclude unconverged or incomparable rows before ranking energy, and record metastable states rather than forcing every branch into one label.
 
-The ledger script below is a synthetic bookkeeping fixture. It is optional automation and provides no real magnetic-state evidence. Use the [electronic-structure code manuals](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) for code-specific spin and charge controls and the [learning index](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for hands-on state-construction routes.
+Before using the synthetic ledger, inspect the real candidate directories and outputs with ordinary read-only commands:
+
+```bash
+: "${CANDIDATE_ROOT:?Set CANDIDATE_ROOT to the directory containing candidate states}"
+find "$CANDIDATE_ROOT" -mindepth 1 -maxdepth 2 -type f \
+  -printf '%12s %p\n' | sort
+find "$CANDIDATE_ROOT" -mindepth 1 -maxdepth 2 -type f -size 0 -print
+find "$CANDIDATE_ROOT" -mindepth 2 -maxdepth 2 -type f -name '*.out' -print0 |
+  while IFS= read -r -d '' output; do
+    printf '\n%s\n' "$output"
+    head -n 20 -- "$output"
+    tail -n 40 -- "$output"
+    grep -niE 'converg|energy|fermi|magnet|occupation|charge|warning|error|stopping' \
+      -- "$output" || true
+  done
+```
+
+Use the displayed histories to fill the candidate table, then open the final structures and state-resolved outputs needed by the model. Generic text matching does not establish completion, SCF convergence, state identity, or comparability; interpret the exact implementation records using its versioned manual. The ledger script below is a synthetic bookkeeping fixture. It is optional automation and provides no real magnetic-state evidence. Use the [electronic-structure code manuals](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) for code-specific spin and charge controls and the [learning index](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for hands-on state-construction routes.
 
 ## Run the bounded candidate ledger
 
@@ -57,6 +73,9 @@ Initial magnetic moments are search controls. Final outputs determine which stat
 The companion fixture contains two completed and comparable magnetic states, one completed state with a different total charge, and one incomplete state.
 
 ```python
+import sys
+
+sys.path.insert(0, "examples/practical-guides")
 from reference_state_candidate_comparison import run
 
 report = run()

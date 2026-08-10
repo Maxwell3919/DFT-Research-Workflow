@@ -13,6 +13,8 @@ Start from an identified mean-field parent and specify the quasiparticle energie
 
 Construct the screening and self-energy with declared empty-state or completeness treatment, dielectric cutoff, k sampling, $q\rightarrow0$ handling, frequency model, Coulomb boundary, and self-consistency level. Keep convergence plots for the specific states or gap, not only program residuals. Major GW codes, tutorials, and analysis routes are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [literature and learning](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning). A converged SCF parent establishes none of these response-space limits; this overview does not claim an executed GW calculation.
 
+A concrete [ABINIT](/DFT-Research-Workflow/tools/abinit/) or [Yambo GW](https://wiki.yambo-code.eu/wiki/index.php?title=GW) run should leave an inspectable chain from the mean-field wavefunctions through the screening database to the self-energy report and state-resolved quasiparticle table. Before copying a gap, open the input datasets, stdout/stderr, empty-state and dielectric-cutoff records, frequency treatment, and $q\to0$ settings; then plot $E^{\mathrm{QP}}-\epsilon^{\mathrm{KS}}$ by band and k point and compare orbital character near crossings. If a quasiparticle equation selects multiple roots, a correction jumps at a near-degeneracy, or the target state changes with the starting point or response basis, preserve the alternatives and converge that state rather than replacing the result with one scissor shift.
+
 ## From Kohn--Sham levels to a quasiparticle equation
 
 In the GW approximation, the electronic self-energy is written schematically as

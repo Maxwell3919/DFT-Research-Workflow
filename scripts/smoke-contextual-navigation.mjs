@@ -85,10 +85,12 @@ async function inspect(page, route, width) {
       innerWidth: window.innerWidth,
       documentOverflow: document.documentElement.scrollWidth > viewportWidth + 1,
       escaping,
-      scripts: document.scripts.length,
+      scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
       islands: document.querySelectorAll('astro-island').length,
       contextualBlocks: document.querySelectorAll('[data-contextual-navigation]').length,
       source: nav?.getAttribute('data-contextual-source'),
+      contextualText: nav?.textContent?.replace(/\s+/g, ' ').trim() ?? '',
+      boundaryCount: nav?.querySelectorAll('.contextual-boundary').length ?? 0,
       links: [...(nav?.querySelectorAll('[data-contextual-link]') ?? [])].map((item) => ({
         relation: item.getAttribute('data-contextual-relation'),
         href: item.querySelector('a')?.href,
@@ -104,6 +106,7 @@ async function inspect(page, route, width) {
   if (expected) {
     if (state.contextualBlocks !== 1 || state.source !== expected.source) throw new Error(`${route}: contextual source mismatch`);
     if (state.links.length > 3 || JSON.stringify(state.links) !== JSON.stringify(expected.links)) throw new Error(`${route}: contextual links differ from registry`);
+    if (state.boundaryCount !== 0 || state.contextualText.includes(navigation.boundary)) throw new Error(`${route}: contextual navigation exposes internal taxonomy-governance copy`);
   } else if (state.contextualBlocks !== 0) {
     throw new Error(`${route}: unlisted route renders contextual navigation`);
   }
@@ -111,7 +114,7 @@ async function inspect(page, route, width) {
     const expectedSupport = [
       `${base}/operations/troubleshooting/`,
       `${base}/operations/software-bridge/`,
-      `${base}/operations/resource-landscape/`,
+      `${base}/tools/`,
     ];
     if (JSON.stringify(state.supportLinks) !== JSON.stringify(expectedSupport)) throw new Error('Research Workflow support sentence does not expose all three support routes');
   }

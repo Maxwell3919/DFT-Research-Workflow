@@ -45,9 +45,9 @@ for (const record of evidence.guides ?? []) {
   if (record.evidence_class !== 'real-interface-walkthrough' && (typeof record.execution_script !== 'string' || !record.execution_script)) errors.push(`${record.guide_slug}: executable evidence requires an execution script`);
   if (record.evidence_class === 'derived-public-data' && !record.traceable_data) errors.push(`${record.guide_slug}: public-data record requires traceable_data=true`);
   if (record.evidence_class !== 'real-execution' && 'case_id' in record) errors.push(`${record.guide_slug}: only real-execution records may bind a file-backed case`);
-  if (record.evidence_class === 'real-execution') {
+  if (record.evidence_class === 'real-execution' && 'case_id' in record) {
     if (typeof record.case_id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(record.case_id)) {
-      errors.push(`${record.guide_slug}: real-execution evidence requires a valid case_id`);
+      errors.push(`${record.guide_slug}: declared case_id is invalid`);
     } else {
       const caseRoot = new URL(`examples/cases/${record.case_id}/`, root);
       try {

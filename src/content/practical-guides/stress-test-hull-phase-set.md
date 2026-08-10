@@ -25,26 +25,17 @@ reviewed_at: "2026-08-04"
 
 Open the withheld entry and its neighbouring hull phases in the database interface, inspect their compositions, structures, identities, and source metadata, then compare the complete and reduced phase diagrams side by side. Follow how the tie line and decomposition products change rather than reading only a changed scalar distance. Use [structure and data sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) to ask whether the phase set is physically and historically complete.
 
-**Reproduce this site's figure:** the companion script performs a controlled omission on the same frozen OQMD snapshot. It demonstrates phase-set sensitivity; it does not show that LiP should be excluded or establish a new Li-P hull.
+**Challenge the attributed result:** the companion script performs a controlled omission on the same frozen OQMD snapshot. It demonstrates phase-set sensitivity; it does not show that LiP should be excluded or establish a new Li-P hull.
 
 Use this example after rebuilding the full frozen Li-P hull. It removes one represented competitor without changing any energy, then shows which hull membership and decomposition claims change.
 
-From the companion-script directory, run the comparison:
+From the repository root, print the baseline and controlled-omission records:
 
 ```bash
-cd examples/practical-guides
-python3 - <<'PY'
-from li_p_convex_hull import load_snapshot, analyze
-
-_, entries = load_snapshot()
-complete = analyze(entries)
-reduced = analyze(entries, excluded_entry_id=17007)
-print([point["name"] for point in complete["hull"]])
-print([point["name"] for point in reduced["hull"]])
-PY
+python3 examples/practical-guides/li_p_convex_hull.py
 ```
 
-The two printed vertex lists are the first output to compare. Keep the exclusion ID with the reduced result.
+Inspect `hull_vertices` and `phase_set_sensitivity` first. The latter keeps the exclusion ID, the affected entry, and the before/after distances together; do not copy the reduced vertex list without that context.
 
 ## Follow the changed facet
 

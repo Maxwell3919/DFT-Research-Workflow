@@ -95,12 +95,12 @@
         "type": "guide",
         "guide_slug": "check-harmonic-mode-ledger",
         "guide_kind": "implementation",
-        "evidence_boundary": "This reconstructs one real Silicon Gamma-point mode ledger only; no published practical guide currently executes and validates a complete q-grid or supercell stability workflow."
+        "evidence_boundary": "Start with the full q-grid or supercell route in Software Bridge and inspect its structure, parent calculation, complete q-point or displacement/force ledger, dispersion, and suspicious eigenvectors. The linked Silicon Gamma-point ledger is only an optional bounded replay after those objects exist; it is not evidence of full-zone dynamical stability."
       },
       "validation_requirement": "Test electronic thresholds, cutoff and k-point sampling, q mesh or supercell size, interpolation, acoustic modes, mode eigenvectors, and non-analytic treatment where applicable.",
       "claim_limitation": "A Gamma-point result does not establish full-Brillouin-zone dynamical stability. Harmonic stability does not establish thermodynamic, anharmonic, or finite-temperature stability.",
-      "common_human_route": "Inspect the relaxed structure, choose DFPT or finite displacement, calculate a q mesh or supercell force set, plot the dispersion, and visualize suspicious eigenvectors.",
-      "what_to_inspect": "Inspect acoustic behavior, q- or supercell convergence, force quality, imaginary-mode location and eigenvector, symmetry, and reproducibility of the distortion."
+      "common_human_route": "Open the relaxed structure, choose DFPT or finite displacement, retain every input plus stdout and stderr, calculate a complete q mesh or one-to-one supercell force set, build the force constants and dispersion, then select and animate each suspicious eigenvector in a compatible viewer.",
+      "what_to_inspect": "Inspect the reference output, q-point ledger or displacement/force mapping, q2r.x/matdyn.x products or force-constant files, acoustic behavior, q- or supercell convergence, imaginary-mode location and eigenvector, symmetry, and reproducibility of the distortion."
     },
     {
       "id": "conventional-superconductivity",
@@ -120,12 +120,12 @@
       "prerequisites": "Establish a metallic full-zone reference state, dynamically qualified phonons, sufficiently dense k and q sampling, and a declared broadening or delta-function treatment.",
       "first_action": {
         "type": "no-guide",
-        "statement": "No reviewed hands-on practical guide is published for electron-phonon coupling or conventional superconductivity. Use the topic overviews and official software workflow to define qualified electronic and phonon parents and observable-specific convergence before execution."
+        "statement": "No reviewed hands-on practical guide is published for electron-phonon coupling or conventional superconductivity. Begin by creating inspectable parent runs for metallic SCF/NSCF states and a complete phonon q grid, then follow the official Wannier90 and EPW interface route while retaining every input, stdout, stderr, save directory, dynamical-matrix set, .win/.amn/.mmn/.eig/.wout lineage, and EPW output before interpreting coupling or Tc."
       },
       "validation_requirement": "Converge the phonons, matrix elements, k mesh, q mesh, interpolation, broadening, spectral function, coupling strength, logarithmic frequency, transition-temperature result, and Coulomb-parameter sensitivity separately.",
       "claim_limitation": "A computed coupling strength or model transition temperature does not establish experimental superconductivity. An unstable or insufficiently sampled phonon parent invalidates the downstream claim.",
-      "common_human_route": "Start from a metallic full-zone reference and qualified phonons, then follow an official EPW or equivalent workflow for matrix elements, interpolation, and derived observables.",
-      "what_to_inspect": "Inspect electronic and phonon parents, interpolation, k/q meshes, broadenings, linewidths, alpha-squared-F, cumulative lambda, omega-log, and derived-result stability."
+      "common_human_route": "Run and inspect the metallic SCF/NSCF parent, complete ph.x q-grid parent, Wannier90 preprocessing/localization/interface products, and epw.x interpolation in separate traceable stages; only then plot linewidths, alpha-squared-F, cumulative lambda, omega-log, and the declared Tc model.",
+      "what_to_inspect": "Inspect stdout and stderr at every stage, prefix/outdir and save-directory ancestry, direct versus interpolated bands and phonons, Wannier spreads and disentanglement, k/q meshes, broadenings, linewidths, alpha-squared-F, cumulative lambda, omega-log, Coulomb-parameter sensitivity, and derived-result stability."
     },
     {
       "id": "surface-energy",

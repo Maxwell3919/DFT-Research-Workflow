@@ -15,8 +15,7 @@ source_ids:
   - ismail-beigi-truncation
   - freysoldt-defects
   - finite-size-scaling-limits
-media_ids:
-  - convergence-finite-size-asymptote
+media_ids: []
 review: docs/reviews/2026-08-03-test-numerical-convergence.md
 reviewed_at: "2026-08-03"
 ---
@@ -29,45 +28,61 @@ Next read the boundary-treatment section of the exact code manual and comparable
 
 ## Prepare the size matrix
 
-Write the operation before generating structures:
-
-~~~text
-physical limit:
-target observable and units:
-predeclared tolerance:
-independent size axes:
-controls intentionally varied toward the declared limit:
-controls held fixed, including identity, normalization, state, boundary treatment, constraints, and method branch:
-state and geometry checks:
-extraction rule:
-required stricter neighbours:
-~~~
+Before generating structures, write down the intended physical limit, target observable and units, predeclared tolerance, and independent size axes. Distinguish the controls intentionally varied toward that limit from the identity, normalization, state, boundary treatment, constraints, and method branch held fixed. Also name the required state and geometry checks, extraction rule, and stricter neighbours along every unresolved axis.
 
 For a slab, lateral area, slab thickness, vacuum, and relaxation depth are separate axes. For a charged defect, shape, separation, dielectric treatment, correction, and relaxation volume can interact. Increasing vacuum alone does not test lateral concentration or electrostatic image error.
 
 Name each input from its physical controls and run the prepared series with the actual code. A QE example is:
 
 ~~~bash
-mkdir -p finite-size/outputs
+mkdir -p finite-size/runs
 for input in finite-size/inputs/*.in; do
-  name=$(basename "$input" .in)
-  pw.x -in "$input" > "finite-size/outputs/$name.out"
+  test -f "$input"
+  name=$(basename -- "$input" .in)
+  run_dir="finite-size/runs/$name"
+  test ! -e "$run_dir"
+  mkdir -p "$run_dir"
+  cp -- "$input" "$run_dir/$name.in"
+  grep -Ei 'prefix|outdir|pseudo_dir' -- "$run_dir/$name.in"
+  (
+    cd "$run_dir"
+    if pw.x -in "$name.in" > "$name.out" 2> "$name.err"; then
+      pw_status=0
+    else
+      pw_status=$?
+    fi
+    printf '%s\n' "$pw_status" > "$name.exit-status"
+    exit "$pw_status"
+  ) || printf 'QE failed for %s; retain and inspect that run.\n' "$name" >&2
 done
 ~~~
 
 This loop is a protocol for the reader's calculations, not execution evidence supplied by the synthetic companion.
+
+Before launch, inspect the displayed `prefix`, `outdir`, and `pseudo_dir` for every copied input. Stage the exact tested-library pseudopotential files required by that input and create an isolated scratch path inside the run directory, or use reviewed absolute paths. Stop rather than letting a copied input inherit another run's scratch or an unexplained potential directory.
 
 ## Check and extract
 
 For QE outputs, begin by separating termination and electronic solver evidence:
 
 ~~~bash
-grep -H "JOB DONE" finite-size/outputs/*.out
-grep -H "convergence has been achieved" finite-size/outputs/*.out
-tail -n 40 finite-size/outputs/*.out
+for run_dir in finite-size/runs/*; do
+  name=$(basename -- "$run_dir")
+  out="$run_dir/$name.out"
+  err="$run_dir/$name.err"
+  printf '\n%s\n' "$run_dir"
+  cat -- "$run_dir/$name.exit-status"
+  test "$(grep -cF 'Program PWSCF v.' -- "$out")" -eq 1
+  test "$(grep -cF 'JOB DONE.' -- "$out")" -eq 1
+  grep -F 'convergence has been achieved' -- "$out" | tail -n 1
+  tail -n 40 -- "$out"
+  tail -n 40 -- "$err"
+  grep -Ei 'warning|error in routine|stopping|not converged|no convergence' \
+    -- "$out" "$err" || true
+done
 ~~~
 
-<code>JOB DONE</code> checks normal termination only. The convergence marker checks the reported electronic solver condition. <code>tail</code> exposes the final part of each file for manual inspection; none of these commands extracts or converges the target observable.
+The shell status, coherent banner, <code>JOB DONE.</code>, stderr, and fatal-text scan constrain program completion. The convergence marker checks the reported electronic solver condition. <code>tail</code> exposes the final part of each file for manual inspection; none of these commands extracts or converges the target observable.
 
 Use one parser for the reported energy difference, force, potential, work function, correction term, dipole probe, or other target. Preserve cell vectors, concentration, coverage, separation, relaxed geometry, charge state, and boundary method in the same table.
 

@@ -19,7 +19,7 @@ A Miller index identifies an orientation, not a unique surface. Also record the 
 
 ## Follow the practical sequence
 
-Use **Build a Surface-Energy Ledger and Diagnose Bulk Drift** to audit an attributed public Si ledger and a separate synthetic drift diagnostic. Then use **Extract Side-Specific Work Functions from a Potential Profile** to practise the plateau test. **Compare Published Si Surface Energies and Work Functions** closes the sequence with a bounded public-data audit and redraw.
+Begin with **Compare Published Si Surface Energies and Work Functions** to inspect the attributed InterMat rows and their limits. Use **Build a Surface-Energy Ledger and Diagnose Bulk Drift** to connect those definitions to the cancellation checks required for a new slab series. **Extract Side-Specific Work Functions from a Potential Profile** is an optional arithmetic exercise only; it contains no real slab or potential output.
 
 ## Write the surface-energy ledger
 
@@ -109,11 +109,11 @@ Adsorbates, oxidation, defects, solvent, fields, and charge transfer change both
 
 The Wulff shape is an equilibrium construction. It requires surface free energies for the relevant orientations and states at common thermodynamic conditions. Missing terminations or reconstructions can alter the construction, while growth morphology additionally depends on kinetics, diffusion, supersaturation, strain, and defects.
 
-## Audit the published Si comparison
+## Inspect the published Si comparison before drawing a trend
 
 The InterMat example freezes reported Si(111), Si(110), and Si(001) surface energies and work functions, checks the snapshot, and redraws the table values. It is not a rerun of InterMat, a thickness series, or independent validation of its DFT or experimental comparison.
 
-## Preserve evidence and state the claim
+## Decide what may continue
 
 Retain parent bulk and slab files, final structures, area and surface count, all energy and reservoir terms, numerical series, potential profiles, plateau windows, side labels, electrostatic settings, hashes, and stopping decisions. Program termination, SCF convergence, geometry convergence, target convergence, physical plausibility, and claim support remain separate.
 

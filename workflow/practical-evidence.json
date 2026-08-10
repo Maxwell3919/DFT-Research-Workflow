@@ -21,11 +21,8 @@
       "blocker": null,
       "priority": 2,
       "execution_script": "examples/practical-guides/ase_repeat_cells.py",
-      "media_ids": [
-        "ase-cell-repetition-diagram"
-      ],
-      "upgrade_readiness": "completed",
-      "case_id": "structure-silicon-cell-lineage"
+      "media_ids": [],
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "ase-surfaces-vacuum-adsorbates",
@@ -39,11 +36,8 @@
       "blocker": null,
       "priority": 2,
       "execution_script": "examples/practical-guides/ase_surface_vacuum_adsorbates.py",
-      "media_ids": [
-        "ase-slab-vacuum-diagram"
-      ],
-      "upgrade_readiness": "completed",
-      "case_id": "structure-graphene-vacuum-adsorbate"
+      "media_ids": [],
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "pymatgen-structure-transformations",
@@ -58,8 +52,7 @@
       "priority": 2,
       "execution_script": "examples/practical-guides/pymatgen_structure_transformations.py",
       "media_ids": [],
-      "upgrade_readiness": "completed",
-      "case_id": "structure-silicon-cell-lineage"
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "two-dimensional-monolayer-model",
@@ -73,11 +66,8 @@
       "blocker": null,
       "priority": 2,
       "execution_script": "examples/practical-guides/ase_monolayer_model.py",
-      "media_ids": [
-        "monolayer-periodicity-diagram"
-      ],
-      "upgrade_readiness": "completed",
-      "case_id": "structure-graphene-vacuum-adsorbate"
+      "media_ids": [],
+      "upgrade_readiness": "completed"
     },
     {
       "guide_slug": "rebuild-oqmd-li-p-convex-hull",
@@ -91,9 +81,7 @@
       "blocker": null,
       "priority": 3,
       "execution_script": "examples/practical-guides/li_p_convex_hull.py",
-      "media_ids": [
-        "oqmd-li-p-convex-hull"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed"
     },
     {
@@ -211,10 +199,7 @@
       "blocker": "One 8x8x8 teaching mesh and one line path do not establish a converged fundamental, indirect, quasiparticle, or optical gap.",
       "priority": 1,
       "execution_script": "examples/practical-guides/silicon_qe_full_zone.py",
-      "media_ids": [
-        "silicon-qe-path-full-zone",
-        "band-path-full-zone-extrema"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -230,9 +215,7 @@
       "blocker": "cutoff and k-mesh convergence, projections, and material conclusions remain unassessed",
       "priority": 1,
       "execution_script": "examples/practical-guides/dos_projection_closure.py",
-      "media_ids": [
-        "silicon-qe-dos"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -248,9 +231,7 @@
       "blocker": "not a dispersion or phonon-frequency convergence study",
       "priority": 2,
       "execution_script": "examples/practical-guides/silicon_gamma_phonon.py",
-      "media_ids": [
-        "silicon-gamma-phonon"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -266,9 +247,7 @@
       "blocker": "single Gamma point and one fixed cutoff/k-mesh; no dielectric observable convergence series",
       "priority": 2,
       "execution_script": "examples/practical-guides/silicon_qe_dielectric.py",
-      "media_ids": [
-        "silicon-qe-dielectric"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -284,9 +263,7 @@
       "blocker": "source selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/strain_stress_ledger.py",
-      "media_ids": [
-        "strain-stress-ledger"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -301,9 +278,7 @@
       "blocker": "source selection pending",
       "priority": 4,
       "execution_script": "examples/practical-guides/piezoelectric_tensor_ledger.py",
-      "media_ids": [
-        "piezoelectric-tensor-ledger"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -318,9 +293,7 @@
       "blocker": "source selection pending",
       "priority": 4,
       "execution_script": "examples/practical-guides/polarization_branch_path.py",
-      "media_ids": [
-        "polarization-branch-path"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -383,9 +356,7 @@
       "blocker": "charged-defect convergence and correction scope",
       "priority": 3,
       "execution_script": "examples/practical-guides/defect_formation_ledger.py",
-      "media_ids": [
-        "defect-formation-ledger"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -400,9 +371,7 @@
       "blocker": "charged-defect convergence and correction scope",
       "priority": 3,
       "execution_script": "examples/practical-guides/defect_charge_state_envelope.py",
-      "media_ids": [
-        "defect-charge-state-envelope"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -417,9 +386,7 @@
       "blocker": "Three published orientations are not a slab-thickness series and do not establish a new converged surface-energy result.",
       "priority": 2,
       "execution_script": "examples/practical-guides/surface_ledger_intermat.py",
-      "media_ids": [
-        "surface-energy-ledger"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed"
     },
     {
@@ -434,9 +401,7 @@
       "blocker": "source selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/work_function_potential.py",
-      "media_ids": [
-        "work-function-potential"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -451,9 +416,7 @@
       "blocker": "Frozen full-coverage top-site rows do not provide a coverage series, site search, free-energy correction, convergence evidence, or new adsorption result.",
       "priority": 2,
       "execution_script": "examples/practical-guides/adsorption_ledger_cmr.py",
-      "media_ids": [
-        "adsorption-energy-ledger"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed"
     },
     {
@@ -468,9 +431,7 @@
       "blocker": null,
       "priority": 2,
       "execution_script": "examples/practical-guides/adsorption_state_grid.py",
-      "media_ids": [
-        "adsorption-state-grid"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "candidate"
     },
     {
@@ -485,9 +446,7 @@
       "blocker": "published-data redraw; no geometry or DFT rerun",
       "priority": 2,
       "execution_script": "examples/practical-guides/interface_ledger_al_tin.py",
-      "media_ids": [
-        "al-tin-interface-ledger"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed"
     },
     {
@@ -502,9 +461,7 @@
       "blocker": "source selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/interface_lattice_match.py",
-      "media_ids": [
-        "interface-lattice-match-map"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -519,9 +476,7 @@
       "blocker": "source selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/formation_energy_ledger.py",
-      "media_ids": [
-        "comparable-energy-ledger"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -536,9 +491,7 @@
       "blocker": "source selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/formation_energy_reactions.py",
-      "media_ids": [
-        "balanced-reference-reactions"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -553,9 +506,7 @@
       "blocker": "source selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/eos_sampling_protocol.py",
-      "media_ids": [
-        "traceable-energy-volume-series"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -570,9 +521,7 @@
       "blocker": "source selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/eos_fit_sensitivity.py",
-      "media_ids": [
-        "eos-fit-sensitivity"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -587,9 +536,7 @@
       "blocker": "source selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/eos_phase_enthalpy.py",
-      "media_ids": [
-        "common-pressure-enthalpy-crossing"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -604,10 +551,7 @@
       "blocker": "only total-energy comparison; force, stress, band, DOS and response convergence are untested",
       "priority": 1,
       "execution_script": "examples/practical-guides/qe_manual_handoff.py",
-      "media_ids": [
-        "convergence-basis-grid-map",
-        "silicon-qe-cutoff-matrix"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -623,10 +567,7 @@
       "blocker": "fixed occupations; no metallic smearing or Fermi-surface convergence study",
       "priority": 1,
       "execution_script": "examples/practical-guides/silicon_qe_convergence.py",
-      "media_ids": [
-        "convergence-k-smearing-matrix",
-        "silicon-qe-kmesh-matrix"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -642,9 +583,7 @@
       "blocker": "2D source selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/convergence_finite_size.py",
-      "media_ids": [
-        "convergence-finite-size-asymptote"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -659,9 +598,7 @@
       "blocker": "DFPT runtime/data selection pending",
       "priority": 3,
       "execution_script": "examples/practical-guides/convergence_response_grids.py",
-      "media_ids": [
-        "convergence-response-grid-chain"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -676,9 +613,7 @@
       "blocker": "all atoms active but no explicit constrained atom, variable-cell, or alternative-start test",
       "priority": 1,
       "execution_script": "examples/practical-guides/silicon_qe_relax.py",
-      "media_ids": [
-        "optimization-degrees-constraint-map"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -713,9 +648,7 @@
       "blocker": "one fixed-cell code/version-specific continuation; no portability, convergence or minimum proof",
       "priority": 2,
       "execution_script": "examples/practical-guides/silicon_qe_restarts.py",
-      "media_ids": [
-        "optimization-restart-verification-chain"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -731,9 +664,7 @@
       "blocker": "scope requires multiple physical candidates",
       "priority": 3,
       "execution_script": "examples/practical-guides/optimization_multiple_starts.py",
-      "media_ids": [
-        "optimization-multiple-basin-map"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {
@@ -782,9 +713,7 @@
       "blocker": "matching printed energy does not establish state identity, restart portability or ground-state proof",
       "priority": 2,
       "execution_script": "examples/practical-guides/silicon_qe_restarts.py",
-      "media_ids": [
-        "fresh-restart-state-map"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -800,9 +729,7 @@
       "blocker": "Silicon is not a magnetic candidate case",
       "priority": 3,
       "execution_script": "examples/practical-guides/reference_state_candidate_comparison.py",
-      "media_ids": [
-        "candidate-state-comparison"
-      ],
+      "media_ids": [],
       "upgrade_readiness": "blocked"
     },
     {

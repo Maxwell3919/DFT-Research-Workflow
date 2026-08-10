@@ -23,15 +23,25 @@ review: docs/reviews/2026-08-04-fermi-surface-and-full-brillouin-zone-analysis.m
 reviewed_at: "2026-08-05"
 ---
 
-## Inspect a three-dimensional Fermi-level isosurface when making a Fermi-surface claim
+## For a Fermi-surface claim, inspect a three-dimensional isosurface
 
 Load the dense aluminium mesh into FermiSurfer, XCrySDen, PyProcar, or another suitable viewer, display the Brillouin-zone boundary, and rotate the surface to look for sheets, necks, and pockets. Compare that object with the labelled band path, then change mesh or interpolation settings to see whether features persist. Use [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), and [specialist post-processing tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
 
-**Reproduce this site's figure:** the companion script reconstructs real stored QE aluminium mesh and path evidence. The left panel uses unconnected points deliberately: it is a two-dimensional projection of samples near the Fermi level, not band connectivity or a real three-dimensional Fermi surface.
+**Inspect the stored mesh and path evidence:** this page contains a two-dimensional projection of unconnected near-Fermi samples and a separate band path. It contains no three-dimensional isosurface object, exporter output, sheet connectivity, or pocket topology.
 
 Use this real aluminium example when a band-path crossing suggests metallicity or a Fermi-surface feature. It compares an explicit uniform full-zone eigenvalue sample with a separate path from the same accepted state. The stored point counts and crossings are execution evidence, not a converged isosurface or pocket count.
 
 ## Purpose
+
+First inspect the committed mesh, path, and receipt without claiming a surface:
+
+```bash
+head -n 5 examples/practical-guides/data/al-qe/full-zone/al-mesh.csv
+head -n 5 examples/practical-guides/data/al-qe/full-zone/al-path.csv
+sed -n '1,120p' examples/practical-guides/data/al-qe/full-zone/al-full-zone.json
+```
+
+Judge whether the coordinates, band identity, Fermi marker, point counts, and hashes match the intended state. These tables support sampled crossings only. To make a Fermi-surface claim, export a version-matched regular-grid field to a documented viewer, inspect the three-dimensional object, and test mesh and interpolation sensitivity; until then, stop at the sampled-data description.
 
 The recorded QE 7.5 sequence used the explicit fcc primitive-cell state and these program stages in a prepared work directory:
 
@@ -54,7 +64,7 @@ The compatible `nscf` input samples the uniform full-zone state. In this case `n
 
 The explicit teaching setup uses one Al atom, `celldm(1)=7.653` bohr, a PBE ultrasoft pseudopotential, 30 Ry wavefunction cutoff, 240 Ry charge cutoff, Marzari-Vanderbilt smearing of 0.02 Ry, and an 8 x 8 x 8 mesh. These are recorded case values, not transferable recommendations. The pseudopotential filename and SHA-256 are preserved in `examples/practical-guides/data/al-qe/full-zone/al-full-zone.json`; the potential body is not redistributed.
 
-## Inspect and reconstruct the stored field
+## Reconstruct only when source outputs are available
 
 ```bash
 python3 examples/practical-guides/al_qe_full_zone.py \
@@ -67,7 +77,7 @@ python3 examples/practical-guides/al_qe_full_zone.py \
   --svg public/media/practical-guides/fermi-surface-and-full-brillouin-zone-analysis/compare-full-zone-isovalue-and-band-path/al-qe-full-zone.svg
 ```
 
-The parser verifies source-output hashes, the Fermi marker, 512 mesh rows, 145 path rows, and four eigenvalues per row before writing the compact JSON, CSV, and SVG. These checks establish dataset identity and shape; they do not establish mesh or isovalue convergence.
+The `/path/to/...` arguments are placeholders for retained source outputs, so this is not the quick inspection command. When those outputs are available, the parser verifies their hashes, the Fermi marker, 512 mesh rows, 145 path rows, and four eigenvalues per row before writing the compact JSON, CSV, and plot. These checks establish dataset identity and shape; they do not establish mesh or isovalue convergence.
 
 The SCF reports a Fermi energy of `7.8018 eV`. For selected QE band 2, this run has 237 mesh values below that chemical potential, 275 at or above it, and 48 within the declared +/-0.25 eV teaching window. The ordered path crosses the same value on three sampled intervals. These are observations from this run, not an isosurface, carrier count, or pocket topology.
 

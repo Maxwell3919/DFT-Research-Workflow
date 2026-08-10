@@ -21,27 +21,27 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
       <p class="eyebrow">Research Workflow support</p>
       <h1>Software Bridge</h1>
       <p class="lede">
-        Start from the scientific task, not from a package menu. Each row names the upstream term,
-        the parent object you must preserve, the artifacts to inspect first, and one official place to continue.
+        Choose the scientific task first. Then open the matching Research Workflow page and the official
+        instructions for the software you actually run.
       </p>
       <p class="scope">
         This is a cross-index, not a parameter manual, software ranking, compatibility promise, or claim that
         different codes produce interchangeable results. Official pages were checked on {verifiedAt}; match them
-        to the version you actually run.
-      </p>
-      <p class="scope">
-        {bridge.ecosystem_note}
+        to the version you actually run. {bridge.ecosystem_note}
         <a data-ecosystem-link href={`${base}/${bridge.resource_landscape_path}`}>{bridge.resource_landscape_label}</a>.
       </p>
     </header>
 
-    <nav class="task-index" aria-label="Software Bridge tasks">
-      <p>Go directly to a task:</p>
+    <nav class="task-index" aria-labelledby="task-index-heading">
+      <h2 id="task-index-heading">Choose your scientific task</h2>
       <ol>
         {bridge.tasks.map((task) => (
           <li><a href={`#${task.id}`}>{task.title}</a></li>
         ))}
       </ol>
+      <p class="task-index__guide">
+        For each task, open its DRW parent page, preserve the stated parent object, use the official start for current syntax, then return to the first inspection and scientific boundary before accepting the result.
+      </p>
     </nav>
 
     {bridge.tasks.map((task, taskIndex) => (
@@ -52,61 +52,53 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
           <p>{task.scientific_action}</p>
         </div>
 
-        <dl class="task__contract">
-          <div>
-            <dt>Required parent object</dt>
-            <dd>{task.required_parent_object}</dd>
-          </div>
-          <div>
-            <dt>Validation requirement</dt>
-            <dd>{task.validation_requirement}</dd>
-          </div>
-        </dl>
-
         <p class="parent-link">
-          DRW parent task:
+          <strong>First open the DRW task:</strong>
           <a data-parent-link href={`${base}/operations/${task.parent_topic}/`}>open {task.parent_topic.replaceAll('-', ' ')}</a>
+        </p>
+        <p class="task__guidance">
+          <strong>Preserve before translating:</strong> {task.required_parent_object}
+          <strong>Before accepting:</strong> {task.validation_requirement}
         </p>
 
         <div class="table-frame" tabindex="0" aria-label={`${task.title} software implementations`}>
           <table>
             <thead>
               <tr>
-                <th scope="col">Software and upstream term</th>
-                <th scope="col">Required inputs</th>
-                <th scope="col">Produced artifacts</th>
-                <th scope="col">First inspection</th>
-                <th scope="col">Official start</th>
+                <th scope="col">Software and official start</th>
+                <th scope="col">Inputs to prepare</th>
+                <th scope="col">Outputs to inspect</th>
+                <th scope="col">First check</th>
               </tr>
             </thead>
             <tbody>
               {task.implementations.map((implementation) => (
                 <tr data-code={implementation.tool_slug}>
-                  <td data-label="Software and upstream term">
+                  <td class="software-cell" data-label="Software and official start">
                     <a data-tool-link href={`${base}/tools/${implementation.tool_slug}/`}>{implementation.software}</a>
-                    <p class="term"><code>{implementation.terminology}</code></p>
+                    <p class="term"><span>Upstream term:</span> <code>{implementation.terminology}</code></p>
+                    <p class="official-start">
+                      <a
+                        data-official-link
+                        href={implementation.official_url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >{implementation.first_official_start}</a>
+                    </p>
                   </td>
-                  <td data-label="Required inputs" data-required-inputs>
+                  <td data-label="Inputs to prepare" data-required-inputs>
                     <ul>
                       {implementation.required_inputs.map((item) => <li>{item}</li>)}
                     </ul>
                   </td>
-                  <td data-label="Produced artifacts" data-artifacts>
+                  <td data-label="Outputs to inspect" data-artifacts>
                     <ul>
                       {implementation.artifacts.map((item) => <li>{item}</li>)}
                     </ul>
                   </td>
-                  <td data-label="First inspection">
+                  <td data-label="First check">
                     <p>{implementation.first_inspection}</p>
                     <p class="boundary" data-check-boundary><strong>Do not equate:</strong> {implementation.boundary}</p>
-                  </td>
-                  <td data-label="Official start">
-                    <a
-                      data-official-link
-                      href={implementation.official_url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >{implementation.first_official_start}</a>
                   </td>
                 </tr>
               ))}
@@ -120,15 +112,6 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
       </section>
     ))}
 
-    <section class="use" aria-labelledby="use-title">
-      <h2 id="use-title">Use the bridge without losing the research question</h2>
-      <ol>
-        <li>Open the DRW parent task and decide what observable and validation standard the question requires.</li>
-        <li>Preserve the required parent object before translating it into package-specific inputs.</li>
-        <li>Use the official start link for current command and parameter semantics.</li>
-        <li>Return to the stated inspection and non-equivalence boundary before accepting or continuing the result.</li>
-      </ol>
-    </section>
   </main>
 </BaseLayout>
 
@@ -184,9 +167,11 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
     border-bottom: 1px solid #cfc4b4;
   }
 
-  .task-index p {
+  .task-index h2 {
     margin: 0 0 0.65rem;
-    font-weight: 650;
+    font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
   }
 
   .task-index ol {
@@ -195,6 +180,13 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
     gap: 0.45rem 1.4rem;
     margin: 0;
     padding-left: 1.25rem;
+  }
+
+  .task-index__guide {
+    color: #50483e;
+    line-height: 1.6;
+    margin: 1rem 0 0;
+    max-width: 58rem;
   }
 
   a {
@@ -217,8 +209,7 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
     max-width: 56rem;
   }
 
-  .task__heading h2,
-  .use h2 {
+  .task__heading h2 {
     margin: 0;
     font-size: clamp(1.9rem, 4vw, 3.1rem);
     font-weight: 500;
@@ -232,36 +223,23 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
     line-height: 1.6;
   }
 
-  .task__contract {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-    margin: 1.8rem 0 0;
-    padding: 1.2rem 0;
-    border-top: 1px solid #d8cfc1;
-    border-bottom: 1px solid #d8cfc1;
-  }
-
-  .task__contract div {
-    min-width: 0;
-  }
-
-  dt {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #6f5c45;
-  }
-
-  dd {
-    margin: 0.5rem 0 0;
-    line-height: 1.55;
-  }
-
   .parent-link {
-    margin: 1rem 0;
+    border-top: 1px solid #d8cfc1;
+    margin: 1.8rem 0 0;
+    padding-top: 1rem;
     color: #50483e;
+  }
+
+  .task__guidance {
+    border-bottom: 1px solid #d8cfc1;
+    color: #50483e;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0.75rem 0 1rem;
+  }
+
+  .task__guidance strong + strong {
+    margin-left: 1rem;
   }
 
   .table-frame {
@@ -305,11 +283,10 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
     border-bottom: 0;
   }
 
-  th:nth-child(1) { width: 18%; }
-  th:nth-child(2) { width: 20%; }
-  th:nth-child(3) { width: 19%; }
-  th:nth-child(4) { width: 30%; }
-  th:nth-child(5) { width: 13%; }
+  th:nth-child(1) { width: 28%; }
+  th:nth-child(2) { width: 22%; }
+  th:nth-child(3) { width: 22%; }
+  th:nth-child(4) { width: 28%; }
 
   td p,
   td ul {
@@ -327,6 +304,16 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
 
   .term {
     margin: 0.55rem 0 0;
+  }
+
+  .term span {
+    color: #6f5c45;
+    font-size: 0.76rem;
+  }
+
+  .official-start {
+    font-weight: 700;
+    margin: 0.8rem 0 0;
   }
 
   code {
@@ -347,31 +334,9 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
     line-height: 1.58;
   }
 
-  .use {
-    max-width: 56rem;
-    margin-top: clamp(4rem, 8vw, 7rem);
-    padding-top: 2rem;
-    border-top: 2px solid #2e2923;
-  }
-
-  .use ol {
-    margin: 1.25rem 0 0;
-    padding-left: 1.35rem;
-    line-height: 1.65;
-  }
-
-  .use li + li {
-    margin-top: 0.65rem;
-  }
-
   @media (max-width: 760px) {
     .bridge {
       padding-inline: clamp(0.85rem, 4vw, 1.35rem);
-    }
-
-    .task__contract {
-      grid-template-columns: 1fr;
-      gap: 1rem;
     }
 
     .table-frame {
@@ -429,7 +394,7 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
       min-width: 0;
     }
 
-    td > a:first-child + .term {
+    .software-cell > * {
       grid-column: 2;
     }
   }
@@ -448,7 +413,7 @@ const verifiedAt = new Intl.DateTimeFormat('en-GB', {
       gap: 0.35rem;
     }
 
-    td > a:first-child + .term {
+    .software-cell > * {
       grid-column: auto;
     }
   }

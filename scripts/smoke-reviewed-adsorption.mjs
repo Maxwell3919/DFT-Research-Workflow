@@ -37,13 +37,13 @@ async function inspect(page, width) {
     hasArticle: Boolean(document.querySelector('.article-content')),
     hasPlaceholder: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     hasContract: Boolean(document.querySelector('.operation-contract')),
-    scripts: document.querySelectorAll('script').length,
+    scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en' || result.title !== 'Adsorption Energies') throw new Error(`adsorption identity mismatch: ${result.title}`);
   if (!result.hasArticle || result.hasPlaceholder || result.hasContract) throw new Error('reviewed adsorption narrative was not rendered naturally');
   if (result.scripts !== 0 || result.overflow) throw new Error(`adsorption page is not static or overflows at ${width}px`);
-  if (result.headings < 8 || result.headings > 14 || result.cards !== 3) throw new Error(`adsorption counts mismatch: ${result.headings} sections outside 8..14, ${result.cards} cards`);
+  if (result.headings < 8 || result.headings > 14 || result.cards !== 2) throw new Error(`adsorption counts mismatch: ${result.headings} sections outside 8..14, ${result.cards} non-synthetic cards`);
   for (const phrase of phrases) if (!result.text.includes(phrase)) throw new Error(`adsorption page is missing ${phrase}`);
   for (const domain of domains) if (!result.links.some((link) => link.includes(domain))) throw new Error(`adsorption page is missing ${domain}`);
   return result;
@@ -83,7 +83,7 @@ try {
     await capture(page, join(artifactDirectory, 'topic-adsorption-energies-desktop.png'));
     await writeFile(join(artifactDirectory, 'reviewed-adsorption-summary.json'), `${JSON.stringify({ site_url: base, route, natural_sections: desktop.headings, practical_cards: desktop.cards, source_links: desktop.links.length, desktop_width: 1440, mobile_width: 390, no_javascript: true, fixed_contract: false, reaction_and_sign_boundary: desktop.text.includes('Balance atoms, charge, electrons, protons, and other reservoirs before evaluation.'), coverage_and_cell_boundary: desktop.text.includes('One adsorbate in a larger cell changes both coverage and image separation.'), program_vs_solver_boundary: desktop.text.includes('A normal program exit establishes only that the executable reached an exit path.') && desktop.text.includes('Satisfaction of the declared SCF residual criterion is only an inner numerical condition.'), thermodynamics_and_kinetics_boundary: desktop.text.includes('A negative endpoint energy does not show that adsorption is fast, reversible, selective, or experimentally realized.') }, null, 2)}\n`);
   }
-  console.log(`Reviewed adsorption smoke passed: ${desktop.headings} natural sections, 3 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and reaction/coverage/program-versus-solver/free-energy/kinetics boundaries.`);
+  console.log(`Reviewed adsorption smoke passed: ${desktop.headings} natural sections, 2 non-synthetic practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and reaction/coverage/program-versus-solver/free-energy/kinetics boundaries.`);
 } finally {
   await browser.close();
 }

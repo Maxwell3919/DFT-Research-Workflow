@@ -15,6 +15,8 @@ Use a band calculation when the question depends on eigenvalue dispersion along 
 
 Prepare an SCF input and a compatible `calculation='bands'` input. They must use the same structure, pseudopotentials, basis settings, charge, spin/SOC treatment, Hubbard definition, `prefix`, and accessible `outdir`. Put the declared ordered path in `K_POINTS crystal_b` or the matching format for the QE version in use.
 
+Run these commands only inside a prepared calculation directory containing the named inputs, pseudopotential receipt, and writable scratch path. The repository's stored Silicon files are evidence to inspect and reconstruct; they are not a universal launch directory.
+
 ```bash
 pw.x -in scf.in > scf.out
 grep -F "convergence has been achieved" scf.out
@@ -82,7 +84,7 @@ Compare interpolated and directly calculated eigenvalues at held-out path points
 
 Energy sorting can exchange branch identity at crossings or near-degeneracies. Preserve the raw eigenvalue order and any overlap- or symmetry-based reordering metadata. A visually continuous branch is not evidence that a crossing is symmetry protected.
 
-## What this topic establishes
+## Decide what may be read from the path
 
 A checked path calculation can support a statement about dispersion and candidate features on that exact path for the declared Kohn--Sham model. It does not establish a complete full-zone electronic topology, full-zone metallicity, a fundamental or experimental gap, a quasiparticle or optical spectrum, a transport coefficient, carrier mobility, material stability, or device performance. Preserve the parent calculation, path ledger, eigenvalues, occupations, energy reference, convergence evidence, plotting transformation, and hashes with the figure.
 

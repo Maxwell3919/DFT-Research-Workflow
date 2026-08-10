@@ -156,6 +156,7 @@ for (const marker of [
 }
 if (pageSource.includes('client:') || /<script(?:\s|>)/i.test(pageSource)) errors.push('page must not hydrate or emit client scripts');
 if (/class=["'][^"']*card/i.test(pageSource)) errors.push('page must not introduce cards');
+if (!pageSource.includes('Software and official start') || pageSource.includes('<th scope="col">Official start</th>')) errors.push('official documentation must remain foregrounded in the first reader-facing column');
 if ((bridge.tasks ?? []).length !== 6 || (bridge.tasks ?? []).reduce((sum, task) => sum + task.implementations.length, 0) !== 24) {
   errors.push('expected exactly 6 tasks and 24 implementation rows');
 }

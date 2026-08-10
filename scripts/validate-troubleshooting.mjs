@@ -137,7 +137,7 @@ if (!scfBoundary.includes('does not establish the lowest relevant state')) error
 if (!phononRecord?.symptom?.includes('dynamical-matrix eigenvalues are negative') || !phononRecord?.symptom?.includes('corresponding to imaginary phonon frequencies')) errors.push('imaginary-frequency symptom must distinguish negative dynamical-matrix eigenvalues from the corresponding imaginary frequencies');
 if (!phononBoundary.includes('alone does not prove a physical instability')) errors.push('imaginary-frequency boundary must reject automatic instability claims');
 
-for (const marker of ['data-troubleshooting-index', 'data-symptom-record', 'workflowSections', 'withBase', 'troubleshootingData']) {
+for (const marker of ['data-troubleshooting-index', 'data-symptom-record', 'data-primary-actions', 'data-claim-boundary', 'data-secondary-evidence', 'workflowSections', 'withBase', 'troubleshootingData']) {
   if (!routeSource.includes(marker)) errors.push(`route source is missing fail-closed static marker ${marker}`);
 }
 for (const forbidden of ['client:load', 'client:idle', 'client:visible', 'client:only', '<script']) {
@@ -155,6 +155,8 @@ if (validateBuilt) {
     if (!/<html[^>]+lang="en"/i.test(html)) errors.push('built route does not declare English');
     if (!html.includes('Troubleshoot a calculation')) errors.push('built route is missing its public heading');
     if ((html.match(/data-symptom-record=/g) ?? []).length !== 10) errors.push('built route does not contain exactly ten symptom records');
+    if ((html.match(/data-primary-actions/g) ?? []).length !== 10) errors.push('built route does not expose one primary-action sequence per symptom');
+    if ((html.match(/data-secondary-evidence/g) ?? []).length !== 10) errors.push('built route does not contain one secondary-evidence disclosure per symptom');
     for (const slug of expectedRecordSlugs) {
       if (!html.includes(`id="${slug}"`)) errors.push(`built route is missing anchor #${slug}`);
     }

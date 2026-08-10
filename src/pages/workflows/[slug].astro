@@ -243,6 +243,14 @@ const commands = manifest.commands ?? [];
 const executionRoutes = manifest.execution_routes ?? [];
 const artifacts = manifest.artifacts ?? [];
 const readerStages = workflow.reader_route.stages;
+const firstFigureStage = new Map<string, string>();
+for (const stage of readerStages) {
+  for (const path of stage.artifact_paths) {
+    if (figures.some((figure) => figure.path === path) && !firstFigureStage.has(path)) {
+      firstFigureStage.set(path, stage.id);
+    }
+  }
+}
 const recordConflicts = workflow.record_conflicts ?? [];
 const storedEvidenceTracks = workflow.evidence_tracks.filter((track) => !track.launches_dft);
 const freshExecutionTracks = workflow.evidence_tracks.filter((track) => track.launches_dft);
@@ -477,24 +485,25 @@ const sourceHumanAction = (role: string) => role === 'structure'
             <p>{stage.purpose}</p>
 
             <div data-human-workflow-step>
-              <p><strong>Interface:</strong> {humanGuidanceForStage(stage.id).interface}</p>
-              <p><strong>Open:</strong> {humanGuidanceForStage(stage.id).open}</p>
-              <p><strong>Inspect:</strong> {humanGuidanceForStage(stage.id).inspect}</p>
-              <p><strong>Decide:</strong> {humanGuidanceForStage(stage.id).decide}</p>
+              <p>{humanGuidanceForStage(stage.id).open} {humanGuidanceForStage(stage.id).inspect}</p>
+              <p><strong>Continue when:</strong> {humanGuidanceForStage(stage.id).decide}</p>
             </div>
 
-            {figures.filter((figure) => stage.artifact_paths.includes(figure.path)).map((figure) => (
+            {figures.filter((figure) => firstFigureStage.get(figure.path) === stage.id).map((figure) => (
               <figure data-stage-figure={figure.path}>
                 <img src={figure.dataUrl} alt={figure.alt} loading="lazy" />
-                <figcaption>{figure.caption ?? figure.role}. Read it together with the source table and the stage boundary below.</figcaption>
+                <figcaption>
+                  {figure.caption ?? figure.role}. Read it together with the source table and the stage boundary below.
+                  {' '}<a href={caseFileUrl(figure.path)}>Open the source figure.</a>
+                </figcaption>
               </figure>
             ))}
 
             {stage.action && (
               <div data-reader-stage-action>
-                <h4>Terminal-capable route: {stage.action.label}</h4>
+                <h4>Run this step: {stage.action.label}</h4>
                 <p><strong>Run from:</strong> <code>{substituteSourceRevision(stage.action.cwd)}</code></p>
-                <pre><code>{commandBlock(stage.action.commands)}</code></pre>
+                <pre data-copyable><code>{commandBlock(stage.action.commands)}</code></pre>
                 <p><strong>Boundary:</strong> {substituteSourceRevision(stage.action.boundary)}</p>
               </div>
             )}
@@ -515,6 +524,10 @@ const sourceHumanAction = (role: string) => role === 'structure'
         ))}
       </ol>
     </section>
+
+    <details class="workflow-reproducibility" data-reproducibility-appendix>
+      <summary>Reproducibility appendix</summary>
+      <p>Open this only when you need the exact published case record, hashes, historical commands, or replay boundary.</p>
 
 <section class="article-content" aria-labelledby="case-scope-heading" data-case-evidence-scope>
       <h2 id="case-scope-heading">How to use this workflow</h2>
@@ -611,10 +624,10 @@ const sourceHumanAction = (role: string) => role === 'structure'
       <p><strong>Source revision:</strong> <code>{sourceRevision}</code></p>
       <p><strong>Working directory:</strong> <code>{workflow.start_here.working_directory}</code></p>
       <p><strong>Case root:</strong> <code>{workflow.start_here.case_root}</code></p>
-      <pre><code>{commandBlock(workflow.start_here.acquisition_commands)}</code></pre>
+      <pre data-copyable><code>{commandBlock(workflow.start_here.acquisition_commands)}</code></pre>
       <h3>{workflow.start_here.first_action.label}</h3>
       <p><strong>Run from:</strong> <code>{substituteSourceRevision(workflow.start_here.first_action.cwd)}</code></p>
-      <pre><code>{commandBlock(workflow.start_here.first_action.commands)}</code></pre>
+      <pre data-copyable><code>{commandBlock(workflow.start_here.first_action.commands)}</code></pre>
       <p><strong>Boundary:</strong> {substituteSourceRevision(workflow.start_here.first_action.boundary)}</p>
     </section>
 
@@ -713,6 +726,7 @@ const sourceHumanAction = (role: string) => role === 'structure'
         Use this case together with <a href={withBase('operations/')}>Research Workflow</a> for the A–E scientific map. The case illustrates one bounded case and its declared routes; it does not prescribe parameters or establish a general material conclusion.
       </p>
     </section>
+    </details>
 
     <p class="directory-link"><a href={withBase('workflows/')}>Return to Worked Workflows</a></p>
   </article>

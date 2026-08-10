@@ -9,7 +9,7 @@ Load dense-mesh eigenvalues into a Fermi-surface viewer such as FermiSurfer, XCr
 
 A connected line through unrelated mesh points is not a Fermi surface, and a high-symmetry band path cannot exclude an off-path pocket. Find suitable [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), and [specialist post-processing routes](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools) before making a topology or metallicity claim.
 
-Use a full-Brillouin-zone calculation when the question depends on where a band reaches a chosen energy: a possible Fermi-surface sheet, pocket, neck, off-path crossing, or extremum. Start from an accepted structure and electronic reference state, then create a compatible uniform-zone eigenvalue field. [Compare a Full-Zone Isovalue with a Band-Path Crossing](/DFT-Research-Workflow/operations/fermi-surface-and-full-brillouin-zone-analysis/guides/compare-full-zone-isovalue-and-band-path/) reconstructs a real QE 7.5 aluminium mesh and path while keeping sampled crossings separate from a converged Fermi-surface claim.
+Use a full-Brillouin-zone calculation when the question depends on where a band reaches a chosen energy: a possible Fermi-surface sheet, pocket, neck, off-path crossing, or extremum. Start from an accepted structure and electronic reference state, then create a compatible uniform-zone eigenvalue field. [Compare a Full-Zone Isovalue with a Band-Path Crossing](/DFT-Research-Workflow/operations/fermi-surface-and-full-brillouin-zone-analysis/guides/compare-full-zone-isovalue-and-band-path/) reconstructs a real QE 7.5 aluminium mesh and path. Its current graphic is a two-dimensional projection of near-Fermi samples, not a three-dimensional isosurface; this repository contains no completed Fermi-surface export or topology result.
 
 ## Produce the full-zone state
 
@@ -77,9 +77,9 @@ $$
 
 but sheet geometry and velocity do not supply scattering times, interactions, contacts, or a conductivity tensor. A nesting-like geometry does not establish an instability, electron-phonon coupling, superconductivity, or density-wave response without the corresponding calculation.
 
-## What this topic establishes
+## Decide whether you have a field or only samples
 
-A converged full-zone field can support a state-specific equal-energy geometry for the declared model, mesh or validated interpolation, and isovalue. It does not establish an experimental Fermi surface, carrier concentration, effective mass, scattering rate, conductivity, quantum-oscillation frequency, instability, superconductivity, topology, material stability, or device performance. Preserve the parent state, full field, mesh/isovalue sensitivity, any path comparison, interpolation checks, rendering method, machine-readable surface data, and hashes.
+An eigenvalue table or near-isovalue scatter is sampled evidence, not a surface. A converged full-zone field plus a reproducible three-dimensional export can support a state-specific equal-energy geometry for the declared model, mesh or validated interpolation, and isovalue. Without that object, stop at the sampled crossing statement. It does not establish an experimental Fermi surface, carrier concentration, effective mass, scattering rate, conductivity, quantum-oscillation frequency, instability, superconductivity, topology, material stability, or device performance. Preserve the parent state, full field, mesh/isovalue sensitivity, any path comparison, interpolation checks, rendering method, machine-readable surface data, and hashes.
 
 ## Sources and methods
 

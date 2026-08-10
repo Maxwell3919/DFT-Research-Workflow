@@ -4,7 +4,7 @@ const base = (process.env.SITE_URL ?? 'http://127.0.0.1:4322/DFT-Research-Workfl
 const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const routes = [
   ['/operations/density-of-states-and-projected-density-of-states/', 'Density of States and Projected Density of States', 'a high-symmetry band path is not a DOS parent'],
-  ['/operations/density-of-states-and-projected-density-of-states/guides/check-dos-normalization-and-projection-closure/', 'Reconstruct a Stored Total DOS and Define Closure Tests', 'Execution verifies the stored-output hash'],
+  ['/operations/density-of-states-and-projected-density-of-states/guides/check-dos-normalization-and-projection-closure/', 'Reconstruct a Stored Total DOS and Define Closure Tests', 'The reconstruction checks the committed total-DOS file and plot.'],
 ];
 const browser = await puppeteer.launch({ executablePath, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
 try {
@@ -14,7 +14,7 @@ try {
     for (const [route, title, phrase] of routes) {
       const response = await page.goto(`${base}${route}`, { waitUntil: 'load' });
       if (response?.status() !== 200) throw new Error(`${route} returned ${response?.status()}`);
-      const state = await page.evaluate(async () => { const image = document.querySelector('.guide-media img'); if (image) { image.loading = 'eager'; image.scrollIntoView(); try { await image.decode(); } catch {} } return { title: document.querySelector('h1')?.textContent?.trim(), text: document.body.innerText, scripts: document.scripts.length, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1, image: image ? image.complete && image.naturalWidth > 0 : true }; });
+      const state = await page.evaluate(async () => { const image = document.querySelector('.guide-media img'); if (image) { image.loading = 'eager'; image.scrollIntoView(); try { await image.decode(); } catch {} } return { title: document.querySelector('h1')?.textContent?.trim(), text: document.body.innerText, scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length, overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1, image: image ? image.complete && image.naturalWidth > 0 : true }; });
       if (state.title !== title || !state.text.includes(phrase) || state.scripts || state.overflow || !state.image) throw new Error(`${route} rendered static/content/media/layout failure at ${width}px`);
     }
     await page.close();

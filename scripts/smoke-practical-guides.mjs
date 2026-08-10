@@ -12,21 +12,21 @@ const parentRoutes = [
 const guides = [
   {
     parentRoute: parentRoutes[0],
-    mediaCount: 1,
+    mediaCount: 0,
     route: '/operations/build-or-modify-computational-model/guides/ase-build-repeat-cells/',
     title: 'Build and Repeat Cells with ASE',
     tool: 'ase',
     version: 'ASE 3.29.0',
-    phrase: 'Repeating an unchanged perfect crystal can preserve the same ideal periodic system.',
+    phrase: 'A regular-looking cell does not show that defect, phonon, magnetic, alloy, or interface finite-size effects are converged.',
   },
   {
     parentRoute: parentRoutes[0],
-    mediaCount: 1,
+    mediaCount: 0,
     route: '/operations/build-or-modify-computational-model/guides/ase-surfaces-vacuum-adsorbates/',
     title: 'Construct Surfaces, Vacuum, and Adsorbates with ASE',
     tool: 'ase',
     version: 'ASE 3.29.0',
-    phrase: 'A surface builder produces coordinates; it does not validate the termination, thickness, coverage, vacuum, or adsorption site.',
+    phrase: 'A surface builder produces starting coordinates; it does not select the physical termination, layer count, lateral cell, adsorption site, vacuum, constraint policy, or electrostatic treatment.',
   },
   {
     parentRoute: parentRoutes[0],
@@ -35,11 +35,11 @@ const guides = [
     title: 'Apply Structure Transformations with pymatgen',
     tool: 'pymatgen',
     version: 'pymatgen-core 2026.7.31',
-    phrase: 'The class executes a structural change; it does not decide whether that change preserves the physical model.',
+    phrase: 'A class can produce an object; it cannot decide whether the object answers the scientific question.',
   },
   {
     parentRoute: parentRoutes[0],
-    mediaCount: 1,
+    mediaCount: 0,
     route: '/operations/build-or-modify-computational-model/examples/two-dimensional-monolayer-model/',
     title: 'Build a Two-Dimensional Monolayer Model',
     tool: 'ase',
@@ -53,7 +53,7 @@ const guides = [
     title: 'Construct Defect and Interface Candidates without Overclaiming Them',
     tool: 'ase',
     version: 'ASE 3.29.0',
-    phrase: 'it is not a lattice-match prediction.',
+    phrase: 'It is not a lattice-match prediction',
   },
   {
     parentRoute: parentRoutes[1],
@@ -87,7 +87,10 @@ async function inspectGuide(page, guide, width) {
     toolTags: [...document.querySelectorAll('.tool-tag')].map((tag) => tag.textContent?.trim()),
     hasMeta: Boolean(document.querySelector('.guide-meta')),
     hasEvidence: Boolean(document.querySelector('.evidence-note')),
-    hasScript: Boolean(document.querySelector('script')),
+    copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
+    unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm').length,
+    copyButtons: document.querySelectorAll('.copy-code-button').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en') throw new Error(`${guide.route}: language is not English`);
@@ -99,7 +102,12 @@ async function inspectGuide(page, guide, width) {
   if (result.images.length !== guide.mediaCount) throw new Error(`${guide.route}: expected ${guide.mediaCount} media items, found ${result.images.length}`);
   if (result.images.some((image) => !image.alt)) throw new Error(`${guide.route}: media item is missing alt text`);
   if (!result.links.some((link) => link.startsWith('https://'))) throw new Error(`${guide.route}: missing official source links`);
-  if (result.hasScript) throw new Error(`${guide.route}: client-side script is present`);
+  if (result.copyEnhancements !== 1 || result.unexpectedScripts !== 0) {
+    throw new Error(`${guide.route}: expected one Copy enhancement and no other scripts`);
+  }
+  if (result.copyButtons !== result.copyableBlocks) {
+    throw new Error(`${guide.route}: renders ${result.copyButtons} Copy controls for ${result.copyableBlocks} copyable code blocks`);
+  }
   if (result.overflow) throw new Error(`${guide.route}: horizontal overflow at ${width}px`);
   return result;
 }
@@ -137,7 +145,8 @@ try {
       text: document.body.innerText,
       links: [...document.querySelectorAll('.practical-card-list a')].map((link) => link.href),
       cards: document.querySelectorAll('.practical-card-list li').length,
-      scripts: document.querySelectorAll('script').length,
+      copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
+      unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
       overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
     }));
     const parentGuides = guides.filter((guide) => guide.parentRoute === parentRoute);
@@ -146,11 +155,11 @@ try {
     }
     if (parent.cards !== parentGuides.length) throw new Error(`${parentRoute}: parent topic has ${parent.cards} practical cards instead of ${parentGuides.length}`);
     for (const guide of parentGuides) if (!parent.links.includes(`${base}${guide.route}`)) throw new Error(`${parentRoute}: parent topic is missing ${guide.route}`);
-    if (parent.scripts !== 0 || parent.overflow) throw new Error(`${parentRoute}: practical interface is not static or overflows`);
+    if (parent.copyEnhancements !== 1 || parent.unexpectedScripts !== 0 || parent.overflow) {
+      throw new Error(`${parentRoute}: parent is missing the bounded Copy enhancement, exposes another script, or overflows`);
+    }
     parentResults.push({ route: parentRoute, ...parent });
   }
-  const parent = parentResults[0];
-
   const desktopResults = [];
   for (const guide of guides) desktopResults.push(await inspectGuide(page, guide, 1440));
 
@@ -187,7 +196,7 @@ try {
     }, null, 2)}\n`);
   }
 
-  console.log(`Practical guide smoke passed: ${parentRoutes.length} parents, ${guides.length} static routes, pinned versions, official links, declared media counts, 1440px/390px layout, and no-JavaScript reading.`);
+  console.log(`Practical guide smoke passed: ${parentRoutes.length} parents, ${guides.length} static-first routes, Copy controls for every copyable code block, pinned versions, official links, declared media counts, 1440px/390px layout, and no-JavaScript reading.`);
 } finally {
   await browser.close();
 }

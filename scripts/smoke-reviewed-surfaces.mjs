@@ -36,13 +36,13 @@ async function inspect(page, width) {
     hasArticle: Boolean(document.querySelector('.article-content')),
     hasPlaceholder: document.body.innerText.includes('This stable destination is reserved for a later reviewed content batch.'),
     hasContract: Boolean(document.querySelector('.operation-contract')),
-    scripts: document.querySelectorAll('script').length,
+    scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
   if (result.language !== 'en' || result.title !== 'Surface Energy and Work Function') throw new Error(`surface identity mismatch: ${result.title}`);
   if (!result.hasArticle || result.hasPlaceholder || result.hasContract) throw new Error('reviewed surface narrative was not rendered naturally');
   if (result.scripts !== 0 || result.overflow) throw new Error(`surface page is not static or overflows at ${width}px`);
-  if (result.headings < 8 || result.headings > 12 || result.cards !== 3) throw new Error(`surface counts mismatch: ${result.headings} sections outside 8..12, ${result.cards} cards`);
+  if (result.headings < 8 || result.headings > 12 || result.cards !== 2) throw new Error(`surface counts mismatch: ${result.headings} sections outside 8..12, ${result.cards} non-synthetic cards`);
   for (const phrase of phrases) if (!result.text.includes(phrase)) throw new Error(`surface page is missing ${phrase}`);
   for (const domain of domains) if (!result.links.some((link) => link.includes(domain))) throw new Error(`surface page is missing ${domain}`);
   return result;
@@ -82,7 +82,7 @@ try {
     await capture(page, join(artifactDirectory, 'topic-surface-energy-work-function-desktop.png'));
     await writeFile(join(artifactDirectory, 'reviewed-surfaces-summary.json'), `${JSON.stringify({ site_url: base, route, natural_sections: desktop.headings, practical_cards: desktop.cards, source_links: desktop.links.length, desktop_width: 1440, mobile_width: 390, no_javascript: true, fixed_contract: false, surface_reference_boundary: desktop.text.includes('The factor two counts the two equivalent surfaces.'), plateau_boundary: desktop.text.includes('The expression is meaningful only when the vacuum reference is flat and charge-free.'), semiconductor_boundary: desktop.text.includes('State whether the question uses work function, ionization potential'), target_convergence_boundary: desktop.text.includes('Here numerical convergence means thickness, vacuum, sampling, and finite lateral-size refinement within a fixed termination') }, null, 2)}\n`);
   }
-  console.log(`Reviewed surface smoke passed: ${desktop.headings} natural sections, 3 practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and surface-reference/plateau/semiconductor/target-convergence boundaries.`);
+  console.log(`Reviewed surface smoke passed: ${desktop.headings} natural sections, 2 non-synthetic practical cards, rendered sources, 1440px/390px no-overflow, no-JavaScript reading, and surface-reference/plateau/semiconductor/target-convergence boundaries.`);
 } finally {
   await browser.close();
 }

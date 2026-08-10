@@ -14,8 +14,7 @@ source_ids:
   - bengtsson-dipole-correction
   - vasp-work-function
   - gpaw-dipole-correction
-media_ids:
-  - work-function-potential
+media_ids: []
 review: docs/reviews/2026-08-04-surface-energy-and-work-function.md
 reviewed_at: "2026-08-04"
 ---
@@ -24,20 +23,19 @@ reviewed_at: "2026-08-04"
 
 Open the slab in side view and identify its vacuum direction, inequivalent surfaces, and dipole orientation. Plot the planar or macroscopic potential on the same spatial coordinate, zoom into each vacuum region, and manually decide whether a field-free plateau exists. Read the Fermi energy from a compatible reference calculation and record the side of the slab to which each value belongs. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), and [specialist post-processing](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
 
-**Audit the stored fixture:** the potential profile is synthetic and conceptual. Its companion script demonstrates plateau selection and subtraction; it is not a real electrostatic output, slab, or converged work-function result.
+**Optional plateau check:** the potential profile is synthetic and conceptual. Use it only after plotting a real potential beside its slab; the script demonstrates window arithmetic and subtraction, not a real electrostatic output or converged work function.
 
 Run the analytic plateau fixture:
 
 ```bash
-python3 examples/practical-guides/work_function_potential.py \
-  --svg public/media/practical-guides/surface-energy-and-work-function/extract-work-function-potential/work-function-potential.svg
+python3 examples/practical-guides/work_function_potential.py
 ```
 
-The command generates its own synthetic planar potential, checks two predefined plateau windows, subtracts one compatible fixture Fermi level, and writes the SVG. It does not read VASP, GPAW, Quantum ESPRESSO, or another real calculation output.
+The command generates its own synthetic planar potential, checks two predefined plateau windows, and subtracts one compatible fixture Fermi level. It does not read VASP, GPAW, Quantum ESPRESSO, or another real calculation output.
 
-## Purpose
+## What this guide verifies
 
-For a real slab, retain the code-specific potential grid, surface normal, potential-component definition, averaging or smoothing convention, charge-density evidence for vacuum, and $E_F$ from the same energy gauge. Plot the profile before choosing any scalar vacuum level.
+Choose a plateau by inspecting the field. For a real slab, retain the code-specific potential grid, surface normal, potential-component definition, averaging or smoothing convention, charge-density evidence for vacuum, and $E_F$ from the same energy gauge. Plot the profile before choosing any scalar vacuum level.
 
 For each side, declare a charge-free window and record its mean, span, and slope. A field-free plateau, not a single endpoint, supplies $E_{\mathrm{vac}}$. Then calculate
 

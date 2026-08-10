@@ -11,6 +11,8 @@ Start from an identified occupied or target subspace and specify the reciprocal 
 
 Calculate overlaps or matrix elements and converge the phase, curvature integral, or response against mesh, windows, smearing, and model choices. A smooth WCC flow still needs subspace and mesh checks; a line or plane colour map is not a full-zone result. Wannier, Berry, browser, and topology tools are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). This overview does not claim an executed Berry calculation.
 
+When a validated [Wannier90](/DFT-Research-Workflow/tools/wannier90/) representation is used, keep the parent `.win`, interface files, `.wout`, checkpoint, real-space Hamiltonian, `postw90` input, stdout/stderr, and the raw loop or curvature table before plotting. Run `postw90.x seed` only after the interpolation and relevant operator matrix elements have been checked against the parent calculation. Plot the sampled reciprocal domain and orientation alongside the values, and retain unclipped signed data. If the occupied/target subspace changes, a near-degeneracy makes a single-band value ill-conditioned, an apparent integer drifts with mesh, or hot spots sit between sampled points, refine the subspace and integration rather than rounding or smoothing the result.
+
 ## A phase around a closed loop
 
 For an isolated cell-periodic Bloch state $\lvert u_{n\mathbf{k}}\rangle$, the Berry connection is

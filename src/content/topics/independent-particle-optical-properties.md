@@ -11,6 +11,8 @@ Start from a qualified parent state and choose the polarization, photon-energy r
 
 Include enough full-zone k points and unoccupied states for the requested range, calculate the transition matrix elements, and apply sum or causality checks where available. Converge the actual spectrum, peak, or integrated window rather than the parent SCF energy. Major optical codes, spectrum tools, and manuals are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties). This overview does not claim an executed optical calculation.
 
+Begin the inspection with the structure and polarization axes visible in [VESTA](/DFT-Research-Workflow/tools/vesta/), then keep the accepted ground-state input/output, the optical-response input, the raw frequency-resolved tensor, and the plotting transform together. A [VASP](/DFT-Research-Workflow/tools/vasp/) `LOPTICS` route should be read from the complete `OUTCAR`, `vasprun.xml`, or version-supported HDF5 response rather than a screenshot; a [Yambo RPA/IP route](https://wiki.yambo-code.eu/wiki/index.php?title=RPA%2FIP) similarly requires its parent database, response input, report, and raw spectrum. Plot $\epsilon_1$ and $\epsilon_2$ for every requested tensor component before absorption or reflectance. If the energy range reaches the last included empty bands, spectral weight changes with k mesh, a peak follows the chosen broadening, or a causality/sum diagnostic fails, extend or repair the response calculation before assigning the feature.
+
 ## A spectrum is a tensor response to specified light
 
 For a periodic solid in the long-wavelength limit, the complex macroscopic dielectric tensor is written

@@ -34,35 +34,22 @@ Before creating hashes or an archive, arrange the record in the order a collabor
 
 Open the accepted structure, principal output, convergence table, and key figure once as a reader would. Check that paths are portable, captions identify the object, candidate labels agree across files, and a failed branch has not been silently replaced. The [visual and symmetry index](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [code and manual index](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes), and [learning resources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) should be linked where they explain how to inspect or reproduce a step; they are not substitutes for preserving the local record.
 
-Only then run the packaging helper and checksum commands below as optional integrity automation. Hashes support byte-identity checks, not scientific acceptance. Do not package credentials, private host details, licensed potential contents, copyrighted PDFs, or large restart data that belong in controlled storage; record their authorized location and identity instead. Reopen the packaged README and a representative input, output, table, and figure before handing the lineage to another person.
-## Verify the packaging tool
-
-From the repository root:
-
-~~~bash
-python3 examples/practical-guides/qe_manual_handoff.py self-test
-~~~
-
-The self-test creates a deterministic fixture in a temporary directory, archives it, restores it cleanly, runs <code>sha256sum -c</code>, deletes declared derived targets, regenerates them, and compares their hashes. No fixture output is presented as scientific evidence.
+Only then use ordinary checksum and archive commands. Hashes support byte-identity checks, not scientific acceptance. Do not package credentials, private host details, licensed potential contents, copyrighted PDFs, or large restart data that belong in controlled storage; record their authorized location and identity instead. Reopen the packaged README and a representative input, output, table, and figure before handing the lineage to another person.
 
 ## Assemble one study directory
 
-Create a new directory outside the repository and copy, rather than link, the files required to understand and reproduce the calculation:
+Create a new directory outside the repository and refuse to reuse an existing path:
 
 ~~~bash
 study="$HOME/drw-archives/si-study"
+test ! -e "$study"
 mkdir -p "$study"/{source,input,commands,output,parsed,figures,environment}
+~~~
 
-cat > "$study/README.md" <<'TXT'
-Scientific question:
-Model and source identity:
-Software and version:
-Pseudopotential filenames and SHA-256:
-Execution context and command:
-Declared numerical acceptance rules:
-Target observable and claim boundary:
-Known failures or exclusions:
-TXT
+Use a text editor to write `README.md` for this study, in the vocabulary of the scientific question rather than a fixed site form. It should identify the model and source, accepted geometry and state, software and version, pseudopotential library receipt and hashes, exact execution route, declared numerical decisions, target observable, failed or excluded branches, claim boundary, controlled-storage references, and what a downstream calculation may consume. Continue only after it is nonempty:
+
+~~~bash
+test -s "$study/README.md"
 ~~~
 
 Use the directories consistently:
@@ -79,84 +66,65 @@ Use the directories consistently:
 
 Do not package restart wavefunctions, scratch trees, credentials, private host paths, licensed potentials, or unrelated raw data merely because they share a directory.
 
-## Record deterministic regeneration
+## Preserve the study's own regeneration route
 
-Copy the reviewed helper and write a regeneration script that reads only preserved raw/native data:
+Copy the exact, reviewed run and parsing scripts used by this study into `commands/`; do not substitute a DFT Research Workflow repository helper merely because it can parse a teaching fixture. Write a short `commands/regenerate.sh` that reads only preserved raw/native data, names every derived target it recreates, and refuses to overwrite the raw `output/` directory. Record interpreter and library versions in `environment/`.
+
+Run that study-specific script once from a fresh work copy, compare every regenerated table and figure with the retained derived objects, and inspect differences rather than updating hashes automatically. A deterministic parser result shows that those derived bytes can be recreated on the recorded stack; it does not validate the raw calculation.
+
+## Inventory, archive, restore, and inspect
+
+From the study directory, inventory the human-readable contents, reject empty files that should contain evidence, and create checksums without including the checksum file in itself:
 
 ~~~bash
-cp examples/practical-guides/qe_manual_handoff.py \
-  "$study/commands/qe_manual_handoff.py"
-
-cat > "$study/commands/regenerate.sh" <<'SH'
-#!/usr/bin/env bash
-set -euo pipefail
-
-python3 commands/qe_manual_handoff.py extract-runtime \
-  --runtime-dir output \
-  --bands-data output/si.bands.dat \
-  --dos-data output/si.dos.dat \
-  --output-dir regeneration-work
-
-mkdir -p parsed figures
-mv regeneration-work/*.csv parsed/
-mv regeneration-work/analysis.json parsed/
-mv regeneration-work/*.svg figures/
-rmdir regeneration-work
-SH
-
-cat > "$study/commands/regeneration-targets.txt" <<'TXT'
-parsed/convergence.csv
-parsed/bands.csv
-parsed/dos.csv
-parsed/analysis.json
-figures/convergence.svg
-figures/bands.svg
-figures/dos.svg
-TXT
-
 (
   cd "$study"
-  bash commands/regenerate.sh
+  find source input commands output parsed figures environment -type f \
+    -printf '%12s %p\n' | sort
+  find source input commands output parsed figures environment -type f -size 0 -print
+  {
+    printf '%s\0' README.md
+    find source input commands output parsed figures environment -type f -print0
+  } | sort -z | xargs -0 -r sha256sum > SHA256SUMS
+  sha256sum -c SHA256SUMS
 )
 ~~~
 
-Adjust the explicit native filenames and target list to the files your branch actually produces. The helper refuses a non-empty analysis destination. Keep raw output immutable during regeneration.
-
-## Create, restore, and audit the package
-
-Choose new paths; the command refuses to restore over an existing directory:
+Choose new archive and restore paths, then use ordinary `tar` and `sha256sum` commands:
 
 ~~~bash
 archive="$HOME/drw-archives/si-study.tar.gz"
+restore_parent="$HOME/drw-restores"
 restored="$HOME/drw-restores/si-study"
+test ! -e "$archive"
+test ! -e "$restored"
 
-python3 examples/practical-guides/qe_manual_handoff.py package-study \
-  --study-dir "$study" \
-  --archive "$archive" \
-  --restore-dir "$restored" \
-  --run-regeneration-check
-~~~
+study=${study%/}
+tar -C "$(dirname -- "$study")" -czf "$archive" "$(basename -- "$study")"
+sha256sum -- "$archive"
 
-The tool writes:
-
-- <code>manifest.json</code>: path, byte count, and SHA-256 for each payload file;
-- <code>INVENTORY.tsv</code>: a plain tabular inventory;
-- <code>SHA256SUMS</code>: checksums for payload plus manifest and inventory;
-- a deterministic <code>tar.gz</code> archive;
-- <code>restore-audit.json</code> in the clean restore.
-
-Repeat the byte-integrity check manually:
-
-~~~bash
+mkdir -p "$restore_parent"
+tar -C "$restore_parent" -xzf "$archive"
+test -d "$restored"
 (
   cd "$restored"
   sha256sum -c SHA256SUMS
 )
-sha256sum "$archive"
-cat "$restored/restore-audit.json"
 ~~~
 
-<code>sha256sum -c</code> proves that restored bytes match the package inventory. The regeneration check proves only that the declared derived files are reproduced byte-for-byte by the preserved command on this software stack. Neither proves numerical convergence, model correctness, physical plausibility, or the scientific claim.
+Open the restored README and representative source, input, stdout, stderr, parsed table, and figure. Confirm that controlled-storage references are usable by the intended collaborator and that no private or licensed body leaked into the archive. Then rerun the study-specific parser in a separate fresh copy if regeneration is part of the handoff.
+
+`sha256sum -c` proves only that restored bytes match the package checksum list. It does not prove that the source URL was genuine, QE completed, SCF or ionic criteria passed, the target observable converged, the model was physically appropriate, or the scientific claim is supported.
+
+## Optional DFT Research Workflow companion check
+
+The page remains bound to a repository companion for its educational assertions. Run this only after understanding the ordinary human package above:
+
+~~~bash
+python3 examples/practical-guides/qe_manual_handoff.py self-test
+~~~
+
+The self-test creates and restores its own deterministic teaching fixture. It does not package this study, run a DFT code, establish provenance for an external file, or support numerical or scientific acceptance.
 
 ## If it fails
 

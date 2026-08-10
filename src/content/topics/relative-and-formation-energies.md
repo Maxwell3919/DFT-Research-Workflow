@@ -13,6 +13,8 @@ Use relative or formation energies when the scientific question is a comparison:
 
 Start with the attached **Build a Comparable Energy Ledger** guide when several calculations must be filtered and normalized. Use **Balance Reference Reactions and Normalization** when the result is defined by a reaction.
 
+Stop before subtraction if any row still lacks a recoverable structure, final-state identity, energy convention, denominator, or convergence decision. The first useful outcome may be an exclusion table rather than an energy ranking.
+
 ## A raw total energy is not yet a comparable result
 
 A raw total energy is an internal value for one calculation; comparison requires a declared subtraction and compatible parents.
@@ -128,17 +130,13 @@ Stability against decomposition requires a compatible competing-phase set and a 
 
 Store the balanced reaction or candidate set, raw ledger, exclusions, normalization, raw and corrected terms, convergence tables, uncertainty assessment, and links to every parent artifact. Downstream work should consume this object rather than scrape a rounded figure.
 
-## Reference states are part of the result
+## Decide what may continue
 
-Before continuing, verify every elemental phase, molecular form, magnetic state, and reservoir condition in the ledger.
+Reopen every elemental phase, molecular form, magnetic state, and reservoir condition before accepting the ledger. If a reference remains ambiguous or a relevant energy difference is not resolved at the required precision, report the comparison as unresolved and stop the downstream ranking.
 
 Send compatible composition-normalized formation energies to a convex hull. Send state-labelled energy-volume points to EOS work. Defect, surface, adsorption, and interface calculations require their own reservoir or excess-quantity construction.
 
-## What this topic establishes
-
-It does not establish the global structural or electronic ground state, stability against all competing phases, a finite-temperature equilibrium, a reaction barrier or rate, experimental synthesizability, or the accuracy of the underlying method.
-
-This topic can support a bounded candidate ordering or written reaction within a stated evaluator, normalization, and uncertainty. It does not establish the global ground state, an exhaustive phase set, a reaction pathway, finite-temperature equilibrium without the required terms, synthesizability, or agreement with experiment.
+An accepted ledger can support a bounded candidate ordering or written reaction within a stated evaluator, normalization, and uncertainty. It does not establish the global structural or electronic ground state, an exhaustive competing-phase set, a reaction pathway or rate, finite-temperature equilibrium without the required terms, synthesizability, or agreement with experiment.
 
 ## Sources and methods
 

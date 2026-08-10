@@ -20,6 +20,7 @@ function expectedParentHref(topicSlug) {
 
 function stateMatchesRegistry(state) {
   if (state.title !== 'Software Bridge' || state.taskCount !== 6 || state.rowCount !== 24) return false;
+  if (JSON.stringify(state.columnHeadings) !== JSON.stringify(['Software and official start', 'Inputs to prepare', 'Outputs to inspect', 'First check'])) return false;
   if (state.scripts !== 0 || state.astroIslands !== 0 || state.documentOverflow || state.elementOverflow) return false;
   if (state.primaryNavBridgeLinks !== 0) return false;
   if (state.ecosystemHref !== `${base}/${bridge.resource_landscape_path}` || !state.ecosystemText.includes(bridge.ecosystem_note)) return false;
@@ -37,6 +38,7 @@ function stateMatchesRegistry(state) {
       const expectedRow = expectedTask.implementations[rowIndex];
       const actualRow = actualTask.rows[rowIndex];
       if (!actualRow || actualRow.code !== expectedRow.tool_slug) return false;
+      if (actualRow.cellCount !== 4 || !actualRow.officialInFirstCell) return false;
       if (actualRow.toolHref !== expectedToolHref(expectedRow.tool_slug)) return false;
       if (actualRow.officialHref !== expectedRow.official_url) return false;
       if (actualRow.officialLabel !== expectedRow.first_official_start) return false;
@@ -58,8 +60,9 @@ async function inspect(page) {
       title: document.querySelector('h1')?.textContent?.trim(),
       taskCount: taskElements.length,
       rowCount: document.querySelectorAll('[data-code]').length,
+      columnHeadings: [...(document.querySelector('table thead')?.querySelectorAll('th') ?? [])].map((heading) => heading.textContent?.trim()),
       taskIds: taskElements.map((task) => task.getAttribute('data-task-id')),
-      scripts: document.scripts.length,
+      scripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
       astroIslands: document.querySelectorAll('astro-island').length,
       documentOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
       elementOverflow: measuredElements.some((element) => {
@@ -76,10 +79,12 @@ async function inspect(page) {
         boundary: task.querySelector('[data-task-boundary]')?.textContent?.replace(/\s+/g, ' ').trim(),
         rows: [...task.querySelectorAll('[data-code]')].map((row) => ({
           code: row.getAttribute('data-code'),
+          cellCount: row.children.length,
           text: row.textContent?.replace(/\s+/g, ' ').trim(),
           toolHref: row.querySelector('[data-tool-link]')?.href,
           officialHref: row.querySelector('[data-official-link]')?.href,
           officialLabel: row.querySelector('[data-official-link]')?.textContent?.trim(),
+          officialInFirstCell: row.firstElementChild?.contains(row.querySelector('[data-official-link]')) ?? false,
           inputs: [...row.querySelectorAll('[data-required-inputs] li')].map((item) => item.textContent?.trim()),
           artifacts: [...row.querySelectorAll('[data-artifacts] li')].map((item) => item.textContent?.trim()),
         })),
@@ -115,7 +120,7 @@ try {
     await page.close();
   }
 
-  console.log('Software Bridge browser smoke passed: exact 6-task/24-row rendering, broader-ecosystem route, scientific boundaries, six responsive widths, and no-JavaScript parity.');
+  console.log('Software Bridge browser smoke passed: exact 6-task/24-row rendering, official start in the first of four reader-facing columns, broader-ecosystem route, scientific boundaries, six responsive widths, and no-JavaScript parity.');
 } finally {
   await browser.close();
 }

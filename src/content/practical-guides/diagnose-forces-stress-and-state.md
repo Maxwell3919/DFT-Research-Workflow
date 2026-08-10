@@ -37,36 +37,57 @@ If the structure looks implausible, preserve the source, start, suspect frame, l
 
 Only after this alignment should a parser make tables or plots for repeated comparison. The stored Silicon companion below parses every active Cartesian component, reports QE's aggregate `Total force` separately, and maps each ordered SCF completion record to its following force evaluation. Use the [official code manuals](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) to interpret implementation-specific force, stress, trajectory, and stop records.
 
-## Run the stored-output diagnosis first
+## Inspect the stored output before parsing it
+
+```bash
+relax_in=examples/practical-guides/data/silicon-qe/relax/si-relax.in
+relax_out=examples/practical-guides/data/silicon-qe/relax/si-relax.out
+
+grep -En 'calculation|forc_conv_thr|nstep|ion_dynamics' -- "$relax_in"
+sed -n '/^ATOMIC_POSITIONS/,/^K_POINTS/p' "$relax_in"
+grep -F '!    total energy' -- "$relax_out"
+grep -cF 'convergence has been achieved' -- "$relax_out"
+test "$(grep -cF 'Program PWSCF v.' -- "$relax_out")" -eq 1
+test "$(grep -cF 'JOB DONE.' -- "$relax_out")" -eq 1
+
+awk '
+  /Forces acting on atoms/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /Total force =/ {last=block; inside=0}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$relax_out"
+
+awk '
+  /Begin final coordinates/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /End final coordinates/ {last=block; inside=0}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$relax_out"
+
+if grep -n 'total[[:space:]]\+stress' -- "$relax_out"; then
+  printf '%s\n' 'Inspect the final complete 3 x 3 stress block and its printed units.'
+else
+  printf '%s\n' 'No stress block is stored; stress and cell convergence are not assessed.'
+fi
+grep -niE 'warning|error in routine|stopping|not converged|no convergence|magnetization|occupation' \
+  -- "$relax_out" || true
+```
+
+The input rows show whether `if_pos` masks constrain individual Cartesian components; when masks are absent, confirm the documented default before treating the printed components as active. The final complete force block, final geometry, missing-or-present stress block, state diagnostics, termination, and SCF records remain separate inspection objects. The aggregate `Total force` printed inside the block is diagnostic only and cannot substitute for the maximum absolute free component.
+
+After this manual pass, the optional companion can reproduce the five stored energy, component-force, aggregate-force, SCF-iteration, and final-residual rows and regenerate its figures:
 
 ```bash
 python3 examples/practical-guides/silicon_qe_relax.py
-grep -F "!    total energy" examples/practical-guides/data/silicon-qe/relax/si-relax.out
-grep -F "Total force =" examples/practical-guides/data/silicon-qe/relax/si-relax.out
-grep -cF "convergence has been achieved" examples/practical-guides/data/silicon-qe/relax/si-relax.out
 ```
 
-The Python report reconstructs five stored energy, component-force, aggregate-force, SCF-iteration, and final-residual rows. It regenerates two figures from the hash-bound output. Ordered parsing maps each of the five electronic completion records to the force evaluation that follows it; that mapping still does not make SCF convergence an ionic convergence test.
+Ordered parsing maps each electronic completion record to the force evaluation that follows it; that mapping still does not make SCF convergence an ionic convergence test.
 
 Next inspect `JOB DONE`, the BFGS termination marker, warnings, the final coordinates, and every state diagnostic required by the model. Accept the geometry only when the intended active force/stress conditions and state identity are satisfied under a fresh final evaluation. A decreasing total-force trace alone is not a stopping test.
 
 ## Record one row for every accepted structural step
 
-A useful optimization table contains more than energy:
-
-```text
-step and segment identity
-structure checksum or trajectory frame
-energy or enthalpy
-maximum and RMS active force
-relevant stress or pressure components
-maximum displacement or strain step
-electronic residual and iteration count
-total and local magnetic moments
-occupation or charge-state label
-symmetry and active constraints
-warnings and recovery events
-```
+A useful optimization table contains more than energy. For every accepted structural step, retain the segment identity and structure checksum or trajectory frame; energy or enthalpy; maximum and RMS active force; relevant stress or pressure components; maximum displacement or strain step; electronic residual and iteration count; total and local magnetic moments; occupation or charge-state label; symmetry and active constraints; and warnings or recovery events.
 
 Keep rejected line-search points or failed electronic steps distinguishable from accepted optimizer steps. Otherwise an energy or force plot can mix objects that did not participate in the same path.
 
@@ -126,16 +147,7 @@ Near a claimed final structure, verify consistency among energy, force, stress, 
 
 ## Preserve segment and recovery boundaries
 
-Wall-time restarts, optimizer changes, tighter electronic settings, changed constraints, and manual structure edits create new trajectory segments. Link them explicitly:
-
-```text
-previous accepted frame
-reason for restart or intervention
-old and new evaluator identity
-old and new optimizer identity
-compatible state reused
-first verified frame of the new segment
-```
+Wall-time restarts, optimizer changes, tighter electronic settings, changed constraints, and manual structure edits create new trajectory segments. Link each new segment to the previous accepted frame, reason for restart or intervention, old and new evaluator and optimizer identities, any compatible state reused, and the first verified frame of the new segment.
 
 A plot may display the segments together, but it should not conceal their different settings or imply a single uninterrupted method.
 

@@ -18,29 +18,29 @@ const requiredOperationalSections = [
 ];
 const requiredOperationalContract = {
   checkedSource: [
-    'models/records/source.sha256',
-    'sha256sum structures/si-cod-9013102/working/9013102-as-downloaded.cif',
-    'The checksum binds the parent bytes.',
+    'Preserve the unchanged database or publication download outside the model directory.',
+    'record its checksum, and never overwrite it',
+    'open the parent with its cell boundary and periodic images visible',
   ],
   declaredTransformation: [
-    'candidate identifier',
-    'parent identifier and checksum',
-    'tool, version, script, and command',
+    'candidate identifier and purpose',
+    'parent identifier, path, and checksum',
+    'script or manual operation and command',
     'transformation parameters and matrix',
   ],
   childObject: [
-    'output filename and checksum',
-    'find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum',
-    'candidate-files.sha256',
+    'child filename and checksum',
+    'write the child, and then reopen the written file',
+    'Open parent and child side by side with cell boundaries visible.',
   ],
   identityAndGeometryChecks: [
-    'composition, atom count, atom order, and site mapping',
-    'cell vectors, volume, periodic directions, and shortest relevant image separations',
-    'A generated candidate is not a predicted ground state.',
+    'composition, atom count, atom order, occupancies, and site mapping',
+    'cell vectors, volume, periodic directions, and relevant image separations',
+    'A generated candidate is not a predicted ground state',
   ],
   decisionAndNext: [
-    'Promote a candidate only when its source lineage, transformation, composition, geometry, periodicity, charge, constraints, and unresolved alternatives are explicit.',
-    'Next, choose the exchange–correlation treatment',
+    'Promote a candidate only when this lineage, its reopened geometry, and its unresolved alternatives are explicit.',
+    'Next, choose the exchange–correlation treatment, electron–ion data, spin, relativistic, boundary, and software setup.',
     'Then test the numerical controls against the quantity that will be used.',
   ],
 };

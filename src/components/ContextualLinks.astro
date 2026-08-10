@@ -20,7 +20,6 @@ const hasTargetBranches = navigation.links.some((link) => link.relation === 'Tar
   <p class="contextual-heading" id={headingId}>
     {hasTargetBranches ? 'Choose the calculation branch' : 'Continue from here'}
   </p>
-  <p class="contextual-boundary">{navigation.boundary}</p>
   <ul>
     {navigation.links.map((link) => (
       <li data-contextual-link data-contextual-relation={link.relation}>
@@ -46,11 +45,6 @@ const hasTargetBranches = navigation.links.some((link) => link.relation === 'Tar
     font-weight: 650;
     line-height: 1.2;
     margin: 0;
-  }
-
-  .contextual-boundary {
-    color: var(--muted, #666158);
-    margin: 0.35rem 0 0;
   }
 
   ul {

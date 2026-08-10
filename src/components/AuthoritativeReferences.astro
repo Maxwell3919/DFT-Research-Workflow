@@ -32,7 +32,7 @@ const headingId = `authoritative-references-${entry.topic_slug}`;
   <ul>
     {entry.references.map((reference) => (
       <li>
-        <strong>{reference.role === 'official' ? 'Selected implementation or method source.' : 'Claim boundary.'}</strong>{' '}
+        <strong>{reference.role === 'official' ? 'Official method or implementation source.' : 'Method or specialist reference.'}</strong>{' '}
         <a href={reference.url}>{reference.label}</a>
       </li>
     ))}
@@ -44,7 +44,7 @@ const headingId = `authoritative-references-${entry.topic_slug}`;
       </li>
     ) : (
       <li>
-        <strong>Reference basis.</strong>{' '}
+        <strong>Why these sources.</strong>{' '}
         {entry.textbook_reason}
       </li>
     )}

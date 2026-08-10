@@ -134,7 +134,7 @@ const resolvedQuestions: ResolvedQuestion[] = navigatorDefinition.questions.map(
     <header class="workflow-lede">
       <h1>Choose the calculation your question requires</h1>
       <p class="page-intro">
-        Write the scientific question as a comparison or decision, then identify the observable and precision it requires. Use A–C to establish a defensible model and reference state, choose only the D calculation that produces that observable, and use E to decide what the evidence supports.
+        Find the observable your question needs, then open the calculation that produces it. Use A–C when you still need a structure, model, numerical setup, relaxed geometry, or reference state; use E when you need to judge or preserve the result.
       </p>
     </header>
 
@@ -142,73 +142,36 @@ const resolvedQuestions: ResolvedQuestion[] = navigatorDefinition.questions.map(
       <header>
         <h2 id="question-navigator-heading">{navigatorDefinition.public_heading}</h2>
         <p>{navigatorDefinition.intro}</p>
-        <p class="navigator-boundary">{navigatorDefinition.boundary}</p>
       </header>
 
-      <ol class="question-list">
-        {resolvedQuestions.map((question) => (
-          <li data-research-question={question.id}>
-            <div class="question-row">
-              <h3>{question.question}</h3>
-              <dl class="question-details">
-                <div>
-                  <dt>Required observable</dt>
-                  <dd>{question.required_observable}</dd>
-                </div>
-                <div>
-                  <dt>Go to</dt>
-                  <dd>
-                    <a data-primary-topic href={withBase(`operations/${question.topic.slug}/`)}>{question.topic.title}</a>
-                    {question.relatedTopics.map((related) => (
-                      <span class="related-route"> {related.context} <a data-related-topic href={related.href}>{related.title}</a>.</span>
-                    ))}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Common human route</dt>
-                  <dd>{question.common_human_route}</dd>
-                </div>
-                <div>
-                  <dt>What to inspect</dt>
-                  <dd>{question.what_to_inspect}</dd>
-                </div>
-                <div>
-                  <dt>Before starting</dt>
-                  <dd>{question.prerequisites}</dd>
-                </div>
-                <div>
-                  <dt>First practical action</dt>
-                  <dd>
-                    {question.firstAction.type === 'guide' ? (
-                      <>
-                        <a data-first-action href={question.firstAction.href}>{question.firstAction.title}</a>
-                        <span> {question.firstAction.evidence_boundary}</span>
-                      </>
-                    ) : (
-                      <span class="no-guide" data-no-guide>{question.firstAction.statement}</span>
-                    )}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Validate</dt>
-                  <dd>{question.validation_requirement}</dd>
-                </div>
-                <div>
-                  <dt>Does not establish</dt>
-                  <dd>{question.claim_limitation}</dd>
-                </div>
-              </dl>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <div class="question-table-wrap">
+        <table class="question-table">
+          <thead>
+            <tr>
+              <th scope="col">Question</th>
+              <th scope="col">Observable or evidence</th>
+              <th scope="col">Start here</th>
+            </tr>
+          </thead>
+          <tbody>
+            {resolvedQuestions.map((question) => (
+              <tr data-research-question={question.id}>
+                <th scope="row">{question.question}</th>
+                <td>{question.required_observable}</td>
+                <td><a data-primary-topic href={withBase(`operations/${question.topic.slug}/`)}>{question.topic.title}</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="navigator-boundary">These routes identify the calculation to start. The linked page explains the objects, checks, failure branches, and what the result can support.</p>
     </section>
 
     <p class="workflow-support-links" data-workflow-support-links>
       If a calculation fails or you need to translate the same scientific task into another code, start with
       {' '}<a href={withBase('operations/troubleshooting/')}>Troubleshooting</a>, the
       {' '}<a href={withBase('operations/software-bridge/')}>Software Bridge</a>, or the
-      {' '}<a href={withBase('operations/resource-landscape/')}>Resource Landscape</a>.
+      {' '}<a href={withBase('tools/')}>Tools & Resources catalog</a>.
     </p>
 
     <section class="topic-directory" aria-labelledby="directory-heading">
@@ -309,88 +272,49 @@ const resolvedQuestions: ResolvedQuestion[] = navigatorDefinition.questions.map(
     font-style: italic;
   }
 
-  .question-list {
-    margin: 2.2rem 0 0;
-    padding-left: 2.2rem;
+  .question-table-wrap {
+    margin-top: 1.5rem;
+    overflow-x: auto;
+    border-top: 1px solid var(--ink);
   }
 
-  .question-list > li {
-    border-top: 1px solid var(--rule);
-    padding: 1.35rem 0 1.7rem 0.25rem;
+  .question-table {
+    width: 100%;
+    min-width: 42rem;
+    border-collapse: collapse;
+    text-align: left;
   }
 
-  .question-list > li::marker {
-    color: var(--accent);
-    font-variant-numeric: tabular-nums;
-    font-weight: 700;
+  .question-table th,
+  .question-table td {
+    padding: 0.75rem 0.85rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.4;
   }
 
-  .question-row {
-    display: grid;
-    gap: 1rem clamp(2rem, 5vw, 4rem);
-    grid-template-columns: minmax(15rem, 0.85fr) minmax(22rem, 1.6fr);
-  }
-
-  .question-row h3 {
-    font-size: clamp(1.12rem, 1.7vw, 1.34rem);
-    font-weight: 600;
-    letter-spacing: -0.012em;
-    line-height: 1.32;
-    margin: 0;
-  }
-
-  .question-details {
-    margin: 0;
-    min-width: 0;
-  }
-
-  .question-details > div {
-    display: grid;
-    gap: 0.35rem 1.15rem;
-    grid-template-columns: minmax(7.8rem, 0.34fr) minmax(0, 1fr);
-  }
-
-  .question-details > div + div {
-    border-top: 1px solid color-mix(in srgb, var(--rule) 72%, transparent);
-    margin-top: 0.72rem;
-    padding-top: 0.72rem;
-  }
-
-  .question-details dt {
-    color: var(--ink);
-    font-size: 0.9rem;
-    font-weight: 700;
-    line-height: 1.45;
-  }
-
-  .question-details dd {
+  .question-table thead th {
     color: var(--muted);
-    line-height: 1.55;
-    margin: 0;
-    min-width: 0;
-    overflow-wrap: anywhere;
+    font: 700 0.78rem/1.2 system-ui, sans-serif;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
   }
 
-  .question-details dd a {
+  .question-table tbody th {
+    width: 39%;
+    font-weight: 600;
+  }
+
+  .question-table tbody td:nth-child(2) { width: 35%; }
+
+  .question-table a {
     color: var(--ink);
     font-weight: 700;
     text-underline-offset: 0.16em;
   }
 
-  .question-details dd a:hover,
-  .question-details dd a:focus-visible {
-    color: var(--accent);
-  }
-
-  .related-route {
-    display: block;
-    margin-top: 0.35rem;
-  }
-
-  .no-guide {
-    color: var(--ink);
-    font-weight: 600;
-  }
+  .question-table a:hover,
+  .question-table a:focus-visible { color: var(--accent); }
 
   .topic-directory {
     padding-top: 1.25rem;
@@ -503,10 +427,6 @@ const resolvedQuestions: ResolvedQuestion[] = navigatorDefinition.questions.map(
       display: block;
     }
 
-    .question-row {
-      grid-template-columns: 1fr;
-    }
-
     .directory-heading > p,
     .workflow-group {
       margin-top: 2rem;
@@ -523,16 +443,31 @@ const resolvedQuestions: ResolvedQuestion[] = navigatorDefinition.questions.map(
       margin-top: 1.4rem;
     }
 
-    .question-list {
-      padding-left: 1.65rem;
+    .question-table {
+      min-width: 0;
     }
 
-    .question-list > li {
-      padding-left: 0.1rem;
+    .question-table thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
     }
 
-    .question-details > div {
-      grid-template-columns: 1fr;
+    .question-table,
+    .question-table tbody,
+    .question-table tr,
+    .question-table th,
+    .question-table td {
+      display: block;
+      width: auto;
     }
+
+    .question-table tr { padding: 0.85rem 0; border-bottom: 1px solid var(--rule); }
+    .question-table th,
+    .question-table td { border: 0; padding: 0.22rem 0; }
+    .question-table td:nth-child(2)::before { content: "Observable: "; font-weight: 700; }
+    .question-table td:nth-child(3)::before { content: "Start: "; font-weight: 700; }
   }
 </style>

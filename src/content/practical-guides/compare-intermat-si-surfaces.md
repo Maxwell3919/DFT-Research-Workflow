@@ -24,7 +24,7 @@ reviewed_at: "2026-08-04"
 
 Open the attributed InterMat record or paper, inspect the stated method and facet definitions, and view representative silicon slabs when structures are available. Check facet indices, termination, unit convention, and whether experimental values are directly comparable before reading the plotted ordering. Use [structure and data sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) to supply this context.
 
-**Reproduce this site's figure:** the companion script redraws a frozen, hash-bound public-data snapshot. It does not rerun the surface calculations, show their slab geometries, or prove convergence beyond the source record.
+**Inspect attributed public data:** the companion script redraws a frozen, hash-bound snapshot. Check the source, facet labels, method, and units before the ordering; the command does not rerun the calculations, show slab geometries, or prove convergence beyond the source record.
 
 Rebuild the attributed comparison directly:
 
@@ -33,7 +33,7 @@ python3 examples/practical-guides/intermat_si_surfaces.py \
   --svg public/media/practical-guides/surface-energy-and-work-function/compare-intermat-si-surfaces/intermat-si-surfaces.svg
 ```
 
-The command reads the committed Table 1 snapshot, hashes its exact bytes, checks the DOI, licence, orientation order, and published calculation values, and writes the SVG. It does not run an electronic-structure code.
+The command reads the committed Table 1 snapshot, hashes its exact bytes, checks the DOI, licence, orientation order, and published calculation values, and writes the comparison. It does not run an electronic-structure code.
 
 ## Inspect what the snapshot represents
 

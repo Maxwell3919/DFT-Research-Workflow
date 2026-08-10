@@ -21,6 +21,8 @@ v_sim anime.ascii
 
 This opens `anime.ascii` in the `v_sim` executable for manual mode playback. In the `v_sim` GUI, open the **Phonons** tab, select the mode, and press play. For a q point away from $\Gamma$, expand the displayed nodes under **Box and symmetry** so that the longer-period modulation is visible. Record the q point, branch or frequency, expansion, and what moves. This visual inspection complements numerical diagnosis; it does not prove that an imaginary mode is a physical instability.
 
+For a full [Quantum ESPRESSO](/DFT-Research-Workflow/tools/quantum-espresso/) dispersion route, keep `scf.in/out/err`, `ph.in/out/err`, every required dynamical matrix, and the `q2r.x` and `matdyn.x` inputs and outputs as one parent chain; do not run `q2r.x` over a partial q set. A [Phonopy](/DFT-Research-Workflow/tools/phonopy/) route instead needs the generated displacement cells, a one-to-one force-output mapping with unchanged atom order, the resulting force constants, and the band or mesh output. The [Software Bridge phonon route](/DFT-Research-Workflow/operations/software-bridge/#harmonic-phonons) shows the corresponding QE, VASP, ABINIT, and CP2K objects. When a negative mode appears, preserve its raw frequency and eigenvector and follow the [imaginary-frequency troubleshooting route](/DFT-Research-Workflow/operations/troubleshooting/#imaginary-phonon-frequencies) before changing the structure or enforcing a sum rule.
+
 ## From force constants to normal modes
 
 For atoms $\kappa,\kappa'$, Cartesian directions $\alpha,\beta$, and lattice translations $\mathbf R$, the harmonic force constants are

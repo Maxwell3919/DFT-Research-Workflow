@@ -21,14 +21,14 @@ Start with a named computational model and one or more physically motivated stru
 
 The common sequence is:
 
-```text
-prepared structure and state
-→ declared active degrees of freedom and constraints
-→ relaxation trajectory
-→ termination, SCF, force, stress, displacement, and state checks
-→ accepted geometry with a stable identity
-→ fresh fixed-geometry reference calculation
-```
+A typical route is to:
+
+1. prepare the structure and electronic state;
+2. declare active degrees of freedom and constraints;
+3. retain the relaxation trajectory;
+4. inspect termination, SCF, force, stress, displacement, and state evidence separately;
+5. accept one exact geometry with a stable identity only when its declared gates pass; and
+6. start a fresh fixed-geometry reference calculation from that accepted object.
 
 This route is common, not universal. An experimental fixed geometry, a strained or constrained structure, a deliberately scanned coordinate, or a metastable state can be the intended object. In those cases, record why the geometry is held or constrained instead of silently forcing it through a free relaxation.
 

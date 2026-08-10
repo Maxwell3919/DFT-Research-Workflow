@@ -116,32 +116,41 @@ find "$case_root" -maxdepth 4 -type f -size 0 -print
 
 ### Invoke only the branch the question requires
 
-These are real serial invocation forms. Replace the filenames with reviewed inputs, use the site-approved MPI or scheduler launcher when required, and run only the branch demanded by the scientific question:
+Select one executable stage after checking its parent evidence:
+
+- `pw.x` reads the reviewed input for the declared SCF, relaxation, NSCF, or bands-parent task.
+- `bands.x` requires a compatible completed `pw.x` bands calculation.
+- `dos.x` requires a compatible dense-grid `pw.x` NSCF parent.
+- `projwfc.x` requires the compatible `pw.x` prefix, outdir, and wavefunctions.
+- `ph.x` starts the requested response branch from a compatible accepted `pw.x` parent.
+- `q2r.x` requires the complete compatible dynamical-matrix set for the declared q mesh.
+- `matdyn.x` requires the corresponding `q2r.x` force constants.
+
+Set the three variables to one reviewed stage. The block refuses existing stdout or stderr and invokes only that one program:
 
 ```bash
-# pw.x: reference, relaxation, NSCF, or bands parent as declared by calculation= in this input.
-pw.x -in scf.in > scf.out 2> scf.err
+: "${QE_PROGRAM:?Set one executable: pw.x, bands.x, dos.x, projwfc.x, ph.x, q2r.x, or matdyn.x}"
+: "${QE_INPUT:?Set QE_INPUT to the reviewed input for that stage}"
+: "${QE_STAGE:?Set a filesystem-safe stage name}"
+case "$QE_PROGRAM" in
+  pw.x|bands.x|dos.x|projwfc.x|ph.x|q2r.x|matdyn.x) ;;
+  *) printf 'Unsupported QE_PROGRAM: %s\n' "$QE_PROGRAM" >&2; exit 2 ;;
+esac
+test -f "$QE_INPUT"
+test ! -e "$QE_STAGE.out"
+test ! -e "$QE_STAGE.err"
 
-# bands.x: post-process a compatible completed pw.x bands calculation.
-bands.x -in bands.in > bands.out 2> bands.err
-
-# dos.x: read a compatible dense-grid pw.x NSCF parent.
-dos.x -in dos.in > dos.out 2> dos.err
-
-# projwfc.x: read the compatible pw.x prefix/outdir and wavefunctions it requires.
-projwfc.x -in projwfc.in > projwfc.out 2> projwfc.err
-
-# ph.x: start the required phonon branch from a compatible converged pw.x parent.
-ph.x -in ph.in > ph.out 2> ph.err
-
-# q2r.x: transform the declared complete ph.x dynamical-matrix set into real-space force constants.
-q2r.x -in q2r.in > q2r.out 2> q2r.err
-
-# matdyn.x: read the q2r.x force constants for the requested dispersion or mode calculation.
-matdyn.x -in matdyn.in > matdyn.out 2> matdyn.err
+if "$QE_PROGRAM" -in "$QE_INPUT" > "$QE_STAGE.out" 2> "$QE_STAGE.err"; then
+  qe_status=0
+else
+  qe_status=$?
+fi
+printf '%s\n' "$qe_status" > "$QE_STAGE.exit-status"
+tail -n 40 -- "$QE_STAGE.out" "$QE_STAGE.err"
+test "$qe_status" -eq 0
 ```
 
-Each line proves only that the shell attempted that executable with separate stdout and stderr paths. Its exit status and output must still be inspected. The comments state parent requirements; they do not define one mandatory `pw.x → bands.x → dos.x → projwfc.x → ph.x → q2r.x → matdyn.x` sequence. Keep every branch in its own prefix/outdir and record the actual launcher, working directory, input hash, and parent artifact identity.
+This proves only that the shell attempted the one selected executable and retained its exit status, stdout, and stderr. The parent list does not define one mandatory `pw.x → bands.x → dos.x → projwfc.x → ph.x → q2r.x → matdyn.x` sequence. Keep every branch in its own prefix/outdir and record the actual launcher, working directory, input hash, and parent artifact identity.
 
 Before a submission, a Slurm installation may support a non-submitting syntax and feasibility check:
 
@@ -262,14 +271,41 @@ grep -n -i -E \
 
 The first search locates evidence candidates; it does not decide which gate they satisfy. The second search locates adverse text; an empty result means only that these patterns were absent. Read surrounding lines and stderr because software- and site-specific failures use other wording.
 
-Extract the final coordinate block from an exact relaxation output rather than assuming that the last `ATOMIC_POSITIONS` match is final:
+For a relaxation, inspect one coherent output together with the exact input. Reject a concatenated stdout, show the active-coordinate mask, extract the last complete force and final-coordinate blocks, and display the last complete stress tensor when the active cell requires one:
 
 ```bash
+relax_in=${relax_in:?Set relax_in to the exact relaxation input path}
 relax_out=${relax_out:?Set relax_out to the exact relaxation stdout path}
-sed -n '/Begin final coordinates/,/End final coordinates/p' "$relax_out"
+test -f "$relax_in"
+test -f "$relax_out"
+test "$(grep -cF 'Program PWSCF v.' -- "$relax_out")" -eq 1
+sed -n '/^ATOMIC_POSITIONS/,/^K_POINTS/p' "$relax_in"
+
+awk '
+  /Forces acting on atoms/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /Total force =/ {last=block; inside=0}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$relax_out"
+
+awk '
+  /Begin final coordinates/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /End final coordinates/ {last=block; inside=0}
+  END {if (last == "") exit 1; printf "%s", last}
+' "$relax_out"
+
+awk '
+  /total[[:space:]]+stress/ {block=$0 ORS; rows=3; next}
+  rows > 0 {block=block $0 ORS; rows--; if (rows == 0) last=block}
+  END {
+    if (last == "") print "No complete stress block found; stress is not assessed."
+    else printf "%s", last
+  }
+' "$relax_out"
 ```
 
-This prints the coordinates that QE labelled as final in that file. An empty result means only that the block was absent or used different version-specific wording. The block does not prove that the ionic thresholds were satisfied, that the geometry is a minimum, or that another coordinate convention was converted correctly.
+The input rows expose explicit `if_pos` flags when present; otherwise confirm the version-matching documented default before classifying free components. Apply the force gate to every free Cartesian component, not aggregate `Total force`. A stress block is required only for the active cell components declared by the protocol, but its absence is then unresolved rather than a pass. The final coordinates, force components, stress components, electronic markers, ionic stop record, and program completion remain separate evidence. None proves a minimum or physical validity.
 
 For a declared `ph.x` or `matdyn.x` output, locate printed mode frequencies:
 

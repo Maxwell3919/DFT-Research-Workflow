@@ -16,8 +16,7 @@ source_ids:
   - fnv-correction
   - kumagai-oba-correction
   - doped-thermodynamics
-media_ids:
-  - defect-formation-ledger
+media_ids: []
 review: docs/reviews/2026-08-04-defect-formation-energies-and-charge-states.md
 reviewed_at: "2026-08-04"
 ---
@@ -26,22 +25,21 @@ reviewed_at: "2026-08-04"
 
 Open both structures side by side, centre the defect, and inspect local relaxation, coordination, periodic-image separation, cell vectors, and the location of any added or removed atom. Then build the host, defect, atomic-reservoir, electron-reservoir, and correction ledger in a spreadsheet, retaining each sign convention and source. Where available, view charge or spin density to test the assumed electronic state. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist defect tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for the real workflow.
 
-**Audit the stored fixture:** the companion script and displayed ledger are synthetic bookkeeping aids. They do not depict a real defect structure, localization pattern, correction convergence, or transition level.
+**Optional bookkeeping check:** the companion script is a synthetic arithmetic aid. Use it only after inspecting real host and defect supercells; it contains no defect structure, localization pattern, correction convergence, or transition level.
 
 Use this guide to assemble host, defect, atomic-reservoir, electron-reservoir, and correction terms before plotting charge-state lines. The four charge states and all energies are invented teaching fixtures for an abstract B vacancy.
 
 From the repository root, run:
 
 ```bash
-python3 examples/practical-guides/defect_formation_ledger.py \
-  --svg public/media/practical-guides/defect-formation-energies-and-charge-states/build-defect-formation-ledger/defect-formation-ledger.svg
+python3 examples/practical-guides/defect_formation_ledger.py
 ```
 
-The script emits a report and rewrites the SVG. Inspect the term table and assertions before the figure.
+The script prints the complete term ledger. Inspect every component, sign, slope assertion, and evidence boundary before using the same layout for real outputs.
 
-## Purpose
+## What this guide verifies
 
-The input key `delta_atoms` is positive when an atom is added to the defective cell. Charge $q$ is positive when electrons are removed. The script evaluates
+Write the sign convention before adding terms. The input key `delta_atoms` is positive when an atom is added to the defective cell. Charge $q$ is positive when electrons are removed. The script evaluates
 
 $$
 E_{\mathrm f}
