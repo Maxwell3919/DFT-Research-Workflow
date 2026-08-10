@@ -11,20 +11,21 @@ const guides = [
     route: '/operations/test-numerical-convergence/guides/converge-basis-cutoffs-and-grids/',
     title: 'Converge Basis Cutoffs and Real-Space Grids',
     listed: true,
-    mediaCount: 0,
+    mediaCount: 1,
     phrase: 'Numerical convergence is a comparison, not a single successful run.',
     requiredPhrases: [
       'for ecut in 30 40 50',
-      'extract-runtime',
+      'for rho_ratio in 4 8 12',
+      'cutoff-comparison.csv',
       'Declare the acceptance tolerance',
-      'not transferable cutoffs or k meshes',
+      'does not independently converge the charge-density cutoff',
     ],
   },
   {
     route: '/operations/test-numerical-convergence/guides/converge-k-points-and-smearing/',
     title: 'Converge k-Point Sampling and Smearing',
     listed: true,
-    mediaCount: 0,
+    mediaCount: 1,
     phrase: 'A k-point and occupation study begins with the observable, reciprocal cell, electronic state, and intended integration method.',
   },
   {
@@ -52,12 +53,12 @@ async function inspectGuide(page, guide, width) {
     text: document.body.innerText,
     links: [...document.querySelectorAll('.article-content a')].map((link) => link.href),
     images: [...document.querySelectorAll('.guide-media img')].map((image) => ({ src: image.src, alt: image.alt })),
-    toolTags: [...document.querySelectorAll('.tool-tag')].map((tag) => tag.textContent?.trim()),
+    toolTags: [...document.querySelectorAll('.tool-tag')].map((tag) => tag.textContent?.trim().toLowerCase()),
     hasMeta: Boolean(document.querySelector('.guide-meta')),
     hasEvidence: Boolean(document.querySelector('.evidence-note')),
     copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
     unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
-    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm').length,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre[data-language="json"] > code, pre[data-language="plaintext"] > code, pre[data-language="gnuplot"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm, pre > code.language-json, pre > code.language-plaintext, pre > code.language-gnuplot').length,
     copyButtons: document.querySelectorAll('.copy-code-button').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
@@ -70,7 +71,7 @@ async function inspectGuide(page, guide, width) {
     }
   }
   if (!result.text.includes('Python 3.12')) throw new Error(`${guide.route}: missing tested Python version`);
-  if (!result.toolTags.includes('python')) throw new Error(`${guide.route}: missing python tool tag`);
+  if (!result.toolTags.includes('python')) throw new Error(`${guide.route}: missing Python tool tag`);
   if (!result.hasMeta || !result.hasEvidence) throw new Error(`${guide.route}: missing metadata or evidence boundary`);
   if (!/do(?:es)? not/i.test(result.text)) throw new Error(`${guide.route}: missing visible claim boundary`);
   if (result.images.length !== guide.mediaCount || result.images.some((image) => !image.alt)) {

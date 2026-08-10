@@ -71,12 +71,18 @@ const navigation = [
           'pre[data-language="python"] > code',
           'pre[data-language="qe"] > code',
           'pre[data-language="slurm"] > code',
+          'pre[data-language="json"] > code',
+          'pre[data-language="plaintext"] > code',
+          'pre[data-language="gnuplot"] > code',
           'pre > code.language-bash',
           'pre > code.language-shell',
           'pre > code.language-sh',
           'pre > code.language-python',
           'pre > code.language-qe',
           'pre > code.language-slurm',
+          'pre > code.language-json',
+          'pre > code.language-plaintext',
+          'pre > code.language-gnuplot',
         ].join(',');
 
         for (const code of document.querySelectorAll(copyableSelector)) {

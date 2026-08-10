@@ -112,11 +112,12 @@ async function inspect(page, route, width) {
   }
   if (route === '/operations/') {
     const expectedSupport = [
+      `${base}/quick-reference/`,
       `${base}/operations/troubleshooting/`,
       `${base}/operations/software-bridge/`,
       `${base}/tools/`,
     ];
-    if (JSON.stringify(state.supportLinks) !== JSON.stringify(expectedSupport)) throw new Error('Research Workflow support sentence does not expose all three support routes');
+    if (JSON.stringify(state.supportLinks) !== JSON.stringify(expectedSupport)) throw new Error('Research Workflow support sentence does not expose all four support routes');
   }
 }
 

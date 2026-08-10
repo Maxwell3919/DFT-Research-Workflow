@@ -18,6 +18,7 @@ import {
 } from '../../lib/practical-guides';
 import { getWorkflowTopics, type WorkflowTopic } from '../../lib/workflow';
 import { getContextualNavigation } from '../../lib/contextual-navigation';
+import { getResource, getResourcePath } from '../../lib/tools';
 import { withBase } from '../../lib/paths';
 import evidenceDocument from '../../../workflow/practical-evidence.json';
 
@@ -165,7 +166,10 @@ const contextualNavigation = page.kind === 'topic'
                         <a href={withBase(practicalGuidePath(entry))}>{entry.data.title}</a>
                         <p>{entry.data.summary}</p>
                         <div class="tool-list" aria-label="Tools">
-                          {entry.data.tools.map((tool) => <span class="tool-tag">{tool}</span>)}
+                          {entry.data.tools.map((slug) => {
+                            const resource = getResource(slug);
+                            return <a class="tool-tag" href={withBase(getResourcePath(resource))}>{resource.name}</a>;
+                          })}
                         </div>
                       </li>
                     ))}

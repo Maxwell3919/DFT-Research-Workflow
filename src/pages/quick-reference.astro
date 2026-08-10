@@ -1,0 +1,228 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/paths';
+
+const scfCheck = `OUT=scf.out
+test -r "$OUT" || { printf 'Cannot read %s\\n' "$OUT" >&2; exit 1; }
+
+printf 'PWSCF banners: %s\\n' "$(grep -cF 'Program PWSCF v.' -- "$OUT" || true)"
+printf 'JOB DONE markers: %s\\n' "$(grep -Ec '^[[:space:]]*JOB DONE\\.[[:space:]]*$' -- "$OUT" || true)"
+printf 'SCF convergence markers: %s\\n' "$(grep -Ec '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$OUT" || true)"
+
+grep -E '^![[:space:]]+total energy[[:space:]]+=' -- "$OUT" | tail -n 1
+grep -Ei 'the Fermi energy is' -- "$OUT" | tail -n 1 || true
+grep -niE 'convergence NOT achieved|No convergence has been achieved|warning|error in routine|stopping|not converged|segmentation fault|out of memory|oom-kill|killed by signal' -- "$OUT" || true`;
+
+const relaxCheck = `OUT=relax.out
+test -r "$OUT" || { printf 'Cannot read %s\\n' "$OUT" >&2; exit 1; }
+
+printf 'PWSCF banners: %s\\n' "$(grep -cF 'Program PWSCF v.' -- "$OUT" || true)"
+printf 'JOB DONE markers: %s\\n' "$(grep -Ec '^[[:space:]]*JOB DONE\\.[[:space:]]*$' -- "$OUT" || true)"
+printf 'SCF convergence markers: %s\\n' "$(grep -Ec '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$OUT" || true)"
+
+grep -E 'bfgs converged|End of BFGS Geometry Optimization|maximum number of steps' -- "$OUT" | tail -n 4 || true
+
+awk '
+  /Forces acting on atoms/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /Total force =/ {last=block; inside=0}
+  END {if (last == "") print "No complete force block found."; else printf "%s", last}
+' "$OUT"
+
+awk '
+  /total[[:space:]]+stress/ {block=$0 ORS; rows=3; next}
+  rows > 0 {block=block $0 ORS; rows--; if (rows == 0) last=block}
+  END {if (last == "") print "No complete stress block found; stress is not assessed."; else printf "%s", last}
+' "$OUT"
+
+awk '
+  /Begin final coordinates/ {block=$0 ORS; inside=1; next}
+  inside {block=block $0 ORS}
+  inside && /End final coordinates/ {last=block; inside=0}
+  END {if (last == "") print "No complete final-coordinate block found."; else printf "%s", last}
+' "$OUT"
+
+grep -niE 'convergence NOT achieved|No convergence has been achieved|warning|error in routine|stopping|not converged|segmentation fault|out of memory|oom-kill|killed by signal' -- "$OUT" || true`;
+
+const jobCheck = `OUT=slurm-job.out
+test -e "$OUT" || { printf 'No output file exists yet: %s\\n' "$OUT" >&2; exit 1; }
+
+ls -lh -- "$OUT"
+head -n 30 -- "$OUT"
+tail -n 80 -- "$OUT"
+grep -nE 'Program (PWSCF|PHONON|BANDS|DOS|PROJWFC|Q2R|MATDYN)|JOB DONE' -- "$OUT" || true
+grep -niE 'error|failed|killed|timeout|time limit|preempt|segmentation fault|out of memory|oom-kill|MPI_ABORT|slurmstepd' -- "$OUT" || true`;
+
+const artifactCheck = `OUT=bands.out
+test -r "$OUT" || { printf 'Cannot read %s\\n' "$OUT" >&2; exit 1; }
+DIR=$(dirname -- "$OUT")
+
+printf 'Output bytes and identity\\n'
+wc -c -- "$OUT"
+sha256sum -- "$OUT"
+
+printf '\\nFiles beside the selected output\\n'
+find "$DIR" -maxdepth 2 -type f -printf '%12s %p\\n' | sort
+
+printf '\\nZero-byte files\\n'
+find "$DIR" -maxdepth 2 -type f -size 0 -print`;
+
+const bandsDosCheck = `OUT=bands.out
+test -r "$OUT" || { printf 'Cannot read %s\\n' "$OUT" >&2; exit 1; }
+DIR=$(dirname -- "$OUT")
+
+grep -HnE 'Program (PWSCF|BANDS|DOS|PROJWFC)|JOB DONE|Fermi energy|highest occupied' -- "$DIR"/*.out 2>/dev/null || true
+grep -HniE 'warning|error in routine|c_bands|not converged|no convergence|stopping' -- "$DIR"/*.out 2>/dev/null || true
+
+find "$DIR" -maxdepth 2 -type f \\( -name '*.bands*' -o -name '*.dos' -o -name '*.dos.dat' -o -name '*.pdos*' -o -name '*projwfc*' \\) -printf '%12s %p\\n' | sort`;
+
+const phononCheck = `OUT=ph.out
+test -r "$OUT" || { printf 'Cannot read %s\\n' "$OUT" >&2; exit 1; }
+
+printf 'PHONON banners: %s\\n' "$(grep -cF 'Program PHONON v.' -- "$OUT" || true)"
+printf 'JOB DONE markers: %s\\n' "$(grep -Ec '^[[:space:]]*JOB DONE\\.[[:space:]]*$' -- "$OUT" || true)"
+grep -nE 'Calculation of q[[:space:]]*=|freq[[:space:]]*\\(' -- "$OUT" || true
+grep -niE 'convergence NOT achieved|No convergence has been achieved|warning|error in routine|stopping|not converged|segmentation fault|out of memory|oom-kill|killed by signal' -- "$OUT" || true`;
+---
+
+<BaseLayout
+  title="Quick Reference"
+  description="Copy-ready, read-only checks for common Quantum ESPRESSO and HPC output files."
+  current="operations"
+>
+  <article class="quick-reference" data-quick-reference>
+    <header class="page-lede">
+      <p class="section-label">Copy, point, inspect</p>
+      <h1>Quick Reference</h1>
+      <p class="page-intro">Change only <code>OUT=...</code>, run the block, and read the evidence it prints. These commands locate records; they do not declare a calculation accepted.</p>
+      <p class="page-boundary">A readable file, a scheduler state, <code>JOB DONE.</code>, an SCF marker, optimizer termination, numerical convergence, and scientific support are separate checks. Keep stdout, stderr, shell or scheduler exit status, exact input, software version, and parent-artifact identity together.</p>
+    </header>
+
+    <nav class="quick-index" aria-label="Quick checks">
+      <a href="#qe-scf-check">QE SCF</a>
+      <a href="#qe-relax-check">QE relax</a>
+      <a href="#job-check">Job output</a>
+      <a href="#artifact-check">Artifacts</a>
+      <a href="#bands-dos-check">Bands / DOS</a>
+      <a href="#phonon-check">Phonons</a>
+    </nav>
+
+    <section id="qe-scf-check" data-quick-check>
+      <h2>QE SCF quick check</h2>
+      <p>The positive SCF marker is anchored to the complete QE 7.5 text shape observed in the published cases. Negative and fatal markers are searched separately so a negative sentence cannot be counted as success.</p>
+      <pre data-language="bash"><code>{scfCheck}</code></pre>
+      <p><strong>Read next:</strong> one coherent run normally has one banner and one termination marker. Inspect the full iteration history, separate stderr and exit status before deciding execution completion. A reported SCF stop does not establish the lowest relevant state or convergence of the target observable.</p>
+    </section>
+
+    <section id="qe-relax-check" data-quick-check>
+      <h2>QE relaxation quick check</h2>
+      <p>This locates electronic stops, optimizer termination, the last complete force and stress blocks, final coordinates, and adverse text in one stdout file.</p>
+      <pre data-language="bash"><code>{relaxCheck}</code></pre>
+      <p><strong>Read next:</strong> use the exact input to identify <code>if_pos</code> masks or documented defaults. Apply the force gate to every free Cartesian component, not aggregate <code>Total force</code>. A stress gate also needs the declared active cell degrees of freedom and target. Reopen the final structure and run a fresh fixed-geometry SCF before using it as a downstream parent.</p>
+    </section>
+
+    <section id="job-check" data-quick-check>
+      <h2>Job-output quick check</h2>
+      <p>An absent or empty output can mean pending allocation, launch failure, wrong path, buffering, or a scheduler/storage problem. This block inspects the named file only; use the recorded job ID with the site's scheduler tools to determine current state.</p>
+      <pre data-language="bash"><code>{jobCheck}</code></pre>
+      <p><strong>Read next:</strong> no program banner means no evidence that QE launched. Preserve the job script, submission receipt, stdout, stderr, exit record, resource record, working directory, and software environment before retrying.</p>
+    </section>
+
+    <section id="artifact-check" data-quick-check>
+      <h2>Output-artifact quick check</h2>
+      <p>Start from the stage output that should have produced the missing object. Inventory sibling files without guessing that the newest or largest file is the right parent.</p>
+      <pre data-language="bash"><code>{artifactCheck}</code></pre>
+      <p><strong>Read next:</strong> compare the inventory with the executable's official output contract and the intended stage manifest. Existence, size, timestamp, and hash establish different facts; none proves semantic completeness or correct lineage.</p>
+    </section>
+
+    <section id="bands-dos-check" data-quick-check>
+      <h2>Bands / DOS consistency quick check</h2>
+      <p>Point <code>OUT</code> to one bands or DOS stage in a directory that retains its sibling logs and data files. The block exposes program identities, termination markers, energy-reference text, band warnings, and candidate data artifacts.</p>
+      <pre data-language="bash"><code>{bandsDosCheck}</code></pre>
+      <p><strong>Read next:</strong> verify that SCF, dense NSCF, <code>bands.x</code>, <code>dos.x</code>, and <code>projwfc.x</code> objects come from the intended compatible parent chain. Align the same energy reference before comparing plots. A selected high-symmetry path and an integrated DOS answer different sampling questions.</p>
+    </section>
+
+    <section id="phonon-check" data-quick-check>
+      <h2>QE phonon quick check</h2>
+      <p>This locates the PHONON program identity, requested q points, printed frequencies, termination, and adverse text.</p>
+      <pre data-language="bash"><code>{phononCheck}</code></pre>
+      <p><strong>Read next:</strong> preserve negative or imaginary modes. Check the electronic parent, residual force and stress, response convergence, q coverage or supercell, acoustic-sum treatment, eigenvectors, and numerical series before calling a mode physical or numerical.</p>
+    </section>
+
+    <aside class="quick-links">
+      <h2>When a check fails</h2>
+      <p>Use <a href={withBase('operations/troubleshooting/')}>Troubleshooting</a> to classify the symptom before changing an input. For version-sensitive syntax and program behavior, follow the linked official manual for the executable that actually ran.</p>
+    </aside>
+
+    <section class="official-links" aria-labelledby="quick-official-heading">
+      <h2 id="quick-official-heading">Official entry points</h2>
+      <ul>
+        <li><a href="https://www.quantum-espresso.org/Doc/pw_user_guide/node21.html" rel="noreferrer">Quantum ESPRESSO PWscf troubleshooting</a></li>
+        <li><a href="https://www.quantum-espresso.org/Doc/ph_user_guide/node18.html" rel="noreferrer">Quantum ESPRESSO PHonon troubleshooting</a></li>
+        <li><a href="https://www.quantum-espresso.org/Doc/INPUT_BANDS.html" rel="noreferrer">Quantum ESPRESSO bands.x input description</a></li>
+        <li><a href="https://www.quantum-espresso.org/Doc/INPUT_DOS.html" rel="noreferrer">Quantum ESPRESSO dos.x input description</a></li>
+        <li><a href="https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html" rel="noreferrer">Quantum ESPRESSO projwfc.x input description</a></li>
+        <li><a href="https://slurm.schedmd.com/squeue.html" rel="noreferrer">Slurm squeue reference</a></li>
+        <li><a href="https://slurm.schedmd.com/sacct.html" rel="noreferrer">Slurm sacct reference</a></li>
+      </ul>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .quick-reference {
+    --accent: #8a3f28;
+    --border: #d9d4ca;
+    --surface-subtle: #f7f4ef;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .quick-index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin: 1.25rem 0 2rem;
+  }
+
+  .quick-index a {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.42rem 0.72rem;
+    text-decoration: none;
+  }
+
+  [data-quick-check] {
+    border-top: 1px solid var(--border);
+    padding: 1.65rem 0 0.7rem;
+  }
+
+  [data-quick-check] > p,
+  .quick-links p {
+    max-width: 78ch;
+  }
+
+  .quick-reference pre {
+    max-width: 100%;
+    overflow-x: auto;
+    font-size: 0.86rem;
+    line-height: 1.5;
+  }
+
+  .quick-links {
+    margin: 1.5rem 0;
+    padding: 1rem 1.15rem;
+    border-left: 3px solid var(--accent);
+    background: var(--surface-subtle);
+  }
+
+  @media (max-width: 430px) {
+    .quick-index {
+      gap: 0.4rem;
+    }
+
+    .quick-index a {
+      padding: 0.38rem 0.58rem;
+    }
+  }
+</style>

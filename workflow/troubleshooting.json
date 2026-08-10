@@ -67,9 +67,79 @@
       "organization": "CP2K",
       "url": "https://manual.cp2k.org/cp2k-2026_2-branch/methods/dft/convergence.html",
       "accessed_at": "2026-08-10"
+    },
+    {
+      "id": "slurm-squeue-docs",
+      "title": "squeue command reference",
+      "organization": "Slurm",
+      "url": "https://slurm.schedmd.com/squeue.html",
+      "accessed_at": "2026-08-11"
+    },
+    {
+      "id": "slurm-sacct-docs",
+      "title": "sacct command reference",
+      "organization": "Slurm",
+      "url": "https://slurm.schedmd.com/sacct.html",
+      "accessed_at": "2026-08-11"
+    },
+    {
+      "id": "qe-bands-docs",
+      "title": "bands.x input description",
+      "organization": "Quantum ESPRESSO",
+      "url": "https://www.quantum-espresso.org/Doc/INPUT_BANDS.html",
+      "accessed_at": "2026-08-11"
+    },
+    {
+      "id": "qe-dos-docs",
+      "title": "dos.x input description",
+      "organization": "Quantum ESPRESSO",
+      "url": "https://www.quantum-espresso.org/Doc/INPUT_DOS.html",
+      "accessed_at": "2026-08-11"
+    },
+    {
+      "id": "qe-projwfc-docs",
+      "title": "projwfc.x input description",
+      "organization": "Quantum ESPRESSO",
+      "url": "https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html",
+      "accessed_at": "2026-08-11"
     }
   ],
   "records": [
+    {
+      "slug": "job-does-not-start",
+      "title": "The job does not start",
+      "symptom": "The scheduler rejects the submission, leaves it pending, or records no application banner and no evidence that the requested executable launched.",
+      "first_check": "Read the submission receipt and current scheduler reason before inspecting QE settings. Confirm the cluster, job ID, owner, working directory, requested resources, and whether an output file exists or remains empty.",
+      "cause_classes": [
+        "Invalid account, partition, reservation, dependency, or resource request",
+        "Pending priority, unavailable nodes, maintenance, or site policy",
+        "Missing job script, working directory, executable, module, permission, or input redirection",
+        "Launcher or MPI integration failure before the application banner"
+      ],
+      "inspect": [
+        "Submission command and receipt, current queue state, pending reason, and detailed scheduler record",
+        "Job script, working directory, stdout and stderr paths, modules, executable resolution, and input path",
+        "Whether stdout or stderr exists, its size, and whether any program banner was written",
+        "Account, partition, dependency, node, CPU, memory, time, and filesystem requests"
+      ],
+      "safe_next_action": [
+        "Wait when the scheduler record shows a valid pending reason that requires no correction.",
+        "Otherwise correct only the demonstrated submission, path, environment, or resource fault and submit a new traceable attempt without changing the scientific input."
+      ],
+      "preserve_before_retry": [
+        "Job script, submission command and receipt, job ID, queue and detail records, stdout, and stderr",
+        "Working directory, executable and module identity, input hash, resource request, and observation time"
+      ],
+      "do_not_conclude": "A job that never starts supplies no QE, SCF, structural, or material evidence. A pending reason is a scheduler observation, not a scientific result and not by itself authorization to cancel or resubmit.",
+      "related_topic_slugs": [
+        "validate-results-and-scientific-conclusions"
+      ],
+      "official_source_ids": [
+        "slurm-squeue-docs",
+        "slurm-sacct-docs",
+        "qe-pw-troubleshooting"
+      ]
+    },
     {
       "slug": "job-stops-before-completion",
       "title": "The job stops before the calculation completes",
@@ -178,6 +248,43 @@
       ]
     },
     {
+      "slug": "scf-becomes-very-slow",
+      "title": "The electronic SCF cycle becomes very slow",
+      "symptom": "Electronic iterations continue but each iteration takes much longer than expected, output updates rarely, or diagonalization, FFT, communication, or I/O dominates the recorded timing.",
+      "first_check": "Confirm that the job is still active, then compare per-iteration timing, k points, bands, plane-wave size, process layout, memory, and I/O with one defensible smaller or earlier run before changing SCF algorithms.",
+      "cause_classes": [
+        "A larger cell, cutoff, k mesh, band count, spinor problem, or symmetry reduction increased the actual workload",
+        "Poor MPI or thread decomposition, oversubscription, load imbalance, or excessive communication",
+        "Memory pressure, swapping, slow shared storage, checkpoint traffic, or filesystem contention",
+        "An eigensolver or occupation problem increased inner iterations even though the outer SCF still advances"
+      ],
+      "inspect": [
+        "Scheduler state, elapsed time, CPU and memory record, output timestamps, and whether bytes are still advancing",
+        "QE timing sections and iteration-by-iteration wall time, diagonalization count, and residual history",
+        "Actual k points, bands, plane waves, FFT grids, pools, ranks, threads, and node placement",
+        "Scratch location, file growth, filesystem health, competing writers, and environment or build changes"
+      ],
+      "safe_next_action": [
+        "Correct a demonstrated process-layout, memory, storage, or environment problem without changing the scientific model.",
+        "If the workload itself grew, benchmark one small supported layout change and separately retain the convergence settings required by the observable."
+      ],
+      "preserve_before_retry": [
+        "Complete timing and iteration output, scheduler resource record, process layout, executable and library identity",
+        "Exact input, k-point and band counts, cutoff and FFT settings, scratch inventory, and comparison-run identity"
+      ],
+      "do_not_conclude": "Slow output does not prove that the process is hung or that SCF will fail. Faster execution after changing decomposition does not establish the electronic state, numerical convergence, or scientific validity.",
+      "related_topic_slugs": [
+        "calculate-reference-ground-state",
+        "test-numerical-convergence",
+        "validate-results-and-scientific-conclusions"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "gpaw-convergence-issues",
+        "cp2k-scf-convergence-guide"
+      ]
+    },
+    {
       "slug": "eigensolver-or-fermi-level-error",
       "title": "The eigensolver, band count, or Fermi-level search fails",
       "symptom": "The output reports a diagonalization failure, unconverged eigenvectors, insufficient bands, or an inability to determine the Fermi level.",
@@ -248,6 +355,82 @@
         "qe-pw-troubleshooting",
         "qe-ph-troubleshooting",
         "cp2k-scf-convergence-guide"
+      ]
+    },
+    {
+      "slug": "expected-output-artifact-is-missing",
+      "title": "An expected output artifact is missing",
+      "symptom": "A stage appears to have run, but the density, wavefunction, save tree, bands, DOS, projected data, dynamical matrix, force constants, table, or figure required for the next action is absent or empty.",
+      "first_check": "Name the exact executable and artifact its official output contract should produce, then bind the stdout, stderr, exit status, working directory, prefix or project identity, and parent artifacts for that one stage.",
+      "cause_classes": [
+        "The stage did not reach the write point even though an earlier program or wrapper exited normally",
+        "The artifact was written under a different working directory, prefix, outdir, filename, or format",
+        "Disk, quota, permission, buffering, cleanup, or concurrent-writer failure left an absent or partial object",
+        "The requested post-processing option did not produce the assumed artifact or the downstream filename was guessed"
+      ],
+      "inspect": [
+        "Program banner, normal termination, shell and scheduler exit, stderr, and the last complete stage output",
+        "Expected filename or directory from the version-matching manual and the exact input fields controlling it",
+        "Working directory, prefix or project, outdir, file inventory, sizes, timestamps, hashes, and zero-byte files",
+        "Parent completion and lineage plus cleanup, copy, archive, or concurrent jobs that could move or alter the object"
+      ],
+      "safe_next_action": [
+        "Correct the demonstrated path, option, storage, or incomplete-stage problem and regenerate the artifact from the accepted parent.",
+        "Do not create an empty placeholder, rename an unrelated file, or continue from an object whose writer and lineage are unknown."
+      ],
+      "preserve_before_retry": [
+        "Input, stdout, stderr, exit records, complete directory inventory, expected artifact definition, and parent manifest",
+        "Working directory, prefix or project, outdir, software version, file hashes, and evidence of cleanup or concurrent writes"
+      ],
+      "do_not_conclude": "A missing artifact is an execution, path, storage, or workflow-lineage problem until demonstrated otherwise. It is not evidence that the requested physical quantity is zero, absent, or scientifically undefined.",
+      "related_topic_slugs": [
+        "validate-results-and-scientific-conclusions",
+        "document-and-preserve-study"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "qe-ph-troubleshooting",
+        "qe-bands-docs",
+        "qe-dos-docs",
+        "qe-projwfc-docs"
+      ]
+    },
+    {
+      "slug": "bands-and-dos-look-inconsistent",
+      "title": "Bands and DOS look inconsistent",
+      "symptom": "A band plot suggests a gap or crossing while the DOS appears to show the opposite, Fermi levels or energy zeros do not align, or projected and total DOS features do not correspond as expected.",
+      "first_check": "Bind every plot and data file to its exact SCF and NSCF parent, sampling definition, number of bands, occupations, smearing, energy reference, spin channel, normalization, and post-processing executable before interpreting the difference.",
+      "cause_classes": [
+        "The high-symmetry path misses a full-zone extremum or crossing sampled by the DOS mesh",
+        "Bands and DOS use incompatible parents, structures, Hamiltonians, spin states, Fermi levels, or energy-zero conventions",
+        "The NSCF mesh, band count, DOS grid, broadening, tetrahedron or smearing treatment is inadequate",
+        "Projection labels, normalization, spin summation, interpolation, parser, or plotting columns are inconsistent"
+      ],
+      "inspect": [
+        "Exact parent manifests, prefix and outdir ancestry, structure, pseudopotentials, method, charge, spin and SOC settings",
+        "Band path versus full-zone mesh, irreducible points, band count, occupations, smearing or tetrahedra, and DOS energy grid",
+        "Fermi energy and plotted zero for every artifact, units, spin channels, normalization, broadening, and projection definitions",
+        "Raw bands, total DOS and projected files together with program warnings such as unconverged eigenvalues"
+      ],
+      "safe_next_action": [
+        "First correct a demonstrated ancestry, reference, parser, normalization, or plotting mismatch without rerunning DFT.",
+        "If the raw objects are compatible, run the smallest controlled full-zone, mesh, band-count, broadening, or energy-grid test required by the disputed observable."
+      ],
+      "preserve_before_retry": [
+        "SCF and NSCF inputs and outputs, post-processing inputs and outputs, raw bands and DOS data, plots, and parser version",
+        "Parent hashes, k-point definitions, energy references, spin and normalization conventions, warnings, and convergence series"
+      ],
+      "do_not_conclude": "A high-symmetry path is not full-Brillouin-zone proof of metallicity, and a broadened DOS is not a direct map of one selected path. Visual disagreement alone does not identify which parent, sampling, reference, or parser is wrong.",
+      "related_topic_slugs": [
+        "band-structure",
+        "density-of-states-and-projected-density-of-states",
+        "fermi-surface-and-full-brillouin-zone-analysis"
+      ],
+      "official_source_ids": [
+        "qe-bands-docs",
+        "qe-dos-docs",
+        "qe-projwfc-docs",
+        "abinit-general-faq"
       ]
     },
     {
@@ -350,6 +533,80 @@
       "related_topic_slugs": [
         "optimize-structure",
         "calculate-reference-ground-state"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "gpaw-convergence-issues",
+        "cp2k-scf-convergence-guide"
+      ]
+    },
+    {
+      "slug": "forces-remain-large",
+      "title": "Forces remain large",
+      "symptom": "One or more free Cartesian force components remain above the declared criterion, decrease and rebound, or disagree with the expected symmetry or structural motion.",
+      "first_check": "Read the last complete force block component by component against the exact input constraints. Keep the printed aggregate Total force separate, then verify electronic convergence and state identity for that geometry.",
+      "cause_classes": [
+        "The structure is far from a stationary point, contains close contacts, or follows the wrong basin",
+        "Electronic, cutoff, k-point, smearing, grid, or pseudopotential settings do not provide stable forces",
+        "The intended free and fixed components, symmetry, or atom mapping do not match the executed input",
+        "The electronic or magnetic state changes between ionic steps and makes the force surface discontinuous"
+      ],
+      "inspect": [
+        "Every final free Cartesian component, its units, the declared threshold, and all if_pos or equivalent constraints",
+        "Force history, accepted and rejected trajectory frames, step sizes, close contacts, and symmetry changes",
+        "SCF residuals, occupations, magnetization, warnings, and state continuity at each force evaluation",
+        "Force sensitivity to the numerical dimensions required by the intended structural decision"
+      ],
+      "safe_next_action": [
+        "Correct a demonstrated model, constraint, state, or force-quality problem before restarting from the last accepted geometry.",
+        "Use one fresh fixed-geometry energy-and-force evaluation to verify the exact candidate before another optimizer change."
+      ],
+      "preserve_before_retry": [
+        "Exact input, complete force blocks, constraints, trajectory, accepted-frame identity, and electronic-state diagnostics",
+        "Software and pseudopotential identity, numerical settings, warnings, and the force criterion declared before the run"
+      ],
+      "do_not_conclude": "A small aggregate Total force does not prove that every free component passes. Large residual forces do not by themselves distinguish a poor model, inadequate numerics, a different electronic state, or a genuine structural driving force.",
+      "related_topic_slugs": [
+        "optimize-structure",
+        "calculate-reference-ground-state",
+        "test-numerical-convergence"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "gpaw-convergence-issues",
+        "cp2k-scf-convergence-guide"
+      ]
+    },
+    {
+      "slug": "stress-remains-large",
+      "title": "Stress remains large",
+      "symptom": "Relevant stress or pressure components remain outside the declared target, oscillate during a variable-cell run, or stay large in a fixed-cell diagnostic.",
+      "first_check": "Decide whether the cell was fixed or active, then read the last complete stress tensor with its units, sign convention, target pressure, and declared active cell degrees of freedom.",
+      "cause_classes": [
+        "A fixed or intentionally strained cell is not at its equilibrium stress and was never meant to relax",
+        "The variable-cell objective, pressure target, cell constraints, symmetry, or cell representation is wrong",
+        "Cutoff, FFT grid, k sampling, smearing, electronic threshold, or pseudopotential choices yield inadequate stress quality",
+        "The structure or electronic state has not settled, or cell and ionic steps are poorly conditioned"
+      ],
+      "inspect": [
+        "The full final stress tensor, pressure, units and sign convention, not one scalar alone",
+        "Cell_dofree or equivalent active cell variables, external target, cell history, volume, angles, and ionic coordinates",
+        "Electronic convergence, force history, state labels, warnings, and accepted versus trial cell steps",
+        "Stress sensitivity to the numerical settings required by the intended cell or equation-of-state decision"
+      ],
+      "safe_next_action": [
+        "For a fixed cell, report stress as a diagnostic and change the cell only when the scientific protocol requires it.",
+        "For an active cell, correct a demonstrated target, constraint, state, or stress-quality problem before one bounded restart from the last accepted cell."
+      ],
+      "preserve_before_retry": [
+        "Complete stress, force and cell histories, exact cell constraints, pressure target, units, sign convention, and trajectory",
+        "Input, output, numerical settings, state diagnostics, restart ancestry, and accepted-cell identity"
+      ],
+      "do_not_conclude": "Large stress in a fixed cell is not automatically a failed calculation, and optimizer termination is not automatically a stress pass. Stress alone does not establish a stable phase, equilibrium cell, or validated structural model.",
+      "related_topic_slugs": [
+        "optimize-structure",
+        "equation-of-state-and-structural-phase-stability",
+        "test-numerical-convergence"
       ],
       "official_source_ids": [
         "qe-pw-troubleshooting",

@@ -231,8 +231,285 @@
   font-size: 0.9rem;
 }
 
+/* Tools & Resources uses one static table DOM that becomes compact rows on small screens. */
+.resource-directory {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2.25rem) 5rem;
+}
+
+.resource-directory .directory-intro { max-width: 58rem; }
+
+.resource-directory .scope-note {
+  padding-left: 1rem;
+  border-left: 2px solid var(--rule);
+  color: var(--muted);
+}
+
+.resource-directory .task-index {
+  margin: 2.5rem 0;
+  padding-block: 1rem;
+  border-block: 1px solid var(--rule);
+}
+
+.resource-directory .task-index > p {
+  margin: 0 0 0.65rem;
+  font-weight: 700;
+}
+
+.resource-directory .task-index ol {
+  columns: 2;
+  column-gap: 2rem;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.resource-directory .task-index li {
+  break-inside: avoid;
+  margin-bottom: 0.35rem;
+}
+
+.resource-directory .task-index li span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.resource-directory .workflow-topic-index {
+  margin: 2rem 0 4rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.resource-directory .workflow-topic-index > summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.resource-directory .workflow-topic-index > ol {
+  margin: 1rem 0 0;
+  padding-left: 1.4rem;
+}
+
+.resource-directory .workflow-topic-index > ol > li { margin-bottom: 0.9rem; }
+.resource-directory .workflow-topic-index p { margin: 0; }
+
+.resource-directory .workflow-topic-index p span {
+  margin-left: 0.45rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.resource-directory .workflow-topic-index ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  margin: 0.3rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.resource-directory .resource-task {
+  position: relative;
+  scroll-margin-top: 2rem;
+  margin-top: clamp(3.5rem, 7vw, 6rem);
+}
+
+.resource-directory .resource-task > p { max-width: 58rem; }
+
+.resource-directory .anchor-alias {
+  position: absolute;
+  inset-block-start: -1rem;
+  scroll-margin-top: 2rem;
+}
+
+.resource-table-wrap { margin-top: 1.25rem; }
+
+.resource-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.88rem;
+  line-height: 1.42;
+}
+
+.resource-table caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.resource-table .resource-column { width: 22%; }
+.resource-table .purpose-column { width: 31%; }
+.resource-table .access-column { width: 16%; }
+.resource-table .used-in-column { width: 31%; }
+
+.resource-table thead th {
+  padding: 0.55rem 0.65rem;
+  border-block: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.025em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.resource-table tbody tr {
+  scroll-margin-top: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.resource-table tbody th,
+.resource-table tbody td {
+  min-width: 0;
+  padding: 0.65rem;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.resource-name-cell h3 {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.28;
+}
+
+.resource-kind,
+.resource-entry-links {
+  margin: 0.22rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.resource-entry-links a { white-space: normal; }
+.resource-purpose { color: var(--muted); }
+
+.resource-access span {
+  display: block;
+  margin-bottom: 0.18rem;
+}
+
+.resource-access span:last-child {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.resource-used-in > ul,
+.resource-used-in details ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.18rem 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resource-used-in li { white-space: normal; }
+
+.resource-used-in details {
+  margin-top: 0.3rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.resource-used-in details summary,
+.resource-caveat summary { cursor: pointer; }
+
+.resource-used-in details ul { margin-top: 0.3rem; }
+
+.resource-caveat {
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.resource-caveat p { margin: 0.3rem 0 0; }
+
+@media (max-width: 52rem) {
+  .resource-table,
+  .resource-table tbody,
+  .resource-table tr,
+  .resource-table th,
+  .resource-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .resource-table colgroup { display: none; }
+
+  .resource-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .resource-table tbody tr { padding: 0.72rem 0; }
+
+  .resource-table tbody th,
+  .resource-table tbody td { padding: 0; }
+
+  .resource-table .resource-name-cell { margin-bottom: 0.28rem; }
+
+  .resource-table .resource-purpose {
+    margin-bottom: 0.3rem;
+    color: var(--muted);
+  }
+
+  .resource-table .resource-access {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.35rem;
+    margin-bottom: 0.3rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .resource-table .resource-access span {
+    display: inline;
+    margin: 0;
+    font-size: inherit;
+  }
+
+  .resource-table .resource-access span + span::before {
+    margin-right: 0.35rem;
+    content: "·";
+  }
+
+  .resource-table .resource-used-in {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.45rem;
+    font-size: 0.82rem;
+  }
+
+  .resource-table .resource-used-in::before {
+    color: var(--muted);
+    content: attr(data-label) ":";
+    font-weight: 600;
+  }
+
+  .resource-table .resource-used-in details {
+    flex-basis: 100%;
+    margin-top: 0.1rem;
+  }
+}
+
 @media (max-width: 42rem) {
   .practical-card-list { grid-template-columns: 1fr; }
+
+  .resource-directory {
+    padding-inline: clamp(0.85rem, 4vw, 1.25rem);
+  }
+
+  .resource-directory .task-index ol { columns: 1; }
+  .resource-directory .workflow-topic-index ul { display: block; }
 }
 
 @media (max-width: 32rem) {

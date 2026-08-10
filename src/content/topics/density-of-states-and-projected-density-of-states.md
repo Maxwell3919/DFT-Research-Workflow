@@ -17,7 +17,7 @@ Prepare `scf.in`, a denser compatible `dos-nscf.in`, and `dos.x.in`. Keep the st
 
 ```bash
 pw.x -in scf.in > scf.out
-grep -F "convergence has been achieved" scf.out
+grep -E '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' scf.out
 grep -F "JOB DONE." scf.out
 ```
 

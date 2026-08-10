@@ -81,7 +81,7 @@ function walkForForbiddenKeys(value, path = 'navigator') {
 }
 
 if (topics.length !== 46) errors.push(`current A-E registry must contain 46 topics, found ${topics.length}`);
-if (guides.length !== 50) errors.push(`current practical collection must contain 50 guides, found ${guides.length}`);
+if (guides.length !== 51) errors.push(`current practical collection must contain 51 guides, found ${guides.length}`);
 if (navigator.schema_version !== 1) errors.push(`schema_version must be 1, found ${navigator.schema_version}`);
 if (navigator.role !== 'editorial-question-to-existing-route-bridge') errors.push('navigator role must remain an editorial bridge');
 if (navigator.public_heading !== 'Start from the research question') errors.push('public heading must be Start from the research question');

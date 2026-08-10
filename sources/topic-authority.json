@@ -401,7 +401,7 @@
       "textbook_key": "sholl-steckel",
       "textbook_reason": null,
       "references": [
-        { "role": "official", "label": "National Academies: computational model verification and validation", "url": "https://www.nationalacademies.org/read/25303/chapter/3" },
+        { "role": "official", "label": "National Academies: reproducibility and replicability in science", "url": "https://doi.org/10.17226/25303" },
         { "role": "specialist", "label": "Computational verification and validation review", "url": "https://doi.org/10.1016/S0376-0421%2802%2900005-2" }
       ]
     },

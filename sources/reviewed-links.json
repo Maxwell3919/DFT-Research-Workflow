@@ -2,7 +2,7 @@
   "schema_version": 1,
   "scope": "All external sources cited by reviewed public topic articles, their scientific review records, and declared supporting workflow pages.",
   "audit_record": "docs/reviews/2026-08-03-reviewed-source-link-audit.md",
-  "expected_unique_urls": 291,
+  "expected_unique_urls": 295,
   "supporting_pages": [
     {
       "page_slug": "troubleshooting",
@@ -19,6 +19,28 @@
         { "kind": "page", "url": "https://manual.cp2k.org/cp2k-2026_2-branch/methods/dft/convergence.html" },
         { "kind": "page", "url": "https://vasp.at/wiki/How_to_handle_imaginary_phonon_modes" },
         { "kind": "page", "url": "https://vasp.at/wiki/Troubleshooting_electronic_convergence" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node18.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/pw_user_guide/node21.html" },
+        { "kind": "page", "url": "https://slurm.schedmd.com/sacct.html" },
+        { "kind": "page", "url": "https://slurm.schedmd.com/squeue.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_BANDS.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_DOS.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html" }
+      ]
+    },
+    {
+      "page_slug": "quick-reference",
+      "route": "/quick-reference/",
+      "source_files": [
+        "src/pages/quick-reference.astro",
+        "docs/reviews/2026-08-11-quick-reference.md"
+      ],
+      "links": [
+        { "kind": "page", "url": "https://slurm.schedmd.com/sacct.html" },
+        { "kind": "page", "url": "https://slurm.schedmd.com/squeue.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_BANDS.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_DOS.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node18.html" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/pw_user_guide/node21.html" }
       ]
@@ -57,7 +79,7 @@
     }
   ],
   "topics": [
-    {"topic_slug":"validate-results-and-scientific-conclusions","article":"src/content/topics/validate-results-and-scientific-conclusions.md","review":"docs/reviews/2026-08-04-validate-results-and-scientific-conclusions.md","links":[{"kind":"doi","url":"https://doi.org/10.1016/S0376-0421%2802%2900005-2"},{"kind":"doi","url":"https://doi.org/10.6028/NIST.IR.8298"},{"kind":"page","url":"https://www.nationalacademies.org/read/25303/chapter/3"},{"kind":"doi","url":"https://doi.org/10.1126/science.aad3000"},{"kind":"doi","url":"https://doi.org/10.1063/1.1390175"}]},
+    {"topic_slug":"validate-results-and-scientific-conclusions","article":"src/content/topics/validate-results-and-scientific-conclusions.md","review":"docs/reviews/2026-08-04-validate-results-and-scientific-conclusions.md","links":[{"kind":"doi","url":"https://doi.org/10.1016/S0376-0421%2802%2900005-2"},{"kind":"doi","url":"https://doi.org/10.6028/NIST.IR.8298"},{"kind":"doi","url":"https://doi.org/10.17226/25303"},{"kind":"doi","url":"https://doi.org/10.1126/science.aad3000"},{"kind":"doi","url":"https://doi.org/10.1063/1.1390175"}]},
     {"topic_slug":"analyze-and-compare-results","article":"src/content/topics/analyze-and-compare-results.md","review":"docs/reviews/2026-08-04-analyze-and-compare-results.md","links":[{"kind":"doi","url":"https://doi.org/10.1126/science.aad3000"},{"kind":"page","url":"https://arxiv.org/abs/2008.10402"},{"kind":"page","url":"https://arxiv.org/abs/2001.01851"},{"kind":"page","url":"https://pml.nist.gov/cuu/Uncertainty/international1.html"},{"kind":"page","url":"https://arxiv.org/abs/2003.12510"}]},
     {"topic_slug":"quantum-transport","article":"src/content/topics/quantum-transport.md","review":"docs/reviews/2026-08-04-quantum-transport.md","links":[{"kind":"doi","url":"https://doi.org/10.1147/rd.13.0223"},{"kind":"page","url":"https://research.ibm.com/publications/four-terminal-phase-coherent-conductance"},{"kind":"page","url":"https://arxiv.org/abs/cond-mat/0110650"},{"kind":"page","url":"https://arxiv.org/abs/1607.04464"},{"kind":"page","url":"https://docs.siesta-project.org/projects/siesta/en/5.4/reference/siesta.html#transiesta"}]},
     {"topic_slug":"electronic-transport","article":"src/content/topics/electronic-transport.md","review":"docs/reviews/2026-08-04-electronic-transport.md","links":[{"kind":"page","url":"https://arxiv.org/abs/cond-mat/0602203"},{"kind":"page","url":"https://arxiv.org/abs/1712.07946"},{"kind":"page","url":"https://arxiv.org/abs/1305.1587"},{"kind":"page","url":"https://arxiv.org/abs/1908.01733"},{"kind":"page","url":"https://docs.epw-code.org/tutorials/GaN-II.html"}]},
@@ -499,6 +521,8 @@
         { "kind": "doi", "url": "https://doi.org/10.1016/j.scriptamat.2015.07.021" },
         { "kind": "doi", "url": "https://doi.org/10.1103/RevModPhys.73.515" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_Q2R.html" },
+        { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/INPUT_MATDYN.html" },
         { "kind": "page", "url": "https://quantum-espresso.org/Doc/INPUT_DYNMAT.html" },
         { "kind": "page", "url": "https://www.quantum-espresso.org/Doc/ph_user_guide/node8.html" },
         { "kind": "page", "url": "https://phonopy.github.io/phonopy/phonopy.html" },

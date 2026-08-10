@@ -34,7 +34,7 @@ Now inspect the stored text evidence:
 
 ```bash
 grep -F "JOB DONE" examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-scf.out
-grep -F "convergence has been achieved" examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-scf.out
+grep -E '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-scf.out
 grep -F "JOB DONE" examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-ph.out
 grep -A 4 -F "Dielectric constant in cartesian axis" examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-ph.out
 grep -A 16 -F "Effective charges (d Force / dE)" examples/cases/silicon-ground-state-electronic-structure/output/si-epsilon-ph.out

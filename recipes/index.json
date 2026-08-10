@@ -166,6 +166,9 @@
             "topic_slugs": [
               "obtain-material-structure"
             ],
+            "practical_guide_slugs": [
+              "inspect-cod-silicon-record"
+            ],
             "coverage": "recorded",
             "case_files": [
               "source/silicon-cod-9013102.cif",
@@ -290,6 +293,9 @@
             "topic_slugs": [
               "calculate-reference-ground-state"
             ],
+            "practical_guide_slugs": [
+              "prepare-fixed-geometry-reference-calculation"
+            ],
             "coverage": "direct-fresh-relaxation-plus-recorded-template",
             "case_files": [
               "run.sh",
@@ -328,6 +334,10 @@
             "topic_slugs": [
               "validate-results-and-scientific-conclusions"
             ],
+            "practical_guide_slugs": [
+              "audit-a-qe-calculation",
+              "inspect-qe-hpc-calculations-from-the-terminal"
+            ],
             "coverage": "recorded-stored-checks",
             "case_files": [
               "check.sh",
@@ -365,6 +375,10 @@
             "purpose": "Inspect the recorded cutoff/k-mesh matrix without promoting it beyond its declared scope.",
             "topic_slugs": [
               "test-numerical-convergence"
+            ],
+            "practical_guide_slugs": [
+              "converge-basis-cutoffs-and-grids",
+              "converge-k-points-and-smearing"
             ],
             "coverage": "exploratory-record",
             "case_files": [
@@ -410,6 +424,11 @@
             "topic_slugs": [
               "optimize-structure"
             ],
+            "practical_guide_slugs": [
+              "choose-relaxed-degrees-and-constraints",
+              "diagnose-forces-stress-and-state",
+              "restart-and-verify-optimization"
+            ],
             "coverage": "separately-recorded-stage",
             "case_files": [
               "input/si-relax.in",
@@ -452,6 +471,10 @@
             "topic_slugs": [
               "calculate-reference-ground-state"
             ],
+            "practical_guide_slugs": [
+              "prepare-fixed-geometry-reference-calculation",
+              "compare-fresh-and-restarted-electronic-states"
+            ],
             "coverage": "recorded",
             "case_files": [
               "input/scf.in",
@@ -492,6 +515,11 @@
             "topic_slugs": [
               "band-structure",
               "density-of-states-and-projected-density-of-states"
+            ],
+            "practical_guide_slugs": [
+              "build-reciprocal-path-ledger",
+              "compare-band-path-and-full-zone-extrema",
+              "check-dos-normalization-and-projection-closure"
             ],
             "coverage": "recorded-with-warnings",
             "case_files": [
@@ -936,6 +964,9 @@
             "topic_slugs": [
               "calculate-reference-ground-state"
             ],
+            "practical_guide_slugs": [
+              "prepare-fixed-geometry-reference-calculation"
+            ],
             "coverage": "one-continuous-recorded-route-plus-template",
             "case_files": [
               "run.sh",
@@ -976,6 +1007,10 @@
             "purpose": "Inspect exits, JOB DONE markers, stderr, SCF convergence, retained warnings, and expected artifacts separately.",
             "topic_slugs": [
               "validate-results-and-scientific-conclusions"
+            ],
+            "practical_guide_slugs": [
+              "audit-a-qe-calculation",
+              "inspect-qe-hpc-calculations-from-the-terminal"
             ],
             "coverage": "recorded-route-scoped-checks",
             "case_files": [
@@ -1018,6 +1053,10 @@
             "purpose": "Read the real k-mesh/smearing screen as a bounded negative teaching result.",
             "topic_slugs": [
               "test-numerical-convergence"
+            ],
+            "practical_guide_slugs": [
+              "converge-basis-cutoffs-and-grids",
+              "converge-k-points-and-smearing"
             ],
             "coverage": "exploratory-record",
             "case_files": [
@@ -1074,6 +1113,10 @@
             "topic_slugs": [
               "calculate-reference-ground-state"
             ],
+            "practical_guide_slugs": [
+              "prepare-fixed-geometry-reference-calculation",
+              "compare-fresh-and-restarted-electronic-states"
+            ],
             "coverage": "recorded-continuous-route",
             "case_files": [],
             "execution_route_ids": [
@@ -1106,6 +1149,11 @@
             "topic_slugs": [
               "band-structure",
               "density-of-states-and-projected-density-of-states"
+            ],
+            "practical_guide_slugs": [
+              "build-reciprocal-path-ledger",
+              "compare-band-path-and-full-zone-extrema",
+              "check-dos-normalization-and-projection-closure"
             ],
             "coverage": "recorded-with-retained-warnings",
             "case_files": [],

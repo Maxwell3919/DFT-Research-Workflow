@@ -79,6 +79,16 @@
       "kind": "page"
     },
     {
+      "id": "qe-pseudopotential-portal",
+      "url": "https://pseudopotentials.quantum-espresso.org/",
+      "kind": "page"
+    },
+    {
+      "id": "qe-upf-spec",
+      "url": "https://pseudopotentials.quantum-espresso.org/home/unified-pseudopotential-format",
+      "kind": "page"
+    },
+    {
       "id": "qe-ph-75",
       "url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html",
       "kind": "page"
@@ -86,6 +96,11 @@
     {
       "id": "phonopy-command",
       "url": "https://phonopy.github.io/phonopy/phonopy.html",
+      "kind": "page"
+    },
+    {
+      "id": "phonopy-qe-interface",
+      "url": "https://phonopy.github.io/phonopy/qe.html",
       "kind": "page"
     },
     {
@@ -707,6 +722,17 @@
       ]
     },
     {
+      "guide_slug": "select-download-and-record-pseudopotentials",
+      "source_ids": [
+        "qe-pw-75",
+        "qe-pseudopotential-portal",
+        "qe-upf-spec",
+        "sssp-paper",
+        "sssp-archive",
+        "pseudodojo-paper"
+      ]
+    },
+    {
       "guide_slug": "converge-basis-cutoffs-and-grids",
       "source_ids": [
         "qe-pw-75",
@@ -1076,7 +1102,10 @@
       "guide_slug": "check-harmonic-mode-ledger",
       "source_ids": [
         "qe-ph-75",
+        "qe-q2r-docs",
+        "qe-matdyn-docs",
         "phonopy-command",
+        "phonopy-qe-interface",
         "phonopy-setting-tags"
       ]
     },

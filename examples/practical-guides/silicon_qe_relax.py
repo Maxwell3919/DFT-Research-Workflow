@@ -43,13 +43,19 @@ def parse_force_blocks(source: str) -> list[list[float]]:
 
 
 def parse_final_scf_accuracies(source: str) -> list[float]:
-    sections = source.split("convergence has been achieved")[:-1]
+    markers = list(re.finditer(
+        r"(?im)^\s+convergence has been achieved in\s+\d+\s+iterations\s*$",
+        source,
+    ))
     accuracies = []
-    for section in sections:
+    start = 0
+    for marker in markers:
+        section = source[start:marker.start()]
         values = re.findall(r"estimated scf accuracy\s*<\s*([-+0-9.Ee]+) Ry", section)
         if not values:
             raise ValueError("SCF convergence marker has no preceding estimated accuracy")
         accuracies.append(float(values[-1]))
+        start = marker.end()
     return accuracies
 
 

@@ -1,10 +1,14 @@
-"""Reconstruct a labelled teaching plot from committed QE 7.5 Silicon evidence."""
+"""Plot fresh split-path QE bands or reconstruct the committed Silicon evidence."""
 from __future__ import annotations
 
+import argparse
 import csv
 import hashlib
+import html
 import json
 import math
+import re
+import tempfile
 from pathlib import Path
 
 
@@ -26,6 +30,190 @@ EXPECTED_SEGMENTS = [
 ]
 ANCHORS = [("GAMMA", 0), ("X", 20), ("U", 40), ("K", 60), ("GAMMA", 80), ("L", 100), ("W", 120), ("X", 140)]
 CONNECTOR_INTERIOR = set(range(41, 60))
+
+
+def parse_gnu_bands(path: Path) -> list[list[tuple[float, float]]]:
+    """Read the blank-line-separated two-column file written by bands.x."""
+    blocks: list[list[tuple[float, float]]] = []
+    block: list[tuple[float, float]] = []
+    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        stripped = line.strip()
+        if not stripped:
+            if block:
+                blocks.append(block)
+                block = []
+            continue
+        fields = stripped.split()
+        if len(fields) < 2:
+            raise ValueError(f"{path}:{number}: expected distance and eigenvalue")
+        block.append((float(fields[0]), float(fields[1])))
+    if block:
+        blocks.append(block)
+    if not blocks:
+        raise ValueError(f"{path}: no band blocks found")
+    reference_x = [x for x, _ in blocks[0]]
+    if len(reference_x) < 2:
+        raise ValueError(f"{path}: fewer than two path points")
+    for index, band in enumerate(blocks, start=1):
+        xs = [x for x, _ in band]
+        if len(xs) != len(reference_x) or any(not math.isclose(a, b, abs_tol=1e-8) for a, b in zip(xs, reference_x)):
+            raise ValueError(f"{path}: band {index} does not share one path grid")
+        if any(right < left for left, right in zip(xs, xs[1:])):
+            raise ValueError(f"{path}: band {index} path coordinate decreases")
+    return blocks
+
+
+def parse_special_point_x(path: Path) -> list[float]:
+    pattern = re.compile(r"high-symmetry point:.*x coordinate\s+([-+0-9.eEdD]+)", re.IGNORECASE)
+    values = [float(match.group(1).replace("D", "E").replace("d", "e")) for match in pattern.finditer(path.read_text(encoding="utf-8"))]
+    if not values:
+        raise ValueError(f"{path}: no bands.x high-symmetry x coordinates found")
+    return values
+
+
+def write_fresh_svg(
+    branch_a_path: Path,
+    branch_b_path: Path,
+    output_a_path: Path,
+    output_b_path: Path,
+    svg: Path,
+    energy_reference_ev: float,
+    energy_min_ev: float,
+    energy_max_ev: float,
+    labels_a: list[str],
+    labels_b: list[str],
+    reference_label: str,
+    title: str,
+) -> dict[str, object]:
+    """Render two independently generated QE path branches with a visible break."""
+    if not energy_min_ev < energy_max_ev:
+        raise ValueError("--emin-ev must be smaller than --emax-ev")
+    bands_a = parse_gnu_bands(branch_a_path)
+    bands_b = parse_gnu_bands(branch_b_path)
+    if len(bands_a) != len(bands_b):
+        raise ValueError("the two branches contain different numbers of bands")
+    ticks_a = parse_special_point_x(output_a_path)
+    ticks_b = parse_special_point_x(output_b_path)
+    if len(ticks_a) != len(labels_a) or len(ticks_b) != len(labels_b):
+        raise ValueError("label counts must match the high-symmetry records in each bands.x output")
+
+    xa = [value for value, _ in bands_a[0]]
+    xb_raw = [value for value, _ in bands_b[0]]
+    for value in ticks_a:
+        if value < xa[0] - 1e-6 or value > xa[-1] + 1e-6:
+            raise ValueError(f"{output_a_path}: special point {value} is outside branch-a data")
+    for value in ticks_b:
+        if value < xb_raw[0] - 1e-6 or value > xb_raw[-1] + 1e-6:
+            raise ValueError(f"{output_b_path}: special point {value} is outside branch-b data")
+
+    span_a = xa[-1] - xa[0]
+    span_b = xb_raw[-1] - xb_raw[0]
+    gap = 0.08 * max(span_a + span_b, 1.0)
+    offset_b = xa[-1] + gap - xb_raw[0]
+    xb = [value + offset_b for value in xb_raw]
+    ticks_b_shifted = [value + offset_b for value in ticks_b]
+
+    width, height = 1120, 620
+    left, right, top, bottom = 92, 36, 78, 82
+    xmin, xmax = xa[0], xb[-1]
+    xmap = lambda value: left + (width - left - right) * (value - xmin) / (xmax - xmin)
+    ymap = lambda value: height - bottom - (height - top - bottom) * (value - energy_min_ev) / (energy_max_ev - energy_min_ev)
+
+    curves: list[str] = []
+    for branch, shifted_x in ((bands_a, xa), (bands_b, xb)):
+        for band in branch:
+            points = " ".join(
+                f"{xmap(x_value):.2f},{ymap(energy - energy_reference_ev):.2f}"
+                for x_value, (_, energy) in zip(shifted_x, band)
+            )
+            curves.append(f'<polyline points="{points}" fill="none" stroke="#145a8d" stroke-width="1.35"/>')
+
+    ticks: list[str] = []
+    for label, value in [*zip(labels_a, ticks_a), *zip(labels_b, ticks_b_shifted)]:
+        position = xmap(value)
+        ticks.append(
+            f'<line x1="{position:.2f}" y1="{top}" x2="{position:.2f}" y2="{height-bottom}" stroke="#d3cec5"/>'
+            f'<text x="{position:.2f}" y="{height-bottom+27}" text-anchor="middle" font-family="sans-serif" font-size="15">{html.escape(label)}</text>'
+        )
+    zero = ymap(0.0)
+    gap_left, gap_right = xmap(xa[-1]), xmap(xb[0])
+    svg.parent.mkdir(parents=True, exist_ok=True)
+    svg.write_text(
+        "\n".join(
+            [
+                f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
+                f'<title id="title">{html.escape(title)}</title>',
+                f'<desc id="desc">Fresh bands.x data plotted relative to {html.escape(reference_label)} = {energy_reference_ev:.8g} eV; the two input branches remain discontinuous.</desc>',
+                '<rect width="100%" height="100%" fill="white"/>',
+                f'<clipPath id="plot"><rect x="{left}" y="{top}" width="{width-left-right}" height="{height-top-bottom}"/></clipPath>',
+                *ticks,
+                f'<line x1="{left}" y1="{zero:.2f}" x2="{width-right}" y2="{zero:.2f}" stroke="#555" stroke-dasharray="5 4"/>',
+                f'<g clip-path="url(#plot)">{"".join(curves)}</g>',
+                f'<rect x="{left}" y="{top}" width="{width-left-right}" height="{height-top-bottom}" fill="none" stroke="#555"/>',
+                f'<line x1="{gap_left+7:.2f}" y1="{top+10}" x2="{gap_right-7:.2f}" y2="{top+10}" stroke="#a33d2d" stroke-width="2"/>',
+                f'<text x="{(gap_left+gap_right)/2:.2f}" y="{top-5}" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#a33d2d">path break</text>',
+                f'<text x="{left}" y="34" font-family="sans-serif" font-size="23" font-weight="700">{html.escape(title)}</text>',
+                f'<text x="{left}" y="57" font-family="sans-serif" font-size="13" fill="#52616b">E_ref = {energy_reference_ev:.8g} eV ({html.escape(reference_label)}) · displayed window {energy_min_ev:g} to {energy_max_ev:g} eV</text>',
+                f'<text x="{width/2}" y="{height-18}" text-anchor="middle" font-family="sans-serif" font-size="14">declared high-symmetry route</text>',
+                f'<text x="24" y="{(top+height-bottom)/2}" transform="rotate(-90 24 {(top+height-bottom)/2})" text-anchor="middle" font-family="sans-serif" font-size="14">E - E_ref (eV)</text>',
+                '</svg>',
+                '',
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return {
+        "mode": "fresh",
+        "branch_a": str(branch_a_path),
+        "branch_b": str(branch_b_path),
+        "bands": len(bands_a),
+        "points_a": len(xa),
+        "points_b": len(xb),
+        "energy_reference_ev": energy_reference_ev,
+        "display_window_ev": [energy_min_ev, energy_max_ev],
+        "svg": str(svg),
+        "boundary": "The SVG transcribes the supplied path data. It does not establish full-zone extrema, numerical convergence, or state validity.",
+    }
+
+
+def self_test_fresh_plot() -> dict[str, object]:
+    """Exercise the fresh-data parser and SVG path-break renderer."""
+    with tempfile.TemporaryDirectory(prefix="drw-bands-") as directory:
+        root = Path(directory)
+        branch_a = root / "a.gnu"
+        branch_b = root / "b.gnu"
+        output_a = root / "a.out"
+        output_b = root / "b.out"
+        svg = root / "bands.svg"
+        branch_a.write_text("0 -1\n0.5 0\n1 1\n\n0 2\n0.5 3\n1 4\n", encoding="utf-8")
+        branch_b.write_text("0 -0.5\n0.25 0\n0.5 0.5\n0.75 1\n1 1.5\n\n0 2.5\n0.25 3\n0.5 3.5\n0.75 4\n1 4.5\n", encoding="utf-8")
+        output_a.write_text(
+            "high-symmetry point: 0 0 0 x coordinate 0.0\n"
+            "high-symmetry point: 0 0 0 x coordinate 0.5\n"
+            "high-symmetry point: 0 0 0 x coordinate 1.0\n",
+            encoding="utf-8",
+        )
+        output_b.write_text(
+            "".join(f"high-symmetry point: 0 0 0 x coordinate {value}\n" for value in (0, 0.25, 0.5, 0.75, 1)),
+            encoding="utf-8",
+        )
+        report = write_fresh_svg(
+            branch_a,
+            branch_b,
+            output_a,
+            output_b,
+            svg,
+            1.0,
+            -3.0,
+            4.0,
+            ["Γ", "X", "U"],
+            ["K", "Γ", "L", "W", "X"],
+            "test reference",
+            "Fresh plotting self-test",
+        )
+        rendered = svg.read_text(encoding="utf-8")
+        assert "path break" in rendered and "E - E_ref (eV)" in rendered and report["bands"] == 2
+        return {"status": "PASS", "checks": ["two branches", "high-symmetry labels", "energy reference", "visible path break"]}
 
 
 def sha256(path: Path) -> str:
@@ -176,6 +364,43 @@ def run(svg: Path | None = None, csv_path: Path | None = None) -> dict[str, obje
 
 
 if __name__ == "__main__":
-    public = ROOT / "public/media/practical-guides/band-structure/build-reciprocal-path-ledger"
-    public.mkdir(parents=True, exist_ok=True)
-    print(json.dumps(run(public / "silicon-qe-bands.svg", DATA / "silicon-qe-bands.csv"), indent=2))
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="mode")
+    subparsers.add_parser("self-test-fresh", help="exercise the fresh-data plotting route")
+    fresh = subparsers.add_parser("fresh", help="plot two fresh bands.x .gnu branches")
+    fresh.add_argument("--branch-a", type=Path, required=True)
+    fresh.add_argument("--branch-b", type=Path, required=True)
+    fresh.add_argument("--bands-output-a", type=Path, required=True)
+    fresh.add_argument("--bands-output-b", type=Path, required=True)
+    fresh.add_argument("--energy-reference-ev", type=float, required=True)
+    fresh.add_argument("--emin-ev", type=float, required=True, help="lower displayed energy relative to the reference")
+    fresh.add_argument("--emax-ev", type=float, required=True, help="upper displayed energy relative to the reference")
+    fresh.add_argument("--labels-a", default="Γ,X,U", help="comma-separated labels for branch A")
+    fresh.add_argument("--labels-b", default="K,Γ,L,W,X", help="comma-separated labels for branch B")
+    fresh.add_argument("--reference-label", default="declared reference")
+    fresh.add_argument("--title", default="Fresh QE band-path output")
+    fresh.add_argument("--svg", type=Path, required=True)
+    args = parser.parse_args()
+
+    if args.mode == "self-test-fresh":
+        report = self_test_fresh_plot()
+    elif args.mode == "fresh":
+        report = write_fresh_svg(
+            args.branch_a,
+            args.branch_b,
+            args.bands_output_a,
+            args.bands_output_b,
+            args.svg,
+            args.energy_reference_ev,
+            args.emin_ev,
+            args.emax_ev,
+            [label.strip() for label in args.labels_a.split(",")],
+            [label.strip() for label in args.labels_b.split(",")],
+            args.reference_label,
+            args.title,
+        )
+    else:
+        public = ROOT / "public/media/practical-guides/band-structure/build-reciprocal-path-ledger"
+        public.mkdir(parents=True, exist_ok=True)
+        report = run(public / "silicon-qe-bands.svg", DATA / "silicon-qe-bands.csv")
+    print(json.dumps(report, indent=2))

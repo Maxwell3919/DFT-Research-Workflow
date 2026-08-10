@@ -12,7 +12,7 @@ Oberkampf–Trucano and NISTIR 8298 support the verification/validation/model-cr
 
 - [Oberkampf and Trucano, verification and validation in computational science](https://doi.org/10.1016/S0376-0421%2802%2900005-2)
 - [NISTIR 8298, verification, validation, and uncertainty procedures](https://doi.org/10.6028/NIST.IR.8298)
-- [National Academies, reproducibility and replicability in science](https://www.nationalacademies.org/read/25303/chapter/3)
+- [National Academies, reproducibility and replicability in science](https://doi.org/10.17226/25303)
 - [Lejaeghere and co-workers, controlled cross-code DFT comparison](https://doi.org/10.1126/science.aad3000)
 - [Perdew and Schmidt, hierarchy of density-functional approximations](https://doi.org/10.1063/1.1390175)
 

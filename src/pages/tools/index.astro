@@ -41,6 +41,57 @@ for (const [alias, target] of Object.entries(landscapeCompatibility.anchor_alias
 }
 const primaryResources = (groupId: string) => resources.filter((resource) => resource.task_groups[0] === groupId);
 const topicResources = new Map(workflowTopics.map((topic) => [topic.slug, getResourcesForTopic(topic.slug)]));
+const topicBySlug = new Map(workflowTopics.map((topic) => [topic.slug, topic]));
+const compactTopicLabels: Record<string, string> = {
+  'obtain-material-structure': 'Find structure',
+  'build-or-modify-computational-model': 'Build model',
+  'choose-dft-method-and-computational-setup': 'Method setup',
+  'test-numerical-convergence': 'Convergence',
+  'optimize-structure': 'Relax',
+  'calculate-reference-ground-state': 'SCF',
+  'relative-and-formation-energies': 'Energies',
+  'equation-of-state-and-structural-phase-stability': 'EOS',
+  'compositional-phase-stability-and-convex-hulls': 'Convex hulls',
+  'defect-formation-energies-and-charge-states': 'Defects',
+  'surface-energy-and-work-function': 'Surfaces',
+  'adsorption-energies': 'Adsorption',
+  'interface-and-heterostructure-energetics': 'Interfaces',
+  'band-structure': 'Bands',
+  'density-of-states-and-projected-density-of-states': 'DOS / PDOS',
+  'fermi-surface-and-full-brillouin-zone-analysis': 'Full BZ / Fermi surface',
+  'charge-density-and-charge-redistribution': 'Charge density',
+  'electrostatic-potential-and-band-alignment': 'Potential / alignment',
+  'chemical-bonding-analysis': 'Bonding',
+  'magnetic-configuration-and-ground-state-comparison': 'Magnetic state',
+  'magnetic-anisotropy-and-exchange-interactions': 'Magnetic interactions',
+  'elastic-constants-and-mechanical-properties': 'Elasticity',
+  'dielectric-response-and-born-effective-charges': 'Dielectric',
+  'polarization-and-ferroelectricity': 'Polarization',
+  'piezoelectric-response': 'Piezoelectric',
+  'harmonic-phonons': 'Phonons',
+  'anharmonic-phonons': 'Anharmonic phonons',
+  'lattice-thermal-transport': 'Thermal transport',
+  'electron-phonon-coupling': 'EPC',
+  'conventional-superconductivity': 'Superconductivity',
+  'reaction-paths-and-transition-states': 'Reaction paths',
+  'diffusion-barriers': 'Diffusion',
+  'ab-initio-molecular-dynamics': 'AIMD',
+  'finite-temperature-structural-sampling': 'Finite-temperature sampling',
+  'independent-particle-optical-properties': 'Optics',
+  'time-dependent-response-and-spectroscopy': 'Spectroscopy',
+  'quasiparticle-corrections': 'Quasiparticles',
+  'excitons-and-bethe-salpeter-equation': 'BSE / excitons',
+  'wannier-function-construction': 'Wannier',
+  'berry-phase-and-berry-curvature': 'Berry phase / curvature',
+  'topological-invariants-and-boundary-states': 'Topology',
+  'electronic-transport': 'Electronic transport',
+  'quantum-transport': 'Quantum transport',
+  'analyze-and-compare-results': 'Analyze',
+  'validate-results-and-scientific-conclusions': 'Validate',
+  'document-and-preserve-study': 'Preserve',
+};
+const compactTopicLabel = (slug: string) => compactTopicLabels[slug] ?? topicBySlug.get(slug)?.title ?? slug;
+const visibleTopicLimit = 4;
 ---
 
 <BaseLayout
@@ -118,110 +169,90 @@ const topicResources = new Map(workflowTopics.map((topic) => [topic.slug, getRes
           {(aliasesByGroup.get(group.id) ?? []).map((alias) => <span class="anchor-alias" id={alias} aria-hidden="true"></span>)}
           <h2 id={`${group.id}-title`}>{group.title}</h2>
           <p>{group.intro}</p>
-          <ol class="resource-list">
-            {entries.map((resource) => (
-              <li id={`resource-${resource.slug}`} data-resource={resource.slug}>
-                <div class="resource-heading">
-                  <h3>
-                    {resource.detail ? (
-                      <a href={withBase(`tools/${resource.slug}/`)}>
-                        <span
-                          data-resource-title={resource.slug}
-                          lang={resource.language}
-                        >{resource.name}</span>
-                      </a>
-                    ) : (
-                      <span
-                        data-resource-title={resource.slug}
-                        lang={resource.language}
-                      >{resource.name}</span>
-                    )}
-                  </h3>
-                  <p>{resource.one_line}</p>
-                </div>
-
-                <p class="resource-tags" aria-label="Resource tags">
-                  {[...resource.kind_tags, ...resource.interface_tags, accessLabels[resource.access]].map((tag) => <span>{tag}</span>)}
-                </p>
-
-                <p class="resource-links">
-                  {resource.links.map((link, index) => (
-                    <>
-                      {index > 0 && <span aria-hidden="true"> · </span>}
-                      <a data-resource-link href={link.url} target="_blank" rel="noreferrer">{link.label}</a>
-                    </>
-                  ))}
-                </p>
-
-                <p class="resource-topics">
-                  <strong>Research tasks:</strong>{' '}
-                  {resource.topics.map((slug, index) => {
-                    const topic = workflowTopics.find((entry) => entry.slug === slug);
+          <div class="resource-table-wrap">
+            <table class="resource-table">
+              <caption>{group.title}: official entries and connections to the research workflow</caption>
+              <colgroup>
+                <col class="resource-column" />
+                <col class="purpose-column" />
+                <col class="access-column" />
+                <col class="used-in-column" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">Resource</th>
+                  <th scope="col">Best used for</th>
+                  <th scope="col">Access</th>
+                  <th scope="col">Used in</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entries.map((resource) => {
+                  const usedInTopics = resource.topics.map((slug) => {
+                    const topic = topicBySlug.get(slug);
                     if (!topic) throw new Error(`${resource.slug}: unresolved topic ${slug}`);
-                    return (
-                      <>
-                        {index > 0 && <span aria-hidden="true"> · </span>}
-                        <a href={withBase(`operations/${topic.slug}/`)}>{topic.title}</a>
-                      </>
-                    );
-                  })}
-                </p>
-
-                {resource.caveat && (
-                  <details class="resource-caveat">
-                    <summary>Before you rely on it</summary>
-                    <p>{resource.caveat}</p>
-                  </details>
-                )}
-              </li>
-            ))}
-          </ol>
+                    return topic;
+                  });
+                  const visibleTopics = usedInTopics.slice(0, visibleTopicLimit);
+                  const remainingTopics = usedInTopics.slice(visibleTopicLimit);
+                  return (
+                    <tr id={`resource-${resource.slug}`} data-resource={resource.slug}>
+                      <th scope="row" class="resource-name-cell">
+                        <h3>
+                          {resource.detail ? (
+                            <a data-resource-detail-link href={withBase(`tools/${resource.slug}/`)}>
+                              <span data-resource-title={resource.slug} lang={resource.language}>{resource.name}</span>
+                            </a>
+                          ) : (
+                            <span data-resource-title={resource.slug} lang={resource.language}>{resource.name}</span>
+                          )}
+                        </h3>
+                        <p class="resource-kind">{resource.kind_tags.join(' · ')}</p>
+                        <p class="resource-entry-links">
+                          {resource.links.map((link, index) => (
+                            <>
+                              {index > 0 && <span aria-hidden="true"> · </span>}
+                              <a data-resource-link href={link.url} target="_blank" rel="noreferrer">{link.label}</a>
+                            </>
+                          ))}
+                        </p>
+                        {resource.caveat && (
+                          <details class="resource-caveat">
+                            <summary>Access note</summary>
+                            <p>{resource.caveat}</p>
+                          </details>
+                        )}
+                      </th>
+                      <td data-label="Best used for" class="resource-purpose">{resource.one_line}</td>
+                      <td data-label="Access" class="resource-access">
+                        <span>{resource.interface_tags.join(' · ')}</span>
+                        <span>{accessLabels[resource.access]}</span>
+                      </td>
+                      <td data-label="Used in" class="resource-used-in">
+                        <ul>
+                          {visibleTopics.map((topic) => (
+                            <li><a href={withBase(`operations/${topic.slug}/`)}>{compactTopicLabel(topic.slug)}</a></li>
+                          ))}
+                        </ul>
+                        {remainingTopics.length > 0 && (
+                          <details>
+                            <summary>+{remainingTopics.length} more</summary>
+                            <ul>
+                              {remainingTopics.map((topic) => (
+                                <li><a href={withBase(`operations/${topic.slug}/`)}>{compactTopicLabel(topic.slug)}</a></li>
+                              ))}
+                            </ul>
+                          </details>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </section>
       );
     })}
   </article>
 </BaseLayout>
-
-<style>
-  .resource-directory {
-    max-width: 76rem;
-    margin: 0 auto;
-    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2.25rem) 5rem;
-  }
-  .directory-intro { max-width: 58rem; }
-  .scope-note { color: var(--muted); border-left: 2px solid var(--rule); padding-left: 1rem; }
-  .task-index { margin: 2.5rem 0; padding-block: 1rem; border-block: 1px solid var(--rule); }
-  .task-index > p { margin: 0 0 0.65rem; font-weight: 700; }
-  .task-index ol { columns: 2; column-gap: 2rem; margin: 0; padding-left: 1.25rem; }
-  .task-index li { break-inside: avoid; margin-bottom: 0.35rem; }
-  .task-index li span { color: var(--muted); font-size: 0.9rem; }
-  .workflow-topic-index { margin: 2rem 0 4rem; border-bottom: 1px solid var(--rule); padding-bottom: 1rem; }
-  .workflow-topic-index > summary { cursor: pointer; font-weight: 700; }
-  .workflow-topic-index > ol { margin: 1rem 0 0; padding-left: 1.4rem; }
-  .workflow-topic-index > ol > li { margin-bottom: 0.9rem; }
-  .workflow-topic-index p { margin: 0; }
-  .workflow-topic-index p span { color: var(--muted); font-size: 0.9rem; margin-left: 0.45rem; }
-  .workflow-topic-index ul { display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; margin: 0.3rem 0 0; padding-left: 1.2rem; }
-  .resource-task { position: relative; scroll-margin-top: 2rem; margin-top: clamp(3.5rem, 7vw, 6rem); }
-  .resource-task > p { max-width: 58rem; }
-  .anchor-alias { position: absolute; inset-block-start: -1rem; scroll-margin-top: 2rem; }
-  .resource-list { list-style: none; margin: 1.25rem 0 0; padding: 0; border-top: 1px solid var(--rule); }
-  .resource-list > li { scroll-margin-top: 1.5rem; padding: 1rem 0 1.1rem; border-bottom: 1px solid var(--rule); }
-  .resource-heading { display: grid; grid-template-columns: minmax(12rem, 0.3fr) minmax(0, 1fr); gap: 1rem 1.5rem; align-items: baseline; }
-  .resource-heading h3, .resource-heading p { margin: 0; }
-  .resource-heading p { color: var(--muted); }
-  .resource-tags, .resource-links, .resource-topics { margin: 0.55rem 0 0; overflow-wrap: anywhere; }
-  .resource-tags { display: flex; flex-wrap: wrap; gap: 0.3rem 0.45rem; }
-  .resource-tags span { color: var(--muted); font-size: 0.82rem; border: 1px solid var(--rule); border-radius: 999px; padding: 0.08rem 0.45rem; }
-  .resource-links, .resource-topics { font-size: 0.92rem; }
-  .resource-topics strong { color: var(--ink); }
-  .resource-caveat { margin-top: 0.6rem; color: var(--muted); font-size: 0.92rem; }
-  .resource-caveat summary { cursor: pointer; color: var(--ink); }
-  .resource-caveat p { margin: 0.4rem 0 0; max-width: 60rem; }
-  @media (max-width: 700px) {
-    .resource-directory { padding-inline: clamp(0.85rem, 4vw, 1.25rem); }
-    .task-index ol { columns: 1; }
-    .resource-heading { grid-template-columns: 1fr; gap: 0.3rem; }
-    .workflow-topic-index ul { display: block; }
-  }
-</style>

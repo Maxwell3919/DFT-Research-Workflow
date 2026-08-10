@@ -46,7 +46,7 @@ relax_out=examples/practical-guides/data/silicon-qe/relax/si-relax.out
 grep -En 'calculation|forc_conv_thr|nstep|ion_dynamics' -- "$relax_in"
 sed -n '/^ATOMIC_POSITIONS/,/^K_POINTS/p' "$relax_in"
 grep -F '!    total energy' -- "$relax_out"
-grep -cF 'convergence has been achieved' -- "$relax_out"
+grep -cE '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$relax_out"
 test "$(grep -cF 'Program PWSCF v.' -- "$relax_out")" -eq 1
 test "$(grep -cF 'JOB DONE.' -- "$relax_out")" -eq 1
 

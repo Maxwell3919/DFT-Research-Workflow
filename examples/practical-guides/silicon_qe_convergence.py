@@ -19,6 +19,9 @@ EXPECTED = {
     "si_e50_k8.out": "94d7173a584cd2b8c4dcc181a3fb02c2553bdb1db60577725f0c724b1ca0348d",
     "si_e50_k10.out": "4593e3586e535581d5035765dc74654d2946ad62887e340b2105dec768fc6b2d",
 }
+SCF_CONVERGENCE = re.compile(
+    r"(?im)^\s+convergence has been achieved in\s+\d+\s+iterations\s*$"
+)
 
 
 def _sha(path: Path) -> str:
@@ -31,7 +34,7 @@ def run() -> dict[str, object]:
         path = DATA / name
         assert _sha(path) == expected, f"hash mismatch: {name}"
         text = path.read_text(encoding="utf8")
-        assert "convergence has been achieved" in text and "JOB DONE" in text
+        assert SCF_CONVERGENCE.search(text) and "JOB DONE" in text
         energy = float(re.findall(r"!\s+total energy\s+=\s+([-0-9.]+) Ry", text)[-1])
         ecut, mesh = map(int, re.match(r"si_e(\d+)_k(\d+).out", name).groups())
         rows.append({"ecutwfc_Ry": ecut, "k_mesh": mesh, "energy_Ry": energy, "file": name})
@@ -56,18 +59,51 @@ def _svg(report: dict[str, object], output: Path, mode: str) -> None:
     if mode == "cutoff":
         groups = {k: [r for r in rows if r["k_mesh"] == k] for k in (6, 8, 10)}
         title, xkey, label = "Actual Silicon QE cutoff matrix", "ecutwfc_Ry", "wavefunction cutoff (Ry)"
+        series_label = lambda key: f"{key}×{key}×{key} k mesh"
+        fixed_note = "fixed: structure, PBE UPF, occupations='fixed'; ecutrho = 8 × ecutwfc"
     else:
         groups = {e: [r for r in rows if r["ecutwfc_Ry"] == e] for e in (30, 40, 50)}
         title, xkey, label = "Actual Silicon QE k-mesh matrix", "k_mesh", "cubic k mesh"
+        series_label = lambda key: f"ecutwfc = {key} Ry"
+        fixed_note = "fixed: structure, PBE UPF, occupations='fixed'; ecutrho = 8 × ecutwfc"
+    x_values = sorted({int(row[xkey]) for row in rows})
+    x_positions = {value: 150 + index * 280 for index, value in enumerate(x_values)}
+    y_top, y_bottom, y_max = 120.0, 390.0, 2.0
+
+    def y_position(value: float) -> float:
+        return y_bottom - min(max(value, 0.0), y_max) / y_max * (y_bottom - y_top)
+
     colors = ["#2b6f8c", "#a33d2d", "#5c7d46"]
     lines = []
     for color, (key, group) in zip(colors, groups.items()):
         group.sort(key=lambda r: r[xkey])
-        points = " ".join(f"{140 + 62*(r[xkey]-min(x[xkey] for x in rows))}:{390 - 24*r['delta_to_50Ry_10cubed_mRy']}" for r in group)
-        points = points.replace(":", ",")
-        lines.append(f'<polyline points="{points}" fill="none" stroke="{color}" stroke-width="4"/><text x="730" y="{160+30*len(lines)}" font-family="sans-serif" font-size="16" fill="{color}">{key}</text>')
+        points = " ".join(
+            f"{x_positions[int(row[xkey])]},{y_position(float(row['delta_to_50Ry_10cubed_mRy'])):.1f}"
+            for row in group
+        )
+        circles = "".join(
+            f'<circle cx="{x_positions[int(row[xkey])]}" cy="{y_position(float(row["delta_to_50Ry_10cubed_mRy"])):.1f}" r="5" fill="{color}"/>'
+            for row in group
+        )
+        legend_y = 145 + 31 * len(lines)
+        lines.append(
+            f'<polyline points="{points}" fill="none" stroke="{color}" stroke-width="3"/>{circles}'
+            f'<line x1="770" y1="{legend_y - 5}" x2="804" y2="{legend_y - 5}" stroke="{color}" stroke-width="3"/>'
+            f'<circle cx="787" cy="{legend_y - 5}" r="4" fill="{color}"/>'
+            f'<text x="814" y="{legend_y}" font-family="sans-serif" font-size="15" fill="{color}">{series_label(key)}</text>'
+        )
+    x_ticks = "".join(
+        f'<line x1="{x_positions[value]}" y1="390" x2="{x_positions[value]}" y2="398" stroke="#243746"/>'
+        f'<text x="{x_positions[value]}" y="420" text-anchor="middle" font-family="sans-serif" font-size="15">{value}</text>'
+        for value in x_values
+    )
+    y_ticks = "".join(
+        f'<line x1="142" y1="{y_position(value):.1f}" x2="710" y2="{y_position(value):.1f}" stroke="#d9d4ca"/>'
+        f'<text x="130" y="{y_position(value) + 5:.1f}" text-anchor="end" font-family="sans-serif" font-size="14">{value:.1f}</text>'
+        for value in (0.0, 0.5, 1.0, 1.5, 2.0)
+    )
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(f'''<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" role="img" aria-labelledby="t d"><title id="t">{title}</title><desc id="d">Nine actual Quantum ESPRESSO Silicon SCF total energies, plotted relative to the 50 Ry, ten by ten by ten mesh row.</desc><rect width="1000" height="520" fill="#f8f5ee"/><text x="70" y="55" font-family="sans-serif" font-size="27" font-weight="700" fill="#172a3a">{title}</text><text x="70" y="82" font-family="sans-serif" font-size="15" fill="#52616b">QE 7.5 · COD 9013102 · one fixed teaching structure · 9 electronically converged SCF runs</text><path d="M140 110V410H760" fill="none" stroke="#243746" stroke-width="3"/><text x="440" y="465" text-anchor="middle" font-family="sans-serif" font-size="17">{label}</text><text x="38" y="270" transform="rotate(-90 38 270)" text-anchor="middle" font-family="sans-serif" font-size="17">E − E(50 Ry, 10³) (mRy/cell)</text>{''.join(lines)}<text x="790" y="130" font-family="sans-serif" font-size="16" font-weight="700">fixed series</text><text x="500" y="505" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#52616b">Teaching evidence only: no force/stress, band, DOS, or experimental convergence claim.</text></svg>''', encoding="utf8")
+    output.write_text(f'''<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="540" viewBox="0 0 1000 540" role="img" aria-labelledby="t d"><title id="t">{title}</title><desc id="d">Nine actual Quantum ESPRESSO Silicon SCF total energies, plotted relative to the 50 Ry, ten by ten by ten mesh row. {fixed_note}.</desc><rect width="1000" height="540" fill="#f8f5ee"/><text x="60" y="48" font-family="sans-serif" font-size="26" font-weight="700" fill="#172a3a">{title}</text><text x="60" y="75" font-family="sans-serif" font-size="14" fill="#52616b">QE 7.5 · COD 9013102 · nine actual electronically converged SCF points</text>{y_ticks}<path d="M142 110V390H710" fill="none" stroke="#243746" stroke-width="2"/>{x_ticks}<text x="426" y="456" text-anchor="middle" font-family="sans-serif" font-size="16">{label}</text><text x="34" y="255" transform="rotate(-90 34 255)" text-anchor="middle" font-family="sans-serif" font-size="16">E − E(50 Ry, 10³) (mRy/cell)</text>{''.join(lines)}<text x="60" y="489" font-family="sans-serif" font-size="13" fill="#52616b">{fixed_note}</text><text x="60" y="516" font-family="sans-serif" font-size="13" fill="#52616b">Bounded teaching series: no independent ecutrho, force/stress, band, DOS, or material-convergence claim.</text></svg>''', encoding="utf8")
 
 
 if __name__ == "__main__":

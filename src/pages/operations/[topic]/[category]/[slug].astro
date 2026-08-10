@@ -13,6 +13,7 @@ import {
 } from '../../../../lib/practical-guides';
 import { getWorkflowTopics, type WorkflowTopic } from '../../../../lib/workflow';
 import { getContextualNavigation } from '../../../../lib/contextual-navigation';
+import { getResource, getResourcePath } from '../../../../lib/tools';
 import { withBase } from '../../../../lib/paths';
 import mediaDocument from '../../../../../workflow/practical-guide-media.json';
 import evidenceDocument from '../../../../../workflow/practical-evidence.json';
@@ -60,6 +61,11 @@ const kindLabel = practicalKindLabel[guide.data.kind];
 const assets = mediaDocument.assets.filter((asset) => guide.data.media_ids.includes(asset.id));
 const canonicalPath = practicalGuidePath(guide);
 const publishedWorkflow = workflowsDocument.workflows.find((workflow) => workflow.case_id === evidence.case_id);
+const publishedWorkflowStage = publishedWorkflow?.reader_route.stages.find((stage) => (
+  'practical_guide_slugs' in stage
+  && Array.isArray(stage.practical_guide_slugs)
+  && stage.practical_guide_slugs.includes(guide.data.guide_slug)
+));
 const caseRoot = evidence.case_id ? `examples/cases/${evidence.case_id}/` : undefined;
 const sourceRevision = (() => {
   const declared = process.env.GITHUB_SHA ?? process.env.SOURCE_REVISION;
@@ -112,6 +118,14 @@ const contextualNavigation = getContextualNavigation({ kind: 'practical', guide_
     <p class="operation-label">{kindLabel} · {topic.group}</p>
     <h1>{guide.data.title}</h1>
     <p class="page-intro">{guide.data.summary}</p>
+    {publishedWorkflow && publishedWorkflowStage && (
+      <p class="case-stage-link" data-workflow-stage-backlink>
+        After learning the procedure, inspect it in the real case at{' '}
+        <a href={withBase(`workflows/${publishedWorkflow.slug}/#reader-stage-${publishedWorkflowStage.id}`)}>
+          {publishedWorkflow.title} · {publishedWorkflowStage.label}
+        </a>.
+      </p>
+    )}
 
     <div class="article-content"><GuideContent /></div>
 
@@ -131,7 +145,12 @@ const contextualNavigation = getContextualNavigation({ kind: 'practical', guide_
       <p>
         <strong>Ways to work:</strong>{' '}
         {guide.data.interfaces.length > 0 ? `${guide.data.interfaces.join(' · ')} · ` : ''}
-        <span class="tool-list">{guide.data.tools.map((tool) => <span class="tool-tag">{tool}</span>)}</span>
+        <span class="tool-list">
+          {guide.data.tools.map((slug) => {
+            const resource = getResource(slug);
+            return <a class="tool-tag" href={withBase(getResourcePath(resource))}>{resource.name}</a>;
+          })}
+        </span>
       </p>
       <p><strong>Companion checked with:</strong> {guide.data.tested_versions.join('; ')}.</p>
     </div>
@@ -149,7 +168,15 @@ const contextualNavigation = getContextualNavigation({ kind: 'practical', guide_
             <a href={caseUrl}>Open the exact case record</a> or its <a href={caseManifestUrl}>manifest</a>.
           </p>
         )}
-        {publishedWorkflow && <p><a href={withBase(`workflows/${publishedWorkflow.slug}/`)}>Read the Worked Workflow</a>.</p>}
+        {publishedWorkflow && (
+          <p>
+            <a href={withBase(
+              publishedWorkflowStage
+                ? `workflows/${publishedWorkflow.slug}/#reader-stage-${publishedWorkflowStage.id}`
+                : `workflows/${publishedWorkflow.slug}/`
+            )}>Read the Worked Workflow</a>.
+          </p>
+        )}
         {isInterfaceWalkthrough && <p>A captured interface proves only what was displayed at the recorded time; it does not validate the structure or any DFT result.</p>}
       </details>
     )}

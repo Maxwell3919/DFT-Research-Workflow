@@ -19,7 +19,7 @@ const requiredHeadings = [
   'Sources and methods',
 ];
 const requiredPhrases = [
-  'Structure optimization searches for a stationary structure',
+  'Structure optimization searches for a stationary candidate',
   'This route is common, not universal.',
   'Normal program termination does not establish SCF convergence.',
   'SCF convergence does not establish ionic optimization convergence.',
@@ -61,7 +61,7 @@ async function inspect(page, expectedWidth) {
     hasContract: Boolean(document.querySelector('.operation-contract')),
     copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
     unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
-    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm').length,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre[data-language="json"] > code, pre[data-language="plaintext"] > code, pre[data-language="gnuplot"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm, pre > code.language-json, pre > code.language-plaintext, pre > code.language-gnuplot').length,
     copyButtons: document.querySelectorAll('.copy-code-button').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
@@ -130,7 +130,7 @@ try {
   if (response?.status() !== 200) throw new Error(`optimization overview no-JavaScript route returned ${response?.status()}`);
   const noJsText = await noJsPage.$eval('body', (body) => body.innerText);
   for (const phrase of [
-    'Structure optimization searches for a stationary structure',
+    'Structure optimization searches for a stationary candidate',
     'This route is common, not universal.',
     'Normal program termination does not establish SCF convergence.',
     'SCF convergence does not establish ionic optimization convergence.',

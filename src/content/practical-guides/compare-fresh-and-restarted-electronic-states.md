@@ -1,14 +1,15 @@
 ---
 topic_slug: calculate-reference-ground-state
 guide_slug: compare-fresh-and-restarted-electronic-states
-title: Compare Fresh and Restarted Electronic States
+title: Compare Fresh and File-Initialized Electronic States
 kind: implementation
 tools:
   - python
   - quantum-espresso
 status: reviewed
-summary: Distinguish a continuation from a fresh electronic initialization and test whether compatible paths reproduce the same declared state.
+summary: Separate interrupted-run restart from a new SCF initialized with compatible stored density or wavefunctions, then compare both paths with a controlled fresh solve.
 tested_versions:
+  - Quantum ESPRESSO 7.5
   - Python 3.12
 execution_script: examples/practical-guides/silicon_qe_restarts.py
 source_ids:
@@ -23,7 +24,7 @@ review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
 reviewed_at: "2026-08-03"
 ---
 
-A restart continues from stored electronic data. A fresh run begins from a newly generated initial state. Both are useful, but they provide different evidence.
+An interrupted-run restart and a file-initialized new SCF are different operations. QE 7.5 reserves `restart_mode='restart'` for a cleanly interrupted calculation. A new fixed-geometry SCF that reads compatible stored density or wavefunctions remains `restart_mode='from_scratch'` and uses `startingpot='file'` and, when justified, `startingwfc='file'`. A controlled fresh SCF instead starts without those parent electronic files.
 
 ## Compare histories, not only terminal energies
 
@@ -31,7 +32,100 @@ Create separate fresh-start and restarted directories and place their parent and
 
 Run both branches with the same declared evaluator. Read every SCF iteration, not just the final total energy: compare residual trends, oscillation, iteration count, occupations, charge or spin state, symmetry, warnings, and any fallback algorithm. Where the implementation produces inspectable charge or magnetization data, compare aligned views as a diagnostic; the [visualization resource index](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) lists suitable tools.
 
-Accept equivalence only when both branches meet their electronic criteria and retain the intended physical state within the declared tolerances. Equal terminal energies alone do not prove identical states, valid restart ancestry, or observable convergence. A faster restarted branch does not show that the fresh route is wrong; a fresh branch changing state may reveal trapping or an incompatible parent.
+Accept equivalence only when both branches meet their electronic criteria and retain the intended physical state within the declared tolerances. Equal terminal energies alone do not prove identical states, valid parent ancestry, or observable convergence. A faster file-initialized branch does not show that the fresh route is wrong; a fresh branch changing state may reveal trapping, path dependence, or an incompatible parent.
+
+## Build one fresh branch and one file-initialized branch
+
+Start from one accepted `scf.in`, exact pseudopotential set, geometry, method, k mesh, occupations, charge, spin treatment, and convergence protocol. Make two isolated directories so neither branch overwrites the other's evidence:
+
+```bash
+root="$HOME/drw-runs/si-init-comparison"
+test ! -e "$root"
+mkdir -p "$root"/{fresh,file-init}/{pseudo,tmp}
+cp scf.in "$root/fresh/scf.in"
+cp scf.in "$root/file-init/scf.in"
+```
+
+The **fresh** input should explicitly use a newly generated starting potential and wavefunctions in `&ELECTRONS`:
+
+```qe
+&ELECTRONS
+  conv_thr = 1.0d-10,
+  startingpot = 'atomic',
+  startingwfc = 'atomic+random',
+/
+```
+
+The displayed threshold belongs to the Silicon example. QE 7.5 documents `startingpot='atomic'` as the normal fresh SCF potential and `startingwfc='atomic+random'` as one fresh wavefunction initialization. A scientifically sensitive state may need more than one controlled fresh seed or initialization; no one seed proves uniqueness.
+
+For the **file-initialized** branch, copy a complete, compatible parent save tree into its isolated `outdir` and preserve a before-run inventory and hashes. The parent must match the geometry representation, atom order, pseudopotentials, Hamiltonian, charge/spin treatment, QE version, prefix, and file representation required by the new calculation:
+
+```bash
+: "${PARENT_SAVE:?Set PARENT_SAVE to the accepted parent prefix.save directory}"
+test -d "$PARENT_SAVE"
+test ! -e "$root/file-init/tmp/si_final.save"
+cp -a -- "$PARENT_SAVE" "$root/file-init/tmp/si_final.save"
+find "$root/file-init/tmp/si_final.save" -maxdepth 2 -type f -printf '%12s %p\n' | sort > "$root/file-init/parent-save.inventory"
+```
+
+Keep `restart_mode='from_scratch'`. Set the matching prefix/outdir and request the existing density; request existing wavefunctions only when their compatibility has also been established:
+
+```qe
+&CONTROL
+  calculation = 'scf',
+  restart_mode = 'from_scratch',
+  prefix = 'si_final',
+  outdir = './tmp',
+  pseudo_dir = './pseudo',
+/
+&ELECTRONS
+  conv_thr = 1.0d-10,
+  startingpot = 'file',
+  startingwfc = 'file',
+/
+```
+
+QE 7.5 documents `startingpot='file'` as reading `charge-density.xml` under the declared `prefix` and `outdir`, and `startingwfc='file'` as reading existing wavefunction files there. These controls do not independently validate ancestry or scientific compatibility. If wavefunctions are unavailable or not compatible, do not request them merely to save iterations.
+
+Stage the same exact UPF in both `pseudo/` directories. Run the branches independently and retain stdout, stderr, and exit status:
+
+```bash
+for branch in fresh file-init; do
+  (
+    cd "$root/$branch"
+    test ! -e scf.out
+    test ! -e scf.err
+    if pw.x -in scf.in > scf.out 2> scf.err; then
+      status=0
+    else
+      status=$?
+    fi
+    printf '%s\n' "$status" > scf.exit-status
+    exit "$status"
+  )
+done
+```
+
+For production/HPC work, submit each branch with the site-specific Slurm template in [Prepare a Fixed-Geometry Reference Calculation](/DFT-Research-Workflow/operations/calculate-reference-ground-state/guides/prepare-fixed-geometry-reference-calculation/). Use distinct scratch paths and job IDs; scheduler completion and SCF convergence remain separate.
+
+Compare full histories, not only speed or the terminal energy:
+
+```bash
+for branch in fresh file-init; do
+  out="$root/$branch/scf.out"
+  err="$root/$branch/scf.err"
+  printf '\n%s\n' "$branch"
+  cat "$root/$branch/scf.exit-status"
+  test "$(grep -cF 'Program PWSCF v.' -- "$out")" -eq 1
+  test "$(grep -cF 'JOB DONE.' -- "$out")" -eq 1
+  grep -E '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$out" | tail -n 1
+  grep -F '!    total energy' -- "$out" | tail -n 1
+  grep -Ei 'Fermi energy|highest occupied|magnetization|occupation|symmetry' -- "$out" || true
+  grep -niE 'warning|error in routine|stopping|not converged|no convergence' -- "$out" "$err" || true
+done
+```
+
+Treat the paths as equivalent only under declared tolerances for the energy or free-energy quantity, residual history, occupations/Fermi level, charge and magnetization diagnostics, symmetry, forces/stress where requested, and the downstream observable. Agreement supports path robustness for the tested pair; it does not establish candidate completeness, a unique electronic ground state, or physical validity.
 
 Inspect the bounded Silicon inputs and outputs before running its helper:
 
@@ -58,7 +152,7 @@ for output in "$fresh_out" "$restart_out"; do
   printf '\n%s\n' "$output"
   test "$(grep -cF 'Program PWSCF v.' -- "$output")" -eq 1
   test "$(grep -cF 'JOB DONE.' -- "$output")" -eq 1
-  grep -F 'convergence has been achieved' -- "$output" | tail -n 1
+  grep -E '^[[:space:]]+convergence has been achieved in[[:space:]]+[0-9]+ iterations[[:space:]]*$' -- "$output" | tail -n 1
   grep -F '!    total energy' -- "$output" | tail -n 1
   grep -niE 'warning|error in routine|stopping|not converged|no convergence|magnetization|occupation' \
     -- "$output" || true
@@ -80,12 +174,16 @@ Use the report as a first check only. Inspect the structure, prefix/outdir linea
 
 ## Actual Silicon fresh/restart comparison
 
-The published inputs describe a fresh QE 7.5 SCF and a restart for one Silicon
-cell. The declared companion does not read those inputs or verify prefix, outdir,
-potential, cell, occupations, k mesh, or restart data. It hashes the two stored
-outputs, requires literal electronic-convergence and `JOB DONE` markers, and
-confirms equal printed total energies. Equal energy does not establish equal state
-identity, compatible execution, uniqueness, or physical ordering.
+The published inputs describe a completed fresh QE 7.5 SCF followed by a second
+SCF that sets `restart_mode='restart'` for one Silicon cell. The second run did
+execute, but the current QE 7.5 manual does not document this as the general way
+to initialize a new SCF from a completed parent. The declared companion does not
+read those inputs or verify prefix, outdir, potential, cell, occupations, k mesh,
+or saved data. It hashes the two stored outputs, requires literal
+electronic-convergence and `JOB DONE` markers, and confirms equal printed total
+energies. Preserve this pair as bounded historical execution evidence; do not
+copy its `restart_mode` transition as a new recipe. Equal energy does not establish
+equal state identity, compatible execution, uniqueness, or physical ordering.
 
 ## Declare the initialization lineage
 
@@ -118,9 +216,9 @@ A state reached from reused electronic data may be legitimate, but the path depe
 
 A different outcome may identify another basin, an unsuitable initialization, or a state switch. Preserve the result instead of merging the lineages.
 
-## Restart only compatible objects
+## Initialize only from compatible objects
 
-Changes to structure, atom order, functional, potentials, charge, spin treatment, relativistic setup, basis identity, or boundary conditions can make stored data incompatible. Code-specific restart controls do not replace a workflow-level compatibility decision.
+Changes to structure, atom order, functional, potentials, charge, spin treatment, relativistic setup, basis identity, k-point representation, or boundary conditions can make stored data incompatible. Code-specific file-read controls do not replace a workflow-level compatibility decision. Use the optimization restart guide only for the narrower cleanly interrupted-run operation.
 
 ## What this guide verifies
 
@@ -133,7 +231,7 @@ ordering.
 
 ## Common mistakes
 
-**Calling every restart reproducible.** Reproducibility requires compatible protocol and the same final state identity.
+**Calling every use of stored data a restart.** In QE, interrupted-run restart and file-initialized new SCF have different controls and evidence.
 
 **Comparing only total energy.** Inspect occupations, charge, moments, symmetry, and related diagnostics.
 

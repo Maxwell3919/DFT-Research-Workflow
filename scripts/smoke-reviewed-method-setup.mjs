@@ -6,48 +6,41 @@ const base = (process.env.SITE_URL ?? 'http://127.0.0.1:4322/DFT-Research-Workfl
 const executablePath = process.env.CHROME_BIN ?? '/usr/bin/google-chrome';
 const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/choose-dft-method-and-computational-setup/';
+const pseudopotentialRoute = `${route}guides/select-download-and-record-pseudopotentials/`;
 const requiredContracts = [
   {
     name: 'versioned method baseline and branch compatibility',
     phrases: [
-      'This task produces a versioned baseline method identity. Every later record should inherit that baseline or name an explicit method or model branch.',
-      'Unrelated target branches need not share one site-wide identity, but calculations combined in one comparison, thermodynamic cycle, or reference cycle must remain method-compatible unless the comparison is explicitly testing method sensitivity.',
+      'This task establishes a versioned method identity and a defensible starting setup.',
+      'Calculations combined in an energy difference, reference cycle, or ranking require compatible method identities unless method sensitivity is itself the test.',
     ],
   },
   {
     name: 'physical and numerical choices',
     phrases: [
       'Separate the physical approximation from its discretization',
-      'Functional, Hubbard correction, dispersion model, core–valence partition, spin–orbit coupling, ensemble, and electrostatic boundary treatment define the approximate physical problem.',
+      'Increasing these controls should approach a method-specific limit; it does not repair an inappropriate physical approximation.',
     ],
   },
   {
     name: 'pseudopotential identity and compatibility',
     phrases: [
-      'sha256sum -- "method/pseudo/$pseudo_name" > method/pseudopotentials.sha256',
-      'head -n 80 -- "method/pseudo/$pseudo_name"',
-      'sha256sum fixes the downloaded file identity.',
-      'The ordinary route is download-first',
-      'Generating a pseudopotential is an advanced branch',
-      'Record its generating functional, explicit valence configuration, frozen-core partition, semicore choice, relativistic treatment, nonlinear core correction where present, format, version, checksum, and any recommended starting cutoffs.',
-      'Check that the selected functional and requested feature are compatible with the dataset and implementation.',
+      'Select, Download, and Record Pseudopotentials',
+      'Inspect element coverage, valence configuration, semicore choices, functional compatibility, scalar/full relativity, recommended starting cutoffs, generation lineage, tests, and license.',
     ],
   },
   {
     name: 'representative execution and output inspection',
     phrases: [
-      'pw.x -in scf.in > scf.out 2> scf.err',
-      "grep -Ei 'program pwscf|exchange-correlation|pseudo|cutoff|k points|occupation|smearing|spin' -- scf.out",
-      'The setup grep locates version-dependent summaries for human inspection.',
-      'The SCF marker, JOB DONE., separate stderr, and shell exit status answer different questions',
+      'Run the smallest representative input, inspect warnings and produced artifacts, and verify that required features are compatible.',
       'A successful exit establishes neither methodological suitability nor numerical convergence.',
     ],
   },
   {
     name: 'baseline versus observable-specific convergence',
     phrases: [
-      'It does not accept cutoffs, k meshes, smearing widths, vacuum dimensions, or response grids; those require observable-specific tests.',
-      'The next task varies numerical controls within one declared method branch and accepts settings only against a declared observable and tolerance.',
+      'Recommended cutoffs are starting evidence; system- and observable-specific convergence follows on the next topic.',
+      'Test Numerical Convergence',
     ],
   },
   {
@@ -73,7 +66,7 @@ async function inspect(page, expectedWidth) {
     hasContract: Boolean(document.querySelector('.operation-contract')),
     copyEnhancements: document.querySelectorAll('script[data-copy-enhancement]').length,
     unexpectedScripts: document.querySelectorAll('script:not([data-copy-enhancement])').length,
-    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm').length,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre[data-language="json"] > code, pre[data-language="plaintext"] > code, pre[data-language="gnuplot"] > code, pre > code.language-bash, pre > code.language-shell, pre > code.language-sh, pre > code.language-python, pre > code.language-qe, pre > code.language-slurm, pre > code.language-json, pre > code.language-plaintext, pre > code.language-gnuplot').length,
     copyButtons: document.querySelectorAll('.copy-code-button').length,
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   }));
@@ -85,11 +78,11 @@ async function inspect(page, expectedWidth) {
   if (result.copyEnhancements !== 1 || result.unexpectedScripts !== 0) {
     throw new Error(`DFT method article exposes ${result.copyEnhancements} copy enhancements and ${result.unexpectedScripts} unexpected scripts`);
   }
-  if (result.copyableBlocks < 1 || result.copyButtons !== result.copyableBlocks) {
+  if (result.copyableBlocks !== 0 || result.copyButtons !== 0) {
     throw new Error(`DFT method article renders ${result.copyButtons} Copy controls for ${result.copyableBlocks} copyable code blocks`);
   }
   if (result.overflow) throw new Error(`DFT method article overflows at ${expectedWidth}px`);
-  if (result.headings.length < 14) throw new Error(`DFT method article has only ${result.headings.length} natural topic sections`);
+  if (result.headings.length < 16) throw new Error(`DFT method article has only ${result.headings.length} natural topic sections`);
   for (const contract of requiredContracts) {
     for (const phrase of contract.phrases) {
       if (!result.text.includes(phrase)) throw new Error(`DFT method article is missing ${contract.name}: ${phrase}`);
@@ -99,6 +92,33 @@ async function inspect(page, expectedWidth) {
     if (!result.links.some((link) => link.includes(domain))) throw new Error(`DFT method article is missing source domain ${domain}`);
   }
   return result;
+}
+
+async function inspectPseudopotentialGuide(page, expectedWidth) {
+  const result = await page.evaluate(() => ({
+    title: document.querySelector('h1')?.textContent?.trim(),
+    text: document.body.innerText,
+    copyableBlocks: document.querySelectorAll('pre[data-copyable] > code, pre[data-language="bash"] > code, pre[data-language="shell"] > code, pre[data-language="sh"] > code, pre[data-language="python"] > code, pre[data-language="qe"] > code, pre[data-language="slurm"] > code, pre[data-language="json"] > code, pre[data-language="plaintext"] > code, pre[data-language="gnuplot"] > code').length,
+    copyButtons: document.querySelectorAll('.copy-code-button').length,
+    overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+  }));
+  if (result.title !== 'Select, Download, and Record Pseudopotentials') throw new Error(`pseudopotential guide title mismatch: ${result.title}`);
+  for (const phrase of [
+    'Choose a tested family in the provider interface',
+    'Download the exact file',
+    'sha256sum "downloads/$PSEUDO_FILE"',
+    'Create the receipt',
+    'Put the exact file into a QE input',
+    'Decide whether to continue',
+    'Advanced branch: generate a pseudopotential',
+    'Software bridges',
+  ]) {
+    if (!result.text.includes(phrase)) throw new Error(`pseudopotential guide is missing ${phrase}`);
+  }
+  if (result.copyableBlocks < 6 || result.copyButtons !== result.copyableBlocks) {
+    throw new Error(`pseudopotential guide renders ${result.copyButtons} Copy controls for ${result.copyableBlocks} executable/input blocks`);
+  }
+  if (result.overflow) throw new Error(`pseudopotential guide overflows at ${expectedWidth}px`);
 }
 
 async function captureStablePage(page, path) {
@@ -129,11 +149,17 @@ try {
   let response = await page.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`DFT method desktop route returned ${response?.status()}`);
   const desktop = await inspect(page, 1440);
+  response = await page.goto(`${base}${pseudopotentialRoute}`, { waitUntil: 'load' });
+  if (response?.status() !== 200) throw new Error(`pseudopotential desktop route returned ${response?.status()}`);
+  await inspectPseudopotentialGuide(page, 1440);
 
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   response = await page.goto(`${base}${route}`, { waitUntil: 'load' });
   if (response?.status() !== 200) throw new Error(`DFT method mobile route returned ${response?.status()}`);
   await inspect(page, 390);
+  response = await page.goto(`${base}${pseudopotentialRoute}`, { waitUntil: 'load' });
+  if (response?.status() !== 200) throw new Error(`pseudopotential mobile route returned ${response?.status()}`);
+  await inspectPseudopotentialGuide(page, 390);
 
   const noJsPage = await browser.newPage();
   await noJsPage.setCacheEnabled(false);
@@ -142,15 +168,18 @@ try {
   if (response?.status() !== 200) throw new Error(`DFT method no-JavaScript route returned ${response?.status()}`);
   const noJsText = await noJsPage.$eval('body', (body) => body.innerText);
   for (const phrase of [
-    'This task produces a versioned baseline method identity. Every later record should inherit that baseline or name an explicit method or model branch.',
-    'Unrelated target branches need not share one site-wide identity, but calculations combined in one comparison, thermodynamic cycle, or reference cycle must remain method-compatible unless the comparison is explicitly testing method sensitivity.',
-    'sha256sum -- "method/pseudo/$pseudo_name" > method/pseudopotentials.sha256',
-    'Generating a pseudopotential is an advanced branch',
-    'pw.x -in scf.in > scf.out 2> scf.err',
-    'It does not accept cutoffs, k meshes, smearing widths, vacuum dimensions, or response grids; those require observable-specific tests.',
+    'This task establishes a versioned method identity and a defensible starting setup.',
+    'Select, Download, and Record Pseudopotentials',
+    'A successful exit establishes neither methodological suitability nor numerical convergence.',
     'Sources and methods',
   ]) {
     if (!noJsText.includes(phrase)) throw new Error(`DFT method no-JavaScript page is missing ${phrase}`);
+  }
+  response = await noJsPage.goto(`${base}${pseudopotentialRoute}`, { waitUntil: 'load' });
+  if (response?.status() !== 200) throw new Error(`pseudopotential no-JavaScript route returned ${response?.status()}`);
+  const noJsPseudopotentialText = await noJsPage.$eval('body', (body) => body.innerText);
+  for (const phrase of ['sha256sum "downloads/$PSEUDO_FILE"', 'Create the receipt', 'Software bridges']) {
+    if (!noJsPseudopotentialText.includes(phrase)) throw new Error(`pseudopotential no-JavaScript page is missing ${phrase}`);
   }
 
   if (artifactDirectory) {
@@ -171,7 +200,7 @@ try {
     }, null, 2)}\n`);
   }
 
-  console.log(`Reviewed DFT method smoke passed: operation-first method sheet, pseudopotential identity, representative execution, output inspection, baseline convergence boundary, ${desktop.headings.length} topic sections, rendered source links, 1440px and 390px no-overflow, and no-JavaScript reading.`);
+  console.log(`Reviewed DFT method smoke passed: concise method overview plus copy-ready pseudopotential selection/download/receipt guide, baseline convergence boundary, ${desktop.headings.length} topic sections, rendered source links, 1440px and 390px no-overflow, and no-JavaScript reading.`);
 } finally {
   await browser.close();
 }

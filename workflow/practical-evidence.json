@@ -215,7 +215,9 @@
       "blocker": "cutoff and k-mesh convergence, projections, and material conclusions remain unassessed",
       "priority": 1,
       "execution_script": "examples/practical-guides/dos_projection_closure.py",
-      "media_ids": [],
+      "media_ids": [
+        "silicon-qe-total-dos"
+      ],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -231,7 +233,9 @@
       "blocker": "not a dispersion or phonon-frequency convergence study",
       "priority": 2,
       "execution_script": "examples/practical-guides/silicon_gamma_phonon.py",
-      "media_ids": [],
+      "media_ids": [
+        "silicon-qe-gamma-phonon"
+      ],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -540,6 +544,21 @@
       "upgrade_readiness": "blocked"
     },
     {
+      "guide_slug": "select-download-and-record-pseudopotentials",
+      "parent_topic": "choose-dft-method-and-computational-setup",
+      "evidence_class": "synthetic-only",
+      "material": "pseudopotential receipt schema and manual trusted-library acquisition procedure; no downloaded payload",
+      "real_result": false,
+      "interface": false,
+      "traceable_data": false,
+      "upgrade": "manual exact-file provenance and model-convergence handoff",
+      "blocker": "provider download, metadata review, code preflight, transferability tests, and material-specific convergence remain reader-run",
+      "priority": 1,
+      "execution_script": "examples/practical-guides/pseudopotential_receipt.py",
+      "media_ids": [],
+      "upgrade_readiness": "blocked"
+    },
+    {
       "guide_slug": "converge-basis-cutoffs-and-grids",
       "parent_topic": "test-numerical-convergence",
       "evidence_class": "real-execution",
@@ -551,7 +570,9 @@
       "blocker": "only total-energy comparison; force, stress, band, DOS and response convergence are untested",
       "priority": 1,
       "execution_script": "examples/practical-guides/qe_manual_handoff.py",
-      "media_ids": [],
+      "media_ids": [
+        "silicon-qe-cutoff-matrix"
+      ],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -567,7 +588,9 @@
       "blocker": "fixed occupations; no metallic smearing or Fermi-surface convergence study",
       "priority": 1,
       "execution_script": "examples/practical-guides/silicon_qe_convergence.py",
-      "media_ids": [],
+      "media_ids": [
+        "silicon-qe-kmesh-matrix"
+      ],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },
@@ -783,15 +806,16 @@
     {
       "guide_slug": "inspect-cod-silicon-record",
       "parent_topic": "obtain-material-structure",
-      "evidence_class": "real-interface-walkthrough",
-      "material": "COD 9013102 Silicon public record and repository expanded teaching snapshot",
+      "evidence_class": "real-execution",
+      "material": "COD 9013102 Silicon public record, browser captures, expanded teaching snapshot, and hash-bound direct-retrieval/parser case",
       "real_result": true,
       "interface": true,
       "traceable_data": true,
-      "upgrade": "completed actual COD record and Mol* object-state walkthrough",
-      "blocker": "No VESTA GUI state is claimed; the Mol* view loads an expanded teaching snapshot, not the byte-for-byte COD download.",
+      "upgrade": "completed actual COD and Mol* interface walkthrough plus a separately recorded direct HTTPS retrieval and ASE/spglib parse",
+      "blocker": "Browser screenshots and parser execution are independent evidence: the parser does not prove the interface state, the screenshots do not prove parser execution, and neither establishes crystallographic suitability or scientific validity. No VESTA GUI state is claimed; the Mol* view loads an expanded teaching snapshot, not the byte-for-byte COD download.",
       "priority": 1,
-      "execution_script": null,
+      "execution_script": "examples/cases/database-cod-silicon/analyze_structure.py",
+      "case_id": "database-cod-silicon",
       "media_ids": [
         "cod-9013102-browser-record",
         "silicon-molstar-browser-viewer"

@@ -39,27 +39,53 @@ type TroubleshootingDefinition = {
 type ResolvedRecord = SymptomRecord & {
   relatedTopics: Array<{ slug: string; title: string; href: string }>;
   officialSources: OfficialSource[];
+  quickReferenceHref: string;
 };
 
 const definition = troubleshootingData as TroubleshootingDefinition;
 const expectedSlugs = [
+  'job-does-not-start',
   'job-stops-before-completion',
   'input-or-method-rejected',
   'scf-does-not-converge',
+  'scf-becomes-very-slow',
   'eigensolver-or-fermi-level-error',
   'restart-or-parent-artifact-rejected',
+  'expected-output-artifact-is-missing',
+  'bands-and-dos-look-inconsistent',
   'io-memory-or-parallel-failure',
   'geometry-looks-physically-wrong',
   'geometry-optimization-stalls',
+  'forces-remain-large',
+  'stress-remains-large',
   'symmetry-or-kq-mapping-mismatch',
   'imaginary-phonon-frequencies',
 ];
+const quickReferenceAnchors: Record<string, string> = {
+  'job-does-not-start': 'job-check',
+  'job-stops-before-completion': 'job-check',
+  'input-or-method-rejected': 'job-check',
+  'scf-does-not-converge': 'qe-scf-check',
+  'scf-becomes-very-slow': 'qe-scf-check',
+  'eigensolver-or-fermi-level-error': 'qe-scf-check',
+  'restart-or-parent-artifact-rejected': 'artifact-check',
+  'expected-output-artifact-is-missing': 'artifact-check',
+  'bands-and-dos-look-inconsistent': 'bands-dos-check',
+  'io-memory-or-parallel-failure': 'job-check',
+  'geometry-looks-physically-wrong': 'qe-relax-check',
+  'geometry-optimization-stalls': 'qe-relax-check',
+  'forces-remain-large': 'qe-relax-check',
+  'stress-remains-large': 'qe-relax-check',
+  'symmetry-or-kq-mapping-mismatch': 'artifact-check',
+  'imaginary-phonon-frequencies': 'phonon-check',
+};
 const allowedSourceHosts = new Set([
   'www.quantum-espresso.org',
   'vasp.at',
   'docs.abinit.org',
   'gpaw.readthedocs.io',
   'manual.cp2k.org',
+  'slurm.schedmd.com',
 ]);
 const topicBySlug = new Map(
   workflowSections.flatMap((section) =>
@@ -95,7 +121,14 @@ const resolvedRecords: ResolvedRecord[] = definition.records.map((record) => {
     if (!source) throw new Error(`Troubleshooting: unresolved official source ${id}`);
     return source;
   });
-  return { ...record, relatedTopics, officialSources };
+  const quickReferenceAnchor = quickReferenceAnchors[record.slug];
+  if (!quickReferenceAnchor) throw new Error(`Troubleshooting: missing Quick Reference anchor for ${record.slug}`);
+  return {
+    ...record,
+    relatedTopics,
+    officialSources,
+    quickReferenceHref: withBase(`quick-reference/#${quickReferenceAnchor}`),
+  };
 });
 
 const usedSourceIds = new Set(definition.records.flatMap((record) => record.official_source_ids));
@@ -144,7 +177,23 @@ for (const source of definition.sources) {
               <ul>{record.inspect.map((item) => <li>{item}</li>)}</ul>
             </section>
             <section class="action-step">
-              <h3>Then take one safe action</h3>
+              <h3>Classify likely causes</h3>
+              <ul>{record.cause_classes.map((item) => <li>{item}</li>)}</ul>
+            </section>
+            <section class="action-step">
+              <h3>Run a read-only quick check</h3>
+              <p><a data-quick-reference href={record.quickReferenceHref}>Open the matching copy-ready Quick Reference check.</a> Change only the declared <code>OUT=...</code>; read the complete files before deciding.</p>
+            </section>
+            <section class="action-step">
+              <h3>Read the official manual</h3>
+              <ul class="link-list">
+                {record.officialSources.map((source) => (
+                  <li><a data-official-source={source.id} href={source.url} rel="noreferrer">{source.organization}: {source.title}</a></li>
+                ))}
+              </ul>
+            </section>
+            <section class="action-step">
+              <h3>Take the next safe action</h3>
               <ul>{record.safe_next_action.map((item) => <li>{item}</li>)}</ul>
             </section>
           </div>
@@ -155,12 +204,8 @@ for (const source of definition.sources) {
           </aside>
 
           <details class="secondary-evidence" data-secondary-evidence>
-            <summary>Show likely causes, evidence to preserve, and references</summary>
+            <summary>Show evidence to preserve and related workflow pages</summary>
             <div class="secondary-grid">
-              <section>
-                <h3>Likely causes</h3>
-                <ul>{record.cause_classes.map((item) => <li>{item}</li>)}</ul>
-              </section>
               <section>
                 <h3>Preserve before retry</h3>
                 <ul>{record.preserve_before_retry.map((item) => <li>{item}</li>)}</ul>
@@ -169,14 +214,6 @@ for (const source of definition.sources) {
                 <h3>Related Research Workflow pages</h3>
                 <ul class="link-list">
                   {record.relatedTopics.map((topic) => <li><a data-related-topic={topic.slug} href={topic.href}>{topic.title}</a></li>)}
-                </ul>
-              </section>
-              <section>
-                <h3>Official sources</h3>
-                <ul class="link-list">
-                  {record.officialSources.map((source) => (
-                    <li><a data-official-source={source.id} href={source.url} rel="noreferrer">{source.organization}: {source.title}</a></li>
-                  ))}
                 </ul>
               </section>
             </div>

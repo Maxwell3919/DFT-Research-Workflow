@@ -187,7 +187,10 @@ def audit_scf(input_path: Path, stdout_path: Path, stderr_path: Path, report_pat
     if not re.search(r"(?im)^\s*calculation\s*=\s*['\"]scf['\"]", input_text):
         raise HandoffError("input does not declare calculation='scf'")
     termination_count = stdout.count("JOB DONE")
-    scf_count = len(re.findall(r"convergence has been achieved", stdout, re.I))
+    scf_count = len(re.findall(
+        r"(?im)^\s+convergence has been achieved in\s+\d+\s+iterations\s*$",
+        stdout,
+    ))
     fatal_patterns = [
         r"(?im)^\s*Error in routine",
         r"(?im)^\s*%%%%%%%%",
@@ -242,7 +245,10 @@ def parse_convergence_outputs(runtime_dir: Path) -> list[dict[str, object]]:
                 "k_mesh": int(match.group(2)),
                 "total_energy_ry": float(energies[-1].replace("D", "E").replace("d", "e")),
                 "job_done": int(text.count("JOB DONE") == 1),
-                "scf_marker": int(bool(re.search(r"convergence has been achieved", text, re.I))),
+                "scf_marker": int(bool(re.search(
+                    r"(?im)^\s+convergence has been achieved in\s+\d+\s+iterations\s*$",
+                    text,
+                ))),
                 "source": path.relative_to(runtime_dir).as_posix(),
                 "sha256": sha256(path),
             }

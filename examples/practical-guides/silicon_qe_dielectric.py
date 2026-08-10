@@ -13,6 +13,10 @@ DATA = ROOT / "dielectric"
 STRUCTURE = ROOT / "silicon-cod-9013102.cif"
 PSEUDOPOTENTIALS = ROOT / "pseudopotentials.json"
 NUMBER = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[Ee][-+]?\d+)?"
+SCF_CONVERGENCE = re.compile(
+    r"(?im)^\s+convergence has been achieved in\s+\d+\s+iterations\s*$"
+)
+ITERATIVE_CONVERGENCE = re.compile(r"(?im)^\s+convergence has been achieved\s*$")
 
 
 def sha256(path: Path) -> str:
@@ -72,7 +76,7 @@ def run() -> dict[str, object]:
     scf_text = scf_output.read_text(encoding="utf-8")
     ph_text = ph_output.read_text(encoding="utf-8")
     assert "Program PWSCF v.7.5" in scf_text
-    assert "convergence has been achieved" in scf_text.lower()
+    assert SCF_CONVERGENCE.search(scf_text)
     assert "JOB DONE." in scf_text
     assert "Program PHONON v.7.5" in ph_text
     assert "Dielectric constant in cartesian axis" in ph_text
@@ -118,8 +122,8 @@ def run() -> dict[str, object]:
             "ph_exit_code": 0,
             "scf_job_done_markers": scf_text.count("JOB DONE."),
             "ph_job_done_markers": ph_text.count("JOB DONE."),
-            "scf_convergence_markers": scf_text.lower().count("convergence has been achieved"),
-            "dfpt_convergence_markers": ph_text.lower().count("convergence has been achieved"),
+            "scf_convergence_markers": len(SCF_CONVERGENCE.findall(scf_text)),
+            "dfpt_convergence_markers": len(ITERATIVE_CONVERGENCE.findall(ph_text)),
         },
         "pseudopotential": {
             "filename": pseudo["filename"],

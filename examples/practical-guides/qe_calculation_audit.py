@@ -77,7 +77,7 @@ def _output_audit(run_id: str, expected: dict[str, object]) -> dict[str, object]
     adverse_lines = [line.strip() for line in text.splitlines() if ADVERSE_LINE.search(line)]
     assert text.count("Program PWSCF v.7.5") == 1
     assert text.count("JOB DONE.") == 1
-    assert "convergence has been achieved" in text
+    assert SCF_ITERATIONS.search(text)
     assert energies and fermi and forces and scf_iterations, f"missing SCF audit field: {run_id}"
     assert abs(float(energies[-1]) - expected["energy_ry_per_fe_primitive_cell"]) < 1.0e-10
     assert _sha256(stdout) == expected["stdout_sha256"]

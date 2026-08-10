@@ -1,9 +1,11 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { practicalGuidePath } from '../../lib/practical-guides';
 import { withBase } from '../../lib/paths';
 import workflowsDocument from '../../../recipes/index.json';
 import topicRegistryDocument from '../../../workflow/topics.json';
@@ -85,6 +87,7 @@ type ReaderRouteStage = {
   execution_route_ids: string[];
   command_stages: string[];
   artifact_paths: string[];
+  practical_guide_slugs?: string[];
   action?: ActionRecord;
   assessment?: string;
   observable_convergence?: string;
@@ -152,11 +155,20 @@ type CaseManifest = {
 };
 
 type Figure = { path: string; role: string; sha256: string; alt: string; caption?: string; dataUrl: string };
-type Props = { workflow: Workflow; manifest: CaseManifest; excerpt: string; figures: Figure[] };
+type PracticalGuideLink = { guide_slug: string; title: string; summary: string; path: string };
+type Props = {
+  workflow: Workflow;
+  manifest: CaseManifest;
+  excerpt: string;
+  figures: Figure[];
+  practicalGuides: PracticalGuideLink[];
+};
 type HumanGuidance = { interface: string; open: string; inspect: string; decide: string };
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const workflows = workflowsDocument.workflows as Workflow[];
+  const reviewedGuides = await getCollection('practicalGuides', ({ data }) => data.status === 'reviewed');
+  const guideBySlug = new Map(reviewedGuides.map((guide) => [guide.data.guide_slug, guide]));
   return Promise.all(workflows.map(async (workflow) => {
     const root = new URL(`../../../examples/cases/${workflow.case_id}/`, import.meta.url);
     try {
@@ -198,6 +210,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
         assertSingleReference('execution route', routeId, routeCounts, `workflow ${workflow.slug}`);
       }
       for (const stage of workflow.reader_route.stages) {
+        const practicalGuideSlugs = stage.practical_guide_slugs ?? [];
+        if (!Array.isArray(practicalGuideSlugs) || practicalGuideSlugs.length > 3 || new Set(practicalGuideSlugs).size !== practicalGuideSlugs.length) {
+          throw new Error(`reader stage ${stage.id} must declare no more than three unique practical_guide_slugs`);
+        }
+        for (const guideSlug of practicalGuideSlugs) {
+          const guide = guideBySlug.get(guideSlug);
+          if (!guide) throw new Error(`reader stage ${stage.id} references unknown reviewed practical guide ${guideSlug}`);
+          if (!stage.topic_slugs.includes(guide.data.topic_slug)) {
+            throw new Error(`reader stage ${stage.id} links practical guide ${guideSlug} outside its declared topics`);
+          }
+        }
         for (const routeId of stage.execution_route_ids) {
           assertSingleReference('execution route', routeId, routeCounts, `reader stage ${stage.id}`);
         }
@@ -224,9 +247,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
             dataUrl: `data:${mime};base64,${data.toString('base64')}`,
           };
         }));
+      const practicalGuideSlugs = [...new Set(
+        workflow.reader_route.stages.flatMap((stage) => stage.practical_guide_slugs ?? []),
+      )];
+      const practicalGuides = practicalGuideSlugs.map((guideSlug) => {
+        const guide = guideBySlug.get(guideSlug);
+        if (!guide) throw new Error(`workflow ${workflow.slug} references unknown reviewed practical guide ${guideSlug}`);
+        return {
+          guide_slug: guide.data.guide_slug,
+          title: guide.data.title,
+          summary: guide.data.summary,
+          path: practicalGuidePath(guide),
+        };
+      });
       return {
         params: { slug: workflow.slug },
-        props: { workflow, manifest: parsed, excerpt, figures } satisfies Props,
+        props: { workflow, manifest: parsed, excerpt, figures, practicalGuides } satisfies Props,
       };
     } catch (error) {
       throw new Error(
@@ -236,7 +272,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }));
 };
 
-const { workflow, manifest, excerpt, figures } = Astro.props as Props;
+const { workflow, manifest, excerpt, figures, practicalGuides } = Astro.props as Props;
 const software = (manifest.software ?? [])
   .map((item) => [item.name, item.version, item.interface ? `(${item.interface})` : ''].filter(Boolean).join(' '));
 const commands = manifest.commands ?? [];
@@ -281,6 +317,7 @@ const artifactByPath = new Map<string, NonNullable<CaseManifest['artifacts']>[nu
 for (const artifact of artifacts) {
   if (artifact.path) artifactByPath.set(artifact.path, artifact);
 }
+const practicalGuideBySlug = new Map(practicalGuides.map((guide) => [guide.guide_slug, guide]));
 const gates = Object.entries(manifest.gates ?? {}).sort(([a], [b]) => a.localeCompare(b));
 const gateLabels: Record<string, string> = {
   G0: 'Inputs and identity',
@@ -473,6 +510,7 @@ const sourceHumanAction = (role: string) => role === 'structure'
       <ol>
         {readerStages.map((stage, index) => (
           <li
+            id={`reader-stage-${stage.id}`}
             data-reader-stage={stage.id}
             data-reader-stage-index={index + 1}
             data-topic-slugs={stage.topic_slugs.join(',')}
@@ -480,14 +518,33 @@ const sourceHumanAction = (role: string) => role === 'structure'
             data-execution-route-ids={stage.execution_route_ids.join(',')}
             data-command-stages={stage.command_stages.join(',')}
             data-artifact-paths={stage.artifact_paths.join(',')}
+            data-practical-guide-slugs={(stage.practical_guide_slugs ?? []).join(',')}
           >
-            <h3 id={`reader-stage-${stage.id}`}>{stage.label}</h3>
+            <h3>{stage.label}</h3>
             <p>{stage.purpose}</p>
 
             <div data-human-workflow-step>
               <p>{humanGuidanceForStage(stage.id).open} {humanGuidanceForStage(stage.id).inspect}</p>
               <p><strong>Continue when:</strong> {humanGuidanceForStage(stage.id).decide}</p>
             </div>
+
+            {(stage.practical_guide_slugs ?? []).length > 0 && (
+              <nav aria-label={`${stage.label} practical guides`} data-stage-practical-guides>
+                <p><strong>Use the detailed procedure:</strong></p>
+                <ul>
+                  {(stage.practical_guide_slugs ?? []).map((guideSlug) => {
+                    const guide = practicalGuideBySlug.get(guideSlug);
+                    if (!guide) return null;
+                    return (
+                      <li data-practical-guide-link={guide.guide_slug}>
+                        <a href={withBase(guide.path)}>{guide.title}</a>
+                        {' — '}{guide.summary}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </nav>
+            )}
 
             {figures.filter((figure) => firstFigureStage.get(figure.path) === stage.id).map((figure) => (
               <figure data-stage-figure={figure.path}>
@@ -579,7 +636,7 @@ const sourceHumanAction = (role: string) => role === 'structure'
           {group.tracks.map((track) => (
             <div data-evidence-track={track.id} data-launches-dft={String(track.launches_dft)}>
               <h4>{track.label}</h4>
-              {track.commands.length > 0 && <pre><code>{commandBlock(track.commands)}</code></pre>}
+              {track.commands.length > 0 && <pre data-copyable><code>{commandBlock(track.commands)}</code></pre>}
               <p><strong>Output policy:</strong> {track.output_policy}</p>
               {track.audit.length > 0 && (
                 <>
@@ -671,7 +728,9 @@ const sourceHumanAction = (role: string) => role === 'structure'
           <p><strong>{entry.stage ?? 'Recorded stage'} · {typeof entry.exit_code === 'number' ? `exit ${entry.exit_code}` : 'exit not recorded'}</strong></p>
           {entry.route_id && <p><strong>Route:</strong> <code>{entry.route_id}</code></p>}
           {entry.record_kind && <p><strong>Record kind:</strong> {entry.record_kind}</p>}
-          <pre><code>{entry.command ?? 'See manifest'}</code></pre>
+          {entry.command
+            ? <pre data-copyable><code>{entry.command}</code></pre>
+            : <p>See the manifest for this record.</p>}
           {entry.evidence_scope && <p><strong>Evidence scope:</strong> {entry.evidence_scope}</p>}
           {entry.exit_code_scope && <p><strong>Exit scope:</strong> {entry.exit_code_scope}</p>}
           {entry.input_artifacts && entry.input_artifacts.length > 0 && <p><strong>Inputs:</strong> <code>{entry.input_artifacts.join(' -> ')}</code></p>}

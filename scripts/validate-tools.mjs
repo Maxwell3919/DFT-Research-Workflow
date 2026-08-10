@@ -7,6 +7,8 @@ const workflow = JSON.parse(await readFile(new URL('workflow/topics.json', root)
 const librarySource = await readFile(new URL('src/lib/tools.ts', root), 'utf8');
 const indexSource = await readFile(new URL('src/pages/tools/index.astro', root), 'utf8');
 const detailSource = await readFile(new URL('src/pages/tools/[slug].astro', root), 'utf8');
+const topicPageSource = await readFile(new URL('src/pages/operations/[slug].astro', root), 'utf8');
+const practicalPageSource = await readFile(new URL('src/pages/operations/[topic]/[category]/[slug].astro', root), 'utf8');
 const topicSlugs = new Set(workflow.sections.flatMap((section) => section.groups.flatMap((group) => group.topics.map((topic) => topic.slug))));
 const allowedAccess = new Set(['open', 'registration', 'institutional', 'subscription', 'commercial', 'mixed', 'restricted', 'free-proprietary']);
 const allowedLinkRoles = new Set(['homepage', 'docs', 'tutorial', 'source', 'download', 'data', 'manual', 'standard', 'community']);
@@ -106,11 +108,34 @@ for (const file of (await readdir(new URL('src/content/practical-guides/', root)
 }
 for (const slug of guideTools) if (!slugs.has(slug)) errors.push(`practical guide references unknown resource: ${slug}`);
 
-for (const marker of ['getResources', 'getDetailedResources', 'getResourceTopics', 'getResourcesForTopic', 'getResourcesForTaskGroup']) {
+for (const marker of ['getResources', 'getDetailedResources', 'getResourcePath', 'getResourceTopics', 'getResourcesForTopic', 'getResourcesForTaskGroup']) {
   if (!librarySource.includes(marker)) errors.push(`resource library missing ${marker}`);
 }
-for (const marker of ['Tools & Resources', 'data-tools-resources', 'data-topic-resource-index', 'data-resource-task', 'data-resource', 'data-resource-link', 'Research tasks:']) {
+for (const marker of [
+  'Tools & Resources',
+  'data-tools-resources',
+  'data-topic-resource-index',
+  'data-resource-task',
+  'class="resource-table"',
+  '<th scope="col">Resource</th>',
+  '<th scope="col">Best used for</th>',
+  '<th scope="col">Access</th>',
+  '<th scope="col">Used in</th>',
+  'data-resource',
+  'data-resource-link',
+  'data-resource-detail-link',
+  'visibleTopicLimit',
+]) {
   if (!indexSource.includes(marker)) errors.push(`catalog source missing ${marker}`);
+}
+if (indexSource.includes('Research tasks:')) errors.push('catalog must not repeat the retired Research tasks label for every resource');
+for (const slug of topicSlugs) {
+  if (!indexSource.includes(`'${slug}':`)) errors.push(`catalog compact Used in label missing: ${slug}`);
+}
+for (const source of [topicPageSource, practicalPageSource]) {
+  for (const marker of ['getResourcePath', 'class="tool-tag"', 'href={withBase(getResourcePath(resource))}', '{resource.name}']) {
+    if (!source.includes(marker)) errors.push(`operation-to-resource renderer missing ${marker}`);
+  }
 }
 for (const marker of ['getDetailedResources', 'data-resource-detail', 'Official entry points', 'Where in the research workflow', 'What to verify', 'data-tool-verify']) {
   if (!detailSource.includes(marker)) errors.push(`detail source missing ${marker}`);
