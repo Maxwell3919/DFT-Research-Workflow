@@ -10,6 +10,7 @@ for (const resource of tools.resources) {
   for (const link of resource.links) resourcesByUrl.set(link.url, resource);
 }
 const results = [];
+const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 async function checkWithCurl(url, error) {
   try {
@@ -64,7 +65,7 @@ async function checkWithGithubApi(url, error) {
   return checkWithCurl(url, error);
 }
 
-async function check(url) {
+async function checkOnce(url) {
   let error = '';
   try {
     const response = await fetch(url, {
@@ -80,12 +81,22 @@ async function check(url) {
   return checkWithGithubApi(url, error);
 }
 
+async function check(url) {
+  let result = null;
+  for (let auditAttempt = 1; auditAttempt <= 2; auditAttempt += 1) {
+    result = { ...await checkOnce(url), audit_attempt: auditAttempt };
+    if (result.ok) return result;
+    if (auditAttempt < 2) await delay(1000 * auditAttempt);
+  }
+  return result;
+}
+
 for (let index = 0; index < urls.length; index += 12) {
   results.push(...await Promise.all(urls.slice(index, index + 12).map(check)));
 }
 
 const artifact = {
-  schema_version: 2,
+  schema_version: 3,
   checked_at: new Date().toISOString(),
   scope: 'workflow/tools.json canonical Tools & Resources official and primary links',
   results,
