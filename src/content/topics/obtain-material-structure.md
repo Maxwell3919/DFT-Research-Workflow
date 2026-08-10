@@ -5,7 +5,13 @@ status: reviewed
 
 A structure file is not yet a computational model. This task ends with an unchanged source artifact, a checked working copy, and a record of what the structure does and does not establish.
 
-## Start with a source record
+## Begin with the human source search
+
+Start with the scientific record, not a downloader. Search a database in a browser, follow the structure cited by the primary paper or supplementary information, and compare records when the phase, composition, pressure, temperature, disorder model, or provenance is ambiguous. Institutional and subscription databases are valid research routes when access is available; record the database name and stable identifier without redistributing restricted content.
+
+[Browse structure databases, repositories, and access routes](/DFT-Research-Workflow/operations/resource-landscape/#structures-data). The resource landscape distinguishes open, registration-based, institutional, and subscription sources and explains what each route can return.
+
+## Compare source records
 
 Use a stable database or deposition identity before searching by filename. Two useful starting points are:
 
@@ -18,28 +24,10 @@ A **generated or hypothetical structure** is not experimental evidence. Record t
 
 The example below uses silicon, COD ID `9013102`. The record reports formula Si, $a=b=c=5.4304$ Å, $\alpha=\beta=\gamma=90^\circ$, space group 227 (`F d -3 m`), diffraction temperature `298.15 K`, atomic coordinates, and no reported disorder. These are facts about the deposited record, not a universal silicon model.
 
-## Download and preserve the CIF
+## Manual route: download and inspect the CIF as text
 
-Create separate source and working directories. Run from the directory in which the study will be prepared:
+Use the record's download control when working in a browser. Keep the downloaded object unchanged in a source directory, save the record URL or citation beside it, and make a working copy before conversion. Open the CIF in a text editor before asking a library to interpret it: the raw tags reveal what the source actually reports and what a converter may omit.
 
-```bash
-mkdir -p structures/si-cod-9013102/{source,working}
-cd structures/si-cod-9013102
-pwd
-COD_BASE=https://www.crystallography.net/cod/
-curl -fL \
-  -o source/9013102.cif \
-  "${COD_BASE}9013102.cif"
-ls -lh source
-sha256sum source/9013102.cif | tee source/SHA256SUMS
-cp source/9013102.cif working/9013102-as-downloaded.cif
-```
-
-`curl -fL` retrieves the database response and fails on an HTTP error. It does not prove that the record is the intended phase. `sha256sum` fixes the byte identity of the downloaded artifact; it does not establish crystallographic or scientific correctness. Keep `source/9013102.cif` unchanged and perform parsing, normalization, symmetry expansion, or conversion on derived files.
-
-Record the COD ID, source URL or query, retrieval date, checksum, publication, temperature, pressure, composition, occupancy/disorder model, and reported symmetry. For a computed database structure, also retain the material/task ID and the calculation method that produced it.
-
-## Read the CIF as text
 
 A CIF is structured text. Before opening a viewer, inspect the file and locate its data block, cell, symmetry, atom-site loop, occupancy, and bibliographic fields:
 
@@ -64,7 +52,12 @@ They are not Cartesian coordinates in ångströms. A CIF can store only asymmetr
 
 A value below one is therefore not a small numerical defect to be rounded away. It can represent vacancies, substitutions, split positions, or an average disordered structure. Most periodic DFT calculations require an explicit configuration. Choosing that representation belongs to **Build or Modify a Computational Model**.
 
-## Visualize the same object
+## Manual route: inspect the structure visually
+
+Open the unchanged CIF in a crystal viewer and show the unit-cell boundary. Rotate it along each lattice direction; inspect composition, periodicity, coordination, implausibly short contacts, duplicated sites, layer or chain continuity, and any vacuum direction. Measure suspicious distances rather than relying on a bonding display. A viewer can expose a wrong phase, cell, orientation, or conversion, but visual plausibility does not establish numerical validity.
+
+[Choose a visual or symmetry tool for this check](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
+
 
 Open the unchanged CIF in a crystallographic viewer such as VESTA or a browser viewer. Check composition, periodicity, coordination, unusually short distances, duplicate sites, and the expected dimensionality. A viewer is a geometry inspection tool, not a source of provenance or a stability test.
 
@@ -77,7 +70,10 @@ Open the unchanged CIF in a crystallographic viewer such as VESTA or a browser v
 
 If the picture and the raw atom-site data appear inconsistent, stop. Resolve whether symmetry expansion, disorder, alternate data blocks, or a parser warning explains the difference before conversion.
 
-## Parse, check symmetry, and inspect geometry
+## Numerical and symmetry checks
+
+After the text and visual inspection, parse the same file and compare the numerical object with what you just saw. Use symmetry detection as a tolerance-dependent diagnostic, not as permission to replace the reported structure silently.
+
 
 Use a crystallographic parser that reports warnings and preserves the selected CIF data block. Record its name and version, the source checksum, the selected block, and every inferred or discarded field. Format conversion can lose symmetry, occupancies, uncertainties, labels, magnetic information, and provenance.
 
@@ -95,6 +91,27 @@ Check at least:
 Numerically detected symmetry is tolerance-dependent. Changing `symprec` can change the operations, equivalent-site grouping, or standardized cell. If a primitive or conventional cell is created, preserve the transformation and site mapping. An intentionally constructed supercell is not automatically replaceable by a smaller cell.
 
 IUCr [checkCIF](https://checkcif.iucr.org/) can identify syntax, geometry, symmetry, and refinement issues. Treat its alerts and a clean report as screening evidence. They are not a certificate that the structure is suitable for a particular DFT calculation.
+
+## Optional automation: retrieve and preserve the CIF
+
+For repeated or remote work, the browser download can be replaced by a recorded command. Create separate source and working directories. Run from the directory in which the study will be prepared:
+
+```bash
+mkdir -p structures/si-cod-9013102/{source,working}
+cd structures/si-cod-9013102
+pwd
+COD_BASE=https://www.crystallography.net/cod/
+curl -fL \
+  -o source/9013102.cif \
+  "${COD_BASE}9013102.cif"
+ls -lh source
+sha256sum source/9013102.cif | tee source/SHA256SUMS
+cp source/9013102.cif working/9013102-as-downloaded.cif
+```
+
+`curl -fL` retrieves the database response and fails on an HTTP error. It does not prove that the record is the intended phase. `sha256sum` fixes the byte identity of the downloaded artifact; it does not establish crystallographic or scientific correctness. Keep `source/9013102.cif` unchanged and perform parsing, normalization, symmetry expansion, or conversion on derived files.
+
+Record the COD ID, source URL or query, retrieval date, checksum, publication, temperature, pressure, composition, occupancy/disorder model, and reported symmetry. For a computed database structure, also retain the material/task ID and the calculation method that produced it.
 
 ## Decide whether to continue
 

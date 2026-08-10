@@ -7,9 +7,11 @@ Topological analysis asks whether a declared electronic subspace can be continuo
 
 It is not a label inferred from orbital character, “band inversion” language, one high-symmetry-path crossing, or a visually striking surface band. Those features can motivate a calculation, but they do not replace it.
 
-## Establish the full-zone gap, then calculate the invariant
+## Read the bulk invariant and boundary spectrum as separate objects
 
-Start by identifying the Hamiltonian, filling, SOC/magnetic state, protecting symmetries, and target subspace. Verify the relevant separation throughout the full Brillouin zone; a high-symmetry line path cannot supply that proof. Choose an invariant compatible with the actual symmetry class, converge its mesh or loop family, and challenge the result against subspace, symmetry tolerance, and model choices that could close the gap. A boundary spectrum is a second calculation with its own termination, thickness/embedding, projected-bulk, localization, and convergence checks. This overview does not claim an executed topology workflow.
+Start by identifying the Hamiltonian, filling, SOC/magnetic state, protecting symmetries, and target subspace. Inspect a full-zone gap search rather than only a presentation band path. Then view the actual invariant evidence: a converged Wilson-loop/WCC flow, full-zone curvature integral, or symmetry-eigenvalue table produced under the formula's valid assumptions. Browser services can help inspect symmetry and band representations, but their input structure and Hamiltonian assumptions must match the calculation.
+
+Treat a boundary spectrum as a second calculation. Plot it with the projected bulk continuum, surface or edge localization, orientation, and termination identified; test thickness or semi-infinite embedding and distinguish dangling-bond or quantum-well features from a state that connects the relevant bulk bands. Choose an invariant compatible with the actual symmetry class and challenge it against mesh, subspace, symmetry tolerance, and model choices that could close the gap. Topology, Wannier, and browser-based resources are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools). This overview does not claim an executed topology workflow.
 
 ## First identify the space in which the invariant lives
 

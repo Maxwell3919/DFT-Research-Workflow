@@ -205,7 +205,7 @@ for (const className of cssClasses) {
 }
 
 const architecture = await readFile(new URL('docs/architecture.md', root), 'utf8');
-for (const statement of ['researcher-scale tasks', 'D · Target Calculations', 'Natural topic organization', 'Migration compatibility', 'Talos handoff']) {
+for (const statement of ['researcher-scale tasks', 'D · Target Calculations', 'Natural topic organization', 'Migration compatibility', 'Human-first, terminal-capable execution cases', 'Maintenance handoff']) {
   if (!architecture.includes(statement)) errors.push(`architecture is missing required statement: ${statement}`);
 }
 const writingPolicy = await readFile(new URL('docs/content-contract.md', root), 'utf8');

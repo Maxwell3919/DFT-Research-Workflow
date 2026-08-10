@@ -112,7 +112,11 @@ const contextualNavigation = page.kind === 'topic'
 
     {page.kind === 'topic' ? (
       <>
-        <p class="operation-label">{page.topic.group} · {page.topic.groupTitle}</p>
+        <p class="operation-label">
+          {page.topic.section === 'D'
+            ? `${page.topic.group} · ${page.topic.groupTitle}`
+            : `${page.topic.section} · ${page.topic.sectionTitle}`}
+        </p>
         <h1>{page.topic.title}</h1>
         {page.topic.section === 'D' && (
           <p class="page-intro">

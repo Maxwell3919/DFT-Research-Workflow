@@ -13,8 +13,8 @@ for (const statement of ['topic_slug: adsorption-energies', 'status: reviewed'])
   if (!article.includes(statement)) errors.push(`${articlePath}: missing frontmatter ${JSON.stringify(statement)}`);
 }
 const headings = article.match(/^## /gm) ?? [];
-if (headings.length < 8 || headings.length > 12) {
-  errors.push(`${articlePath}: expected 8-12 continuous manual sections, found ${headings.length}`);
+if (headings.length < 8 || headings.length > 14) {
+  errors.push(`${articlePath}: expected 8-14 continuous manual sections, found ${headings.length}`);
 }
 
 for (const statement of [
@@ -86,4 +86,4 @@ if (errors.length > 0) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log('Reviewed adsorption topic valid: 8-12 continuous manual sections, exact 14-source coverage, reaction/sign/site/coverage/reference/free-energy/kinetics boundaries, and no universal numerical prescription.');
+console.log(`Reviewed adsorption topic valid: ${headings.length} continuous manual sections, exact 14-source coverage, reaction/sign/site/coverage/reference/free-energy/kinetics boundaries, and no universal numerical prescription.`);

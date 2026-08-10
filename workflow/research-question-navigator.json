@@ -18,7 +18,9 @@
         "evidence_boundary": "This guide defines the active coordinates and constraints before a run; it does not prove that a minimum has been found."
       },
       "validation_requirement": "Inspect every free force component rather than only an aggregate force, the relevant stress components, the final geometry, electronic convergence, and state identity. Audit the accepted structure again in the fixed-geometry reference calculation.",
-      "claim_limitation": "A local optimization does not establish the global minimum, dynamical stability, thermodynamic stability, or an experimental structure."
+      "claim_limitation": "A local optimization does not establish the global minimum, dynamical stability, thermodynamic stability, or an experimental structure.",
+      "common_human_route": "Open the structure in a viewer, inspect the cell and constraints, then prepare, monitor, and re-open the optimization in the selected code.",
+      "what_to_inspect": "Inspect geometry before and after, force/stress history, every free force component, warnings, step behavior, and physical plausibility."
     },
     {
       "id": "formation-energy",
@@ -33,7 +35,9 @@
         "evidence_boundary": "This is a synthetic A2B3 ledger fixture. It demonstrates the comparability gate but does not provide a real material formation-energy result or validate the underlying energies and reference states."
       },
       "validation_requirement": "Check reaction balance, normalization, reference-state identity, numerical convergence of every term, and sensitivity to defensible reference choices.",
-      "claim_limitation": "A negative formation energy does not establish convex-hull stability, synthesis, kinetic accessibility, or experimental formation."
+      "claim_limitation": "A negative formation energy does not establish convex-hull stability, synthesis, kinetic accessibility, or experimental formation.",
+      "common_human_route": "Find reference phases in literature or databases, calculate comparable states, then assemble and plot the energy ledger in a spreadsheet, notebook, or transparent script.",
+      "what_to_inspect": "Inspect reference identities, stoichiometry, units, magnetic and structural states, numerical sensitivity, and energy-difference outliers."
     },
     {
       "id": "decomposition-stability",
@@ -54,7 +58,9 @@
         "evidence_boundary": "This is a derived-public-data Li-P worked example, not a guide for importing and validating a new project's complete phase set."
       },
       "validation_requirement": "Challenge candidate-set completeness, phase-set sensitivity, energy normalization, numerical convergence, and reasonable method choices.",
-      "claim_limitation": "Hull membership is conditional on the declared phase set, thermodynamic conditions, and energy model. It does not establish kinetic stability, synthesis, finite-temperature stability, or dynamical stability."
+      "claim_limitation": "Hull membership is conditional on the declared phase set, thermodynamic conditions, and energy model. It does not establish kinetic stability, synthesis, finite-temperature stability, or dynamical stability.",
+      "common_human_route": "Build the competing-phase set from databases and literature, inspect every identity, then construct the hull with a phase-diagram tool, notebook, or reviewed script.",
+      "what_to_inspect": "Inspect the lower envelope, tie lines, omitted or duplicate phases, reference consistency, near-degenerate competitors, and phase-set sensitivity."
     },
     {
       "id": "metallicity",
@@ -75,7 +81,9 @@
         "evidence_boundary": "This bounded real Aluminium comparison does not claim that its stored full-zone sample is converged."
       },
       "validation_requirement": "Test k-point sampling, smearing, band coverage, full-zone extrema or crossings, density-of-states broadening, and energy-zero consistency.",
-      "claim_limitation": "A high-symmetry band path alone is not full-Brillouin-zone evidence of metallicity, and a broadened finite density of states on one mesh can be a numerical artifact."
+      "claim_limitation": "A high-symmetry band path alone is not full-Brillouin-zone evidence of metallicity, and a broadened finite density of states on one mesh can be a numerical artifact.",
+      "common_human_route": "Establish the reference state, run dense full-zone sampling for DOS or Fermi-surface evidence, and use a band-path plot only as a complementary selected-dispersion view.",
+      "what_to_inspect": "Inspect states at the Fermi level, mesh and broadening sensitivity, occupations, full-zone crossings or surfaces, spin channels, and DOS/path disagreement."
     },
     {
       "id": "dynamical-stability",
@@ -90,7 +98,9 @@
         "evidence_boundary": "This reconstructs one real Silicon Gamma-point mode ledger only; no published practical guide currently executes and validates a complete q-grid or supercell stability workflow."
       },
       "validation_requirement": "Test electronic thresholds, cutoff and k-point sampling, q mesh or supercell size, interpolation, acoustic modes, mode eigenvectors, and non-analytic treatment where applicable.",
-      "claim_limitation": "A Gamma-point result does not establish full-Brillouin-zone dynamical stability. Harmonic stability does not establish thermodynamic, anharmonic, or finite-temperature stability."
+      "claim_limitation": "A Gamma-point result does not establish full-Brillouin-zone dynamical stability. Harmonic stability does not establish thermodynamic, anharmonic, or finite-temperature stability.",
+      "common_human_route": "Inspect the relaxed structure, choose DFPT or finite displacement, calculate a q mesh or supercell force set, plot the dispersion, and visualize suspicious eigenvectors.",
+      "what_to_inspect": "Inspect acoustic behavior, q- or supercell convergence, force quality, imaginary-mode location and eigenvector, symmetry, and reproducibility of the distortion."
     },
     {
       "id": "conventional-superconductivity",
@@ -110,10 +120,12 @@
       "prerequisites": "Establish a metallic full-zone reference state, dynamically qualified phonons, sufficiently dense k and q sampling, and a declared broadening or delta-function treatment.",
       "first_action": {
         "type": "no-guide",
-        "statement": "No executable practical guide is published for electron-phonon coupling or conventional superconductivity. Use the two topic overviews to define the qualified phonon parent and observable-specific convergence before attempting software-specific execution."
+        "statement": "No reviewed hands-on practical guide is published for electron-phonon coupling or conventional superconductivity. Use the topic overviews and official software workflow to define qualified electronic and phonon parents and observable-specific convergence before execution."
       },
       "validation_requirement": "Converge the phonons, matrix elements, k mesh, q mesh, interpolation, broadening, spectral function, coupling strength, logarithmic frequency, transition-temperature result, and Coulomb-parameter sensitivity separately.",
-      "claim_limitation": "A computed coupling strength or model transition temperature does not establish experimental superconductivity. An unstable or insufficiently sampled phonon parent invalidates the downstream claim."
+      "claim_limitation": "A computed coupling strength or model transition temperature does not establish experimental superconductivity. An unstable or insufficiently sampled phonon parent invalidates the downstream claim.",
+      "common_human_route": "Start from a metallic full-zone reference and qualified phonons, then follow an official EPW or equivalent workflow for matrix elements, interpolation, and derived observables.",
+      "what_to_inspect": "Inspect electronic and phonon parents, interpolation, k/q meshes, broadenings, linewidths, alpha-squared-F, cumulative lambda, omega-log, and derived-result stability."
     },
     {
       "id": "surface-energy",
@@ -128,7 +140,9 @@
         "evidence_boundary": "This combines attributed published data with a synthetic bulk-drift diagnostic; it is not an end-to-end surface calculation."
       },
       "validation_requirement": "Test slab thickness, vacuum, lateral sampling, bulk-reference drift, reconstruction, termination, relaxation depth, and asymmetric-slab treatment.",
-      "claim_limitation": "One slab energy does not establish equilibrium morphology, environmental stability, kinetics, or the experimentally realized termination."
+      "claim_limitation": "One slab energy does not establish equilibrium morphology, environmental stability, kinetics, or the experimentally realized termination.",
+      "common_human_route": "Build and visually inspect termination-aware slabs with a GUI or library, converge slab and bulk references comparably, then compare surface-energy ledgers.",
+      "what_to_inspect": "Inspect orientation, termination, stoichiometry, thickness, vacuum, dipoles, relaxation, reconstruction, energy convergence, and assumed surface equivalence."
     },
     {
       "id": "work-function",
@@ -143,7 +157,9 @@
         "evidence_boundary": "This uses a synthetic planar-potential fixture; it is not evidence for a real surface work function."
       },
       "validation_requirement": "Check plateau flatness, vacuum and slab-thickness sensitivity, k-point sampling, Fermi-level identity, dipole correction, and inequivalent surface sides.",
-      "claim_limitation": "Work function is not surface energy and does not identify the stable facet, interface band alignment, or an experimental contact potential without the corresponding model."
+      "claim_limitation": "Work function is not surface energy and does not identify the stable facet, interface band alignment, or an experimental contact potential without the corresponding model.",
+      "common_human_route": "Inspect slab and vacuum direction visually, calculate electrostatic potential, plot planar or macroscopic averages, and identify a stable vacuum plateau relative to the Fermi level.",
+      "what_to_inspect": "Inspect vacuum thickness, plateau flatness, dipole corrections, side dependence, potential alignment, Fermi-level definition, and numerical sensitivity."
     },
     {
       "id": "adsorption",
@@ -158,7 +174,9 @@
         "evidence_boundary": "This uses attributed and synthetic bookkeeping material; it is not an executed adsorption project."
       },
       "validation_requirement": "Check site and state identity after relaxation, coverage, cell size, slab convergence, reference states, numerical convergence, and thermal or electrochemical corrections when claiming a free energy.",
-      "claim_limitation": "Negative adsorption energy does not establish catalytic activity, reaction rate, selectivity, poisoning resistance, or experimental adsorption conditions."
+      "claim_limitation": "Negative adsorption energy does not establish catalytic activity, reaction rate, selectivity, poisoning resistance, or experimental adsorption conditions.",
+      "common_human_route": "Use a viewer or builder for several adsorption geometries, calculate slab, adsorbate, and combined systems comparably, then inspect structures and energy differences.",
+      "what_to_inspect": "Inspect sites, orientations, reconstruction, dissociation, image interactions, reference states, coverage, competing minima, forces, and comparability."
     },
     {
       "id": "charge-redistribution",
@@ -173,7 +191,9 @@
         "evidence_boundary": "This uses invented compatible grids; it does not generate a real DFT density-difference chain."
       },
       "validation_requirement": "Check grid and cell identity, electron-count convention, full-cell integral closure, interpolation control, and sensitivity to any charge-partition scheme.",
-      "claim_limitation": "Difference-density lobes do not define a unique transferred-electron count, bond order, oxidation state, or causal bonding mechanism. Partitioned charges remain method-dependent."
+      "claim_limitation": "Difference-density lobes do not define a unique transferred-electron count, bond order, oxidation state, or causal bonding mechanism. Partitioned charges remain method-dependent.",
+      "common_human_route": "Generate compatible combined and fragment densities, confirm identical cells and grids, construct the difference field, and inspect integrals plus isosurfaces or slices.",
+      "what_to_inspect": "Inspect grid and atom alignment, subtraction convention, charge closure, isovalue dependence, spatial localization, and model robustness."
     }
   ]
 }

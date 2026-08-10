@@ -23,7 +23,11 @@ reviewed_at: "2026-08-04"
 
 This is a bounded real-execution case: a COD 9013102 Silicon structure was used for an 8×8×8 QE 7.5 SCF calculation, followed by `ph.x` at Γ using the same `prefix`/`outdir` lineage. The committed output contains three 1.216451 cm⁻¹ acoustic diagnostics and a threefold 514.442616 cm⁻¹ optical result. The structure, SCF and DFPT inputs, standard output, stderr files, dynamical matrix, parsed CSV, and hashes are all committed as small public artifacts.
 
-## Inspect the stored run before plotting it
+## Read the one-point mode object before replaying it
+
+This artifact contains frequencies at Gamma only. It has no phonon path, q-mesh interpolation, or interactive eigenvector animation. Read the six-mode figure as a frequency transcription, then return to the structure and ask which atomic displacement each mode represents; this stored public case cannot answer that mode-character question. A full human phonon workflow opens the dispersion, selects a q point and branch, and animates the eigenvector in a compatible viewer before deciding whether a feature is translational, structural, or physically suspicious. See [lattice-dynamics routes and viewers](/DFT-Research-Workflow/operations/resource-landscape/#lattice-dynamics).
+
+Inspect the stored run markers and frequency lines:
 
 ```bash
 grep -F "JOB DONE" examples/cases/silicon-ground-state-electronic-structure/output/si-gamma-scf.out
@@ -37,7 +41,7 @@ The `JOB DONE` lines check normal program termination only. The SCF marker check
 
 ![Six Silicon Gamma-point modes, with three small acoustic diagnostics and three optical modes at 514.442616 inverse centimetres.](/DFT-Research-Workflow/media/practical-guides/harmonic-phonons/check-harmonic-mode-ledger/silicon-gamma-phonon.svg)
 
-## Reconstruct the published ledger
+## Optional automation: reconstruct the published ledger
 
 ```text
 python3 examples/practical-guides/silicon_gamma_phonon.py \

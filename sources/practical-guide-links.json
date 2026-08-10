@@ -499,11 +499,6 @@
       "kind": "doi"
     },
     {
-      "id": "interface-energy-review",
-      "url": "https://doi.org/10.1038/s41524-019-0160-9",
-      "kind": "doi"
-    },
-    {
       "id": "pymatgen-interface-docs",
       "url": "https://pymatgen.org/pymatgen.analysis.interfaces.html",
       "kind": "page"
@@ -651,6 +646,16 @@
     {
       "id": "slurm-scancel-docs",
       "url": "https://slurm.schedmd.com/scancel.html",
+      "kind": "page"
+    },
+    {
+      "id": "molstar-viewer-query-parameters",
+      "url": "https://molstar.org/viewer-docs/query-parameters/",
+      "kind": "page"
+    },
+    {
+      "id": "vesta-documentation",
+      "url": "https://jp-minerals.org/vesta/en/doc.html",
       "kind": "page"
     }
   ],
@@ -1103,6 +1108,14 @@
       "source_ids": [
         "qe-pw-75",
         "qe-ph-75"
+      ]
+    },
+    {
+      "guide_slug": "inspect-cod-silicon-record",
+      "source_ids": [
+        "cod-9013102",
+        "molstar-viewer-query-parameters",
+        "vesta-documentation"
       ]
     }
   ]

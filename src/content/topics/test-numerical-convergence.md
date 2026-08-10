@@ -5,6 +5,12 @@ status: reviewed
 
 Numerical convergence is an operation: declare a target, run a controlled series, extract the same quantity from every run, and decide against a tolerance written before inspecting the result. It is not a property of an input file in isolation.
 
+## Start with the human decision
+
+Before generating a sweep, inspect the [method and input resources](/DFT-Research-Workflow/operations/resource-landscape/#method-inputs), the chosen code's version-specific manual, and recent Methods or Supporting Information for a comparable material and observable. Identify the actual control names, units, coupled settings, printed diagnostics, and output artifact that must be compared. A value reported in the literature is a starting hypothesis, not a transferable convergence result.
+
+Use the interface natural to the task. A researcher may edit inputs in a text editor or GUI, submit them through an HPC scheduler, collect results in a spreadsheet or notebook, and inspect plots manually. Complete and inspect at least one row end to end before automating the series. Automation should reproduce a understood comparison, not hide the model, state, or acceptance rule. Relevant code families and learning routes are indexed under [electronic-structure codes](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) and [manuals, workshops, and courses](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
+
 Prepare this worksheet first:
 
 ~~~text
@@ -92,7 +98,7 @@ For a metal, run a mesh-by-smearing matrix and inspect a two-dimensional stable 
 
 ## Test finite-size behaviour within a declared boundary model
 
-State the limit: isolated object, dilute defect, declared adsorbate coverage, semi-infinite surface, isolated layer, or another defined target. Vary lateral size, slab thickness, vacuum, relaxation depth, shape, or separation according to the residual interaction while preserving concentration and boundary meaning.
+State the limit: isolated object, dilute defect, declared adsorbate coverage, semi-infinite surface, isolated layer, or another defined target. For a fixed-concentration or fixed-coverage study, preserve that quantity while varying independent size controls. For a dilute or isolated-limit study, concentration, coverage, or image separation is intentionally varied toward the declared limit. In both routes, preserve the chemical and structural identity, normalization convention, state, and method branch; do not disguise an unintended identity change as finite-size convergence.
 
 Changing Coulomb truncation, dipole correction, neutralization, dielectric model, or constraint defines a method branch. At fixed boundary treatment, test independent size directions and require a stricter neighbour in each unresolved direction.
 
@@ -110,6 +116,8 @@ fine integration or interpolation grid used for the reported quantity
 An apparently smooth interpolated curve is not evidence that the underlying coarse grid is sufficient. Compare selected direct and interpolated points, inspect sum rules and symmetry diagnostics, and converge the final observable over both coarse and fine grids.
 
 ## Expect non-monotonic and anisotropic behaviour
+
+Open the complete table and plot the target observable against every varied control. Look for plateaus, oscillation, odd-even or offset effects, discontinuities, anisotropy, excluded points, and changes in state identity. A human-readable table and figure are part of the decision record; visual inspection complements the declared numerical tolerance and never replaces it.
 
 Shell filling, FFT changes, Fermi-surface crossings, state switching, interpolation error, and commensurability can create oscillations or false plateaus. Test several points in the apparent tail and more than one refinement path.
 
@@ -130,6 +138,8 @@ If no affordable point passes, narrow the claim or report the unresolved numeric
 ## Limit the reuse of convergence evidence
 
 Reuse requires a declared family of models, methods, states, and observables. Composition, volume, dimensionality, charge, magnetism, pseudopotential, functional, relativity, software version, or target quantity can invalidate it.
+
+Every later calculation record should identify the B-stage baseline it inherits or name an explicit method or model branch. Unrelated target branches need not share one site-wide method identity, but every convergence series and every comparison or reference cycle must remain internally compatible unless a declared robustness test is comparing branches.
 
 Geometry is not passive. If relaxation changes volume, symmetry, metallicity, or state beyond the tested family, repeat the relevant B baseline on the accepted geometry. Baseline numerical convergence does not establish observable-specific convergence.
 

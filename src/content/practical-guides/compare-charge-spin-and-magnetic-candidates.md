@@ -26,6 +26,16 @@ reviewed_at: "2026-08-03"
 
 A ground-state statement is bounded by the electronic states that were prepared and made comparable. Build a candidate table before selecting the reference.
 
+## Build candidate states as physical objects
+
+Begin with the original paper, supporting information, or a specialist review when it defines the magnetic cell, oxidation or charge convention, ordering vector, constrained state, or experimentally relevant competitors. Draw or visualize each candidate in the correct cell; label sublattices, moment directions, net charge, compensating background assumptions, and any geometry restrictions. Use the [visualization and symmetry resource index](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) to inspect whether the chosen cell can represent the intended order.
+
+Create one directory and one human-readable state sheet per candidate. Keep geometry, pseudopotentials, functional, basis, k sampling, smearing, and thresholds comparable unless the physical branch explicitly requires a change. Run genuinely fresh initializations where state trapping is at issue, then compare them with declared restart routes rather than silently inheriting a density.
+
+Read the full SCF history and inspect the final total and local moments where the code reports them, occupations, charge and spin-density outputs, symmetry, warnings, forces, stress, and any state switching. Use tables and aligned density or moment views to compare accepted candidates. Exclude unconverged or incomparable rows before ranking energy, and record metastable states rather than forcing every branch into one label.
+
+The ledger script below is a synthetic bookkeeping fixture. It is optional automation and provides no real magnetic-state evidence. Use the [electronic-structure code manuals](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) for code-specific spin and charge controls and the [learning index](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for hands-on state-construction routes.
+
 ## Run the bounded candidate ledger
 
 ```bash

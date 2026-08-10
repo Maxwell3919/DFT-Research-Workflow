@@ -24,7 +24,15 @@ reviewed_at: 2026-08-03
 
 Use this guide to create a traceable slab and adsorbate starting candidate. A surface builder produces coordinates; it does not validate the termination, thickness, coverage, vacuum, or adsorption site.
 
-## Run the checked construction
+## Manual route: choose and inspect a surface candidate
+
+Use the primary paper, supplementary methods, or a trusted surface reference to identify the bulk phase, Miller plane, termination, lateral cell, and any symmetry constraint. Decide which terminations and adsorption sites must be compared before building one convenient slab.
+
+Open the parent crystal and orient the intended surface normal in a viewer. After construction, inspect the slab from the top and side with the cell boundary shown. Count layers and adsorbates; measure slab thickness, vacuum, shortest periodic-image separation, and suspicious contacts; verify that the adsorbate is on the intended side and site. This visual inspection catches construction errors but does not establish slab-thickness, vacuum, coverage, adsorption-site, or dipole convergence.
+
+[Compare structure viewers and surface-building routes](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
+
+## Optional automation: run the checked construction
 
 From the repository root, run:
 
@@ -51,6 +59,9 @@ slab.center(vacuum=10.0, axis=2)
 Every numerical value is illustrative. The call encodes a (111) orientation, a two-by-two lateral repeat, three substrate layers, one initial on-top H site, an out-of-plane nonperiodic ASE object, and centered empty-cell length. None is a production recommendation.
 
 ## Inspect the produced object
+
+Keep the top and side views beside the numerical report. The image answers whether the intended geometry was constructed; the reported cell, coordinates, distances, and periodicity answer whether that geometry matches the recorded specification. Neither layer establishes energetic preference or relaxation stability.
+
 
 Check at least:
 

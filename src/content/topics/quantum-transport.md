@@ -7,9 +7,11 @@ Quantum transport asks how charge crosses a finite, atomically resolved region c
 
 A band structure of the isolated central fragment cannot answer this question because it contains neither reservoir occupations nor contact-induced shifts and broadening. Quantum transport is also distinct from **Electronic Transport**, which describes an extended material through a bulk distribution, scattering model, and conductivity. Inferring bulk conductivity from device conductance requires an additional geometry and scaling model; it is not a direct conversion.
 
-## Construct and converge the open system
+## Inspect the device geometry and energy-resolved current path
 
-Prepare bulk-like left and right electrodes, principal layers, matching planes, a central region long enough to recover lead behaviour, transverse periodicity, and electrostatic boundary conditions. Verify the electrode Hamiltonian and surface Green function before calculating zero-bias transmission. For finite bias, solve the charge and potential self-consistently at each bias and inspect terminal currents and charge conservation. Converge the reported $T(E)$ or current against central length, contacts, transverse k mesh, basis/grid, real-energy and contour integration, temperature, bias sequence, and restart path. A line-path band structure and an isolated fragment are not valid parents for this calculation.
+Build the left lead, principal layers, matching planes, central region, and right lead in an atomistic viewer. Inspect orientation, transverse periodicity, lead/device atom correspondence, contact bonding, vacuum, and whether the potential and density recover bulk-like lead behaviour before the matching planes. A visually clean isolated fragment is not a valid device parent if the electrodes or electrostatic boundary problem are missing.
+
+Verify the electrode Hamiltonian and surface Green function, then plot zero-bias transmission with lead bands or channel thresholds where useful. Inspect k-resolved transmission, eigenchannels or local-current maps, density of states, and the potential profile to identify the origin of a feature; these projections inherit the chosen basis and partition. For finite bias, solve the charge and potential self-consistently and inspect both terminal currents and charge conservation. Converge $T(E)$ or current against central length, contacts, transverse k mesh, basis/grid, energy and contour integration, temperature, bias sequence, and restart path. Open TranSIESTA/TBtrans and commercial GUI routes are indexed under [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
 
 ## The device is defined by its boundaries
 

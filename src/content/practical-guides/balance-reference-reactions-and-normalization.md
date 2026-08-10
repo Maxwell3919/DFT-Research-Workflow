@@ -22,6 +22,12 @@ review: docs/reviews/2026-08-03-relative-and-formation-energies.md
 reviewed_at: "2026-08-03"
 ---
 
+## Open the source records before balancing the reaction
+
+A researcher normally begins with the candidate and reservoir structures, the calculation records that produced their energies, and the paper or database metadata defining the reference convention. Put stoichiometries and per-cell energies in a spreadsheet, balance the reaction by hand, and inspect whether charge, composition, method, and state identity are compatible before converting to a per-atom or per-formula-unit value. Use [structure and data sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data) and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) to recover missing reference definitions.
+
+**Audit the stored fixture:** the displayed abstract reaction is a conceptual, deterministic teaching fixture. Its companion script checks rational stoichiometry and normalization; it is not a real material reaction or formation-energy result.
+
 Use this fixture when you need to check reaction balance, coefficient signs, and reporting normalization before inserting calculated energies. It uses invented energies for abstract species `A`, `B2`, `AB`, and `A2B3`; none denotes a real material.
 
 From the companion-script directory, inspect the returned report with:

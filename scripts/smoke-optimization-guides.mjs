@@ -33,11 +33,15 @@ const guides = [
   },
   {
     route: '/operations/optimize-structure/guides/compare-multiple-starts-and-minima/',
-    title: 'Compare Multiple Starts and Metastable Minima',
+    title: 'Compare Multiple Starts and Stationary Candidates',
     tool: 'python',
     version: 'Python 3.12',
     phrase: 'A local optimizer answers a basin-dependent question',
     boundary: 'It does not run DFT',
+    requiredPhrases: [
+      'Force, stress, displacement, and solver criteria can support an accepted stationary candidate, but they do not establish positive curvature.',
+      'Call an endpoint a local minimum only when a Hessian, phonon, vibrational, or other appropriate curvature test supports that classification in the active subspace.',
+    ],
   },
 ];
 
@@ -59,6 +63,9 @@ async function inspectGuide(page, guide, width) {
   if (result.language !== 'en') throw new Error(`${guide.route}: language is not English`);
   if (result.title !== guide.title) throw new Error(`${guide.route}: title mismatch ${result.title}`);
   if (!result.text.includes(guide.phrase)) throw new Error(`${guide.route}: missing scientific boundary phrase`);
+  for (const phrase of guide.requiredPhrases ?? []) {
+    if (!result.text.includes(phrase)) throw new Error(`${guide.route}: missing stationary-candidate boundary phrase ${phrase}`);
+  }
   if (!result.text.includes(guide.version)) throw new Error(`${guide.route}: missing tested version ${guide.version}`);
   if (!result.toolTags.includes(guide.tool)) throw new Error(`${guide.route}: missing tool tag ${guide.tool}`);
   if (!result.hasMeta || !result.hasEvidence) throw new Error(`${guide.route}: missing metadata or evidence boundary`);

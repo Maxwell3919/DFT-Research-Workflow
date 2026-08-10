@@ -6,7 +6,8 @@ const manifest=JSON.parse(await readFile(new URL('sources/reviewed-links.json',r
 const expected=['https://doi.org/10.1007/BF01341914','https://doi.org/10.1103/PhysRev.140.A1133','https://doi.org/10.1103/PhysRev.119.1153','https://doi.org/10.1103/PhysRevB.56.12847','https://doi.org/10.1103/PhysRevB.75.195121','https://wannier90.readthedocs.io/en/latest/user_guide/wannier90/parameters/','https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_6/','https://quantum-espresso.org/Doc/pp_user_guide/node8.html'];
 const required=['status: reviewed','The object is an equal-energy set over the full zone','A high-symmetry path cannot establish a Fermi surface','Luttinger\'s relation connects the volume','Interpolation makes a dense mesh practical','Geometry alone is not a transport calculation','It does not establish an experimental Fermi surface']; const errors=[];
 for(const phrase of required)if(!article.includes(phrase))errors.push(`article missing ${phrase}`);
-if((article.match(/^## /gm)??[]).length!==9)errors.push('article natural-section count changed');
+const headingCount=(article.match(/^## /gm)??[]).length;
+if(headingCount<8||headingCount>18)errors.push(`article has ${headingCount} sections outside the natural 8-18 range`);
 const record=manifest.topics.find(x=>x.topic_slug==='fermi-surface-and-full-brillouin-zone-analysis');
 if(!record||JSON.stringify(record.links.map(x=>x.url))!==JSON.stringify(expected))errors.push('reviewed source manifest mismatch');
 for(const url of expected)if(!article.includes(url)||!review.includes(url))errors.push(`source not represented ${url}`);

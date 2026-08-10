@@ -3,9 +3,27 @@ topic_slug: choose-dft-method-and-computational-setup
 status: reviewed
 ---
 
-This task produces the method sheet that every later input, output, and comparison must match. It answers a practical question: **which physical approximation and implementation will be used, and how will another researcher identify exactly the same setup?**
+This task produces a versioned baseline method identity. Every later record should inherit that baseline or name an explicit method or model branch. Unrelated target branches need not share one site-wide identity, but calculations combined in one comparison, thermodynamic cycle, or reference cycle must remain method-compatible unless the comparison is explicitly testing method sensitivity. Start with the scientific question and required observable, not with an executable or a parameter file.
 
-Before a production calculation, create a small method record beside the inputs:
+## Choose a route a researcher can actually use
+
+Write down the systems or states being compared, the required precision, and the physical effects that could change the answer. Then inspect how researchers normally implement that problem:
+
+- compare recent primary papers and their Methods or Supporting Information for the same material class and observable;
+- open the [electronic-structure code landscape](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) and identify implementations that support the required forces, stress, response, spin, relativity, boundary treatment, and post-processing;
+- check which open, registered, institutional, subscription, or commercial software and datasets are legitimately available to the research group and computing centre;
+- open the version-specific official manual and search the exact method or keyword rather than copying an input from another code or release;
+- use the [manuals, workshops, and courses landscape](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) when a worked upstream route is more useful than a parameter reference.
+
+A browser portal, GUI, text editor, terminal, and HPC scheduler are all legitimate parts of this operation. If a GUI generates an input, inspect the generated text and effective settings before submission. Availability on the current machine is a practical constraint, not a scientific ranking of codes.
+
+## Select core-valence data before handling the file
+
+Open the relevant [method and input resource landscape](/DFT-Research-Workflow/operations/resource-landscape/#method-inputs) and the dataset provider's browser interface. Select a coherent family, version, exchange-correlation treatment, accuracy tier, relativistic treatment, and file format. For every element, inspect the explicit valence and semicore partition, pseudopotential or PAW type, generator information, validation or test report, warnings, recommended starting cutoffs, licence, and compatibility with the chosen code and target feature.
+
+A recommendation is prior evidence, not acceptance for this material or observable. If a field is absent, record it as unknown. Do not infer valence, relativity, or functional compatibility from a filename. All-electron implementations replace pseudopotential selection with their own basis, radial-grid, muffin-tin, species-default, or linearization choices; those controls still require an identified source and convergence evidence.
+
+Only after this inspection should you download or receive the exact dataset. Preserve the portal record or receipt, family and version, access date, licence boundary, and original filename. Then fix the local identity:
 
 ~~~bash
 mkdir -p method/pseudo
@@ -15,25 +33,31 @@ head -n 80 method/pseudo/selected.UPF
 grep -Ei 'functional|valence|relativ|cutoff|wavefunction|density' method/pseudo/selected.UPF
 ~~~
 
-<code>sha256sum</code> fixes the file identity. <code>head</code> and <code>grep</code> expose whatever metadata that particular file makes readable; they do not establish transferability or accuracy. Record absent fields as unknown rather than inferring them from a filename.
+<code>sha256sum</code> fixes the downloaded file identity. <code>head</code> and <code>grep</code> expose metadata that this particular file makes readable; they do not replace the provider report or establish transferability or accuracy.
 
-Use a plain-text sheet that travels with the calculation:
+## Record the decision
+
+Keep a plain-text method sheet beside the inputs:
 
 ~~~text
 scientific question and target observable:
 model and reference comparison:
+software, version, access route, and required modules:
 electronic theory and exact functional:
 charge or electron-number condition:
 spin, magnetization, and relativistic treatment:
-pseudopotential or all-electron dataset, source, valence, checksum:
+pseudopotential, PAW, or all-electron dataset, source, valence, version, licence, checksum:
 basis or grid family:
 occupations and smearing interpretation:
 dispersion, Hubbard, field, solvent, or boundary treatment:
-software, version, libraries, and known feature restrictions:
 parameters still requiring numerical convergence:
+relevant Methods or Supporting Information checked:
+known feature restrictions and unresolved choices:
 ~~~
 
-Prepare a representative input, run it, and compare the program-reported setup with this sheet:
+## Run one bounded implementation preflight
+
+Prepare one representative input and compare the program-reported setup with the sheet before launching a sweep. Quantum ESPRESSO is the demonstrated implementation below; it is not the definition of this research task.
 
 ~~~bash
 pw.x -in scf.in > scf.out
@@ -41,11 +65,11 @@ grep -Ei 'program pwscf|exchange-correlation|pseudo|cutoff|k points|occupation|s
 grep "JOB DONE" scf.out
 ~~~
 
-The first <code>grep</code> only locates version-dependent setup summaries for inspection. The second checks normal program termination only. A successful program exit establishes neither methodological suitability nor numerical convergence.
+The first <code>grep</code> locates version-dependent setup summaries for human inspection. The second checks normal program termination only. A successful exit establishes neither methodological suitability nor numerical convergence. A researcher using another code should perform the equivalent comparison with that code's official manual, generated input, reported effective settings, warnings, and output artifacts.
 
-This task establishes a **versioned method identity** and a defensible starting setup. It does not accept cutoffs, k meshes, smearing widths, vacuum dimensions, or response grids; those require observable-specific tests.
+This task establishes a versioned method identity and a defensible starting setup. It does not accept cutoffs, k meshes, smearing widths, vacuum dimensions, or response grids; those require observable-specific tests.
 
-## Begin with the scientific comparison
+## Make the scientific comparison explicit
 
 Write the comparison before selecting software options. Identify the systems or states being compared, the observable needed, the required precision, and the physical effects that could change the answer.
 
@@ -137,7 +161,7 @@ Compare the sheet with the input, the exact data files, and the output summary. 
 
 ## The result of this task
 
-The result is a reconstructable method identity, not a claim that the calculation is accurate or converged. The next task varies numerical controls at fixed method identity and accepts settings only against a declared observable and tolerance.
+The result is a reconstructable baseline and a rule for naming later branches, not a claim that the calculation is accurate or converged. The next task varies numerical controls within one declared method branch and accepts settings only against a declared observable and tolerance. Later target records either inherit that accepted baseline or identify why a different physical or implementation branch is required.
 
 There is no universal best functional, pseudopotential library, all-electron method, code, basis, cutoff, k-point mesh, smearing width, Hubbard parameter, or boundary correction. The defensible choice is bounded by the scientific question, implementation, convergence evidence, and robustness tests.
 

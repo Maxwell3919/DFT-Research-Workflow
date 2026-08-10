@@ -8,10 +8,10 @@ const artifactDirectory = process.env.SMOKE_ARTIFACT_DIR;
 const route = '/operations/choose-dft-method-and-computational-setup/';
 const requiredContracts = [
   {
-    name: 'versioned method sheet',
+    name: 'versioned method baseline and branch compatibility',
     phrases: [
-      'This task produces the method sheet that every later input, output, and comparison must match.',
-      'This task establishes a versioned method identity and a defensible starting setup.',
+      'This task produces a versioned baseline method identity. Every later record should inherit that baseline or name an explicit method or model branch.',
+      'Unrelated target branches need not share one site-wide identity, but calculations combined in one comparison, thermodynamic cycle, or reference cycle must remain method-compatible unless the comparison is explicitly testing method sensitivity.',
     ],
   },
   {
@@ -26,7 +26,7 @@ const requiredContracts = [
     phrases: [
       'sha256sum method/pseudo/* > method/pseudopotentials.sha256',
       'head -n 80 method/pseudo/selected.UPF',
-      'sha256sum fixes the file identity.',
+      'sha256sum fixes the downloaded file identity.',
       'Record its generating functional, explicit valence configuration, frozen-core partition, semicore choice, relativistic treatment, nonlinear core correction where present, format, version, checksum, and any recommended starting cutoffs.',
       'Check that the selected functional and requested feature are compatible with the dataset and implementation.',
     ],
@@ -36,16 +36,16 @@ const requiredContracts = [
     phrases: [
       'pw.x -in scf.in > scf.out',
       "grep -Ei 'program pwscf|exchange-correlation|pseudo|cutoff|k points|occupation|smearing|spin' scf.out",
-      'The first grep only locates version-dependent setup summaries for inspection.',
+      'The first grep locates version-dependent setup summaries for human inspection.',
       'The second checks normal program termination only.',
-      'A successful program exit establishes neither methodological suitability nor numerical convergence.',
+      'A successful exit establishes neither methodological suitability nor numerical convergence.',
     ],
   },
   {
     name: 'baseline versus observable-specific convergence',
     phrases: [
       'It does not accept cutoffs, k meshes, smearing widths, vacuum dimensions, or response grids; those require observable-specific tests.',
-      'The next task varies numerical controls at fixed method identity and accepts settings only against a declared observable and tolerance.',
+      'The next task varies numerical controls within one declared method branch and accepts settings only against a declared observable and tolerance.',
     ],
   },
   {
@@ -130,7 +130,8 @@ try {
   if (response?.status() !== 200) throw new Error(`DFT method no-JavaScript route returned ${response?.status()}`);
   const noJsText = await noJsPage.$eval('body', (body) => body.innerText);
   for (const phrase of [
-    'This task produces the method sheet that every later input, output, and comparison must match.',
+    'This task produces a versioned baseline method identity. Every later record should inherit that baseline or name an explicit method or model branch.',
+    'Unrelated target branches need not share one site-wide identity, but calculations combined in one comparison, thermodynamic cycle, or reference cycle must remain method-compatible unless the comparison is explicitly testing method sensitivity.',
     'sha256sum method/pseudo/* > method/pseudopotentials.sha256',
     'pw.x -in scf.in > scf.out',
     'It does not accept cutoffs, k meshes, smearing widths, vacuum dimensions, or response grids; those require observable-specific tests.',

@@ -7,9 +7,11 @@ The Bethe--Salpeter equation (BSE) is used when a neutral excitation cannot be r
 
 A BSE spectrum therefore answers a different question from a Kohn--Sham band structure, a quasiparticle gap, or a measured spectrum affected by temperature, disorder, substrates, phonons, and carrier populations.
 
-## Assemble and converge the two-particle problem
+## Inspect the spectrum and the electron--hole state together
 
-Start from compatible quasiparticle energies and screening. Select valence/conduction windows, k sampling, momentum transfer, spin/SOC sector, Coulomb boundary, kernel, polarization, and solver approximation. Calculate the neutral excitations, then inspect continuum placement, oscillator strengths, electron--hole amplitudes, bright/dark character, broadening, and convergence of the specific excitation or spectrum. Solver residual alone is not target convergence, and one peak does not establish an exciton mechanism. This overview does not claim an executed BSE calculation.
+Start from compatible quasiparticle energies and screening. Select valence/conduction windows, k sampling, momentum transfer, spin/SOC sector, Coulomb boundary, kernel, polarization, and solver approximation. Plot the BSE spectrum against the independent-particle or quasiparticle continuum, keeping oscillator strengths and polarization visible. For an assigned excitation, inspect its valence/conduction and k-space weights and, where supported, a real-space electron--hole distribution with a clearly fixed electron or hole position.
+
+These views distinguish bright, dark, bound, resonant, localized, interlayer, and charge-transfer candidates more reliably than peak energy alone, but they remain representation-dependent evidence. Converge the specific excitation, continuum placement, oscillator strength, and spatial or reciprocal character against windows, meshes, screening, and solver choices. Major BSE/GW codes and tutorials are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties). Solver residual alone is not target convergence, and one peak does not establish an exciton mechanism. This overview does not claim an executed BSE calculation.
 
 ## From electron--hole pairs to neutral excitations
 

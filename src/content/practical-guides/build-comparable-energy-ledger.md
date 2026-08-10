@@ -21,6 +21,12 @@ review: docs/reviews/2026-08-03-relative-and-formation-energies.md
 reviewed_at: "2026-08-03"
 ---
 
+## Inspect calculation records before sorting energies
+
+Open the input, output, accepted structure, and state record for every candidate. In a spreadsheet, mark composition, cell size, charge, magnetic identity, evaluator, energy convention, completion, and relevant convergence evidence; reject incomparable rows before ranking anything. Open structural outliers in a viewer and return to the original paper or Methods section when state identity is unclear. See [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for common inspection routes.
+
+**Audit the stored fixture:** the abstract A2B3 ledger and its figure are conceptual, synthetic teaching objects. The companion script demonstrates a comparability gate; it does not supply a real material ranking.
+
 Use this guide before subtracting total energies from different calculation records. The fixture contains two accepted abstract `A2B3` candidates and three deliberately incompatible rows.
 
 Inspect the report from the companion-script directory:

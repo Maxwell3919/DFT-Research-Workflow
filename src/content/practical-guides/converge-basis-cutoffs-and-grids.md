@@ -30,15 +30,13 @@ Numerical convergence is a comparison, not a single successful run. Choose the q
 
 The silicon files below are an illustrative series for learning the procedure. Their values are not transferable cutoffs or k meshes for another material, pseudopotential, property, or accuracy target.
 
-## Verify the parser
+## Choose the method, data, and manual
 
-From the repository root:
+Start from the target observable and tolerance. Open the [method and input landscape](/DFT-Research-Workflow/operations/resource-landscape/#method-inputs), the exact code manual, and the provider record for the selected pseudopotential, PAW dataset, species defaults, or basis set. Inspect its family, functional, valence or all-electron treatment, relativity, test evidence, recommended starting controls, warnings, and licence before using it.
 
-~~~bash
-python3 examples/practical-guides/qe_manual_handoff.py self-test
-~~~
+Identify the completeness controls used by the chosen representation. Plane waves, localized orbitals, real-space grids, LAPW/APW methods, and GPW/GAPW methods do not share one cutoff model. Quantum ESPRESSO and the committed Silicon matrix below provide one plane-wave pseudopotential implementation; other common implementations are indexed under [electronic-structure codes](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes).
 
-A passing self-test establishes that the documented parser can reconstruct the hash-registry-bound public fixture. It does not accept a convergence threshold for your new calculation.
+Read comparable Methods or Supporting Information to learn which controls other researchers tested, but do not import their accepted values until the model, dataset, code, state, and target observable are shown to be comparable.
 
 ## Generate and inspect the declared input series
 
@@ -119,7 +117,17 @@ done
 
 <code>JOB DONE</code> checks normal termination. The SCF line checks the electronic solver condition reported for that run. The energy line supplies the compared scalar. None of them establishes convergence of the series.
 
-## Parse and plot the fresh runtime
+## Inspect the table and plot
+
+Build an ordinary table containing the input identity, varied and fixed controls, termination and solver state, target observable, difference from the declared reference, and cost. Plot every completed point with a spreadsheet, notebook, or plotting program. Inspect the raw table and figure for a stable region, non-monotonicity, state changes, excluded rows, and edge-of-series behavior before accepting a setting.
+
+## Optional parser and replay
+
+The repository helper is an optional way to reproduce that already understood table and figure. Verify its parsing rules first:
+
+~~~bash
+python3 examples/practical-guides/qe_manual_handoff.py self-test
+~~~
 
 The helper reads the files below <code>runtime</code>, binds every row to its source hash, and writes ordinary CSV plus light-background SVG:
 

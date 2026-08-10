@@ -5,6 +5,16 @@ status: reviewed
 
 A reference ground-state calculation establishes the fixed-geometry electronic state, energy reference, and reusable parent data used by later calculations. The phrase “ground state” must be used with care. A self-consistent calculation normally finds one stationary electronic solution compatible with the chosen model, method, boundary conditions, occupations, and initialization. The durable result is therefore a verified reference-state candidate and a record of the competing states that were actually tested.
 
+## Compare states as physical and numerical objects
+
+Place the accepted geometry, the fixed-geometry input, and the structure viewer side by side. Confirm cell vectors, atom order, units, charge, spin treatment, occupations, constraints, and any intended symmetry before launching a static calculation. For competing magnetic, charge, constrained, or metastable candidates, create a human-readable state label and a separate directory for each candidate. Consult the original paper or supporting information when it determines the cell, ordering pattern, charge convention, or physically relevant competitors.
+
+Use the [electronic-structure code and official-manual index](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) to locate the implementation's SCF, restart, occupation, and spin definitions. Use [visualization and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) to inspect the shared geometry and any state-dependent density or magnetization object that the code can export. The [learning resource index](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) points to hands-on routes when an unfamiliar code or state construction needs a worked introduction.
+
+Run every candidate with the same declared evaluator unless the scientific question requires a different branch. Read the full SCF iteration history rather than only the last energy: identify oscillation, slow residual decay, occupation changes, state switching, warnings, and the actual electronic stop condition. Then inspect the final total and local moments where available, occupations, charge or spin-density evidence, symmetry, forces and stress as diagnostics, and restart ancestry. A restarted result should be compared with a genuinely fresh start when state trapping matters.
+
+Compare accepted candidates in one table and, where useful, in aligned plots or density views. Exclude incomparable or unconverged rows before ranking energy. The lowest printed energy is not automatically the lowest relevant state, and neither a visually reasonable density nor an SCF marker proves model validity. Record why a state was accepted, rejected, or retained as metastable; package scripts only after this manual state comparison is intelligible.
+
 ## Build and audit the reference state
 
 Begin with one exact accepted geometry. Prepare a fixed-geometry input with the final method and numerical settings, run a fresh static self-consistent calculation, and inspect the output before reusing its density, potential, or wavefunctions. If competing charge, spin, occupation, symmetry, or relativistic branches are plausible, evaluate them under one comparable protocol and retain every excluded or failed candidate with its reason.

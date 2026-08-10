@@ -22,6 +22,12 @@ review: docs/reviews/2026-08-04-defect-formation-energies-and-charge-states.md
 reviewed_at: "2026-08-04"
 ---
 
+## Inspect the defect identity behind every line
+
+For a real defect, open the relaxed structure and charge or spin density for each charge state, check that the same defect configuration persists, and mark the host band edges and allowed Fermi-level range. Plot the formation-energy lines with chemical-potential and correction conventions stated, then inspect the lower envelope and any skipped state manually. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist defect tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
+
+**Audit the stored fixture:** the envelope, transition levels, and self-consistent Fermi-level example are deliberately synthetic. The companion script checks the toy ledger and crossing logic; it contains no real defect geometry, localization evidence, or material transition level.
+
 Use this example only after charge-state intercepts and slopes have been assembled and checked. It separates three operations: draw every line, select the thermodynamic lower envelope, and solve one declared charge-neutrality model. All inputs describe an invented defect in an abstract 3 eV gap.
 
 From the repository root, run:

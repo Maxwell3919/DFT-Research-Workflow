@@ -5,9 +5,11 @@ status: reviewed
 
 Piezoelectric response connects a mechanical perturbation to a change in macroscopic polarization, or an electric perturbation to stress or strain. It is a linear derivative of a declared insulating crystal state under declared electrical and mechanical boundary conditions. A polar crystal, a finite polarization difference, or a large dielectric constant is not itself a piezoelectric coefficient.
 
-## Choose the coefficient before perturbing the structure
+## Inspect the axes, deformation, and tensor together
 
-Decide whether the required output is $e$, $d$, or another constitutive tensor and declare the electrical, mechanical, clamped-ion, and internally relaxed conditions. Starting from one accepted insulating state, run compatible DFPT or signed finite-strain calculations, follow the polarization branch, fit the requested derivative, and inspect tensor symmetry, units, linearity, and convergence. Converge every elastic or dielectric tensor used in a conversion. The subordinate ledger is synthetic-only and verifies arithmetic rather than a material response.
+Decide whether the required output is $e$, $d$, or another constitutive tensor and declare the electrical, mechanical, clamped-ion, and internally relaxed conditions. Open the reference structure with its crystallographic axes visible, record the Cartesian and Voigt conventions, and inspect representative positive and negative deformations. When internal coordinates relax, compare the actual atomic motion with the clamped structure; the two responses are different physical objects, not two columns to combine without inspection.
+
+Run compatible DFPT or signed finite-strain calculations, follow the polarization branch, and plot each requested tensor component against the applied perturbation before fitting it. Inspect symmetry, units, linearity, branch continuity, and conversion inputs. Converge every elastic or dielectric tensor used to obtain a different coefficient. The subordinate ledger is synthetic-only and demonstrates arithmetic with invented entries; it is not a piezoelectric workflow. Relevant response codes, GUI tools, and manuals are grouped under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
 
 ## Decide which constitutive tensor answers the question
 

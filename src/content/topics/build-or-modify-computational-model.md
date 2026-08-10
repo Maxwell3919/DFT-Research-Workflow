@@ -5,71 +5,21 @@ status: reviewed
 
 A computational model is the explicit system sent to a calculation: atoms, composition, cell, periodicity, charge, candidate order, constraints, and every deliberate departure from the source structure. The result of this task is often a **model family**, not one privileged file.
 
+## Manual route: define and inspect the model family
+
+Begin with the observable and the physical alternatives it leaves unresolved. Read the original paper and supplementary methods for the reported phase, orientation, defects, termination, charge or magnetic state, and experimental constraints. Then choose the smallest model family that can represent those alternatives; do not let a convenient builder choose the scientific object for you.
+
+Open the checked parent structure before editing it. After each meaningful transformation, open parent and child side by side with cell boundaries visible. Inspect orientation, replication, vacuum direction, termination, defect site, interface registry, coordination, and any unexpectedly short contact. Record what you accepted or rejected. Visual inspection complements numerical geometry and symmetry checks; it does not replace them.
+
+[Compare structure viewers, symmetry services, and model-building tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
+
 ## Start from the question and the checked source
 
 Name the comparison or observable first. Then identify the smallest model that can represent it. A primitive bulk cell cannot represent an isolated defect, a surface, a long-period magnetic order, or an interface. A slab built for one coverage is not automatically the model for another.
 
 Before transforming anything, create a model workspace and inventory the checked source object:
 
-```bash
-mkdir -p models/{source,candidates,records}
-pwd
-find models -maxdepth 2 -type f -print
-sha256sum structures/si-cod-9013102/working/9013102-as-downloaded.cif \
-  > models/records/source.sha256
-```
-
-The checksum binds the parent bytes. It does not say that the parent is the correct physical model. Copy or reference the checked working artifact; never overwrite the unchanged database download.
-
 Write one sentence that states what the model approximates: periodic bulk, isolated object, low-dimensional layer, surface, defect, adsorbate, interface, ordered composition, magnetic pattern, or constrained geometry. That sentence determines which periodic images, compositions, length scales, and degrees of freedom must remain visible.
-
-## Record every transformation
-
-For each child model, preserve:
-
-```text
-candidate identifier
-parent identifier and checksum
-tool, version, script, and command
-transformation parameters and matrix
-site mapping and species changes
-parent and child composition
-parent and child cell and periodicity
-charge, magnetic initialization, and constraints
-output filename and checksum
-reason this candidate exists
-```
-
-After a tool creates a child, inspect and hash it rather than trusting a picture or filename:
-
-```bash
-study_root="$(pwd -P)"
-candidate_dir="$study_root/models/candidates"
-source_ledger="$study_root/models/records/source.sha256"
-candidate_ledger="$study_root/models/records/candidate-files.sha256"
-
-test -n "$(find "$candidate_dir" -type f -print -quit)"
-(
-  cd "$candidate_dir"
-  find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum
-) > "$candidate_ledger"
-
-if diff -u "$source_ledger" "$candidate_ledger"; then
-  printf '%s\n' 'No byte/path-ledger differences detected.'
-else
-  diff_status=$?
-  if [ "$diff_status" -eq 1 ]; then
-    printf '%s\n' 'Ledger differences detected; inspect the parsed parent and children.'
-  else
-    printf 'diff failed with status %s\n' "$diff_status" >&2
-    exit "$diff_status"
-  fi
-fi
-```
-
-Run this block from the study directory that contains `models/`. The quoted absolute variables fix that working context, while the subshell records candidate paths relative to `models/candidates/`. `find -type f -print0`, `sort -z`, and `xargs -0` include nested regular files deterministically without breaking on spaces. The non-empty check prevents an empty directory from being mistaken for a completed inventory.
-
-Each digest binds the exact bytes of one preserved artifact at its recorded path. A `diff` status of zero means the two ledgers are textually identical; status one means they differ; any greater status is an execution error and stops the operation. A path-ledger difference does not by itself establish that two structures have different scientific identities, and equal bytes do not establish that a model is suitable. Parse the parent and every child and compare the cell matrix, species and occupancies, coordinates, periodic-boundary flags, atom mapping, and declared transformation before accepting the model.
 
 ## Distinguish representation changes from model changes
 
@@ -104,6 +54,68 @@ Cheap energies, geometric scores, electrostatic ranks, or machine-learned estima
 Periodic size is part of the model. A supercell is a modelling choice, not merely a larger file. A supercell fixes defect concentration and allowed wavelengths; a lateral slab cell fixes coverage; a low-dimensional cell fixes the image geometry. Vacuum is part of the boundary model, not empty experimental material. There is no universal supercell, vacuum, layer-count, or lattice-mismatch threshold. Those controls require convergence against the target observable.
 
 Constraints are assumptions written into the model. Fixed layers, selected coordinates, cell restrictions, imposed symmetry, and magnetic patterns must identify affected atoms or components and their physical justification. A constrained stationary point is not an unconstrained minimum.
+
+## Numerical and lineage checks
+
+For each child model, preserve:
+
+```text
+candidate identifier
+parent identifier and checksum
+tool, version, script, and command
+transformation parameters and matrix
+site mapping and species changes
+parent and child composition
+parent and child cell and periodicity
+charge, magnetic initialization, and constraints
+output filename and checksum
+reason this candidate exists
+```
+
+After a tool creates a child, inspect and hash it rather than trusting a picture or filename:
+
+Each digest binds the exact bytes of one preserved artifact at its recorded path. A `diff` status of zero means the two ledgers are textually identical; status one means they differ; any greater status is an execution error and stops the operation. A path-ledger difference does not by itself establish that two structures have different scientific identities, and equal bytes do not establish that a model is suitable. Parse the parent and every child and compare the cell matrix, species and occupancies, coordinates, periodic-boundary flags, atom mapping, and declared transformation before accepting the model.
+
+## Optional automation: preserve and compare repeated transformations
+
+Scripts and hashes make repeated work auditable after the researcher has chosen and inspected the model. They do not decide which phase, termination, defect site, interface registry, or constrained state is physically appropriate.
+
+```bash
+mkdir -p models/{source,candidates,records}
+pwd
+find models -maxdepth 2 -type f -print
+sha256sum structures/si-cod-9013102/working/9013102-as-downloaded.cif \
+  > models/records/source.sha256
+```
+
+The checksum binds the parent bytes. It does not say that the parent is the correct physical model. Copy or reference the checked working artifact; never overwrite the unchanged database download.
+
+```bash
+study_root="$(pwd -P)"
+candidate_dir="$study_root/models/candidates"
+source_ledger="$study_root/models/records/source.sha256"
+candidate_ledger="$study_root/models/records/candidate-files.sha256"
+
+test -n "$(find "$candidate_dir" -type f -print -quit)"
+(
+  cd "$candidate_dir"
+  find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum
+) > "$candidate_ledger"
+
+if diff -u "$source_ledger" "$candidate_ledger"; then
+  printf '%s\n' 'No byte/path-ledger differences detected.'
+else
+  diff_status=$?
+  if [ "$diff_status" -eq 1 ]; then
+    printf '%s\n' 'Ledger differences detected; inspect the parsed parent and children.'
+  else
+    printf 'diff failed with status %s\n' "$diff_status" >&2
+    exit "$diff_status"
+  fi
+fi
+```
+
+Run this block from the study directory that contains `models/`. The quoted absolute variables fix that working context, while the subshell records candidate paths relative to `models/candidates/`. `find -type f -print0`, `sort -z`, and `xargs -0` include nested regular files deterministically without breaking on spaces. The non-empty check prevents an empty directory from being mistaken for a completed inventory.
 
 ## Decide which candidates continue
 

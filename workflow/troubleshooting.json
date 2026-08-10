@@ -285,6 +285,43 @@
       ]
     },
     {
+      "slug": "geometry-looks-physically-wrong",
+      "title": "The geometry looks physically wrong",
+      "symptom": "A starting, intermediate, or final structure shows overlaps, broken coordination, an implausible cell, vacuum collapse, unexpected reconstruction, atom swapping, or motion inconsistent with declared constraints.",
+      "first_check": "Open the source, starting, suspect, and last accepted structures in the same viewer with the same cell, periodic-image, and orientation settings; confirm units, atom mapping, boundary conditions, and active constraints before changing optimizer settings.",
+      "cause_classes": [
+        "Wrong structure source, unit conversion, atom order, periodic image, or coordinate convention",
+        "Incorrect supercell, vacuum direction, cell degrees of freedom, symmetry, or constraints",
+        "A real reconstruction or state-coupled distortion that must be tested rather than cosmetically repaired",
+        "An unaccepted trial frame, failed electronic step, or corrupted or incompatible restart"
+      ],
+      "inspect": [
+        "Source, initial, suspect, and final structures side by side, including cell vectors and periodic images",
+        "Bond lengths, coordination, layer registry, vacuum, cell volume and angles, and constraint mapping",
+        "Trajectory frames around the first anomalous change together with force, stress, displacement, and SCF histories",
+        "Output warnings, state diagnostics, restart ancestry, and whether the suspicious frame was accepted by the optimizer"
+      ],
+      "safe_next_action": [
+        "Stop using the suspect structure as a parent; return to the last accepted frame or rebuild the model from the verified source while preserving the anomalous branch.",
+        "After correcting a demonstrated model, mapping, boundary, or numerical problem, run a bounded fresh energy-and-force check before restarting optimization."
+      ],
+      "preserve_before_retry": [
+        "Source, initial, suspect, and last accepted structures plus the complete trajectory and the viewer settings or screenshots needed to reproduce the observation",
+        "Inputs, outputs, constraints, state labels, restart objects, and the exact transformation or manual edit applied"
+      ],
+      "do_not_conclude": "A visually implausible structure is a valid warning, not proof of numerical nonconvergence or physical instability. Conversely, a visually plausible structure does not establish force or stress convergence, a minimum, model validity, or scientific support.",
+      "related_topic_slugs": [
+        "build-or-modify-computational-model",
+        "optimize-structure",
+        "calculate-reference-ground-state"
+      ],
+      "official_source_ids": [
+        "qe-pw-troubleshooting",
+        "gpaw-convergence-issues",
+        "cp2k-scf-convergence-guide"
+      ]
+    },
+    {
       "slug": "geometry-optimization-stalls",
       "title": "The geometry optimization stalls or exits without an acceptable structure",
       "symptom": "The optimizer reports an error, reaches its step limit, repeats large moves, or exits without satisfying the active force and stress conditions.",

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0-worked-workflows",
   "status": "migration-registry",
-  "scope_note": "Only workflows with a complete, published terminal-first case bundle are public. Legacy recipe routes remain migration surfaces, not a second workflow directory.",
+  "scope_note": "Only workflows with real, inspectable case evidence and explicit scientific boundaries are public. Human browser, GUI, manual, terminal, and HPC actions form one research route; exact replay remains supporting evidence. Legacy recipe routes remain migration surfaces, not a second workflow directory.",
   "workflows": [
     {
       "slug": "silicon-ground-state-electronic-structure",
@@ -10,7 +10,7 @@
       "excerpt_path": "source/output-excerpt.txt",
       "material": "Silicon",
       "status": "published-when-case-complete",
-      "summary": "An assembled, provenance-bound set of separately recorded real Silicon QE 7.5 stages, without asserting one historical continuous launcher.",
+      "summary": "Follow a real COD Silicon structure through model inspection, numerical setup, reference calculations, bands, DOS, plots, and bounded interpretation using separately recorded real QE 7.5 evidence.",
       "history_kind": "assembled-public-evidence",
       "evidence_boundary": "Program completion, SCF convergence, ionic convergence, expected-artifact presence, target-observable convergence, and scientific support are separate decisions.",
       "continuity_boundary": "The public case is an assembled set of hash-bound, separately recorded real QE 7.5 stages. It does not claim one continuous historical launcher, case-wide shell-exit transcript, execution interval, or cross-route save-tree ancestry.",
@@ -146,7 +146,7 @@
           {
             "id": "source",
             "label": "Obtain the source structure",
-            "purpose": "Bind the starting crystal record to an inspectable public source before changing its representation.",
+            "purpose": "Open the COD record, read its metadata, download and visually inspect the CIF, then bind the starting crystal to the public source before changing its representation.",
             "topic_slugs": [
               "obtain-material-structure"
             ],
@@ -173,7 +173,7 @@
           {
             "id": "model",
             "label": "Build the computational model",
-            "purpose": "Inspect the checked bridge from the conventional COD cell to the declared two-site primitive QE representation.",
+            "purpose": "Compare the conventional COD cell and the declared two-site primitive QE representation visually and numerically before accepting the transformation.",
             "topic_slugs": [
               "build-or-modify-computational-model"
             ],
@@ -191,7 +191,7 @@
           {
             "id": "pseudopotential",
             "label": "Obtain and verify the pseudopotential",
-            "purpose": "Acquire the exact declared SSSP archive member without redistributing it.",
+            "purpose": "Inspect the SSSP family and potential metadata, then acquire the exact declared archive member without redistributing it.",
             "topic_slugs": [
               "choose-dft-method-and-computational-setup"
             ],
@@ -420,7 +420,7 @@
           {
             "id": "plot",
             "label": "Rebuild tables and plots",
-            "purpose": "Regenerate the public teaching figures directly from the stored raw-output record.",
+            "purpose": "Open the public teaching figures beside their source tables, inspect the axes, references, warnings, and visible trends, then regenerate them from the stored raw-output record if needed.",
             "topic_slugs": [
               "analyze-and-compare-results"
             ],
@@ -454,7 +454,7 @@
           {
             "id": "interpret",
             "label": "Interpret within the evidence boundary",
-            "purpose": "Read the parsed samples together with warnings, sampling policy, and explicit non-claims.",
+            "purpose": "Read the real figures, parsed samples, raw anomalies, warnings, sampling policy, relevant literature, and explicit non-claims together.",
             "topic_slugs": [
               "validate-results-and-scientific-conclusions"
             ],
@@ -477,7 +477,7 @@
           {
             "id": "preserve",
             "label": "Preserve the reproducible record",
-            "purpose": "Keep sources, inputs, outputs, hashes, parsers, environment, routes, and non-claims together.",
+            "purpose": "Keep the human decision record, source/browser receipt, visual inspection notes, inputs, outputs, figures, hashes, parsers, environment, routes, and non-claims together.",
             "topic_slugs": [
               "document-and-preserve-study"
             ],
@@ -524,7 +524,7 @@
       "excerpt_path": "output/compact-source-excerpt.txt",
       "material": "Aluminium",
       "status": "published-when-case-complete",
-      "summary": "An assembled Aluminium record separating initial captured outputs, an isolated SCF/NSCF/dos.x/bands rerun, and later bounded screens with explicit evidence ceilings.",
+      "summary": "Follow an explicit fcc Aluminium teaching model through metallic setup, real QE SCF/full-zone/DOS branches, convergence and E(V) screens, plots, and bounded interpretation.",
       "history_kind": "assembled-public-evidence-with-one-continuous-route",
       "evidence_boundary": "Program completion, SCF convergence, ionic convergence, expected-artifact presence, target-observable convergence, and scientific support are separate decisions.",
       "continuity_boundary": "The public case assembles several real QE 7.5 routes. Only isolated-dos-route is continuous; the case as a whole does not claim one historical launcher, case-wide shell-exit transcript, execution interval, or cross-route save-tree ancestry.",
@@ -665,7 +665,7 @@
           {
             "id": "source",
             "label": "Identify the structure source",
-            "purpose": "Establish what structure record the calculation actually starts from.",
+            "purpose": "Recognize that this case starts from an explicit teaching input with no database or experimental identity, then inspect the fcc structure before calculation.",
             "topic_slugs": [
               "obtain-material-structure"
             ],
@@ -683,7 +683,7 @@
           {
             "id": "model",
             "label": "Inspect the computational model",
-            "purpose": "Check the one-atom fcc primitive model shared by the electronic routes.",
+            "purpose": "Visualize and inspect the one-atom fcc primitive model shared by the electronic routes, including its cell and periodic interpretation.",
             "topic_slugs": [
               "build-or-modify-computational-model"
             ],
@@ -703,7 +703,7 @@
           {
             "id": "pseudopotential",
             "label": "Obtain and verify the pseudopotential",
-            "purpose": "Acquire the exact public Quantum ESPRESSO UPF and reject any byte mismatch.",
+            "purpose": "Open the public Quantum ESPRESSO potential record, inspect its metadata and method compatibility, then acquire the exact UPF and reject any byte mismatch.",
             "topic_slugs": [
               "choose-dft-method-and-computational-setup"
             ],
@@ -902,7 +902,7 @@
           {
             "id": "plot",
             "label": "Rebuild tables and plots",
-            "purpose": "Regenerate the native dos.x, raw-NSCF, and bounded-screen teaching views from committed evidence.",
+            "purpose": "Open the native dos.x, raw-NSCF, convergence, and bounded E(V) views with their source tables, inspect what each representation shows, then regenerate them from committed evidence if needed.",
             "topic_slugs": [
               "analyze-and-compare-results"
             ],
@@ -936,7 +936,7 @@
           {
             "id": "interpret",
             "label": "Interpret within the evidence boundary",
-            "purpose": "Read route-scoped results together with warnings, the exploratory FAIL, and explicit non-claims.",
+            "purpose": "Read route-scoped figures and tables together with raw warnings, the exploratory FAIL, relevant literature, and explicit non-claims.",
             "topic_slugs": [
               "validate-results-and-scientific-conclusions"
             ],
@@ -962,7 +962,7 @@
           {
             "id": "preserve",
             "label": "Preserve the reproducible record",
-            "purpose": "Keep route-scoped inputs, outputs, hashes, commands, source receipts, parsers, warnings, and non-claims together.",
+            "purpose": "Keep the human decision record, model inspection notes, route-scoped inputs, outputs, figures, hashes, commands, source receipts, parsers, warnings, and non-claims together.",
             "topic_slugs": [
               "document-and-preserve-study"
             ],

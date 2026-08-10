@@ -15,7 +15,7 @@ const verifiedAtLabel = new Intl.DateTimeFormat('en-GB', {
 }).format(new Date(`${toolsRegistry.verified_at}T00:00:00Z`));
 const requiredHeadings = ['What', 'Use it when', 'First useful action', 'Inputs and outputs', 'What to verify', 'Where in DRW', 'Start here', 'Official documentation'];
 const routes = [
-  { route: '/tools/', title: 'Tools', phrase: 'Materials data services' },
+  { route: '/tools/', title: 'Tools', phrase: 'Structures and materials data' },
   ...toolsRegistry.tools.map((tool) => ({
     route: `/tools/${tool.slug}/`,
     title: tool.name,
@@ -99,7 +99,7 @@ try {
     }
   }
   await page.close();
-  console.log('Tools browser smoke passed: index and all 17 operationalized detail pages, ordered actual-use sections, registry-bound inputs/outputs/verification checks and primary DRW entries, 1440px/390px no-overflow, and 390px no-JavaScript reading.');
+  console.log('Tools browser smoke passed: index and all 17 human-ordered depth pages, browser-first starts, registry-bound checks, responsive containment, and no-JavaScript reading.');
 } finally {
   await browser.close();
 }

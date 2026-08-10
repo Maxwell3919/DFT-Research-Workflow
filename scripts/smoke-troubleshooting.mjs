@@ -10,6 +10,7 @@ const expectedSlugs = [
   'eigensolver-or-fermi-level-error',
   'restart-or-parent-artifact-rejected',
   'io-memory-or-parallel-failure',
+  'geometry-looks-physically-wrong',
   'geometry-optimization-stalls',
   'symmetry-or-kq-mapping-mismatch',
   'imaginary-phonon-frequencies',
@@ -156,7 +157,7 @@ try {
     if (!exists) throw new Error(`Troubleshooting stable anchor #${anchor} is missing without JavaScript`);
   }
 
-  console.log(`Troubleshooting smoke passed: 9 static symptoms, ${topicTargets.length} related DRW targets, 1440/1024/768/430/390/360px no-overflow layouts, 390px no-JavaScript rendering, and 3 stable anchors.`);
+  console.log(`Troubleshooting smoke passed: ${expectedSlugs.length} static symptoms, ${topicTargets.length} related DRW targets, 1440/1024/768/430/390/360px no-overflow layouts, 390px no-JavaScript rendering, and ${requiredAnchors.length} stable anchors.`);
 } finally {
   await browser.close();
 }

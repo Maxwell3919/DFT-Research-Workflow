@@ -5,9 +5,11 @@ status: reviewed
 
 Elastic constants describe the local, reversible response of a specified crystalline state to an infinitesimal homogeneous strain. They answer how the energy curvature or stress changes near that state; they do not directly answer when a specimen fractures, how a porous polycrystal flows, or whether a phase survives finite temperature and defects. In DFT, the response belongs to the full calculation object: crystal state, charge and magnetic state, exchange--correlation and Hubbard model, pressure or field boundary condition, internal-coordinate freedom, and numerical representation all affect the tensor being compared.
 
-## Run a controlled strain series
+## Inspect the strained structures, then fit the response
 
-Start from an accepted structure with a declared residual stress. Choose stress--strain or energy--strain, the independent signed strain patterns, and whether ions remain clamped or relax internally. Hold the electronic method fixed, calculate every strained state, extract stress and energy into one ledger, fit the tensor, and inspect residuals, symmetry, strain-amplitude dependence, and agreement between compatible routes. Converge the tensor component or derived modulus that supports the claim, not merely the unstrained SCF energy. The subordinate ledger is synthetic-only: it checks fitting arithmetic, not a material calculation.
+Open the accepted reference cell in a structure viewer before making strains. Confirm the crystallographic axes, the Cartesian basis used by the code, the Voigt convention, and which internal coordinates are allowed to move. After generating each signed deformation, view representative positive and negative structures side by side: a swapped axis, unintended cell rotation, broken constraint, or failed internal relaxation can produce a smooth but meaningless fit.
+
+Choose stress--strain or energy--strain, calculate every state with one electronic method, and plot stress and energy against signed strain before fitting the tensor. Inspect linearity or curvature, residuals, symmetry-equivalent components, strain-amplitude dependence, and agreement between compatible routes. Converge the tensor component or directional modulus used in the claim, not merely the unstrained SCF energy. The subordinate ledger is a synthetic arithmetic fixture, not a material calculation. Common visualization, response, and literature routes are indexed in the [resource landscape](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [literature guide](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
 
 ## The elastic tensor is an energy curvature with declared variables
 

@@ -22,7 +22,15 @@ review: docs/reviews/2026-08-05-structure-candidate-construction.md
 reviewed_at: "2026-08-05"
 ---
 
-The smallest useful structure-operation record is not a screenshot of atoms. It is a reconstructable parent, an explicit transformation, exported calculation structures, before/after metrics, and a claim boundary. This worked example keeps those records for two candidate-building operations in one terminal-first case.
+A useful structure-operation record combines human inspection with reconstructable lineage: the parent, explicit transformation, exported calculation structures, before/after metrics, visual observations, and a claim boundary. A screenshot alone is insufficient, but omitting the visual comparison can hide a wrong defect site, cell, layer orientation, or interface registry. This worked example keeps those records for two candidate-building operations.
+
+## Manual route: inspect the two candidate families
+
+For the vacancy candidate, open pristine and defective cells side by side, show the periodic boundaries, identify the removed site, and inspect the remaining coordination and nearest periodic images. For the graphene/h-BN candidate, inspect top and side views, verify layer order and orientation, compare plausible registries, and measure the initial layer separation and repeated-image spacing.
+
+Record what each view supports. It can show that the intended candidate was constructed; it cannot show that the vacancy, registry, separation, or interface is relaxed, stable, lowest in energy, or sufficiently isolated.
+
+[Choose a viewer or symmetry service for these comparisons](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
 
 ## Start from the recorded case directory
 
@@ -44,7 +52,7 @@ The Silicon branch begins with an eight-atom conventional diamond cell, repeats 
 
 The interface branch creates eight C atoms and an eight-atom alternating B/N layer in one imposed in-plane cell. The layers are separated by `3.35 Å` and use `pbc = [true, true, false]`. The reported `0.0%` in-plane mismatch is a construction constraint caused by assigning both layers the same coordinates; it is not a lattice-match prediction.
 
-## Rebuild outside the repository
+## Optional automation: rebuild outside the repository
 
 Use a new empty directory so the committed evidence is never overwritten:
 
@@ -70,6 +78,9 @@ python3 -m json.tool examples/cases/structure-defect-interface-candidates/derive
 ```
 
 ## Run the two acceptance layers
+
+The automated checks audit reconstructability and declared geometry metrics. Review their output together with the manual parent/child and top/side comparisons; passing one layer does not substitute for the other.
+
 
 The case-level check verifies required files, the 64→63 deletion, the 16-atom bilayer, periodicity, separation, and the independent pymatgen materialization:
 

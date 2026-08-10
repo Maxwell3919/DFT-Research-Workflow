@@ -8,6 +8,7 @@ interface Props {
 
 const { navigation } = Astro.props;
 const headingId = `continue-${navigation.sourceKey.replace(/[^a-z0-9]+/g, '-')}`;
+const hasTargetBranches = navigation.links.some((link) => link.relation === 'Target branch');
 ---
 
 <nav
@@ -16,7 +17,9 @@ const headingId = `continue-${navigation.sourceKey.replace(/[^a-z0-9]+/g, '-')}`
   data-contextual-source={navigation.sourceKey}
   aria-labelledby={headingId}
 >
-  <p class="contextual-heading" id={headingId}>Continue from here</p>
+  <p class="contextual-heading" id={headingId}>
+    {hasTargetBranches ? 'Choose the calculation branch' : 'Continue from here'}
+  </p>
   <p class="contextual-boundary">{navigation.boundary}</p>
   <ul>
     {navigation.links.map((link) => (

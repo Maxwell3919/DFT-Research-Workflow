@@ -1,7 +1,7 @@
 # DFT Research Workflow
 
-DFT Research Workflow is an English, software-neutral learning framework for
-how researchers carry out a density-functional-theory study.
+DFT Research Workflow is an English, software-neutral, human-first research
+manual for carrying out a density-functional-theory study.
 
 The site starts with obtaining or building a material structure, continues
 through calculation preparation and reference-state calculations, branches into
@@ -53,7 +53,7 @@ workflow/
 └── practical-evidence.json       # guide evidence class and case binding
 
 examples/cases/
-└── <case-id>/                    # terminal-first inputs, outputs and gates
+└── <case-id>/                    # reproducible inputs, outputs and evidence gates
 
 docs/
 ├── architecture.md
@@ -95,7 +95,7 @@ npm run check
 ```
 
 `npm run check` validates the current topic registry, transitional migration
-sources, project-base-safe links, content policy, terminal-case schemas and
+sources, project-base-safe links, content policy, case schemas and
 hashes, Astro types, the static build, and generated routes. To re-run every
 committed case extractor, parser, and gate checker (including verifying that a
 declared `FAIL` returns nonzero), use:

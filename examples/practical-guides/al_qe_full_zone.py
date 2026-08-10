@@ -179,7 +179,10 @@ def write_svg(path: Path, mesh: list[dict[str, object]], band_path: list[dict[st
     def py(value: float) -> float:
         return 450 - (value - pmin) / (pmax - pmin or 1) * 350
 
-    points = " ".join(f"{sx(float(row['k_cart'][0])):.1f},{sy(float(row['k_cart'][1])):.1f}" for row in near)
+    mesh_points = "".join(
+        f'<circle cx="{sx(float(row["k_cart"][0])):.1f}" cy="{sy(float(row["k_cart"][1])):.1f}" r="3.2" fill="#2b6f8c" opacity="0.75"/>'
+        for row in near
+    )
     line = " ".join(f"{px(i):.1f},{py(value):.1f}" for i, value in enumerate(path_values))
     zero_y = py(0.0)
     labels = []
@@ -195,8 +198,8 @@ def write_svg(path: Path, mesh: list[dict[str, object]], band_path: list[dict[st
         f'''<rect x="55" y="95" width="475" height="390" fill="#fffdf8" stroke="#b9b0a3"/>\n'''
         f'''<rect x="585" y="95" width="465" height="390" fill="#fffdf8" stroke="#b9b0a3"/>\n'''
         f'''<line x1="80" y1="450" x2="500" y2="450" stroke="#524a42"/><line x1="80" y1="100" x2="80" y2="450" stroke="#524a42"/>\n'''
-        f'''<polyline points="{points}" fill="none" stroke="#2b6f8c" stroke-width="2" opacity="0.8"/>\n'''
-        f'''<text x="80" y="125" font-family="sans-serif" font-size="17">mesh points within ±0.25 eV of μ</text>\n'''
+        f'''{mesh_points}\n'''
+        f'''<text x="80" y="125" font-family="sans-serif" font-size="17">unconnected mesh points within ±0.25 eV of μ</text>\n'''
         f'''<text x="80" y="470" font-family="sans-serif" font-size="14">kₓ (QE cart. units)</text>\n'''
         f'''<line x1="610" y1="{zero_y:.1f}" x2="1040" y2="{zero_y:.1f}" stroke="#a33d2d" stroke-dasharray="6 5"/>\n'''
         f'''<polyline points="{line}" fill="none" stroke="#2b6f8c" stroke-width="3"/>\n'''

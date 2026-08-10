@@ -7,9 +7,11 @@ Conventional superconductivity asks whether a declared phonon-mediated pairing m
 
 The calculation consumes mutually compatible electronic states, phonons, and electron--phonon coupling data. It then adds a treatment of retarded attraction, residual Coulomb repulsion, temperature, and the superconducting gap equation. Each step has its own numerical and physical boundary.
 
-## Audit the parent chain before solving for a transition
+## Read the normal state and pairing spectrum before reporting $T_c$
 
-Start with the selected metallic normal state, its Fermi surface, a qualified phonon spectrum, and converged EPC data. Inspect unresolved imaginary modes and low-frequency spectral weight before forming $\alpha^2F(\omega)$, $\lambda$, or $\omega_{\log}$. Declare the Coulomb model and $\mu^*$ sensitivity, choose an approximate formula or an isotropic/anisotropic Eliashberg solver, and converge the final reported quantity against k and q meshes, smearing, interpolation, bands, frequency and temperature grids, and solver cutoffs.
+Start by viewing the selected metallic normal state's Fermi surface, phonon dispersion, and any mode-resolved linewidth or EPC map. Plot $\alpha^2F(\omega)$ beside the cumulative $\lambda(\omega)$ integral so that low-frequency or single-mode dominance remains visible; do not reduce the parent chain to one total $\lambda$. Inspect unresolved imaginary modes and low-frequency spectral weight before forming $\omega_{\log}$ or solving for a transition.
+
+Declare the Coulomb model and $\mu^*$ sensitivity, then choose an approximate formula, isotropic Eliashberg solver, or anisotropic/multiband solver according to the question. For anisotropic work, inspect the gap over the actual Fermi surface rather than only its average. Converge the final reported quantity against k and q meshes, smearing, interpolation, bands, frequency and temperature grids, and solver cutoffs. Human routes through EPC codes, Fermi-surface viewers, tutorials, and manuals are indexed under [lattice dynamics](/DFT-Research-Workflow/operations/resource-landscape/#lattice-dynamics) and [literature and learning](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
 
 $\lambda$ convergence is not $T_c$ convergence. If an Allen--Dynes implementation reports an undefined result because its denominator or inputs fall outside the meaningful model, preserve it as undefined; do not rewrite it as $T_c=0$. A numerical transition in the pairing model is not evidence of an experimentally realized superconducting phase.
 

@@ -7,11 +7,11 @@ Electron--phonon coupling (EPC) describes how a specified lattice vibration chan
 
 A phonon calculation supplies the normal modes and their perturbations. EPC adds the response of the electronic states to those perturbations. Superconductivity, transport, and spectral renormalization are later uses of that information, each with additional assumptions and convergence requirements.
 
-## Start from a qualified phonon parent
+## Inspect the coupled electronic and vibrational objects
 
-Do not begin with $\lambda$. First establish a compatible electronic reference and a qualified phonon parent: the relevant modes, q coverage, acoustic and polar treatment, and any instability must be understood for the model being coupled. Calculate EPC matrix elements on a declared coarse k--q representation, validate electronic, phonon, and EPC interpolation against direct data, then integrate on dense k and q meshes with controlled occupations, smearing or delta-function treatment, band windows, and long-range small-q reconstruction.
+Do not begin with $\lambda$. First open the electronic bands or Fermi surface and the phonon dispersion for the same state. Inspect the modes and q regions that enter the intended observable, including any imaginary branch, polar small-q behaviour, or narrow Fermi-surface feature. Calculate EPC matrix elements on a declared coarse k--q representation, then compare interpolated electronic bands, phonons, and selected coupling values directly with their coarse-grid parents before integrating on dense meshes.
 
-Choose the convergence target before the dense calculation: matrix elements, linewidths, scattering rates, $\alpha^2F(\omega)$, or $\lambda$. Vary k mesh, q mesh, smearing, interpolation, and carrier state independently and jointly. A completed phonon or EPC executable does not qualify the parent, and a smooth $\alpha^2F$ plot does not establish convergence. Preserve unresolved imaginary modes and missing q-point evidence as blockers to a positive downstream interpretation.
+For a superconducting or mechanism claim, view phonon linewidths or mode/q-resolved coupling together with $\alpha^2F(\omega)$ and the cumulative $\lambda(\omega)$ integral. For transport, inspect the state- and momentum-resolved scattering object rather than only an averaged lifetime. These plots reveal where a scalar originates but do not establish convergence. Vary k mesh, q mesh, smearing or delta treatment, interpolation, bands, carrier state, and long-range reconstruction for the actual reported quantity. Preserve unresolved imaginary modes and missing q-point evidence as blockers. Major EPW, Perturbo, DFPT, and interpolation routes are indexed under [lattice dynamics](/DFT-Research-Workflow/operations/resource-landscape/#lattice-dynamics) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
 
 ## The matrix element is the primitive quantity
 

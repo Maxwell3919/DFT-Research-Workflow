@@ -22,7 +22,11 @@ reviewed_at: "2026-08-04"
 
 **Evidence class: synthetic-only.** This deterministic ledger uses invented piezoelectric entries in a declared local Voigt convention. It verifies the arithmetic $e=e^{\mathrm{clamped}}+e^{\mathrm{internal}}$ and then applies an explicitly invented compliance factor to show why a converted $d$ coefficient requires a separately declared elastic input. No number is a material property.
 
-## Run the deterministic ledger
+## Use this only as an arithmetic fixture
+
+There is no crystal structure, tensor orientation, deformation series, polarization branch, or real software output in this page. For a material calculation, first open the structure with its axes visible, inspect positive and negative strains, compare clamped and internally relaxed geometries, and plot the real response components before converting between $e$ and $d$. The [electronic-property resource landscape](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) lists actual response routes.
+
+### Optional automation: run the invented ledger
 
 ```text
 python3 examples/practical-guides/piezoelectric_tensor_ledger.py \

@@ -23,6 +23,12 @@ review: docs/reviews/2026-08-03-equation-of-state-and-structural-phase-stability
 reviewed_at: "2026-08-03"
 ---
 
+## Plot both branches and inspect their structures
+
+A real comparison starts by opening the competing phase structures, checking their state identities, and plotting each energy-volume or enthalpy-pressure branch over the same range. At a chosen pressure, inspect the minimizing volume on both branches and the pressure-volume contribution before locating a crossing. Compare the pressure range and phase candidates with the relevant literature through [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
+
+**Audit the stored fixture:** both phase branches and the crossing figure are invented conceptual data. The companion script tests common-pressure bookkeeping only; it cannot support a phase boundary or stability claim for a material.
+
 Use this fixture after two phase branches have been fitted over a common supported pressure interval. It checks the common-pressure operation with invented analytic alpha and beta branches; it is not a material calculation.
 
 Inspect the report from the companion-script directory:

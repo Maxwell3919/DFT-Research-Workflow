@@ -24,7 +24,15 @@ reviewed_at: 2026-08-03
 
 Use this guide when a declared integer transformation is needed before a defect, magnetic, alloy, phonon, or interface calculation. Start from a reconstructable parent object; the final supercell alone is not sufficient lineage.
 
-## Run the checked transformation
+## Manual route: define and inspect the repeat
+
+Open the parent structure with its cell boundary visible. Identify which periodic directions must be repeated and why the larger cell is required for the intended defect, magnetic order, alloy arrangement, phonon displacement, or interface match. Write down the integer transformation before using a builder.
+
+After construction, reopen parent and child side by side. Confirm the cell orientation, repeated motif, atom count, periodic directions, and absence of duplicated or colliding sites. A visually regular supercell is not proof that it is large enough for the target observable.
+
+[Compare visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
+
+## Optional automation: run the checked transformation
 
 From the repository root, run:
 
@@ -83,6 +91,9 @@ general = make_supercell(parent, P)
 Here $\det(P)=4$, so the expected volume and atom-count multiplier is four. Record $P$ itself, not only the final vectors, because cell shape controls periodic-image geometry.
 
 ## Inspect and decide
+
+Combine the side-by-side visual check with numerical comparison of the transformation matrix, child cell, atom count, periodicity, and parent-to-child mapping. Neither check establishes defect-image, phonon, magnetic, or interface-size convergence; those remain target-specific tests.
+
 
 Before using the child, record the parent checksum, matrix, atom-count multiplier, parent-to-child mapping, periodicity, resulting cell, shortest relevant image separations, and intended purpose.
 

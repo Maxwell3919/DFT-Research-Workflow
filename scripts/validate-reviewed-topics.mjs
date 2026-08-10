@@ -49,11 +49,12 @@ const reviewedTopicSpecifications = {
   'obtain-material-structure': {
     review: 'docs/reviews/2026-08-03-obtain-material-structure.md',
     sections: [
-      '## Start with a source record',
-      '## Download and preserve the CIF',
-      '## Read the CIF as text',
-      '## Visualize the same object',
-      '## Parse, check symmetry, and inspect geometry',
+      '## Begin with the human source search',
+      '## Compare source records',
+      '## Manual route: download and inspect the CIF as text',
+      '## Manual route: inspect the structure visually',
+      '## Numerical and symmetry checks',
+      '## Optional automation: retrieve and preserve the CIF',
       '## Decide whether to continue',
       '## The result of this task',
       '## Sources and standards',
@@ -83,11 +84,13 @@ const reviewedTopicSpecifications = {
   'build-or-modify-computational-model': {
     review: 'docs/reviews/2026-08-03-build-computational-model.md',
     sections: [
+      '## Manual route: define and inspect the model family',
       '## Start from the question and the checked source',
-      '## Record every transformation',
       '## Distinguish representation changes from model changes',
       '## Check the child object before calculation',
       '## Match the model family to the unresolved alternatives',
+      '## Numerical and lineage checks',
+      '## Optional automation: preserve and compare repeated transformations',
       '## Decide which candidates continue',
       '## The result of this task',
       '## Sources and methods',
@@ -125,7 +128,11 @@ const reviewedTopicSpecifications = {
   'choose-dft-method-and-computational-setup': {
     review: 'docs/reviews/2026-08-03-choose-dft-method-and-setup.md',
     sections: [
-      '## Begin with the scientific comparison',
+      '## Choose a route a researcher can actually use',
+      '## Select core-valence data before handling the file',
+      '## Record the decision',
+      '## Run one bounded implementation preflight',
+      '## Make the scientific comparison explicit',
       '## Separate the physical approximation from its discretization',
       '## Choose exchange–correlation treatment by the physics and error',
       '## Define the core and valence treatment',
@@ -142,7 +149,7 @@ const reviewedTopicSpecifications = {
       '## Sources and methods',
     ],
     boundaries: [
-      'This task establishes a **versioned method identity** and a defensible starting setup.',
+      'This task establishes a versioned method identity and a defensible starting setup.',
       'Increasing these controls should approach a method-specific limit; it does not repair an inappropriate physical approximation.',
       'A formally higher rung is not automatically better for every observable or material.',
       'A pseudopotential file being readable does not establish its accuracy or transferability.',
@@ -150,7 +157,7 @@ const reviewedTopicSpecifications = {
       'DFT+U is not a universal elemental constant and not a knob to force a preferred gap or magnetic state.',
       'They are not interchangeable switches',
       'A smearing width used to stabilize metallic integration is not automatically a physical electronic temperature.',
-      'A successful program exit establishes neither methodological suitability nor numerical convergence.',
+      'A successful exit establishes neither methodological suitability nor numerical convergence.',
       'There is no universal best functional, pseudopotential library, all-electron method, code, basis, cutoff, k-point mesh, smearing width, Hubbard parameter, or boundary correction.',
     ],
     sources: [

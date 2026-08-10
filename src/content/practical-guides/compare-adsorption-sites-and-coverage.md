@@ -21,6 +21,12 @@ review: docs/reviews/2026-08-04-adsorption-energies.md
 reviewed_at: "2026-08-04"
 ---
 
+## Compare final geometries, not input site labels
+
+Open every relaxed adsorption structure in the same orientation, first from above and then from the side. Relabel migrated states by their final geometry; record coverage, lateral cell, adsorbate count, reconstruction, spin state, and key distances. Place thumbnails or saved views beside the energy table so a human can distinguish a physical coverage effect from a periodic-cell or identity change. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [specialist adsorption tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools) for common routes.
+
+**Audit the stored fixture:** the state grid and its companion script are conceptual, synthetic classification aids. They contain no relaxed atomistic structures and therefore cannot establish a preferred adsorption site or coverage trend.
+
 Run the bounded synthetic grouping fixture:
 
 ```bash

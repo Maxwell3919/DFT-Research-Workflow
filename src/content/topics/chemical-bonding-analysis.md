@@ -3,6 +3,12 @@ topic_slug: chemical-bonding-analysis
 status: reviewed
 ---
 
+## Choose the bonding object that matches the question
+
+Open the structure and identify the bond, basin, region, or orbital interaction to be tested. Then inspect the appropriate real object: an ELF or density slice, a QTAIM critical-point report, a COHP/COOP curve, a Wannier representation, or a charge-partition table. Display it beside the geometry and record the method, basis or projection, integration convention, and energy reference.
+
+No single coloured field or population number proves a unique chemical bond. Compare complementary analyses, neighbouring bonds, and reasonable numerical settings before interpreting a trend. [Specialist bonding tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) provide the main routes.
+
 Use bonding analysis when a converged structural or energetic trend needs a bounded electronic interpretation: which selected atom pair contributes bonding or antibonding states, where a localization feature appears, or how a density topology changes between compatible states. The parent object is the accepted electronic state together with its structure, wavefunctions or density, k-point weights, occupations, spin/SOC treatment, and energy reference.
 
 Choose the indicator before choosing the plotting tool. COHP/COOP, electron localization function (ELF), and density topology answer different questions. None is a unique bond order or a replacement for the energy comparison that established the state.

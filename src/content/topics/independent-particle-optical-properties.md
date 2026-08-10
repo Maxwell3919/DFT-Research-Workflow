@@ -5,9 +5,11 @@ status: reviewed
 
 Independent-particle optical properties ask how a declared electronic structure absorbs or disperses light when an electron--hole pair is represented as two independent single-particle states. The central output is a frequency- and direction-dependent dielectric response, not a generic experimental spectrum. It begins with a ground-state structure and electronic state whose symmetry, spin state, spin--orbit treatment, occupations, energy reference, and numerical representation are known.
 
-## Calculate the tensor over the required spectral window
+## Plot the tensor components before assigning peaks
 
-Start from a qualified parent state and choose the tensor components, polarization, photon-energy range, dimensional normalization, and independent-particle/local-field model. Include enough full-zone k points and unoccupied states for that range, calculate the transition matrix elements, and inspect raw real/imaginary response, sum or causality checks where available, broadening dependence, peak positions, integrated weight, and unit conversions. Converge the reported spectrum rather than the parent SCF energy. This overview does not claim an executed optical calculation.
+Start from a qualified parent state and choose the polarization, photon-energy range, dimensional normalization, and independent-particle/local-field model. Plot the raw real and imaginary dielectric components together, with crystal axes and polarization labels that match the viewed structure. Inspect anisotropy, zero crossings, onset, peak position, integrated weight, and how each feature changes with broadening; a single absorption trace can hide a tensor or normalization mistake.
+
+Include enough full-zone k points and unoccupied states for the requested range, calculate the transition matrix elements, and apply sum or causality checks where available. Converge the actual spectrum, peak, or integrated window rather than the parent SCF energy. Major optical codes, spectrum tools, and manuals are indexed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties). This overview does not claim an executed optical calculation.
 
 ## A spectrum is a tensor response to specified light
 

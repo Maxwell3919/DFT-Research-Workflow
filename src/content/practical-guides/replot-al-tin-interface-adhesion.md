@@ -19,6 +19,12 @@ review: docs/reviews/2026-08-04-interface-and-heterostructure-energetics.md
 reviewed_at: "2026-08-04"
 ---
 
+## Return each plotted point to its interface definition
+
+Read the attributed table and Methods section, identify termination, registry, layer count, cell area, separation, and sign convention for every Al/TiN row, and inspect an atomistic structure when the source provides one. Plot the values only after distinguishing per-cell adhesion or interaction energy from area-normalized interface quantities and from the stated layer-removal comparison. See [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist interface tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
+
+**Reproduce this site's figure:** the companion script redraws seven frozen published rows. The scatter plot is a public-data view, not an interface geometry, relaxation, or independent reproduction of the calculations.
+
 Rebuild the traceable redraw:
 
 ```bash

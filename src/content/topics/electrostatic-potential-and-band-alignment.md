@@ -3,6 +3,12 @@ topic_slug: electrostatic-potential-and-band-alignment
 status: reviewed
 ---
 
+## Place the potential profile beside the geometry
+
+Open the slab or interface and identify its normal, surfaces, layers, vacuum regions, and dipole direction. Plot the planar and, where appropriate, macroscopic average of the potential on the same spatial coordinate. Select bulk-like or field-free reference regions by inspecting the curve and structure together; do not let an unattended plateau detector make that physical decision.
+
+For band offsets, display the separate bulk references and interface lineup in one auditable diagram with a common convention. Check thickness, vacuum, dipole correction, and residual field before reading a number. Relevant plotting routes appear under [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties), [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
+
 Use electrostatic-potential analysis when a surface work function, bulk-to-bulk reference, explicit-interface band offset, field, or charged-defect correction needs an energy reference. The parent object is an accepted slab, bulk, or interface electronic state with its boundary conditions, geometry, charge, spin/SOC state, occupations, electrostatic corrections, and raw potential field preserved.
 
 Decide the reference construction before plotting. A periodic potential has an arbitrary additive constant, so absolute values from separate calculations cannot be compared directly. A plotted profile is not automatically a vacuum level, built-in field, band offset, Schottky barrier, or device diagram.

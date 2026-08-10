@@ -3,6 +3,12 @@ topic_slug: charge-density-and-charge-redistribution
 status: reviewed
 ---
 
+## Inspect the actual volumetric field
+
+Export the compatible charge-density or difference-density grid and open it in VESTA, XCrySDen, VMD, OVITO, or another volumetric viewer. Inspect signed isosurfaces and planar slices in the context of the atomic structure, using the same cell, grid, pseudopotential convention, and electron count for every subtracted term.
+
+Vary isovalues and colour limits, integrate the full-cell difference as a closure test, and compare multiple sections before assigning accumulation or depletion to a bond. A coloured schematic cell is not charge-density evidence. Use [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [specialist field-analysis tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools) for the human and quantitative routes.
+
 Use a charge-density calculation when the next decision depends on where a declared electronic state places charge: for example, whether an interface produces a reproducible redistribution, whether a defect changes a local region, or whether a spatial feature survives a change of numerical representation. The parent object is an accepted electronic state with its structure, cell, pseudopotential or all-electron convention, spin/SOC treatment, occupations, and real-space density representation still attached.
 
 If the intended conclusion needs an electron count rather than a picture, choose the integration region or partition before generating the plot. A density is not automatically an atomic charge, oxidation state, bond order, or measured charge-transfer observable.

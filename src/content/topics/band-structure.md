@@ -3,6 +3,12 @@ topic_slug: band-structure
 status: reviewed
 ---
 
+## Work from a labelled Brillouin-zone path and a real band plot
+
+Upload or enter the accepted structure in a path generator such as SeeK-path, inspect the standardized cell, Brillouin zone, labels, and ordered segments, then preserve the returned path definition with the calculation. After execution, open the plotted eigenvalues with labelled ticks and an explicit energy reference; check discontinuities, missing bands, spin channels, and whether the path matches the recorded structure.
+
+A high-symmetry path is a selected visualization, not full-zone evidence. Use [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) for the reciprocal path, [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) for plotting and inspection, and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) when comparing a reported gap or band character.
+
 Use a band calculation when the question depends on eigenvalue dispersion along a declared reciprocal-space path: visible crossings, curvature, symmetry labels, or candidate band extrema. Start only after accepting a structure and a self-consistent electronic state. The real Quantum ESPRESSO 7.5 route in [Build a Reciprocal-Path Ledger Before Plotting Bands](/DFT-Research-Workflow/operations/band-structure/guides/build-reciprocal-path-ledger/) shows the complete SCF-to-path-to-`bands.x` lineage; [Compare a Band Path with a Full-Zone Extremum Search](/DFT-Research-Workflow/operations/band-structure/guides/compare-band-path-and-full-zone-extrema/) shows why the path cannot establish a fundamental gap or full-zone metallicity.
 
 ## Run from the accepted reference state

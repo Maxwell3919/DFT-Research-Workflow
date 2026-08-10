@@ -61,6 +61,8 @@ const requiredQuestionFields = [
   'first_action',
   'validation_requirement',
   'claim_limitation',
+  'common_human_route',
+  'what_to_inspect',
 ];
 const allowedTopLevelKeys = new Set(['schema_version', 'role', 'public_heading', 'intro', 'boundary', 'questions']);
 const allowedQuestionKeys = new Set([...requiredQuestionFields, 'related_topics']);
@@ -79,7 +81,7 @@ function walkForForbiddenKeys(value, path = 'navigator') {
 }
 
 if (topics.length !== 46) errors.push(`current A-E registry must contain 46 topics, found ${topics.length}`);
-if (guides.length !== 49) errors.push(`current practical collection must contain 49 guides, found ${guides.length}`);
+if (guides.length !== 50) errors.push(`current practical collection must contain 50 guides, found ${guides.length}`);
 if (navigator.schema_version !== 1) errors.push(`schema_version must be 1, found ${navigator.schema_version}`);
 if (navigator.role !== 'editorial-question-to-existing-route-bridge') errors.push('navigator role must remain an editorial bridge');
 if (navigator.public_heading !== 'Start from the research question') errors.push('public heading must be Start from the research question');
@@ -136,7 +138,7 @@ for (const question of navigator.questions ?? []) {
     }
     if (!question.first_action.evidence_boundary?.trim()) errors.push(`${question.id}: guide action lacks an evidence boundary`);
   } else if (question.first_action?.type === 'no-guide') {
-    if (!question.first_action.statement?.includes('No executable practical guide is published')) errors.push(`${question.id}: no-guide state is not explicit`);
+    if (!question.first_action.statement?.includes('No reviewed hands-on practical guide is published')) errors.push(`${question.id}: no-guide state is not explicit`);
     if (guides.some((guide) => guide.topic_slug === question.topic_slug)) errors.push(`${question.id}: claims no guide although its primary topic has one`);
   } else {
     errors.push(`${question.id}: first_action type must be guide or no-guide`);
@@ -144,11 +146,20 @@ for (const question of navigator.questions ?? []) {
 }
 
 for (const id of expectedMappings.keys()) if (!seenIds.has(id)) errors.push(`missing bounded research question ${id}`);
+for (const question of navigator.questions ?? []) {
+  if (!question.common_human_route?.trim() || !question.what_to_inspect?.trim()) errors.push(`${question.id}: human route or inspection guidance missing`);
+  if (/^Use (the )?(API|Python)/i.test(question.common_human_route)) errors.push(`${question.id}: programmatic route presented before human workflow`);
+}
 
 const formation = navigator.questions?.find((question) => question.id === 'formation-energy');
 const hull = navigator.questions?.find((question) => question.id === 'decomposition-stability');
 if (!formation?.claim_limitation.includes('negative formation energy does not establish convex-hull stability')) errors.push('formation energy must remain distinct from convex-hull stability');
+if (!formation?.first_action?.evidence_boundary?.includes('synthetic A2B3 ledger fixture')) errors.push('formation-energy first action must identify the synthetic A2B3 fixture');
 if (!hull?.required_observable.includes('lower convex envelope') || !hull?.claim_limitation.includes('conditional on the declared phase set')) errors.push('decomposition stability must retain convex-hull phase-set boundaries');
+
+const localOptimization = navigator.questions?.find((question) => question.id === 'local-minimum');
+if (!localOptimization?.question.includes('declared geometry-optimization conditions been satisfied')) errors.push('geometry route must ask whether the declared optimization conditions were satisfied rather than claim a minimum');
+if (!localOptimization?.required_observable.includes('every relevant force component') || !localOptimization?.required_observable.includes('stress for relaxed cell degrees of freedom')) errors.push('geometry route must always require force evidence and require stress only for relaxed cell degrees of freedom');
 
 const metallicity = navigator.questions?.find((question) => question.id === 'metallicity');
 if (!metallicity?.required_observable.includes('full-zone') || !metallicity?.claim_limitation.includes('high-symmetry band path alone')) errors.push('metallicity must require full-zone evidence and reject a path-only claim');
@@ -167,4 +178,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log('Research Question Navigator valid: 10 unique question-to-observable routes resolve against 46 A-E topics and 49 reviewed practical guides, with explicit guide evidence limits, EPC no-guide state, and scientific claim boundaries.');
+console.log('Research Question Navigator valid: 10 question-to-observable routes with explicit human routes, inspection objects, guide evidence limits, EPC no-guide state, and scientific claim boundaries.');

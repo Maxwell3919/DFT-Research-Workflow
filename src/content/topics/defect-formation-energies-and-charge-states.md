@@ -3,6 +3,12 @@ topic_slug: defect-formation-energies-and-charge-states
 status: reviewed
 ---
 
+## Inspect the host, defect, and electronic state together
+
+Open pristine and defect supercells side by side in VESTA, OVITO, or another atomistic viewer. Locate the removed, added, or substituted atom; check periodic-image separation, local relaxation, coordination changes, and any unintended reconstruction. Then inspect the charge-state ledger and formation-energy lines as a function of Fermi level, including chemical-potential limits and correction terms.
+
+A lower-envelope plot is useful only when every line comes from a compatible, physically identified calculation. Inspect charge or spin localization where the method permits it and compare transition levels with the band edges used in the same convention. Find common viewers under [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), defect packages under [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and host or experimental context under [literature and learning](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
+
 Use defect formation energies when atoms and electrons are exchanged between a defective supercell and declared reservoirs. Its primary result is therefore a formation energy as a function of atomic and electron chemical potentials, not a single intrinsic “defect energy.” Call it a formation free energy only when the declared thermal and statistical-mechanical contributions are included.
 
 Start with **Build an Auditable Defect Formation-Energy Ledger** to assemble terms and signs. Use **Trace a Charge-State Envelope and Neutrality Root** only after the charge-state lines are trustworthy.

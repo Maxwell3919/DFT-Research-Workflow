@@ -26,6 +26,16 @@ reviewed_at: "2026-08-03"
 
 A restart continues from stored electronic data. A fresh run begins from a newly generated initial state. Both are useful, but they provide different evidence.
 
+## Compare histories, not only terminal energies
+
+Create separate fresh-start and restarted directories and place their parent and child inputs, outputs, and restart inventories side by side. Verify the exact geometry, pseudopotential, charge-density, wavefunction, code-version, and numerical-setup identity before treating the two runs as comparable. Open the relevant restart definitions through the [electronic-structure code and manual index](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes).
+
+Run both branches with the same declared evaluator. Read every SCF iteration, not just the final total energy: compare residual trends, oscillation, iteration count, occupations, charge or spin state, symmetry, warnings, and any fallback algorithm. Where the implementation produces inspectable charge or magnetization data, compare aligned views as a diagnostic; the [visualization resource index](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) lists suitable tools.
+
+Accept equivalence only when both branches meet their electronic criteria and retain the intended physical state within the declared tolerances. Equal terminal energies alone do not prove identical states, valid restart ancestry, or observable convergence. A faster restarted branch does not show that the fresh route is wrong; a fresh branch changing state may reveal trapping or an incompatible parent.
+
+The stored Silicon comparison script below is optional automation for its bounded artifacts. It can reproduce the declared energy and marker comparison, but it cannot establish a general restart policy or prove state identity beyond the recorded evidence.
+
 ## Run the bounded comparison
 
 ```bash

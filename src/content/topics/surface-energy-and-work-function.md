@@ -3,6 +3,12 @@ topic_slug: surface-energy-and-work-function
 status: reviewed
 ---
 
+## Look at the slab before reading its scalar result
+
+Open the slab from both the side and the surface normal. Identify the termination, number of layers, fixed atoms, lateral cell, symmetry, dipole orientation, and vacuum direction; measure the vacuum width and check for unintended interaction or reconstruction. A bulk reference, slab series, and converged electrostatic-potential profile are the researcher-visible objects behind surface energy and work function.
+
+Plot surface energy against thickness and vacuum, and plot the planar or macroscopic potential beside the slab orientation. Select a field-free vacuum plateau manually rather than accepting an arbitrary average. Use [visual and symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) for the geometry and [specialist analysis tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools) for planar averages and surface post-processing.
+
 Use a surface-energy calculation to compare the cost of creating declared facets, terminations, or reconstructions. Use a work-function calculation when the question is electron removal from one specified surface to field-free vacuum. Start both from an accepted bulk parent and a fully identified slab; neither quantity belongs to a chemical formula or Miller index alone.
 
 ## Prepare and identify the surface state

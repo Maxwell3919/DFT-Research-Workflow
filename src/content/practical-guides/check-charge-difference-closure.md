@@ -13,11 +13,16 @@ execution_script: examples/practical-guides/charge_difference_closure.py
 source_ids:
   - qe-pp-density
   - vasp-chgcar-density
-media_ids:
-  - charge-difference-closure
+media_ids: []
 review: docs/reviews/2026-08-04-charge-density-and-charge-redistribution.md
 reviewed_at: "2026-08-04"
 ---
+
+## View a signed volumetric field before interpreting charge transfer
+
+For a real system, open the total and reference densities on the same grid in a volumetric viewer, then inspect signed difference-density isosurfaces and planar slices beside the atomic structure. Vary the isovalue and colour scale, integrate the full cell, and compare several sections; numerical closure complements visual inspection but cannot assign a unique chemical bond. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [specialist field-analysis tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools).
+
+**Audit the stored fixture:** the arrays are invented arithmetic, not a charge-density field or software output. No density image is published because four coloured cells would resemble scientific evidence without containing a real volumetric object.
 
 Run this fixture before interpreting a difference-density image. It checks the arithmetic distinction between local positive and negative cells and a closed complete-cell sum. It does not read a Quantum ESPRESSO or VASP density and does not perform an electronic-structure calculation.
 
@@ -28,15 +33,14 @@ For real work, the parent objects are the combined-system and fragment density f
 From the repository root, run:
 
 ```bash
-python3 examples/practical-guides/charge_difference_closure.py \
-  --svg public/media/practical-guides/charge-density-and-charge-redistribution/check-charge-difference-closure/charge-difference-closure.svg
+python3 examples/practical-guides/charge_difference_closure.py
 ```
 
-The command runs the deterministic arithmetic, prints a JSON object to the terminal, and writes the requested SVG. The `--svg` path controls only the rendered diagram location.
+The command runs the deterministic arithmetic and prints a JSON object. It creates no image.
 
 ## Inspect the reported quantities
 
-Confirm that the process exits normally and prints the boundary sentence `Execution establishes invented-grid arithmetic and SVG rendering only; it is not a DFT calculation.` This is program-success evidence for the fixture only.
+Confirm that the process exits normally and prints the boundary sentence `Execution establishes invented-grid arithmetic only; it is not a density field or DFT calculation.` This is program-success evidence for the fixture only.
 
 In the JSON output, inspect:
 
@@ -44,7 +48,7 @@ In the JSON output, inspect:
 - `positive_cell_sum` and `negative_cell_sum`, which confirm that local accumulation and depletion remain even when the full-cell sum closes;
 - `grid_cells`, which identifies the four-cell invented object.
 
-For this fixed fixture, `full_cell_delta_integral` should be zero within the script's $10^{-12}$ assertion while the positive and negative sums remain nonzero. The generated SVG should show the same local sign pattern. This verifies the script's invented arithmetic and SVG rendering, not a physical density.
+For this fixed fixture, `full_cell_delta_integral` should be zero within the script's $10^{-12}$ assertion while the positive and negative sums remain nonzero. This verifies the script's invented arithmetic, not a physical density or its spatial distribution.
 
 ## If a real subtraction does not close
 

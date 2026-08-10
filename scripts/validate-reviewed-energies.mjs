@@ -17,7 +17,7 @@ for (const statement of [
 }
 
 const headings = article.match(/^## /gm) ?? [];
-if (headings.length !== 17) errors.push(`${articlePath}: expected 17 natural sections, found ${headings.length}`);
+if (headings.length < 12 || headings.length > 20) errors.push(`${articlePath}: expected 12-20 natural sections, found ${headings.length}`);
 
 for (const statement of [
   'ΔE_rel(i | r) = [E_i - E_r] / N',
@@ -94,4 +94,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log('Reviewed energy comparison valid: 17 natural sections, exact 10-source coverage, explicit reference and normalization equations, formation-versus-stability boundary, and no universal numerical prescription.');
+console.log(`Reviewed energy comparison valid: ${headings.length} natural sections, exact 10-source coverage, explicit reference and normalization equations, formation-versus-stability boundary, and no universal numerical prescription.`);

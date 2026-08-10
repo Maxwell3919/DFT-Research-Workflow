@@ -3,6 +3,12 @@ topic_slug: density-of-states-and-projected-density-of-states
 status: reviewed
 ---
 
+## Inspect the spectrum, scale, and projection closure
+
+Open the total and projected DOS as quantitative plots with energy reference, ordinate scale, spin convention, broadening, and integration grid stated. Compare total and projected curves, integrate the occupied range where meaningful, and inspect whether important features persist under denser sampling or different broadening.
+
+A visually plausible peak is not sufficient evidence of orbital identity, electron count, or metallicity. Check projection completeness and compare the full-zone sampling with any band-path view. Common plotting and projection routes are listed under [electronic-property tools](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools); use [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) for experimental or independent computational comparison.
+
 Calculate a density of states (DOS) when the question concerns how many electronic states occur in an energy interval across the Brillouin zone. A DOS needs an accepted structure and reference electronic state followed by a sufficiently dense, compatible uniform-zone calculation; a high-symmetry band path is not a DOS parent. [Reconstruct a Stored Total DOS and Define Closure Tests](/DFT-Research-Workflow/operations/density-of-states-and-projected-density-of-states/guides/check-dos-normalization-and-projection-closure/) reconstructs a real QE 7.5 total-DOS result and states explicitly which diagnostics were not validated.
 
 ## Run a total DOS from a uniform-zone state

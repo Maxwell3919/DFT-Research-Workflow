@@ -24,7 +24,15 @@ reviewed_at: 2026-08-03
 
 This worked example creates one generated MoS2 monolayer object and checks what was actually built. It is not derived from an experimental CIF, does not contain a DFT-relaxed lattice, and supports no stability or property claim.
 
-## Run the checked model construction
+## Manual route: identify and inspect the monolayer
+
+Establish the intended layer, polytype, composition, and orientation from a primary paper, supplementary structure, database record, or declared prototype. A generated monolayer is a model proposal, not a recovered experimental structure.
+
+Open the model in top and side views with the cell boundary visible. Identify the nonperiodic axis; inspect stoichiometry, coordination, layer planarity or buckling, and in-plane repetition; measure the atomic thickness, cell length, vacuum region, and closest periodic image. Verify that later input files preserve the intended periodic boundary treatment. Visual inspection catches a wrong orientation or image contact but does not establish vacuum, k-mesh, dipole, or structural convergence.
+
+[Browse structure sources](/DFT-Research-Workflow/operations/resource-landscape/#structures-data) and [compare visual or symmetry tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
+
+## Optional automation: run the checked model construction
 
 From the repository root, run:
 
@@ -56,6 +64,9 @@ The values are bounded demonstration inputs, not certified experimental data, co
 The call specifies composition, requested layer type, in-plane lattice parameter, builder thickness, two-by-two lateral repetition, one layer along the third direction, and empty-cell length. Changing composition, polytype, strain, thickness, defect content, stacking, or periodicity changes the physical hypothesis.
 
 ## Check the produced object
+
+Review the top and side views together with the numerical cell, composition, periodicity, thickness, vacuum, and nearest-image report. The visual and numerical checks should describe the same object; neither proves that the model is the stable monolayer or that its finite-size errors are converged.
+
 
 ```python
 assert monolayer.pbc.tolist() == [True, True, False]

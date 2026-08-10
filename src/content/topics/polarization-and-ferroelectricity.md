@@ -5,9 +5,11 @@ status: reviewed
 
 Polarization and ferroelectricity concern a change of bulk electrical state, not a dipole moment obtained by summing charges inside one arbitrarily chosen periodic cell. In a periodic insulating crystal, the observable quantity is a polarization difference along a continuous insulating path. Ferroelectricity is the stronger claim that two or more polar states are switchable by an electric field through a physically viable path; a non-centrosymmetric relaxed structure or one Berry-phase number does not establish it.
 
-## Follow an insulating path, not two disconnected endpoints
+## Inspect the structural path while following the polarization branch
 
-Prepare compatible nonpolar reference and polar endpoint structures, generate a continuous structural path, and calculate the polarization, energy, and insulating character at every image. Unwrap the reported branch by whole polarization quanta, then test k sampling, path resolution, endpoint state identity, and the energy profile. A continuous polarization difference supports the declared path only. A ferroelectric claim still needs switchability and a viable competing state; the subordinate branch exercise is synthetic-only and does not calculate either.
+Open the nonpolar reference and polar endpoint together. Align their cells, confirm atom correspondence, and identify the actual distortion direction rather than inferring it from a polarization number. Generate a continuous path and step through its structures in a viewer; unexpected atom exchange, cell rotation, symmetry change, or loss of the intended domain invalidates a formally continuous numeric series.
+
+Plot polarization representative, unwrapped branch, total energy, and insulating gap against the same path coordinate. Calculate all four from compatible states, unwrap only by whole polarization quanta, and test k sampling, path resolution, endpoint identity, and the energy profile. A continuous polarization difference supports the declared path only. A ferroelectric claim still needs switchability and a viable competing state; the subordinate branch exercise is synthetic-only and contains no real structure or Berry-phase calculation. Human routes through polarization software, structure viewers, and the literature are listed under [electronic properties](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) and [literature and learning](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
 
 ## A bulk polarization is defined modulo a quantum
 

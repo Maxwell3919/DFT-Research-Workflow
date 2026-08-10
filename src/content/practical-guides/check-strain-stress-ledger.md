@@ -22,7 +22,11 @@ reviewed_at: "2026-08-04"
 
 **Evidence class: synthetic-only.** This fixture uses invented signed uniaxial strain and stress rows in one declared component convention. It verifies a least-squares slope, signed-strain symmetry, and the cubic stability inequalities for the invented matrix. It does not calculate a stress tensor or infer a material response.
 
-## Run the deterministic ledger
+## Use this only as an arithmetic fixture
+
+There is no reference crystal, deformed structure, stress output, or material-specific symmetry decision in this page. A real workflow opens the reference and representative signed-strain cells, confirms the axes and Voigt convention, inspects internal relaxation, and plots energy and stress against strain before fitting. The [electronic-property and response resources](/DFT-Research-Workflow/operations/resource-landscape/#electronic-properties) provide routes for real calculations.
+
+### Optional automation: run the invented ledger
 
 ```text
 python3 examples/practical-guides/strain_stress_ledger.py \

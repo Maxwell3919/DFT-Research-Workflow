@@ -1,0 +1,2046 @@
+{
+  "schema_version": 1,
+  "authority": "Secondary human research resource landscape for the existing A-E workflow.",
+  "scope_note": "This classified index has high recall but does not rank, endorse, certify, or make listed resources equivalent. Access and interfaces can change; inspect current terms and official documentation.",
+  "reviewed_at": "2026-08-10",
+  "categories": [
+    {
+      "id": "structures-data",
+      "title": "Structures and materials data",
+      "intro": "Discover structures and published data through browser portals, repositories, papers, and licensed institutional resources. Inspect provenance before model construction.",
+      "resources": [
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use COD for openly downloadable experimental crystallographic records.",
+          "first_human_action": "Search COD by formula, elements, mineral, author, or diffraction metadata; inspect the record before downloading its CIF.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-cod",
+          "link_label": "Search structures in COD",
+          "id": "cod",
+          "name": "Crystallography Open Database"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Registration",
+          "interfaces": [
+            "Web",
+            "API",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Materials Project for computed-material candidates, provenance-rich records, and structure exports.",
+          "first_human_action": "Open Materials Explorer, search by composition, formula, or material ID, filter candidates, inspect the material page and structure, then export the required cell representation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-materials-project",
+          "link_label": "Follow the Materials Explorer tutorial",
+          "id": "materials-project",
+          "name": "Materials Project"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web",
+            "API",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use NOMAD for uploaded calculation records, normalized metadata, archived files, and cross-code materials data.",
+          "first_human_action": "Open NOMAD in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-nomad",
+          "link_label": "Search calculations and materials in NOMAD",
+          "id": "nomad",
+          "name": "NOMAD"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web",
+            "API"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use AFLOW for computed inorganic structures, properties, and high-throughput records.",
+          "first_human_action": "Open AFLOW in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-aflow",
+          "link_label": "Explore AFLOW materials data",
+          "id": "aflow",
+          "name": "AFLOW"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use the AFLOW prototype encyclopedia for prototype cells, Strukturbericht relations, and reusable starting structures.",
+          "first_human_action": "Open AFLOW Encyclopedia of Crystallographic Prototypes in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-aflow-prototypes",
+          "link_label": "Search AFLOW crystal prototypes",
+          "id": "aflow-prototypes",
+          "name": "AFLOW Encyclopedia of Crystallographic Prototypes"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web",
+            "API"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use OQMD for computed structures, formation energies, competing phases, and phase-stability candidate sets.",
+          "first_human_action": "Open Open Quantum Materials Database in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-oqmd",
+          "link_label": "Search OQMD entries",
+          "id": "oqmd",
+          "name": "Open Quantum Materials Database"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web",
+            "API"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use JARVIS for NIST-hosted computed structures, benchmark properties, and linked atomistic records.",
+          "first_human_action": "Open JARVIS in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-jarvis",
+          "link_label": "Explore JARVIS materials data",
+          "id": "jarvis",
+          "name": "JARVIS"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Academic",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use C2DB for computed monolayer candidates and documented two-dimensional properties.",
+          "first_human_action": "Open Computational 2D Materials Database in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-c2db",
+          "link_label": "Search the C2DB",
+          "id": "c2db",
+          "name": "Computational 2D Materials Database"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Academic",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Alexandria for large computed structure and property collections.",
+          "first_human_action": "Open Alexandria database in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-alexandria",
+          "link_label": "Explore the Alexandria database",
+          "id": "alexandria",
+          "name": "Alexandria database"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Materials Cloud Archive for paper-linked datasets, inputs, outputs, provenance, and supplementary evidence.",
+          "first_human_action": "Open Materials Cloud Archive in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-materials-cloud-archive",
+          "link_label": "Search the Materials Cloud Archive",
+          "id": "materials-cloud-archive",
+          "name": "Materials Cloud Archive"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use NIST MDR for citable public materials datasets and supporting research records.",
+          "first_human_action": "Open NIST Materials Data Repository in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-nist-mdr",
+          "link_label": "Search the NIST Materials Data Repository",
+          "id": "nist-mdr",
+          "name": "NIST Materials Data Repository"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web",
+            "API",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use MDF to discover and retrieve published materials datasets across participating repositories.",
+          "first_human_action": "Open Materials Data Facility in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-mdf",
+          "link_label": "Search the Materials Data Facility",
+          "id": "mdf",
+          "name": "Materials Data Facility"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Zenodo when papers, authors, or projects deposit versioned structures, inputs, outputs, or analysis data.",
+          "first_human_action": "Open Zenodo in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-zenodo",
+          "link_label": "Search research records in Zenodo",
+          "id": "zenodo",
+          "name": "Zenodo"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Figshare for paper-linked and author-deposited supplementary structures or calculation data.",
+          "first_human_action": "Open Figshare in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-figshare",
+          "link_label": "Search research data in Figshare",
+          "id": "figshare",
+          "name": "Figshare"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Institutional",
+          "interfaces": [
+            "Web",
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use ICSD for curated experimental inorganic structures through institutional access.",
+          "first_human_action": "Search ICSD by chemistry, bibliography, cell, space group, or experimental criteria; inspect the bibliographic and refinement record before export.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "Subscription access and curation do not remove the need to verify the original experiment, disorder, occupancy, cell choice, and model suitability.",
+          "source_id": "rl-icsd",
+          "link_label": "Search structures in ICSD",
+          "id": "icsd",
+          "name": "Inorganic Crystal Structure Database"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Subscription",
+          "interfaces": [
+            "Web",
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use CSD for curated organic, organometallic, and molecular crystal structures through institutional access.",
+          "first_human_action": "Open Cambridge Structural Database in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-csd",
+          "link_label": "Explore the Cambridge Structural Database",
+          "id": "csd",
+          "name": "Cambridge Structural Database"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Subscription",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use SpringerMaterials for curated structures, phase diagrams, physical-property tables, and source references.",
+          "first_human_action": "Open SpringerMaterials in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-springer-materials",
+          "link_label": "Search SpringerMaterials",
+          "id": "springer-materials",
+          "name": "SpringerMaterials"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Subscription",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use PAULING FILE for curated inorganic phase, structure, diffraction, and property information.",
+          "first_human_action": "Open PAULING FILE in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-pauling-file",
+          "link_label": "Open the PAULING FILE portal",
+          "id": "pauling-file",
+          "name": "PAULING FILE"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Mixed",
+          "interfaces": [
+            "Web",
+            "API"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use MPDS for PAULING FILE-derived search with open, registered, and subscription-dependent coverage.",
+          "first_human_action": "Open Materials Platform for Data Science in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "Open, registered, full-GUI, and API tiers expose different coverage; preserve the tier and source provenance used.",
+          "source_id": "rl-mpds",
+          "link_label": "Explore MPDS access and data",
+          "id": "mpds",
+          "name": "Materials Platform for Data Science"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Mixed",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use NIMS MatNavi for structures, phase diagrams, properties, polymers, and related curated records.",
+          "first_human_action": "Open NIMS MatNavi and AtomWork in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "Registration and paid AtomWork-Adv coverage differ; preserve database identity, access tier, source reference, and retrieval date.",
+          "source_id": "rl-nims-matnavi",
+          "link_label": "Browse NIMS MatNavi databases",
+          "id": "nims-matnavi",
+          "name": "NIMS MatNavi and AtomWork"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Commercial",
+          "interfaces": [
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Pearson's Crystal Data for licensed desktop search and comparison of inorganic structures.",
+              "first_human_action": "Open Pearson's Crystal Data in its desktop GUI after confirming institutional or licensed access, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-pearsons-crystal-data",
+          "link_label": "Review Pearson's Crystal Data",
+          "id": "pearsons-crystal-data",
+          "name": "Pearson's Crystal Data"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Academic",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use AMCSD for published mineral structures linked to primary literature.",
+          "first_human_action": "Open American Mineralogist Crystal Structure Database in a browser, search the material or record, inspect its metadata and structure, then export only the object needed for the calculation.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "A database record is a source object, not an automatically accepted DFT model or independently validated scientific result.",
+          "source_id": "rl-amcsd",
+          "link_label": "Search the AMCSD",
+          "id": "amcsd",
+          "name": "American Mineralogist Crystal Structure Database"
+        },
+        {
+          "subcategory": "Materials and structure databases",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web",
+            "API"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use OPTIMADE for federated structure discovery across providers using a common schema.",
+          "first_human_action": "Open the provider list or a human-facing client, identify participating databases and filters, then inspect the original provider record before accepting a structure.",
+          "inspect": "Inspect record identity, composition, cell representation, provenance, method or experiment metadata, disorder or occupancy, and available downloads.",
+          "bring_back": "Bring back the cited record identifier, original downloaded object, retrieval date, and enough metadata to reconstruct the selection.",
+          "boundary": "Federated access is a discovery convenience; provenance, coverage, cell conventions, and source-specific metadata remain with the provider.",
+          "source_id": "rl-optimade",
+          "link_label": "Explore OPTIMADE providers and clients",
+          "id": "optimade",
+          "name": "OPTIMADE providers"
+        }
+      ]
+    },
+    {
+      "id": "visual-symmetry",
+      "title": "Visual inspection and symmetry",
+      "intro": "Use viewers and crystallographic services to recognize cell, geometry, periodicity, orientation, symmetry, and conversion problems that parsers alone may not expose.",
+      "resources": [
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use VESTA to rotate, measure, change boundaries, and inspect structures or volumetric data.",
+          "first_human_action": "Open the actual CIF or volumetric file in VESTA, verify species and cell, rotate along meaningful directions, adjust periodic boundaries, and measure suspicious distances or angles.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "Human visual inspection can reveal model mistakes but does not replace numerical validation or convergence testing.",
+          "source_id": "rl-vesta",
+          "link_label": "Download VESTA and open its manual",
+          "id": "vesta",
+          "name": "VESTA"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Official",
+          "access": "Mixed",
+          "interfaces": [
+            "GUI",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use OVITO to inspect atomistic trajectories, defects, local environments, and large snapshots.",
+          "first_human_action": "Open OVITO with the actual structure or object, inspect the relevant geometry or transformation, and preserve the settings used.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "Human visual inspection can reveal model mistakes but does not replace numerical validation or convergence testing.",
+          "source_id": "rl-ovito",
+          "link_label": "Start with OVITO desktop",
+          "id": "ovito",
+          "name": "OVITO"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use XCrySDen for crystal, density, Brillouin-zone, k-path, and Fermi-surface views in supported formats.",
+          "first_human_action": "Open XCrySDen with the actual structure or object, inspect the relevant geometry or transformation, and preserve the settings used.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "Human visual inspection can reveal model mistakes but does not replace numerical validation or convergence testing. This is a legacy HTTP-only official site; do not enter credentials or sensitive data; use institutional or package documentation if policy blocks it.",
+          "source_id": "rl-xcrysden",
+          "link_label": "Review XCrySDen capabilities",
+          "id": "xcrysden",
+          "name": "XCrySDen"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web",
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Jmol/JSmol for lightweight interactive molecular and crystal viewing.",
+          "first_human_action": "Open Jmol and JSmol with the actual structure or object, inspect the relevant geometry or transformation, and preserve the settings used.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "Human visual inspection can reveal model mistakes but does not replace numerical validation or convergence testing.",
+          "source_id": "rl-jmol",
+          "link_label": "Open Jmol documentation",
+          "id": "jmol",
+          "name": "Jmol and JSmol"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Official",
+          "access": "Mixed",
+          "interfaces": [
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Mercury for crystal packing, contacts, unit cells, and molecular-crystal inspection.",
+          "first_human_action": "Open Mercury with the actual structure or object, inspect the relevant geometry or transformation, and preserve the settings used.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "Human visual inspection can reveal model mistakes but does not replace numerical validation or convergence testing.",
+          "source_id": "rl-mercury",
+          "link_label": "Inspect crystal structures with Mercury",
+          "id": "mercury",
+          "name": "Mercury"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Academic",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Bilbao for group-subgroup, representation, k-vector, and other crystallographic calculations.",
+          "first_human_action": "Choose the Bilbao program matching the crystallographic question, read its input convention, submit the actual data, and preserve the returned tables and settings.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "Human visual inspection can reveal model mistakes but does not replace numerical validation or convergence testing.",
+          "source_id": "rl-bilbao",
+          "link_label": "Choose a crystallographic tool on Bilbao",
+          "id": "bilbao",
+          "name": "Bilbao Crystallographic Server"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Academic",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use FINDSYM for tolerance-dependent symmetry assignment and standardized descriptions.",
+          "first_human_action": "Upload a CIF or enter lattice and sites, set justified tolerances, submit the structure, and compare the detected group and transformation across reasonable tolerances.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "Detected symmetry is tolerance-dependent; preserve the input, tolerances, transformation, and origin shift.",
+          "source_id": "rl-findsym",
+          "link_label": "Upload a structure to FINDSYM",
+          "id": "findsym",
+          "name": "FINDSYM"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use checkCIF for crystallographic syntax and consistency reports on experimental CIFs.",
+          "first_human_action": "Upload the original CIF, read every alert in context, and return to the paper or refinement metadata for unresolved geometry, occupancy, or symmetry issues.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "A clean report does not establish chemical correctness or readiness for the intended DFT model.",
+          "source_id": "rl-checkcif",
+          "link_label": "Run an IUCr checkCIF report",
+          "id": "checkcif",
+          "name": "IUCr checkCIF"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use SeeK-path for a standardized primitive cell, labelled Brillouin zone, and conventional high-symmetry path.",
+          "first_human_action": "Upload the actual structure, inspect the standardized cell and Brillouin zone, then copy the path and warnings with their convention.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "The path belongs to the returned standardized cell and is not full-Brillouin-zone sampling or proof of metallicity.",
+          "source_id": "rl-seekpath-web",
+          "link_label": "Inspect a structure and k path in SeeK-path",
+          "id": "seekpath-web",
+          "name": "SeeK-path web tool"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Crystal Toolkit for browser-based structure viewing and transparent cell or slab transformations.",
+          "first_human_action": "Open Crystal Toolkit with the actual structure or object, inspect the relevant geometry or transformation, and preserve the settings used.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "Human visual inspection can reveal model mistakes but does not replace numerical validation or convergence testing.",
+          "source_id": "rl-crystal-toolkit",
+          "link_label": "Follow the Crystal Toolkit browser tutorial",
+          "id": "crystal-toolkit",
+          "name": "Crystal Toolkit"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Official",
+              "access": "Mixed",
+          "interfaces": [
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use CrystalMaker for licensed interactive crystal visualization, measurement, and manipulation.",
+          "first_human_action": "Open CrystalMaker with the actual structure or object, inspect the relevant geometry or transformation, and preserve the settings used.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "Human visual inspection can reveal model mistakes but does not replace numerical validation or convergence testing.",
+          "source_id": "rl-crystalmaker",
+          "link_label": "Review CrystalMaker for structure inspection",
+          "id": "crystalmaker",
+          "name": "CrystalMaker"
+        },
+        {
+          "subcategory": "Visual inspection and crystallographic services",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Avogadro to build and inspect finite molecular structures interactively.",
+          "first_human_action": "Open Avogadro with the actual structure or object, inspect the relevant geometry or transformation, and preserve the settings used.",
+          "inspect": "Inspect the actual structure, transformation, tolerance, orientation, geometry, warning, or visual feature relevant to the current decision.",
+          "bring_back": "Bring back the original input, exported result, settings or tolerances, and a note describing the visual or crystallographic decision.",
+          "boundary": "Human visual inspection can reveal model mistakes but does not replace numerical validation or convergence testing.",
+          "source_id": "rl-avogadro",
+          "link_label": "Start with the Avogadro GUI",
+          "id": "avogadro",
+          "name": "Avogadro"
+        }
+      ]
+    },
+    {
+      "id": "electronic-properties",
+      "title": "Electronic-structure implementations",
+      "intro": "Choose software from the scientific method, basis, property, scale, access, and collaboration constraints. These families are not rankings or equivalence claims.",
+      "resources": [
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Quantum ESPRESSO for plane-wave pseudopotential/PAW ground-state, response, phonon, or post-processing work.",
+          "first_human_action": "Open the official Quantum ESPRESSO documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-quantum-espresso",
+          "link_label": "Open Quantum ESPRESSO documentation",
+          "id": "quantum-espresso",
+          "name": "Quantum ESPRESSO"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Commercial",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use VASP for licensed plane-wave PAW materials calculations.",
+          "first_human_action": "Open the official VASP documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-vasp",
+          "link_label": "Open the VASP Wiki",
+          "id": "vasp",
+          "name": "VASP"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use ABINIT for plane-wave pseudopotential/PAW ground-state, DFPT, or many-body work.",
+          "first_human_action": "Open the official ABINIT documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-abinit",
+          "link_label": "Open ABINIT documentation",
+          "id": "abinit",
+          "name": "ABINIT"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Mixed",
+          "interfaces": [
+            "CLI",
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use CASTEP for plane-wave materials calculations through an available licence or academic route.",
+          "first_human_action": "Open the official CASTEP documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-castep",
+          "link_label": "Open CASTEP documentation",
+          "id": "castep",
+          "name": "CASTEP"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use CP2K for GPW/GAPW periodic, molecular, dynamics, or mixed quantum/classical work.",
+          "first_human_action": "Open the official CP2K documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-cp2k",
+          "link_label": "Open the CP2K reference manual",
+          "id": "cp2k",
+          "name": "CP2K"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Commercial",
+          "interfaces": [
+            "CLI",
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use WIEN2k for all-electron full-potential APW/LAPW calculations.",
+          "first_human_action": "Open the official WIEN2k documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation. This is a legacy HTTP-only official site; do not enter credentials or sensitive data; use institutional or package documentation if policy blocks it.",
+          "source_id": "rl-wien2k",
+          "link_label": "Open the WIEN2k project site",
+          "id": "wien2k",
+          "name": "WIEN2k"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Elk for open all-electron full-potential LAPW calculations.",
+          "first_human_action": "Open the official Elk documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-elk",
+          "link_label": "Open the Elk code site",
+          "id": "elk",
+          "name": "Elk"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use exciting for all-electron LAPW ground-state or excited-state calculations.",
+          "first_human_action": "Open the official exciting documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-exciting",
+          "link_label": "Open exciting documentation and tutorials",
+          "id": "exciting",
+          "name": "exciting"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use FLEUR for full-potential LAPW electronic or magnetic calculations.",
+          "first_human_action": "Open the official FLEUR documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-fleur",
+          "link_label": "Open the FLEUR project site",
+          "id": "fleur",
+          "name": "FLEUR"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Mixed",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use FHI-aims for all-electron numeric atom-centered orbital calculations.",
+          "first_human_action": "Open the official FHI-aims documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-fhi-aims",
+          "link_label": "Open the FHI-aims manual",
+          "id": "fhi-aims",
+          "name": "FHI-aims"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use SIESTA for localized numerical atomic-orbital periodic calculations.",
+          "first_human_action": "Open the official SIESTA documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-siesta",
+          "link_label": "Open SIESTA documentation",
+          "id": "siesta",
+          "name": "SIESTA"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use OpenMX for localized pseudoatomic-orbital electronic and transport-related work.",
+          "first_human_action": "Open the official OpenMX documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-openmx",
+          "link_label": "Open the OpenMX project site",
+          "id": "openmx",
+          "name": "OpenMX"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Mixed",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use ONETEP for linear-scaling DFT for large systems.",
+          "first_human_action": "Open the official ONETEP documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-onetep",
+          "link_label": "Open ONETEP documentation and access information",
+          "id": "onetep",
+          "name": "ONETEP"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use BigDFT for wavelet-based and large-system electronic-structure work.",
+          "first_human_action": "Open the official BigDFT documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-bigdft",
+          "link_label": "Open BigDFT documentation",
+          "id": "bigdft",
+          "name": "BigDFT"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Python",
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use GPAW for PAW calculations on real-space grids or plane waves with ASE integration.",
+          "first_human_action": "Open the official GPAW documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-gpaw",
+          "link_label": "Open GPAW documentation",
+          "id": "gpaw",
+          "name": "GPAW"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Octopus for real-space ground-state or time-dependent work.",
+          "first_human_action": "Open the official Octopus documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-octopus",
+          "link_label": "Open Octopus documentation",
+          "id": "octopus",
+          "name": "Octopus"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use DFTB+ for scientifically justified approximate density-functional tight binding.",
+          "first_human_action": "Open the official DFTB+ documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "DFTB+ is an approximate parameterized tight-binding method and must not be presented as interchangeable with full Kohn-Sham DFT.",
+          "source_id": "rl-dftbplus",
+          "link_label": "Open DFTB+ documentation",
+          "id": "dftbplus",
+          "name": "DFTB+"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Commercial",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use CRYSTAL for periodic local Gaussian-basis calculations.",
+          "first_human_action": "Open the official CRYSTAL documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-crystal",
+          "link_label": "Open the CRYSTAL code site",
+          "id": "crystal",
+          "name": "CRYSTAL"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Commercial",
+          "interfaces": [
+            "GUI",
+            "CLI",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use AMS BAND for licensed periodic DFT through BAND and AMS tools.",
+          "first_human_action": "Open the official AMS BAND documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-ams-band",
+          "link_label": "Open the AMS BAND manual",
+          "id": "ams-band",
+          "name": "AMS BAND"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Commercial",
+          "interfaces": [
+            "GUI",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use QuantumATK for licensed integrated atomistic, electronic, and transport work.",
+          "first_human_action": "Open the official QuantumATK documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-quantumatk",
+          "link_label": "Review QuantumATK capabilities",
+          "id": "quantumatk",
+          "name": "QuantumATK"
+        },
+        {
+          "subcategory": "Electronic-structure codes",
+          "authority": "Official",
+          "access": "Commercial",
+          "interfaces": [
+            "GUI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use BIOVIA Materials Studio for licensed integrated materials modeling and electronic-structure work.",
+          "first_human_action": "Open the official BIOVIA Materials Studio documentation, identify the method and basis for the intended task, and inspect one matching-version example before production input.",
+          "inspect": "Inspect version and licence constraints, method and basis definitions, input semantics, convergence reports, warnings, and artifacts used by the next calculation.",
+          "bring_back": "Bring back the exact code/version identity, input files, execution command, output and restart lineage, and observable-specific checks.",
+          "boundary": "Software availability or successful termination does not establish convergence, model validity, or numerical equivalence with another implementation.",
+          "source_id": "rl-materials-studio",
+          "link_label": "Review Materials Studio capabilities",
+          "id": "materials-studio",
+          "name": "BIOVIA Materials Studio"
+        }
+      ]
+    },
+    {
+      "id": "specialist-tools",
+      "title": "Specialist analysis and workflow tools",
+      "intro": "Use specialist packages only after preserving and auditing their required parent calculations, conventions, and target-specific convergence.",
+      "resources": [
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI",
+            "GUI",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Phonopy for harmonic finite-displacement force constants, phonons, and mode animation.",
+          "first_human_action": "Open the official animation guide, set ANIME to the q point of interest, generate anime.ascii, and open it in v_sim.",
+          "inspect": "In the v_sim Phonons tab, select and play the mode; inspect which atoms move and their direction and phase, and expand nodes for a non-Gamma modulation.",
+          "bring_back": "Bring back the q point, mode or frequency, anime.ascii, node-expansion settings, a visual note or screenshot, and the numerical checks used to diagnose the mode.",
+          "boundary": "Mode animation complements numerical diagnosis and can expose a wrong cell or interpretation; it does not prove that an imaginary mode is a physical instability.",
+          "source_id": "rl-phonopy",
+          "link_label": "Open the Phonopy mode-animation guide",
+          "id": "phonopy",
+          "name": "Phonopy"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Phono3py for third-order force constants and lattice thermal transport.",
+          "first_human_action": "Open the official Phono3py workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-phono3py",
+          "link_label": "Follow the Phono3py workflow",
+          "id": "phono3py",
+          "name": "Phono3py"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI",
+            "Library"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Wannier90 for Wannier functions and interpolation.",
+          "first_human_action": "Open the official Wannier90 workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-wannier90",
+          "link_label": "Open Wannier90 documentation",
+          "id": "wannier90",
+          "name": "Wannier90"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use EPW for Wannier-interpolated electron-phonon, transport, or superconductivity work.",
+          "first_human_action": "Open the official EPW workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-epw",
+          "link_label": "Open EPW documentation",
+          "id": "epw",
+          "name": "EPW"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use WannierTools for topological and surface-state analysis from a validated tight-binding model.",
+          "first_human_action": "Open the official WannierTools workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-wanniertools",
+          "link_label": "Open WannierTools documentation",
+          "id": "wanniertools",
+          "name": "WannierTools"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use VASPKIT for documented VASP-centered pre/post-processing.",
+          "first_human_action": "Open the official VASPKIT workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-vaspkit",
+          "link_label": "Open VASPKIT documentation",
+          "id": "vaspkit",
+          "name": "VASPKIT"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Python",
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use PyProcar for projected bands, Fermi surfaces, and spin textures.",
+          "first_human_action": "Open the official PyProcar workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-pyprocar",
+          "link_label": "Open PyProcar documentation",
+          "id": "pyprocar",
+          "name": "PyProcar"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use sumo for band, DOS, and optical plotting from supported codes.",
+          "first_human_action": "Open the official sumo workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-sumo",
+          "link_label": "Open sumo documentation",
+          "id": "sumo",
+          "name": "sumo"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Critic2 for critical-point, basin, and scalar-field topology analysis.",
+          "first_human_action": "Open the official Critic2 workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-critic2",
+          "link_label": "Open Critic2 documentation",
+          "id": "critic2",
+          "name": "Critic2"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Academic",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Henkelman-group Bader analysis for grid-based Bader partitioning.",
+          "first_human_action": "Open the official Henkelman-group Bader analysis workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-bader",
+          "link_label": "Open the Bader analysis documentation",
+          "id": "bader",
+          "name": "Henkelman-group Bader analysis"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Registration",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use LOBSTER for projection-based chemical-bonding analysis.",
+          "first_human_action": "Open the official LOBSTER workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence. This is a legacy HTTP-only official site; do not enter credentials or sensitive data; use institutional or package documentation if policy blocks it.",
+          "source_id": "rl-lobster",
+          "link_label": "Open the LOBSTER project site",
+          "id": "lobster",
+          "name": "LOBSTER"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Python",
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use BoltzTraP2 for semiclassical electronic transport interpolation.",
+          "first_human_action": "Open the official BoltzTraP2 workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-boltztrap2",
+          "link_label": "Open the BoltzTraP2 repository",
+          "id": "boltztrap2",
+          "name": "BoltzTraP2"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Yambo for many-body perturbation and optical calculations.",
+          "first_human_action": "Open the official Yambo workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-yambo",
+          "link_label": "Open Yambo documentation",
+          "id": "yambo",
+          "name": "Yambo"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use BerkeleyGW for GW and Bethe-Salpeter calculations.",
+          "first_human_action": "Open the official BerkeleyGW workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-berkeleygw",
+          "link_label": "Open BerkeleyGW documentation",
+          "id": "berkeleygw",
+          "name": "BerkeleyGW"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Python",
+            "CLI"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Atomic Simulation Environment for transparent structure I/O, calculators, and repeated atomistic tasks.",
+          "first_human_action": "Open the official Atomic Simulation Environment workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-ase",
+          "link_label": "Open ASE documentation",
+          "id": "ase",
+          "name": "Atomic Simulation Environment"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use pymatgen for materials structures, transformations, phase diagrams, and code I/O.",
+          "first_human_action": "Open the official pymatgen workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-pymatgen",
+          "link_label": "Open pymatgen documentation",
+          "id": "pymatgen",
+          "name": "pymatgen"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Library",
+            "Python"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use spglib for programmatic symmetry detection after human inspection.",
+          "first_human_action": "Open the official spglib workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A post-processing artifact is only as trustworthy as its parent calculation and its own observable-specific convergence.",
+          "source_id": "rl-spglib",
+          "link_label": "Open spglib documentation",
+          "id": "spglib",
+          "name": "spglib"
+        },
+        {
+          "subcategory": "Specialist analysis and workflow tools",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Python",
+            "CLI",
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use AiiDA for provenance-preserving execution after the manual workflow is understood.",
+          "first_human_action": "Open the official AiiDA workflow matching the parent calculation, then inspect its required inputs and expected artifacts.",
+          "inspect": "Inspect parent compatibility, units, conventions, numerical settings, warnings, and the scientific object produced for human review.",
+          "bring_back": "Bring back parent identifiers, tool/version, settings, outputs, plots, and validation notes.",
+          "boundary": "A provenance graph records relationships and failures; it does not establish numerical convergence or scientific validity.",
+          "source_id": "rl-aiida",
+          "link_label": "Open AiiDA documentation",
+          "id": "aiida",
+          "name": "AiiDA"
+        }
+      ]
+    },
+    {
+      "id": "pseudopotentials-basis",
+      "title": "Pseudopotentials, PAW datasets, and basis resources",
+      "intro": "Choose the family and exact file through human-facing metadata and validation evidence before scripting downloads or sweeps.",
+      "resources": [
+        {
+          "subcategory": "Pseudopotential, PAW, and basis resources",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Standard Solid State Pseudopotentials for tested QE-compatible precision and efficiency tables.",
+          "first_human_action": "Open Standard Solid State Pseudopotentials, choose a family compatible with the intended method and functional, and inspect valence, relativity, validation, format, and cutoff guidance before download.",
+          "inspect": "Inspect family and release, XC compatibility, valence configuration, relativistic treatment, validation set, numerical guidance, and licence.",
+          "bring_back": "Bring back the exact file, source URL, release or version, metadata, licence boundary, and checksum.",
+          "boundary": "A recommendation or benchmark does not remove the need to converge the target observable for the actual model.",
+          "source_id": "rl-sssp",
+          "link_label": "Compare pseudopotentials in SSSP",
+          "id": "sssp",
+          "name": "Standard Solid State Pseudopotentials"
+        },
+        {
+          "subcategory": "Pseudopotential, PAW, and basis resources",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use PseudoDojo for norm-conserving pseudopotentials with selectable validation data.",
+          "first_human_action": "Open PseudoDojo, choose a family compatible with the intended method and functional, and inspect valence, relativity, validation, format, and cutoff guidance before download.",
+          "inspect": "Inspect family and release, XC compatibility, valence configuration, relativistic treatment, validation set, numerical guidance, and licence.",
+          "bring_back": "Bring back the exact file, source URL, release or version, metadata, licence boundary, and checksum.",
+          "boundary": "A recommendation or benchmark does not remove the need to converge the target observable for the actual model.",
+          "source_id": "rl-pseudo-dojo",
+          "link_label": "Choose and inspect a PseudoDojo table",
+          "id": "pseudo-dojo",
+          "name": "PseudoDojo"
+        },
+        {
+          "subcategory": "Pseudopotential, PAW, and basis resources",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use PSLibrary for versioned PAW and ultrasoft pseudopotentials for QE.",
+          "first_human_action": "Open PSLibrary, choose a family compatible with the intended method and functional, and inspect valence, relativity, validation, format, and cutoff guidance before download.",
+          "inspect": "Inspect family and release, XC compatibility, valence configuration, relativistic treatment, validation set, numerical guidance, and licence.",
+          "bring_back": "Bring back the exact file, source URL, release or version, metadata, licence boundary, and checksum.",
+          "boundary": "A recommendation or benchmark does not remove the need to converge the target observable for the actual model.",
+          "source_id": "rl-pslibrary",
+          "link_label": "Open PSLibrary documentation",
+          "id": "pslibrary",
+          "name": "PSLibrary"
+        },
+        {
+          "subcategory": "Pseudopotential, PAW, and basis resources",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use GBRV pseudopotential library for published solid-state testing of ultrasoft pseudopotentials.",
+          "first_human_action": "Open GBRV pseudopotential library, choose a family compatible with the intended method and functional, and inspect valence, relativity, validation, format, and cutoff guidance before download.",
+          "inspect": "Inspect family and release, XC compatibility, valence configuration, relativistic treatment, validation set, numerical guidance, and licence.",
+          "bring_back": "Bring back the exact file, source URL, release or version, metadata, licence boundary, and checksum.",
+          "boundary": "A recommendation or benchmark does not remove the need to converge the target observable for the actual model.",
+          "source_id": "rl-gbrv",
+          "link_label": "Open the GBRV library",
+          "id": "gbrv",
+          "name": "GBRV pseudopotential library"
+        },
+        {
+          "subcategory": "Pseudopotential, PAW, and basis resources",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Quantum ESPRESSO pseudopotential portal for browsing QE-oriented files and provenance.",
+          "first_human_action": "Open Quantum ESPRESSO pseudopotential portal, choose a family compatible with the intended method and functional, and inspect valence, relativity, validation, format, and cutoff guidance before download.",
+          "inspect": "Inspect family and release, XC compatibility, valence configuration, relativistic treatment, validation set, numerical guidance, and licence.",
+          "bring_back": "Bring back the exact file, source URL, release or version, metadata, licence boundary, and checksum.",
+          "boundary": "A recommendation or benchmark does not remove the need to converge the target observable for the actual model.",
+          "source_id": "rl-qe-pseudopotentials",
+          "link_label": "Browse the QE pseudopotential portal",
+          "id": "qe-pseudopotentials",
+          "name": "Quantum ESPRESSO pseudopotential portal"
+        },
+        {
+          "subcategory": "Pseudopotential, PAW, and basis resources",
+          "authority": "Official",
+          "access": "Commercial",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use VASP PAW dataset guidance for licensed VASP PAW selection guidance.",
+          "first_human_action": "Open VASP PAW dataset guidance, choose a family compatible with the intended method and functional, and inspect valence, relativity, validation, format, and cutoff guidance before download.",
+          "inspect": "Inspect family and release, XC compatibility, valence configuration, relativistic treatment, validation set, numerical guidance, and licence.",
+          "bring_back": "Bring back the exact file, source URL, release or version, metadata, licence boundary, and checksum.",
+          "boundary": "POTCAR content is licensed and must not be copied into DRW; preserve only permitted identities and hashes under local licence rules.",
+          "source_id": "rl-vasp-paw",
+          "link_label": "Read how VASP PAW datasets are chosen",
+          "id": "vasp-paw",
+          "name": "VASP PAW dataset guidance"
+        },
+        {
+          "subcategory": "Pseudopotential, PAW, and basis resources",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use ABINIT pseudopotential guidance for ABINIT-compatible pseudopotential and PAW guidance.",
+          "first_human_action": "Open ABINIT pseudopotential guidance, choose a family compatible with the intended method and functional, and inspect valence, relativity, validation, format, and cutoff guidance before download.",
+          "inspect": "Inspect family and release, XC compatibility, valence configuration, relativistic treatment, validation set, numerical guidance, and licence.",
+          "bring_back": "Bring back the exact file, source URL, release or version, metadata, licence boundary, and checksum.",
+          "boundary": "A recommendation or benchmark does not remove the need to converge the target observable for the actual model.",
+          "source_id": "rl-abinit-pseudos",
+          "link_label": "Open ABINIT pseudopotential topics",
+          "id": "abinit-pseudos",
+          "name": "ABINIT pseudopotential guidance"
+        },
+        {
+          "subcategory": "Pseudopotential, PAW, and basis resources",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use CP2K basis and potential data for distributed CP2K basis-set and potential files.",
+          "first_human_action": "Open CP2K basis and potential data, choose a family compatible with the intended method and functional, and inspect valence, relativity, validation, format, and cutoff guidance before download.",
+          "inspect": "Inspect family and release, XC compatibility, valence configuration, relativistic treatment, validation set, numerical guidance, and licence.",
+          "bring_back": "Bring back the exact file, source URL, release or version, metadata, licence boundary, and checksum.",
+          "boundary": "A recommendation or benchmark does not remove the need to converge the target observable for the actual model.",
+          "source_id": "rl-cp2k-data",
+          "link_label": "Inspect CP2K distributed data files",
+          "id": "cp2k-data",
+          "name": "CP2K basis and potential data"
+        },
+        {
+          "subcategory": "Pseudopotential, PAW, and basis resources",
+          "authority": "Official",
+          "access": "Mixed",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use FHI-aims species defaults for release-matched numeric atom-centered orbital species definitions.",
+          "first_human_action": "Open FHI-aims species defaults, choose a family compatible with the intended method and functional, and inspect valence, relativity, validation, format, and cutoff guidance before download.",
+          "inspect": "Inspect family and release, XC compatibility, valence configuration, relativistic treatment, validation set, numerical guidance, and licence.",
+          "bring_back": "Bring back the exact file, source URL, release or version, metadata, licence boundary, and checksum.",
+          "boundary": "A recommendation or benchmark does not remove the need to converge the target observable for the actual model.",
+          "source_id": "rl-fhi-aims-species",
+          "link_label": "Open the FHI-aims manual for species defaults",
+          "id": "fhi-aims-species",
+          "name": "FHI-aims species defaults"
+        }
+      ]
+    },
+    {
+      "id": "literature-learning",
+      "title": "Manuals, tutorials, workshops, and courses",
+      "intro": "Learning resources are part of the workflow. Use them to learn where to look, then return to the current official input reference.",
+      "resources": [
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Quantum ESPRESSO Learn for official schools, workshops, and self-paced material.",
+          "first_human_action": "Open the Learn index, choose a workshop tutorial or self-paced course that matches the current task, and inspect its prerequisites and example files before running it.",
+          "inspect": "Inspect the tutorial date, Quantum ESPRESSO version where stated, required executables and pseudopotentials, supplied inputs, expected outputs, and links to current input documentation.",
+          "bring_back": "Bring back the example inputs, Quantum ESPRESSO version context, pseudopotential identities, expected artifacts, and current official input-reference pages for the keywords you will use.",
+          "boundary": "The Learn index is publicly readable and links material from different dates and hosts. A tutorial may target an older Quantum ESPRESSO release or a specific teaching model; verify every keyword and workflow against the installed version and do not treat the example as a converged research protocol.",
+          "source_id": "rl-qe-learn",
+          "link_label": "Choose a Quantum ESPRESSO school or course",
+          "id": "qe-learn",
+          "name": "Quantum ESPRESSO Learn"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Materials Cloud Learn for recorded lectures and schools across QE, AiiDA, Wannier90, and related tools.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-materials-cloud-learn",
+          "link_label": "Browse Materials Cloud learning materials",
+          "id": "materials-cloud-learn",
+          "name": "Materials Cloud Learn"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+              "access": "Mixed",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use VASP tutorials for official task-oriented VASP exercises.",
+              "first_human_action": "Open the public module closest to the current calculation and inspect one complete example. Execute its hands-on VASP steps only in an environment with licensed VASP access.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+              "boundary": "The linked reading is public, but executing VASP exercises requires licensed VASP access and licensed PAW datasets. Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-vasp-tutorials",
+          "link_label": "Work through the official VASP tutorials",
+          "id": "vasp-tutorials",
+          "name": "VASP tutorials"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+              "access": "Mixed",
+              "interfaces": [
+                "Web"
+              ],
+              "languages": [
+                "English"
+              ],
+              "use_when": "Use VASP workshop material for official VASP workshop lectures and exercises.",
+              "first_human_action": "Open the public workshop module closest to the current calculation and inspect one complete example. Execute its hands-on VASP steps only in an environment with licensed VASP access.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+              "boundary": "The linked reading is public, but executing VASP exercises requires licensed VASP access and licensed PAW datasets. Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+              "source_id": "rl-vasp-workshop",
+          "link_label": "Open VASP workshop material",
+          "id": "vasp-workshop",
+          "name": "VASP workshop material"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use ABINIT tutorials for progressive official ground-state, response, and advanced lessons.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-abinit-tutorials",
+          "link_label": "Choose an ABINIT tutorial",
+          "id": "abinit-tutorials",
+          "name": "ABINIT tutorials"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use CP2K exercises for official hands-on CP2K exercises.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-cp2k-exercises",
+          "link_label": "Choose a CP2K exercise",
+          "id": "cp2k-exercises",
+          "name": "CP2K exercises"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use SIESTA tutorials and video lectures for official SIESTA documentation, tutorials, and video lectures.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-siesta-learning",
+          "link_label": "Start from the SIESTA documentation hub",
+          "id": "siesta-learning",
+          "name": "SIESTA tutorials and video lectures"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use exciting tutorials for official all-electron ground-state and excited-state examples.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-exciting-tutorials",
+          "link_label": "Choose an exciting tutorial",
+          "id": "exciting-tutorials",
+          "name": "exciting tutorials"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Octopus tutorials for official real-space and time-dependent examples.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-octopus-tutorials",
+          "link_label": "Choose an Octopus tutorial",
+          "id": "octopus-tutorials",
+          "name": "Octopus tutorials"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Phonopy examples for examples connecting displacements, forces, force constants, and phonons.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-phonopy-examples",
+          "link_label": "Work through Phonopy examples",
+          "id": "phonopy-examples",
+          "name": "Phonopy examples"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use Wannier90 tutorials for official Wannierization and interpolation examples.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-wannier90-tutorials",
+          "link_label": "Choose a Wannier90 tutorial",
+          "id": "wannier90-tutorials",
+          "name": "Wannier90 tutorials"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Official",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "English"
+          ],
+          "use_when": "Use AiiDA tutorials for provenance-preserving execution after manual understanding.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-aiida-tutorials",
+          "link_label": "Work through the AiiDA tutorials",
+          "id": "aiida-tutorials",
+          "name": "AiiDA tutorials"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Academic",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "Japanese",
+            "English"
+          ],
+          "use_when": "Use MateriApps for a Japanese/English task-oriented computational-materials software concierge.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-materiapps",
+          "link_label": "Browse the MateriApps software concierge",
+          "id": "materiapps",
+          "name": "MateriApps"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Academic",
+          "access": "Open",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "Japanese"
+          ],
+          "use_when": "Use MateriApps Materials Project to QE hands-on guide for a Japanese browser-to-structure-to-QE practical example.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-materiapps-mp-qe-ja",
+          "link_label": "Follow the Japanese Materials Project to QE guide",
+          "id": "materiapps-mp-qe-ja",
+          "name": "MateriApps Materials Project to QE hands-on guide"
+        },
+        {
+          "subcategory": "Tutorials, workshops, and courses",
+          "authority": "Academic",
+          "access": "Registration",
+          "interfaces": [
+            "Web"
+          ],
+          "languages": [
+            "Chinese"
+          ],
+          "use_when": "Use 材料模拟与计算 (Materials Simulation and Computing) for a Chinese university course covering materials-modeling and GUI-based first-principles practice.",
+          "first_human_action": "Open the module closest to the current calculation and work through one complete hands-on example with the matching software version.",
+          "inspect": "Inspect prerequisites, software version, supplied files, expected outputs, exercises, and whether the lesson is conceptual or executable.",
+          "bring_back": "Bring back example files, version-specific notes, and the official manual page governing each parameter used in your calculation.",
+          "boundary": "Training material illustrates a route; it is not a universal protocol or a substitute for current official parameter documentation.",
+          "source_id": "rl-whut-materials-simulation-cn",
+          "link_label": "Open the Chinese university course",
+          "id": "whut-materials-simulation-cn",
+          "name": "材料模拟与计算 (Materials Simulation and Computing)"
+        }
+      ]
+    }
+  ]
+}

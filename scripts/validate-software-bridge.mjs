@@ -80,6 +80,8 @@ for (const phrase of ['not a software manual', 'compatibility promise', 'benchma
   requireText(bridge.scope_note, phrase, 'scope_note');
 }
 if (!/^\d{4}-\d{2}-\d{2}$/.test(bridge.verified_at ?? '')) errors.push('verified_at');
+if (!String(bridge.ecosystem_note).includes('not a complete software list') || !String(bridge.ecosystem_note).includes('ranking')) errors.push('ecosystem breadth boundary');
+if (bridge.resource_landscape_path !== 'operations/resource-landscape/' || !String(bridge.resource_landscape_label).includes('broader electronic-structure ecosystem')) errors.push('resource landscape bridge');
 if (JSON.stringify(bridge.software_order) !== JSON.stringify(expectedSoftware)) errors.push('software_order changed');
 if (JSON.stringify((bridge.tasks ?? []).map((task) => task.id)) !== JSON.stringify(expectedTaskIds)) errors.push('task inventory or order changed');
 
@@ -129,6 +131,9 @@ requireText(cp2kDos?.boundary, 'CP2K 2026.2 or later', 'dense-dos-pdos:cp2k');
 const cp2kPhonons = taskById.get('harmonic-phonons')?.implementations.find((entry) => entry.tool_slug === 'cp2k');
 requireText(cp2kPhonons?.boundary, 'Gamma-point normal modes', 'harmonic-phonons:cp2k');
 requireText(cp2kPhonons?.boundary, 'not a general-q phonon dispersion workflow', 'harmonic-phonons:cp2k');
+const cp2kRestart = taskById.get('restart-continuation')?.implementations.find((entry) => entry.tool_slug === 'cp2k');
+requireText(cp2kRestart?.terminology, 'restart-relevant fields read from an external CP2K restart/input file', 'restart-continuation:cp2k');
+requireText(cp2kRestart?.boundary, 'reads only the selected restart-relevant fields', 'restart-continuation:cp2k');
 for (const implementation of taskById.get('restart-continuation')?.implementations ?? []) {
   requireText(`${implementation.first_inspection} ${implementation.boundary}`, 'ancestry', `restart-continuation:${implementation.tool_slug}`);
 }
@@ -145,6 +150,7 @@ for (const marker of [
   'data-artifacts',
   'data-check-boundary',
   'data-task-boundary',
+  'data-ecosystem-link',
 ]) {
   if (!pageSource.includes(marker)) errors.push(`page source missing ${marker}`);
 }
@@ -160,4 +166,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('Software Bridge valid: 6 frozen scientific tasks, 24 QE/VASP/ABINIT/CP2K mappings, exact existing parent topics and official URLs, static rendering markers, and fail-closed scientific non-equivalence boundaries.');
+console.log('Software Bridge valid: 6 frozen tasks, 24 audited mappings, exact parent topics and official URLs, broader-ecosystem boundary, and fail-closed non-equivalence.');

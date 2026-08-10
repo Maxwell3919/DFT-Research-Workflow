@@ -25,6 +25,16 @@ reviewed_at: "2026-08-03"
 
 A restart is a continuation of a traceable optimization problem, not permission to overwrite an unfinished calculation. Geometry, optimizer state, constraints, electronic restart data, software identity, and the reason for continuation must remain connected.
 
+## Resume from a known physical state
+
+Open the previous output and the last several trajectory frames before choosing a restart command. Identify the last accepted geometry rather than the last coordinates merely printed, read the stop reason, and inspect the segment for collisions, cell jumps, state switching, or a constraint mismatch. Keep the source, initial frame, last accepted frame, and failed tail available for comparison in a viewer from the [visualization and symmetry index](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry).
+
+Inventory the restart objects separately: geometry, charge density, wavefunctions, optimizer state, checkpoint metadata, pseudopotentials, executable version, parallel layout requirements, and scratch path. File existence alone does not establish that an object is complete, compatible, or descended from the intended parent. Open the implementation's restart reference through the [electronic-structure code and manual index](/DFT-Research-Workflow/operations/resource-landscape/#electronic-structure-codes) before changing restart modes.
+
+Write continuation output to a new file or directory and submit it through the normal executable or scheduler. Once it starts, compare the first accepted continuation frame and electronic state with the preserved parent boundary. Inspect the full new SCF, force, stress, displacement, warning, and state histories; a continuous-looking energy is not enough. Reopen the combined trajectory to look for a jump at the segment boundary.
+
+After the optimizer reports its condition, run the required fresh fixed-geometry energy-and-gradient verification and compare it with the accepted endpoint. The companion reconstruction below is optional automation for the stored case. It cannot make an incompatible restart valid, and VASP `CONTCAR` or any other endpoint file being present does not prove convergence.
+
 ## Run, inspect, decide, then continue
 
 Run the bounded stored-output checker:

@@ -14,11 +14,16 @@ source_ids:
   - qe-pw-75
   - vasp-magnetic-anisotropy
   - vasp-lsorbit
-media_ids:
-  - anisotropy-exchange-ledger
+media_ids: []
 review: docs/reviews/2026-08-04-magnetic-anisotropy-and-exchange-interactions.md
 reviewed_at: "2026-08-04"
 ---
+
+## Mark the axes and spin arrangements before fitting energies
+
+For a real material, open the structure with the tested magnetization directions or spin pairs labelled, and inspect final site moments or spin density for every run. Plot directional energies or configuration energies with error scale and fit residuals, keeping the sign, cell, pair counting, and spin normalization visible. Compare with symmetry and published conventions through [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [specialist magnetic tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
+
+**Audit the stored fixture:** the ledger is deliberately invented teaching arithmetic. No bar chart is published because empty synthetic bars would not show a magnetic structure, spin density, real spin-orbit result, or measured exchange interaction.
 
 Use this fixture to check ledger arithmetic before processing real magnetic energies. It separates two operations: ranking invented SOC directional energies for one fixed magnetic texture, and fitting invented two-site energies to the convention
 
@@ -35,15 +40,14 @@ For a real calculation, the parent object must contain compatible total energies
 From the repository root, run:
 
 ```bash
-python3 examples/practical-guides/anisotropy_exchange_ledger.py \
-  --svg public/media/practical-guides/magnetic-anisotropy-and-exchange-interactions/fit-anisotropy-and-exchange-ledger/anisotropy-exchange-ledger.svg
+python3 examples/practical-guides/anisotropy_exchange_ledger.py
 ```
 
-The command prints a Python result dictionary and writes the requested SVG. Confirm normal exit and the final line `Invented anisotropy/exchange fixture passed; it verifies arithmetic and SVG rendering only.` This establishes program completion for the fixture, not SOC or exchange convergence.
+The command prints a Python result dictionary. Confirm normal exit and the final line `Invented anisotropy/exchange fixture passed; it verifies arithmetic only.` This establishes program completion for the fixture, not SOC or exchange convergence.
 
 ## Inspect the directional-energy reduction
 
-Read `easy_direction_within_fixture` and `mae_relative_to_c`. The first names the lowest built-in directional entry; the second subtracts the built-in `c axis` reference. Check that the values use the declared `energy_unit` normalization and match the plotted bars.
+Read `easy_direction_within_fixture` and `mae_relative_to_c`. The first names the lowest built-in directional entry; the second subtracts the built-in `c axis` reference. Check that the values use the declared `energy_unit` normalization.
 
 This ranking is conditional on the invented fixed-geometry entries. In real work, all directions must use the same magnetic texture, structure, SOC Hamiltonian, charge, potential data, k points, occupations, symmetry policy, and numerical precision. A scalar-relativistic energy cannot be mixed with an SOC energy, and a collinear energy cannot silently enter a noncollinear directional comparison.
 
@@ -59,7 +63,7 @@ Then compare `held_out_orthogonal_energy` with `predicted_orthogonal_energy`. Eq
 
 For real MAE, reconstruct every directional difference from retained high-precision total energies and the declared normalization, then converge the difference and easy-direction ranking. For real exchange, retain the final moment map of every configuration, state the sign and pair-counting convention, fit enough independent configurations, and test held-out states. A passed script run does not replace any of those checks.
 
-Execution verifies invented arithmetic, sign convention, normalization labels, one held-out reconstruction, and SVG rendering only. It does not calculate a material MAE or exchange parameter, establish an easy axis, validate a magnetic Hamiltonian, predict a transition temperature, or support a scientific conclusion.
+Execution verifies invented arithmetic, sign convention, normalization labels, and one held-out reconstruction only. It does not calculate a material MAE or exchange parameter, establish an easy axis, validate a magnetic Hamiltonian, predict a transition temperature, or support a scientific conclusion.
 
 ## Official sources
 

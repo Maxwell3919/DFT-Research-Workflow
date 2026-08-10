@@ -21,6 +21,12 @@ review: docs/reviews/2026-08-03-equation-of-state-and-structural-phase-stability
 reviewed_at: "2026-08-03"
 ---
 
+## Inspect every deformed structure and raw point
+
+Open the structures at the smallest, central, and largest sampled volumes, then spot-check the rest. Confirm which lattice ratios, internal coordinates, magnetic state, and symmetry constraints were held or relaxed. Maintain a table linking each visible structure to its input, output, volume, energy, stress, convergence evidence, and method identity; plot raw points before fitting. [Visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry) and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning) help identify unintended transitions and defensible sampling ranges.
+
+**Audit the stored fixture:** the displayed series is a conceptual, synthetic traceability example. Its companion script validates record completeness, not a real energy-volume calculation or equation of state.
+
 Use this guide before fitting an EOS. It filters an abstract A2B2 point ledger so only one structural and electronic branch reaches the fit.
 
 Inspect the accepted points and their order from the companion-script directory:

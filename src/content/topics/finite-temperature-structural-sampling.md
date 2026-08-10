@@ -5,9 +5,11 @@ status: reviewed
 
 Finite-temperature structural sampling asks which configurations of a declared finite model contribute to an equilibrium observable, and with what statistical weight. It begins after a trajectory or configuration generator exists. It does not turn a finite set of frames into an equilibrium phase, a free-energy landscape, or a material property merely by plotting a histogram.
 
-## Turn configurations into a qualified distribution
+## Inspect configurations, overlap, and the resulting distribution
 
-Start with an identified ensemble and trajectory or window set. Define the collective variable, retained interval, bias and reweighting data, binning or estimator, correlation treatment, and uncertainty target before plotting. Inspect stationarity, independent support, window overlap or bias evolution, effective sample size, finite-size sensitivity, and stability to analysis choices. Converge the population or free-energy difference that supports the claim. This overview does not claim that a finite-temperature sampling calculation was run.
+Start with an identified ensemble and trajectory or window set. Open representative configurations from every basin and window before reducing them to a collective variable; confirm that the coordinate distinguishes the structures the scientific question actually cares about. Plot the collective-variable time series, per-window histograms, overlap between neighbouring windows, bias evolution, and the reconstructed population or free-energy profile. A smooth final curve can conceal disconnected support or an omitted slow coordinate.
+
+Define the retained interval, bias and reweighting data, binning or estimator, correlation treatment, and uncertainty target before accepting the plot. Inspect stationarity, independent support, effective sample size, finite-size sensitivity, and stability to analysis choices. Converge the population or free-energy difference that supports the claim. PLUMED, trajectory viewers, enhanced-sampling routes, and learning resources are indexed under [specialist tools](/DFT-Research-Workflow/operations/resource-landscape/#specialist-tools) and [literature and learning](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning). This overview does not claim that a finite-temperature sampling calculation was run.
 
 ## A structural distribution has a measure, an ensemble, and a coordinate
 

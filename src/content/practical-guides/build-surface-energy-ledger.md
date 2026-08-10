@@ -23,6 +23,12 @@ review: docs/reviews/2026-08-04-surface-energy-and-work-function.md
 reviewed_at: "2026-08-04"
 ---
 
+## View the facets and slab definitions before comparing values
+
+Open each facet as a slab, view it from the side and along the surface normal, and identify termination, surface-cell area, layer count, fixed atoms, vacuum, and whether the two faces are equivalent. Read the source Methods or database record to determine the bulk reference and unit convention, then place those definitions beside the energy table. Use [visual tools](/DFT-Research-Workflow/operations/resource-landscape/#visual-symmetry), [structure and surface data](/DFT-Research-Workflow/operations/resource-landscape/#structures-data), and [literature sources](/DFT-Research-Workflow/operations/resource-landscape/#literature-learning).
+
+**Reproduce this site's figure:** the companion script redraws attributed published silicon surface values and a separate synthetic bulk-drift diagnostic. The three source values are not a slab-thickness or vacuum-convergence series, and the schematic diagnostic is secondary rather than real slab evidence.
+
 Start by auditing the attributed InterMat ledger:
 
 ```bash
