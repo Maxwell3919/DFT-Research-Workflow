@@ -163,10 +163,10 @@
       "sha256": "e6de08c86aa1d17fae2bb17fe8ee2b63a27e72379795cc611660c5ca20a17242"
     },
     {
-      "bytes": 160718,
+      "bytes": 118716,
       "path": "derived/al-dos-gaussian.csv",
       "role": "Gaussian raw-NSCF representation",
-      "sha256": "9cff2ec93554d6c12c654746f69d1c48224f44acc63e57b35a0ad1329a735b2a"
+      "sha256": "4b36c0539ea778dec4277bafcda220b79963b15035c074273d9aa1acf05bf116"
     },
     {
       "bytes": 1226,

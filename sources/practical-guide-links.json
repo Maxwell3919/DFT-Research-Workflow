@@ -349,11 +349,6 @@
       "kind": "page"
     },
     {
-      "id": "oqmd-download-license",
-      "url": "https://www.oqmd.org/download/",
-      "kind": "page"
-    },
-    {
       "id": "oqmd-paper",
       "url": "https://doi.org/10.1007/s11837-013-0755-4",
       "kind": "doi"
@@ -881,7 +876,6 @@
       "guide_slug": "rebuild-oqmd-li-p-convex-hull",
       "source_ids": [
         "oqmd-api",
-        "oqmd-download-license",
         "oqmd-paper",
         "pymatgen-phase-diagram-api"
       ]

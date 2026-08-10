@@ -12,7 +12,6 @@ tested_versions:
 execution_script: examples/practical-guides/li_p_convex_hull.py
 source_ids:
   - oqmd-api
-  - oqmd-download-license
   - oqmd-paper
   - pymatgen-phase-diagram-api
 media_ids: []
@@ -41,7 +40,7 @@ Inspect the JSON report for row count, hull vertices, decomposition endpoints an
 
 The frozen snapshot records query URL, retrieval time, API version, source timestamp, field order, and reuse terms. Every row retains `entry_id`, `calculation_label`, formula, structure metadata, formation energy, and database stability. Do not replace these identifiers with plot labels.
 
-The OQMD [REST API documentation](https://static.oqmd.org/static/docs/restful.html) defines the interface, its [download page](https://www.oqmd.org/download/) states current dataset licence terms, and the [OQMD paper](https://doi.org/10.1007/s11837-013-0755-4) describes the database. The committed snapshot, not the mutable live response, is the input to this fixture.
+The OQMD [REST API documentation](https://static.oqmd.org/static/docs/restful.html) defines the interface, and the [OQMD paper](https://doi.org/10.1007/s11837-013-0755-4) describes the database. The committed snapshot, not the mutable live response, is the input to this fixture.
 
 ## Check composition and normalization
 
@@ -74,6 +73,5 @@ This guide verifies frozen-data parsing, attribution, normalization, and binary 
 ## Official sources
 
 - [OQMD RESTful API documentation](https://static.oqmd.org/static/docs/restful.html)
-- [OQMD download page and current dataset licence terms](https://www.oqmd.org/download/)
 - [Kirklin and co-workers, the OQMD](https://doi.org/10.1007/s11837-013-0755-4)
 - [pymatgen phase-diagram analysis API](https://pymatgen.org/pymatgen.analysis.html#module-pymatgen.analysis.phase_diagram)

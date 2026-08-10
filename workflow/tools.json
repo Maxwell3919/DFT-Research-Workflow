@@ -3633,9 +3633,9 @@
       ],
       "links": [
         {
-          "role": "homepage",
-          "label": "Official entry",
-          "url": "https://openpbs.org/"
+          "role": "source",
+          "label": "Official OpenPBS repository",
+          "url": "https://github.com/openpbs/openpbs"
         }
       ],
       "editorial_state": "catalog"
@@ -4177,8 +4177,8 @@
       "links": [
         {
           "role": "docs",
-          "label": "VASPKIT",
-          "url": "https://vaspkit.com/"
+          "label": "Official VASPKIT documentation source",
+          "url": "https://github.com/vaspkit/vaspkit.github.io"
         }
       ],
       "editorial_state": "reviewed"
@@ -5462,8 +5462,8 @@
       "links": [
         {
           "role": "manual",
-          "label": "Official entry",
-          "url": "https://goldbook.iupac.org/"
+          "label": "Official Gold Book DOI",
+          "url": "https://doi.org/10.1351/goldbook"
         }
       ],
       "editorial_state": "catalog"
