@@ -58,6 +58,7 @@ const requiredRoutes = [
   { route: '/operations/', status: 200, name: 'Research Workflow' },
   ...representativeTopicSlugs.map((slug) => ({ route: `/operations/${slug}/`, status: 200, name: slug })),
   { route: '/workflows/', status: 200, name: 'Worked Workflows directory' },
+  { route: '/troubleshooting/', status: 200, name: 'Troubleshooting' },
   { route: '/workflows/silicon-ground-state-electronic-structure/', status: 200, name: 'Silicon Worked Workflow' },
   { route: '/workflows/aluminium-metallic-electronic-structure/', status: 200, name: 'Aluminium Worked Workflow' },
   { route: '/recipes/', status: 200, name: 'Recipes migration surface' },
@@ -137,7 +138,7 @@ async function inspectPage(page, expectedStatus) {
   if (observation.overflow) throw new Error('page has horizontal overflow');
   if (observation.oldUi !== 0) throw new Error(`page exposes ${observation.oldUi} retired UI elements`);
   if (observation.fixedContracts !== 0) throw new Error('page exposes a fixed operation contract');
-  if (JSON.stringify(observation.nav) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools & Resources'])) throw new Error(`navigation mismatch: ${JSON.stringify(observation.nav)}`);
+  if (JSON.stringify(observation.nav) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools & Resources', 'Troubleshooting'])) throw new Error(`navigation mismatch: ${JSON.stringify(observation.nav)}`);
   if (observation.background !== 'rgb(255, 255, 255)') throw new Error(`background is not white: ${observation.background}`);
   if (!/Iowan Old Style|Palatino|Book Antiqua|Georgia|Times New Roman|serif/i.test(observation.fontFamily)) throw new Error(`serif reading stack missing: ${observation.fontFamily}`);
   if (expectedStatus === 404 && !observation.text.includes('Page Not Found')) throw new Error('custom 404 content missing');
