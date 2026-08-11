@@ -151,7 +151,7 @@ function outputPath(href) {
 
 const htmlFiles = (await walk(distPath)).filter((path) => path.endsWith('.html'));
 const supportingOperationRoutes = ['troubleshooting', 'software-bridge', 'resource-landscape'];
-const standaloneSupportRoutes = ['quick-reference'];
+const standaloneSupportRoutes = ['quick-reference', 'troubleshooting'];
 const expectedHtmlCount = 4 + topicSlugs.length + transitionalSlugs.length + legacySlugs.length + recipeSlugs.length + frameworkSlugs.length + practicalGuides.length + toolsDocument.resources.filter((resource) => resource.detail).length + 2 + workedWorkflows.length + 1 + retiredPracticalRedirects.length + supportingOperationRoutes.length + standaloneSupportRoutes.length;
 if (htmlFiles.length !== expectedHtmlCount) errors.push(`generated HTML route set mismatch: expected ${expectedHtmlCount}, found ${htmlFiles.length}`);
 
@@ -250,7 +250,7 @@ const home = htmlByPath.get(join(distPath, 'index.html')) ?? '';
 const homeText = stripMarkup(home);
 const homeNav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
 const navLabels = [...homeNav.matchAll(/<a[^>]*>([^<]+)<\/a>/g)].map((match) => match[1].trim());
-if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools &amp; Resources'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
+if (JSON.stringify(navLabels) !== JSON.stringify(['Home', 'Research Workflow', 'Worked Workflows', 'Tools &amp; Resources', 'Troubleshooting'])) errors.push(`generated primary navigation mismatch: ${JSON.stringify(navLabels)}`);
 for (const phrase of [
   'Scientific Question',
   'Required Observable',
