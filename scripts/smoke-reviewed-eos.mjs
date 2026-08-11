@@ -20,7 +20,7 @@ const phrases = [
   'Decide what the curves may support next',
   'Sources and methods',
 ];
-const domains = ['doi.org', 'docs.ase-lib.org', 'vasp.at', 'phonopy.github.io', 'goldbook.iupac.org'];
+const domains = ['doi.org', 'docs.ase-lib.org', 'vasp.at', 'phonopy.github.io', 'openstax.org'];
 
 async function inspect(page, width) {
   const result = await page.evaluate(() => ({

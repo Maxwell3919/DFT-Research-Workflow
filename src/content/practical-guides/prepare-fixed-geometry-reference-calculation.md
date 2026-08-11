@@ -18,7 +18,8 @@ source_ids:
   - cp2k-scf
   - abinit-basic1
   - cod-9013102
-media_ids: []
+media_ids:
+  - silicon-qe-scf-output-terminal
 review: docs/reviews/2026-08-03-calculate-reference-ground-state.md
 reviewed_at: "2026-08-03"
 ---

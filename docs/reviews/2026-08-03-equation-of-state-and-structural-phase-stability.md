@@ -41,7 +41,7 @@ Convex-hull stability, elastic tensors, phonons, anharmonicity, reaction paths, 
 - ASE officially documents the supported EOS fit forms, returned equilibrium volume/energy/bulk modulus, and native bulk-modulus units.
 - VASP officially documents fixed-volume relaxation, EOS fitting, and numerical discontinuities from basis and FFT-grid changes.
 - Phonopy officially documents volume-indexed quasiharmonic free energies and the pressure-volume term.
-- IUPAC defines enthalpy as internal energy plus pressure times volume.
+- The linked open textbook gives the basic enthalpy identity; the EOS guide separately declares the pressure, volume, and energy conventions used for a calculation.
 
 All eight URLs returned live official pages or recognized primary DOI redirects during the pre-write check. Reachability, semantic support, and the article synthesis remain distinct evidence classes.
 
@@ -54,7 +54,7 @@ Reviewed source records:
 - https://docs.ase-lib.org/ase/eos.html
 - https://vasp.at/wiki/Volume_relaxation
 - https://phonopy.github.io/phonopy/qha.html
-- https://goldbook.iupac.org/terms/view/H02752
+- https://openstax.org/books/chemistry-2e/pages/5-3-enthalpy
 
 ## Practical execution review
 

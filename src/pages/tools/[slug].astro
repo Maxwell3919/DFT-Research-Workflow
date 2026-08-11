@@ -2,7 +2,10 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ContextualLinks from '../../components/ContextualLinks.astro';
+import CanonicalLiterature from '../../components/CanonicalLiterature.astro';
+import RealExecutionEvidence from '../../components/RealExecutionEvidence.astro';
 import { getContextualNavigation } from '../../lib/contextual-navigation';
+import { canonicalLiteratureByResource } from '../../lib/canonical-literature';
 import {
   getDetailedResources,
   getResource,
@@ -42,6 +45,7 @@ const reviewedAtLabel = new Intl.DateTimeFormat('en-GB', {
 const contextualNavigation = getContextualNavigation({ kind: 'tool', slug: resource.slug });
 const verificationNote = resource.caveat
   ?? 'Check current official documentation, access terms, release compatibility, input semantics, and the evidence needed for the specific research claim.';
+const canonicalLiterature = canonicalLiteratureByResource[resource.slug] ?? [];
 ---
 
 <BaseLayout
@@ -84,6 +88,9 @@ const verificationNote = resource.caveat
     ) : (
       <p>No reviewed hands-on page currently demonstrates this resource. Start from the connected research task and the official entry point.</p>
     )}
+
+    {canonicalLiterature.length > 0 && <CanonicalLiterature entries={canonicalLiterature} />}
+    {resource.slug === 'quantum-espresso' && <RealExecutionEvidence resourceSlug={resource.slug} />}
 
     <h2>What to verify</h2>
     <p data-tool-verify>{verificationNote}</p>

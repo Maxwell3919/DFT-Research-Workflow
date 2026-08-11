@@ -234,7 +234,8 @@
       "priority": 2,
       "execution_script": "examples/practical-guides/silicon_gamma_phonon.py",
       "media_ids": [
-        "silicon-qe-gamma-phonon"
+        "silicon-qe-gamma-phonon",
+        "silicon-qe-gamma-phonon-output-terminal"
       ],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
@@ -720,7 +721,9 @@
       "blocker": "no geometry optimization, candidate comparison, or ground-state proof",
       "priority": 1,
       "execution_script": "examples/practical-guides/qe_manual_handoff.py",
-      "media_ids": [],
+      "media_ids": [
+        "silicon-qe-scf-output-terminal"
+      ],
       "upgrade_readiness": "completed",
       "case_id": "silicon-ground-state-electronic-structure"
     },

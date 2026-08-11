@@ -1,0 +1,31 @@
+---
+import type { CanonicalLiterature as CanonicalLiteratureRecord } from '../lib/canonical-literature';
+
+interface Props {
+  entries: CanonicalLiteratureRecord[];
+}
+
+const { entries } = Astro.props;
+---
+
+<section class="canonical-literature" aria-labelledby="canonical-literature-title">
+  <h2 id="canonical-literature-title">Canonical literature</h2>
+  <p class="section-intro">These papers explain why the method or software exists. Use the current official entry points above for live input syntax and release-specific behaviour.</p>
+  <ol>
+    {entries.map((entry) => (
+      <li>
+        <p><a href={entry.url}>{entry.citation}</a></p>
+        <p><strong>Why it matters.</strong> {entry.whyItMatters}</p>
+        <p><strong>What to look for.</strong> {entry.lookFor}</p>
+        <p><strong>Workflow connection.</strong> {entry.connection}</p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .canonical-literature { margin-top: 2.5rem; }
+  .canonical-literature ol { padding-left: 1.25rem; }
+  .canonical-literature li + li { margin-top: 1.45rem; }
+  .canonical-literature p { margin: 0.45rem 0; }
+</style>

@@ -155,4 +155,4 @@ Store every structure, state, point, exclusion, fit, residual, convergence table
 - [ASE equation-of-state documentation](https://docs.ase-lib.org/ase/eos.html)
 - [VASP volume-relaxation and EOS guidance](https://vasp.at/wiki/Volume_relaxation)
 - [Phonopy quasiharmonic documentation](https://phonopy.github.io/phonopy/qha.html)
-- [IUPAC definition of enthalpy](https://goldbook.iupac.org/terms/view/H02752)
+- [OpenStax explanation of enthalpy](https://openstax.org/books/chemistry-2e/pages/5-3-enthalpy)

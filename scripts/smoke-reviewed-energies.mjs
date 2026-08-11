@@ -20,7 +20,7 @@ const requiredPhrases = [
   'Decide what may continue',
   'Sources and methods',
 ];
-const requiredDomains = ['docs.materialsproject.org', 'goldbook.iupac.org', 'phonopy.github.io', 'doi.org'];
+const requiredDomains = ['docs.materialsproject.org', 'openstax.org', 'phonopy.github.io', 'doi.org'];
 
 async function inspect(page, expectedWidth) {
   const result = await page.evaluate(() => ({

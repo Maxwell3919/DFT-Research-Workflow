@@ -142,7 +142,7 @@ An accepted ledger can support a bounded candidate ordering or written reaction 
 
 - [Materials Project phase-diagram methodology](https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/phase-diagrams-pds)
 - [Materials Project energy-correction methodology](https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/thermodynamic-stability)
-- [IUPAC definition of Gibbs energy](https://goldbook.iupac.org/terms/view/G02629)
+- [OpenStax explanation of Gibbs free energy](https://openstax.org/books/chemistry-2e/pages/16-4-free-energy)
 - [Phonopy thermodynamic-property formulations](https://phonopy.github.io/phonopy/formulation.html)
 - [Hohenberg and Kohn, inhomogeneous electron gas](https://doi.org/10.1103/PhysRev.136.B864)
 - [Kohn and Sham, self-consistent equations](https://doi.org/10.1103/PhysRev.140.A1133)
