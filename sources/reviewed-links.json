@@ -244,7 +244,7 @@
       "links": [
         { "kind": "page", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/phase-diagrams-pds" },
         { "kind": "page", "url": "https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/thermodynamic-stability" },
-        { "kind": "page", "url": "https://goldbook.iupac.org/terms/view/G02629" },
+        { "kind": "page", "url": "https://openstax.org/books/chemistry-2e/pages/16-4-free-energy" },
         { "kind": "page", "url": "https://phonopy.github.io/phonopy/formulation.html" },
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.136.B864" },
         { "kind": "doi", "url": "https://doi.org/10.1103/PhysRev.140.A1133" },

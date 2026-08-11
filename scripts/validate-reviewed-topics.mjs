@@ -215,7 +215,7 @@ const reviewedTopicSpecifications = {
     sources: [
       'https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/phase-diagrams-pds',
       'https://docs.materialsproject.org/methodology/materials-methodology/thermodynamic-stability/thermodynamic-stability',
-      'https://goldbook.iupac.org/terms/view/G02629',
+      'https://openstax.org/books/chemistry-2e/pages/16-4-free-energy',
       'https://phonopy.github.io/phonopy/formulation.html',
       'https://doi.org/10.1103/PhysRev.136.B864',
       'https://doi.org/10.1103/PhysRev.140.A1133',
