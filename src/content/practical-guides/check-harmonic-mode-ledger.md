@@ -23,6 +23,7 @@ source_ids:
   - phonopy-setting-tags
 media_ids:
   - silicon-qe-gamma-phonon
+  - silicon-qe-gamma-phonon-output-terminal
 review: docs/reviews/2026-08-04-harmonic-phonons.md
 reviewed_at: "2026-08-04"
 ---

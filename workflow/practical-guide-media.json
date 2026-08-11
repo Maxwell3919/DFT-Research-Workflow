@@ -194,6 +194,32 @@
       "reuse_basis": "Project-captured screenshot of the public Mol* Viewer loading this repository expanded Silicon teaching snapshot; no external screenshot or fabricated GUI state was used.",
       "caption": "Actual Mol* browser state for the repository expanded eight-site Silicon teaching snapshot. It is not the byte-for-byte raw COD download and does not validate the model.",
       "alt": "Molstar browser viewer showing an eight-site Silicon unit cell with the loaded teaching snapshot identified in the viewer state tree."
+    },
+    {
+      "id": "silicon-qe-scf-output-terminal",
+      "guide_slug": "prepare-fixed-geometry-reference-calculation",
+      "path": "media/practical-guides/calculate-reference-ground-state/prepare-fixed-geometry-reference-calculation/silicon-qe-scf-output.png",
+      "provenance_type": "real-execution",
+      "created_at": "2026-08-11",
+      "source_url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html",
+      "accessed_at": "2026-08-11",
+      "source_output": "examples/practical-guides/data/silicon-qe/output/scf.out",
+      "reuse_basis": "Project-captured Chromium rendering of selected, byte-for-byte lines from the retained QE 7.5 Silicon pw.x output. The only added text is an explicit omission marker for the intervening eigenvalue listing; no numerical value or scientific mark was altered.",
+      "caption": "Actual QE 7.5 Silicon pw.x terminal output: iterations 4–9, total energies, estimated SCF accuracy, and the recorded nine-iteration completion. The terminal image is an output inspection aid, not evidence that this single SCF run establishes numerical convergence or scientific validity.",
+      "alt": "Terminal rendering of retained Quantum ESPRESSO Silicon SCF output showing iterations four through nine, total energies, estimated accuracy, and completion in nine iterations."
+    },
+    {
+      "id": "silicon-qe-gamma-phonon-output-terminal",
+      "guide_slug": "check-harmonic-mode-ledger",
+      "path": "media/practical-guides/harmonic-phonons/check-harmonic-mode-ledger/silicon-qe-gamma-phonon-output.png",
+      "provenance_type": "real-execution",
+      "created_at": "2026-08-11",
+      "source_url": "https://www.quantum-espresso.org/Doc/INPUT_PH.html",
+      "accessed_at": "2026-08-11",
+      "source_output": "examples/practical-guides/data/silicon-qe/phonon/si-gamma-ph.out",
+      "reuse_basis": "Project-captured Chromium rendering of the retained QE 7.5 Silicon ph.x output block containing the Gamma-point mode frequencies, symmetry labels, timing, and JOB DONE marker; no external figure or result was copied.",
+      "caption": "Actual QE 7.5 Silicon ph.x terminal output for the retained Gamma-point run. It makes the reported mode lines and program completion visible, but remains neither a phonon dispersion nor q-mesh convergence or dynamical-stability evidence.",
+      "alt": "Terminal rendering of retained Quantum ESPRESSO Gamma-point phonon output showing six mode frequencies, symmetry labels, timing, and JOB DONE."
     }
   ]
 }

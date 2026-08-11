@@ -135,7 +135,11 @@ const contextualNavigation = getContextualNavigation({ kind: 'practical', guide_
         {assets.map((asset) => (
           <figure>
             <img src={withBase(asset.path)} alt={asset.alt} loading="lazy" />
-            <figcaption>{asset.caption} <a href={withBase(asset.path)}>Open the full-size figure.</a></figcaption>
+            <figcaption>
+              {asset.caption}{' '}
+              {asset.source_url && <a href={asset.source_url}>Source.</a>}{' '}
+              <a href={withBase(asset.path)}>Open the full-size figure.</a>
+            </figcaption>
           </figure>
         ))}
       </section>

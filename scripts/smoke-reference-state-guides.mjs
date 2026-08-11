@@ -14,7 +14,7 @@ const guides = [
     tool: 'Python',
     version: 'Python 3.12',
     phrase: 'A fixed-cell relaxation and a static SCF calculation are separate runs.',
-    mediaCount: 0,
+    mediaCount: 1,
     requiredPhrases: [
       'last complete',
       'accepted-geometry.inc',
