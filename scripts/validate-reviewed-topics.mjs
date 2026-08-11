@@ -270,7 +270,7 @@ const reviewedTopicSpecifications = {
       'https://docs.ase-lib.org/ase/eos.html',
       'https://vasp.at/wiki/Volume_relaxation',
       'https://phonopy.github.io/phonopy/qha.html',
-      'https://goldbook.iupac.org/terms/view/H02752',
+      'https://openstax.org/books/chemistry-2e/pages/5-3-enthalpy',
     ],
     reviewStatements: [
       'reviewed within the declared educational and execution scope',

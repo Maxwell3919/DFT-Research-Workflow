@@ -354,8 +354,8 @@
       "kind": "page"
     },
     {
-      "id": "iupac-enthalpy",
-      "url": "https://goldbook.iupac.org/terms/view/H02752",
+      "id": "openstax-enthalpy",
+      "url": "https://openstax.org/books/chemistry-2e/pages/5-3-enthalpy",
       "kind": "page"
     },
     {
@@ -892,7 +892,7 @@
     {
       "guide_slug": "compare-phase-enthalpies-common-pressure",
       "source_ids": [
-        "iupac-enthalpy",
+        "openstax-enthalpy",
         "vinet-eos",
         "mouhat-elastic-stability",
         "phonopy-qha"

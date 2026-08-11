@@ -1,0 +1,29 @@
+---
+import { withBase } from '../lib/paths';
+
+interface Props {
+  resourceSlug: string;
+}
+
+const { resourceSlug } = Astro.props;
+const evidence = resourceSlug === 'quantum-espresso' ? {
+  path: 'media/practical-guides/calculate-reference-ground-state/prepare-fixed-geometry-reference-calculation/silicon-qe-scf-output.png',
+  alt: 'Terminal rendering of retained Quantum ESPRESSO Silicon SCF output showing iterations four through nine, total energies, estimated accuracy, and completion in nine iterations.',
+  caption: 'Actual QE 7.5 Silicon pw.x output retained by the fixed-geometry reference case: iterations, total energies, estimated electronic accuracy, and the program completion marker.',
+  sourceUrl: 'https://www.quantum-espresso.org/Doc/INPUT_PW.html',
+  guide: 'operations/calculate-reference-ground-state/guides/prepare-fixed-geometry-reference-calculation/',
+} : null;
+---
+
+{evidence && (
+  <figure class="real-execution-evidence">
+    <img src={withBase(evidence.path)} alt={evidence.alt} loading="lazy" />
+    <figcaption>{evidence.caption} <a href={evidence.sourceUrl}>Source: QE pw.x documentation</a>. <a href={withBase(evidence.guide)}>Inspect the complete case and evidence boundary →</a></figcaption>
+  </figure>
+)}
+
+<style>
+  .real-execution-evidence { margin: 2rem 0; max-width: 48rem; }
+  .real-execution-evidence img { display: block; max-width: 100%; height: auto; border: 1px solid var(--rule); }
+  .real-execution-evidence figcaption { color: var(--muted); font-size: 0.92rem; margin-top: 0.65rem; }
+</style>

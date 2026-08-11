@@ -13,7 +13,7 @@ tested_versions:
   - ASE 3.29.0
 execution_script: examples/practical-guides/eos_phase_enthalpy.py
 source_ids:
-  - iupac-enthalpy
+  - openstax-enthalpy
   - vinet-eos
   - mouhat-elastic-stability
   - phonopy-qha
@@ -70,7 +70,7 @@ The fixture contains no DFT run, pathway, barrier, nucleation model, phonons, el
 
 ## Official and primary sources
 
-- [IUPAC definition of enthalpy](https://goldbook.iupac.org/terms/view/H02752)
+- [OpenStax explanation of enthalpy](https://openstax.org/books/chemistry-2e/pages/5-3-enthalpy)
 - [Vinet and co-workers, compressibility of solids](https://doi.org/10.1029/JB092iB09p09319)
 - [Mouhat and Coudert, elastic stability conditions](https://doi.org/10.1103/PhysRevB.90.224104)
 - [Phonopy quasiharmonic documentation](https://phonopy.github.io/phonopy/qha.html)

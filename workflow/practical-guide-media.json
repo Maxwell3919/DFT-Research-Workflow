@@ -204,7 +204,7 @@
       "source_url": "https://www.quantum-espresso.org/Doc/INPUT_PW.html",
       "accessed_at": "2026-08-11",
       "source_output": "examples/practical-guides/data/silicon-qe/output/scf.out",
-      "reuse_basis": "Project-captured Chromium rendering of selected, byte-for-byte lines from the retained QE 7.5 Silicon pw.x output. The only added text is an explicit omission marker for the intervening eigenvalue listing; no numerical value or scientific mark was altered.",
+      "reuse_basis": "Project-captured Chromium rendering of selected, byte-for-byte lines from the retained QE 7.5 Silicon pw.x output. The only added text is an explicit omission marker for the intervening eigenvalue listing; no numerical value or scientific mark was altered. Reused on the Quantum ESPRESSO tool page as a labelled link to this bounded real-execution case.",
       "caption": "Actual QE 7.5 Silicon pw.x terminal output: iterations 4–9, total energies, estimated SCF accuracy, and the recorded nine-iteration completion. The terminal image is an output inspection aid, not evidence that this single SCF run establishes numerical convergence or scientific validity.",
       "alt": "Terminal rendering of retained Quantum ESPRESSO Silicon SCF output showing iterations four through nine, total energies, estimated accuracy, and completion in nine iterations."
     },

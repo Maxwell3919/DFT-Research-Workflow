@@ -50,7 +50,7 @@ const expectedSources = [
   'https://docs.ase-lib.org/ase/eos.html',
   'https://vasp.at/wiki/Volume_relaxation',
   'https://phonopy.github.io/phonopy/qha.html',
-  'https://goldbook.iupac.org/terms/view/H02752',
+  'https://openstax.org/books/chemistry-2e/pages/5-3-enthalpy',
 ];
 const record = manifest.topics.find((topic) => topic.topic_slug === 'equation-of-state-and-structural-phase-stability');
 if (!record) {
