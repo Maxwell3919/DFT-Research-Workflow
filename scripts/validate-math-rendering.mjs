@@ -96,6 +96,10 @@ const inlineCodeExceptions = [{
   file: 'src/content/practical-guides/two-dimensional-monolayer-model.md',
   tokens: new Set(['c']),
   reason: 'c is the literal crystallographic cell-axis label in this inspection instruction.',
+}, {
+  file: 'src/content/practical-guides/run-parallel-qe-jobs-in-one-slurm-allocation.md',
+  tokens: new Set(['I_MPI_HYDRA_BOOTSTRAP', 'I_MPI_JOB_RESPECT_PROCESS_PLACEMENT', 'I_MPI_PIN', 'I_MPI_PIN_PROCESSOR_LIST']),
+  reason: 'I_MPI_* are literal Intel MPI environment variable names, not algebraic notation.',
 }];
 
 function isExplicitInlineException(file, token) {

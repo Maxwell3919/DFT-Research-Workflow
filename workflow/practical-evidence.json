@@ -821,6 +821,51 @@
         "silicon-molstar-browser-viewer"
       ],
       "upgrade_readiness": "completed"
+    },
+    {
+      "guide_slug": "verify-cluster-environment-before-qe",
+      "parent_topic": "test-numerical-convergence",
+      "evidence_class": "real-execution",
+      "material": "read-only environment report produced by the companion on the repository host",
+      "real_result": true,
+      "interface": false,
+      "traceable_data": true,
+      "upgrade": "record a committed environment snapshot from a QE cluster",
+      "blocker": null,
+      "priority": 2,
+      "execution_script": "examples/practical-guides/verify_qe_environment.py",
+      "media_ids": [],
+      "upgrade_readiness": "completed"
+    },
+    {
+      "guide_slug": "run-parallel-qe-jobs-in-one-slurm-allocation",
+      "parent_topic": "test-numerical-convergence",
+      "evidence_class": "real-execution",
+      "material": "generated and statically validated fork-bootstrap sbatch template",
+      "real_result": true,
+      "interface": false,
+      "traceable_data": true,
+      "upgrade": "record a committed smoke-test run on a Slurm cluster",
+      "blocker": null,
+      "priority": 2,
+      "execution_script": "examples/practical-guides/qe_parallel_universe_smoke.py",
+      "media_ids": [],
+      "upgrade_readiness": "completed"
+    },
+    {
+      "guide_slug": "migrate-and-verify-calculation-data",
+      "parent_topic": "document-and-preserve-study",
+      "evidence_class": "real-execution",
+      "material": "sha256sum manifest comparison exercised on generated fixtures",
+      "real_result": true,
+      "interface": false,
+      "traceable_data": true,
+      "upgrade": "record a committed cross-host migration manifest pair",
+      "blocker": null,
+      "priority": 2,
+      "execution_script": "examples/practical-guides/migrate_verify_data.py",
+      "media_ids": [],
+      "upgrade_readiness": "completed"
     }
   ]
 }

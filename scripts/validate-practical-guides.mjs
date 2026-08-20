@@ -329,6 +329,24 @@ const reviewRequirements = new Map([
     'Execution success is not transport convergence for a real calculation',
     'The media asset is an original derived-public-data redraw',
   ]],
+  ['docs/reviews/2026-08-20-verify-cluster-environment-before-qe.md', [
+    'reviewed within the declared read-only environment-verification scope',
+    'The report records observations; it does not prove that a calculation will run, converge, or be scientifically valid',
+    'Scheduler, MPI, and QE presence do not establish compatibility, correctness, or numerical convergence',
+    'No media are added',
+  ]],
+  ['docs/reviews/2026-08-20-run-parallel-qe-jobs-in-one-slurm-allocation.md', [
+    'reviewed within the declared single-node parallel-launch teaching scope',
+    'The template is a teaching pattern, not a site configuration',
+    'A smoke test proves only that the launcher pattern starts; it does not establish QE convergence or scientific validity',
+    'No media are added',
+  ]],
+  ['docs/reviews/2026-08-20-migrate-and-verify-calculation-data.md', [
+    'reviewed within the declared migration and byte-identity scope',
+    'Byte-for-byte agreement does not establish content correctness, calculation success, or scientific validity',
+    'Version baselines are a comparison boundary, not a claim that one version is more accurate',
+    'No media are added',
+  ]],
 ]);
 
 function parseFrontmatter(source) {

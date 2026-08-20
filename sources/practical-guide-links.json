@@ -667,6 +667,31 @@
       "id": "vesta-documentation",
       "url": "https://jp-minerals.org/vesta/en/doc.html",
       "kind": "page"
+    },
+    {
+      "id": "intel-mpi-hydra-options",
+      "url": "https://www.intel.com/content/www/us/en/docs/mpi-library/developer-reference-linux/current/global-hydra-options.html",
+      "kind": "page"
+    },
+    {
+      "id": "intel-mpi-hydra-env",
+      "url": "https://www.intel.com/content/www/us/en/docs/mpi-library/developer-reference-linux/current/hydra-environment-variables.html",
+      "kind": "page"
+    },
+    {
+      "id": "intel-mpi-pinning",
+      "url": "https://www.intel.com/content/www/us/en/docs/mpi-library/developer-reference-linux/current/process-pinning.html",
+      "kind": "page"
+    },
+    {
+      "id": "gnu-coreutils-sha256sum",
+      "url": "https://www.gnu.org/software/coreutils/manual/html_node/sha2-utilities.html",
+      "kind": "page"
+    },
+    {
+      "id": "gnu-tar",
+      "url": "https://www.gnu.org/software/tar/manual/html_node/",
+      "kind": "page"
     }
   ],
   "guides": [
@@ -1139,6 +1164,31 @@
         "cod-9013102",
         "molstar-viewer-query-parameters",
         "vesta-documentation"
+      ]
+    },
+    {
+      "guide_slug": "verify-cluster-environment-before-qe",
+      "source_ids": [
+        "qe-pw-75",
+        "slurm-sbatch-docs",
+        "slurm-squeue-docs"
+      ]
+    },
+    {
+      "guide_slug": "run-parallel-qe-jobs-in-one-slurm-allocation",
+      "source_ids": [
+        "intel-mpi-hydra-options",
+        "intel-mpi-hydra-env",
+        "intel-mpi-pinning",
+        "slurm-sbatch-docs"
+      ]
+    },
+    {
+      "guide_slug": "migrate-and-verify-calculation-data",
+      "source_ids": [
+        "qe-pw-75",
+        "gnu-coreutils-sha256sum",
+        "gnu-tar"
       ]
     }
   ]
